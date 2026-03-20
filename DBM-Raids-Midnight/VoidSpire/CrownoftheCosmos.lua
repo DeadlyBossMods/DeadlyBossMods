@@ -21,12 +21,12 @@ mod:RegisterCombat("combat")
 local warnRiftSimulacrum				= mod:NewSpellAnnounce(1261016, 2)--P2 Starting
 
 local specWarnVoidExpulsion				= mod:NewSpecialWarningCount(1283236, nil, nil, nil, 2, 2)--P1+
-local specWarnSilverstrikeBarrage		= mod:NewSpecialWarningCount(1234564, nil, nil, nil, 2, 2)--Intermission 1
+--local specWarnSilverstrikeBarrage		= mod:NewSpecialWarningCount(1234564, nil, nil, nil, 2, 2)--Intermission 1
 local specWarnSingularityEruption		= mod:NewSpecialWarningDodgeCount(1235622, nil, nil, nil, 2, 2)--Intermission 1
 --local specWarnVoidstalkerSting		= mod:NewSpecialWarningCount(1237035, false, nil, nil, 2, 2)--Stage 2 non mythic
 local specWarnCalloftheVoid				= mod:NewSpecialWarningSwitchCount(1237837, nil, nil, nil, 2, 2)--P2
 local specWarnCosmicBarrier				= mod:NewSpecialWarningSwitchCount(1246918, "Dps", nil, nil, 2, 2)--P2
-local specWarnDevouringCosmos			= mod:NewSpecialWarningSpell(1238843, nil, nil, nil, 3, 2)--P3 (berserk?)
+local specWarnDevouringCosmos			= mod:NewSpecialWarningSpell(1238843, nil, nil, nil, 3, 2)--P3
 local specWarnDarkHand					= mod:NewSpecialWarningDefensive(1238844, nil, nil, nil, 1, 2)--P1 Tank Add
 local specWarnRavenousAbyss				= mod:NewSpecialWarningRun(1243753, nil, nil, nil, 4, 2)--P1 Add
 local specWarnInterruptingTremor		= mod:NewSpecialWarningCast(1243743, "SpellCaster", nil, nil, 1, 2)--P1 Add
@@ -44,10 +44,14 @@ local timerRangerCaptainsMarkCD			= mod:NewCDCountTimer(20.5, 1237614, nil, nil,
 local timerCosmicBarrierCD				= mod:NewCDCountTimer(20.5, 1246918, nil, nil, nil, 5)--P2
 local timerAspectoftheEndCD				= mod:NewCDCountTimer(20.5, 1239111, nil, nil, nil, 3)--Intermission 2
 local timerGraspofEmptynessCD			= mod:NewCDCountTimer(20.5, 1232470, nil, nil, nil, 3)--P1
-local timerDevouringCosmosCD			= mod:NewCDCountTimer(20.5, 1238843, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--P3 (berserk?)
+local timerDevouringCosmosCD			= mod:NewCDCountTimer(20.5, 1238843, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--P3
+local timerDarkHandCD					= mod:NewCDCountTimer(20.5, 1238844, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P1 Tank Add
+local timerRavenousAbyssCD				= mod:NewCDCountTimer(20.5, 1243753, nil, nil, nil, 2)--P1 Add
+local timerInterruptingTremorCD			= mod:NewCDCountTimer(20.5, 1243743, "SpellCaster", nil, nil, 2)--P1 Add
 local timerRiftSimulacrumCD				= mod:NewCDCountTimer(20.5, 1261016, nil, nil, nil, 6)--P2 Starting
 local timerCosmicPortalCD				= mod:NewCDCountTimer(20.5, 1261339, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic only mechanic of unknown nature
 local timerRiftSlashCD					= mod:NewCDCountTimer(20.5, 1246461, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P2 Rift Simulacrum slash attack
+local timerStage2CD						= mod:NewCDTimer(20.5, 1272966, nil, nil, nil, 6)
 
 mod:AddPrivateAuraSoundOption(1233865, true, 1233865, 1, 1)--Null Corona
 mod:AddPrivateAuraSoundOption(1283236, true, 1283236, 1, 1)--Void Expulsion
@@ -96,25 +100,28 @@ function mod:OnLimitedCombatStart()
 	specWarnVoidExpulsion:SetAlert(5, "aesoon", 2, 2, 0)
 	timerVoidExpulsionCD:SetTimeline(5)
 	timerSilverstrikeArrowCD:SetTimeline(6)
-	specWarnSilverstrikeBarrage:SetAlert(7, "specialsoon", 2, 2)--Figure out more accurate sound after seeing it
+--	specWarnSilverstrikeBarrage:SetAlert(7, "specialsoon", 2, 2)
 	timerSilverstrikeBarrageCD:SetTimeline(7)
-	specWarnSingularityEruption:SetAlert(8, "watchstep", 2, 2)--Figure out more accurate sound after seeing it
+	specWarnSingularityEruption:SetAlert(8, "watchstep", 2, 2)
 	timerSingularityEruptionCD:SetTimeline(8)
 	timerVoidstalkerStingCD:SetTimeline(9)
 	specWarnCalloftheVoid:SetAlert(10, "mobsoon", 2, 2)
 	timerCalloftheVoidCD:SetTimeline(10)
 	timerRangerCaptainsMarkCD:SetTimeline({11, 131})--Regular, Mythic?
-	specWarnCosmicBarrier:SetAlert(12, "attackshield", 2, 2)--Figure out more accurate sound after seeing it
+	specWarnCosmicBarrier:SetAlert(12, "attackshield", 2, 2, 0)
 	timerCosmicBarrierCD:SetTimeline(12)
 	timerAspectoftheEndCD:SetTimeline(13)
 	timerGraspofEmptynessCD:SetTimeline({14, 132})--Regular, Mythic?
-	specWarnDevouringCosmos:SetAlert(15, "stilldanger", 2, 4)--Figure out more accurate sound after seeing it
+	specWarnDevouringCosmos:SetAlert(15, "changeplatform", 19, 4)
 	timerDevouringCosmosCD:SetTimeline(15)
 	if self:IsTank() then
-		specWarnDarkHand:SetAlert(64, "defensive", 2, 2, 0)
+		specWarnDarkHand:SetAlert(64, "defensive", 2, 2)
 	end
-	specWarnRavenousAbyss:SetAlert(65, "justrun", 2, 4, 0)
+	timerDarkHandCD:SetTimeline(64)
+	specWarnRavenousAbyss:SetAlert(65, "watchstep", 2, 2)
+	timerRavenousAbyssCD:SetTimeline(65)
 	specWarnInterruptingTremor:SetAlert(66, "stopcast", 2, 2, 0)
+	timerInterruptingTremorCD:SetTimeline(66)
 	warnRiftSimulacrum:SetAlert(135, "ptwo", 2, 2, 0)--Verify
 	timerRiftSimulacrumCD:SetTimeline(135)
 	specWarnCosmicPortal:SetAlert(136, "bigmobsoon", 2, 2)
@@ -123,6 +130,7 @@ function mod:OnLimitedCombatStart()
 		specWarnRiftSlash:SetAlert(137, "defensive", 2, 2)
 	end
 	timerRiftSlashCD:SetTimeline(137)
+	timerStage2CD:SetTimeline(351)
 
 	self:EnablePrivateAuraSound({1233865,1233887}, "absorbyou", 19)
 	self:EnablePrivateAuraSound(1283236, "orbrun", 2)
@@ -137,7 +145,6 @@ function mod:OnLimitedCombatStart()
 --	self:EnablePrivateAuraSound(1234570, "debuffyou", 17)--Phase soft enrage, probably not worth annoucning, it kinda just persistently stacks
 	self:EnablePrivateAuraSound(1238206, "watchfeet", 8)
 	self:EnablePrivateAuraSound(1238708, "speedyou", 19)
-	DBM:AddMsg("This module is untested and may have issues. If you find any, please report them to DBM's Discord or come by MysticalOS's socials or stream. Thanks!")
 end
 
 --[[

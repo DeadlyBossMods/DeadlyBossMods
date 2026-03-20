@@ -20,7 +20,7 @@ local mfloor, mmax = math.floor, math.max
 do
 	local debugLogFrame, debugLogViewport, debugLogContent, clearButton
 	local debugLogLineFrames = {}
-	local maxDebugLogEntries = 1000
+	local maxDebugLogEntries = 750
 	local debugLogSoftClosed = true
 	local lineHeight = 14
 	local debugLogLineCount = 0

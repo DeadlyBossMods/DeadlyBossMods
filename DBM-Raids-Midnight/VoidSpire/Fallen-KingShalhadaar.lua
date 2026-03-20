@@ -149,6 +149,7 @@ do
 					DBM:FireEvent("DBM_ResumeBlizzAPI")
 				end
 				self:UnregisterShortTermEvents()
+				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			badStateDetected = true
@@ -157,6 +158,7 @@ do
 				DBM:FireEvent("DBM_ResumeBlizzAPI")
 			end
 			self:UnregisterShortTermEvents()
+			DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 

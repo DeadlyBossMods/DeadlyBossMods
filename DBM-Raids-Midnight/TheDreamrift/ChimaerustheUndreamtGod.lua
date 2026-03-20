@@ -170,6 +170,7 @@ do
 				cachedEventIDs[eventID] = "phlegm"
 			end
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
+			--30 is max time, but when all adds die, 30 is canceled and replaced with 1 second timer
 			timerRavenousDiveCD:TLStart(timer, eventID, self.vb.diveCount)
 			cachedEventIDs[eventID] = "dive"
 		elseif timer == 165 or timer == 10 then--Stage Two markers
@@ -195,6 +196,7 @@ do
 				DBM:FireEvent("DBM_ResumeBlizzAPI")
 			end
 			self:UnregisterShortTermEvents()
+			DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	--Note, bar stage changing and canceling is handled by core
