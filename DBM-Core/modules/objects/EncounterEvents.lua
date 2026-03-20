@@ -78,14 +78,14 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	--Secrets
 	local spellId = eventInfo.spellID
 	local spellName = eventInfo.spellName or C_Spell.GetSpellName(spellId)--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
-	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
-	if self.Options.HideDBMBars then return end
-	if self.Options.DontShowBossTimers and source == 0 then return end
-	if self.Options.DontShowUserTimers and source == 1 then return end
 	local iconId = eventInfo.iconFileID
 	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
 	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for eventID: "..eventID.." with spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(tostring(duration).." (Rounded: "..tostring(durationRounded)..")", color).." and state: "..tostring(eventState), 3, nil, nil, true)
+	if self.Options.HideDBMBars then return end
+	if self.Options.DontShowBossTimers and source == 0 then return end
+	if self.Options.DontShowUserTimers and source == 1 then return end
+	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
 	if not DBT.Options.ColorByType or not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
 		color = nil
