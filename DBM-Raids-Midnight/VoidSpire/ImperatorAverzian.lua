@@ -52,7 +52,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.voidFallCount = 1
 	self.vb.voidMarkCount = 1
 	next72IsShadow = false
-	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and self:IsDifficulty("lfr", "normal", "heroic") and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -91,7 +91,7 @@ do
 	---@param timer number
 	---@param eventID number
 	local function timersEasy(self, timer, eventID, timeInCombat)
-		--Logic confirmed against normal and LFR
+		--Logic confirmed against normal, heroic, and LFR
 		if timer == 4 or timer == 36 then--Dark Upheaval
 			timerDarkUpheavalCD:TLStart(timer, eventID, self.vb.upheavalCount)
 			cachedEventIDs[eventID] = "upheaval"
@@ -144,7 +144,7 @@ do
 		local timer = math.floor(eventInfo.duration + 0.5)
 		local timeInCombat = GetTime() - self.combatInfo.pull
 		if not badStateDetected then
-			if self:IsEasy() then
+			if self:IsDifficulty("lfr", "normal", "heroic") then
 				timersEasy(self, timer, eventID, timeInCombat)
 			end
 		end
