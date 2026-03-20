@@ -8,6 +8,8 @@ local private = select(2, ...)
 local PrivateAuras = {}
 DBM.PrivateAuras = PrivateAuras
 
+local PAAnchorsRegistered = false
+
 ---Helper function to build a settings table from flattened option keys
 ---@param prefix string The prefix for the option keys (e.g., "PrivateAurasPlayer")
 ---@return table Settings table with all configuration properties
@@ -28,6 +30,10 @@ local function GetPrivateAuraSettings(prefix)
         yOffset = DBM.Options[prefix .. "YOffset"],
         UpscaleDuration = DBM.Options[prefix .. "UpscaleDuration"],
     }
+end
+
+function PrivateAuras:IsRegistered()
+	return PAAnchorsRegistered
 end
 
 ---Register Private Aura Display frame/text for a unit. Will unregister existing anchors for the unit before registering new ones
@@ -176,6 +182,7 @@ end
 
 ---@param unit playerUUIDs? if nil, will unregister all units. If string, will unregister that unit
 function PrivateAuras:UnregisterPrivateAuras(unit)
+	PAAnchorsRegistered = false
     if not self.PAFrames then return end
     if not unit then
         for u, _ in pairs(self.PAFrames) do
@@ -376,6 +383,7 @@ end
 
 ---Register private auras for player and the first co-tank found in raid
 function PrivateAuras:RegisterAllUnits()
+	PAAnchorsRegistered = true
 	--Options toggles are checked in actual fuctions. Don't option check here.
 	--We still want to unregister events if a user toggles feature off after using it
     self:RegisterPrivateAuras("player")

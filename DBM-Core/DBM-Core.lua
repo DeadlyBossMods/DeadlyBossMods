@@ -489,7 +489,7 @@ private.chatPrefixShort = "<" .. L.DBM .. "> "
 local usedProfile = "Default"
 local dbmIsEnabled = true
 -- Table variables
-local loadcIds, oocBWComms, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache = {}, {}, {}, {}, {}, {}, {}, {}
+local loadcIds, oocBWComms, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache, disablePAOnCombatEnd = {}, {}, {}, {}, {}, {}, {}, {}, {}
 local inCombat = {} ---@type DBMMod[]
 local combatInfo = {} ---@type table<integer, CombatInfo[]>
 local inCombatTrash = {}
@@ -4611,6 +4611,19 @@ do
 				self:AddMsg(L.LEAVING_COMBAT, nil, true)--Played using generic sound
 			end
 		end
+		if private.isRetail and not InCombatLockdown() then
+			--Only clear registered private aura sounds when out of combat
+			for modId in pairs(disablePAOnCombatEnd) do
+				local mod = DBM:GetModByName(modId)
+				if mod then
+					mod:DisablePrivateAuraSounds()
+				end
+				disablePAOnCombatEnd[modId] = nil
+			end
+			if self.PrivateAuras:IsRegistered() then
+				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
+			end
+		end
 	end
 
 	local function isBossEngaged(cId)
@@ -4806,7 +4819,7 @@ do
 				local playerClass = self:GetRaidClass(targetName)
 				if playerClass then
 					local playerColor = RAID_CLASS_COLORS[playerClass]
-					if playerClass then
+					if playerColor then
 						targetName = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, targetName, 0.41 * 255, 0.8 * 255, 0.94 * 255)
 					end
 				end
@@ -5089,7 +5102,9 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if private.isRetail then
-				self.PrivateAuras:RegisterAllUnits()
+				if not InCombatLockdown() and not self.PrivateAuras:IsRegistered() then
+					self.PrivateAuras:RegisterAllUnits()
+				end
 				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
 				end
@@ -5422,7 +5437,12 @@ do
 			end
 			mod:Stop()
 			if mod.paSounds then
-				mod:DisablePrivateAuraSounds()
+				--Set mod to be disabled after combat end if we are in combat, otherwise disable immediately
+				if not InCombatLockdown() then
+					mod:DisablePrivateAuraSounds()
+				else
+					disablePAOnCombatEnd[mod.id] = true
+				end
 			end
 			if mod.tlTimerEvents then
 				mod:DisableTimelineOptions()
@@ -5430,7 +5450,7 @@ do
 			if mod.tlSoundEvents then
 				mod:DisableAlertOptions()
 			end
-			if private.isRetail then
+			if private.isRetail and not InCombatLockdown() then
 				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
 			if self.Options.IgnoreBlizzAPI then

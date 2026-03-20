@@ -970,6 +970,10 @@ do
 		else
 			optionId = auraspellId
 		end
+		if InCombatLockdown() then
+			DBM:Debug("Attempting to register private aura sound for spell ID " .. optionId .. " failed due to combat restriction. This sound will not be registered.", 2)
+			return
+		end
 		if not C_UnitAuras.AuraIsPrivate(optionId) then
 			DBM:Debug("Attempting to register private aura sound for spell ID " .. optionId .. " which is not a private aura. This sound will not be registered.", 2)
 			return
