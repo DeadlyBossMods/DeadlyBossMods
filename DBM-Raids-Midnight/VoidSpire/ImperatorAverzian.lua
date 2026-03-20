@@ -133,6 +133,7 @@ do
 				DBM:FireEvent("DBM_ResumeBlizzAPI")
 			end
 			self:UnregisterShortTermEvents()
+			DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	--Note, bar state changing and canceling is handled by core
