@@ -4611,7 +4611,7 @@ do
 				self:AddMsg(L.LEAVING_COMBAT, nil, true)--Played using generic sound
 			end
 		end
-		if private.isRetail and not InCombatLockdown() then
+		if private.isRetail and not InCombatLockdown() and #inCombat == 0 then
 			--Only clear registered private aura sounds when out of combat
 			for modId in pairs(disablePAOnCombatEnd) do
 				local mod = DBM:GetModByName(modId)
