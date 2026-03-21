@@ -49,6 +49,7 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 			self:Debug("|cffffff00ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName, 2, nil, nil, true)
 		end
 	end
+	if not self:AntiSpam(0.5, "ENCOUNTER_WARNING") then return end--Designers can't be assed to make sure event isn't buggy and spammy so we're forced to hard throttle
 	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	if self.Options.HideDBMWarnings then return end
 	local iconFileID = encounterWarningInfo.iconFileID
@@ -68,8 +69,9 @@ end
 --TODO, make sure DBM core can track timers in startedTimers table?
 --TODO, re-enable icon when blizzard unfucks SetTexture
 --TODO, use EncounterTimelineIconMasks to get icon mask from
+--NOTE, passthroughEvent is not a real event, just one we can inject when called externally, we underscores to reserve in case blizz actually adds new args
 --/run C_EncounterTimeline.AddEditModeEvents()
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining, _, _, passthroughEvent)
 	local eventID = eventInfo.id
 	local eventState = C_EncounterTimeline.GetEventState(eventID)
 	local duration = remaining or eventInfo.duration
@@ -85,7 +87,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	if self.Options.HideDBMBars then return end
 	if self.Options.DontShowBossTimers and source == 0 then return end
 	if self.Options.DontShowUserTimers and source == 1 then return end
-	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
+	if not passthroughEvent and self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
 	if not DBT.Options.ColorByType or not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
 		color = nil

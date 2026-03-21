@@ -231,6 +231,7 @@ L.HidePATooltip						= "禁用鼠标悬停时的法术提示框"
 L.HidePABorder						= "禁用边框"
 L.Area_TankPrivateAuras				= "副坦私人光环选项"
 L.EnableTankPrivateAuraIcons		= "在屏幕上显示副坦私人光环图标（需要坦克专精）"
+L.ShowSecondCoTank					= "Show a second co-tank"--checkbox
 L.RIGHT								= "右"
 L.LEFT								= "左"
 L.UP								= "上"

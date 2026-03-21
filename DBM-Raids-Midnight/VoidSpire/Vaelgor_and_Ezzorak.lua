@@ -48,7 +48,7 @@ mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3)--Gloomtouched (soake
 mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3)--Diminish (Gloomtouched ended, don't soak again)
 mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2)--Gloomfield (GTFO left by gloom)
 mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 1)--Dread Breath Target
-mod:AddPrivateAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
+--mod:AddPrivateAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
 mod:AddPrivateAuraSoundOption(1265152, true, 1245645, 1, 3)--Impale (secondary attack of Rakfang)
 mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1)--Radiant Barrier
 mod:AddPrivateAuraSoundOption(1270497, true, 1270497, 1, 1)--Shadowmark
@@ -145,7 +145,7 @@ function mod:OnLimitedCombatStart()
 	self:EnablePrivateAuraSound(1270852, "debuffyou", 17)
 	self:EnablePrivateAuraSound(1245421, "watchfeet", 8)
 	self:EnablePrivateAuraSound(1255612, "targetyou", 2)--Maybe a more specific sound?
-	self:EnablePrivateAuraSound(1255979, "fearyou", 19)
+	--self:EnablePrivateAuraSound(1255979, "fearyou", 19)
 	self:EnablePrivateAuraSound(1248865, "barrieryou", 19)--1249595 results in spam
 	self:EnablePrivateAuraSound(1270497, "shadowyou", 15)
 	self:EnablePrivateAuraSound(1265152, "stunyou", 19)
@@ -381,37 +381,37 @@ do
 			local eventType = cachedEventIDs[eventID]
 			if eventType then
 				if eventType == "nullbeam" then
-					self.vb.beamCount = self.vb.beamCount + 1
 					specWarnNullBeam:Show(self.vb.beamCount)
 					specWarnNullBeam:Play("beamincoming")
+					self.vb.beamCount = self.vb.beamCount + 1
 				elseif eventType == "voidhowl" then
-					self.vb.howlCount = self.vb.howlCount + 1
 					specWarnVoidHowl:Show(self.vb.howlCount)
 					specWarnVoidHowl:Play("range5")
+					self.vb.howlCount = self.vb.howlCount + 1
 				elseif eventType == "gloom" then
-					self.vb.gloomCount = self.vb.gloomCount + 1
 					specWarnGloom:Show(self.vb.gloomCount)
 					specWarnGloom:Play("gloomincoming")
+					self.vb.gloomCount = self.vb.gloomCount + 1
 				elseif eventType == "dread" then
-					self.vb.dreadCount = self.vb.dreadCount + 1
 					specWarnDreadBreath:Show(self.vb.dreadCount)
 					specWarnDreadBreath:Play("breathsoon")
+					self.vb.dreadCount = self.vb.dreadCount + 1
 				elseif eventType == "maw" then
-					self.vb.mawCount = self.vb.mawCount + 1
 					specWarnGrabblingMaw:Show()
 					specWarnGrabblingMaw:Play("defensive")
+					self.vb.mawCount = self.vb.mawCount + 1
 				elseif eventType == "vaelwing" then
-					self.vb.vaelwingCount = self.vb.vaelwingCount + 1
 					specWarnVaelwing:Show()
 					specWarnVaelwing:Play("defensive")
+					self.vb.vaelwingCount = self.vb.vaelwingCount + 1
 				elseif eventType == "rakfang" then
-					self.vb.rakfangCount = self.vb.rakfangCount + 1
 					specWarnRakfang:Show()
 					specWarnRakfang:Play("defensive")
+					self.vb.rakfangCount = self.vb.rakfangCount + 1
 				elseif eventType == "radiantbarrier" then
-					self.vb.radiantBarrierCount = self.vb.radiantBarrierCount + 1
 					specWarnRadiantBarrier:Show(self.vb.radiantBarrierCount)
 					specWarnRadiantBarrier:Play("findshield")
+					self.vb.radiantBarrierCount = self.vb.radiantBarrierCount + 1
 				end
 				cachedEventIDs[eventID] = nil
 			end

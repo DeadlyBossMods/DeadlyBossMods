@@ -157,25 +157,25 @@ do
 			local eventType = cachedEventIDs[eventID]
 			if eventType then
 				if eventType == "upheaval" then
-					self.vb.upheavalCount = self.vb.upheavalCount + 1
 					specWarnDarkUpheaval:Show(self.vb.upheavalCount)
 					specWarnDarkUpheaval:Play("aesoon")
+					self.vb.upheavalCount = self.vb.upheavalCount + 1
 				elseif eventType == "oblivion" then
-					self.vb.oblivionCount = self.vb.oblivionCount + 1
 					specWarnOblivionWrath:Show(self.vb.oblivionCount)
 					specWarnOblivionWrath:Play("watchstep")
+					self.vb.oblivionCount = self.vb.oblivionCount + 1
 				elseif eventType == "voidfall" then
-					self.vb.voidFallCount = self.vb.voidFallCount + 1
 					specWarnVoidFall:Show(self.vb.voidFallCount)
 					specWarnVoidFall:Play("carefly")
+					self.vb.voidFallCount = self.vb.voidFallCount + 1
 				elseif eventType == "shadow" then
-					self.vb.shadowCount = self.vb.shadowCount + 1
 					specWarnShadowsAdvance:Show(self.vb.shadowCount)
 					specWarnShadowsAdvance:Play("mobsoon")
+					self.vb.shadowCount = self.vb.shadowCount + 1
 				elseif eventType == "collapse" then
-					self.vb.CollapseCount = self.vb.CollapseCount + 1
 					specWarnUmbralCollapse:Show(self.vb.CollapseCount)
 					specWarnUmbralCollapse:Play("gathershare")
+					self.vb.CollapseCount = self.vb.CollapseCount + 1
 				end
 				cachedEventIDs[eventID] = nil
 			end

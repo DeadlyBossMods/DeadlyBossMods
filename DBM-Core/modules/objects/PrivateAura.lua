@@ -32,6 +32,52 @@ local function GetPrivateAuraSettings(prefix)
     }
 end
 
+---@param settings table
+---@return number
+local function GetCoTankRowYOffset(settings)
+    local step = settings.Height + settings.Spacing
+    if settings.GrowDirection == "UP" or settings.GrowDirection == "DOWN" then
+        step = settings.Height + (settings.Limit - 1) * (settings.Height + settings.Spacing) + settings.Spacing
+    end
+    return step
+end
+
+---@param index integer
+---@return table
+local function GetCoTankSettings(index)
+    local settings = GetPrivateAuraSettings("PrivateAurasCoTank")
+    if index and index > 1 then
+        settings.yOffset = settings.yOffset - GetCoTankRowYOffset(settings) * (index - 1)
+    end
+    return settings
+end
+
+---@class DBMPrivateAuraPreviewFrame: Frame
+---@field Textures Texture[]
+
+---@param frame Frame
+---@param settings table
+local function UpdateCoTankPreviewFrame(frame, settings)
+    ---@cast frame DBMPrivateAuraPreviewFrame
+    frame.Textures = frame.Textures or {}
+    frame:ClearAllPoints()
+    frame:SetPoint(settings.Anchor, UIParent, settings.relativeTo, settings.xOffset, settings.yOffset)
+    frame:SetSize(settings.Width, settings.Height)
+    for i=1, 10 do
+        if i <= settings.Limit then
+            frame.Textures[i] = frame.Textures[i] or frame:CreateTexture(nil, "ARTWORK")
+            frame.Textures[i]:SetTexture(236318)
+            frame.Textures[i]:SetSize(settings.Width, settings.Height)
+            local xOffset = (settings.GrowDirection == "RIGHT" and (i-1)*(settings.Width+settings.Spacing)) or (settings.GrowDirection == "LEFT" and -(i-1)*(settings.Width+settings.Spacing)) or 0
+            local yOffset = (settings.GrowDirection == "UP" and (i-1)*(settings.Height+settings.Spacing)) or (settings.GrowDirection == "DOWN" and -(i-1)*(settings.Height+settings.Spacing)) or 0
+            frame.Textures[i]:SetPoint("CENTER", frame, "CENTER", xOffset, yOffset)
+            frame.Textures[i]:Show()
+        elseif frame.Textures[i] then
+            frame.Textures[i]:Hide()
+        end
+    end
+end
+
 function PrivateAuras:IsRegistered()
 	return PAAnchorsRegistered
 end
@@ -224,6 +270,9 @@ do
 		    self.CoTankPreview:SetMovable(false)
 		    self.CoTankPreview:EnableMouse(false)
 		end
+        if self.CoTankPreview2 then
+            self.CoTankPreview2:Hide()
+        end
 		if self.TextWarningPreview then
 		    self.TextWarningPreview:Hide()
 		end
@@ -236,7 +285,8 @@ do
 		end
 	    local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
 	    local TextAnchorSettings = GetPrivateAuraSettings("PrivateAurasTextAnchor")
-	    local CoTankSettings = GetPrivateAuraSettings("PrivateAurasCoTank")
+        local CoTankSettings = GetCoTankSettings(1)
+        local CoTankSettings2 = GetCoTankSettings(2)
 	    if self.IsInPreview then
 			DBM:Unschedule(stopMoving)
 	        stopMoving(self)
@@ -358,30 +408,28 @@ do
 	                    DBM.Options.PrivateAurasCoTankRelativeTo = relativeTo
 	                end)
 	            end
-                self.CoTankPreview:ClearAllPoints()
-	            self.CoTankPreview:SetPoint(CoTankSettings.Anchor, UIParent, CoTankSettings.relativeTo, CoTankSettings.xOffset, CoTankSettings.yOffset)
-	            self.CoTankPreview:SetSize(CoTankSettings.Width, CoTankSettings.Height)
-	            for i=1, 10 do
-	                if i <= CoTankSettings.Limit then
-	                    self.CoTankPreview.Textures[i] = self.CoTankPreview.Textures[i] or self.CoTankPreview:CreateTexture(nil, "ARTWORK")
-	                    self.CoTankPreview.Textures[i]:SetTexture(236318)
-	                    self.CoTankPreview.Textures[i]:SetSize(CoTankSettings.Width, CoTankSettings.Height)
-	                    local xOffset = (CoTankSettings.GrowDirection == "RIGHT" and (i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "LEFT" and -(i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or 0
-	                    local yOffset = (CoTankSettings.GrowDirection == "UP" and (i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "DOWN" and -(i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or 0
-	                    self.CoTankPreview.Textures[i]:SetPoint("CENTER", self.CoTankPreview, "CENTER", xOffset, yOffset)
-	                elseif self.CoTankPreview.Textures[i] then
-	                    self.CoTankPreview.Textures[i]:Hide()
-	                end
-	            end
+                UpdateCoTankPreviewFrame(self.CoTankPreview, CoTankSettings)
 	            self.CoTankPreview:Show()
 	            self.CoTankPreview:SetMovable(true)
 	            self.CoTankPreview:EnableMouse(true)
+                if DBM.Options.PrivateAurasCoTankShowSecond then
+                    if not self.CoTankPreview2 then
+                        self.CoTankPreview2 = CreateFrame("Frame", nil, UIParent)
+                        self.CoTankPreview2.Textures = {}
+                    end
+                    UpdateCoTankPreviewFrame(self.CoTankPreview2, CoTankSettings2)
+                    self.CoTankPreview2:Show()
+                else
+                    if self.CoTankPreview2 then
+                        self.CoTankPreview2:Hide()
+                    end
+                end
 	        end
 	    end
 	end
 end
 
----Register private auras for player and the first co-tank found in raid
+---Register private auras for player and up to two co-tanks found in raid
 function PrivateAuras:RegisterAllUnits()
 	PAAnchorsRegistered = true
 	--Options toggles are checked in actual fuctions. Don't option check here.
@@ -389,10 +437,15 @@ function PrivateAuras:RegisterAllUnits()
     self:RegisterPrivateAuras("player")
     if not IsInGroup() then return end
     if UnitGroupRolesAssigned("player") ~= "TANK" then return end
+    local maxCoTanks = DBM.Options.PrivateAurasCoTankShowSecond and 2 or 1
+    local registeredCoTanks = 0
     for unit in DBM:GetGroupMembers() do
         if not UnitIsUnit(unit, "player") and DBM:IsTanking(unit) then
-            self:RegisterPrivateAuras(unit)
-            break
+            registeredCoTanks = registeredCoTanks + 1
+            self:RegisterPrivateAuras(unit, GetCoTankSettings(registeredCoTanks))
+            if registeredCoTanks >= maxCoTanks then
+                break
+            end
         end
     end
 end
@@ -428,22 +481,15 @@ function PrivateAuras:OnSettingsChange(player)
             self.TextWarningPreview:SetPoint(TextAnchorSettings.Anchor, UIParent, TextAnchorSettings.relativeTo, TextAnchorSettings.xOffset, TextAnchorSettings.yOffset)
         end
     elseif self.CoTankPreview then
-	    local CoTankSettings = GetPrivateAuraSettings("PrivateAurasCoTank")
-        self.CoTankPreview:ClearAllPoints()
-	    self.CoTankPreview:SetPoint(CoTankSettings.Anchor, UIParent, CoTankSettings.relativeTo, CoTankSettings.xOffset, CoTankSettings.yOffset)
-	    self.CoTankPreview:SetSize(CoTankSettings.Width, CoTankSettings.Height)
-	    for i=1, 10 do
-	        if i <= CoTankSettings.Limit then
-	            self.CoTankPreview.Textures[i] = self.CoTankPreview.Textures[i] or self.CoTankPreview:CreateTexture(nil, "ARTWORK")
-	            self.CoTankPreview.Textures[i]:SetTexture(236318)
-	            self.CoTankPreview.Textures[i]:SetSize(CoTankSettings.Width, CoTankSettings.Height)
-	            local xOffset = (CoTankSettings.GrowDirection == "RIGHT" and (i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "LEFT" and -(i-1)*(CoTankSettings.Width+CoTankSettings.Spacing)) or 0
-	            local yOffset = (CoTankSettings.GrowDirection == "UP" and (i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or (CoTankSettings.GrowDirection == "DOWN" and -(i-1)*(CoTankSettings.Height+CoTankSettings.Spacing)) or 0
-	            self.CoTankPreview.Textures[i]:SetPoint("CENTER", self.CoTankPreview, "CENTER", xOffset, yOffset)
-                self.CoTankPreview.Textures[i]:Show()
-	        elseif self.CoTankPreview.Textures[i] then
-	            self.CoTankPreview.Textures[i]:Hide()
-	        end
-	    end
+        local CoTankSettings = GetCoTankSettings(1)
+        UpdateCoTankPreviewFrame(self.CoTankPreview, CoTankSettings)
+        if DBM.Options.PrivateAurasCoTankShowSecond then
+            self.CoTankPreview2 = self.CoTankPreview2 or CreateFrame("Frame", nil, UIParent)
+            self.CoTankPreview2.Textures = self.CoTankPreview2.Textures or {}
+            UpdateCoTankPreviewFrame(self.CoTankPreview2, GetCoTankSettings(2))
+            self.CoTankPreview2:Show()
+        elseif self.CoTankPreview2 then
+            self.CoTankPreview2:Hide()
+        end
     end
 end

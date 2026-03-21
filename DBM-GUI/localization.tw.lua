@@ -225,6 +225,7 @@ L.HidePATooltip						= "停用滑鼠停留法術提示"--checkbox
 L.HidePABorder						= "停用邊框"--checkbox
 L.Area_TankPrivateAuras				= "副坦克私有光環選項"
 L.EnableTankPrivateAuraIcons		= "在螢幕上顯示副坦克私有光環圖示 (需要坦克專精)"--checkbox
+L.ShowSecondCoTank					= "Show a second co-tank"--checkbox
 L.RIGHT								= "右"
 L.LEFT								= "左"
 L.UP								= "上"

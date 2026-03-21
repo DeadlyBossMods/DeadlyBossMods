@@ -180,28 +180,28 @@ do
 			local eventType = cachedEventIDs[eventID]
 			if eventType then
 				if eventType == "convergence" then
-					self.vb.convergenceCount = self.vb.convergenceCount + 1
 					specWarnVoidConvergence:Show(self.vb.convergenceCount)
 					specWarnVoidConvergence:Play("targetchange")
+					self.vb.convergenceCount = self.vb.convergenceCount + 1
 				elseif eventType == "fractured" then
-					self.vb.fracturedProjectionCount = self.vb.fracturedProjectionCount + 1
 					specWarnFracturedProjection:Show(self.vb.fracturedProjectionCount)
 					specWarnFracturedProjection:Play("crowdcontrol")
+					self.vb.fracturedProjectionCount = self.vb.fracturedProjectionCount + 1
 				elseif eventType == "twisted" then
-					self.vb.twilightObscurityCount = self.vb.twilightObscurityCount + 1
 					specWarnTwilightObscurity:Show(self.vb.twilightObscurityCount)
 					specWarnTwilightObscurity:Play("aesoon")
+					self.vb.twilightObscurityCount = self.vb.twilightObscurityCount + 1
 				elseif eventType == "entropic" then
-					self.vb.entropicUnravelingCount = self.vb.entropicUnravelingCount + 1
 					specWarnEntropicUnraveling:Show(self.vb.entropicUnravelingCount)
 					specWarnEntropicUnraveling:Play("dpshard")
+					self.vb.entropicUnravelingCount = self.vb.entropicUnravelingCount + 1
 				elseif eventType == "despotic" then
 					self.vb.despoticCommandCount = self.vb.despoticCommandCount + 1
 				elseif eventType == "shattering" then
-					self.vb.shatteringTwilightCount = self.vb.shatteringTwilightCount + 1
 					--Schedule 5 seconds after event, which is when spikes should come out
 					specWarnShatteringTwilight:Schedule(3.5, self.vb.shatteringTwilightCount)
 					specWarnShatteringTwilight:ScheduleVoice(3.5, "watchstep")
+					self.vb.shatteringTwilightCount = self.vb.shatteringTwilightCount + 1
 				end
 				cachedEventIDs[eventID] = nil
 			end

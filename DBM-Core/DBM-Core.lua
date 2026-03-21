@@ -405,7 +405,7 @@ DBM.DefaultOptions = {
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
 	ShortTimerText = true,
-	HardcodedTimer = true,
+	HardcodedTimer = false,--Revisit to true at a fututure date
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 	CoreSavedRevision = 1,
 	SilentMode = false,
@@ -446,6 +446,7 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankRelativeTo = "CENTER",--NYI
 	PrivateAurasCoTankXOffset = -150,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasCoTankYOffset = 150,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasCoTankShowSecond = false,
 	--Player Text Anchor
 	PrivateAurasTextAnchorScale = 1.8,
 	PrivateAurasTextAnchorXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)

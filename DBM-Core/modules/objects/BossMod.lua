@@ -272,7 +272,7 @@ function bossModPrototype:SetStage(stage)
 	if self.inCombat then--Safety, in event mod manages to run any phase change calls out of combat/during a wipe we'll just safely ignore it
 		DBM:FireEvent("DBM_SetStage", self, self.id, self.vb.phase, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, self.vb.stageTotality)--Mod, modId, Stage, Encounter Id (if available), total number of times SetStage has been called since combat start
 		--Note, some encounters have more than one encounter Id, for these encounters, the first ID from mod is always returned regardless of actual engage ID triggered fight
-		DBM:Debug("DBM_SetStage: " .. self.vb.phase .. "/" .. self.vb.stageTotality)
+		DBM:Debug("DBM_SetStage: " .. self.vb.phase .. "/" .. self.vb.stageTotality, nil, nil, nil, true)
 		test:Trace(self, "SetStage", self.vb.phase, self.vb.stageTotality)
 	end
 end
@@ -1063,13 +1063,22 @@ do
 	end
 
 	--Called automatically on combat end to clear any custom timeline countdown sounds
-	function bossModPrototype:DisableTimelineOptions()
+	---@param specificEvent table? Used to clear only custom events instead of all events.
+	function bossModPrototype:DisableTimelineOptions(specificEvent)
 		--Note. Currently this doesn't wipe color since we don't want to wipe default generic colors until blizzard
 		--adds function that lets us set a default color to use when a custom one isn't set since we set defaults
 		--for ALL events on login as a workaround right now
 		if self.tlTimerEvents then
-			for encounterEventId in next, self.tlTimerEvents do
-				C_EncounterEvents.SetEventSound(encounterEventId, 2, nil)
+			if specificEvent then
+				for encounterEventId in next, specificEvent do
+					C_EncounterEvents.SetEventSound(encounterEventId, 2, nil)
+					self.tlTimerEvents[encounterEventId] = nil
+				end
+				return
+			else
+				for encounterEventId in next, self.tlTimerEvents do
+					C_EncounterEvents.SetEventSound(encounterEventId, 2, nil)
+				end
 			end
 			self.tlTimerEvents = nil
 		end
@@ -1118,11 +1127,21 @@ do
 	end
 
 	--Called automatically on combat end to clear any custom timeline/warning alert sounds
-	function bossModPrototype:DisableAlertOptions()
+	---@param specificEvent table? Used to clear only custom events instead of all events.
+	function bossModPrototype:DisableAlertOptions(specificEvent)
 		if self.tlSoundEvents then
-			for encounterEventId in next, self.tlSoundEvents do
-				C_EncounterEvents.SetEventSound(encounterEventId, 1, nil)
-				C_EncounterEvents.SetEventSound(encounterEventId, 0, nil)
+			if specificEvent then
+				for encounterEventId in next, specificEvent do
+					C_EncounterEvents.SetEventSound(encounterEventId, 1, nil)
+					C_EncounterEvents.SetEventSound(encounterEventId, 0, nil)
+					self.tlSoundEvents[encounterEventId] = nil
+				end
+				return
+			else
+				for encounterEventId in next, self.tlSoundEvents do
+					C_EncounterEvents.SetEventSound(encounterEventId, 1, nil)
+					C_EncounterEvents.SetEventSound(encounterEventId, 0, nil)
+				end
 			end
 			self.tlSoundEvents = nil
 		end
