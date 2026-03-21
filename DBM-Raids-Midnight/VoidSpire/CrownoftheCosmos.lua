@@ -26,7 +26,7 @@ local specWarnVoidExpulsion				= mod:NewSpecialWarningCount(1283236, nil, nil, n
 --local specWarnVoidstalkerSting		= mod:NewSpecialWarningCount(1237035, false, nil, nil, 2, 2)--Stage 2 non mythic
 local specWarnCalloftheVoid				= mod:NewSpecialWarningSwitchCount(1237837, nil, nil, nil, 2, 2)--P2
 local specWarnCosmicBarrier				= mod:NewSpecialWarningSwitchCount(1246918, "Dps", nil, nil, 2, 2)--P2
-local specWarnDevouringCosmos			= mod:NewSpecialWarningSpell(1238843, nil, nil, nil, 3, 2)--P3
+local specWarnDevouringCosmos			= mod:NewSpecialWarningCount(1238843, nil, nil, nil, 3, 2)--P3
 local specWarnDarkHand					= mod:NewSpecialWarningDefensive(1238844, nil, nil, nil, 1, 2)--P1 Tank Add
 local specWarnRavenousAbyss				= mod:NewSpecialWarningDodgeCount(1243753, nil, nil, nil, 4, 2)--P1 Add
 local specWarnInterruptingTremor		= mod:NewSpecialWarningCast(1243743, "SpellCaster", nil, nil, 1, 2)--P1 Add
@@ -83,6 +83,7 @@ mod.vb.rangerMarkCount = 0
 mod.vb.cosmicBarrierCount = 0
 mod.vb.aspectoftheEndCount = 0
 mod.vb.graspofEmptynessCount = 0
+mod.vb.devouringCosmosCount = 0
 local cachedEventIDs = {}
 local lastResolvedType, lastResolvedTimer
 
@@ -110,6 +111,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.cosmicBarrierCount = 1
 	self.vb.aspectoftheEndCount = 1
 	self.vb.graspofEmptynessCount = 1
+	self.vb.devouringCosmosCount = 1
 	self:SetStage(1)
 
 	if DBM.Options.HardcodedTimer and self:IsEasy() then
@@ -330,7 +332,7 @@ do
 				lastResolvedType, lastResolvedTimer = "nullCorona", timer
 				return true
 			elseif timer == 59 or timer == 60 then--Devouring Cosmos
-				timerDevouringCosmosCD:TLStart(timer, eventID)
+				timerDevouringCosmosCD:TLStart(timer, eventID, self.vb.devouringCosmosCount)
 				cachedEventIDs[eventID] = "devouringCosmos"
 				lastResolvedType, lastResolvedTimer = "devouringCosmos", timer
 				return true
@@ -434,8 +436,9 @@ do
 			elseif eventType == "aspectoftheEnd" then
 				self.vb.aspectoftheEndCount = self.vb.aspectoftheEndCount + 1
 			elseif eventType == "devouringCosmos" then
-				specWarnDevouringCosmos:Show()
+				specWarnDevouringCosmos:Show(self.vb.devouringCosmosCount)
 				specWarnDevouringCosmos:Play("changeplatform")
+				self.vb.devouringCosmosCount = self.vb.devouringCosmosCount + 1
 			elseif eventType == "stage2Start" then
 				self:SetStage(2)
 			elseif eventType == "stage3Start" then
