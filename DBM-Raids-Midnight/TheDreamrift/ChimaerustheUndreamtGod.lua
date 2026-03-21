@@ -13,9 +13,9 @@ mod:RegisterCombat("combat")
 --NOTE, https://www.wowhead.com/spell=1245771/corrupted-feathers has event ID ono boss but isn't in journal, possibly pre boss trash mechanic
 --NOTE, https://www.wowhead.com/spell=1262616/retched-acid not in journal (208)
 --NOTE, https://www.wowhead.com/spell=1280127/stage-two also exists, but based on most recent testing blizzard uses consume for p2 and not this bar anymore
-local specWarnRavenousDive				= mod:NewSpecialWarningCount(1245404, nil, nil, nil, 2, 2)
+local specWarnRavenousDive				= mod:NewSpecialWarningCount(1245404, nil, 218027, nil, 2, 2)
 local specWarnRiftEmergence				= mod:NewSpecialWarningCount(1251021, nil, nil, DBM_COMMON_L.ADDS, 2, 2)
-local specWarnCausticPhlegm				= mod:NewSpecialWarningCount(1246621, nil, nil, nil, 2, 2)
+local specWarnCausticPhlegm				= mod:NewSpecialWarningCount(1246621, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
 local specWarnRendingTear				= mod:NewSpecialWarningDodgeCount(1272726, nil, nil, DBM_COMMON_L.FRONTAL, 2, 2)
 local specWarnCorruptedDevastation		= mod:NewSpecialWarningDodgeCount(1245452, nil, 17088, nil, 2, 2)
 local specWarnFearsomecry				= mod:NewSpecialWarningInterrupt(1249017, "HasInterrupt", nil, nil, 1, 2)--Add alert
@@ -25,7 +25,7 @@ local specWarnConsume					= mod:NewSpecialWarningCount(1245396, nil, nil, nil, 2
 local specWarnCannibalized				= mod:NewSpecialWarningSpell(1245844, nil, nil, nil, 1, 2)--Basically screwing up the add killing
 mod:GroupSpells(1245396, 1245844)--Group Cannibalized with Consume
 
-local timerRavenousDiveCD				= mod:NewCDCountTimer(20.5, 1245404, nil, nil, nil, 6)--Stage 1 bar
+local timerRavenousDiveCD				= mod:NewCDCountTimer(20.5, 1245404, 218027, nil, nil, 6)--Stage 1 bar, shortname "Dive"
 local timerRiftEmergenceCD				= mod:NewCDCountTimer(20.5, 1251021, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerCausticPhlegmCD				= mod:NewCDCountTimer(20.5, 1246621, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2)
 local timerRendingTearCD				= mod:NewCDCountTimer(20.5, 1272726, DBM_COMMON_L.FRONTAL.." (%s)", nil, nil, 3)

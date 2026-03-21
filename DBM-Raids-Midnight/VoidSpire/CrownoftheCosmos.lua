@@ -22,33 +22,33 @@ local warnRiftSimulacrum				= mod:NewSpellAnnounce(1261016, 2)--P2 Starting
 local warnVoidStalkerSting				= mod:NewCountAnnounce(1237035, 2)--Stage 2 non mythic
 
 local specWarnVoidExpulsion				= mod:NewSpecialWarningCount(1283236, nil, nil, nil, 2, 2)--P1+
-local specWarnSingularityEruption		= mod:NewSpecialWarningDodgeCount(1235622, nil, nil, nil, 2, 2)--Intermission 1
+--local specWarnSingularityEruption		= mod:NewSpecialWarningDodgeCount(1235622, nil, nil, nil, 2, 2)--Intermission 1
 --local specWarnVoidstalkerSting		= mod:NewSpecialWarningCount(1237035, false, nil, nil, 2, 2)--Stage 2 non mythic
 local specWarnCalloftheVoid				= mod:NewSpecialWarningSwitchCount(1237837, nil, nil, nil, 2, 2)--P2
 local specWarnCosmicBarrier				= mod:NewSpecialWarningSwitchCount(1246918, "Dps", nil, nil, 2, 2)--P2
 local specWarnDevouringCosmos			= mod:NewSpecialWarningSpell(1238843, nil, nil, nil, 3, 2)--P3
 local specWarnDarkHand					= mod:NewSpecialWarningDefensive(1238844, nil, nil, nil, 1, 2)--P1 Tank Add
-local specWarnRavenousAbyss				= mod:NewSpecialWarningRun(1243753, nil, nil, nil, 4, 2)--P1 Add
+local specWarnRavenousAbyss				= mod:NewSpecialWarningDodgeCount(1243753, nil, nil, nil, 4, 2)--P1 Add
 local specWarnInterruptingTremor		= mod:NewSpecialWarningCast(1243743, "SpellCaster", nil, nil, 1, 2)--P1 Add
 local specWarnCosmicPortal				= mod:NewSpecialWarningCount(1261339, nil, nil, nil, 2, 2)--Mythic only mechanic of unknown nature
 local specWarnRiftSlash					= mod:NewSpecialWarningDefensive(1246461, nil, nil, nil, 1, 2)--P2 Rift Simulacrum slash attack
 
-local timerNullCoronaCD					= mod:NewCDCountTimer(20.5, 1233865, nil, nil, nil, 3)--P1+
+local timerNullCoronaCD					= mod:NewCDCountTimer(20.5, 1233865, DBM_COMMON_L.HEALABSORB.." (%s)", nil, nil, 3)--P1+
 local timerVoidExpulsionCD				= mod:NewCDCountTimer(20.5, 1283236, nil, nil, nil, 3)--P1+
-local timerSilverstrikeArrowCD			= mod:NewCDCountTimer(20.5, 1233602, nil, nil, nil, 3)--P1/P3
-local timerSilverstrikeBarrageCD		= mod:NewCDCountTimer(20.5, 1234564, nil, nil, nil, 3)--Intermission 1
-local timerSingularityEruptionCD		= mod:NewCDCountTimer(20.5, 1235622, nil, nil, nil, 3)--Intermission 1
+local timerSilverstrikeArrowCD			= mod:NewCDCountTimer(20.5, 1233602, 208407, nil, nil, 3)--P1/P3, shortname "Arrow"
+local timerSilverstrikeBarrageCD		= mod:NewCDCountTimer(20.5, 1234564, 208071, nil, nil, 3)--Intermission 1, shortname "Arrow Barrage"
+--local timerSingularityEruptionCD		= mod:NewCDCountTimer(20.5, 1235622, nil, nil, nil, 3)--Intermission 1 (Passive, doesn't have a timer)
 local timerVoidstalkerStingCD			= mod:NewCDCountTimer(20.5, 1237035, nil, nil, nil, 2)--Stage 2 non mythic
-local timerCalloftheVoidCD				= mod:NewCDCountTimer(20.5, 1237837, nil, nil, nil, 1)--P2
-local timerRangerCaptainsMarkCD			= mod:NewCDCountTimer(20.5, 1237614, nil, nil, nil, 3)--P3
-local timerCosmicBarrierCD				= mod:NewCDCountTimer(20.5, 1246918, nil, nil, nil, 5)--P2
-local timerAspectoftheEndCD				= mod:NewCDCountTimer(20.5, 1239111, nil, nil, nil, 3)--Intermission 2
-local timerGraspofEmptynessCD			= mod:NewCDCountTimer(20.5, 1232470, nil, nil, nil, 3)--P1
+local timerCalloftheVoidCD				= mod:NewCDCountTimer(20.5, 1237837, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)--P2
+local timerRangerCaptainsMarkCD			= mod:NewCDCountTimer(20.5, 1237614, 208407, nil, nil, 3)--P3, also shortname "Arrow"
+local timerCosmicBarrierCD				= mod:NewCDCountTimer(20.5, 1246918, 151702, nil, nil, 5)--P2, shortname "Shield"
+local timerAspectoftheEndCD				= mod:NewCDCountTimer(20.5, 1239111, 1234576, nil, nil, 3)--Intermission 2, shortname "Tethers"
+local timerGraspofEmptynessCD			= mod:NewCDCountTimer(20.5, 1232470, 367465, nil, nil, 3)--P1, shortname "Grasp"
 local timerDevouringCosmosCD			= mod:NewCDCountTimer(20.5, 1238843, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--P3
 local timerDarkHandCD					= mod:NewCDCountTimer(20.5, 1238844, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P1 Tank Add
 local timerRavenousAbyssCD				= mod:NewCDCountTimer(20.5, 1243753, nil, nil, nil, 2)--P1 Add
 local timerInterruptingTremorCD			= mod:NewCDCountTimer(20.5, 1243743, "SpellCaster", nil, nil, 2)--P1 Add
-local timerRiftSimulacrumCD				= mod:NewCDCountTimer(20.5, 1261016, nil, nil, nil, 6)--P2 Starting
+--local timerRiftSimulacrumCD			= mod:NewCDCountTimer(20.5, 1261016, nil, nil, nil, 6)--P2 Starting (stage 2 bar does this, this timer never fires)
 local timerCosmicPortalCD				= mod:NewCDCountTimer(20.5, 1261339, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic only mechanic of unknown nature
 local timerRiftSlashCD					= mod:NewCDCountTimer(20.5, 1246461, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P2 Rift Simulacrum slash attack
 local timerStage2CD						= mod:NewCDTimer(20.5, 1272966, nil, nil, nil, 6)
@@ -136,8 +136,8 @@ function mod:OnLimitedCombatStart()
 		timerVoidExpulsionCD:SetTimeline(5)
 		timerSilverstrikeArrowCD:SetTimeline(6)
 		timerSilverstrikeBarrageCD:SetTimeline(7)
-		specWarnSingularityEruption:SetAlert(8, "watchstep", 2, 2)
-		timerSingularityEruptionCD:SetTimeline(8)
+--		specWarnSingularityEruption:SetAlert(8, "watchstep", 2, 2)
+--		timerSingularityEruptionCD:SetTimeline(8)
 		timerVoidstalkerStingCD:SetTimeline(9)
 		specWarnCalloftheVoid:SetAlert(10, "mobsoon", 2, 2)
 		timerCalloftheVoidCD:SetTimeline(10)
@@ -157,7 +157,7 @@ function mod:OnLimitedCombatStart()
 		specWarnInterruptingTremor:SetAlert(66, "stopcast", 2, 2, 0)
 		timerInterruptingTremorCD:SetTimeline(66)
 		warnRiftSimulacrum:SetAlert(135, "ptwo", 2, 2, 0)--Verify
-		timerRiftSimulacrumCD:SetTimeline(135)
+--		timerRiftSimulacrumCD:SetTimeline(135)
 		specWarnCosmicPortal:SetAlert(136, "bigmobsoon", 2, 2)
 		timerCosmicPortalCD:SetTimeline(136)
 		if self:IsTank() then
@@ -404,7 +404,7 @@ do
 				end
 				self.vb.darkHandCount = self.vb.darkHandCount + 1
 			elseif eventType == "ravenousAbyss" then
-				specWarnRavenousAbyss:Show()
+				specWarnRavenousAbyss:Show(self.vb.ravenousAbyssCount)
 				specWarnRavenousAbyss:Play("watchstep")
 				self.vb.ravenousAbyssCount = self.vb.ravenousAbyssCount + 1
 			elseif eventType == "interruptingTremor" then

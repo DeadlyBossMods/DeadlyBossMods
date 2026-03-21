@@ -102,6 +102,9 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining, _, _, passthro
 	--end
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
+	if passthroughEvent then
+		self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r received passthrough event for eventID: "..tostring(eventID)..".", 2, nil, nil, true)
+	end
 	if DBT.Options.VarianceEnabled2 and maxQueueDuration and maxQueueDuration > 0 then--Currently not functional due to a bug where maxQueueDuration always returns 0 even if it's not
 		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, color, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	else
