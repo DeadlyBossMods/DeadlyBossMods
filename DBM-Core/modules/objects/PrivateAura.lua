@@ -408,16 +408,16 @@ do
 	            self.CoTankPreview:SetMovable(true)
 	            self.CoTankPreview:EnableMouse(true)
                 if DBM.Options.PrivateAurasCoTankShowSecond then
-                	if not self.CoTankPreview2 then
-                		self.CoTankPreview2 = CreateFrame("Frame", nil, UIParent)
-                		self.CoTankPreview2.Textures = {}
-                	end
-                	UpdateCoTankPreviewFrame(self.CoTankPreview2, CoTankSettings2)
-                	self.CoTankPreview2:Show()
+                    if not self.CoTankPreview2 then
+                        self.CoTankPreview2 = CreateFrame("Frame", nil, UIParent)
+                        self.CoTankPreview2.Textures = {}
+                    end
+                    UpdateCoTankPreviewFrame(self.CoTankPreview2, CoTankSettings2)
+                    self.CoTankPreview2:Show()
                 else
-                	if self.CoTankPreview2 then
-                		self.CoTankPreview2:Hide()
-                	end
+                    if self.CoTankPreview2 then
+                        self.CoTankPreview2:Hide()
+                    end
                 end
 	        end
 	    end
@@ -436,10 +436,10 @@ function PrivateAuras:RegisterAllUnits()
     local registeredCoTanks = 0
     for unit in DBM:GetGroupMembers() do
         if not UnitIsUnit(unit, "player") and DBM:IsTanking(unit) then
-            	registeredCoTanks = registeredCoTanks + 1
+            registeredCoTanks = registeredCoTanks + 1
                 self:RegisterPrivateAuras(unit, GetCoTankSettings(registeredCoTanks))
                 if registeredCoTanks >= maxCoTanks then
-                	break
+                    break
                 end
         end
     end
@@ -476,15 +476,15 @@ function PrivateAuras:OnSettingsChange(player)
             self.TextWarningPreview:SetPoint(TextAnchorSettings.Anchor, UIParent, TextAnchorSettings.relativeTo, TextAnchorSettings.xOffset, TextAnchorSettings.yOffset)
         end
     elseif self.CoTankPreview then
-        	local CoTankSettings = GetCoTankSettings(1)
-        	UpdateCoTankPreviewFrame(self.CoTankPreview, CoTankSettings)
-        	if DBM.Options.PrivateAurasCoTankShowSecond then
-        		self.CoTankPreview2 = self.CoTankPreview2 or CreateFrame("Frame", nil, UIParent)
-        		self.CoTankPreview2.Textures = self.CoTankPreview2.Textures or {}
-        		UpdateCoTankPreviewFrame(self.CoTankPreview2, GetCoTankSettings(2))
-        		self.CoTankPreview2:Show()
-        	elseif self.CoTankPreview2 then
-        		self.CoTankPreview2:Hide()
-        	end
+        local CoTankSettings = GetCoTankSettings(1)
+        UpdateCoTankPreviewFrame(self.CoTankPreview, CoTankSettings)
+        if DBM.Options.PrivateAurasCoTankShowSecond then
+            self.CoTankPreview2 = self.CoTankPreview2 or CreateFrame("Frame", nil, UIParent)
+            self.CoTankPreview2.Textures = self.CoTankPreview2.Textures or {}
+            UpdateCoTankPreviewFrame(self.CoTankPreview2, GetCoTankSettings(2))
+            self.CoTankPreview2:Show()
+        elseif self.CoTankPreview2 then
+            self.CoTankPreview2:Hide()
+        end
     end
 end
