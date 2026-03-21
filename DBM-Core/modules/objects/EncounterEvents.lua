@@ -5,7 +5,7 @@ local private = select(2, ...)
 local DBM = private:GetPrototype("DBM")
 
 private.hardCodedTimers = {
-	--[eventID] = timerId
+	--[eventID] = {timerId1, timerId2, ...}
 }
 
 --{ Name = "text", Type = "cstring", Nilable = false, SecretValue = true },
@@ -114,25 +114,43 @@ end
 --/run C_EncounterTimeline.ResumeScriptEvent()
 --0 = Active, 1 = Paused, 2 = Finished, 3 = Canceled
 function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+	local hardcodedIds = private.hardCodedTimers[eventID]
+	local hardcodedTimerId
+	if type(hardcodedIds) == "table" then
+		hardcodedTimerId = hardcodedIds[1]
+	else
+		hardcodedTimerId = hardcodedIds
+	end
 	local bar
 	--Check for and update hard coded bars
-	if private.hardCodedTimers[eventID] then
-		bar = DBT:GetBar(private.hardCodedTimers[eventID])
+	if hardcodedTimerId then
+		bar = DBT:GetBar(hardcodedTimerId)
 	else
 		bar = DBT:GetBar(eventID)
 	end
 	local eventState = C_EncounterTimeline.GetEventState(eventID)
-	if bar then
-		if eventState == 1 then
+	if eventState == 1 then
+		if bar then
 			bar:Pause()
-		elseif eventState == 0 then
+		end
+	elseif eventState == 0 then
+		if bar then
 			bar:Resume()
-		else--Finished or cancled (sometimes blizzard sends state changed instead of event removed when canceling events)
+		end
+	else--Finished or canceled (sometimes blizzard sends state changed instead of event removed when canceling events)
+		if bar then
 			bar:Cancel()
-			if private.hardCodedTimers[eventID] then
+		end
+		if hardcodedTimerId then
+			if type(hardcodedIds) == "table" then
+				table.remove(hardcodedIds, 1)
+				if #hardcodedIds == 0 then
+					private.hardCodedTimers[eventID] = nil
+				end
+			else
 				private.hardCodedTimers[eventID] = nil
-				self:Debug("|cffffff00Hardcoded timer terminated for eventID: |r"..tostring(eventID), 3, nil, nil, true)
 			end
+			self:Debug("|cffffff00Hardcoded timer terminated for eventID: |r"..tostring(eventID).." (timerID: "..tostring(hardcodedTimerId)..")", 3, nil, nil, true)
 		end
 	end
 	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r fired for eventID: "..tostring(eventID).." with state: "..tostring(eventState), 3, nil, nil, true)

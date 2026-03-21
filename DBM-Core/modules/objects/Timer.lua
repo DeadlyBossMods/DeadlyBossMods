@@ -267,7 +267,15 @@ end
 ---@param eventID number eventID needed to cancel, pause, unpause a hardcoded timer started by timeline
 function timerPrototype:SetEventID(eventID, ...)
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
-	private.hardCodedTimers[eventID] = id
+	local hardcodedIds = private.hardCodedTimers[eventID]
+	if not hardcodedIds then
+		hardcodedIds = {}
+		private.hardCodedTimers[eventID] = hardcodedIds
+	elseif type(hardcodedIds) ~= "table" then
+		hardcodedIds = {hardcodedIds}
+		private.hardCodedTimers[eventID] = hardcodedIds
+	end
+	hardcodedIds[#hardcodedIds + 1] = id
 end
 
 ---Simple function to call Start and SetEventID with a single call for hardcoded timeline timers
