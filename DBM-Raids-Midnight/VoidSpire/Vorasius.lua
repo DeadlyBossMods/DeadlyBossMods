@@ -117,17 +117,17 @@ do
 		if eventState == 2 then
 			local eventType = cachedEventIDs[eventID]
 			if eventType == "roar" then
-				self.vb.roarCount = self.vb.roarCount + 1
 				specWarnPrimordialRoar:Show(self.vb.roarCount)
 				specWarnPrimordialRoar:Play("pullin")
+				self.vb.roarCount = self.vb.roarCount + 1
 			elseif eventType == "expulsion" then
-				self.vb.expulsionCount = self.vb.expulsionCount + 1
 				specWarnParasiteExpulsion:Show(self.vb.expulsionCount)
 				specWarnParasiteExpulsion:Play("watchstep")
+				self.vb.expulsionCount = self.vb.expulsionCount + 1
 			elseif eventType == "slam" then
-				self.vb.clawCount = self.vb.clawCount + 1
 				specWarnShadowclawSlam:Show(self.vb.clawCount)
 				specWarnShadowclawSlam:Play("slamincoming")
+				self.vb.clawCount = self.vb.clawCount + 1
 			end
 			cachedEventIDs[eventID] = nil
 		elseif eventState == 3 then

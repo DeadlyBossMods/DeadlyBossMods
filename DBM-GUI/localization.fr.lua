@@ -225,6 +225,7 @@ L.HidePATooltip						= "Désactiver l’infobulle du sort au survol"
 L.HidePABorder						= "Désactiver la bordure"
 L.Area_TankPrivateAuras				= "Options des auras privées du co-tank"
 L.EnableTankPrivateAuraIcons		= "Afficher les icônes des auras privées du co-tank à l’écran"
+L.ShowSecondCoTank					= "Show a second co-tank"--checkbox
 L.RIGHT								= "Droite"
 L.LEFT								= "Gauche"
 L.UP								= "Haut"

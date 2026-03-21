@@ -226,6 +226,7 @@ L.HidePATooltip						= "Desactivar tooltip del hechizo al pasar el cursor"
 L.HidePABorder						= "Desactivar borde"
 L.Area_TankPrivateAuras				= "Opciones de auras privadas del co-tanque"
 L.EnableTankPrivateAuraIcons		= "Mostrar iconos de auras privadas del co-tanque en pantalla"
+L.ShowSecondCoTank					= "Show a second co-tank"--checkbox
 L.RIGHT								= "Derecha"
 L.LEFT								= "Izquierda"
 L.UP								= "Arriba"

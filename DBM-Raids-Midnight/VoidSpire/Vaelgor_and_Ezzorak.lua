@@ -381,37 +381,37 @@ do
 			local eventType = cachedEventIDs[eventID]
 			if eventType then
 				if eventType == "nullbeam" then
-					self.vb.beamCount = self.vb.beamCount + 1
 					specWarnNullBeam:Show(self.vb.beamCount)
 					specWarnNullBeam:Play("beamincoming")
+					self.vb.beamCount = self.vb.beamCount + 1
 				elseif eventType == "voidhowl" then
-					self.vb.howlCount = self.vb.howlCount + 1
 					specWarnVoidHowl:Show(self.vb.howlCount)
 					specWarnVoidHowl:Play("range5")
+					self.vb.howlCount = self.vb.howlCount + 1
 				elseif eventType == "gloom" then
-					self.vb.gloomCount = self.vb.gloomCount + 1
 					specWarnGloom:Show(self.vb.gloomCount)
 					specWarnGloom:Play("gloomincoming")
+					self.vb.gloomCount = self.vb.gloomCount + 1
 				elseif eventType == "dread" then
-					self.vb.dreadCount = self.vb.dreadCount + 1
 					specWarnDreadBreath:Show(self.vb.dreadCount)
 					specWarnDreadBreath:Play("breathsoon")
+					self.vb.dreadCount = self.vb.dreadCount + 1
 				elseif eventType == "maw" then
-					self.vb.mawCount = self.vb.mawCount + 1
 					specWarnGrabblingMaw:Show()
 					specWarnGrabblingMaw:Play("defensive")
+					self.vb.mawCount = self.vb.mawCount + 1
 				elseif eventType == "vaelwing" then
-					self.vb.vaelwingCount = self.vb.vaelwingCount + 1
 					specWarnVaelwing:Show()
 					specWarnVaelwing:Play("defensive")
+					self.vb.vaelwingCount = self.vb.vaelwingCount + 1
 				elseif eventType == "rakfang" then
-					self.vb.rakfangCount = self.vb.rakfangCount + 1
 					specWarnRakfang:Show()
 					specWarnRakfang:Play("defensive")
+					self.vb.rakfangCount = self.vb.rakfangCount + 1
 				elseif eventType == "radiantbarrier" then
-					self.vb.radiantBarrierCount = self.vb.radiantBarrierCount + 1
 					specWarnRadiantBarrier:Show(self.vb.radiantBarrierCount)
 					specWarnRadiantBarrier:Play("findshield")
+					self.vb.radiantBarrierCount = self.vb.radiantBarrierCount + 1
 				end
 				cachedEventIDs[eventID] = nil
 			end

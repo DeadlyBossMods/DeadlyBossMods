@@ -218,33 +218,33 @@ do
 			local eventType = cachedEventIDs[eventID]
 			if eventType then
 				if eventType == "consume" then
-					self.vb.consumeCount = self.vb.consumeCount + 1
 					specWarnConsume:Show(self.vb.consumeCount)
 					specWarnConsume:Play("phasechange")
+					self.vb.consumeCount = self.vb.consumeCount + 1
 				elseif eventType == "tear" then
-					self.vb.tearCount = self.vb.tearCount + 1
 					specWarnRendingTear:Show(self.vb.tearCount)
 					specWarnRendingTear:Play("frontal")
+					self.vb.tearCount = self.vb.tearCount + 1
 				elseif eventType == "rift" then
-					self.vb.riftCount = self.vb.riftCount + 1
 					specWarnRiftEmergence:Show(self.vb.riftCount)
 					specWarnRiftEmergence:Play("mobsoon")
+					self.vb.riftCount = self.vb.riftCount + 1
 				elseif eventType == "phlegm" then
-					self.vb.phlegmCount = self.vb.phlegmCount + 1
 					specWarnCausticPhlegm:Show(self.vb.phlegmCount)
 					specWarnCausticPhlegm:Play("aesoon")
+					self.vb.phlegmCount = self.vb.phlegmCount + 1
 				elseif eventType == "upheaval" then
-					self.vb.upheavalCount = self.vb.upheavalCount + 1
 					specWarnAlndustUpheaval:Show(self.vb.upheavalCount)
 					specWarnAlndustUpheaval:Play("soakincoming")
+					self.vb.upheavalCount = self.vb.upheavalCount + 1
 				elseif eventType == "devastation" then
-					self.vb.devastationCount = self.vb.devastationCount + 1
 					specWarnCorruptedDevastation:Show(self.vb.devastationCount)
 					specWarnCorruptedDevastation:Play("breathsoon")
+					self.vb.devastationCount = self.vb.devastationCount + 1
 				elseif eventType == "dive" then
-					self.vb.diveCount = self.vb.diveCount + 1
 					specWarnRavenousDive:Show(self.vb.diveCount)
 					specWarnRavenousDive:Play("phasechange")
+					self.vb.diveCount = self.vb.diveCount + 1
 				end
 				cachedEventIDs[eventID] = nil
 			end

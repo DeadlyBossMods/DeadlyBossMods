@@ -446,6 +446,7 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankRelativeTo = "CENTER",--NYI
 	PrivateAurasCoTankXOffset = -150,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasCoTankYOffset = 150,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasCoTankShowSecond = false,
 	--Player Text Anchor
 	PrivateAurasTextAnchorScale = 1.8,
 	PrivateAurasTextAnchorXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)

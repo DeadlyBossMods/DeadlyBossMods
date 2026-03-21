@@ -227,6 +227,7 @@ L.HidePATooltip						= "Desativar dica do feitiço ao passar o cursor"
 L.HidePABorder						= "Desativar borda"
 L.Area_TankPrivateAuras				= "Opções de auras privadas do co-tanque"
 L.EnableTankPrivateAuraIcons		= "Exibir ícones de auras privadas do co-tanque na tela"
+L.ShowSecondCoTank					= "Show a second co-tank"--checkbox
 L.RIGHT								= "Direita"
 L.LEFT								= "Esquerda"
 L.UP								= "Cima"

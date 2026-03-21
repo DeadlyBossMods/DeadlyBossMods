@@ -220,6 +220,7 @@ L.HidePATooltip						= "Disable on hover spell tooltip"--checkbox
 L.HidePABorder						= "Disable border"--checkbox
 L.Area_TankPrivateAuras				= "Co-Tank Private Aura Options"
 L.EnableTankPrivateAuraIcons		= "Show Co-Tank Private Aura icons on screen (Requires tank spec)"--checkbox
+L.ShowSecondCoTank					= "Show a second co-tank"--checkbox
 L.RIGHT								= "Right"
 L.LEFT								= "Left"
 L.UP								= "Up"
