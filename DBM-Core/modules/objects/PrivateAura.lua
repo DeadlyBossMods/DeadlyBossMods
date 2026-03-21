@@ -55,9 +55,10 @@ end
 ---@class DBMPrivateAuraPreviewFrame: Frame
 ---@field Textures Texture[]
 
----@param frame DBMPrivateAuraPreviewFrame
+---@param frame Frame
 ---@param settings table
 local function UpdateCoTankPreviewFrame(frame, settings)
+    ---@cast frame DBMPrivateAuraPreviewFrame
     frame.Textures = frame.Textures or {}
     frame:ClearAllPoints()
     frame:SetPoint(settings.Anchor, UIParent, settings.relativeTo, settings.xOffset, settings.yOffset)
