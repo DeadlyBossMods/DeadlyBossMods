@@ -52,9 +52,13 @@ local function GetCoTankSettings(index)
     return settings
 end
 
----@param frame Frame
+---@class DBMPrivateAuraPreviewFrame: Frame
+---@field Textures Texture[]
+
+---@param frame DBMPrivateAuraPreviewFrame
 ---@param settings table
 local function UpdateCoTankPreviewFrame(frame, settings)
+    frame.Textures = frame.Textures or {}
     frame:ClearAllPoints()
     frame:SetPoint(settings.Anchor, UIParent, settings.relativeTo, settings.xOffset, settings.yOffset)
     frame:SetSize(settings.Width, settings.Height)
@@ -437,10 +441,10 @@ function PrivateAuras:RegisterAllUnits()
     for unit in DBM:GetGroupMembers() do
         if not UnitIsUnit(unit, "player") and DBM:IsTanking(unit) then
             registeredCoTanks = registeredCoTanks + 1
-                self:RegisterPrivateAuras(unit, GetCoTankSettings(registeredCoTanks))
-                if registeredCoTanks >= maxCoTanks then
-                    break
-                end
+            self:RegisterPrivateAuras(unit, GetCoTankSettings(registeredCoTanks))
+            if registeredCoTanks >= maxCoTanks then
+                break
+            end
         end
     end
 end
