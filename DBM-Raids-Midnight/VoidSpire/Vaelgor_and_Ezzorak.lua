@@ -48,7 +48,7 @@ mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3)--Gloomtouched (soake
 mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3)--Diminish (Gloomtouched ended, don't soak again)
 mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2)--Gloomfield (GTFO left by gloom)
 mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 1)--Dread Breath Target
-mod:AddPrivateAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
+--mod:AddPrivateAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
 mod:AddPrivateAuraSoundOption(1265152, true, 1245645, 1, 3)--Impale (secondary attack of Rakfang)
 mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1)--Radiant Barrier
 mod:AddPrivateAuraSoundOption(1270497, true, 1270497, 1, 1)--Shadowmark
@@ -145,7 +145,7 @@ function mod:OnLimitedCombatStart()
 	self:EnablePrivateAuraSound(1270852, "debuffyou", 17)
 	self:EnablePrivateAuraSound(1245421, "watchfeet", 8)
 	self:EnablePrivateAuraSound(1255612, "targetyou", 2)--Maybe a more specific sound?
-	self:EnablePrivateAuraSound(1255979, "fearyou", 19)
+	--self:EnablePrivateAuraSound(1255979, "fearyou", 19)
 	self:EnablePrivateAuraSound(1248865, "barrieryou", 19)--1249595 results in spam
 	self:EnablePrivateAuraSound(1270497, "shadowyou", 15)
 	self:EnablePrivateAuraSound(1265152, "stunyou", 19)
