@@ -417,6 +417,7 @@ L.SAOne								= "음성팩 / 없으면 SA 1"
 L.SATwo								= "음성팩 / 없으면 SA 2"
 L.SAThree							= "음성팩 / 없으면 SA 3"
 L.SAFour							= "음성팩 / 없으면 SA 4"
+L.PrivateAuraSoundCombatLockdown		= "전투 중에는 비공개 오라 효과음을 바꿀 수 없습니다."
 --Timer Dropdowns
 L.ColorDropGeneric					= "일반 (기본값: 미분류)"
 L.ColorDrop1						= "색상 1 (기본값: 쫄)"
