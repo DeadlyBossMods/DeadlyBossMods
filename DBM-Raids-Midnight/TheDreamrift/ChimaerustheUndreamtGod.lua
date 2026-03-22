@@ -34,7 +34,8 @@ local timerCorruptedDevastationCD		= mod:NewCDCountTimer(20.5, 1245452, 17088, n
 local timerConsumingMiasmaCD			= mod:NewCDCountTimer(20.5, 1257087, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--Heroic+Mythic only
 local timerAlndustUpheavalCD			= mod:NewCDCountTimer(20.5, 1262289, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5)
 local timerRiftMadnessCD				= mod:NewNextTimer(20.5, 1264780, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
-local timerConsumeCD					= mod:NewCDCountTimer(20.5, 1245396, nil, nil, nil, 6)--Stage 2 bar
+local timerConsumeCD					= mod:NewCDCountTimer(20.5, 1245396, nil, nil, nil, 5)
+local timerStage2CD						= mod:NewCDTimer(20.5, 1280127, nil, nil, nil, 6)--Hardcoded stage 2 timer for when blizz doesn't provide consume timers in stage 2, or provides them with wrong timers. Will be removed if blizz provides accurate consume timers in stage 2
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
 mod:AddPrivateAuraSoundOption(1272726, true, 1272726, 1, 1)--Rending Tear
@@ -105,6 +106,7 @@ function mod:OnLimitedCombatStart()
 		specWarnConsume:SetAlert(307, "phasechange", 2, 3)
 		timerConsumeCD:SetTimeline(307)
 		specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
+		timerStage2CD:SetTimeline(353)
 	end
 	self:EnablePrivateAuraSound(1272726, "bleedyou", 19)
 	self:EnablePrivateAuraSound(1257087, "movetopool", 15)
@@ -123,15 +125,15 @@ end
 
 do
 	local function phaseReset(self)
-		self.vb.diveCount = 1
+--		self.vb.diveCount = 1--NOT reset, because dive is phase change ending
 		self.vb.riftCount = 1
 		self.vb.phlegmCount = 1
 		self.vb.tearCount = 1
 		self.vb.devastationCount = 1
 		self.vb.upheavalCount = 1
 		self.vb.consumeCount = 1
-		--self.vb.riftMadnessCount = 1--Unused on Normal/LFR
-		--self.vb.miasmaCount = 1--Unused on Normal/LFR
+		self.vb.riftMadnessCount = 1--Unused on Normal/LFR
+		self.vb.miasmaCount = 1--Unused on Normal/LFR
 		sawPhlegm53 = false
 		next12IsDevastation = false
 	end
@@ -159,11 +161,15 @@ do
 			timerRiftEmergenceCD:TLStart(timer, eventID, self.vb.riftCount)
 			cachedEventIDs[eventID] = "rift"
 		elseif timer == 3 or timer == 18 or timer == 24 or timer == 26 or timer == 29 or timer == 53 then--Caustic Phlegm
-			timerCausticPhlegmCD:TLStart(timer, eventID, self.vb.phlegmCount)
-			if timer == 53 then
-				sawPhlegm53 = true
+			if timer == 18 then--Bugged air phase timer, ignore
+				DBM:Debug("Encounter timeline has a known incorrect timer for Caustic Phlegm at 18 seconds, ignoring this timer", nil, nil, nil, true)
+			else
+				timerCausticPhlegmCD:TLStart(timer, eventID, self.vb.phlegmCount)
+				if timer == 53 then
+					sawPhlegm53 = true
+				end
+				cachedEventIDs[eventID] = "phlegm"
 			end
-			cachedEventIDs[eventID] = "phlegm"
 		elseif timer == 40 then--Rending Tear
 			timerRendingTearCD:TLStart(timer, eventID, self.vb.tearCount)
 			cachedEventIDs[eventID] = "tear"
@@ -186,19 +192,13 @@ do
 			end
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
 			--30 is max time, but when all adds die, 30 is canceled and replaced with 1 second timer
+			timerRavenousDiveCD:Stop()--Terminate to avoid debug from early phase transition ends
 			timerRavenousDiveCD:TLStart(timer, eventID, self.vb.diveCount)
 			cachedEventIDs[eventID] = "dive"
 		elseif timer == 165 or timer == 10 then--Stage Two markers
 			--Used by blizzard as phase markers, but not represented as bars in DBM yet.
-			if timer == 10 then--Hard reset marker for phase transition
-				phaseReset(self)
-				phase2Adjusted = true
-				DBM:Debug("Phase 2 adjustment applied", nil, nil, nil, true)
-			else
-				phase2Adjusted = false
-				cachedEventIDs[eventID] = "initialPhaseTImer"
-			end
-			return
+			timerStage2CD:Stop()
+			timerStage2CD:TLStart(timer, eventID)
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
 				badStateDetected = true
@@ -259,7 +259,9 @@ do
 					specWarnRavenousDive:Show(self.vb.diveCount)
 					specWarnRavenousDive:Play("phasechange")
 					self.vb.diveCount = self.vb.diveCount + 1
-				elseif eventType == "initialPhaseTImer" then
+					phaseReset(self)--Phase transition ends, reset all timers
+					DBM:Debug("Phase reset applied by Ravenous Dive", nil, nil, nil, true)
+				elseif eventType == "initialPhaseTimer" then
 					if not phase2Adjusted then
 						--Phase 2 timer didn't reset to 10, which means it ended at max duration
 						--Phase 2 timer only resets to 10 if you kill all the adds early. so we can't always assume this will happen
