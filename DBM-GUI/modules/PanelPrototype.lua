@@ -449,14 +449,6 @@ do
 		{ text = L.CVoiceThree, value = 3 }
 	})
 
-	---@param name string
-	---@param autoplace boolean?
-	---@param dbmvar string?
-	---@param dbtvar string?
-	---@param mod DBMMod?
-	---@param modvar string?
-	---@param globalvar string?
-	---@param isTimer boolean?
 	function PanelPrototype:CreateCheckButton(name, autoplace, _, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
 		if not name then
 			error("CreateCheckButton: name must not be nil")
@@ -486,8 +478,6 @@ do
 		local desc, noteSpellName = parseDescription(name, true)
 		local frame, frame2
 		if modvar then -- Special warning, has modvar for sound and note
-			---@cast mod DBMMod
-			---@cast modvar string
 			if isTimer then
 				frame = self:CreateDropdown(nil, tcolors, mod, modvar .. "TColor", function(value)
 					mod.Options[modvar .. "TColor"] = value

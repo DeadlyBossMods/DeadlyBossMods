@@ -458,13 +458,16 @@ do
 
 	---@param force boolean? Called when group roster updates since we may have gained or lost tanks
 	function PrivateAuras:UpdatePrivateAuraAnchors(force)
-		if InCombatLockdown() then return end
+		if InCombatLockdown() then
+			return false
+		end
 		if IsInValidInstance() and (force or not PAAnchorsRegistered) then
 			--No need to call unregister first, RegisterAllUnits already clears existing units first
 			PrivateAuras:RegisterAllUnits()
 		elseif PAAnchorsRegistered then
 			PrivateAuras:UnregisterPrivateAuras()
 		end
+		return true
 	end
 end
 

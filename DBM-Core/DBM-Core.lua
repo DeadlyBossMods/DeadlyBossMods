@@ -498,7 +498,7 @@ local inCombatTrash = {}
 local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false
 -- Nil variables
 local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader, syncZonePASounds
-local pendingPASoundZoneSync
+local pendingPASoundZoneSync, pendingPAAnchorCheck
 -- 0 variables
 local LastInstanceMapID = -1
 
@@ -2658,7 +2658,12 @@ do
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
 		end
-		self.PrivateAuras:UpdatePrivateAuraAnchors(true)
+		local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+		if not succeeded then
+			pendingPAAnchorCheck = true
+		else
+			pendingPAAnchorCheck = nil
+		end
 	end
 
 	function DBM:GROUP_ROSTER_UPDATE(force)
@@ -4213,7 +4218,12 @@ do
 		if private.isRetail then
 			--Handle private aura sounds and anchors
 			syncZonePASounds(self, mapID)
-			self.PrivateAuras:UpdatePrivateAuraAnchors()
+			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+			if not succeeded then
+				pendingPAAnchorCheck = true
+			else
+				pendingPAAnchorCheck = nil
+			end
 		end
 		self:UpdateMapRestrictions()
 		private:GetModule("DevToolsModule"):OnDebugToggle()
@@ -4640,6 +4650,12 @@ do
 		end
 		if pendingPASoundZoneSync then
 			syncZonePASounds(self, pendingPASoundZoneSync)
+		end
+		if pendingPAAnchorCheck then
+			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+			if succeeded then
+				pendingPAAnchorCheck = nil
+			end
 		end
 	end
 
