@@ -4222,7 +4222,7 @@ do
 			if not succeeded then
 				pendingPAAnchorCheck = 1
 			else
-				pendingPAAnchorCheck = nil
+				pendingPAAnchorCheck = 0
 			end
 		end
 		self:UpdateMapRestrictions()
