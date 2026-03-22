@@ -897,6 +897,136 @@ function bossModPrototype:GetFromTimersTable(table, difficultyName, phase, spell
 	return prev
 end
 
+do
+	local function getTLCountState(self)
+		if not self.tlCountState then
+			self.tlCountState = {
+				events = {},
+				pending = {},
+			}
+		end
+		return self.tlCountState
+	end
+
+	local function removePendingEvent(pendingEvents, eventID)
+		if not pendingEvents then return end
+		for i = 1, #pendingEvents do
+			if pendingEvents[i] == eventID then
+				table.remove(pendingEvents, i)
+				return
+			end
+		end
+	end
+
+	local function reindexPendingCounts(self, state, eventType)
+		local pendingEvents = state.pending[eventType]
+		if not pendingEvents then return end
+		for i, pendingEventID in ipairs(pendingEvents) do
+			local eventInfo = state.events[pendingEventID]
+			if eventInfo and eventInfo.countKey then
+				local currentCount = self.vb[eventInfo.countKey]
+				if type(currentCount) == "number" then
+					eventInfo.count = currentCount + i - 1
+				end
+			end
+		end
+	end
+
+	local function cleanupTLCountState(self, state, eventType)
+		local pendingEvents = eventType and state.pending[eventType]
+		if pendingEvents and #pendingEvents == 0 then
+			state.pending[eventType] = nil
+		end
+		if not next(state.events) and not next(state.pending) then
+			self.tlCountState = nil
+		end
+	end
+
+	---Reserve a timeline count for a hardcoded event.
+	---@param eventID number
+	---@param eventType string Name of event type checked in mod for ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED
+	---@param countKey string? Name of the vb count field to reserve against. Omit for non-count events.
+	---@return number? count
+	function bossModPrototype:TLCountStart(eventID, eventType, countKey)
+		local state = getTLCountState(self)
+		if state.events[eventID] then
+			self:TLCountCancel(eventID)
+			state = getTLCountState(self)
+		end
+		local eventInfo = {
+			eventType = eventType,
+			countKey = countKey,
+		}
+		if countKey then
+			local currentCount = self.vb[countKey]
+			if type(currentCount) ~= "number" then
+				DBM:Debug("|cffff0000TLCountStart received invalid count key '" .. tostring(countKey) .. "' for eventType '" .. tostring(eventType) .. "'|r", 2, nil, nil, true)
+				currentCount = 1
+			end
+			local pendingEvents = state.pending[eventType]
+			if not pendingEvents then
+				pendingEvents = {}
+				state.pending[eventType] = pendingEvents
+			end
+			eventInfo.count = currentCount + #pendingEvents
+			pendingEvents[#pendingEvents + 1] = eventID
+		end
+		state.events[eventID] = eventInfo
+		return eventInfo.count
+	end
+
+	---Commit a reserved timeline count when an event finishes.
+	---@param eventID number
+	---@return string? eventType Returns eventType cached by TLCountStart in TLStart
+	---@return number? count Returns event count before incrementing the vb countKey
+	function bossModPrototype:TLCountFinish(eventID)
+		local state = self.tlCountState
+		if not state then return nil, nil end
+		local eventInfo = state.events[eventID]
+		if not eventInfo then return nil, nil end
+		state.events[eventID] = nil
+		local eventType = eventInfo.eventType
+		local eventCount = eventInfo.count
+		if eventInfo.countKey then
+			local currentCount = self.vb[eventInfo.countKey]
+			if type(currentCount) == "number" then
+				eventCount = eventCount or currentCount
+				if eventCount >= currentCount then
+					self.vb[eventInfo.countKey] = eventCount + 1
+				end
+			else
+				DBM:Debug("|cffff0000TLCountFinish received invalid count key '" .. tostring(eventInfo.countKey) .. "' for eventType '" .. tostring(eventType) .. "'|r", 2, nil, nil, true)
+			end
+			removePendingEvent(state.pending[eventType], eventID)
+			reindexPendingCounts(self, state, eventType)
+		end
+		cleanupTLCountState(self, state, eventType)
+		return eventType, eventCount
+	end
+
+	---Discard a reserved timeline count when an event is canceled.
+	---@param eventID number
+	---@return string? eventType
+	function bossModPrototype:TLCountCancel(eventID)
+		local state = self.tlCountState
+		if not state then return nil end
+		local eventInfo = state.events[eventID]
+		if not eventInfo then return nil end
+		state.events[eventID] = nil
+		if eventInfo.countKey then
+			removePendingEvent(state.pending[eventInfo.eventType], eventID)
+			reindexPendingCounts(self, state, eventInfo.eventType)
+		end
+		cleanupTLCountState(self, state, eventInfo.eventType)
+		return eventInfo.eventType
+	end
+
+	---Reset all reserved timeline count state for this mod.
+	function bossModPrototype:TLCountReset()
+		self.tlCountState = nil
+	end
+end
+
 
 ----------------------------------
 --  Private/Secret API Methods  --

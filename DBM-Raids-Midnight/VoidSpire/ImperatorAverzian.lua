@@ -41,10 +41,10 @@ mod.vb.voidFallCount = 0
 mod.vb.voidMarkCount = 0
 local badStateDetected = false
 local next72IsShadow = false
-local cachedEventIDs = {}
+
 
 function mod:OnLimitedCombatStart()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self.vb.shadowCount = 1
 	self.vb.upheavalCount = 1
 	self.vb.CollapseCount = 1
@@ -82,7 +82,7 @@ function mod:OnLimitedCombatStart()
 end
 
 function mod:OnCombatEnd()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self:UnregisterShortTermEvents()
 end
 
@@ -93,14 +93,11 @@ do
 	local function timersEasy(self, timer, eventID, timeInCombat)
 		--Logic confirmed against normal, heroic, and LFR
 		if timer == 4 or timer == 36 then--Dark Upheaval
-			timerDarkUpheavalCD:TLStart(timer, eventID, self.vb.upheavalCount)
-			cachedEventIDs[eventID] = "upheaval"
+			timerDarkUpheavalCD:TLStart(timer, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
 		elseif timer == 48 or timer == 18 then--Oblivion's Wrath
-			timerOblivionWrathCD:TLStart(timer, eventID, self.vb.oblivionCount)
-			cachedEventIDs[eventID] = "oblivion"
+			timerOblivionWrathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "oblivion", "oblivionCount"))
 		elseif timer == 125 then--Void Fall
-			timerVoidFallCD:TLStart(timer, eventID, self.vb.voidFallCount)
-			cachedEventIDs[eventID] = "voidfall"
+			timerVoidFallCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidfall", "voidFallCount"))
 			if timeInCombat >= 2 then
 				next72IsShadow = true
 			end
@@ -109,22 +106,18 @@ do
 			--We need to deal with special count handling to work around this quirk
 			if timer == 84 then
 				--Increment count by 1 since it'll start in parallel to the initial 12 second bar
-				timerShadowsAdvanceCD:TLStart(timer, eventID, self.vb.shadowCount+1)
+				timerShadowsAdvanceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shadow", "shadowCount") + 1)
 			else
-				timerShadowsAdvanceCD:TLStart(timer, eventID, self.vb.shadowCount)
+				timerShadowsAdvanceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
 			end
-			cachedEventIDs[eventID] = "shadow"
 		elseif timer == 20 then--Umbral Collapse
-			timerUmbralCollapseCD:TLStart(timer, eventID, self.vb.CollapseCount)
-			cachedEventIDs[eventID] = "collapse"
+			timerUmbralCollapseCD:TLStart(timer, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
 		elseif timer == 72 then--Can be Shadow's Advance or Umbral Collapse in this pull
 			if next72IsShadow then
-				timerShadowsAdvanceCD:TLStart(timer, eventID, self.vb.shadowCount)
-				cachedEventIDs[eventID] = "shadow"
+				timerShadowsAdvanceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
 				next72IsShadow = false
 			else
-				timerUmbralCollapseCD:TLStart(timer, eventID, self.vb.CollapseCount)
-				cachedEventIDs[eventID] = "collapse"
+				timerUmbralCollapseCD:TLStart(timer, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
@@ -158,33 +151,27 @@ do
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
 		if eventState == 2 then--Finished (A bar that's ending, meaning now the cast should be happening soon)
-			local eventType = cachedEventIDs[eventID]
+			local eventType, eventCount = self:TLCountFinish(eventID)
 			if eventType then
 				if eventType == "upheaval" then
-					specWarnDarkUpheaval:Show(self.vb.upheavalCount)
+					specWarnDarkUpheaval:Show(eventCount)
 					specWarnDarkUpheaval:Play("aesoon")
-					self.vb.upheavalCount = self.vb.upheavalCount + 1
 				elseif eventType == "oblivion" then
-					specWarnOblivionWrath:Show(self.vb.oblivionCount)
+					specWarnOblivionWrath:Show(eventCount)
 					specWarnOblivionWrath:Play("watchstep")
-					self.vb.oblivionCount = self.vb.oblivionCount + 1
 				elseif eventType == "voidfall" then
-					specWarnVoidFall:Show(self.vb.voidFallCount)
+					specWarnVoidFall:Show(eventCount)
 					specWarnVoidFall:Play("carefly")
-					self.vb.voidFallCount = self.vb.voidFallCount + 1
 				elseif eventType == "shadow" then
-					specWarnShadowsAdvance:Show(self.vb.shadowCount)
+					specWarnShadowsAdvance:Show(eventCount)
 					specWarnShadowsAdvance:Play("mobsoon")
-					self.vb.shadowCount = self.vb.shadowCount + 1
 				elseif eventType == "collapse" then
-					specWarnUmbralCollapse:Show(self.vb.CollapseCount)
+					specWarnUmbralCollapse:Show(eventCount)
 					specWarnUmbralCollapse:Play("gathershare")
-					self.vb.CollapseCount = self.vb.CollapseCount + 1
 				end
-				cachedEventIDs[eventID] = nil
 			end
 		elseif eventState == 3 then--Canceled/removed
-			cachedEventIDs[eventID] = nil
+			self:TLCountCancel(eventID)
 		end
 	end
 end

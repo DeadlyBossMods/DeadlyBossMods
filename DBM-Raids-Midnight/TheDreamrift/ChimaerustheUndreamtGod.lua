@@ -60,11 +60,9 @@ mod.vb.consumeCount = 0
 local badStateDetected = false
 local sawPhlegm53 = false
 local next12IsDevastation = false
-local phase2Adjusted = false
-local cachedEventIDs = {}
 
 function mod:OnLimitedCombatStart()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self.vb.diveCount = 1
 	self.vb.riftCount = 1
 	self.vb.phlegmCount = 1
@@ -76,7 +74,6 @@ function mod:OnLimitedCombatStart()
 	self.vb.consumeCount = 1
 	sawPhlegm53 = false
 	next12IsDevastation = false
-	phase2Adjusted = false
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
@@ -119,12 +116,13 @@ function mod:OnLimitedCombatStart()
 end
 
 function mod:OnCombatEnd()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self:UnregisterShortTermEvents()
 end
 
 do
 	local function phaseReset(self)
+		self:TLCountReset()
 --		self.vb.diveCount = 1--NOT reset, because dive is phase change ending
 		self.vb.riftCount = 1
 		self.vb.phlegmCount = 1
@@ -146,55 +144,44 @@ do
 			timerBerserkCD:Start(timer)
 		elseif timer == 72 then--Consume (unambiguous)
 			sawPhlegm53 = false
-			timerConsumeCD:TLStart(timer, eventID, self.vb.consumeCount)
-			cachedEventIDs[eventID] = "consume"
+			timerConsumeCD:TLStart(timer, eventID, self:TLCountStart(eventID, "consume", "consumeCount"))
 		elseif timer == 80 then--Can be Rending Tear or Consume, disambiguate by observed sequence anchor (53s Phlegm)
 			if sawPhlegm53 then
-				timerConsumeCD:TLStart(timer, eventID, self.vb.consumeCount)
+				timerConsumeCD:TLStart(timer, eventID, self:TLCountStart(eventID, "consume", "consumeCount"))
 				sawPhlegm53 = false
-				cachedEventIDs[eventID] = "consume"
 			else
-				timerRendingTearCD:TLStart(timer, eventID, self.vb.tearCount)
-				cachedEventIDs[eventID] = "tear"
+				timerRendingTearCD:TLStart(timer, eventID, self:TLCountStart(eventID, "tear", "tearCount"))
 			end
 		elseif timer == 7 or timer == 82 then--Rift Emergence
-			timerRiftEmergenceCD:TLStart(timer, eventID, self.vb.riftCount)
-			cachedEventIDs[eventID] = "rift"
+			timerRiftEmergenceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "rift", "riftCount"))
 		elseif timer == 3 or timer == 18 or timer == 24 or timer == 26 or timer == 29 or timer == 53 then--Caustic Phlegm
 			if timer == 18 then--Bugged air phase timer, ignore
 				DBM:Debug("Encounter timeline has a known incorrect timer for Caustic Phlegm at 18 seconds, ignoring this timer", nil, nil, nil, true)
 			else
-				timerCausticPhlegmCD:TLStart(timer, eventID, self.vb.phlegmCount)
+				timerCausticPhlegmCD:TLStart(timer, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				if timer == 53 then
 					sawPhlegm53 = true
 				end
-				cachedEventIDs[eventID] = "phlegm"
 			end
 		elseif timer == 40 then--Rending Tear
-			timerRendingTearCD:TLStart(timer, eventID, self.vb.tearCount)
-			cachedEventIDs[eventID] = "tear"
+			timerRendingTearCD:TLStart(timer, eventID, self:TLCountStart(eventID, "tear", "tearCount"))
 		elseif timer == 16 or timer == 81 then--Alndust Upheaval
-			timerAlndustUpheavalCD:TLStart(timer, eventID, self.vb.upheavalCount)
-			cachedEventIDs[eventID] = "upheaval"
+			timerAlndustUpheavalCD:TLStart(timer, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
 		elseif timer == 8 then--Corrupted Devastation opener before mixed 12s
-			timerCorruptedDevastationCD:TLStart(timer, eventID, self.vb.devastationCount)
+			timerCorruptedDevastationCD:TLStart(timer, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			next12IsDevastation = true
-			cachedEventIDs[eventID] = "devastation"
 		elseif timer == 12 or timer == 2 then--Can be Corrupted Devastation or Caustic Phlegm
 			if next12IsDevastation then
-				timerCorruptedDevastationCD:TLStart(timer, eventID, self.vb.devastationCount)
+				timerCorruptedDevastationCD:TLStart(timer, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 				next12IsDevastation = false
-				cachedEventIDs[eventID] = "devastation"
 			else
-				timerCausticPhlegmCD:TLStart(timer, eventID, self.vb.phlegmCount)
+				timerCausticPhlegmCD:TLStart(timer, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				next12IsDevastation = true
-				cachedEventIDs[eventID] = "phlegm"
 			end
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
 			--30 is max time, but when all adds die, 30 is canceled and replaced with 1 second timer
 			timerRavenousDiveCD:Stop()--Terminate to avoid debug from early phase transition ends
-			timerRavenousDiveCD:TLStart(timer, eventID, self.vb.diveCount)
-			cachedEventIDs[eventID] = "dive"
+			timerRavenousDiveCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dive", "diveCount"))
 		elseif timer == 165 or timer == 10 then--Stage Two markers
 			--Used by blizzard as phase markers, but not represented as bars in DBM yet.
 			timerStage2CD:Stop()
@@ -229,50 +216,35 @@ do
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
 		if eventState == 2 then
-			local eventType = cachedEventIDs[eventID]
+			local eventType, eventCount = self:TLCountFinish(eventID)
 			if eventType then
 				if eventType == "consume" then
-					specWarnConsume:Show(self.vb.consumeCount)
+					specWarnConsume:Show(eventCount)
 					specWarnConsume:Play("phasechange")
-					self.vb.consumeCount = self.vb.consumeCount + 1
 				elseif eventType == "tear" then
-					specWarnRendingTear:Show(self.vb.tearCount)
+					specWarnRendingTear:Show(eventCount)
 					specWarnRendingTear:Play("frontal")
-					self.vb.tearCount = self.vb.tearCount + 1
 				elseif eventType == "rift" then
-					specWarnRiftEmergence:Show(self.vb.riftCount)
+					specWarnRiftEmergence:Show(eventCount)
 					specWarnRiftEmergence:Play("mobsoon")
-					self.vb.riftCount = self.vb.riftCount + 1
 				elseif eventType == "phlegm" then
-					specWarnCausticPhlegm:Show(self.vb.phlegmCount)
+					specWarnCausticPhlegm:Show(eventCount)
 					specWarnCausticPhlegm:Play("aesoon")
-					self.vb.phlegmCount = self.vb.phlegmCount + 1
 				elseif eventType == "upheaval" then
-					specWarnAlndustUpheaval:Show(self.vb.upheavalCount)
+					specWarnAlndustUpheaval:Show(eventCount)
 					specWarnAlndustUpheaval:Play("soakincoming")
-					self.vb.upheavalCount = self.vb.upheavalCount + 1
 				elseif eventType == "devastation" then
-					specWarnCorruptedDevastation:Show(self.vb.devastationCount)
+					specWarnCorruptedDevastation:Show(eventCount)
 					specWarnCorruptedDevastation:Play("breathsoon")
-					self.vb.devastationCount = self.vb.devastationCount + 1
 				elseif eventType == "dive" then
-					specWarnRavenousDive:Show(self.vb.diveCount)
+					specWarnRavenousDive:Show(eventCount)
 					specWarnRavenousDive:Play("phasechange")
-					self.vb.diveCount = self.vb.diveCount + 1
 					phaseReset(self)--Phase transition ends, reset all timers
 					DBM:Debug("Phase reset applied by Ravenous Dive", nil, nil, nil, true)
-				elseif eventType == "initialPhaseTimer" then
-					if not phase2Adjusted then
-						--Phase 2 timer didn't reset to 10, which means it ended at max duration
-						--Phase 2 timer only resets to 10 if you kill all the adds early. so we can't always assume this will happen
-						phaseReset(self)
-						DBM:Debug("Phase 2 adjustment applied by initial phase timer", nil, nil, nil, true)
-					end
 				end
-				cachedEventIDs[eventID] = nil
 			end
 		elseif eventState == 3 then
-			cachedEventIDs[eventID] = nil
+			self:TLCountCancel(eventID)
 		end
 	end
 end

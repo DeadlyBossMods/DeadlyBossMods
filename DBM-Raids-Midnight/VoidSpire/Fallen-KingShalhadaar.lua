@@ -40,7 +40,6 @@ mod.vb.shatteringTwilightCount = 0
 mod.vb.twilightObscurityCount = 0
 mod.vb.entropicUnravelingCount = 0
 local badStateDetected = false
-local cachedEventIDs = {}
 local next45Type = nil
 
 local function resetCounts(self)
@@ -52,7 +51,7 @@ local function resetCounts(self)
 end
 
 function mod:OnLimitedCombatStart()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	resetCounts(self)
 	self.vb.entropicUnravelingCount = 1
 	next45Type = nil
@@ -89,7 +88,7 @@ end
 
 --Note, bar stage changing and canceling is handled by core
 function mod:OnCombatEnd()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self:UnregisterShortTermEvents()
 end
 
@@ -107,40 +106,31 @@ do
 			end
 	--		resetCounts(self)--Phase reset point
 			next45Type = "twisted"--Shared 45s open as Twisted/Fractured after phase transition
-			timerEntropicUnravelingCD:TLStart(timer, eventID, self.vb.entropicUnravelingCount)
-			cachedEventIDs[eventID] = "entropic"
+			timerEntropicUnravelingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "entropic", "entropicUnravelingCount"))
 		elseif timer == 27 or timer == 46 then--Despotic Command
-			timerDespoticCommandCD:TLStart(timer, eventID, self.vb.despoticCommandCount)
-			cachedEventIDs[eventID] = "despotic"
+			timerDespoticCommandCD:TLStart(timer, eventID, self:TLCountStart(eventID, "despotic", "despoticCommandCount"))
 			if timer == 46 then
 				next45Type = "shattering"
 			end
 		elseif timer == 18 then--Fractured Projection
-			timerFracturedProjectionCD:TLStart(timer, eventID, self.vb.fracturedProjectionCount)
-			cachedEventIDs[eventID] = "fractured"
+			timerFracturedProjectionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "fractured", "fracturedProjectionCount"))
 		elseif timer == 42 then--Shattering Twilight
-			timerShatteringTwilightCD:TLStart(timer, eventID, self.vb.shatteringTwilightCount)
-			cachedEventIDs[eventID] = "shattering"
+			timerShatteringTwilightCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shattering", "shatteringTwilightCount"))
 		elseif timer == 11 or timer == 47 then--Void Convergence
-			timerVoidConvergenceCD:TLStart(timer, eventID, self.vb.convergenceCount)
-			cachedEventIDs[eventID] = "convergence"
+			timerVoidConvergenceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
 			next45Type = "twisted"
 		elseif timer == 15 then--Twisting Obscurity opener
-			timerTwilightObscurityCD:TLStart(timer, eventID, self.vb.twilightObscurityCount)
-			cachedEventIDs[eventID] = "twisted"
+			timerTwilightObscurityCD:TLStart(timer, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
 			next45Type = "fractured"
 		elseif timer == 45 then--Shared duration among Twisted/Fractured/Shattering
 			if next45Type == "twisted" then
-				timerTwilightObscurityCD:TLStart(timer, eventID, self.vb.twilightObscurityCount)
-				cachedEventIDs[eventID] = "twisted"
+				timerTwilightObscurityCD:TLStart(timer, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
 				next45Type = "fractured"
 			elseif next45Type == "fractured" then
-				timerFracturedProjectionCD:TLStart(timer, eventID, self.vb.fracturedProjectionCount)
-				cachedEventIDs[eventID] = "fractured"
+				timerFracturedProjectionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "fractured", "fracturedProjectionCount"))
 				next45Type = "shattering"
 			elseif next45Type == "shattering" then
-				timerShatteringTwilightCD:TLStart(timer, eventID, self.vb.shatteringTwilightCount)
-				cachedEventIDs[eventID] = "shattering"
+				timerShatteringTwilightCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shattering", "shatteringTwilightCount"))
 				next45Type = nil
 			else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 				badStateDetected = true
@@ -181,36 +171,29 @@ do
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
 		if eventState == 2 then--Finished (A bar that's ending, meaning now the cast should be happening soon)
-			local eventType = cachedEventIDs[eventID]
+			local eventType, eventCount = self:TLCountFinish(eventID)
 			if eventType then
 				if eventType == "convergence" then
-					specWarnVoidConvergence:Show(self.vb.convergenceCount)
+					specWarnVoidConvergence:Show(eventCount)
 					specWarnVoidConvergence:Play("targetchange")
-					self.vb.convergenceCount = self.vb.convergenceCount + 1
 				elseif eventType == "fractured" then
-					specWarnFracturedProjection:Show(self.vb.fracturedProjectionCount)
+					specWarnFracturedProjection:Show(eventCount)
 					specWarnFracturedProjection:Play("crowdcontrol")
-					self.vb.fracturedProjectionCount = self.vb.fracturedProjectionCount + 1
 				elseif eventType == "twisted" then
-					specWarnTwilightObscurity:Show(self.vb.twilightObscurityCount)
+					specWarnTwilightObscurity:Show(eventCount)
 					specWarnTwilightObscurity:Play("aesoon")
-					self.vb.twilightObscurityCount = self.vb.twilightObscurityCount + 1
 				elseif eventType == "entropic" then
-					specWarnEntropicUnraveling:Show(self.vb.entropicUnravelingCount)
+					specWarnEntropicUnraveling:Show(eventCount)
 					specWarnEntropicUnraveling:Play("dpshard")
-					self.vb.entropicUnravelingCount = self.vb.entropicUnravelingCount + 1
 				elseif eventType == "despotic" then
-					self.vb.despoticCommandCount = self.vb.despoticCommandCount + 1
 				elseif eventType == "shattering" then
 					--Schedule 5 seconds after event, which is when spikes should come out
-					specWarnShatteringTwilight:Schedule(3.5, self.vb.shatteringTwilightCount)
+					specWarnShatteringTwilight:Schedule(3.5, eventCount)
 					specWarnShatteringTwilight:ScheduleVoice(3.5, "watchstep")
-					self.vb.shatteringTwilightCount = self.vb.shatteringTwilightCount + 1
 				end
-				cachedEventIDs[eventID] = nil
 			end
 		elseif eventState == 3 then--Canceled/removed
-			cachedEventIDs[eventID] = nil
+			self:TLCountCancel(eventID)
 		end
 	end
 end

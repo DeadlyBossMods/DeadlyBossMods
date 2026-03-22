@@ -35,10 +35,9 @@ mod.vb.breathCount = 0
 mod.vb.expulsionCount = 0
 mod.vb.roarCount = 0
 local badStateDetected = false
-local cachedEventIDs = {}
 
 function mod:OnLimitedCombatStart()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self.vb.clawCount = 1
 	self.vb.breathCount = 1
 	self.vb.expulsionCount = 1
@@ -69,7 +68,7 @@ function mod:OnLimitedCombatStart()
 end
 
 function mod:OnCombatEnd()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self:UnregisterShortTermEvents()
 end
 
@@ -80,14 +79,11 @@ do
 	local function timersEasy(self, timer, eventID)
 		--Logic confirmed against normal and LFR
 		if timer == 6 or timer == 120 then--Primordial Roar
-			timerPrimordialRoarCD:TLStart(timer, eventID, self.vb.roarCount)
-			cachedEventIDs[eventID] = "roar"
+			timerPrimordialRoarCD:TLStart(timer, eventID, self:TLCountStart(eventID, "roar", "roarCount"))
 		elseif timer == 57 or timer == 123 then--Parasite Expulsion
-			timerParasiteExpulsionCD:TLStart(timer, eventID, self.vb.expulsionCount)
-			cachedEventIDs[eventID] = "expulsion"
+			timerParasiteExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "expulsion", "expulsionCount"))
 		elseif timer == 16 or timer == 136 or timer == 240 then--Shadowclaw Slam
-			timerShadowclawSlamCD:TLStart(timer, eventID, self.vb.clawCount)
-			cachedEventIDs[eventID] = "slam"
+			timerShadowclawSlamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "slam", "clawCount"))
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
 				badStateDetected = true
@@ -119,23 +115,19 @@ do
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
 		if eventState == 2 then
-			local eventType = cachedEventIDs[eventID]
+			local eventType, eventCount = self:TLCountFinish(eventID)
 			if eventType == "roar" then
-				specWarnPrimordialRoar:Show(self.vb.roarCount)
+				specWarnPrimordialRoar:Show(eventCount)
 				specWarnPrimordialRoar:Play("pullin")
-				self.vb.roarCount = self.vb.roarCount + 1
 			elseif eventType == "expulsion" then
-				specWarnParasiteExpulsion:Show(self.vb.expulsionCount)
+				specWarnParasiteExpulsion:Show(eventCount)
 				specWarnParasiteExpulsion:Play("watchstep")
-				self.vb.expulsionCount = self.vb.expulsionCount + 1
 			elseif eventType == "slam" then
-				specWarnShadowclawSlam:Show(self.vb.clawCount)
+				specWarnShadowclawSlam:Show(eventCount)
 				specWarnShadowclawSlam:Play("slamincoming")
-				self.vb.clawCount = self.vb.clawCount + 1
 			end
-			cachedEventIDs[eventID] = nil
 		elseif eventState == 3 then
-			cachedEventIDs[eventID] = nil
+			self:TLCountCancel(eventID)
 		end
 	end
 end
