@@ -170,8 +170,10 @@ function PanelPrototype:CreateButton(title, width, height, onclick, font, highli
 		button:SetNormalFontObject(font or highlightFont)
 		button:SetHighlightFontObject(highlightFont or font)
 	end
-	if _G[button:GetName() .. "Text"]:GetStringWidth() > button:GetWidth() then
-		button:SetWidth(_G[button:GetName() .. "Text"]:GetStringWidth() + 25)
+	-- Cache button text to avoid repeated global lookups
+	local buttonText = _G[button:GetName() .. "Text"]
+	if buttonText:GetStringWidth() > button:GetWidth() then
+		button:SetWidth(buttonText:GetStringWidth() + 25)
 	end
 	self:SetLastObj(button)
 	return button

@@ -49,6 +49,8 @@ local mt = {__index = bossModPrototype}
 ---@field disableHealthCombat boolean?
 ---@field isCustomMod boolean?
 ---@field sendMainBossGUID boolean? Used to force enable nameplate timers for main boss
+---@field panel table? GUI panel for this mod (set by DBM-GUI)
+---@field testPanel table? GUI test panel for this mod (set by DBM-GUI)
 
 ---@param name string|number Name of mod is usually journalID for auto translation or a unique string
 ---@param modId string? Must match parent module name (ie DBM-Party-Classic) or it won't appear in GUI
