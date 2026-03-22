@@ -498,7 +498,7 @@ local inCombatTrash = {}
 local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false
 -- Nil variables
 local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader, syncZonePASounds
-local pendingPASoundZoneSync, pendingPAAnchorCheck
+local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
 -- 0 variables
 local LastInstanceMapID = -1
 
@@ -2658,11 +2658,11 @@ do
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
 		end
-		local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+		local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors(true)
 		if not succeeded then
-			pendingPAAnchorCheck = true
+			pendingPAAnchorCheck = 2
 		else
-			pendingPAAnchorCheck = nil
+			pendingPAAnchorCheck = 0
 		end
 	end
 
@@ -4220,7 +4220,7 @@ do
 			syncZonePASounds(self, mapID)
 			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
 			if not succeeded then
-				pendingPAAnchorCheck = true
+				pendingPAAnchorCheck = 1
 			else
 				pendingPAAnchorCheck = nil
 			end
@@ -4651,10 +4651,10 @@ do
 		if pendingPASoundZoneSync then
 			syncZonePASounds(self, pendingPASoundZoneSync)
 		end
-		if pendingPAAnchorCheck then
-			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+		if pendingPAAnchorCheck > 0 then
+			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors(pendingPAAnchorCheck == 2 and true or false)
 			if succeeded then
-				pendingPAAnchorCheck = nil
+				pendingPAAnchorCheck = 0
 			end
 		end
 	end
