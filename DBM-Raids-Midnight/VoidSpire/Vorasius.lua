@@ -24,21 +24,20 @@ local timerShadowclawSlamCD				= mod:NewCDCountTimer(20.5, 1241836, 182557, nil,
 local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2)--Shortname "Roar"
 
-mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2)--Dark Goo
-mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3)--Smashed (debuff from shadowclaw slam)
-mod:AddPrivateAuraSoundOption(1272527, false, 1272527, 1, 1)--Creep Spit
-mod:AddPrivateAuraSoundOption(1259186, true, 1259186, 1, 1)--Blisterburst
-mod:AddPrivateAuraSoundOption(1254113, true, 1254113, 1, 2)--Fixate
+mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2, "watchfeet", 8)--Dark Goo
+mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3, "debuffyou", 17)--Smashed (debuff from shadowclaw slam)
+mod:AddPrivateAuraSoundOption(1272527, false, 1272527, 1, 1, "debuffyou", 17)--Creep Spit
+mod:AddPrivateAuraSoundOption(1259186, true, 1259186, 1, 1, "debuffyou", 17)--Blisterburst
+mod:AddPrivateAuraSoundOption(1254113, true, 1254113, 1, 2, "fixateyou", 19)--Fixate
 
 mod.vb.clawCount = 0
 mod.vb.breathCount = 0
 mod.vb.expulsionCount = 0
 mod.vb.roarCount = 0
 local badStateDetected = false
-local cachedEventIDs = {}
 
 function mod:OnLimitedCombatStart()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self.vb.clawCount = 1
 	self.vb.breathCount = 1
 	self.vb.expulsionCount = 1
@@ -61,15 +60,10 @@ function mod:OnLimitedCombatStart()
 --		specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)
 	end
 	specWarnVoidBreath:SetAlert(61, "breathsoon", 2, 4, 0)--Doesn't have a timeline event, so we still use blizz api regardless if hardcode enabled or not
-	self:EnablePrivateAuraSound(1243270, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1241844, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1272527, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1259186, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1254113, "fixateyou", 19)
 end
 
 function mod:OnCombatEnd()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self:UnregisterShortTermEvents()
 end
 
@@ -80,22 +74,23 @@ do
 	local function timersEasy(self, timer, eventID)
 		--Logic confirmed against normal and LFR
 		if timer == 6 or timer == 120 then--Primordial Roar
-			timerPrimordialRoarCD:TLStart(timer, eventID, self.vb.roarCount)
-			cachedEventIDs[eventID] = "roar"
+			timerPrimordialRoarCD:TLStart(timer, eventID, self:TLCountStart(eventID, "roar", "roarCount"))
 		elseif timer == 57 or timer == 123 then--Parasite Expulsion
-			timerParasiteExpulsionCD:TLStart(timer, eventID, self.vb.expulsionCount)
-			cachedEventIDs[eventID] = "expulsion"
+			timerParasiteExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "expulsion", "expulsionCount"))
 		elseif timer == 16 or timer == 136 or timer == 240 then--Shadowclaw Slam
-			timerShadowclawSlamCD:TLStart(timer, eventID, self.vb.clawCount)
-			cachedEventIDs[eventID] = "slam"
+			timerShadowclawSlamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "slam", "clawCount"))
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
-			badStateDetected = true
-			if DBM.Options.IgnoreBlizzAPI then
-				DBM.Options.IgnoreBlizzAPI = false
-				DBM:FireEvent("DBM_ResumeBlizzAPI")
+			if not DBM.Options.DebugMode then
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			else
+				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
 			end
-			self:UnregisterShortTermEvents()
-			DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	--Note, bar stage changing and canceling is handled by core
@@ -115,23 +110,21 @@ do
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
 		if eventState == 2 then
-			local eventType = cachedEventIDs[eventID]
-			if eventType == "roar" then
-				specWarnPrimordialRoar:Show(self.vb.roarCount)
-				specWarnPrimordialRoar:Play("pullin")
-				self.vb.roarCount = self.vb.roarCount + 1
-			elseif eventType == "expulsion" then
-				specWarnParasiteExpulsion:Show(self.vb.expulsionCount)
-				specWarnParasiteExpulsion:Play("watchstep")
-				self.vb.expulsionCount = self.vb.expulsionCount + 1
-			elseif eventType == "slam" then
-				specWarnShadowclawSlam:Show(self.vb.clawCount)
-				specWarnShadowclawSlam:Play("slamincoming")
-				self.vb.clawCount = self.vb.clawCount + 1
+			local eventType, eventCount = self:TLCountFinish(eventID)
+			if eventType and eventCount then
+				if eventType == "roar" then
+					specWarnPrimordialRoar:Show(eventCount)
+					specWarnPrimordialRoar:Play("pullin")
+				elseif eventType == "expulsion" then
+					specWarnParasiteExpulsion:Show(eventCount)
+					specWarnParasiteExpulsion:Play("watchstep")
+				elseif eventType == "slam" then
+					specWarnShadowclawSlam:Show(eventCount)
+					specWarnShadowclawSlam:Play("slamincoming")
+				end
 			end
-			cachedEventIDs[eventID] = nil
 		elseif eventState == 3 then
-			cachedEventIDs[eventID] = nil
+			self:TLCountCancel(eventID)
 		end
 	end
 end

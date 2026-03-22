@@ -237,16 +237,16 @@ local function detectEarlyTimerRefresh(self, bar, timer)
 			DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", nil, nil, nil, true)
 			DBM:FireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", 2)
 		elseif bar.timer < -0.2 then
-			DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed after zero, outside known variance window. Remaining time is : " .. remaining, 2)
+			DBM:Debug("Timer " .. ttext .. phaseText .. " |cffff0000refreshed after zero, outside known variance window. Remaining time is : |r" .. remaining, 2, nil, nil, true)
 		elseif bar.timer > correctWithVarianceDuration(0.2, bar) then
-			DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. ")", 2)
+			DBM:Debug("Timer " .. ttext .. phaseText .. " |cffff0000refreshed before expired. Remaining time is : |r" .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. ")", 2, nil, nil, true)
 		end
 	else
 		if DBM.Options.BadTimerAlert and bar.timer > 1 then
 			DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, nil, nil, true)
 			DBM:FireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", 2)
 		elseif bar.timer > 0.2 then
-			DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining, 2, true)
+			DBM:Debug("Timer " .. ttext .. phaseText .. " |cffff0000refreshed before expired. Remaining time is : |r" .. remaining, 2, true, nil, true)
 		end
 	end
 
@@ -276,6 +276,8 @@ function timerPrototype:SetEventID(eventID, ...)
 		private.hardCodedTimers[eventID] = hardcodedIds
 	end
 	hardcodedIds[#hardcodedIds + 1] = id
+	private.hardCodedTimerEvents = private.hardCodedTimerEvents or {}
+	private.hardCodedTimerEvents[id] = eventID
 end
 
 ---Simple function to call Start and SetEventID with a single call for hardcoded timeline timers
@@ -283,7 +285,15 @@ end
 ---@param eventID number
 function timerPrototype:TLStart(timer, eventID, ...)
 	self:SetEventID(eventID, ...)
-	DBM:Debug("|cff00ff00Starting hardcoded timer for eventID " .. eventID .. ":|r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.name .. "|r timer |cff69ccf0" .. timer .. "|r", 3, nil, nil, true)
+	local argsText = ""
+	if select("#", ...) > 0 then
+		local argValues = {}
+		for i = 1, select("#", ...) do
+			argValues[#argValues + 1] = tostring(select(i, ...))
+		end
+		argsText = " args |cff69ccf0" .. table.concat(argValues, ", ") .. "|r"
+	end
+	DBM:Debug("|cff00ff00Starting hardcoded timer for eventID " .. eventID .. ":|r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.name .. "|r" .. argsText .. " timer |cff69ccf0" .. timer .. "|r", 3, nil, nil, true)
 	return self:Start(timer, ...)
 end
 

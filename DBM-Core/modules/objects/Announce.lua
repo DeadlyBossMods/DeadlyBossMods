@@ -478,6 +478,13 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		--boolean: Whether or not this warning is a special warning (higher priority). BW would call this "emphasized"
 		--announceCount: If it's a count announce, this will provide access to the number value of that count. This, along with spellId should be used instead of message text scanning for most weak auras that need to target specific count casts
 		DBM:FireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false, announceCount)
+		if DBM.Options.IgnoreBlizzAPI and self.spellId and self.spellName then
+			if announceCount then
+				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. " (" .. announceCount .. ")|r", 2, nil, nil, true)
+			else
+				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. "|r", 2, nil, nil, true)
+			end
+		end
 		if self.sound > 0 then--0 means muted, 1 means no voice pack support, 2 means voice pack version/support
 			if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not private.voiceSessionDisabled and self.sound <= private.swFilterDisabled then return end
 			if not self.option or self.mod.Options[self.option .. "SWSound"] ~= "None" then

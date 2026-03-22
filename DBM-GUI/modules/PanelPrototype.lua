@@ -498,6 +498,20 @@ do
 				frame2:SetPoint("LEFT", frame, "RIGHT", isNewDropdown and 4 or 18, 0)
 			else--Special warning option
 				frame = self:CreateDropdown(nil, sounds, mod, modvar .. "SWSound", function(value)
+					if modvar:match("^PrivateAuraSound%d+$") then
+						local optionId = tonumber(modvar:match("^PrivateAuraSound(%d+)$"))
+						if InCombatLockdown() then
+							DBM:AddMsg(L.PrivateAuraSoundCombatLockdown, nil, true)
+							frame:SetSelectedValue(mod.Options[modvar .. "SWSound"])
+							return
+						end
+						mod.Options[modvar .. "SWSound"] = value
+						if optionId then
+							mod:RefreshPrivateAuraSound(optionId)
+						end
+						DBM:PlaySpecialWarningSound(value, true)
+						return
+					end
 					mod.Options[modvar .. "SWSound"] = value
 					DBM:PlaySpecialWarningSound(value, true)
 				end, nil, nil, button, L.BossModSWSound)

@@ -34,18 +34,19 @@ local timerCorruptedDevastationCD		= mod:NewCDCountTimer(20.5, 1245452, 17088, n
 local timerConsumingMiasmaCD			= mod:NewCDCountTimer(20.5, 1257087, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--Heroic+Mythic only
 local timerAlndustUpheavalCD			= mod:NewCDCountTimer(20.5, 1262289, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5)
 local timerRiftMadnessCD				= mod:NewNextTimer(20.5, 1264780, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
-local timerConsumeCD					= mod:NewCDCountTimer(20.5, 1245396, nil, nil, nil, 6)--Stage 2 bar
+local timerConsumeCD					= mod:NewCDCountTimer(20.5, 1245396, nil, nil, nil, 5)
+local timerStage2CD						= mod:NewCDTimer(20.5, 1280127, nil, nil, nil, 6)--Hardcoded stage 2 timer for when blizz doesn't provide consume timers in stage 2, or provides them with wrong timers. Will be removed if blizz provides accurate consume timers in stage 2
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
-mod:AddPrivateAuraSoundOption(1272726, true, 1272726, 1, 1)--Rending Tear
-mod:AddPrivateAuraSoundOption(1257087, true, 1257087, 1, 1)--Consuming Miasma
-mod:AddPrivateAuraSoundOption(1245698, true, 1262289, 1, 2)--Alnsight (can also use https://www.wowhead.com/spell=1253744/rift-vulnerability)
-mod:AddPrivateAuraSoundOption(1264756, true, 1264780, 1, 1)--Rift Madness (initial target)
+mod:AddPrivateAuraSoundOption(1272726, true, 1272726, 1, 1, "bleedyou", 19)--Rending Tear
+mod:AddPrivateAuraSoundOption(1257087, true, 1257087, 1, 1, "movetopool", 15)--Consuming Miasma
+mod:AddPrivateAuraSoundOption(1245698, true, 1262289, 1, 2, "riftyou", 19)--Alnsight (can also use https://www.wowhead.com/spell=1253744/rift-vulnerability)
+mod:AddPrivateAuraSoundOption(1264756, true, 1264780, 1, 1, "debuffyou", 17)--Rift Madness (initial target)
 --mod:AddPrivateAuraSoundOption(1264780, true, 1264780, 1, 1)--Rift Madness (standing in the soak?)
 --https://www.wowhead.com/beta/spell=1264757/rift-madness another rift madness, not sure what to include yet beyond initial
-mod:AddPrivateAuraSoundOption(1258192, false, 1258192, 1, 1)--Lingering Miasma
-mod:AddPrivateAuraSoundOption(1265940, true, 1249017, 1, 1)--Fearsome Cry
-mod:AddPrivateAuraSoundOption(1250953, false, 1250953, 1, 1)--Rift Sickness
+mod:AddPrivateAuraSoundOption(1258192, false, 1258192, 1, 1, "dotyou", 19)--Lingering Miasma
+mod:AddPrivateAuraSoundOption(1265940, true, 1249017, 1, 1, "fearyou", 19)--Fearsome Cry
+mod:AddPrivateAuraSoundOption(1250953, false, 1250953, 1, 1, "absorbyou", 19)--Rift Sickness
 
 mod.vb.diveCount = 0
 mod.vb.riftCount = 0
@@ -59,10 +60,9 @@ mod.vb.consumeCount = 0
 local badStateDetected = false
 local sawPhlegm53 = false
 local next12IsDevastation = false
-local cachedEventIDs = {}
 
 function mod:OnLimitedCombatStart()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self.vb.diveCount = 1
 	self.vb.riftCount = 1
 	self.vb.phlegmCount = 1
@@ -103,23 +103,31 @@ function mod:OnLimitedCombatStart()
 		specWarnConsume:SetAlert(307, "phasechange", 2, 3)
 		timerConsumeCD:SetTimeline(307)
 		specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
+		timerStage2CD:SetTimeline(353)
 	end
-	self:EnablePrivateAuraSound(1272726, "bleedyou", 19)
-	self:EnablePrivateAuraSound(1257087, "movetopool", 15)
-	self:EnablePrivateAuraSound(1245698, "riftyou", 19)
-	self:EnablePrivateAuraSound(1264756, "debuffyou", 17)--TODO, better custom voice?
 --	self:EnablePrivateAuraSound(1264780, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1258192, "dotyou", 19)
-	self:EnablePrivateAuraSound(1265940, "fearyou", 19)
-	self:EnablePrivateAuraSound(1250953, "absorbyou", 19)
 end
 
 function mod:OnCombatEnd()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self:UnregisterShortTermEvents()
 end
 
 do
+	local function phaseReset(self)
+		self:TLCountReset()
+--		self.vb.diveCount = 1--NOT reset, because dive is phase change ending
+		self.vb.riftCount = 1
+		self.vb.phlegmCount = 1
+		self.vb.tearCount = 1
+		self.vb.devastationCount = 1
+		self.vb.upheavalCount = 1
+		self.vb.consumeCount = 1
+		self.vb.riftMadnessCount = 1--Unused on Normal/LFR
+		self.vb.miasmaCount = 1--Unused on Normal/LFR
+		sawPhlegm53 = false
+		next12IsDevastation = false
+	end
 	---@param self DBMMod
 	---@param timer number
 	---@param eventID number
@@ -129,74 +137,60 @@ do
 			timerBerserkCD:Start(timer)
 		elseif timer == 72 then--Consume (unambiguous)
 			sawPhlegm53 = false
-			timerConsumeCD:TLStart(timer, eventID, self.vb.consumeCount)
-			cachedEventIDs[eventID] = "consume"
+			timerConsumeCD:TLStart(timer, eventID, self:TLCountStart(eventID, "consume", "consumeCount"))
 		elseif timer == 80 then--Can be Rending Tear or Consume, disambiguate by observed sequence anchor (53s Phlegm)
 			if sawPhlegm53 then
-				timerConsumeCD:TLStart(timer, eventID, self.vb.consumeCount)
+				timerConsumeCD:TLStart(timer, eventID, self:TLCountStart(eventID, "consume", "consumeCount"))
 				sawPhlegm53 = false
-				cachedEventIDs[eventID] = "consume"
 			else
-				timerRendingTearCD:TLStart(timer, eventID, self.vb.tearCount)
-				cachedEventIDs[eventID] = "tear"
+				timerRendingTearCD:TLStart(timer, eventID, self:TLCountStart(eventID, "tear", "tearCount"))
 			end
 		elseif timer == 7 or timer == 82 then--Rift Emergence
-			timerRiftEmergenceCD:TLStart(timer, eventID, self.vb.riftCount)
-			cachedEventIDs[eventID] = "rift"
+			timerRiftEmergenceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "rift", "riftCount"))
 		elseif timer == 3 or timer == 18 or timer == 24 or timer == 26 or timer == 29 or timer == 53 then--Caustic Phlegm
-			timerCausticPhlegmCD:TLStart(timer, eventID, self.vb.phlegmCount)
-			if timer == 53 then
-				sawPhlegm53 = true
-			end
-			cachedEventIDs[eventID] = "phlegm"
-		elseif timer == 40 then--Rending Tear
-			timerRendingTearCD:TLStart(timer, eventID, self.vb.tearCount)
-			cachedEventIDs[eventID] = "tear"
-		elseif timer == 16 or timer == 81 then--Alndust Upheaval
-			timerAlndustUpheavalCD:TLStart(timer, eventID, self.vb.upheavalCount)
-			cachedEventIDs[eventID] = "upheaval"
-		elseif timer == 8 then--Corrupted Devastation opener before mixed 12s
-			timerCorruptedDevastationCD:TLStart(timer, eventID, self.vb.devastationCount)
-			next12IsDevastation = true
-			cachedEventIDs[eventID] = "devastation"
-		elseif timer == 12 then--Can be Corrupted Devastation or Caustic Phlegm
-			if next12IsDevastation then
-				timerCorruptedDevastationCD:TLStart(timer, eventID, self.vb.devastationCount)
-				next12IsDevastation = false
-				cachedEventIDs[eventID] = "devastation"
+			if timer == 18 then--Bugged air phase timer, ignore
+				DBM:Debug("Encounter timeline has a known incorrect timer for Caustic Phlegm at 18 seconds, ignoring this timer", nil, nil, nil, true)
 			else
-				timerCausticPhlegmCD:TLStart(timer, eventID, self.vb.phlegmCount)
+				timerCausticPhlegmCD:TLStart(timer, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
+				if timer == 53 then
+					sawPhlegm53 = true
+				end
+			end
+		elseif timer == 40 then--Rending Tear
+			timerRendingTearCD:TLStart(timer, eventID, self:TLCountStart(eventID, "tear", "tearCount"))
+		elseif timer == 16 or timer == 81 then--Alndust Upheaval
+			timerAlndustUpheavalCD:TLStart(timer, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
+		elseif timer == 8 then--Corrupted Devastation opener before mixed 12s
+			timerCorruptedDevastationCD:TLStart(timer, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			next12IsDevastation = true
+		elseif timer == 12 or timer == 2 then--Can be Corrupted Devastation or Caustic Phlegm
+			if next12IsDevastation then
+				timerCorruptedDevastationCD:TLStart(timer, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+				next12IsDevastation = false
+			else
+				timerCausticPhlegmCD:TLStart(timer, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				next12IsDevastation = true
-				cachedEventIDs[eventID] = "phlegm"
 			end
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
 			--30 is max time, but when all adds die, 30 is canceled and replaced with 1 second timer
-			timerRavenousDiveCD:TLStart(timer, eventID, self.vb.diveCount)
-			cachedEventIDs[eventID] = "dive"
+			timerRavenousDiveCD:Stop()--Terminate to avoid debug from early phase transition ends
+			timerRavenousDiveCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dive", "diveCount"))
 		elseif timer == 165 or timer == 10 then--Stage Two markers
 			--Used by blizzard as phase markers, but not represented as bars in DBM yet.
-			if timer == 10 then--Hard reset marker for phase transition
-				self.vb.diveCount = 1
-				self.vb.riftCount = 1
-				self.vb.phlegmCount = 1
-				self.vb.tearCount = 1
-				self.vb.devastationCount = 1
-				self.vb.upheavalCount = 1
-				self.vb.consumeCount = 1
-				--self.vb.riftMadnessCount = 1--Unused on Normal/LFR
-				--self.vb.miasmaCount = 1--Unused on Normal/LFR
-				sawPhlegm53 = false
-				next12IsDevastation = false
-			end
-			return
+			timerStage2CD:Stop()
+			timerStage2CD:TLStart(timer, eventID)
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
-			badStateDetected = true
-			if DBM.Options.IgnoreBlizzAPI then
-				DBM.Options.IgnoreBlizzAPI = false
-				DBM:FireEvent("DBM_ResumeBlizzAPI")
+			if not DBM.Options.DebugMode then
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			else
+				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
 			end
-			self:UnregisterShortTermEvents()
-			DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	--Note, bar stage changing and canceling is handled by core
@@ -215,41 +209,35 @@ do
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
 		if eventState == 2 then
-			local eventType = cachedEventIDs[eventID]
-			if eventType then
+			local eventType, eventCount = self:TLCountFinish(eventID)
+			if eventType and eventCount then
 				if eventType == "consume" then
-					specWarnConsume:Show(self.vb.consumeCount)
+					specWarnConsume:Show(eventCount)
 					specWarnConsume:Play("phasechange")
-					self.vb.consumeCount = self.vb.consumeCount + 1
 				elseif eventType == "tear" then
-					specWarnRendingTear:Show(self.vb.tearCount)
+					specWarnRendingTear:Show(eventCount)
 					specWarnRendingTear:Play("frontal")
-					self.vb.tearCount = self.vb.tearCount + 1
 				elseif eventType == "rift" then
-					specWarnRiftEmergence:Show(self.vb.riftCount)
+					specWarnRiftEmergence:Show(eventCount)
 					specWarnRiftEmergence:Play("mobsoon")
-					self.vb.riftCount = self.vb.riftCount + 1
 				elseif eventType == "phlegm" then
-					specWarnCausticPhlegm:Show(self.vb.phlegmCount)
+					specWarnCausticPhlegm:Show(eventCount)
 					specWarnCausticPhlegm:Play("aesoon")
-					self.vb.phlegmCount = self.vb.phlegmCount + 1
 				elseif eventType == "upheaval" then
-					specWarnAlndustUpheaval:Show(self.vb.upheavalCount)
+					specWarnAlndustUpheaval:Show(eventCount)
 					specWarnAlndustUpheaval:Play("soakincoming")
-					self.vb.upheavalCount = self.vb.upheavalCount + 1
 				elseif eventType == "devastation" then
-					specWarnCorruptedDevastation:Show(self.vb.devastationCount)
+					specWarnCorruptedDevastation:Show(eventCount)
 					specWarnCorruptedDevastation:Play("breathsoon")
-					self.vb.devastationCount = self.vb.devastationCount + 1
 				elseif eventType == "dive" then
-					specWarnRavenousDive:Show(self.vb.diveCount)
+					specWarnRavenousDive:Show(eventCount)
 					specWarnRavenousDive:Play("phasechange")
-					self.vb.diveCount = self.vb.diveCount + 1
+					phaseReset(self)--Phase transition ends, reset all timers
+					DBM:Debug("Phase reset applied by Ravenous Dive", nil, nil, nil, true)
 				end
-				cachedEventIDs[eventID] = nil
 			end
 		elseif eventState == 3 then
-			cachedEventIDs[eventID] = nil
+			self:TLCountCancel(eventID)
 		end
 	end
 end

@@ -7,6 +7,7 @@ local DBM = private:GetPrototype("DBM")
 private.hardCodedTimers = {
 	--[eventID] = {timerId1, timerId2, ...}
 }
+private.hardCodedTimerEvents = private.hardCodedTimerEvents or {}
 
 --{ Name = "text", Type = "cstring", Nilable = false, SecretValue = true },
 --{ Name = "casterGUID", Type = "WOWGUID", Nilable = false, SecretValue = true },
@@ -121,6 +122,7 @@ end
 function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	local hardcodedIds = private.hardCodedTimers[eventID]
 	local hardcodedTimerId
+	local staleHardcodedEvent = false
 	if type(hardcodedIds) == "table" then
 		hardcodedTimerId = hardcodedIds[1]
 	else
@@ -129,7 +131,12 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	local bar
 	--Check for and update hard coded bars
 	if hardcodedTimerId then
-		bar = DBT:GetBar(hardcodedTimerId)
+		local mappedEventID = private.hardCodedTimerEvents[hardcodedTimerId]
+		if mappedEventID and mappedEventID ~= eventID then
+			staleHardcodedEvent = true
+		else
+			bar = DBT:GetBar(hardcodedTimerId)
+		end
 	else
 		bar = DBT:GetBar(eventID)
 	end
@@ -137,16 +144,25 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	if eventState == 1 then
 		if bar then
 			bar:Pause()
+		elseif staleHardcodedEvent then
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale pause for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, true)
 		end
 	elseif eventState == 0 then
 		if bar then
 			bar:Resume()
+		elseif staleHardcodedEvent then
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale resume for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, true)
 		end
 	else--Finished or canceled (sometimes blizzard sends state changed instead of event removed when canceling events)
 		if bar then
 			bar:Cancel()
+		elseif staleHardcodedEvent then
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, true)
 		end
 		if hardcodedTimerId then
+			if private.hardCodedTimerEvents[hardcodedTimerId] == eventID then
+				private.hardCodedTimerEvents[hardcodedTimerId] = nil
+			end
 			if type(hardcodedIds) == "table" then
 				table.remove(hardcodedIds, 1)
 				if #hardcodedIds == 0 then

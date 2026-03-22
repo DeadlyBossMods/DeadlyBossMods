@@ -41,17 +41,17 @@ local timerCosmosisDreadBreathCD	= mod:NewCDCountTimer(20.5, 1277472, nil, nil, 
 local timerCosmosisVoidHowlCD		= mod:NewCDCountTimer(20.5, 1277473, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerRadiantBarrierCD			= mod:NewCDCountTimer(20.5, 1248847, nil, nil, nil, 5)
 
-mod:AddPrivateAuraSoundOption(1262999, true, 1262623, 1, 3)--Null Beam (soaked it)
-mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2)--Null Zone (GTFO from null beam)
-mod:AddPrivateAuraSoundOption(1252157, true, 1262623, 1, 1)--Null Implosion
-mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3)--Gloomtouched (soaked Gloom)
-mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3)--Diminish (Gloomtouched ended, don't soak again)
-mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2)--Gloomfield (GTFO left by gloom)
-mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 1)--Dread Breath Target
+mod:AddPrivateAuraSoundOption({1262999,1262676,1262656}, true, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
+mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2, "watchfeet", 8)--Null Zone (GTFO from null beam)
+mod:AddPrivateAuraSoundOption(1252157, true, 1262623, 1, 1, "debuffyou", 17)--Null Implosion
+mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3, "gloomyou", 19)--Gloomtouched (soaked Gloom)
+mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3, "debuffyou", 17)--Diminish (Gloomtouched ended, don't soak again)
+mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2, "watchfeet", 8)--Gloomfield (GTFO left by gloom)
+mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 1, "targetyou", 2)--Dread Breath Target
 --mod:AddPrivateAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
-mod:AddPrivateAuraSoundOption(1265152, true, 1245645, 1, 3)--Impale (secondary attack of Rakfang)
-mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1)--Radiant Barrier
-mod:AddPrivateAuraSoundOption(1270497, true, 1270497, 1, 1)--Shadowmark
+mod:AddPrivateAuraSoundOption(1265152, true, 1245645, 1, 3, "stunyou", 19)--Impale (secondary attack of Rakfang)
+mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1, "barrieryou", 19)--Radiant Barrier
+mod:AddPrivateAuraSoundOption(1270497, true, 1270497, 1, 1, "shadowyou", 15)--Shadowmark
 
 mod.vb.beamCount = 0
 mod.vb.howlCount = 0
@@ -74,10 +74,9 @@ local next53S2IsGloom = true
 local next31S3IsVaelwing = true
 local next63S3IsNullbeam = true
 local next11S3Type = "dread"
-local cachedEventIDs = {}
 
 function mod:OnLimitedCombatStart()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self.vb.beamCount = 1
 	self.vb.howlCount = 1
 	self.vb.gloomCount = 1
@@ -138,21 +137,11 @@ function mod:OnLimitedCombatStart()
 		timerRadiantBarrierCD:SetTimeline(381)
 	end
 
-	self:EnablePrivateAuraSound({1262999,1262676,1262656}, "beamyou", 19)--iffy sound choice, might change
-	self:EnablePrivateAuraSound(1244672, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1252157, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1245554, "gloomyou", 19)
-	self:EnablePrivateAuraSound(1270852, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1245421, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1255612, "targetyou", 2)--Maybe a more specific sound?
 	--self:EnablePrivateAuraSound(1255979, "fearyou", 19)
-	self:EnablePrivateAuraSound(1248865, "barrieryou", 19)--1249595 results in spam
-	self:EnablePrivateAuraSound(1270497, "shadowyou", 15)
-	self:EnablePrivateAuraSound(1265152, "stunyou", 19)
 end
 
 function mod:OnCombatEnd()
-	table.wipe(cachedEventIDs)
+	self:TLCountReset()
 	self:UnregisterShortTermEvents()
 end
 
@@ -165,51 +154,38 @@ do
 		local stage = self:GetStage()
 		if stage == 1 then--Stage 1
 			if timer == 1 then--Nullbeam (initial cast at pull)
-				timerNullBeamCD:TLStart(timer, eventID, self.vb.beamCount)
-				cachedEventIDs[eventID] = "nullbeam"
+				timerNullBeamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 			elseif timer == 6 then--Vaelwing (initial tank ability at pull)
-				timerVaelwingCD:TLStart(timer, eventID, self.vb.vaelwingCount)
-				cachedEventIDs[eventID] = "vaelwing"
+				timerVaelwingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
 			elseif timer == 19 then--Grappling Maw (initial CD)
-				timerGrabblingMawCD:TLStart(timer, eventID, self.vb.mawCount)
-				cachedEventIDs[eventID] = "maw"
+				timerGrabblingMawCD:TLStart(timer, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
 			elseif timer == 21 then--Dread Breath (recurring CD)
-				timerDreadBreathCD:TLStart(timer, eventID, self.vb.dreadCount)
-				cachedEventIDs[eventID] = "dread"
+				timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 			elseif timer == 28 then--Dread Breath (initial CD)
-				timerDreadBreathCD:TLStart(timer, eventID, self.vb.dreadCount)
-				cachedEventIDs[eventID] = "dread"
+				timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 			elseif timer == 32 then--Void Howl (initial CD)
-				timerVoidHowlCD:TLStart(timer, eventID, self.vb.howlCount)
-				cachedEventIDs[eventID] = "voidhowl"
+				timerVoidHowlCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif timer == 47 then--Void Howl (recurring CD)
-				timerVoidHowlCD:TLStart(timer, eventID, self.vb.howlCount)
-				cachedEventIDs[eventID] = "voidhowl"
+				timerVoidHowlCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif timer == 53 then--Gloom (first) or Nullbeam (recurring), disambiguate by sequence flag
 				if next53IsGloom then
-					timerGloomCD:TLStart(timer, eventID, self.vb.gloomCount)
-					cachedEventIDs[eventID] = "gloom"
+					timerGloomCD:TLStart(timer, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 					next53IsGloom = false
 				else
-					timerNullBeamCD:TLStart(timer, eventID, self.vb.beamCount)
-					cachedEventIDs[eventID] = "nullbeam"
+					timerNullBeamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 				end
 			elseif timer == 95 then--Gloom (recurring)
-				timerGloomCD:TLStart(timer, eventID, self.vb.gloomCount)
-				cachedEventIDs[eventID] = "gloom"
+				timerGloomCD:TLStart(timer, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 			elseif timer == 26 then--Vaelwing or Grappling Maw (alternating), disambiguate by sequence flag
 				if next26IsVaelwing then
-					timerVaelwingCD:TLStart(timer, eventID, self.vb.vaelwingCount)
-					cachedEventIDs[eventID] = "vaelwing"
+					timerVaelwingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
 					next26IsVaelwing = false
 				else
-					timerGrabblingMawCD:TLStart(timer, eventID, self.vb.mawCount)
-					cachedEventIDs[eventID] = "maw"
+					timerGrabblingMawCD:TLStart(timer, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
 					next26IsVaelwing = true
 				end
 			elseif timer == 111 then--Radiant Barrier (CD across all stages)
-				timerRadiantBarrierCD:TLStart(timer, eventID, self.vb.radiantBarrierCount)
-				cachedEventIDs[eventID] = "radiantbarrier"
+				timerRadiantBarrierCD:TLStart(timer, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
 			elseif timer == 8 then--Midnight Flames (phase marker, stage 1 → 2 → 3)
 				next26S2Type = "voidhowl"
 				next53S2IsGloom = true
@@ -226,51 +202,38 @@ do
 			end
 		elseif stage == 2 then--Stage 2 (t=118 to t=256)
 			if timer == 6 then--Rakfang (initial opener)
-				timerRakfangCD:TLStart(timer, eventID, self.vb.rakfangCount)
-				cachedEventIDs[eventID] = "rakfang"
+				timerRakfangCD:TLStart(timer, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
 			elseif timer == 11 then--Gloom (initial CD)
-				timerGloomCD:TLStart(timer, eventID, self.vb.gloomCount)
-				cachedEventIDs[eventID] = "gloom"
+				timerGloomCD:TLStart(timer, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 			elseif timer == 16 then--Void Howl (initial CD)
-				timerVoidHowlCD:TLStart(timer, eventID, self.vb.howlCount)
-				cachedEventIDs[eventID] = "voidhowl"
+				timerVoidHowlCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif timer == 19 then--Grappling Maw (initial CD)
-				timerGrabblingMawCD:TLStart(timer, eventID, self.vb.mawCount)
-				cachedEventIDs[eventID] = "maw"
+				timerGrabblingMawCD:TLStart(timer, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
 			elseif timer == 28 then--Dread Breath (initial CD)
-				timerDreadBreathCD:TLStart(timer, eventID, self.vb.dreadCount)
-				cachedEventIDs[eventID] = "dread"
+				timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 			elseif timer == 47 then--Nullbeam (initial CD)
-				timerNullBeamCD:TLStart(timer, eventID, self.vb.beamCount)
-				cachedEventIDs[eventID] = "nullbeam"
+				timerNullBeamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 			elseif timer == 95 then--Nullbeam (recurring CD)
-				timerNullBeamCD:TLStart(timer, eventID, self.vb.beamCount)
-				cachedEventIDs[eventID] = "nullbeam"
+				timerNullBeamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 			elseif timer == 111 then--Radiant Barrier
-				timerRadiantBarrierCD:TLStart(timer, eventID, self.vb.radiantBarrierCount)
-				cachedEventIDs[eventID] = "radiantbarrier"
+				timerRadiantBarrierCD:TLStart(timer, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
 			elseif timer == 26 then--Rakfang, Void Howl, or Grappling Maw (sequence in pull starts with voidhowl)
 				if next26S2Type == "voidhowl" then
-					timerVoidHowlCD:TLStart(timer, eventID, self.vb.howlCount)
-					cachedEventIDs[eventID] = "voidhowl"
+					timerVoidHowlCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 					next26S2Type = "maw"
 				elseif next26S2Type == "rakfang" then
-					timerRakfangCD:TLStart(timer, eventID, self.vb.rakfangCount)
-					cachedEventIDs[eventID] = "rakfang"
+					timerRakfangCD:TLStart(timer, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
 					next26S2Type = "voidhowl"
 				else--maw
-					timerGrabblingMawCD:TLStart(timer, eventID, self.vb.mawCount)
-					cachedEventIDs[eventID] = "maw"
+					timerGrabblingMawCD:TLStart(timer, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
 					next26S2Type = "rakfang"
 				end
 			elseif timer == 53 then--Gloom or Dread Breath (alternating: gloom first)
 				if next53S2IsGloom then
-					timerGloomCD:TLStart(timer, eventID, self.vb.gloomCount)
-					cachedEventIDs[eventID] = "gloom"
+					timerGloomCD:TLStart(timer, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 					next53S2IsGloom = false
 				else
-					timerDreadBreathCD:TLStart(timer, eventID, self.vb.dreadCount)
-					cachedEventIDs[eventID] = "dread"
+					timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 					next53S2IsGloom = true
 				end
 			elseif timer == 8 then--Midnight Flames (phase marker, stage 2 → 3)
@@ -290,73 +253,61 @@ do
 			end
 		elseif stage == 3 then--Stage 3 (t=256 to t=454)
 			if timer == 225 then--Radiant Barrier
-				timerRadiantBarrierCD:TLStart(timer, eventID, self.vb.radiantBarrierCount)
-				cachedEventIDs[eventID] = "radiantbarrier"
+				timerRadiantBarrierCD:TLStart(timer, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
 			elseif timer == 81 or timer == 65 then--Dread Breath
-				timerDreadBreathCD:TLStart(timer, eventID, self.vb.dreadCount)
-				cachedEventIDs[eventID] = "dread"
+				timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 			elseif timer == 51 or timer == 25 then--Void Howl
-				timerVoidHowlCD:TLStart(timer, eventID, self.vb.howlCount)
-				cachedEventIDs[eventID] = "voidhowl"
+				timerVoidHowlCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif timer == 50 then--Gloom opener
-				timerGloomCD:TLStart(timer, eventID, self.vb.gloomCount)
-				cachedEventIDs[eventID] = "gloom"
+				timerGloomCD:TLStart(timer, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 			elseif timer == 15 then--Rakfang opener
-				timerRakfangCD:TLStart(timer, eventID, self.vb.rakfangCount)
-				cachedEventIDs[eventID] = "rakfang"
+				timerRakfangCD:TLStart(timer, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
 			elseif timer == 13 then--Nullbeam opener
-				timerNullBeamCD:TLStart(timer, eventID, self.vb.beamCount)
-				cachedEventIDs[eventID] = "nullbeam"
+				timerNullBeamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 			elseif timer == 9 then--Vaelwing finisher
-				timerVaelwingCD:TLStart(timer, eventID, self.vb.vaelwingCount)
-				cachedEventIDs[eventID] = "vaelwing"
+				timerVaelwingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
 			elseif timer == 31 then--Vaelwing or Rakfang alternating (starts Vaelwing)
 				if next31S3IsVaelwing then
-					timerVaelwingCD:TLStart(timer, eventID, self.vb.vaelwingCount)
-					cachedEventIDs[eventID] = "vaelwing"
+					timerVaelwingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
 					next31S3IsVaelwing = false
 				else
-					timerRakfangCD:TLStart(timer, eventID, self.vb.rakfangCount)
-					cachedEventIDs[eventID] = "rakfang"
+					timerRakfangCD:TLStart(timer, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
 					next31S3IsVaelwing = true
 				end
 			elseif timer == 63 then--Nullbeam or Gloom alternating (starts Nullbeam)
 				if next63S3IsNullbeam then
-					timerNullBeamCD:TLStart(timer, eventID, self.vb.beamCount)
-					cachedEventIDs[eventID] = "nullbeam"
+					timerNullBeamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 					next63S3IsNullbeam = false
 				else
-					timerGloomCD:TLStart(timer, eventID, self.vb.gloomCount)
-					cachedEventIDs[eventID] = "gloom"
+					timerGloomCD:TLStart(timer, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 					next63S3IsNullbeam = true
 				end
 			elseif timer == 11 then--In this pull: Dread Breath mid-stage, then Radiant Barrier + Nullbeam at end
 				if next11S3Type == "dread" then
-					timerDreadBreathCD:TLStart(timer, eventID, self.vb.dreadCount)
-					cachedEventIDs[eventID] = "dread"
+					timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 					next11S3Type = "barrier"
 				elseif next11S3Type == "barrier" then
-					timerRadiantBarrierCD:TLStart(timer, eventID, self.vb.radiantBarrierCount)
-					cachedEventIDs[eventID] = "radiantbarrier"
+					timerRadiantBarrierCD:TLStart(timer, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
 					next11S3Type = "nullbeam"
 				else
-					timerNullBeamCD:TLStart(timer, eventID, self.vb.beamCount)
-					cachedEventIDs[eventID] = "nullbeam"
+					timerNullBeamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 				end
 			elseif timer == 21 then--Dread Breath at end of fight
-				timerDreadBreathCD:TLStart(timer, eventID, self.vb.dreadCount)
-				cachedEventIDs[eventID] = "dread"
+				timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 			elseif timer == 8 then--Vaelwing opener in stage 3
-				timerVaelwingCD:TLStart(timer, eventID, self.vb.vaelwingCount)
-				cachedEventIDs[eventID] = "vaelwing"
+				timerVaelwingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
-				badStateDetected = true
-				if DBM.Options.IgnoreBlizzAPI then
-					DBM.Options.IgnoreBlizzAPI = false
-					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				if not DBM.Options.DebugMode then
+					badStateDetected = true
+					if DBM.Options.IgnoreBlizzAPI then
+						DBM.Options.IgnoreBlizzAPI = false
+						DBM:FireEvent("DBM_ResumeBlizzAPI")
+					end
+					self:UnregisterShortTermEvents()
+					DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				else
+					DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
 				end
-				self:UnregisterShortTermEvents()
-				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			end
 		else--Unknown stage
 			return
@@ -378,45 +329,36 @@ do
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
 		if eventState == 2 then--Finished (bar ending, cast happening soon)
-			local eventType = cachedEventIDs[eventID]
-			if eventType then
+			local eventType, eventCount = self:TLCountFinish(eventID)
+			if eventType and eventCount then
 				if eventType == "nullbeam" then
-					specWarnNullBeam:Show(self.vb.beamCount)
+					specWarnNullBeam:Show(eventCount)
 					specWarnNullBeam:Play("beamincoming")
-					self.vb.beamCount = self.vb.beamCount + 1
 				elseif eventType == "voidhowl" then
-					specWarnVoidHowl:Show(self.vb.howlCount)
+					specWarnVoidHowl:Show(eventCount)
 					specWarnVoidHowl:Play("range5")
-					self.vb.howlCount = self.vb.howlCount + 1
 				elseif eventType == "gloom" then
-					specWarnGloom:Show(self.vb.gloomCount)
+					specWarnGloom:Show(eventCount)
 					specWarnGloom:Play("gloomincoming")
-					self.vb.gloomCount = self.vb.gloomCount + 1
 				elseif eventType == "dread" then
-					specWarnDreadBreath:Show(self.vb.dreadCount)
+					specWarnDreadBreath:Show(eventCount)
 					specWarnDreadBreath:Play("breathsoon")
-					self.vb.dreadCount = self.vb.dreadCount + 1
 				elseif eventType == "maw" then
 					specWarnGrabblingMaw:Show()
 					specWarnGrabblingMaw:Play("defensive")
-					self.vb.mawCount = self.vb.mawCount + 1
 				elseif eventType == "vaelwing" then
 					specWarnVaelwing:Show()
 					specWarnVaelwing:Play("defensive")
-					self.vb.vaelwingCount = self.vb.vaelwingCount + 1
 				elseif eventType == "rakfang" then
 					specWarnRakfang:Show()
 					specWarnRakfang:Play("defensive")
-					self.vb.rakfangCount = self.vb.rakfangCount + 1
 				elseif eventType == "radiantbarrier" then
-					specWarnRadiantBarrier:Show(self.vb.radiantBarrierCount)
+					specWarnRadiantBarrier:Show(eventCount)
 					specWarnRadiantBarrier:Play("findshield")
-					self.vb.radiantBarrierCount = self.vb.radiantBarrierCount + 1
 				end
-				cachedEventIDs[eventID] = nil
 			end
 		elseif eventState == 3 then--Canceled/removed
-			cachedEventIDs[eventID] = nil
+			self:TLCountCancel(eventID)
 		end
 	end
 end
