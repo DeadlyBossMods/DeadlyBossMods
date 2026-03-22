@@ -61,6 +61,31 @@ local badStateDetected = false
 local sawPhlegm53 = false
 local next12IsDevastation = false
 
+local function setFallback(self)
+	--Blizz API fallbacks
+	specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3, 0)
+	timerRavenousDiveCD:SetTimeline(48)
+	specWarnRiftEmergence:SetAlert(49, "mobsoon", 2, 2)
+	timerRiftEmergenceCD:SetTimeline(49)
+	specWarnCausticPhlegm:SetAlert(50, "aesoon", 2, 2)
+	timerCausticPhlegmCD:SetTimeline(50)
+	specWarnRendingTear:SetAlert(51, "frontal", 15, 2)
+	timerRendingTearCD:SetTimeline(51)
+	specWarnCorruptedDevastation:SetAlert({53,458}, "breathsoon", 2, 2, 0)
+	timerCorruptedDevastationCD:SetTimeline({53,458})
+	specWarnFearsomecry:SetAlert(117, "kickcast", 1, 2, 0)--Needs vetting, it's an add ability but has event Id, so it might fire an ECOUNTER_WARNING based on blizz set conditionals
+	specWarnDiscordantRoar:SetAlert(118, "aesoon", 2, 2, 0)--^
+	timerConsumingMiasmaCD:SetTimeline(119)
+	specWarnAlndustUpheaval:SetAlert({149,431}, "soakincoming", 19, 2)--Can't count casts with blizz API, but hardcode will be able to use group1 and group 2 soak sounds
+	timerAlndustUpheavalCD:SetTimeline({149,431})
+	timerBerserkCD:SetTimeline(170)
+	timerRiftMadnessCD:SetTimeline(217)
+	specWarnConsume:SetAlert(307, "phasechange", 2, 3)
+	timerConsumeCD:SetTimeline(307)
+	specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
+	timerStage2CD:SetTimeline(353)
+end
+
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self.vb.diveCount = 1
@@ -82,28 +107,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
 	else
-		--Blizz API fallbacks
-		specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3, 0)
-		timerRavenousDiveCD:SetTimeline(48)
-		specWarnRiftEmergence:SetAlert(49, "mobsoon", 2, 2)
-		timerRiftEmergenceCD:SetTimeline(49)
-		specWarnCausticPhlegm:SetAlert(50, "aesoon", 2, 2)
-		timerCausticPhlegmCD:SetTimeline(50)
-		specWarnRendingTear:SetAlert(51, "frontal", 15, 2)
-		timerRendingTearCD:SetTimeline(51)
-		specWarnCorruptedDevastation:SetAlert({53,458}, "breathsoon", 2, 2, 0)
-		timerCorruptedDevastationCD:SetTimeline({53,458})
-		specWarnFearsomecry:SetAlert(117, "kickcast", 1, 2, 0)--Needs vetting, it's an add ability but has event Id, so it might fire an ECOUNTER_WARNING based on blizz set conditionals
-		specWarnDiscordantRoar:SetAlert(118, "aesoon", 2, 2, 0)--^
-		timerConsumingMiasmaCD:SetTimeline(119)
-		specWarnAlndustUpheaval:SetAlert({149,431}, "soakincoming", 19, 2)--Can't count casts with blizz API, but hardcode will be able to use group1 and group 2 soak sounds
-		timerAlndustUpheavalCD:SetTimeline({149,431})
-		timerBerserkCD:SetTimeline(170)
-		timerRiftMadnessCD:SetTimeline(217)
-		specWarnConsume:SetAlert(307, "phasechange", 2, 3)
-		timerConsumeCD:SetTimeline(307)
-		specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
-		timerStage2CD:SetTimeline(353)
+		setFallback(self)
 	end
 --	self:EnablePrivateAuraSound(1264780, "debuffyou", 17)
 end
@@ -187,6 +191,7 @@ do
 					DBM:FireEvent("DBM_ResumeBlizzAPI")
 				end
 				self:UnregisterShortTermEvents()
+				setFallback(self)
 				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			else
 				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)

@@ -405,7 +405,7 @@ DBM.DefaultOptions = {
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
 	ShortTimerText = true,
-	HardcodedTimer = false,--Revisit to true at a fututure date
+	HardcodedTimer = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 	CoreSavedRevision = 1,
 	SilentMode = false,
@@ -4222,7 +4222,7 @@ do
 			if not succeeded then
 				pendingPAAnchorCheck = 1
 			else
-				pendingPAAnchorCheck = nil
+				pendingPAAnchorCheck = 0
 			end
 		end
 		self:UpdateMapRestrictions()

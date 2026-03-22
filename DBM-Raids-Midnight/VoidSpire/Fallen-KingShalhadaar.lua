@@ -50,6 +50,21 @@ local function resetCounts(self)
 	self.vb.twilightObscurityCount = 1
 end
 
+local function setFallback(self)
+	specWarnVoidConvergence:SetAlert(139, "targetchange", 2, 3)
+	timerVoidConvergenceCD:SetTimeline(139)
+	timerDespoticCommandCD:SetTimeline(140)
+	specWarnFracturedProjection:SetAlert(141, "crowdcontrol", 2, 3)
+	timerFracturedProjectionCD:SetTimeline(141)
+	specWarnShatteringTwilight:SetAlert(142, "watchstep", 2, 3)--Alert for rest of raid
+	timerShatteringTwilightCD:SetTimeline(142)
+	specWarnTwilightObscurity:SetAlert(143, "aesoon", 2, 2)
+	timerTwilightObscurityCD:SetTimeline(143)
+	specWarnEntropicUnraveling:SetAlert(148, "dpshard", 2, 2, 0)
+	timerEntropicUnravelingCD:SetTimeline(148)
+	timerBerserkCD:SetTimeline(633)
+end
+
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	resetCounts(self)
@@ -63,21 +78,8 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
 	else
-		--Blizz API fallbacks
-		specWarnVoidConvergence:SetAlert(139, "targetchange", 2, 3)
-		timerVoidConvergenceCD:SetTimeline(139)
-		timerDespoticCommandCD:SetTimeline(140)
-		specWarnFracturedProjection:SetAlert(141, "crowdcontrol", 2, 3)
-		timerFracturedProjectionCD:SetTimeline(141)
-		specWarnShatteringTwilight:SetAlert(142, "watchstep", 2, 3)--Alert for rest of raid
-		timerShatteringTwilightCD:SetTimeline(142)
-		specWarnTwilightObscurity:SetAlert(143, "aesoon", 2, 2)
-		timerTwilightObscurityCD:SetTimeline(143)
-		specWarnEntropicUnraveling:SetAlert(148, "dpshard", 2, 2, 0)
-		timerEntropicUnravelingCD:SetTimeline(148)
-		timerBerserkCD:SetTimeline(633)
+		setFallback(self)
 	end
-
 end
 
 --Note, bar stage changing and canceling is handled by core
@@ -143,6 +145,7 @@ do
 					DBM:FireEvent("DBM_ResumeBlizzAPI")
 				end
 				self:UnregisterShortTermEvents()
+				setFallback(self)
 				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			else
 				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)

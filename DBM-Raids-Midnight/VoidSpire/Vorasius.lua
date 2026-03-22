@@ -36,6 +36,18 @@ mod.vb.expulsionCount = 0
 mod.vb.roarCount = 0
 local badStateDetected = false
 
+local function setFallback(self)
+	--Blizz API fallbacks
+	specWarnShadowclawSlam:SetAlert({59, 60}, "slamincoming", 19, 2)
+	timerShadowclawSlamCD:SetTimeline({59, 60})
+--	timerVoidBreathCD:SetTimeline(61)
+	specWarnParasiteExpulsion:SetAlert(62, "watchstep", 2, 2)
+	timerParasiteExpulsionCD:SetTimeline(62)
+	specWarnPrimordialRoar:SetAlert(133, "pullin", 12, 3)
+	timerPrimordialRoarCD:SetTimeline(133)
+--	specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)
+end
+
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self.vb.clawCount = 1
@@ -49,15 +61,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
 	else
-		--Blizz API fallbacks
-		specWarnShadowclawSlam:SetAlert({59, 60}, "slamincoming", 19, 2)
-		timerShadowclawSlamCD:SetTimeline({59, 60})
---		timerVoidBreathCD:SetTimeline(61)
-		specWarnParasiteExpulsion:SetAlert(62, "watchstep", 2, 2)
-		timerParasiteExpulsionCD:SetTimeline(62)
-		specWarnPrimordialRoar:SetAlert(133, "pullin", 12, 3)
-		timerPrimordialRoarCD:SetTimeline(133)
---		specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)
+		setFallback(self)
 	end
 	specWarnVoidBreath:SetAlert(61, "breathsoon", 2, 4, 0)--Doesn't have a timeline event, so we still use blizz api regardless if hardcode enabled or not
 end
@@ -87,6 +91,7 @@ do
 					DBM:FireEvent("DBM_ResumeBlizzAPI")
 				end
 				self:UnregisterShortTermEvents()
+				setFallback(self)
 				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			else
 				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
