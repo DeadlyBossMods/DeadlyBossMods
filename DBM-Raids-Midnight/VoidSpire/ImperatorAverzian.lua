@@ -43,6 +43,7 @@ local badStateDetected = false
 local next72IsShadow = false
 
 local function setFallback(self)
+	--Blizz API fallbacks
 	specWarnShadowsAdvance:SetAlert({194, 195}, "mobsoon", 2, 2)
 	timerShadowsAdvanceCD:SetTimeline({194, 195})
 	specWarnDarkUpheaval:SetAlert(196, "aesoon", 2, 2)
