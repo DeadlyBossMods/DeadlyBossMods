@@ -1119,7 +1119,16 @@ do
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number Required voice pack version (if not met, falls back to default special warning sounds)
 	local function enablePrivateAuraSound(mod, auraspellId, voice, voiceVersion)
-		local optionId = type(auraspellId) == "table" and auraspellId[1] or auraspellId
+		local optionId
+		if type(auraspellId) == "table" then
+			optionId = auraspellId[1]
+		else
+			optionId = auraspellId
+		end
+		if type(optionId) ~= "number" then
+			DBM:Debug("Attempting to register private aura sound failed due to invalid optionId type for mod " .. mod.id, 2)
+			return
+		end
 		if InCombatLockdown() then
 			DBM:Debug("Attempting to register private aura sound for spell ID " .. optionId .. " failed due to combat restriction. This sound will not be registered.", 2)
 			return
