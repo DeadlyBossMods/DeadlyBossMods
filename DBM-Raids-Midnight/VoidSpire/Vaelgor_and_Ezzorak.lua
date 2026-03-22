@@ -75,6 +75,38 @@ local next31S3IsVaelwing = true
 local next63S3IsNullbeam = true
 local next11S3Type = "dread"
 
+local function setFallback(self)
+	--Blizz API fallbacks
+	specWarnNullBeam:SetAlert(101, "beamincoming", 19, 3)
+	timerNullBeamCD:SetTimeline(101)
+	specWarnVoidHowl:SetAlert(102, "range5", 2, 2)
+	timerVoidHowlCD:SetTimeline(102)
+	specWarnGloom:SetAlert(103, "gloomincoming", 19, 3)
+	timerGloomCD:SetTimeline(103)
+	specWarnDreadBreath:SetAlert(104, "breathsoon", 2, 3, 0)
+	timerDreadBreathCD:SetTimeline(104)
+	specWarnMidnightFlames:SetAlert(105, "aesoon", 2, 2, 0)
+	timerMidnightFlamesCD:SetTimeline(105)
+	if self:IsTank() then
+		specWarnGrabblingMaw:SetAlert(219, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
+		specWarnRakfang:SetAlert(220, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
+		specWarnVaelwing:SetAlert(221, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
+	end
+	timerGrabblingMawCD:SetTimeline(219)
+	timerRakfangCD:SetTimeline(220)
+	timerVaelwingCD:SetTimeline(221)
+	specWarnCosmosisGloom:SetAlert(377, "gloomincoming", 19, 3)
+	timerCosmosisGloomCD:SetTimeline(377)
+	specWarnCosmosisNullbeam:SetAlert(378, "beamincoming", 19, 3)
+	timerCosmosisNullbeamCD:SetTimeline(378)
+	specWarnCosmosisDreadBreath:SetAlert(379, "breathsoon", 19, 3)
+	timerCosmosisDreadBreathCD:SetTimeline(379)
+	specWarnCosmosisVoidHowl:SetAlert(380, "range5", 2, 2)
+	timerCosmosisVoidHowlCD:SetTimeline(380)
+	specWarnRadiantBarrier:SetAlert(381, "findshield", 2, 3, 0)
+	timerRadiantBarrierCD:SetTimeline(381)
+end
+
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self.vb.beamCount = 1
@@ -106,37 +138,8 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
 	else
-		--Blizz API fallbacks
-		specWarnNullBeam:SetAlert(101, "beamincoming", 19, 3)
-		timerNullBeamCD:SetTimeline(101)
-		specWarnVoidHowl:SetAlert(102, "range5", 2, 2)
-		timerVoidHowlCD:SetTimeline(102)
-		specWarnGloom:SetAlert(103, "gloomincoming", 19, 3)
-		timerGloomCD:SetTimeline(103)
-		specWarnDreadBreath:SetAlert(104, "breathsoon", 2, 3, 0)
-		timerDreadBreathCD:SetTimeline(104)
-		specWarnMidnightFlames:SetAlert(105, "aesoon", 2, 2, 0)
-		timerMidnightFlamesCD:SetTimeline(105)
-		if self:IsTank() then
-			specWarnGrabblingMaw:SetAlert(219, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
-			specWarnRakfang:SetAlert(220, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
-			specWarnVaelwing:SetAlert(221, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
-		end
-		timerGrabblingMawCD:SetTimeline(219)
-		timerRakfangCD:SetTimeline(220)
-		timerVaelwingCD:SetTimeline(221)
-		specWarnCosmosisGloom:SetAlert(377, "gloomincoming", 19, 3)
-		timerCosmosisGloomCD:SetTimeline(377)
-		specWarnCosmosisNullbeam:SetAlert(378, "beamincoming", 19, 3)
-		timerCosmosisNullbeamCD:SetTimeline(378)
-		specWarnCosmosisDreadBreath:SetAlert(379, "breathsoon", 19, 3)
-		timerCosmosisDreadBreathCD:SetTimeline(379)
-		specWarnCosmosisVoidHowl:SetAlert(380, "range5", 2, 2)
-		timerCosmosisVoidHowlCD:SetTimeline(380)
-		specWarnRadiantBarrier:SetAlert(381, "findshield", 2, 3, 0)
-		timerRadiantBarrierCD:SetTimeline(381)
+		setFallback(self)
 	end
-
 	--self:EnablePrivateAuraSound(1255979, "fearyou", 19)
 end
 
@@ -198,6 +201,7 @@ do
 					DBM:FireEvent("DBM_ResumeBlizzAPI")
 				end
 				self:UnregisterShortTermEvents()
+				setFallback(self)
 				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			end
 		elseif stage == 2 then--Stage 2 (t=118 to t=256)
@@ -249,6 +253,7 @@ do
 					DBM:FireEvent("DBM_ResumeBlizzAPI")
 				end
 				self:UnregisterShortTermEvents()
+				setFallback(self)
 				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			end
 		elseif stage == 3 then--Stage 3 (t=256 to t=454)
@@ -304,6 +309,7 @@ do
 						DBM:FireEvent("DBM_ResumeBlizzAPI")
 					end
 					self:UnregisterShortTermEvents()
+					setFallback(self)
 					DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 				else
 					DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
