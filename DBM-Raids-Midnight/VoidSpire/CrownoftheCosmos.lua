@@ -370,7 +370,6 @@ do
 	--Note, bar stage changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if self:GetStage() >= 4 then return end--Only Stages 1, 1.5, 2, 2.5, and 3 in this pass
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)

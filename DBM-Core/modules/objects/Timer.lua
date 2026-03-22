@@ -237,16 +237,16 @@ local function detectEarlyTimerRefresh(self, bar, timer)
 			DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", nil, nil, nil, true)
 			DBM:FireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired, outside known variance window. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. "). Please report this bug", 2)
 		elseif bar.timer < -0.2 then
-			DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed after zero, outside known variance window. Remaining time is : " .. remaining, 2)
+			DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed after zero, outside known variance window. Remaining time is : " .. remaining, 2, nil, nil, true)
 		elseif bar.timer > correctWithVarianceDuration(0.2, bar) then
-			DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. ")", 2)
+			DBM:Debug("Timer " .. ttext .. phaseText .. " |cffff0000refreshed before expired. Remaining time is : |r" .. remaining .. " (until variance minimum timer: " .. deltaFromVarianceMinTimer .. ")", 2, nil, nil, true)
 		end
 	else
 		if DBM.Options.BadTimerAlert and bar.timer > 1 then
 			DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, nil, nil, true)
 			DBM:FireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", 2)
 		elseif bar.timer > 0.2 then
-			DBM:Debug("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining, 2, true)
+			DBM:Debug("Timer " .. ttext .. phaseText .. " |cffff0000refreshed before expired. Remaining time is : |r" .. remaining, 2, true, nil, true)
 		end
 	end
 
