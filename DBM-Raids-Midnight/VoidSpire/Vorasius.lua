@@ -24,11 +24,11 @@ local timerShadowclawSlamCD				= mod:NewCDCountTimer(20.5, 1241836, 182557, nil,
 local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2)--Shortname "Roar"
 
-mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2)--Dark Goo
-mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3)--Smashed (debuff from shadowclaw slam)
-mod:AddPrivateAuraSoundOption(1272527, false, 1272527, 1, 1)--Creep Spit
-mod:AddPrivateAuraSoundOption(1259186, true, 1259186, 1, 1)--Blisterburst
-mod:AddPrivateAuraSoundOption(1254113, true, 1254113, 1, 2)--Fixate
+mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2, "watchfeet", 8)--Dark Goo
+mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3, "debuffyou", 17)--Smashed (debuff from shadowclaw slam)
+mod:AddPrivateAuraSoundOption(1272527, false, 1272527, 1, 1, "debuffyou", 17)--Creep Spit
+mod:AddPrivateAuraSoundOption(1259186, true, 1259186, 1, 1, "debuffyou", 17)--Blisterburst
+mod:AddPrivateAuraSoundOption(1254113, true, 1254113, 1, 2, "fixateyou", 19)--Fixate
 
 mod.vb.clawCount = 0
 mod.vb.breathCount = 0
@@ -60,11 +60,6 @@ function mod:OnLimitedCombatStart()
 --		specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)
 	end
 	specWarnVoidBreath:SetAlert(61, "breathsoon", 2, 4, 0)--Doesn't have a timeline event, so we still use blizz api regardless if hardcode enabled or not
-	self:EnablePrivateAuraSound(1243270, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1241844, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1272527, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1259186, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1254113, "fixateyou", 19)
 end
 
 function mod:OnCombatEnd()

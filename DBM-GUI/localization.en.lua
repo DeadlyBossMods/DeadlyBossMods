@@ -423,6 +423,7 @@ L.SAOne								= "Voice Pack / SA 1 fallback"
 L.SATwo								= "Voice Pack / SA 2 fallback"
 L.SAThree							= "Voice Pack / SA 3 fallback"
 L.SAFour							= "Voice Pack / SA 4 fallback"
+L.PrivateAuraSoundCombatLockdown	= "Private aura sounds cannot be changed in combat."
 --Timer Dropdowns
 L.ColorDropGeneric					= "Generic (Default: Untyped)"
 L.ColorDrop1						= "Color 1 (Default: Add)"

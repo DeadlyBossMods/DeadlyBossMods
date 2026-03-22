@@ -449,6 +449,14 @@ do
 		{ text = L.CVoiceThree, value = 3 }
 	})
 
+	---@param name string
+	---@param autoplace boolean?
+	---@param dbmvar string?
+	---@param dbtvar string?
+	---@param mod DBMMod?
+	---@param modvar string?
+	---@param globalvar string?
+	---@param isTimer boolean?
 	function PanelPrototype:CreateCheckButton(name, autoplace, _, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
 		if not name then
 			error("CreateCheckButton: name must not be nil")
@@ -478,6 +486,8 @@ do
 		local desc, noteSpellName = parseDescription(name, true)
 		local frame, frame2
 		if modvar then -- Special warning, has modvar for sound and note
+			---@cast mod DBMMod
+			---@cast modvar string
 			if isTimer then
 				frame = self:CreateDropdown(nil, tcolors, mod, modvar .. "TColor", function(value)
 					mod.Options[modvar .. "TColor"] = value
@@ -498,6 +508,20 @@ do
 				frame2:SetPoint("LEFT", frame, "RIGHT", isNewDropdown and 4 or 18, 0)
 			else--Special warning option
 				frame = self:CreateDropdown(nil, sounds, mod, modvar .. "SWSound", function(value)
+					if modvar:match("^PrivateAuraSound%d+$") then
+						local optionId = tonumber(modvar:match("^PrivateAuraSound(%d+)$"))
+						if InCombatLockdown() then
+							DBM:AddMsg(L.PrivateAuraSoundCombatLockdown, nil, true)
+							frame:SetSelectedValue(mod.Options[modvar .. "SWSound"])
+							return
+						end
+						mod.Options[modvar .. "SWSound"] = value
+						if optionId then
+							mod:RefreshPrivateAuraSound(optionId)
+						end
+						DBM:PlaySpecialWarningSound(value, true)
+						return
+					end
 					mod.Options[modvar .. "SWSound"] = value
 					DBM:PlaySpecialWarningSound(value, true)
 				end, nil, nil, button, L.BossModSWSound)
