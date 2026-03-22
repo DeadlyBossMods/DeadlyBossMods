@@ -350,13 +350,17 @@ do
 				timerVaelwingCD:TLStart(timer, eventID, self.vb.vaelwingCount)
 				cachedEventIDs[eventID] = "vaelwing"
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
-				badStateDetected = true
-				if DBM.Options.IgnoreBlizzAPI then
-					DBM.Options.IgnoreBlizzAPI = false
-					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				if not DBM.Options.DebugMode then
+					badStateDetected = true
+					if DBM.Options.IgnoreBlizzAPI then
+						DBM.Options.IgnoreBlizzAPI = false
+						DBM:FireEvent("DBM_ResumeBlizzAPI")
+					end
+					self:UnregisterShortTermEvents()
+					DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				else
+					DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
 				end
-				self:UnregisterShortTermEvents()
-				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			end
 		else--Unknown stage
 			return

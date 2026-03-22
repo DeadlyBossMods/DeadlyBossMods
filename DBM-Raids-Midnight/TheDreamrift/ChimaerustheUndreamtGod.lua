@@ -59,6 +59,7 @@ mod.vb.consumeCount = 0
 local badStateDetected = false
 local sawPhlegm53 = false
 local next12IsDevastation = false
+local phase2Adjusted = false
 local cachedEventIDs = {}
 
 function mod:OnLimitedCombatStart()
@@ -74,6 +75,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.consumeCount = 1
 	sawPhlegm53 = false
 	next12IsDevastation = false
+	phase2Adjusted = false
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
@@ -120,6 +122,19 @@ function mod:OnCombatEnd()
 end
 
 do
+	local function phaseReset(self)
+		self.vb.diveCount = 1
+		self.vb.riftCount = 1
+		self.vb.phlegmCount = 1
+		self.vb.tearCount = 1
+		self.vb.devastationCount = 1
+		self.vb.upheavalCount = 1
+		self.vb.consumeCount = 1
+		--self.vb.riftMadnessCount = 1--Unused on Normal/LFR
+		--self.vb.miasmaCount = 1--Unused on Normal/LFR
+		sawPhlegm53 = false
+		next12IsDevastation = false
+	end
 	---@param self DBMMod
 	---@param timer number
 	---@param eventID number
@@ -159,7 +174,7 @@ do
 			timerCorruptedDevastationCD:TLStart(timer, eventID, self.vb.devastationCount)
 			next12IsDevastation = true
 			cachedEventIDs[eventID] = "devastation"
-		elseif timer == 12 then--Can be Corrupted Devastation or Caustic Phlegm
+		elseif timer == 12 or timer == 2 then--Can be Corrupted Devastation or Caustic Phlegm
 			if next12IsDevastation then
 				timerCorruptedDevastationCD:TLStart(timer, eventID, self.vb.devastationCount)
 				next12IsDevastation = false
@@ -176,27 +191,26 @@ do
 		elseif timer == 165 or timer == 10 then--Stage Two markers
 			--Used by blizzard as phase markers, but not represented as bars in DBM yet.
 			if timer == 10 then--Hard reset marker for phase transition
-				self.vb.diveCount = 1
-				self.vb.riftCount = 1
-				self.vb.phlegmCount = 1
-				self.vb.tearCount = 1
-				self.vb.devastationCount = 1
-				self.vb.upheavalCount = 1
-				self.vb.consumeCount = 1
-				--self.vb.riftMadnessCount = 1--Unused on Normal/LFR
-				--self.vb.miasmaCount = 1--Unused on Normal/LFR
-				sawPhlegm53 = false
-				next12IsDevastation = false
+				phaseReset(self)
+				phase2Adjusted = true
+				DBM:Debug("Phase 2 adjustment applied", nil, nil, nil, true)
+			else
+				phase2Adjusted = false
+				cachedEventIDs[eventID] = "initialPhaseTImer"
 			end
 			return
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
-			badStateDetected = true
-			if DBM.Options.IgnoreBlizzAPI then
-				DBM.Options.IgnoreBlizzAPI = false
-				DBM:FireEvent("DBM_ResumeBlizzAPI")
+			if not DBM.Options.DebugMode then
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			else
+				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
 			end
-			self:UnregisterShortTermEvents()
-			DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	--Note, bar stage changing and canceling is handled by core
@@ -245,6 +259,13 @@ do
 					specWarnRavenousDive:Show(self.vb.diveCount)
 					specWarnRavenousDive:Play("phasechange")
 					self.vb.diveCount = self.vb.diveCount + 1
+				elseif eventType == "initialPhaseTImer" then
+					if not phase2Adjusted then
+						--Phase 2 timer didn't reset to 10, which means it ended at max duration
+						--Phase 2 timer only resets to 10 if you kill all the adds early. so we can't always assume this will happen
+						phaseReset(self)
+						DBM:Debug("Phase 2 adjustment applied by initial phase timer", nil, nil, nil, true)
+					end
 				end
 				cachedEventIDs[eventID] = nil
 			end

@@ -89,13 +89,17 @@ do
 			timerShadowclawSlamCD:TLStart(timer, eventID, self.vb.clawCount)
 			cachedEventIDs[eventID] = "slam"
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
-			badStateDetected = true
-			if DBM.Options.IgnoreBlizzAPI then
-				DBM.Options.IgnoreBlizzAPI = false
-				DBM:FireEvent("DBM_ResumeBlizzAPI")
+			if not DBM.Options.DebugMode then
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			else
+				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
 			end
-			self:UnregisterShortTermEvents()
-			DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	--Note, bar stage changing and canceling is handled by core
