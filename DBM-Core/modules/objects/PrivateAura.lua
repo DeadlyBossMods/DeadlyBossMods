@@ -450,6 +450,27 @@ function PrivateAuras:RegisterAllUnits()
     end
 end
 
+do
+	local function IsInValidInstance()
+		local inInstance, instanceType = IsInInstance()
+		return inInstance and instanceType ~= "pvp" and instanceType ~= "arena"
+	end
+
+	---@param force boolean? Called when group roster updates since we may have gained or lost tanks
+	function PrivateAuras:UpdatePrivateAuraAnchors(force)
+		if InCombatLockdown() then
+			return false
+		end
+		if IsInValidInstance() and (force or not PAAnchorsRegistered) then
+			--No need to call unregister first, RegisterAllUnits already clears existing units first
+			PrivateAuras:RegisterAllUnits()
+		elseif PAAnchorsRegistered then
+			PrivateAuras:UnregisterPrivateAuras()
+		end
+		return true
+	end
+end
+
 ---@param player boolean?
 function PrivateAuras:OnSettingsChange(player)
     if not self.IsInPreview then return end

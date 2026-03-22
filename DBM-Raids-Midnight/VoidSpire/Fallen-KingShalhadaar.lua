@@ -26,12 +26,12 @@ local timerTwilightObscurityCD				= mod:NewCDCountTimer(20.5, 1250686, DBM_COMMO
 local timerEntropicUnravelingCD				= mod:NewCDCountTimer(20.5, 1246175, DBM_COMMON_L.LINES.." (%s)", nil, nil, 6, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerBerserkCD						= mod:NewBerserkTimer(600)
 
-mod:AddPrivateAuraSoundOption(1250828, true, 1243453, 1, 3)--Void Exposure (People who soak void convergence)
-mod:AddPrivateAuraSoundOption(1248697, true, 1248697, 1, 1)--Despotic Command
-mod:AddPrivateAuraSoundOption(1245592, true, 1245592, 1, 2)--Torturous Extract (dropped by 3 diff mechanics so not bundled)
-mod:AddPrivateAuraSoundOption(1253024, true, 1253024, 1, 1)--Shattering Twilight
-mod:AddPrivateAuraSoundOption(1251213, true, 1253024, 1, 2)--Twilight Spikes (pool from Shattering Twilight)
-mod:AddPrivateAuraSoundOption(1250991, false, 1243453, 1, 3)--Dark Radiation (dot from void convergence)
+mod:AddPrivateAuraSoundOption(1250828, true, 1243453, 1, 3, "watchfeet", 8)--Void Exposure (People who soak void convergence)
+mod:AddPrivateAuraSoundOption(1248697, true, 1248697, 1, 1, "poolyou", 18)--Despotic Command
+mod:AddPrivateAuraSoundOption(1245592, true, 1245592, 1, 2, "watchfeet", 8)--Torturous Extract (dropped by 3 diff mechanics so not bundled)
+mod:AddPrivateAuraSoundOption({1253024, 1268992}, true, 1253024, 1, 1, "runout", 2)--Shattering Twilight
+mod:AddPrivateAuraSoundOption(1251213, true, 1253024, 1, 2, "watchfeet", 8)--Twilight Spikes (pool from Shattering Twilight)
+mod:AddPrivateAuraSoundOption(1250991, false, 1243453, 1, 3, "debuffyou", 17)--Dark Radiation (dot from void convergence)
 
 mod.vb.convergenceCount = 0
 mod.vb.despoticCommandCount = 0
@@ -78,12 +78,6 @@ function mod:OnLimitedCombatStart()
 		timerBerserkCD:SetTimeline(633)
 	end
 
-	self:EnablePrivateAuraSound(1250828, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1248697, "poolyou", 18)
-	self:EnablePrivateAuraSound({1253024, 1268992}, "runout", 2)
-	self:EnablePrivateAuraSound(1251213, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1245592, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1250991, "debuffyou", 17)
 end
 
 --Note, bar stage changing and canceling is handled by core
@@ -172,7 +166,7 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then--Finished (A bar that's ending, meaning now the cast should be happening soon)
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType then
+			if eventType and eventCount then
 				if eventType == "convergence" then
 					specWarnVoidConvergence:Show(eventCount)
 					specWarnVoidConvergence:Play("targetchange")

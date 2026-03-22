@@ -41,17 +41,17 @@ local timerCosmosisDreadBreathCD	= mod:NewCDCountTimer(20.5, 1277472, nil, nil, 
 local timerCosmosisVoidHowlCD		= mod:NewCDCountTimer(20.5, 1277473, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerRadiantBarrierCD			= mod:NewCDCountTimer(20.5, 1248847, nil, nil, nil, 5)
 
-mod:AddPrivateAuraSoundOption(1262999, true, 1262623, 1, 3)--Null Beam (soaked it)
-mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2)--Null Zone (GTFO from null beam)
-mod:AddPrivateAuraSoundOption(1252157, true, 1262623, 1, 1)--Null Implosion
-mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3)--Gloomtouched (soaked Gloom)
-mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3)--Diminish (Gloomtouched ended, don't soak again)
-mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2)--Gloomfield (GTFO left by gloom)
-mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 1)--Dread Breath Target
+mod:AddPrivateAuraSoundOption({1262999,1262676,1262656}, true, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
+mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2, "watchfeet", 8)--Null Zone (GTFO from null beam)
+mod:AddPrivateAuraSoundOption(1252157, true, 1262623, 1, 1, "debuffyou", 17)--Null Implosion
+mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3, "gloomyou", 19)--Gloomtouched (soaked Gloom)
+mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3, "debuffyou", 17)--Diminish (Gloomtouched ended, don't soak again)
+mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2, "watchfeet", 8)--Gloomfield (GTFO left by gloom)
+mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 1, "targetyou", 2)--Dread Breath Target
 --mod:AddPrivateAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
-mod:AddPrivateAuraSoundOption(1265152, true, 1245645, 1, 3)--Impale (secondary attack of Rakfang)
-mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1)--Radiant Barrier
-mod:AddPrivateAuraSoundOption(1270497, true, 1270497, 1, 1)--Shadowmark
+mod:AddPrivateAuraSoundOption(1265152, true, 1245645, 1, 3, "stunyou", 19)--Impale (secondary attack of Rakfang)
+mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1, "barrieryou", 19)--Radiant Barrier
+mod:AddPrivateAuraSoundOption(1270497, true, 1270497, 1, 1, "shadowyou", 15)--Shadowmark
 
 mod.vb.beamCount = 0
 mod.vb.howlCount = 0
@@ -137,17 +137,7 @@ function mod:OnLimitedCombatStart()
 		timerRadiantBarrierCD:SetTimeline(381)
 	end
 
-	self:EnablePrivateAuraSound({1262999,1262676,1262656}, "beamyou", 19)--iffy sound choice, might change
-	self:EnablePrivateAuraSound(1244672, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1252157, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1245554, "gloomyou", 19)
-	self:EnablePrivateAuraSound(1270852, "debuffyou", 17)
-	self:EnablePrivateAuraSound(1245421, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1255612, "targetyou", 2)--Maybe a more specific sound?
 	--self:EnablePrivateAuraSound(1255979, "fearyou", 19)
-	self:EnablePrivateAuraSound(1248865, "barrieryou", 19)--1249595 results in spam
-	self:EnablePrivateAuraSound(1270497, "shadowyou", 15)
-	self:EnablePrivateAuraSound(1265152, "stunyou", 19)
 end
 
 function mod:OnCombatEnd()
@@ -340,7 +330,7 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then--Finished (bar ending, cast happening soon)
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType then
+			if eventType and eventCount then
 				if eventType == "nullbeam" then
 					specWarnNullBeam:Show(eventCount)
 					specWarnNullBeam:Play("beamincoming")

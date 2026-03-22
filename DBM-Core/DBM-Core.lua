@@ -490,14 +490,15 @@ private.chatPrefixShort = "<" .. L.DBM .. "> "
 local usedProfile = "Default"
 local dbmIsEnabled = true
 -- Table variables
-local loadcIds, oocBWComms, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache, disablePAOnCombatEnd = {}, {}, {}, {}, {}, {}, {}, {}, {}
+local loadcIds, oocBWComms, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache = {}, {}, {}, {}, {}, {}, {}, {}
 local inCombat = {} ---@type DBMMod[]
 local combatInfo = {} ---@type table<integer, CombatInfo[]>
 local inCombatTrash = {}
 -- False variables
 local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false
 -- Nil variables
-local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader
+local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader, syncZonePASounds
+local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
 -- 0 variables
 local LastInstanceMapID = -1
 
@@ -2657,6 +2658,12 @@ do
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
 		end
+		local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors(true)
+		if not succeeded then
+			pendingPAAnchorCheck = 2
+		else
+			pendingPAAnchorCheck = 0
+		end
 	end
 
 	function DBM:GROUP_ROSTER_UPDATE(force)
@@ -4142,6 +4149,25 @@ do
 	end
 
 	---@param self DBM
+	---@param mapID number
+	syncZonePASounds = function(self, mapID)
+		if not private.isRetail then
+			return
+		end
+		if InCombatLockdown() or #inCombat > 0 then
+			pendingPASoundZoneSync = mapID
+			return
+		end
+		pendingPASoundZoneSync = nil
+		for _, mod in ipairs(DBM.Mods) do
+			mod:DisablePrivateAuraSounds()
+		end
+		for _, mod in ipairs(DBM.Mods) do
+			mod:RegisterZonePASounds(mapID)
+		end
+	end
+
+	---@param self DBM
 	---@param delay number?
 	local function SecondaryLoadCheck(self, delay)
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = private.GetInstanceInfo()
@@ -4189,6 +4215,16 @@ do
 		-- LoadMod
 		self:LoadModsOnDemand("mapId", mapID, delay or 0)
 		self:CheckAvailableMods()
+		if private.isRetail then
+			--Handle private aura sounds and anchors
+			syncZonePASounds(self, mapID)
+			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+			if not succeeded then
+				pendingPAAnchorCheck = 1
+			else
+				pendingPAAnchorCheck = nil
+			end
+		end
 		self:UpdateMapRestrictions()
 		private:GetModule("DevToolsModule"):OnDebugToggle()
 		if self:HasMapRestrictions() then
@@ -4612,17 +4648,13 @@ do
 				self:AddMsg(L.LEAVING_COMBAT, nil, true)--Played using generic sound
 			end
 		end
-		if private.isRetail and not InCombatLockdown() and #inCombat == 0 then
-			--Only clear registered private aura sounds when out of combat
-			for modId in pairs(disablePAOnCombatEnd) do
-				local mod = DBM:GetModByName(modId)
-				if mod then
-					mod:DisablePrivateAuraSounds()
-				end
-				disablePAOnCombatEnd[modId] = nil
-			end
-			if self.PrivateAuras:IsRegistered() then
-				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
+		if pendingPASoundZoneSync then
+			syncZonePASounds(self, pendingPASoundZoneSync)
+		end
+		if pendingPAAnchorCheck > 0 then
+			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors(pendingPAAnchorCheck == 2 and true or false)
+			if succeeded then
+				pendingPAAnchorCheck = 0
 			end
 		end
 	end
@@ -5103,9 +5135,6 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if private.isRetail then
-				if not InCombatLockdown() and not self.PrivateAuras:IsRegistered() then
-					self.PrivateAuras:RegisterAllUnits()
-				end
 				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
 				end
@@ -5437,22 +5466,11 @@ do
 				mod:UnregisterOnUpdateHandler()
 			end
 			mod:Stop()
-			if mod.paSounds then
-				--Set mod to be disabled after combat end if we are in combat, otherwise disable immediately
-				if not InCombatLockdown() then
-					mod:DisablePrivateAuraSounds()
-				else
-					disablePAOnCombatEnd[mod.id] = true
-				end
-			end
 			if mod.tlTimerEvents then
 				mod:DisableTimelineOptions()
 			end
 			if mod.tlSoundEvents then
 				mod:DisableAlertOptions()
-			end
-			if private.isRetail and not InCombatLockdown() then
-				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
 			if self.Options.IgnoreBlizzAPI then
 				self.Options.IgnoreBlizzAPI = false
@@ -5736,6 +5754,9 @@ do
 				self:CreatePizzaTimer(0, "", nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
+				if pendingPASoundZoneSync then
+					syncZonePASounds(self, pendingPASoundZoneSync)
+				end
 				--module cleanup
 				private:ClearModuleTasks()
 			end

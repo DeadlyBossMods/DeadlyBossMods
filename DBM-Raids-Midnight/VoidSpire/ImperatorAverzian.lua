@@ -28,10 +28,10 @@ local timerOblivionWrathCD				= mod:NewCDCountTimer(20.5, 1260712, nil, nil, nil
 local timerVoidFallCD					= mod:NewCDCountTimer(20.5, 1258880, 28405, nil, nil, 2)--Shortname "Knockback"
 local timerVoidMarkCD					= mod:NewCDCountTimer(20.5, 1280023, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.MAGIC_ICON)
 
-mod:AddPrivateAuraSoundOption(1249265, true, 1249265, 1, 2)--Umbral Collapse
-mod:AddPrivateAuraSoundOption(1280023, true, 1280023, 1, 1)--Void Marked
-mod:AddPrivateAuraSoundOption(1283069, true, 1283069, 1, 3)--Weakened
-mod:AddPrivateAuraSoundOption(1275059, true, 1275059, 1, 1)--Black Miasma
+mod:AddPrivateAuraSoundOption({1249265,1260203}, true, 1249265, 1, 2, "helpsoak", 2)--Umbral Collapse
+mod:AddPrivateAuraSoundOption(1280023, true, 1280023, 1, 1, "darknessyou", 19)--Void Marked
+mod:AddPrivateAuraSoundOption(1283069, true, 1283069, 1, 3, "fixateyou", 19)--Weakened
+mod:AddPrivateAuraSoundOption(1275059, true, 1275059, 1, 1, "curseyou", 19)--Black Miasma
 
 mod.vb.shadowCount = 0
 mod.vb.upheavalCount = 0
@@ -75,10 +75,6 @@ function mod:OnLimitedCombatStart()
 		timerVoidMarkCD:SetTimeline(419)
 	end
 
-	self:EnablePrivateAuraSound({1249265,1260203}, "helpsoak", 2)--or gathershare?
-	self:EnablePrivateAuraSound(1280023, "darknessyou", 19)
-	self:EnablePrivateAuraSound(1283069, "fixateyou", 19)
-	self:EnablePrivateAuraSound(1275059, "curseyou", 19)
 end
 
 function mod:OnCombatEnd()
@@ -152,7 +148,7 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then--Finished (A bar that's ending, meaning now the cast should be happening soon)
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType then
+			if eventType and eventCount then
 				if eventType == "upheaval" then
 					specWarnDarkUpheaval:Show(eventCount)
 					specWarnDarkUpheaval:Play("aesoon")

@@ -54,19 +54,19 @@ local timerRiftSlashCD					= mod:NewCDCountTimer(20.5, 1246461, nil, "Tank", nil
 local timerStage2CD						= mod:NewCDTimer(20.5, 1272966, nil, nil, nil, 6)
 local timerStage3CD						= mod:NewCDTimer(20.5, 1273378, nil, nil, nil, 6)
 
-mod:AddPrivateAuraSoundOption(1233865, true, 1233865, 1, 1)--Null Corona
-mod:AddPrivateAuraSoundOption(1283236, true, 1283236, 1, 1)--Void Expulsion
-mod:AddPrivateAuraSoundOption(1242553, true, 1283236, 1, 2)--Void Remnants (GTFO left by Void Expulsion)
-mod:AddPrivateAuraSoundOption(1233602, true, 1233602, 1, 1)--Silverstrike Arrow
-mod:AddPrivateAuraSoundOption(1243981, true, 1234564, 1, 3)--Silverstrike Barrage
+mod:AddPrivateAuraSoundOption({1233865,1233887}, true, 1233865, 1, 1, "absorbyou", 19)--Null Corona
+mod:AddPrivateAuraSoundOption(1283236, true, 1283236, 1, 1, "orbrun", 2)--Void Expulsion
+mod:AddPrivateAuraSoundOption(1242553, true, 1283236, 1, 2, "watchfeet", 8)--Void Remnants (GTFO left by Void Expulsion)
+mod:AddPrivateAuraSoundOption(1233602, true, 1233602, 1, 1, "arrowyou", 19)--Silverstrike Arrow
+mod:AddPrivateAuraSoundOption(1243981, true, 1234564, 1, 3, "debuffyou", 17)--Silverstrike Barrage
 --mod:AddPrivateAuraSoundOption(1234570, false, 1234570, 1, 1)--Stellar Emission (stacking debuff during Intermission 1)
-mod:AddPrivateAuraSoundOption(1238206, true, 1238206, 1, 2)--Volatile Fissure
-mod:AddPrivateAuraSoundOption(1237623, true, 1237614, 1, 1)--Ranger Captain's Mark
-mod:AddPrivateAuraSoundOption(1239111, true, 1239111, 1, 1)--Aspect of the End
-mod:AddPrivateAuraSoundOption(1255453, false, 1239111, 1, 3)--Gravity Collapse (Aspect of the End debuff)
-mod:AddPrivateAuraSoundOption(1232470, true, 1232470, 1, 1)--Grasp of Emptiness
-mod:AddPrivateAuraSoundOption(1243753, true, 1243753, 1, 3)--Failing to get out of Ravenous Abyss
-mod:AddPrivateAuraSoundOption(1238708, true, 1238708, 1, 1)--Dark Rush
+mod:AddPrivateAuraSoundOption(1238206, true, 1238206, 1, 2, "watchfeet", 8)--Volatile Fissure
+mod:AddPrivateAuraSoundOption({1237623,1259861}, true, 1237614, 1, 1, "markyou", 19)--Ranger Captain's Mark
+mod:AddPrivateAuraSoundOption(1239111, true, 1239111, 1, 1, "lineapart", 2)--Aspect of the End
+mod:AddPrivateAuraSoundOption(1255453, false, 1239111, 1, 3, "debuffyou", 2)--Gravity Collapse (Aspect of the End debuff)
+mod:AddPrivateAuraSoundOption({1232470,1260027}, true, 1232470, 1, 1, "graspyou", 19)--Grasp of Emptiness
+mod:AddPrivateAuraSoundOption(1243753, true, 1243753, 1, 3, "debuffyou", 17)--Failing to get out of Ravenous Abyss
+mod:AddPrivateAuraSoundOption(1238708, true, 1238708, 1, 1, "speedyou", 19)--Dark Rush
 
 mod.vb.coronaCount = 0
 mod.vb.expulsionCount = 0
@@ -168,19 +168,7 @@ function mod:OnLimitedCombatStart()
 		timerStage2CD:SetTimeline(351)
 	end
 
-	self:EnablePrivateAuraSound({1233865,1233887}, "absorbyou", 19)
-	self:EnablePrivateAuraSound(1283236, "orbrun", 2)
-	self:EnablePrivateAuraSound(1233602, "arrowyou", 19)
-	self:EnablePrivateAuraSound(1243981, "debuffyou", 17)
-	self:EnablePrivateAuraSound({1237623,1259861}, "markyou", 19)
-	self:EnablePrivateAuraSound(1239111, "lineapart", 2)
-	self:EnablePrivateAuraSound({1232470,1260027}, "graspyou", 19)
-	self:EnablePrivateAuraSound(1255453, "debuffyou", 2)
-	self:EnablePrivateAuraSound(1242553, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1243753, "debuffyou", 17)
 --	self:EnablePrivateAuraSound(1234570, "debuffyou", 17)--Phase soft enrage, probably not worth annoucning, it kinda just persistently stacks
-	self:EnablePrivateAuraSound(1238206, "watchfeet", 8)
-	self:EnablePrivateAuraSound(1238708, "speedyou", 19)
 end
 
 function mod:OnCombatEnd()
@@ -359,44 +347,46 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType == "voidExpulsion" then
-				specWarnVoidExpulsion:Show(eventCount)
-				specWarnVoidExpulsion:Play("aesoon")
-			elseif eventType == "nullCorona" then
-				warnNullCorona:Show(eventCount)
-			elseif eventType == "silverstrikeArrow" then
-				warnSilverStrikeArrow:Show(eventCount)
-			elseif eventType == "darkHand" then
-				if self:IsTank() then
-					specWarnDarkHand:Show()
-					specWarnDarkHand:Play("defensive")
+			if eventType and eventCount then
+				if eventType == "voidExpulsion" then
+					specWarnVoidExpulsion:Show(eventCount)
+					specWarnVoidExpulsion:Play("aesoon")
+				elseif eventType == "nullCorona" then
+					warnNullCorona:Show(eventCount)
+				elseif eventType == "silverstrikeArrow" then
+					warnSilverStrikeArrow:Show(eventCount)
+				elseif eventType == "darkHand" then
+					if self:IsTank() then
+						specWarnDarkHand:Show()
+						specWarnDarkHand:Play("defensive")
+					end
+				elseif eventType == "ravenousAbyss" then
+					specWarnRavenousAbyss:Show(eventCount)
+					specWarnRavenousAbyss:Play("watchstep")
+				elseif eventType == "interruptingTremor" then
+					specWarnInterruptingTremor:Show()
+					specWarnInterruptingTremor:Play("stopcast")
+				elseif eventType == "voidstalkerSting" then
+					warnVoidStalkerSting:Show(eventCount)
+				elseif eventType == "calloftheVoid" then
+					specWarnCalloftheVoid:Show(eventCount)
+					specWarnCalloftheVoid:Play("mobsoon")
+				elseif eventType == "riftSlash" then
+					if self:IsTank() then
+						specWarnRiftSlash:Show()
+						specWarnRiftSlash:Play("defensive")
+					end
+				elseif eventType == "cosmicBarrier" then
+					specWarnCosmicBarrier:Show(eventCount)
+					specWarnCosmicBarrier:Play("attackshield")
+				elseif eventType == "devouringCosmos" then
+					specWarnDevouringCosmos:Show(eventCount)
+					specWarnDevouringCosmos:Play("changeplatform")
+				elseif eventType == "stage2Start" then
+					self:SetStage(2)
+				elseif eventType == "stage3Start" then
+					self:SetStage(3)
 				end
-			elseif eventType == "ravenousAbyss" then
-				specWarnRavenousAbyss:Show(eventCount)
-				specWarnRavenousAbyss:Play("watchstep")
-			elseif eventType == "interruptingTremor" then
-				specWarnInterruptingTremor:Show()
-				specWarnInterruptingTremor:Play("stopcast")
-			elseif eventType == "voidstalkerSting" then
-				warnVoidStalkerSting:Show(eventCount)
-			elseif eventType == "calloftheVoid" then
-				specWarnCalloftheVoid:Show(eventCount)
-				specWarnCalloftheVoid:Play("mobsoon")
-			elseif eventType == "riftSlash" then
-				if self:IsTank() then
-					specWarnRiftSlash:Show()
-					specWarnRiftSlash:Play("defensive")
-				end
-			elseif eventType == "cosmicBarrier" then
-				specWarnCosmicBarrier:Show(eventCount)
-				specWarnCosmicBarrier:Play("attackshield")
-			elseif eventType == "devouringCosmos" then
-				specWarnDevouringCosmos:Show(eventCount)
-				specWarnDevouringCosmos:Play("changeplatform")
-			elseif eventType == "stage2Start" then
-				self:SetStage(2)
-			elseif eventType == "stage3Start" then
-				self:SetStage(3)
 			end
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)
