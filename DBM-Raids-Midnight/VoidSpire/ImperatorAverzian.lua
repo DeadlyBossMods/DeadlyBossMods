@@ -148,7 +148,7 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then--Finished (A bar that's ending, meaning now the cast should be happening soon)
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType then
+			if eventType and eventCount then
 				if eventType == "upheaval" then
 					specWarnDarkUpheaval:Show(eventCount)
 					specWarnDarkUpheaval:Play("aesoon")

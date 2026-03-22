@@ -347,44 +347,46 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType == "voidExpulsion" then
-				specWarnVoidExpulsion:Show(eventCount)
-				specWarnVoidExpulsion:Play("aesoon")
-			elseif eventType == "nullCorona" then
-				warnNullCorona:Show(eventCount)
-			elseif eventType == "silverstrikeArrow" then
-				warnSilverStrikeArrow:Show(eventCount)
-			elseif eventType == "darkHand" then
-				if self:IsTank() then
-					specWarnDarkHand:Show()
-					specWarnDarkHand:Play("defensive")
+			if eventType and eventCount then
+				if eventType == "voidExpulsion" then
+					specWarnVoidExpulsion:Show(eventCount)
+					specWarnVoidExpulsion:Play("aesoon")
+				elseif eventType == "nullCorona" then
+					warnNullCorona:Show(eventCount)
+				elseif eventType == "silverstrikeArrow" then
+					warnSilverStrikeArrow:Show(eventCount)
+				elseif eventType == "darkHand" then
+					if self:IsTank() then
+						specWarnDarkHand:Show()
+						specWarnDarkHand:Play("defensive")
+					end
+				elseif eventType == "ravenousAbyss" then
+					specWarnRavenousAbyss:Show(eventCount)
+					specWarnRavenousAbyss:Play("watchstep")
+				elseif eventType == "interruptingTremor" then
+					specWarnInterruptingTremor:Show()
+					specWarnInterruptingTremor:Play("stopcast")
+				elseif eventType == "voidstalkerSting" then
+					warnVoidStalkerSting:Show(eventCount)
+				elseif eventType == "calloftheVoid" then
+					specWarnCalloftheVoid:Show(eventCount)
+					specWarnCalloftheVoid:Play("mobsoon")
+				elseif eventType == "riftSlash" then
+					if self:IsTank() then
+						specWarnRiftSlash:Show()
+						specWarnRiftSlash:Play("defensive")
+					end
+				elseif eventType == "cosmicBarrier" then
+					specWarnCosmicBarrier:Show(eventCount)
+					specWarnCosmicBarrier:Play("attackshield")
+				elseif eventType == "devouringCosmos" then
+					specWarnDevouringCosmos:Show(eventCount)
+					specWarnDevouringCosmos:Play("changeplatform")
+				elseif eventType == "stage2Start" then
+					self:SetStage(2)
+				elseif eventType == "stage3Start" then
+					self:SetStage(3)
 				end
-			elseif eventType == "ravenousAbyss" then
-				specWarnRavenousAbyss:Show(eventCount)
-				specWarnRavenousAbyss:Play("watchstep")
-			elseif eventType == "interruptingTremor" then
-				specWarnInterruptingTremor:Show()
-				specWarnInterruptingTremor:Play("stopcast")
-			elseif eventType == "voidstalkerSting" then
-				warnVoidStalkerSting:Show(eventCount)
-			elseif eventType == "calloftheVoid" then
-				specWarnCalloftheVoid:Show(eventCount)
-				specWarnCalloftheVoid:Play("mobsoon")
-			elseif eventType == "riftSlash" then
-				if self:IsTank() then
-					specWarnRiftSlash:Show()
-					specWarnRiftSlash:Play("defensive")
-				end
-			elseif eventType == "cosmicBarrier" then
-				specWarnCosmicBarrier:Show(eventCount)
-				specWarnCosmicBarrier:Play("attackshield")
-			elseif eventType == "devouringCosmos" then
-				specWarnDevouringCosmos:Show(eventCount)
-				specWarnDevouringCosmos:Play("changeplatform")
-			elseif eventType == "stage2Start" then
-				self:SetStage(2)
-			elseif eventType == "stage3Start" then
-				self:SetStage(3)
 			end
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)

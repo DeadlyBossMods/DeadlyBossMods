@@ -111,15 +111,17 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType == "roar" then
-				specWarnPrimordialRoar:Show(eventCount)
-				specWarnPrimordialRoar:Play("pullin")
-			elseif eventType == "expulsion" then
-				specWarnParasiteExpulsion:Show(eventCount)
-				specWarnParasiteExpulsion:Play("watchstep")
-			elseif eventType == "slam" then
-				specWarnShadowclawSlam:Show(eventCount)
-				specWarnShadowclawSlam:Play("slamincoming")
+			if eventType and eventCount then
+				if eventType == "roar" then
+					specWarnPrimordialRoar:Show(eventCount)
+					specWarnPrimordialRoar:Play("pullin")
+				elseif eventType == "expulsion" then
+					specWarnParasiteExpulsion:Show(eventCount)
+					specWarnParasiteExpulsion:Play("watchstep")
+				elseif eventType == "slam" then
+					specWarnShadowclawSlam:Show(eventCount)
+					specWarnShadowclawSlam:Play("slamincoming")
+				end
 			end
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)

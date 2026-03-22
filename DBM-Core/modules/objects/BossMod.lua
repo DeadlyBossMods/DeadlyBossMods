@@ -980,12 +980,12 @@ do
 	---Commit a reserved timeline count when an event finishes.
 	---@param eventID number
 	---@return string? eventType Returns eventType cached by TLCountStart in TLStart
-	---@return number count Returns event count before incrementing the vb countKey
+	---@return number? count Returns event count before incrementing the vb countKey
 	function bossModPrototype:TLCountFinish(eventID)
 		local state = self.tlCountState
-		if not state then return nil, 0 end
+		if not state then return nil, nil end
 		local eventInfo = state.events[eventID]
-		if not eventInfo then return nil, 0 end
+		if not eventInfo then return nil, nil end
 		state.events[eventID] = nil
 		local eventType = eventInfo.eventType
 		local eventCount = eventInfo.count

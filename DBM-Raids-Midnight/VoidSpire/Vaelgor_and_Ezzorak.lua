@@ -330,7 +330,7 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then--Finished (bar ending, cast happening soon)
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType then
+			if eventType and eventCount then
 				if eventType == "nullbeam" then
 					specWarnNullBeam:Show(eventCount)
 					specWarnNullBeam:Play("beamincoming")
