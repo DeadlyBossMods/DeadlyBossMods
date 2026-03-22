@@ -128,7 +128,7 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 		optionId = auraspellId
 	end
 	if type(optionId) ~= "number" then
-		DBM:Debug("Attempting to add private aura sound failed due to invalid optionId type for mod " .. mod.id, 2)
+		DBM:Debug("Attempting to add private aura sound failed due to invalid optionId type for mod " .. self.id, 2)
 		return
 	end
 	self.DefaultOptions["PrivateAuraSound" .. optionId] = (default == nil) or default
