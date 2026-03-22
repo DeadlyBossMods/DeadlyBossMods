@@ -1198,10 +1198,12 @@ do
 			DBM:Debug("Attempting to unregister private aura sounds for mod " .. self.id .. " failed due to combat restriction. This unregister will be deferred.", 2)
 			return
 		end
-		if self.paSounds then
-			for optionId in pairs(self.paSounds) do
-				disablePrivateAuraSoundOption(self, optionId)
+		while self.paSounds do
+			local optionId = next(self.paSounds)
+			if not optionId then
+				break
 			end
+			disablePrivateAuraSoundOption(self, optionId)
 		end
 	end
 
