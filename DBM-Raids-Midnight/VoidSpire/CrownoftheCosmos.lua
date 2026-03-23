@@ -84,6 +84,7 @@ mod.vb.cosmicBarrierCount = 0
 mod.vb.aspectoftheEndCount = 0
 mod.vb.graspofEmptynessCount = 0
 mod.vb.devouringCosmosCount = 0
+mod.vb.riftSlashCount = 0
 local lastResolvedType, lastResolvedTimer
 
 ---@param self DBMMod
@@ -111,6 +112,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.aspectoftheEndCount = 1
 	self.vb.graspofEmptynessCount = 1
 	self.vb.devouringCosmosCount = 1
+	self.vb.riftSlashCount = 1
 	self:SetStage(1)
 
 	if DBM.Options.HardcodedTimer and self:IsEasy() then
@@ -232,30 +234,49 @@ do
 		elseif stage == 2 then
 			--Stage 2
 			--NOTE: 20s overlap is inferred using recent cast context when available:
-			--Voidstalker(5/6) -> Voidstalker(20), Void Expulsion(14) -> Void Expulsion(20).
+			--Voidstalker(5/6) -> Voidstalker(20), Void Expulsion(14/16) -> Void Expulsion(20).
+			--Opener adds additional duration buckets not seen in later loops:
+			--Null Corona(13), Void Expulsion(16), Voidstalker(8), Call(12), Ranger's Mark(21), Cosmic Barrier(24), Rift Slash(6).
 			--Unknown contexts intentionally fall through to Blizzard passthrough.
-			if timer == 11 then--Null Corona (first Stage 2 event)
+			if timer == 11 or timer == 13 then--Null Corona
 				timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
 				lastResolvedType, lastResolvedTimer = "nullCorona", timer
 				return true
-			elseif timer == 5 or timer == 6 then--Voidstalker Sting
-				timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
-				lastResolvedType, lastResolvedTimer = "voidstalkerSting", timer
-				return true
-			elseif timer == 10 then--Call of the Void
-				timerCalloftheVoidCD:TLStart(timer, eventID, self:TLCountStart(eventID, "calloftheVoid", "calloftheVoidCount"))
-				lastResolvedType, lastResolvedTimer = "calloftheVoid", timer
-				return true
-			elseif timer == 12 then--Rift Slash
-				timerRiftSlashCD:TLStart(timer, eventID)
-				self:TLCountStart(eventID, "riftSlash")
-				lastResolvedType, lastResolvedTimer = "riftSlash", timer
-				return true
-			elseif timer == 14 then--Void Expulsion
+			elseif timer == 16 or timer == 14 then--Void Expulsion
 				timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
 				lastResolvedType, lastResolvedTimer = "voidExpulsion", timer
 				return true
-			elseif timer == 19 then--Ranger Captain's Mark
+			elseif timer == 8 then--Voidstalker Sting opener
+				timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+				lastResolvedType, lastResolvedTimer = "voidstalkerSting", timer
+				return true
+			elseif timer == 10 then--Call of the Void recurring
+				timerCalloftheVoidCD:TLStart(timer, eventID, self:TLCountStart(eventID, "calloftheVoid", "calloftheVoidCount"))
+				lastResolvedType, lastResolvedTimer = "calloftheVoid", timer
+				return true
+			elseif timer == 12 then--Ambiguous opener Call of the Void (12) vs Rift Slash (12)
+				if lastResolvedType == "voidstalkerSting" and lastResolvedTimer == 8 then
+					timerCalloftheVoidCD:TLStart(timer, eventID, self:TLCountStart(eventID, "calloftheVoid", "calloftheVoidCount"))
+					lastResolvedType, lastResolvedTimer = "calloftheVoid", timer
+				else
+					timerRiftSlashCD:TLStart(timer, eventID, self:TLCountStart(eventID, "riftSlash", "riftSlashCount"))
+					lastResolvedType, lastResolvedTimer = "riftSlash", timer
+				end
+				return true
+			elseif timer == 6 then--Ambiguous opener Rift Slash (6) vs recurring Voidstalker Sting (6)
+				if lastResolvedType == "cosmicBarrier" and lastResolvedTimer == 24 then
+					timerRiftSlashCD:TLStart(timer, eventID, self:TLCountStart(eventID, "riftSlash", "riftSlashCount"))
+					lastResolvedType, lastResolvedTimer = "riftSlash", timer
+				else
+					timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+					lastResolvedType, lastResolvedTimer = "voidstalkerSting", timer
+				end
+				return true
+			elseif timer == 5 then--Voidstalker Sting recurring
+				timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+				lastResolvedType, lastResolvedTimer = "voidstalkerSting", timer
+				return true
+			elseif timer == 21 or timer == 19 then--Ranger Captain's Mark
 				timerRangerCaptainsMarkCD:TLStart(timer, eventID, self:TLCountStart(eventID, "rangerMark", "rangerMarkCount"))
 				lastResolvedType, lastResolvedTimer = "rangerMark", timer
 				return true
@@ -264,12 +285,12 @@ do
 					timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
 					lastResolvedType, lastResolvedTimer = "voidstalkerSting", timer
 					return true
-				elseif lastResolvedType == "voidExpulsion" and lastResolvedTimer == 14 then
+				elseif lastResolvedType == "voidExpulsion" and (lastResolvedTimer == 14 or lastResolvedTimer == 16) then
 					timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
 					lastResolvedType, lastResolvedTimer = "voidExpulsion", timer
 					return true
 				end
-			elseif timer == 22 then--Cosmic Barrier
+			elseif timer == 24 or timer == 22 then--Cosmic Barrier
 				timerCosmicBarrierCD:TLStart(timer, eventID, self:TLCountStart(eventID, "cosmicBarrier", "cosmicBarrierCount"))
 				lastResolvedType, lastResolvedTimer = "cosmicBarrier", timer
 				return true
@@ -347,7 +368,7 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType and eventCount then
+			if eventType and (eventCount or eventType == "stage2Start" or eventType == "stage3Start") then
 				if eventType == "voidExpulsion" then
 					specWarnVoidExpulsion:Show(eventCount)
 					specWarnVoidExpulsion:Play("aesoon")
