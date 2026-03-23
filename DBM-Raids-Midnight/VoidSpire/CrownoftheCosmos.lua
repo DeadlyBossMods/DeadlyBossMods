@@ -313,7 +313,7 @@ do
 			if stage2p5Seen and not stage3Recovered and (timer == 59 or timer == 60 or timer == 29 or timer == 30) then
 				stage3Recovered = true
 				self:SetStage(3)
-				self:Debug("Crown hardcoded: auto-corrected to Stage 3 in 2.5 using duration " .. timer .. " (eventID " .. eventID .. ")", 2)
+				DBM:Debug("Crown hardcoded: auto-corrected to Stage 3 in 2.5 using duration " .. timer .. " (eventID " .. eventID .. ")", 2, nil, nil, true)
 				return timersEasy(self, timer, timerExact, eventID)
 			end
 			if timer == 10 or timer == 3 then--Silverstrike Barrage sequence
