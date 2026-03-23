@@ -1027,6 +1027,42 @@ do
 	function bossModPrototype:TLCountReset()
 		self.tlCountState = nil
 	end
+
+	---Reset recent hardcoded timeline resolver context.
+	function bossModPrototype:TLResolveReset()
+		self.tlResolveState = nil
+	end
+
+	---Push latest resolved hardcoded timeline event context.
+	---@param eventType string
+	---@param timer number
+	---@param maxEntries number? default 4
+	function bossModPrototype:TLResolvePush(eventType, timer, maxEntries)
+		if not self.tlResolveState then
+			self.tlResolveState = {}
+		end
+		local state = self.tlResolveState
+		state[#state + 1] = {
+			eventType = eventType,
+			timer = timer,
+		}
+		maxEntries = maxEntries or 4
+		if #state > maxEntries then
+			table.remove(state, 1)
+		end
+	end
+
+	---Peek previously resolved hardcoded timeline context.
+	---@param offset number? 0 = latest, 1 = one before latest, etc.
+	---@return string? eventType
+	---@return number? timer
+	function bossModPrototype:TLResolvePeek(offset)
+		local state = self.tlResolveState
+		if not state then return nil, nil end
+		local entry = state[#state - (offset or 0)]
+		if not entry then return nil, nil end
+		return entry.eventType, entry.timer
+	end
 end
 
 

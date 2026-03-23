@@ -84,7 +84,9 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining, _, _, passthro
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
 	local iconId = eventInfo.iconFileID
 	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
-	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for eventID: "..eventID.." with spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(tostring(duration).." (Rounded: "..tostring(durationRounded)..")", color).." and state: "..tostring(eventState), 3, nil, nil, true)
+	if not passthroughEvent then
+		self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for eventID: "..eventID.." with spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(tostring(duration).." (Rounded: "..tostring(durationRounded)..")", color).." and state: "..tostring(eventState), 3, nil, nil, true)
+	end
 	if self.Options.HideDBMBars then return end
 	if self.Options.DontShowBossTimers and source == 0 then return end
 	if self.Options.DontShowUserTimers and source == 1 then return end
@@ -104,7 +106,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining, _, _, passthro
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
 	if passthroughEvent then
-		self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r received passthrough event for eventID: "..tostring(eventID)..".", 2, nil, nil, true)
+		self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r received passthrough event for eventID: "..tostring(eventID)..".", 2, nil, nil, DBM.Options.DebugLevel == 3)
 	end
 	if DBT.Options.VarianceEnabled2 and maxQueueDuration and maxQueueDuration > 0 then--Currently not functional due to a bug where maxQueueDuration always returns 0 even if it's not
 		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, color, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
@@ -145,19 +147,19 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		if bar then
 			bar:Pause()
 		elseif staleHardcodedEvent then
-			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale pause for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, true)
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale pause for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
 		end
 	elseif eventState == 0 then
 		if bar then
 			bar:Resume()
 		elseif staleHardcodedEvent then
-			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale resume for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, true)
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale resume for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
 		end
 	else--Finished or canceled (sometimes blizzard sends state changed instead of event removed when canceling events)
 		if bar then
 			bar:Cancel()
 		elseif staleHardcodedEvent then
-			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, true)
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
 		end
 		if hardcodedTimerId then
 			if private.hardCodedTimerEvents[hardcodedTimerId] == eventID then

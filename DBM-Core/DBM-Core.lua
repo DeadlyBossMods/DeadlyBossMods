@@ -2658,11 +2658,13 @@ do
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
 		end
-		local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors(true)
-		if not succeeded then
-			pendingPAAnchorCheck = 2
-		else
-			pendingPAAnchorCheck = 0
+		if private.isRetail then
+			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+			if not succeeded then
+				pendingPAAnchorCheck = 2
+			else
+				pendingPAAnchorCheck = 0
+			end
 		end
 	end
 
@@ -4648,13 +4650,15 @@ do
 				self:AddMsg(L.LEAVING_COMBAT, nil, true)--Played using generic sound
 			end
 		end
-		if pendingPASoundZoneSync then
-			syncZonePASounds(self, pendingPASoundZoneSync)
-		end
-		if pendingPAAnchorCheck > 0 then
-			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors(pendingPAAnchorCheck == 2 and true or false)
-			if succeeded then
-				pendingPAAnchorCheck = 0
+		if private.isRetail then
+			if pendingPASoundZoneSync then
+				syncZonePASounds(self, pendingPASoundZoneSync)
+			end
+			if pendingPAAnchorCheck > 0 then
+				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+				if succeeded then
+					pendingPAAnchorCheck = 0
+				end
 			end
 		end
 	end
@@ -5754,7 +5758,7 @@ do
 				self:CreatePizzaTimer(0, "", nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
-				if pendingPASoundZoneSync then
+				if private.isRetail and pendingPASoundZoneSync then
 					syncZonePASounds(self, pendingPASoundZoneSync)
 				end
 				--module cleanup

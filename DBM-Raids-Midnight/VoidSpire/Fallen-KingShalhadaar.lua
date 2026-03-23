@@ -51,6 +51,7 @@ local function resetCounts(self)
 end
 
 local function setFallback(self)
+	--Blizz API fallbacks
 	specWarnVoidConvergence:SetAlert(139, "targetchange", 2, 3)
 	timerVoidConvergenceCD:SetTimeline(139)
 	timerDespoticCommandCD:SetTimeline(140)

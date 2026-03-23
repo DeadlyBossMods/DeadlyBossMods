@@ -12,8 +12,8 @@ local check4 = raidwarnoptions:CreateCheckButton(L.WarningIconChat, true, nil, "
 local check5, check6
 if not DBM:IsPostMidnight() then
 	check5 = raidwarnoptions:CreateCheckButton(L.WarningAlphabetical, true, nil, "WarningAlphabetical")
-	check6 = raidwarnoptions:CreateCheckButton(L.ShortTextSpellname, true, nil, "WarningShortText")
 end
+check6 = raidwarnoptions:CreateCheckButton(L.ShortTextSpellname, true, nil, "WarningShortText")
 
 -- RaidWarn Font
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {

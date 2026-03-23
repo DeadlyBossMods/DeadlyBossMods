@@ -14,17 +14,17 @@ mod:RegisterCombat("combat")
 --TODO, add remaining private auras? most of em are just basic stacks and stuff anchor kinda handles better since we can't warn for stacks
 --TODO, do adds have timeline timers? i very much doubt it, possibly see if timers are fixed after spawn and start on spawn
 local specWarnShadowsAdvance			= mod:NewSpecialWarningCount(1262776, nil, nil, DBM_COMMON_L.ADDS, 2, 2)
-local specWarnDarkUpheaval				= mod:NewSpecialWarningCount(1249251, nil, nil, nil, 2, 2)
-local specWarnUmbralCollapse			= mod:NewSpecialWarningCount(1249265, nil, DBM_COMMON_L.GROUPSOAK, nil, 2, 2)
-local specWarnOblivionWrath				= mod:NewSpecialWarningDodgeCount(1260712, nil, nil, nil, 2, 2)
+local specWarnDarkUpheaval				= mod:NewSpecialWarningCount(1249251, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
+local specWarnUmbralCollapse			= mod:NewSpecialWarningCount(1249265, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
+local specWarnOblivionWrath				= mod:NewSpecialWarningDodgeCount(1260712, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
 local specWarnVoidFall					= mod:NewSpecialWarningCount(1258880, nil, 28405, nil, 2, 2)
-local specWarnMarchofEndless			= mod:NewSpecialWarningSpell(1260203, nil, nil, nil, 3, 2)--Enrage?
+local specWarnMarchofEndless			= mod:NewSpecialWarningSpell(1260203, nil, nil, nil, 3, 2)
 local specWarnPitchBulwark				= mod:NewSpecialWarningInterrupt(1255702, false, nil, nil, 1, 2)--Probably spammy
 
-local timerShadowsAdvanceCD				= mod:NewCDCountTimer(20.5, 1262776, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
-local timerDarkUpheavalCD				= mod:NewCDCountTimer(20.5, 1249251, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerShadowsAdvanceCD				= mod:NewCDCountTimer("d20.5", 1262776, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
+local timerDarkUpheavalCD				= mod:NewCDCountTimer(20.5, 1249251, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerUmbralCollapseCD				= mod:NewCDCountTimer(20.5, 1249265, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 3)
-local timerOblivionWrathCD				= mod:NewCDCountTimer(20.5, 1260712, nil, nil, nil, 3)
+local timerOblivionWrathCD				= mod:NewCDCountTimer(20.5, 1260712, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 3)
 local timerVoidFallCD					= mod:NewCDCountTimer(20.5, 1258880, 28405, nil, nil, 2)--Shortname "Knockback"
 local timerVoidMarkCD					= mod:NewCDCountTimer(20.5, 1280023, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.MAGIC_ICON)
 
@@ -41,8 +41,10 @@ mod.vb.voidFallCount = 0
 mod.vb.voidMarkCount = 0
 local badStateDetected = false
 local next72IsShadow = false
+local buggedUmbral = 0
 
 local function setFallback(self)
+	--Blizz API fallbacks
 	specWarnShadowsAdvance:SetAlert({194, 195}, "mobsoon", 2, 2)
 	timerShadowsAdvanceCD:SetTimeline({194, 195})
 	specWarnDarkUpheaval:SetAlert(196, "aesoon", 2, 2)
@@ -67,6 +69,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.voidFallCount = 1
 	self.vb.voidMarkCount = 1
 	next72IsShadow = false
+	buggedUmbral = 0
 	if DBM.Options.HardcodedTimer and self:IsDifficulty("lfr", "normal", "heroic") and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
@@ -101,11 +104,12 @@ do
 		elseif timer == 84 or timer == 12 then--Shadow's Advance
 			--Blizzard starts two shadows advance on pull, it's only time 84 exists
 			--We need to deal with special count handling to work around this quirk
+			--Timers passed as string with "d" in front of them to flag allowdouble as true
 			if timer == 84 then
 				--Increment count by 1 since it'll start in parallel to the initial 12 second bar
-				timerShadowsAdvanceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shadow", "shadowCount") + 1)
+				timerShadowsAdvanceCD:TLStart("d12", eventID, self:TLCountStart(eventID, "shadow", "shadowCount") + 1)
 			else
-				timerShadowsAdvanceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
+				timerShadowsAdvanceCD:TLStart("d84", eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
 			end
 		elseif timer == 20 then--Umbral Collapse
 			timerUmbralCollapseCD:TLStart(timer, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
@@ -115,6 +119,16 @@ do
 				next72IsShadow = false
 			else
 				timerUmbralCollapseCD:TLStart(timer, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
+				if buggedUmbral == 0 then--We haven't seen the bugged 72 yet
+					--Currently, blizzard has a bug where the 2nd umbral timer that starts for the fight (first 72 second timer)
+					--immediately cancels itself with a state of 2, despite fact the timer is actually accurate.
+					buggedUmbral = eventID
+					--Hard schedule alert here since blizzard is going to finish their own timer due to a bug on their end
+					specWarnUmbralCollapse:Schedule(72, 2)
+					specWarnUmbralCollapse:ScheduleVoice(72, "gathershare")
+					timerUmbralCollapseCD:Stop()
+					timerUmbralCollapseCD:Start(72, 2)
+				end
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
@@ -164,6 +178,9 @@ do
 					specWarnShadowsAdvance:Show(eventCount)
 					specWarnShadowsAdvance:Play("mobsoon")
 				elseif eventType == "collapse" then
+					if buggedUmbral == eventID then--This is the bugged umbral timer, we need to ignore it
+						return
+					end
 					specWarnUmbralCollapse:Show(eventCount)
 					specWarnUmbralCollapse:Play("gathershare")
 				end
