@@ -72,7 +72,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.entropicUnravelingCount = 1
 	next45Type = nil
 
-	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and not self:IsMythic() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -93,8 +93,8 @@ do
 	---@param self DBMMod
 	---@param timer number
 	---@param eventID number
-	local function timersEasy(self, timer, eventID)
-		--Logic confirmed against normal and LFR
+	local function timersNonMythic(self, timer, eventID)
+		--Logic confirmed against normal and LFR and heroic
 		if timer == 490 then--Berserk
 			timerBerserkCD:Start(490)
 		elseif timer == 100 then--Entropic Unraveling, phase change marker
@@ -118,7 +118,11 @@ do
 			next45Type = "twisted"
 		elseif timer == 15 then--Twisting Obscurity opener
 			timerTwilightObscurityCD:TLStart(timer, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
-			next45Type = "fractured"
+			--If a prior event already seeded the shared 45s chain (e.g. 11/47/100), keep that seed.
+			--Only force fractured when no seed exists yet.
+			if not next45Type then
+				next45Type = "fractured"
+			end
 		elseif timer == 45 then--Shared duration among Twisted/Fractured/Shattering
 			if next45Type == "twisted" then
 				timerTwilightObscurityCD:TLStart(timer, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
@@ -159,8 +163,8 @@ do
 		local eventID = eventInfo.id
 		local timer = math.floor(eventInfo.duration + 0.5)
 		if not badStateDetected then
-			if self:IsEasy() then
-				timersEasy(self, timer, eventID)
+			if not self:IsMythic() then
+				timersNonMythic(self, timer, eventID)
 			end
 		end
 	end

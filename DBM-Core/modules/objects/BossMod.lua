@@ -1384,14 +1384,13 @@ do
 					C_EncounterEvents.SetEventSound(encounterEventId, 0, nil)
 					self.tlSoundEvents[encounterEventId] = nil
 				end
-				return
 			else
 				for encounterEventId in next, self.tlSoundEvents do
 					C_EncounterEvents.SetEventSound(encounterEventId, 1, nil)
 					C_EncounterEvents.SetEventSound(encounterEventId, 0, nil)
 				end
+				self.tlSoundEvents = nil
 			end
-			self.tlSoundEvents = nil
 		end
 	end
 end
