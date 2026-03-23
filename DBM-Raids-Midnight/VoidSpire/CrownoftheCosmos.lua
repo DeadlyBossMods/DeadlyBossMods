@@ -87,11 +87,10 @@ mod.vb.devouringCosmosCount = 0
 mod.vb.riftSlashCount = 0
 local stage2p5Seen, stage3Recovered = false, false
 
----@param self DBMMod
-local function unsetBackupTL(self)
-	self:DisableAlertOptions({64, 65, 66})--Dark Hand, Ravenous Abyss, Interrupting Tremor
-	self:DisableTimelineOptions({64, 65, 66})
-end
+--local function unsetBackupTL(self)
+--	self:DisableAlertOptions({64, 65, 66})--Dark Hand, Ravenous Abyss, Interrupting Tremor
+--	self:DisableTimelineOptions({64, 65, 66})
+--end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
@@ -124,15 +123,17 @@ function mod:OnLimitedCombatStart()
 		)
 		--Stage 1 opener has an unresolved 4s overlap (Dark Hand, Interrupting Tremor, Ravenous Abyss);
 		--register Blizz API fallbacks so passthrough bars keep correct sounds/colors.
-		if self:IsTank() then
-			specWarnDarkHand:SetAlert(64, "defensive", 2, 2)
-		end
-		timerDarkHandCD:SetTimeline(64)
-		specWarnRavenousAbyss:SetAlert(65, "watchstep", 2, 2)
-		timerRavenousAbyssCD:SetTimeline(65)
-		specWarnInterruptingTremor:SetAlert(66, "stopcast", 2, 2, 0)
-		timerInterruptingTremorCD:SetTimeline(66)
-		self:Schedule(8, unsetBackupTL, self)--Unregister fallbacks after opener overlap window
+		--Currently, this is commented because it doesn't function as designed.
+		--Sounds fail to unregister midcombat, likely due to blizz restriction.
+--		if self:IsTank() then
+--			specWarnDarkHand:SetAlert(64, "defensive", 2, 2)
+--		end
+--		timerDarkHandCD:SetTimeline(64)
+--		specWarnRavenousAbyss:SetAlert(65, "watchstep", 2, 2)
+--		timerRavenousAbyssCD:SetTimeline(65)
+--		specWarnInterruptingTremor:SetAlert(66, "stopcast", 2, 2, 0)
+--		timerInterruptingTremorCD:SetTimeline(66)
+--		self:Schedule(8, unsetBackupTL, self)--Unregister fallbacks after opener overlap window
 	else
 		--Blizz API fallbacks
 		timerNullCoronaCD:SetTimeline(4)
