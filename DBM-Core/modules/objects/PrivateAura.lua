@@ -456,16 +456,17 @@ do
 		return inInstance and instanceType ~= "pvp" and instanceType ~= "arena"
 	end
 
-	---@param force boolean? Called when group roster updates since we may have gained or lost tanks
-	function PrivateAuras:UpdatePrivateAuraAnchors(force)
+	function PrivateAuras:UpdatePrivateAuraAnchors()
 		if InCombatLockdown() then
 			return false
 		end
-		if IsInValidInstance() and (force or not PAAnchorsRegistered) then
+		if PAAnchorsRegistered then
+			PAAnchorsRegistered = false
+			PrivateAuras:UnregisterPrivateAuras()
+		end
+		if IsInValidInstance() then
 			--No need to call unregister first, RegisterAllUnits already clears existing units first
 			PrivateAuras:RegisterAllUnits()
-		elseif PAAnchorsRegistered then
-			PrivateAuras:UnregisterPrivateAuras()
 		end
 		return true
 	end

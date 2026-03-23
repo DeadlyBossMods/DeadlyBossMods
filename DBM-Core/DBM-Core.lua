@@ -2659,7 +2659,7 @@ do
 			lastGroupLeader = nil
 		end
 		if private.isRetail then
-			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors(true)
+			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
 			if not succeeded then
 				pendingPAAnchorCheck = 2
 			else
@@ -4655,7 +4655,7 @@ do
 				syncZonePASounds(self, pendingPASoundZoneSync)
 			end
 			if pendingPAAnchorCheck > 0 then
-				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors(pendingPAAnchorCheck == 2 and true or false)
+				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
 				if succeeded then
 					pendingPAAnchorCheck = 0
 				end
