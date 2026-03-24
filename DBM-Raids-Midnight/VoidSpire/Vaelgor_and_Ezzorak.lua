@@ -14,11 +14,11 @@ mod:RegisterCombat("combat")
 --local warnRadiantBarrier			= mod:NewCountAnnounce(1248847, 1)
 
 local specWarnNullBeam				= mod:NewSpecialWarningCount(1262623, nil, nil, nil, 2, 2)
-local specWarnVoidHowl				= mod:NewSpecialWarningCount(1244917, nil, nil, nil, 2, 2)
+local specWarnVoidHowl				= mod:NewSpecialWarningCount(1244917, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
 local specWarnGloom					= mod:NewSpecialWarningCount(1245391, nil, nil, nil, 2, 2)
-local specWarnDreadBreath			= mod:NewSpecialWarningCount(1244221, nil, nil, nil, 2, 2)
-local specWarnMidnightFlames		= mod:NewSpecialWarningCount(1249748, nil, nil, nil, 2, 2)
-local specWarnGrabblingMaw			= mod:NewSpecialWarningDefensive(1280458, nil, nil, nil, 1, 2)
+local specWarnDreadBreath			= mod:NewSpecialWarningCount(1244221, nil, 17088, nil, 2, 2)
+local specWarnMidnightFlames		= mod:NewSpecialWarningCount(1249748, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
+local specWarnGrabblingMaw			= mod:NewSpecialWarningCount(1280458, nil, nil, 56689, 1, 2)
 local specWarnRakfang				= mod:NewSpecialWarningDefensive(1245645, nil, nil, nil, 1, 2)
 local specWarnVaelwing				= mod:NewSpecialWarningDefensive(1265131, nil, nil, nil, 1, 2)
 local specWarnCosmosisGloom			= mod:NewSpecialWarningCount(1277470, nil, nil, nil, 2, 2)
@@ -28,11 +28,11 @@ local specWarnCosmosisVoidHowl		= mod:NewSpecialWarningCount(1277473, nil, nil, 
 local specWarnRadiantBarrier		= mod:NewSpecialWarningCount(1248847, nil, nil, nil, 2, 2)
 
 local timerNullBeamCD				= mod:NewCDCountTimer(20.5, 1262623, nil, nil, nil, 3)
-local timerVoidHowlCD				= mod:NewCDCountTimer(20.5, 1244917, nil, nil, nil, 2)
+local timerVoidHowlCD				= mod:NewCDCountTimer(20.5, 1244917, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 2)
 local timerGloomCD					= mod:NewCDCountTimer(20.5, 1245391, nil, nil, nil, 3)
-local timerDreadBreathCD			= mod:NewCDCountTimer(20.5, 1244221, nil, nil, nil, 3)
-local timerMidnightFlamesCD			= mod:NewCDCountTimer(20.5, 1249748, nil, nil, nil, 2)
-local timerGrabblingMawCD			= mod:NewCDCountTimer(20.5, 1280458, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerDreadBreathCD			= mod:NewCDCountTimer(20.5, 1244221, 17088, nil, nil, 3)
+local timerMidnightFlamesCD			= mod:NewCDCountTimer(20.5, 1249748, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2)
+local timerGrabblingMawCD			= mod:NewCDCountTimer(20.5, 1280458, 56689, nil, nil, 2, nil, DBM_COMMON_L.TANK_ICON)--Shortname "Grip"
 local timerRakfangCD				= mod:NewCDCountTimer(20.5, 1245645, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerVaelwingCD				= mod:NewCDCountTimer(20.5, 1265131, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerCosmosisGloomCD			= mod:NewCDCountTimer(20.5, 1277470, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -87,12 +87,12 @@ local function setFallback(self)
 	timerDreadBreathCD:SetTimeline(104)
 	specWarnMidnightFlames:SetAlert(105, "aesoon", 2, 2, 0)
 	timerMidnightFlamesCD:SetTimeline(105)
+	specWarnGrabblingMaw:SetAlert(219, "pullin", 2, 3)
+	timerGrabblingMawCD:SetTimeline(219)
 	if self:IsTank() then
-		specWarnGrabblingMaw:SetAlert(219, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
 		specWarnRakfang:SetAlert(220, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
 		specWarnVaelwing:SetAlert(221, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
 	end
-	timerGrabblingMawCD:SetTimeline(219)
 	timerRakfangCD:SetTimeline(220)
 	timerVaelwingCD:SetTimeline(221)
 	specWarnCosmosisGloom:SetAlert(377, "gloomincoming", 19, 3)
@@ -350,8 +350,8 @@ do
 					specWarnDreadBreath:Show(eventCount)
 					specWarnDreadBreath:Play("breathsoon")
 				elseif eventType == "maw" then
-					specWarnGrabblingMaw:Show()
-					specWarnGrabblingMaw:Play("defensive")
+					specWarnGrabblingMaw:Show(eventCount)
+					specWarnGrabblingMaw:Play("pullin")
 				elseif eventType == "vaelwing" then
 					specWarnVaelwing:Show()
 					specWarnVaelwing:Play("defensive")

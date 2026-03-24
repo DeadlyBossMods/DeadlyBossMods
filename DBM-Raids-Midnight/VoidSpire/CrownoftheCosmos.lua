@@ -29,7 +29,7 @@ local specWarnCosmicBarrier				= mod:NewSpecialWarningSwitchCount(1246918, "Dps"
 local specWarnDevouringCosmos			= mod:NewSpecialWarningCount(1238843, nil, nil, nil, 3, 2)--P3
 local specWarnDarkHand					= mod:NewSpecialWarningDefensive(1238844, nil, nil, nil, 1, 2)--P1 Tank Add
 local specWarnRavenousAbyss				= mod:NewSpecialWarningDodgeCount(1243753, nil, nil, nil, 4, 2)--P1 Add
-local specWarnInterruptingTremor		= mod:NewSpecialWarningCast(1243743, "SpellCaster", nil, nil, 1, 2)--P1 Add
+local specWarnInterruptingTremor		= mod:NewSpecialWarningCount(1243743, "SpellCaster|HasInterrupt", nil, nil, 1, 2)--P1 Add
 local specWarnCosmicPortal				= mod:NewSpecialWarningCount(1261339, nil, nil, nil, 2, 2)--Mythic only mechanic of unknown nature
 local specWarnRiftSlash					= mod:NewSpecialWarningDefensive(1246461, nil, nil, nil, 1, 2)--P2 Rift Simulacrum slash attack
 
@@ -46,8 +46,8 @@ local timerAspectoftheEndCD				= mod:NewCDCountTimer(20.5, 1239111, 1234576, nil
 local timerGraspofEmptynessCD			= mod:NewCDCountTimer(20.5, 1232470, 367465, nil, nil, 3)--P1, shortname "Grasp"
 local timerDevouringCosmosCD			= mod:NewCDCountTimer(20.5, 1238843, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--P3
 local timerDarkHandCD					= mod:NewCDCountTimer(20.5, 1238844, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P1 Tank Add
-local timerRavenousAbyssCD				= mod:NewCDCountTimer(20.5, 1243753, nil, nil, nil, 2)--P1 Add
-local timerInterruptingTremorCD			= mod:NewCDCountTimer(20.5, 1243743, "SpellCaster", nil, nil, 2)--P1 Add
+local timerRavenousAbyssCD				= mod:NewCDCountTimer(20.5, 1243753, DBM_COMMON_L.AVOID.." (%s)", nil, nil, 3)--P1 Add
+local timerInterruptingTremorCD			= mod:NewCDCountTimer(20.5, 1243743, nil, "SpellCaster|HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--P1 Add
 --local timerRiftSimulacrumCD			= mod:NewCDCountTimer(20.5, 1261016, nil, nil, nil, 6)--P2 Starting (stage 2 bar does this, this timer never fires)
 local timerCosmicPortalCD				= mod:NewCDCountTimer(20.5, 1261339, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic only mechanic of unknown nature
 local timerRiftSlashCD					= mod:NewCDCountTimer(20.5, 1246461, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P2 Rift Simulacrum slash attack
@@ -86,16 +86,13 @@ mod.vb.graspofEmptynessCount = 0
 mod.vb.devouringCosmosCount = 0
 mod.vb.riftSlashCount = 0
 local stage2p5Seen, stage3Recovered = false, false
-
---local function unsetBackupTL(self)
---	self:DisableAlertOptions({64, 65, 66})--Dark Hand, Ravenous Abyss, Interrupting Tremor
---	self:DisableTimelineOptions({64, 65, 66})
---end
+local lastTLEvent = 0
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self:TLResolveReset()
 	stage2p5Seen, stage3Recovered = false, false
+	lastTLEvent = 0
 	self.vb.coronaCount = 1
 	self.vb.expulsionCount = 1
 	self.vb.voidExpulsionCount = 1
@@ -121,19 +118,22 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		--Stage 1 opener has an unresolved 4s overlap (Dark Hand, Interrupting Tremor, Ravenous Abyss);
-		--register Blizz API fallbacks so passthrough bars keep correct sounds/colors.
-		--Currently, this is commented because it doesn't function as designed.
-		--Sounds fail to unregister midcombat, likely due to blizz restriction.
---		if self:IsTank() then
---			specWarnDarkHand:SetAlert(64, "defensive", 2, 2)
---		end
---		timerDarkHandCD:SetTimeline(64)
---		specWarnRavenousAbyss:SetAlert(65, "watchstep", 2, 2)
---		timerRavenousAbyssCD:SetTimeline(65)
---		specWarnInterruptingTremor:SetAlert(66, "stopcast", 2, 2, 0)
---		timerInterruptingTremorCD:SetTimeline(66)
---		self:Schedule(8, unsetBackupTL, self)--Unregister fallbacks after opener overlap window
+		if self:IsTank() then
+			specWarnDarkHand:Schedule(4, 1)
+			specWarnDarkHand:ScheduleVoice(4, "defensive")
+		end
+		--pre Schedule first 3 abilities that have ambigous timers
+		timerDarkHandCD:Start(4, 1)
+		specWarnRavenousAbyss:Schedule(4, 1)
+		specWarnRavenousAbyss:ScheduleVoice(4, "watchstep")
+		timerRavenousAbyssCD:Start(4, 1)
+		specWarnInterruptingTremor:Schedule(4, 1)
+		if self:IsSpellCaster() then
+			specWarnInterruptingTremor:ScheduleVoice(4, "kickorstopcast")
+		else
+			specWarnInterruptingTremor:ScheduleVoice(4, "kickcast")
+		end
+		timerInterruptingTremorCD:Start(4, 1)
 	else
 		--Blizz API fallbacks
 		timerNullCoronaCD:SetTimeline(4)
@@ -159,7 +159,11 @@ function mod:OnLimitedCombatStart()
 		timerDarkHandCD:SetTimeline(64)
 		specWarnRavenousAbyss:SetAlert(65, "watchstep", 2, 2)
 		timerRavenousAbyssCD:SetTimeline(65)
-		specWarnInterruptingTremor:SetAlert(66, "stopcast", 2, 2, 0)
+		if self:IsSpellCaster() then
+			specWarnInterruptingTremor:SetAlert(66, "kickorstopcast", 2, 2, 0)
+		else
+			specWarnInterruptingTremor:SetAlert(66, "kickcast", 2, 2, 0)
+		end
 		timerInterruptingTremorCD:SetTimeline(66)
 		warnRiftSimulacrum:SetAlert(135, "ptwo", 2, 2, 0)--Verify
 --		timerRiftSimulacrumCD:SetTimeline(135)
@@ -219,7 +223,9 @@ do
 					timerInterruptingTremorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "interruptingTremor", "interruptingTremorCount"))
 					return true
 				end
-			elseif timer == 2 or timer == 3 or timer == 6 then--Silverstrike Barrage starts Intermission 1 (Stage 1.5)
+			elseif (timer == 2) and (GetTime() - lastTLEvent > 10) then--Initial 1.5 (2 rounded) Silverstrike Barrage starts Intermission 1 (Stage 1.5)
+				--Time since last TL event is usually around 12-14
+				--Phase tranition cancels P1 timers and then has 3 CHAT_MSG_MONSTER_YELL events
 				self:SetStage(1.5)
 				timerSilverstrikeBarrageCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
 				return true
@@ -378,6 +384,7 @@ do
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
+		lastTLEvent = GetTime()
 		if self:IsEasy() then
 			local handled = timersEasy(self, timer, timerExact, eventID)
 			if not handled then--Ambiguous/unresolvable duration; let Blizzard show its own bar
@@ -387,6 +394,7 @@ do
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		lastTLEvent = GetTime()
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
 		if eventState == 2 then
@@ -418,8 +426,12 @@ do
 				specWarnRavenousAbyss:Show(eventCount)
 				specWarnRavenousAbyss:Play("watchstep")
 			elseif eventType == "interruptingTremor" then
-				specWarnInterruptingTremor:Show()
-				specWarnInterruptingTremor:Play("stopcast")
+				specWarnInterruptingTremor:Show(eventCount)
+				if self:IsSpellCaster() then
+					specWarnInterruptingTremor:Play("kickorstopcast")
+				else
+					specWarnInterruptingTremor:Play("kickcast")
+				end
 			elseif eventType == "voidstalkerSting" then
 				warnVoidStalkerSting:Show(eventCount)
 			elseif eventType == "calloftheVoid" then
