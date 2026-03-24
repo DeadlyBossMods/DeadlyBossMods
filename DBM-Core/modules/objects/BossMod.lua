@@ -899,6 +899,16 @@ function bossModPrototype:GetFromTimersTable(table, difficultyName, phase, spell
 	return prev
 end
 
+---Returns true when timer matches expected value within rounding variance.
+---@param timer number
+---@param expected number
+---@param variance number? Defaults to 1 second.
+---@return boolean
+function bossModPrototype:IsRoundedTimer(timer, expected, variance)
+	variance = variance or 1
+	return timer >= (expected - variance) and timer <= (expected + variance)
+end
+
 do
 	local function getTLCountState(self)
 		if not self.tlCountState then
