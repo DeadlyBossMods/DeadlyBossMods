@@ -31,7 +31,7 @@
 ## X-Curse-Project-ID: 3358
 ## X-Wago-ID: qv633o6b
 
-# localization.en.lua
+localization.en.lua
 
 VoidSpire\ImperatorAverzian.lua
 VoidSpire\Vorasius.lua

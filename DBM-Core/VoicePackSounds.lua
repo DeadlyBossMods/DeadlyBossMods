@@ -195,6 +195,7 @@ local VPSound = {
 	["kick4r"] = 0,
 	["kick5r"] = 0,
 	["kickcast"] = 0,
+	["kickorstopcast"] = 19,--Neuro Done
 	["killbigmob"] = 0,
 	["killmine"] = 0,
 	["killmob"] = 0,

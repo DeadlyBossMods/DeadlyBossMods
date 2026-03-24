@@ -1,5 +1,5 @@
 local mod	= DBM:NewMod(2737, "DBM-Raids-Midnight", 3, 1307)
---local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(250589)--War Chaplain Senn main boss, 250588 Commander Venel Lightblood, 250587 general Amias Bellamy
@@ -34,11 +34,11 @@ local timerSacredShieldCD					= mod:NewCDCountTimer(20.5, 1249260, nil, nil, nil
 local timerTyrsWrathCD						= mod:NewCDCountTimer(20.5, 1248721, nil, nil, nil, 3)
 local timerAuraofDevotionCD					= mod:NewCDCountTimer(20.5, 1246162, nil, nil, nil, 3)
 local timerSearingRadianceCD				= mod:NewCDCountTimer(20.5, 1255738, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerJudgementShieldCD				= mod:NewCDCountTimer(20.5, 1251857, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerJudgementShieldCD				= mod:NewCDCountTimer(20.5, 1251857, L.JudgementShield.." (%s)", "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerAvengerShieldCD					= mod:NewCDCountTimer(20.5, 1246487, nil, nil, nil, 3)
 local timerDivineTollCD						= mod:NewCDCountTimer(20.5, 1248652, nil, nil, nil, 3)
 local timerAuraofWrathCD					= mod:NewCDCountTimer(20.5, 1248449, nil, nil, nil, 5)
-local timerjudgementFinalCD					= mod:NewCDCountTimer(20.5, 1246736, nil, "Tank", nil, 5)
+local timerjudgementFinalCD					= mod:NewCDCountTimer(20.5, 1246736, L.JudgementFV.." (%s)", "Tank", nil, 5)
 local timerDivineStormCD					= mod:NewCDCountTimer(20.5, 1246765, nil, nil, nil, 3)
 local timerSacredTollCD						= mod:NewCDCountTimer(20.5, 1246749, nil, nil, nil, 2)
 local timerExecutionSentenceCD				= mod:NewCDCountTimer(20.5, 1276368, nil, nil, nil, 3)
