@@ -6,6 +6,6 @@ local L
 L= DBM:GetModLocalization(2737)
 
 L:SetMiscLocalization({
-	JudgementShield	= "Judgement-SotR)",
-	JudgementFV		= "Judgement-FV)"
+	JudgementShield	= "Judgment-SotR)",
+	JudgementFV		= "Judgment-FV)"
 })
