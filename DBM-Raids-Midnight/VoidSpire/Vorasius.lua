@@ -19,7 +19,7 @@ local specWarnParasiteExpulsion			= mod:NewSpecialWarningDodgeCount(1254199, nil
 local specWarnPrimordialRoar			= mod:NewSpecialWarningCount(1260046, nil, 140459, nil, 2, 2)
 --local specWarnFixateParasite			= mod:NewSpecialWarningYou(1254112, nil, nil, nil, 1, 2)
 
-local timerShadowclawSlamCD				= mod:NewCDCountTimer(20.5, 1241836, 182557, nil, nil, 2)--Shortname "Slam"
+local timerShadowclawSlamCD				= mod:NewCDCountTimer("d20.5", 1241836, 182557, nil, nil, 2)--Shortname "Slam"
 --local timerVoidBreathCD				= mod:NewCDCountTimer(20.5, 1243853, 17088, nil, nil, 3)--Shortname "Breath"
 local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2)--Shortname "Roar"
@@ -82,7 +82,15 @@ do
 		elseif timer == 57 or timer == 123 then--Parasite Expulsion
 			timerParasiteExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "expulsion", "expulsionCount"))
 		elseif timer == 16 or timer == 136 or timer == 240 then--Shadowclaw Slam
-			timerShadowclawSlamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "slam", "clawCount"))
+			if timer == 240 then
+				timer = 120--Blizzard doesn't even know their own timers
+			end
+			if timer == 136 then
+				--Increment count by 1 since it'll start in parallel to the initial 16 second bar
+				timerShadowclawSlamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "slam", "clawCount") + 1)
+			else
+				timerShadowclawSlamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "slam", "clawCount"))
+			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
 				badStateDetected = true
