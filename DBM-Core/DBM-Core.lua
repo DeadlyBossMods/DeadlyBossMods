@@ -83,10 +83,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 407, "a0f5bf5"--407.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.32 alpha"--Core version
+DBM.DisplayVersion = "12.0.32"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 3, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 3, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
