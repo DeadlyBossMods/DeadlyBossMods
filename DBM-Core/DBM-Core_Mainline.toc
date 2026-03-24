@@ -1,4 +1,4 @@
-## Interface: 120001
+## Interface: 120001, 120005
 ## X-Min-Interface: 110200
 ## Category: DBM
 ## Group: DBM-Core
