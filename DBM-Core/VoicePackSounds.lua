@@ -77,6 +77,7 @@ local VPSound = {
 	["changemoon"] = 0,
 	["changemt"] = 2,
 	["changetarget"] = 2,
+	["changeplatform"] = 19,--Neuro Done
 	["chargemove"] = 2,
 	["chargethroughbomb"] = 18,
 	["checkhp"] = 0,

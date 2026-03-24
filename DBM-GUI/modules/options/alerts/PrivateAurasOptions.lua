@@ -169,6 +169,11 @@ coTankPAIcon:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankEnabled = not DBM.Options.PrivateAurasCoTankEnabled
 	DBM.PrivateAuras:OnSettingsChange(false)
 end)
+local coTankPASecond	= coTankPAArea:CreateCheckButton(L.ShowSecondCoTank, true, nil, "PrivateAurasCoTankShowSecond")
+coTankPASecond:SetScript("OnClick", function()
+	DBM.Options.PrivateAurasCoTankShowSecond = not DBM.Options.PrivateAurasCoTankShowSecond
+	DBM.PrivateAuras:OnSettingsChange(false)
+end)
 local coTankUpscaleDText = coTankPAArea:CreateCheckButton(L.UpscaleDurationText, true, nil, "PrivateAurasCoTankUpscaleDuration")
 coTankUpscaleDText:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankUpscaleDuration = not DBM.Options.PrivateAurasCoTankUpscaleDuration
@@ -258,8 +263,10 @@ coTankPAReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankAnchor = DBM.DefaultOptions.PrivateAurasCoTankAnchor
 	DBM.Options.PrivateAurasCoTankRelativeTo = DBM.DefaultOptions.PrivateAurasCoTankRelativeTo
 	DBM.Options.PrivateAurasCoTankUpscaleDuration = DBM.DefaultOptions.PrivateAurasCoTankUpscaleDuration
+	DBM.Options.PrivateAurasCoTankShowSecond = DBM.DefaultOptions.PrivateAurasCoTankShowSecond
 	-- Set UI visuals
 	coTankPAIcon:SetChecked(DBM.Options.PrivateAurasCoTankEnabled)
+	coTankPASecond:SetChecked(DBM.Options.PrivateAurasCoTankShowSecond)
 	coTankPABorder:SetChecked(DBM.Options.PrivateAurasCoTankHideBorder)
 	coTankPATooltip:SetChecked(DBM.Options.PrivateAurasCoTankHideTooltip)
 	coTankGrowDir:SetSelectedValue(DBM.Options.PrivateAurasCoTankGrowDirection)

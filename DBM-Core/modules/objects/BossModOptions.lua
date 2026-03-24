@@ -107,39 +107,67 @@ end
 ---|1: Custom subtype for when targetted by the private aura spell
 ---|2: Custom subtype for when standing in the private aura spell (GTFO)
 ---|3: Custom subtype for lingering debuffs (such as dots, or increased damage taken)
----@param auraspellId number must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
+---@param auraspellId number|number[] must match debuff ID(s); if a table, first element is the option key and all IDs share the same sound
 ---@param default SpecFlags|boolean?
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 ---@param defaultSound acceptedSASounds? is used to set default Special announce sound (1-4) just like regular special announce objects
----@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo, 3: post debuff
-function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType)
-	self.DefaultOptions["PrivateAuraSound" .. auraspellId] = (default == nil) or default
-	self.DefaultOptions["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
+---@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo, 3: post debuff. Also accepts a voice string as shorthand for migrated 6-arg calls.
+---@param voice VPSound|number? voice pack media path for zone-based private aura sound registration. Also accepts the shorthand voiceVersion number when subType is passed as a voice string.
+---@param voiceVersion number? required voice pack version; if voice pack version is below this value, falls back to default sound
+function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion)
+	if type(subType) == "string" then
+		local shorthandVoiceVersion = type(voice) == "number" and voice or nil
+		voice = subType
+		voiceVersion = shorthandVoiceVersion
+		subType = nil
+	end
+	local optionId
+	if type(auraspellId) == "table" then
+		optionId = auraspellId[1]
+	else
+		optionId = auraspellId
+	end
+	if type(optionId) ~= "number" then
+		DBM:Debug("Attempting to add private aura sound failed due to invalid optionId type for mod " .. self.id, 2)
+		return
+	end
+	self.DefaultOptions["PrivateAuraSound" .. optionId] = (default == nil) or default
+	self.DefaultOptions["PrivateAuraSound" .. optionId .. "SWSound"] = defaultSound or 1
 	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
-	self.Options["PrivateAuraSound" .. auraspellId] = (default == nil) or default
+	self.Options["PrivateAuraSound" .. optionId] = (default == nil) or default
 	--Temp hide UI options for private auras that are flagged not private until 12.0.5 because reasons.
-	if not C_UnitAuras.AuraIsPrivate(auraspellId) then
+	if not C_UnitAuras.AuraIsPrivate(optionId) then
 		return
 	end
 	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
 	---@diagnostic disable-next-line: assign-type-mismatch
-	self.Options["PrivateAuraSound" .. auraspellId .. "SWSound"] = defaultSound or 1
+	self.Options["PrivateAuraSound" .. optionId .. "SWSound"] = defaultSound or 1
 	subType = subType or 0
 	if subType == 1 then
-		self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT:format(auraspellId)
+		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT:format(optionId)
 	elseif subType == 2 then
-		self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT:format(auraspellId)
+		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT:format(optionId)
 	elseif subType == 3 then
-		self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_POST_TEXT:format(auraspellId)
+		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_PRIVATEAURA_OPTION_POST_TEXT:format(optionId)
 	else
-		self.localization.options["PrivateAuraSound" .. auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TEXT:format(auraspellId)
+		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_PRIVATEAURA_OPTION_TEXT:format(optionId)
 	end
 --	if not DBM.Options.GroupOptionsExcludePA then
-		self:GroupSpellsPA(groupSpellId or auraspellId, "PrivateAuraSound" .. auraspellId)
+		self:GroupSpellsPA(groupSpellId or optionId, "PrivateAuraSound" .. optionId)
 --	end
-	self:SetOptionCategory("PrivateAuraSound" .. auraspellId, "paura", nil, nil, true)
+	self:SetOptionCategory("PrivateAuraSound" .. optionId, "paura", nil, nil, true)
+	-- Store for zone-based registration in SecondaryLoadCheck, keyed by exact zone IDs captured from SetZone at option registration time.
+	if voice then
+		if self.zones then
+			if not self.pendingPASoundsByZone then self.pendingPASoundsByZone = {} end
+			for zoneID in pairs(self.zones) do
+				self.pendingPASoundsByZone[zoneID] = self.pendingPASoundsByZone[zoneID] or {}
+				self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, voice, voiceVersion or 0}
+			end
+		end
+	end
 end
 
 ---Object for customizing blizzard timeline object with colors and sounds

@@ -405,6 +405,7 @@ DBM.DefaultOptions = {
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
 	ShortTimerText = true,
+	HardcodedTimer = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 	CoreSavedRevision = 1,
 	SilentMode = false,
@@ -445,6 +446,7 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankRelativeTo = "CENTER",--NYI
 	PrivateAurasCoTankXOffset = -150,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasCoTankYOffset = 150,--Partial (drag and drop only, no UI slider/editbox)
+	PrivateAurasCoTankShowSecond = false,
 	--Player Text Anchor
 	PrivateAurasTextAnchorScale = 1.8,
 	PrivateAurasTextAnchorXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)
@@ -495,7 +497,8 @@ local inCombatTrash = {}
 -- False variables
 local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false
 -- Nil variables
-local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader
+local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader, syncZonePASounds
+local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
 -- 0 variables
 local LastInstanceMapID = -1
 
@@ -2030,7 +2033,7 @@ do
 			else
 				self:RegisterEvents(
 					"ENCOUNTER_TIMELINE_EVENT_ADDED",
-					"ENCOUNTER_TIMELINE_EVENT_REMOVED",
+					--"ENCOUNTER_TIMELINE_EVENT_REMOVED",
 					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
 					"ENCOUNTER_WARNING"
 				)
@@ -2188,6 +2191,8 @@ do
 	--- |"DBM_Wipe"
 	--- |"DBM_PlaySound"
 	--- |"DBM_TestModStarted"
+	--- |"DBM_IgnoreBlizzAPI"
+	--- |"DBM_ResumeBlizzAPI"
 	local callbacks = {}
 
 	function fireEvent(event, ...)
@@ -2652,6 +2657,14 @@ do
 			raid[playerName].locale = GetLocale()
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
+		end
+		if private.isRetail then
+			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+			if not succeeded then
+				pendingPAAnchorCheck = 2
+			else
+				pendingPAAnchorCheck = 0
+			end
 		end
 	end
 
@@ -4138,6 +4151,25 @@ do
 	end
 
 	---@param self DBM
+	---@param mapID number
+	syncZonePASounds = function(self, mapID)
+		if not private.isRetail then
+			return
+		end
+		if InCombatLockdown() or #inCombat > 0 then
+			pendingPASoundZoneSync = mapID
+			return
+		end
+		pendingPASoundZoneSync = nil
+		for _, mod in ipairs(DBM.Mods) do
+			mod:DisablePrivateAuraSounds()
+		end
+		for _, mod in ipairs(DBM.Mods) do
+			mod:RegisterZonePASounds(mapID)
+		end
+	end
+
+	---@param self DBM
 	---@param delay number?
 	local function SecondaryLoadCheck(self, delay)
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = private.GetInstanceInfo()
@@ -4185,6 +4217,16 @@ do
 		-- LoadMod
 		self:LoadModsOnDemand("mapId", mapID, delay or 0)
 		self:CheckAvailableMods()
+		if private.isRetail then
+			--Handle private aura sounds and anchors
+			syncZonePASounds(self, mapID)
+			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+			if not succeeded then
+				pendingPAAnchorCheck = 1
+			else
+				pendingPAAnchorCheck = 0
+			end
+		end
 		self:UpdateMapRestrictions()
 		private:GetModule("DevToolsModule"):OnDebugToggle()
 		if self:HasMapRestrictions() then
@@ -4608,6 +4650,17 @@ do
 				self:AddMsg(L.LEAVING_COMBAT, nil, true)--Played using generic sound
 			end
 		end
+		if private.isRetail then
+			if pendingPASoundZoneSync then
+				syncZonePASounds(self, pendingPASoundZoneSync)
+			end
+			if pendingPAAnchorCheck > 0 then
+				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+				if succeeded then
+					pendingPAAnchorCheck = 0
+				end
+			end
+		end
 	end
 
 	local function isBossEngaged(cId)
@@ -4625,16 +4678,32 @@ do
 	end
 
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		if timerRequestInProgress then return end--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
-		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
-			self:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT event fired for zoneId" .. LastInstanceMapID, 3, nil, nil, true)
-			for _, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if not v.noIEEUDetection and not (#inCombat > 0 and v.noMultiBoss) then
-					if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
-						self:StartCombat(v.mod, 0, "IEEU")
+		self:Debug("|cffffff00INSTANCE_ENCOUNTER_ENGAGE_UNIT: |r event fired for zoneId" .. LastInstanceMapID, 3, nil, nil, true)
+		if not timerRequestInProgress then--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
+			if dbmIsEnabled and combatInfo[LastInstanceMapID] then
+				for _, v in ipairs(combatInfo[LastInstanceMapID]) do
+					if not v.noIEEUDetection and not (#inCombat > 0 and v.noMultiBoss) then
+						if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
+							self:StartCombat(v.mod, 0, "IEEU")
+						end
 					end
 				end
 			end
+		end
+		if UnitExists("boss1") then
+			self:Debug("|cffffff00boss1: |r " .. UnitName("boss1"), 3, nil, nil, true)
+		end
+		if UnitExists("boss2") then
+			self:Debug("|cffffff00boss2: |r " .. UnitName("boss2"), 3, nil, nil, true)
+		end
+		if UnitExists("boss3") then
+			self:Debug("|cffffff00boss3: |r " .. UnitName("boss3"), 3, nil, nil, true)
+		end
+		if UnitExists("boss4") then
+			self:Debug("|cffffff00boss4: |r " .. UnitName("boss4"), 3, nil, nil, true)
+		end
+		if UnitExists("boss5") then
+			self:Debug("|cffffff00boss5: |r " .. UnitName("boss5"), 3, nil, nil, true)
 		end
 	end
 
@@ -4774,11 +4843,25 @@ do
 
 	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		if self:issecretvalue(msg) then
+			if target then
+				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc .. " while looking at " .. target, 2, nil, nil, true)
+			else
+				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc, 2, nil, nil, true)
+			end
 			return
 		end
 		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
 			local targetName = target or "nil"
-			self:Debug("CHAT_MSG_MONSTER_YELL from " .. npc .. " while looking at " .. targetName, 2, nil, nil, true)
+			if targetName ~= "nil" then
+				local playerClass = self:GetRaidClass(targetName)
+				if playerClass then
+					local playerColor = RAID_CLASS_COLORS[playerClass]
+					if playerColor then
+						targetName = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, targetName, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+					end
+				end
+			end
+			self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 2, nil, nil, true)
 		end
 		if private.isClassic and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.hordeOny) then
@@ -4807,6 +4890,7 @@ do
 
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
 		if self:issecretvalue(msg) then
+			self:Debug("|cffffa500CHAT_MSG_MONSTER_EMOTE: |r fired: " .. msg, 2, nil, nil, true)
 			return
 		end
 		return onMonsterMessage(self, "emote", msg)
@@ -4814,6 +4898,8 @@ do
 
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender, ...)
 		if self:issecretvalue(msg) then
+			--Still send the debug to debuglog
+			self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. msg .. " with sender of " .. sender, 2, nil, nil, true)
 			return
 		end
 		onMonsterMessage(self, "emote", msg)
@@ -4822,7 +4908,7 @@ do
 			local spellId = tonumber(id)
 			if spellId then
 				local spellName = DBM:GetSpellName(spellId) or CL.UNKNOWN
-				self:Debug("CHAT_MSG_RAID_BOSS_EMOTE fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 2, nil, nil, true)
+				self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 2, nil, nil, true)
 			end
 		end
 		return self:FilterRaidBossEmote(msg, sender, ...)
@@ -4838,6 +4924,7 @@ do
 
 	function DBM:RAID_BOSS_WHISPER(msg)
 		if self:issecretvalue(msg) then
+			self:Debug("RAID_BOSS_WHISPER fired: " .. msg, 2, nil, nil, true)
 			return
 		end
 		--Make it easier for devs to detect whispers they are unable to see
@@ -4853,16 +4940,17 @@ do
 		if gossipOptionID then--At least one must return for debug
 			if DBM:MidRestrictionsActive() then
 				--GUID is a secret in combat
-				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)), 1, nil, nil, true)
+				self:Debug("|cffffff00GOSSIP_SHOW: |r triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)), 1, nil, nil, true)
 			else
 				local cid = self:GetUnitCreatureId("npc") or 0
-				self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid, 1, nil, nil, true)
+				self:Debug("|cffffff00GOSSIP_SHOW: |r triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid, 1, nil, nil, true)
 			end
 		end
 	end
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
 		if self:issecretvalue(msg) then
+			self:Debug("CHAT_MSG_MONSTER_SAY fired: " .. msg, 2, nil, nil, true)
 			return
 		end
 		if private.isClassic and not IsInInstance() then
@@ -5051,7 +5139,6 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if private.isRetail then
-				self.PrivateAuras:RegisterAllUnits()
 				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
 				end
@@ -5383,17 +5470,11 @@ do
 				mod:UnregisterOnUpdateHandler()
 			end
 			mod:Stop()
-			if mod.paSounds then
-				mod:DisablePrivateAuraSounds()
-			end
 			if mod.tlTimerEvents then
 				mod:DisableTimelineOptions()
 			end
 			if mod.tlSoundEvents then
 				mod:DisableAlertOptions()
-			end
-			if private.isRetail then
-				self.PrivateAuras:UnregisterPrivateAuras(nil)--Sending no unit unregisters all
 			end
 			if self.Options.IgnoreBlizzAPI then
 				self.Options.IgnoreBlizzAPI = false
@@ -5677,6 +5758,9 @@ do
 				self:CreatePizzaTimer(0, "", nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
+				if private.isRetail and pendingPASoundZoneSync then
+					syncZonePASounds(self, pendingPASoundZoneSync)
+				end
 				--module cleanup
 				private:ClearModuleTasks()
 			end

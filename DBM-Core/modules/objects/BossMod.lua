@@ -49,6 +49,8 @@ local mt = {__index = bossModPrototype}
 ---@field disableHealthCombat boolean?
 ---@field isCustomMod boolean?
 ---@field sendMainBossGUID boolean? Used to force enable nameplate timers for main boss
+---@field paSounds table<number, number[]>?
+---@field pendingPASoundsByZone table<number, table<integer, table>>?
 
 ---@param name string|number Name of mod is usually journalID for auto translation or a unique string
 ---@param modId string? Must match parent module name (ie DBM-Party-Classic) or it won't appear in GUI
@@ -272,7 +274,7 @@ function bossModPrototype:SetStage(stage)
 	if self.inCombat then--Safety, in event mod manages to run any phase change calls out of combat/during a wipe we'll just safely ignore it
 		DBM:FireEvent("DBM_SetStage", self, self.id, self.vb.phase, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, self.vb.stageTotality)--Mod, modId, Stage, Encounter Id (if available), total number of times SetStage has been called since combat start
 		--Note, some encounters have more than one encounter Id, for these encounters, the first ID from mod is always returned regardless of actual engage ID triggered fight
-		DBM:Debug("DBM_SetStage: " .. self.vb.phase .. "/" .. self.vb.stageTotality)
+		DBM:Debug("DBM_SetStage: " .. self.vb.phase .. "/" .. self.vb.stageTotality, nil, nil, nil, true)
 		test:Trace(self, "SetStage", self.vb.phase, self.vb.stageTotality)
 	end
 end
@@ -897,6 +899,172 @@ function bossModPrototype:GetFromTimersTable(table, difficultyName, phase, spell
 	return prev
 end
 
+do
+	local function getTLCountState(self)
+		if not self.tlCountState then
+			self.tlCountState = {
+				events = {},
+				pending = {},
+			}
+		end
+		return self.tlCountState
+	end
+
+	local function removePendingEvent(pendingEvents, eventID)
+		if not pendingEvents then return end
+		for i = 1, #pendingEvents do
+			if pendingEvents[i] == eventID then
+				table.remove(pendingEvents, i)
+				return
+			end
+		end
+	end
+
+	local function reindexPendingCounts(self, state, eventType)
+		local pendingEvents = state.pending[eventType]
+		if not pendingEvents then return end
+		for i, pendingEventID in ipairs(pendingEvents) do
+			local eventInfo = state.events[pendingEventID]
+			if eventInfo and eventInfo.countKey then
+				local currentCount = self.vb[eventInfo.countKey]
+				if type(currentCount) == "number" then
+					eventInfo.count = currentCount + i - 1
+				end
+			end
+		end
+	end
+
+	local function cleanupTLCountState(self, state, eventType)
+		local pendingEvents = eventType and state.pending[eventType]
+		if pendingEvents and #pendingEvents == 0 then
+			state.pending[eventType] = nil
+		end
+		if not next(state.events) and not next(state.pending) then
+			self.tlCountState = nil
+		end
+	end
+
+	---Reserve a timeline count for a hardcoded event.
+	---@param eventID number
+	---@param eventType string Name of event type checked in mod for ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED
+	---@param countKey string? Name of the vb count field to reserve against. Omit for non-count events.
+	---@return number? count
+	function bossModPrototype:TLCountStart(eventID, eventType, countKey)
+		local state = getTLCountState(self)
+		if state.events[eventID] then
+			self:TLCountCancel(eventID)
+			state = getTLCountState(self)
+		end
+		local eventInfo = {
+			eventType = eventType,
+			countKey = countKey,
+		}
+		if countKey then
+			local currentCount = self.vb[countKey]
+			if type(currentCount) ~= "number" then
+				DBM:Debug("|cffff0000TLCountStart received invalid count key '" .. tostring(countKey) .. "' for eventType '" .. tostring(eventType) .. "'|r", 2, nil, nil, true)
+				currentCount = 1
+			end
+			local pendingEvents = state.pending[eventType]
+			if not pendingEvents then
+				pendingEvents = {}
+				state.pending[eventType] = pendingEvents
+			end
+			eventInfo.count = currentCount + #pendingEvents
+			pendingEvents[#pendingEvents + 1] = eventID
+		end
+		state.events[eventID] = eventInfo
+		return eventInfo.count
+	end
+
+	---Commit a reserved timeline count when an event finishes.
+	---@param eventID number
+	---@return string? eventType Returns eventType cached by TLCountStart in TLStart
+	---@return number? count Returns event count before incrementing the vb countKey
+	function bossModPrototype:TLCountFinish(eventID)
+		local state = self.tlCountState
+		if not state then return nil, nil end
+		local eventInfo = state.events[eventID]
+		if not eventInfo then return nil, nil end
+		state.events[eventID] = nil
+		local eventType = eventInfo.eventType
+		local eventCount = eventInfo.count
+		if eventInfo.countKey then
+			local currentCount = self.vb[eventInfo.countKey]
+			if type(currentCount) == "number" then
+				eventCount = eventCount or currentCount
+				if eventCount >= currentCount then
+					self.vb[eventInfo.countKey] = eventCount + 1
+				end
+			else
+				DBM:Debug("|cffff0000TLCountFinish received invalid count key '" .. tostring(eventInfo.countKey) .. "' for eventType '" .. tostring(eventType) .. "'|r", 2, nil, nil, true)
+			end
+			removePendingEvent(state.pending[eventType], eventID)
+			reindexPendingCounts(self, state, eventType)
+		end
+		cleanupTLCountState(self, state, eventType)
+		return eventType, eventCount
+	end
+
+	---Discard a reserved timeline count when an event is canceled.
+	---@param eventID number
+	---@return string? eventType
+	function bossModPrototype:TLCountCancel(eventID)
+		local state = self.tlCountState
+		if not state then return nil end
+		local eventInfo = state.events[eventID]
+		if not eventInfo then return nil end
+		state.events[eventID] = nil
+		if eventInfo.countKey then
+			removePendingEvent(state.pending[eventInfo.eventType], eventID)
+			reindexPendingCounts(self, state, eventInfo.eventType)
+		end
+		cleanupTLCountState(self, state, eventInfo.eventType)
+		return eventInfo.eventType
+	end
+
+	---Reset all reserved timeline count state for this mod.
+	function bossModPrototype:TLCountReset()
+		self.tlCountState = nil
+	end
+
+	---Reset recent hardcoded timeline resolver context.
+	function bossModPrototype:TLResolveReset()
+		self.tlResolveState = nil
+	end
+
+	---Push latest resolved hardcoded timeline event context.
+	---@param eventType string
+	---@param timer number
+	---@param maxEntries number? default 4
+	function bossModPrototype:TLResolvePush(eventType, timer, maxEntries)
+		if not self.tlResolveState then
+			self.tlResolveState = {}
+		end
+		local state = self.tlResolveState
+		state[#state + 1] = {
+			eventType = eventType,
+			timer = timer,
+		}
+		maxEntries = maxEntries or 4
+		if #state > maxEntries then
+			table.remove(state, 1)
+		end
+	end
+
+	---Peek previously resolved hardcoded timeline context.
+	---@param offset number? 0 = latest, 1 = one before latest, etc.
+	---@return string? eventType
+	---@return number? timer
+	function bossModPrototype:TLResolvePeek(offset)
+		local state = self.tlResolveState
+		if not state then return nil, nil end
+		local entry = state[#state - (offset or 0)]
+		if not entry then return nil, nil end
+		return entry.eventType, entry.timer
+	end
+end
+
 
 ----------------------------------
 --  Private/Secret API Methods  --
@@ -904,20 +1072,28 @@ end
 do
 	-- Helper function to register a private aura sound for a single spell ID
 	---@param self DBMMod
+	---@param optionId number
 	---@param spellId number
 	---@param media number|string
-	local function registerPrivateAuraSound(self, spellId, media)
+	local function registerPrivateAuraSound(self, optionId, spellId, media)
 		local soundSetting = DBM.Options.UseSoundChannel or "Master"
+		if not self.paSounds then
+			self.paSounds = {}
+		end
+		if not self.paSounds[optionId] then
+			self.paSounds[optionId] = {}
+		end
+		local privateAuraSoundId
 		--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
 		if type(media) == "number" then
-			self.paSounds[#self.paSounds + 1] = C_UnitAuras.AddPrivateAuraAppliedSound({
+			privateAuraSoundId = C_UnitAuras.AddPrivateAuraAppliedSound({
 				spellID = spellId,
 				unitToken = "player",
 				soundFileID = media,
 				outputChannel = soundSetting,
 			})
 		else--It's a string, so it's not an ID, we need to set soundFileName instead
-			self.paSounds[#self.paSounds + 1] = C_UnitAuras.AddPrivateAuraAppliedSound({
+			privateAuraSoundId = C_UnitAuras.AddPrivateAuraAppliedSound({
 				spellID = spellId,
 				unitToken = "player",
 				--Another cause of LuaLS being stupid for some reason
@@ -925,6 +1101,20 @@ do
 				soundFileName = media,
 				outputChannel = soundSetting,
 			})
+		end
+		self.paSounds[optionId][#self.paSounds[optionId] + 1] = privateAuraSoundId
+	end
+
+	---@param self DBMMod
+	---@param optionId number
+	local function disablePrivateAuraSoundOption(self, optionId)
+		if not self.paSounds or not self.paSounds[optionId] then return end
+		for _, id in ipairs(self.paSounds[optionId]) do
+			C_UnitAuras.RemovePrivateAuraAppliedSound(id)
+		end
+		self.paSounds[optionId] = nil
+		if not next(self.paSounds) then
+			self.paSounds = nil
 		end
 	end
 
@@ -959,44 +1149,106 @@ do
 		return mediaPath
 	end
 
-	--Function to actually register specific media to specific auras
-	---@param auraspellId number|table ID of Private aura we're actually monitoring (if it doesn't match option key, put option key in altOptionId)
+	--Internal function for zone-based registration of a single pending PA sound entry
+	---@param mod DBMMod
+	---@param auraspellId number|number[] ID(s) of the private aura(s) to register sound for
 	---@param voice VPSound voice pack media path
-	---@param voiceVersion number Required voice pack verion (if not met, falls back to default special warning sounds)
-	function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion)
+	---@param voiceVersion number Required voice pack version (if not met, falls back to default special warning sounds)
+	local function enablePrivateAuraSound(mod, auraspellId, voice, voiceVersion)
 		local optionId
 		if type(auraspellId) == "table" then
 			optionId = auraspellId[1]
 		else
 			optionId = auraspellId
 		end
+		if type(optionId) ~= "number" then
+			DBM:Debug("Attempting to register private aura sound failed due to invalid optionId type for mod " .. mod.id, 2)
+			return
+		end
+		if InCombatLockdown() then
+			DBM:Debug("Attempting to register private aura sound for spell ID " .. optionId .. " failed due to combat restriction. This sound will not be registered.", 2)
+			return
+		end
 		if not C_UnitAuras.AuraIsPrivate(optionId) then
 			DBM:Debug("Attempting to register private aura sound for spell ID " .. optionId .. " which is not a private aura. This sound will not be registered.", 2)
 			return
 		end
 		if DBM.Options.DontPlayPrivateAuraSound then return end
-		if optionId and self.Options["PrivateAuraSound" .. optionId] then
-			if not self.paSounds then self.paSounds = {} end
-			local mediaPath = checkValidVPSound(self, "PrivateAuraSound", optionId, voice, voiceVersion)
-			--Multi spellId aura
+		if optionId and mod.Options["PrivateAuraSound" .. optionId] then
+			local mediaPath = checkValidVPSound(mod, "PrivateAuraSound", optionId, voice, voiceVersion)
 			if mediaPath == "None" then return end--Don't register if media path is none, even if option is enabled
 			if type(auraspellId) == "table" then
 				for _, spellId in ipairs(auraspellId) do
-					registerPrivateAuraSound(self, spellId, mediaPath)
+					registerPrivateAuraSound(mod, optionId, spellId, mediaPath)
 				end
 			else
-				--Single spellId aura
-				registerPrivateAuraSound(self, auraspellId, mediaPath)
+				registerPrivateAuraSound(mod, optionId, auraspellId, mediaPath)
 			end
 		end
 	end
 
-	function bossModPrototype:DisablePrivateAuraSounds()
-		if self.paSounds then
-			for _, id in next, self.paSounds do
-				C_UnitAuras.RemovePrivateAuraAppliedSound(id)
+	---Called by DBM-Core's SecondaryLoadCheck when entering a zone.
+	---Registers only the pending private aura sounds stored for the current zone.
+	---@param mapID number
+	function bossModPrototype:RegisterZonePASounds(mapID)
+		if not self.pendingPASoundsByZone then return end
+		local zoneEntries = self.pendingPASoundsByZone[mapID]
+		if not zoneEntries then return end
+		for _, entry in ipairs(zoneEntries) do
+			enablePrivateAuraSound(self, entry[1], entry[2], entry[3])
+		end
+	end
+
+	---Refresh a single currently active private aura sound option for this mod using the player's current zone.
+	---@param optionId number
+	---@return boolean refreshed Returns false if the refresh could not be performed safely.
+	function bossModPrototype:RefreshPrivateAuraSound(optionId)
+		if InCombatLockdown() then
+			return false
+		end
+		disablePrivateAuraSoundOption(self, optionId)
+		local mapID = DBM:GetCurrentArea()
+		if not mapID or mapID <= 0 or not self.pendingPASoundsByZone then
+			return true
+		end
+		local zoneEntries = self.pendingPASoundsByZone[mapID]
+		if not zoneEntries then
+			return true
+		end
+		for _, entry in ipairs(zoneEntries) do
+			local entryOptionId = type(entry[1]) == "table" and entry[1][1] or entry[1]
+			if entryOptionId == optionId then
+				enablePrivateAuraSound(self, entry[1], entry[2], entry[3])
 			end
-			self.paSounds = nil
+		end
+		return true
+	end
+
+	---Refresh currently active private aura sounds for this mod using the player's current zone.
+	---@return boolean refreshed Returns false if the refresh could not be performed safely.
+	function bossModPrototype:RefreshPrivateAuraSounds()
+		if InCombatLockdown() then
+			return false
+		end
+		self:DisablePrivateAuraSounds()
+		local mapID = DBM:GetCurrentArea()
+		if mapID and mapID > 0 then
+			self:RegisterZonePASounds(mapID)
+		end
+		return true
+	end
+
+	function bossModPrototype:DisablePrivateAuraSounds()
+		if InCombatLockdown() then
+			DBM:Debug("Attempting to unregister private aura sounds for mod " .. self.id .. " failed due to combat restriction. This unregister will be deferred.", 2)
+			return
+		end
+		while self.paSounds do
+			local optionId = next(self.paSounds)
+			if not optionId then
+				break
+			end
+			disablePrivateAuraSoundOption(self, optionId)
 		end
 	end
 
@@ -1059,13 +1311,22 @@ do
 	end
 
 	--Called automatically on combat end to clear any custom timeline countdown sounds
-	function bossModPrototype:DisableTimelineOptions()
+	---@param specificEvent table? Used to clear only custom events instead of all events.
+	function bossModPrototype:DisableTimelineOptions(specificEvent)
 		--Note. Currently this doesn't wipe color since we don't want to wipe default generic colors until blizzard
 		--adds function that lets us set a default color to use when a custom one isn't set since we set defaults
 		--for ALL events on login as a workaround right now
 		if self.tlTimerEvents then
-			for encounterEventId in next, self.tlTimerEvents do
-				C_EncounterEvents.SetEventSound(encounterEventId, 2, nil)
+			if specificEvent then
+				for encounterEventId in next, specificEvent do
+					C_EncounterEvents.SetEventSound(encounterEventId, 2, nil)
+					self.tlTimerEvents[encounterEventId] = nil
+				end
+				return
+			else
+				for encounterEventId in next, self.tlTimerEvents do
+					C_EncounterEvents.SetEventSound(encounterEventId, 2, nil)
+				end
 			end
 			self.tlTimerEvents = nil
 		end
@@ -1114,13 +1375,22 @@ do
 	end
 
 	--Called automatically on combat end to clear any custom timeline/warning alert sounds
-	function bossModPrototype:DisableAlertOptions()
+	---@param specificEvent table? Used to clear only custom events instead of all events.
+	function bossModPrototype:DisableAlertOptions(specificEvent)
 		if self.tlSoundEvents then
-			for encounterEventId in next, self.tlSoundEvents do
-				C_EncounterEvents.SetEventSound(encounterEventId, 1, nil)
-				C_EncounterEvents.SetEventSound(encounterEventId, 0, nil)
+			if specificEvent then
+				for encounterEventId in next, specificEvent do
+					C_EncounterEvents.SetEventSound(encounterEventId, 1, nil)
+					C_EncounterEvents.SetEventSound(encounterEventId, 0, nil)
+					self.tlSoundEvents[encounterEventId] = nil
+				end
+			else
+				for encounterEventId in next, self.tlSoundEvents do
+					C_EncounterEvents.SetEventSound(encounterEventId, 1, nil)
+					C_EncounterEvents.SetEventSound(encounterEventId, 0, nil)
+				end
+				self.tlSoundEvents = nil
 			end
-			self.tlSoundEvents = nil
 		end
 	end
 end

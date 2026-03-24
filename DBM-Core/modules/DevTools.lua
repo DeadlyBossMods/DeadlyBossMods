@@ -15,23 +15,26 @@ function module:OnModuleLoad()
 	self:OnDebugToggle()
 end
 
+local mfloor, mmax = math.floor, math.max
+
 do
-	local debugLogFrame, debugLogViewport, debugLogContent
+	local debugLogFrame, debugLogViewport, debugLogContent, clearButton
 	local debugLogLineFrames = {}
-	local maxDebugLogEntries = 1000
+	local maxDebugLogEntries = 750
 	local debugLogSoftClosed = true
 	local lineHeight = 14
 	local debugLogLineCount = 0
 	local debugLogStartIndex = 1
 	local debugLogTopVisibleLine = 1
+	local debugLogNormalPoint, debugLogNormalRelativeTo, debugLogNormalX, debugLogNormalY
 
 	local function getVisibleLineCount()
 		if not debugLogViewport then return 1 end
-		return math.max(1, math.floor(debugLogViewport:GetHeight() / lineHeight))
+		return mmax(1, mfloor(debugLogViewport:GetHeight() / lineHeight))
 	end
 
 	local function getMaxTopVisibleLine()
-		return math.max(1, debugLogLineCount - getVisibleLineCount() + 1)
+		return mmax(1, debugLogLineCount - getVisibleLineCount() + 1)
 	end
 
 	local function clampTopVisibleLine()
@@ -50,7 +53,7 @@ do
 			debugLogTopVisibleLine = getMaxTopVisibleLine()
 		end
 		clampTopVisibleLine()
-		debugLogContent:SetHeight(math.max(debugLogViewport:GetHeight(), debugLogLineCount * lineHeight + 8))
+		debugLogContent:SetHeight(mmax(debugLogViewport:GetHeight(), debugLogLineCount * lineHeight + 8))
 		debugLogContent:ClearAllPoints()
 		debugLogContent:SetPoint("TOPLEFT", debugLogViewport, "TOPLEFT", 0, ((debugLogTopVisibleLine - 1) * lineHeight))
 	end
@@ -58,8 +61,15 @@ do
 	local function setDebugLogSoftClosed(softClosed)
 		if not debugLogFrame then return end
 		debugLogSoftClosed = softClosed
-		debugLogFrame:SetAlpha(softClosed and 0 or 1)
-		debugLogFrame:EnableMouse(not softClosed)
+		if softClosed then
+			-- Move off-screen to the right
+			debugLogFrame:ClearAllPoints()
+			debugLogFrame:SetPoint("LEFT", UIParent, "RIGHT", 5000, 0)
+		else
+			-- Restore to previous position
+			debugLogFrame:ClearAllPoints()
+			debugLogFrame:SetPoint(debugLogNormalPoint or "CENTER", debugLogNormalRelativeTo or UIParent, debugLogNormalPoint or "CENTER", debugLogNormalX or 0, debugLogNormalY or 0)
+		end
 	end
 
 	local function ensureLineFrame(index)
@@ -109,14 +119,20 @@ do
 		debugLogFrame:Hide()
 		debugLogFrame:SetFrameStrata("DIALOG")
 		debugLogFrame.backdropInfo = {
-			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background",
+			bgFile		= "Interface\\BUTTONS\\WHITE8X8",
 			tile		= true,
 			tileSize	= 16
 		}
 		debugLogFrame:ApplyBackdrop()
 		debugLogFrame:SetPoint("CENTER")
-		debugLogFrame:SetSize(800, 500)
-		debugLogFrame:SetClampedToScreen(true)
+		debugLogFrame:SetSize(1200, 800)
+		debugLogFrame:SetBackdropColor(0, 0, 0, 1)
+		debugLogFrame:SetClampedToScreen(false)
+		-- Store the normal position for later restoration
+		debugLogNormalPoint = "CENTER"
+		debugLogNormalRelativeTo = UIParent
+		debugLogNormalX = 0
+		debugLogNormalY = 0
 		debugLogFrame:SetMovable(true)
 		debugLogFrame:SetToplevel(true)
 		debugLogFrame:EnableMouse(true)
@@ -138,7 +154,7 @@ do
 			hideDebugLog()
 		end)
 
-		local clearButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
+		clearButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
 		clearButton:SetPoint("BOTTOMRIGHT", debugLogFrame, "BOTTOMRIGHT", -12, 12)
 		clearButton:SetSize(80, 22)
 		clearButton:SetText("Clear")
@@ -165,7 +181,7 @@ do
 		end)
 
 		debugLogContent = CreateFrame("Frame", nil, debugLogViewport)
-		debugLogContent:SetSize(740, 1)
+		debugLogContent:SetSize(1140, 1)
 
 		local scrollUpButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
 		scrollUpButton:SetPoint("TOPRIGHT", debugLogFrame, "TOPRIGHT", -12, -40)
@@ -190,6 +206,21 @@ do
 		setDebugLogSoftClosed(true)
 	end
 
+	--Debug Mode
+	local function getFightTime()
+		local inCombat = private.getInCombat()
+		if #inCombat > 0 then--At least one boss is engaged
+			for i = #inCombat, 1, -1 do
+				local mod = inCombat[i]
+				if mod and mod.combatInfo then
+					return mfloor(GetTime() - (mod.combatInfo.pull or 0) + 0.5)
+				end
+			end
+		else
+			return nil
+		end
+	end
+
 	function appendToDebugLog(text)
 		local wasAtBottom = debugLogTopVisibleLine >= getMaxTopVisibleLine()
 		local line
@@ -203,7 +234,12 @@ do
 				debugLogTopVisibleLine = debugLogTopVisibleLine - 1
 			end
 		end
-		line:SetText(text)
+		local time = getFightTime()
+		if time then
+			line:SetText(time..": "..text)
+		else
+			line:SetText(text)
+		end
 		line:Show()
 		updateLineLayout()
 		if debugLogFrame and debugLogFrame:IsShown() and not debugLogSoftClosed then
@@ -262,7 +298,6 @@ do
 end
 
 do
-	--Debug Mode
 	local eventsRegistered = false
 	local UnitName, UnitExists = UnitName, UnitExists
 	function module:UNIT_TARGETABLE_CHANGED(uId)
@@ -301,7 +336,7 @@ do
 	---@param alwaysFireEvent boolean? Used specifically for transcriptor logging
 	---@param isLogged boolean? Used specifically for events we want logged in the DBM Debug Log frame
 	function DBM:Debug(text, level, useSound, alwaysFireEvent, isLogged)
-		if (isLogged or alwaysFireEvent) and DBM.Options and DBM.Options.DebugMode then
+		if isLogged and DBM.Options and DBM.Options.DebugMode then
 			appendToDebugLog(text)
 		end
 		--Still fire debug callbacks for transcriptor even if user level debug is not enabled
