@@ -246,6 +246,9 @@ do
 					timerGrabblingMawCD:TLStart(timer, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
 					next26S2Type = "rakfang"
 				end
+			elseif self:IsRoundedTimer(timer, 51) then--Dread Breath recurring (raw ~51.3-51.6, rounds to 51 or 52); checked before ~53 to win the overlap at 52
+				timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				next53S2IsGloom = true
 			elseif self:IsRoundedTimer(timer, 53) then--Gloom or Dread Breath (alternating: gloom first)
 				if next53S2IsGloom then
 					timerGloomCD:TLStart(timer, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
@@ -254,9 +257,6 @@ do
 					timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 					next53S2IsGloom = true
 				end
-			elseif self:IsRoundedTimer(timer, 51) then--Dread Breath recurring seen around 51/52 in this log
-				timerDreadBreathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
-				next53S2IsGloom = true
 			elseif self:IsRoundedTimer(timer, 8) then--Midnight Flames (phase marker, stage 2 → 3)
 				next31S3IsVaelwing = true
 				next63S3IsNullbeam = true
@@ -319,7 +319,7 @@ do
 					next31S3IsVaelwing = true
 					lastS3Type = "rakfang"
 				end
-			elseif self:IsRoundedTimer(timer, 63) then--Nullbeam or Gloom alternating (starts Nullbeam)
+			elseif self:IsRoundedTimer(timer, 63, 2) then--Nullbeam or Gloom alternating (starts Nullbeam); variance 2 covers raw 61-63
 				if next63S3IsNullbeam then
 					timerNullBeamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 					next63S3IsNullbeam = false
