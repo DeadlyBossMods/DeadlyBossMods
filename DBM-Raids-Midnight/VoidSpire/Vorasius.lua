@@ -77,20 +77,21 @@ end
 do
 	---@param self DBMMod
 	---@param timer number
+	---@param timerExact number
 	---@param eventID number
-	local function timersEasy(self, timer, eventID)
+	local function timersEasy(self, timer, timerExact, eventID)
 		--Logic confirmed against normal and LFR
 		if timer == 6 or timer == 120 then--Primordial Roar
-			timerPrimordialRoarCD:TLStart(timer, eventID, self:TLCountStart(eventID, "roar", "roarCount"))
+			timerPrimordialRoarCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "roar", "roarCount"))
 		elseif timer == 57 or timer == 123 then--Parasite Expulsion
-			timerParasiteExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "expulsion", "expulsionCount"))
+			timerParasiteExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "expulsion", "expulsionCount"))
 		elseif timer == 16 or timer == 136 or timer == 240 then--Shadowclaw Slam
 			--Blizzard schedules two concurrent Slam timers (two different spellids alternating)
 			--Assign unified count immediately and store per-eventID since bars never cancel on this boss
 			local count = self.vb.clawCount
 			self.vb.clawCount = count + 1
 			slamEventCounts[eventID] = count
-			timerShadowclawSlamCD:TLStart(timer, eventID, count)
+			timerShadowclawSlamCD:TLStart(timerExact, eventID, count)
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
 				badStateDetected = true
@@ -111,10 +112,11 @@ do
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
 --		local eventState = C_EncounterTimeline.GetEventState(eventID)
-		local timer = math.floor(eventInfo.duration + 0.5)
+		local timerExact = eventInfo.duration
+		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
 			if self:IsEasy() then
-				timersEasy(self, timer, eventID)
+				timersEasy(self, timer, timerExact, eventID)
 			end
 		end
 	end
