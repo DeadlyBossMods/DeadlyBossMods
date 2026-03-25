@@ -187,9 +187,12 @@ do
 					specWarnTwilightObscurity:Show(eventCount)
 					specWarnTwilightObscurity:Play("aesoon")
 				elseif eventType == "entropic" then
+					--NOTE: This phase change actually overwrites all existing bars with new ones
+					--As a result, it'll trigger some false "refreshed before expired" debug because
+					--ADDED events fire before the CHANGED events cancel previous bars
 					specWarnEntropicUnraveling:Show(eventCount)
 					specWarnEntropicUnraveling:Play("dpshard")
-				elseif eventType == "despotic" then
+--				elseif eventType == "despotic" then
 				elseif eventType == "shattering" then
 					--Schedule 5 seconds after event, which is when spikes should come out
 					specWarnShatteringTwilight:Schedule(3.5, eventCount)

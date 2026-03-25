@@ -181,6 +181,7 @@ do
 					specWarnShadowsAdvance:Play("mobsoon")
 				elseif eventType == "collapse" then
 					if buggedUmbral == eventID then--This is the bugged umbral timer, we need to ignore it
+						buggedUmbral = 0
 						return
 					end
 					specWarnUmbralCollapse:Show(eventCount)
