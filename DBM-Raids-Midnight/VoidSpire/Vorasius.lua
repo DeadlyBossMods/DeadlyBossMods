@@ -19,7 +19,7 @@ local specWarnParasiteExpulsion			= mod:NewSpecialWarningDodgeCount(1254199, nil
 local specWarnPrimordialRoar			= mod:NewSpecialWarningCount(1260046, nil, 140459, nil, 2, 2)
 --local specWarnFixateParasite			= mod:NewSpecialWarningYou(1254112, nil, nil, nil, 1, 2)
 
-local timerShadowclawSlamCD				= mod:NewCDCountTimer(20.5, 1241836, 182557, nil, nil, 2)--Shortname "Slam"
+local timerShadowclawSlamCD				= mod:NewCDCountTimer("d20.5", 1241836, 182557, nil, nil, 2)--Shortname "Slam"
 --local timerVoidBreathCD				= mod:NewCDCountTimer(20.5, 1243853, 17088, nil, nil, 3)--Shortname "Breath"
 local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2)--Shortname "Roar"
@@ -35,6 +35,7 @@ mod.vb.breathCount = 0
 mod.vb.expulsionCount = 0
 mod.vb.roarCount = 0
 local badStateDetected = false
+local slamEventCounts = {}--Simple eventID to count mapping for slam, since both spellids share a unified count and bars never cancel on this boss
 
 local function setFallback(self)
 	--Blizz API fallbacks
@@ -50,6 +51,7 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
+	table.wipe(slamEventCounts)
 	self.vb.clawCount = 1
 	self.vb.breathCount = 1
 	self.vb.expulsionCount = 1
@@ -68,6 +70,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	table.wipe(slamEventCounts)
 	self:UnregisterShortTermEvents()
 end
 
@@ -82,7 +85,12 @@ do
 		elseif timer == 57 or timer == 123 then--Parasite Expulsion
 			timerParasiteExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "expulsion", "expulsionCount"))
 		elseif timer == 16 or timer == 136 or timer == 240 then--Shadowclaw Slam
-			timerShadowclawSlamCD:TLStart(timer, eventID, self:TLCountStart(eventID, "slam", "clawCount"))
+			--Blizzard schedules two concurrent Slam timers (two different spellids alternating)
+			--Assign unified count immediately and store per-eventID since bars never cancel on this boss
+			local count = self.vb.clawCount
+			self.vb.clawCount = count + 1
+			slamEventCounts[eventID] = count
+			timerShadowclawSlamCD:TLStart(timer, eventID, count)
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
 				badStateDetected = true
@@ -92,9 +100,9 @@ do
 				end
 				self:UnregisterShortTermEvents()
 				setFallback(self)
-				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			else
-				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
 			end
 		end
 	end
@@ -115,21 +123,30 @@ do
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
 		if eventState == 2 then
-			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType and eventCount then
-				if eventType == "roar" then
-					specWarnPrimordialRoar:Show(eventCount)
-					specWarnPrimordialRoar:Play("pullin")
-				elseif eventType == "expulsion" then
-					specWarnParasiteExpulsion:Show(eventCount)
-					specWarnParasiteExpulsion:Play("watchstep")
-				elseif eventType == "slam" then
-					specWarnShadowclawSlam:Show(eventCount)
-					specWarnShadowclawSlam:Play("slamincoming")
+			--Check slam first via local map (bypasses TLCount since slam bars never cancel)
+			local slamCount = slamEventCounts[eventID]
+			if slamCount then
+				slamEventCounts[eventID] = nil
+				specWarnShadowclawSlam:Show(slamCount)
+				specWarnShadowclawSlam:Play("slamincoming")
+			else
+				local eventType, eventCount = self:TLCountFinish(eventID)
+				if eventType and eventCount then
+					if eventType == "roar" then
+						specWarnPrimordialRoar:Show(eventCount)
+						specWarnPrimordialRoar:Play("pullin")
+					elseif eventType == "expulsion" then
+						specWarnParasiteExpulsion:Show(eventCount)
+						specWarnParasiteExpulsion:Play("watchstep")
+					end
 				end
 			end
 		elseif eventState == 3 then
-			self:TLCountCancel(eventID)
+			if slamEventCounts[eventID] then
+				slamEventCounts[eventID] = nil
+			else
+				self:TLCountCancel(eventID)
+			end
 		end
 	end
 end

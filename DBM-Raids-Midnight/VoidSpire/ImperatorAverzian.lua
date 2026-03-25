@@ -107,9 +107,9 @@ do
 			--Timers passed as string with "d" in front of them to flag allowdouble as true
 			if timer == 84 then
 				--Increment count by 1 since it'll start in parallel to the initial 12 second bar
-				timerShadowsAdvanceCD:TLStart("d84", eventID, self:TLCountStart(eventID, "shadow", "shadowCount") + 1)
+				timerShadowsAdvanceCD:TLStart(84, eventID, self:TLCountStart(eventID, "shadow", "shadowCount") + 1)
 			else
-				timerShadowsAdvanceCD:TLStart("d12", eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
+				timerShadowsAdvanceCD:TLStart(12, eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
 			end
 		elseif timer == 20 then--Umbral Collapse
 			timerUmbralCollapseCD:TLStart(timer, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
@@ -139,9 +139,9 @@ do
 				end
 				self:UnregisterShortTermEvents()
 				setFallback(self)
-				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			else
-				DBM:Debug("|cffff0000TheDreamrift: Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
 			end
 		end
 	end

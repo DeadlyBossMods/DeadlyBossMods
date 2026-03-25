@@ -293,7 +293,7 @@ function timerPrototype:TLStart(timer, eventID, ...)
 		end
 		argsText = " args |cff69ccf0" .. table.concat(argValues, ", ") .. "|r"
 	end
-	DBM:Debug("|cff00ff00Starting hardcoded timer for eventID " .. eventID .. ":|r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.name .. "|r" .. argsText .. " timer |cff69ccf0" .. timer .. "|r", 3, nil, nil, true)
+	DBM:Debug("|cff00ff00Starting hardcoded timer for eventID " .. eventID .. ":|r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. (self.originalName or self.name) .. "|r" .. argsText .. " timer |cff69ccf0" .. timer .. "|r", 3, nil, nil, true)
 	return self:Start(timer, ...)
 end
 
@@ -1186,7 +1186,7 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			error("bad string timer, expected number or string starting with d, v, or dv", 2)
 		end
 	end
-	local spellName, icon
+	local spellName, altSpellName, icon
 	spellName = DBM:ParseSpellName(spellId, timerType)
 	local unparsedId = spellId
 	if timerType == "achievement" then
@@ -1213,10 +1213,10 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			--If timertext is a number, accept it as a secondary auto translate spellid
 			if type(timerText) == "number" then
 				timerTextValue = timerText
-				spellName = DBM:GetSpellName(timerText or 0)--Override Cached spell Name
+				altSpellName = DBM:GetSpellName(timerText or 0)--Override Cached spell Name
 				--Automatically register alternate spellnames when detecting their use here
-				if spellId and spellName and type(spellName) == "string" then
-					DBM:RegisterAltSpellName(spellId, spellName)
+				if spellId and altSpellName and type(altSpellName) == "string" then
+					DBM:RegisterAltSpellName(spellId, altSpellName)
 				end
 			--Interpret it literal with no restrictions, first checking mod local table, then just taking timerText directly
 			else
@@ -1251,7 +1251,8 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			simpType = simpType,
 			waSpecialKey = waSpecialKey,--Not same as simpType, this overrides option key
 			spellId = spellId,
-			name = spellName,--If name gets stored as nil, it'll be corrected later in Timer start, if spell name returns in a later attempt
+			name = altSpellName or spellName,--If name gets stored as nil, it'll be corrected later in Timer start, if spell name returns in a later attempt
+			originalName = spellName,
 			timer = timer,
 			id = id,
 			icon = icon,
