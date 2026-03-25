@@ -1215,7 +1215,7 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 				timerTextValue = timerText
 				altSpellName = DBM:GetSpellName(timerText or 0)--Override Cached spell Name
 				--Automatically register alternate spellnames when detecting their use here
-				if spellId and spellName and type(spellName) == "string" then
+				if spellId and altSpellName and type(altSpellName) == "string" then
 					DBM:RegisterAltSpellName(spellId, altSpellName)
 				end
 			--Interpret it literal with no restrictions, first checking mod local table, then just taking timerText directly
