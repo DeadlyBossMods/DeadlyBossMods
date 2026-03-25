@@ -1,4 +1,4 @@
-## Interface: 120000
+## Interface: 120001
 ## X-Min-Interface: 120000
 ## Version: @project-version@
 ## Category: DBM
@@ -32,6 +32,7 @@
 ## X-Wago-ID: qv633o6b
 
 localization.en.lua
+localization.ru.lua
 
 VoidSpire\ImperatorAverzian.lua
 VoidSpire\Vorasius.lua
