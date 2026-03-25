@@ -92,8 +92,9 @@ end
 do
 	---@param self DBMMod
 	---@param timer number
+	---@param timerExact number
 	---@param eventID number
-	local function timersNonMythic(self, timer, eventID)
+	local function timersNonMythic(self, timer, timerExact, eventID)
 		--Logic confirmed against normal and LFR and heroic
 		if timer == 490 then--Berserk
 			timerBerserkCD:Start(490)
@@ -103,21 +104,21 @@ do
 			end
 	--		resetCounts(self)--Phase reset point
 			next45Type = "twisted"--Shared 45s open as Twisted/Fractured after phase transition
-			timerEntropicUnravelingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "entropic", "entropicUnravelingCount"))
+			timerEntropicUnravelingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "entropic", "entropicUnravelingCount"))
 		elseif timer == 27 or timer == 46 then--Despotic Command
-			timerDespoticCommandCD:TLStart(timer, eventID, self:TLCountStart(eventID, "despotic", "despoticCommandCount"))
+			timerDespoticCommandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "despotic", "despoticCommandCount"))
 			if timer == 46 then
 				next45Type = "shattering"
 			end
 		elseif timer == 18 then--Fractured Projection
-			timerFracturedProjectionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "fractured", "fracturedProjectionCount"))
+			timerFracturedProjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "fractured", "fracturedProjectionCount"))
 		elseif timer == 42 then--Shattering Twilight
-			timerShatteringTwilightCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shattering", "shatteringTwilightCount"))
+			timerShatteringTwilightCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shattering", "shatteringTwilightCount"))
 		elseif timer == 11 or timer == 47 then--Void Convergence
-			timerVoidConvergenceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
+			timerVoidConvergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
 			next45Type = "twisted"
 		elseif timer == 15 then--Twisting Obscurity opener
-			timerTwilightObscurityCD:TLStart(timer, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
+			timerTwilightObscurityCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
 			--If a prior event already seeded the shared 45s chain (e.g. 11/47/100), keep that seed.
 			--Only force fractured when no seed exists yet.
 			if not next45Type then
@@ -125,13 +126,13 @@ do
 			end
 		elseif timer == 45 then--Shared duration among Twisted/Fractured/Shattering
 			if next45Type == "twisted" then
-				timerTwilightObscurityCD:TLStart(timer, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
+				timerTwilightObscurityCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
 				next45Type = "fractured"
 			elseif next45Type == "fractured" then
-				timerFracturedProjectionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "fractured", "fracturedProjectionCount"))
+				timerFracturedProjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "fractured", "fracturedProjectionCount"))
 				next45Type = "shattering"
 			elseif next45Type == "shattering" then
-				timerShatteringTwilightCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shattering", "shatteringTwilightCount"))
+				timerShatteringTwilightCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shattering", "shatteringTwilightCount"))
 				next45Type = nil
 			else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 				badStateDetected = true
@@ -161,10 +162,11 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
-		local timer = math.floor(eventInfo.duration + 0.5)
+		local timerExact = eventInfo.duration
+		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
 			if not self:IsMythic() then
-				timersNonMythic(self, timer, eventID)
+				timersNonMythic(self, timer, timerExact, eventID)
 			end
 		end
 	end
