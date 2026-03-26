@@ -72,7 +72,7 @@ end
 --TODO, use EncounterTimelineIconMasks to get icon mask from
 --NOTE, passthroughEvent is not a real event, just one we can inject when called externally, we underscores to reserve in case blizz actually adds new args
 --/run C_EncounterTimeline.AddEditModeEvents()
-function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining, _, _, passthroughEvent)
+function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local eventID = eventInfo.id
 	local eventState = C_EncounterTimeline.GetEventState(eventID)
 	local duration = remaining or eventInfo.duration
@@ -84,13 +84,11 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining, _, _, passthro
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
 	local iconId = eventInfo.iconFileID
 	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
-	if not passthroughEvent then
-		self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for eventID: "..eventID.." with spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(tostring(duration).." (Rounded: "..tostring(durationRounded)..")", color).." and state: "..tostring(eventState), 3, nil, nil, true)
-	end
+	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for eventID: "..eventID.." with spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(tostring(duration).." (Rounded: "..tostring(durationRounded)..")", color).." and state: "..tostring(eventState), 3, nil, nil, true)
 	if self.Options.HideDBMBars then return end
 	if self.Options.DontShowBossTimers and source == 0 then return end
 	if self.Options.DontShowUserTimers and source == 1 then return end
-	if not passthroughEvent and self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
+	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
 	if not DBT.Options.ColorByType or not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
 		color = nil
@@ -105,9 +103,6 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining, _, _, passthro
 	--end
 	--self:Unschedule(removeEntry, self.startedTimers, eventID)
 	--self:Schedule(duration, removeEntry, self.startedTimers, eventID)
-	if passthroughEvent then
-		self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r received passthrough event for eventID: "..tostring(eventID)..".", 2, nil, nil, DBM.Options.DebugLevel == 3)
-	end
 	if DBT.Options.VarianceEnabled2 and maxQueueDuration and maxQueueDuration > 0 then--Currently not functional due to a bug where maxQueueDuration always returns 0 even if it's not
 		DBT:CreateBar("v"..tostring(duration).."-"..tostring(maxQueueDuration+duration), eventID, iconId, nil, nil, color, nil, nil, nil, nil, nil, nil, nil, nil, spellName, true, eventState == 1)--barState 1 is "paused"
 	else

@@ -425,6 +425,7 @@ L.SpamBlockNoShowTrashTimers		= "Do not show timers for dungeon/raid trash (Note
 L.SpamBlockNoShowEventTimers		= "Do not show timers for events or prompts (Queue pop, boss respawn, etc)"
 L.SpamBlockNoShowUTimers			= "Niente temporizzatori utente (Personalizzato/Pull/Pausa)"
 L.SpamBlockNoCountdowns				= "Niente suoni conto alla rovescia"
+L.SpamBlockNoTLColors				= "Non impostare i colori della Timeline Blizzard (Nota: disattiva anche i colori delle barre DBM)"
 L.Area_SpamFilter_Nameplates		= "Nameplate Features"
 L.SpamBlockNoNameplate				= "Non mostrare Auree Barre Vitali (disabilita completamente)"
 L.SpamBlockNoNameplateCD			= "Do not show nameplate only cooldown timer icons for abilities"

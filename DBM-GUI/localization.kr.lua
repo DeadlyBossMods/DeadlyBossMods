@@ -516,6 +516,7 @@ L.SpamBlockNoShowTrashTimers		= "던전/레이드 일반몹 타이머 표시 안
 L.SpamBlockNoShowEventTimers		= "이벤트나 알림 타이머 표시 안함 (대기열, 보스 재생성 등)"
 L.SpamBlockNoShowUTimers			= "사용자 전송 타이머 표시 안함 (사용자 지정/풀링/휴식)"
 L.SpamBlockNoCountdowns				= "초읽기 음성 재생 안함"
+L.SpamBlockNoTLColors				= "블리자드 타임라인 색상 설정 안함 (알림: DBM 바 색상도 함께 비활성화)"
 
 L.Area_SpamFilter_Nameplates		= "이름표"
 L.SpamBlockNoNameplate				= "특수한 보스 패턴의 스킬 아이콘을 이름표에 표시 안함 (예: 적에게 버프나 디버프 거는 패턴)"
