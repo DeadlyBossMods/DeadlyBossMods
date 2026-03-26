@@ -8,6 +8,7 @@ private.hardCodedTimers = {
 	--[eventID] = {timerId1, timerId2, ...}
 }
 private.hardCodedTimerEvents = private.hardCodedTimerEvents or {}
+private.buggedBlizzardTimers = private.buggedBlizzardTimers or {}
 
 --{ Name = "text", Type = "cstring", Nilable = false, SecretValue = true },
 --{ Name = "casterGUID", Type = "WOWGUID", Nilable = false, SecretValue = true },
@@ -118,6 +119,7 @@ end
 --0 = Active, 1 = Paused, 2 = Finished, 3 = Canceled
 function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	local hardcodedIds = private.hardCodedTimers[eventID]
+	local ignoredEventID = private.buggedBlizzardTimers[eventID] or false
 	local hardcodedTimerId
 	local staleHardcodedEvent = false
 	if type(hardcodedIds) == "table" then
@@ -129,7 +131,6 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	--Check for and update hard coded bars
 	if hardcodedTimerId then
 		local mappedEventID = private.hardCodedTimerEvents[hardcodedTimerId]
-		local ignoredEventID = private.buggedBlizzardTimers[hardcodedTimerId] or false
 		if not ignoredEventID then
 			if mappedEventID and mappedEventID ~= eventID then
 				staleHardcodedEvent = true
@@ -160,30 +161,33 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale resume for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
 		end
 	else--Finished or canceled (sometimes blizzard sends state changed instead of event removed when canceling events)
-		if bar and not private.buggedBlizzardTimers[hardcodedTimerId]then
-			bar:Cancel()
+		--Ignore Finished or canceled event for a bugged ID, since it's onen of blizzards early cancel bugs
+		if ignoredEventID then
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring cancel for eventID: "..tostring(eventID).." (timerID belongs to a known bugged Blizzard timer)", 2, nil, nil, DBM.Options.DebugLevel == 3)
+			private.buggedBlizzardTimers[eventID] = nil--Clear it here since we know for certain this timer is now gone
+		else
+			if bar then
+				bar:Cancel()
+				if hardcodedTimerId then
+					DBM:FireEvent("DBM_TimerStop", hardcodedTimerId)
+				end
+			elseif staleHardcodedEvent then
+				self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
+			end
 			if hardcodedTimerId then
-				DBM:FireEvent("DBM_TimerStop", hardcodedTimerId)
-			end
-		elseif private.buggedBlizzardTimers[hardcodedTimerId] then
-			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring cancel for eventID: "..tostring(eventID).." (timerID belongs to a known bugged Blizzard timer that doesn't fire removed event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
-			private.buggedBlizzardTimers[hardcodedTimerId] = nil--Clear it here since we know for certain this timer is now gone
-		elseif staleHardcodedEvent then
-			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
-		end
-		if hardcodedTimerId then
-			if private.hardCodedTimerEvents[hardcodedTimerId] == eventID and not private.buggedBlizzardTimers[hardcodedTimerId] then
-				private.hardCodedTimerEvents[hardcodedTimerId] = nil
-			end
-			if type(hardcodedIds) == "table" then
-				table.remove(hardcodedIds, 1)
-				if #hardcodedIds == 0 then
+				if private.hardCodedTimerEvents[hardcodedTimerId] == eventID then
+					private.hardCodedTimerEvents[hardcodedTimerId] = nil
+				end
+				if type(hardcodedIds) == "table" then
+					table.remove(hardcodedIds, 1)
+					if #hardcodedIds == 0 then
+						private.hardCodedTimers[eventID] = nil
+					end
+				else
 					private.hardCodedTimers[eventID] = nil
 				end
-			else
-				private.hardCodedTimers[eventID] = nil
+				self:Debug("|cffffff00Hardcoded timer terminated for eventID: |r"..tostring(eventID).." (timerID: "..tostring(hardcodedTimerId)..")", 3, nil, nil, true)
 			end
-			self:Debug("|cffffff00Hardcoded timer terminated for eventID: |r"..tostring(eventID).." (timerID: "..tostring(hardcodedTimerId)..")", 3, nil, nil, true)
 		end
 	end
 	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r fired for eventID: "..tostring(eventID).." with state: "..tostring(eventState), 3, nil, nil, true)
