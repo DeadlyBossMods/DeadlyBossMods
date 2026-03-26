@@ -134,7 +134,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	--Check for and update hard coded bars
 	if hardcodedTimerId then
 		local mappedEventID = private.hardCodedTimerEvents[hardcodedTimerId]
-		local ignoredEventID = private.ignoredBlizzardTimerEvents[hardcodedTimerId] or false
+		local ignoredEventID = private.buggedBlizzardTimers[hardcodedTimerId] or false
 		if not ignoredEventID then
 			if mappedEventID and mappedEventID ~= eventID then
 				staleHardcodedEvent = true
@@ -165,7 +165,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
 		end
 		if hardcodedTimerId then
-			if private.hardCodedTimerEvents[hardcodedTimerId] == eventID and not private.buggedBlizzardTimerEvents[hardcodedTimerId] then
+			if private.hardCodedTimerEvents[hardcodedTimerId] == eventID and not private.buggedBlizzardTimers[hardcodedTimerId] then
 				private.hardCodedTimerEvents[hardcodedTimerId] = nil
 			end
 			if type(hardcodedIds) == "table" then
