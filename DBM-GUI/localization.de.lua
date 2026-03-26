@@ -420,6 +420,7 @@ L.SpamBlockNoShowTrashTimers		= "Do not show timers for dungeon/raid trash (Note
 L.SpamBlockNoShowEventTimers		= "Do not show timers for events or prompts (Queue pop, boss respawn, etc)"
 L.SpamBlockNoShowUTimers			= "Zeige keine von anderen gesendeten Timer (benutzerdefiniert/Pull/Pause)"
 L.SpamBlockNoCountdowns				= "Spiele keine Countdown-Sounds"
+L.SpamBlockNoTLColors				= "Blizzard-Zeitlinienfarben nicht setzen (Hinweis: Deaktiviert auch DBM-Balkenfarben)"
 L.Area_SpamFilter_Nameplates		= "Nameplate Features"
 L.SpamBlockNoNameplate				= "Zeige keine Namensplakettenauras"
 L.SpamBlockNoNameplateCD			= "Do not show nameplate only cooldown timer icons for abilities"

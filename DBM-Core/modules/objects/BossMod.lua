@@ -1269,14 +1269,16 @@ do
 	function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId, customOption)
 		--Set Color (done outside option check since right now option check isnt supported until 12.0.5
 		--And we want to set colors on any bar even if it's "disabled" for now
-		local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
-		local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType, true)
-		if type(encounterEventId) == "table" then
-			for _, id in ipairs(encounterEventId) do
-				C_EncounterEvents.SetEventColor(id, {r = timerRed, g = timerGreen, b = timerBlue})
+		if not DBM.Options.DontSetTimelineColors then
+			local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
+			local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType, true)
+			if type(encounterEventId) == "table" then
+				for _, id in ipairs(encounterEventId) do
+					C_EncounterEvents.SetEventColor(id, {r = timerRed, g = timerGreen, b = timerBlue})
+				end
+			else
+				C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
 			end
-		else
-			C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
 		end
 		if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
 			--Set Countdown

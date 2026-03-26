@@ -41,7 +41,6 @@ mod.vb.voidFallCount = 0
 mod.vb.voidMarkCount = 0
 local badStateDetected = false
 local next72IsShadow = false
-local buggedUmbral = 0
 
 local function setFallback(self)
 	--Blizz API fallbacks
@@ -69,7 +68,6 @@ function mod:OnLimitedCombatStart()
 	self.vb.voidFallCount = 1
 	self.vb.voidMarkCount = 1
 	next72IsShadow = false
-	buggedUmbral = 0
 	if DBM.Options.HardcodedTimer and self:IsDifficulty("lfr", "normal", "heroic") and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
@@ -120,10 +118,10 @@ do
 				next72IsShadow = false
 			else
 				timerUmbralCollapseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
-				if buggedUmbral == 0 then--We haven't seen the bugged 72 yet
+				if not timerUmbralCollapseCD:IsBuggedEventID(eventID) then--We haven't seen the bugged 72 yet
 					--Currently, blizzard has a bug where the 2nd umbral timer that starts for the fight (first 72 second timer)
 					--immediately cancels itself with a state of 2, despite fact the timer is actually accurate.
-					buggedUmbral = eventID
+					timerUmbralCollapseCD:SetBuggedEventID(eventID)
 					--Hard schedule alert here since blizzard is going to finish their own timer due to a bug on their end
 					specWarnUmbralCollapse:Schedule(72, 2)
 					specWarnUmbralCollapse:ScheduleVoice(72, "gathershare")
@@ -180,7 +178,8 @@ do
 					specWarnShadowsAdvance:Show(eventCount)
 					specWarnShadowsAdvance:Play("mobsoon")
 				elseif eventType == "collapse" then
-					if buggedUmbral == eventID then--This is the bugged umbral timer, we need to ignore it
+					if timerUmbralCollapseCD:IsBuggedEventID(eventID) then--This is the bugged umbral timer, we need to ignore it
+						timerUmbralCollapseCD:UnsetBuggedEventID(eventID)
 						return
 					end
 					specWarnUmbralCollapse:Show(eventCount)
