@@ -280,6 +280,32 @@ function timerPrototype:SetEventID(eventID, ...)
 	private.hardCodedTimerEvents[id] = eventID
 end
 
+---@param eventID number eventID of an event we need to be ignored by handlers because blizzard is using it incorrectly
+function timerPrototype:SetBuggedEventID(eventID)
+	if not private.buggedBlizzardTimers then
+		private.buggedBlizzardTimers = {}
+	end
+	private.buggedBlizzardTimers[eventID] = true
+end
+
+---@param eventID number
+---@return boolean
+function timerPrototype:IsBuggedEventID(eventID)
+	if private.buggedBlizzardTimers then
+		if private.buggedBlizzardTimers[eventID] then
+			return true
+		end
+	end
+	return false
+end
+
+---@param eventID number
+function timerPrototype:UnsetBuggedEventID(eventID)
+	if private.buggedBlizzardTimers then
+		private.buggedBlizzardTimers[eventID] = nil
+	end
+end
+
 ---Simple function to call Start and SetEventID with a single call for hardcoded timeline timers
 ---@param timer any
 ---@param eventID number
