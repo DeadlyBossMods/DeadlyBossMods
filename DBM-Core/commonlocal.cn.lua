@@ -8,6 +8,9 @@ if not DBM_COMMON_L then DBM_COMMON_L = {} end
 local CL = DBM_COMMON_L
 
 -- 基本
+--CL.ALPHABETICAL                   = "Alphabetical"
+--CL.DURATION                       = "Duration"
+--CL.SORTING                        = "Sorting"
 CL.NONE								= "无"
 CL.RANDOM							= "随机"
 CL.UNKNOWN							= "未知"

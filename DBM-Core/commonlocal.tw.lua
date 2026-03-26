@@ -4,6 +4,9 @@ if not DBM_COMMON_L then DBM_COMMON_L = {} end
 local CL = DBM_COMMON_L
 
 --General
+--CL.ALPHABETICAL           = "Alphabetical"
+--CL.DURATION               = "Duration"
+--CL.SORTING                = "Sorting"
 CL.NONE						= "無"
 CL.RANDOM					= "隨機"
 CL.UNKNOWN					= "未知"--UNKNOWN which is "Unknown" (does u vs U matter?)
