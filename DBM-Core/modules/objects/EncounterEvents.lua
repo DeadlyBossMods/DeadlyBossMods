@@ -144,18 +144,27 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	if eventState == 1 then
 		if bar then
 			bar:Pause()
+			if hardcodedTimerId then
+				DBM:FireEvent("DBM_TimerPause", hardcodedTimerId)
+			end
 		elseif staleHardcodedEvent then
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale pause for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
 		end
 	elseif eventState == 0 then
 		if bar then
 			bar:Resume()
+			if hardcodedTimerId then
+				DBM:FireEvent("DBM_TimerResume", hardcodedTimerId)
+			end
 		elseif staleHardcodedEvent then
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale resume for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
 		end
 	else--Finished or canceled (sometimes blizzard sends state changed instead of event removed when canceling events)
 		if bar then
 			bar:Cancel()
+			if hardcodedTimerId then
+				DBM:FireEvent("DBM_TimerStop", hardcodedTimerId)
+			end
 		elseif staleHardcodedEvent then
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
 		end
