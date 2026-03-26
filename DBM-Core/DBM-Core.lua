@@ -370,6 +370,7 @@ DBM.DefaultOptions = {
 	CastNPIconGlowBehavior = 1,
 	CastNPIconGlowType2 = 4,--Button Default
 	DontPlayCountdowns = false,
+	DontSetTimelineColors = false,
 	DontSendYells = false,
 	BlockNoteShare = false,
 	DontAutoGossip = false,
