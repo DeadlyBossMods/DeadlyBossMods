@@ -522,7 +522,7 @@ L.AUTO_TIMER_OPTIONS.castcount 			= "Exibir cronômetro (com contagem) para o la
 L.AUTO_TIMER_OPTIONS.castsource 		= "Exibir cronômetro (com fonte) para o lançamento de $spell:%s"
 L.AUTO_TIMER_OPTIONS.active				= "Exibir cronômetro para a duração de $spell:%s"
 L.AUTO_TIMER_OPTIONS.fades				= "Exibir cronômetro para quando $spell:%s desvanecerá dos jogadores"
-L.AUTO_TIMER_OPTIONS.ai					= "Exibir cronômetro IA para recarga de $spell:%s"
+L.AUTO_TIMER_OPTIONS.ai					= "Exibir cronômetro IA para a recarga de $spell:%s"
 
 L.AUTO_TIMER_OPTIONS.cd					= "Exibir cronômetro para a recarga de $spell:%s"
 L.AUTO_TIMER_OPTIONS.cdcount			= "Exibir cronômetro para a recarga de $spell:%s"
