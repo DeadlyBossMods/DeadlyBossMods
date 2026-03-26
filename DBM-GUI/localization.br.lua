@@ -433,6 +433,7 @@ L.SpamBlockNoShowTrashTimers		= "Não exibir cronômetros para lixos de masmorra
 L.SpamBlockNoShowEventTimers		= "Não exibir cronômetros para eventos"
 L.SpamBlockNoShowUTimers			= "Não exibir cronômetros enviados pelo usuário"
 L.SpamBlockNoCountdowns				= "Não reproduzir sons de contagem regressiva"
+L.SpamBlockNoTLColors				= "Não definir as cores da Linha do Tempo da Blizzard (Nota: isso também desativa as cores das barras do DBM)"
 L.Area_SpamFilter_Nameplates		= "Opçoes de placa de nome"
 L.SpamBlockNoNameplate				= "Não exibir ícones de bônus ou penalidades"
 L.SpamBlockNoNameplateCD			= "Não exibir ícones de tempos de recarga de habilidades"

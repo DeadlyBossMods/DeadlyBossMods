@@ -425,6 +425,7 @@ L.SpamBlockNoShowTrashTimers		= "不顯示地城/團隊小怪的計時器(注意
 L.SpamBlockNoShowEventTimers		= "不顯示事件與提示計時器(佇列提示/首領重生..等)"
 L.SpamBlockNoShowUTimers			= "不顯示玩家送出的計時器(自訂/拉怪/休息)"
 L.SpamBlockNoCountdowns				= "不播放倒數音效"
+L.SpamBlockNoTLColors				= "不要設定暴雪時間軸顏色（注意：這也會停用 DBM 計時條顏色）"
 L.Area_SpamFilter_Nameplates		= "名條功能"
 L.SpamBlockNoNameplate				= "不要顯示只有特別首領機制圖示的名條（例如對敵人施加增益或減益）"
 L.SpamBlockNoNameplateCD			= "不要顯示只有技能冷卻計時圖示的名條"

@@ -83,10 +83,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 407, "a0f5bf5"--407.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.34 alpha"--Core version
+DBM.DisplayVersion = "12.0.35 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 3, 24) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 3, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -370,6 +370,7 @@ DBM.DefaultOptions = {
 	CastNPIconGlowBehavior = 1,
 	CastNPIconGlowType2 = 4,--Button Default
 	DontPlayCountdowns = false,
+	DontSetTimelineColors = false,
 	DontSendYells = false,
 	BlockNoteShare = false,
 	DontAutoGossip = false,
@@ -1789,11 +1790,13 @@ do
 			if self:IsPostMidnight() then
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
 				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
-				--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
-				local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
-				--https://wago.tools/db2/EncounterEvent?page=25
-				for i = 1, 658 do
-					C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
+				if not self.Options.DontSetTimelineColors then
+					--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
+					local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
+					--https://wago.tools/db2/EncounterEvent?page=25
+					for i = 1, 733 do
+						C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
+					end
 				end
 				if self.Options.HideBossEmoteFrame2 then
 					C_EncounterWarnings.SetWarningsShown(false)
