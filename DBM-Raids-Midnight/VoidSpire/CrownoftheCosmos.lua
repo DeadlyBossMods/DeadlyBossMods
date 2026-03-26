@@ -27,7 +27,7 @@ local specWarnVoidExpulsion				= mod:NewSpecialWarningCount(1283236, nil, nil, n
 local specWarnCalloftheVoid				= mod:NewSpecialWarningSwitchCount(1237837, nil, nil, nil, 2, 2)--P2
 local specWarnCosmicBarrier				= mod:NewSpecialWarningSwitchCount(1246918, "Dps", nil, nil, 2, 2)--P2
 local specWarnDevouringCosmos			= mod:NewSpecialWarningCount(1238843, nil, nil, nil, 3, 2)--P3
-local specWarnDarkHand					= mod:NewSpecialWarningDefensive(1238844, nil, nil, nil, 1, 2)--P1 Tank Add
+local specWarnDarkHand					= mod:NewSpecialWarningDefensive(1233787, nil, nil, nil, 1, 2)--P1 Tank Add
 local specWarnRavenousAbyss				= mod:NewSpecialWarningDodgeCount(1243753, nil, nil, nil, 4, 2)--P1 Add
 local specWarnInterruptingTremor		= mod:NewSpecialWarningCount(1243743, "SpellCaster|HasInterrupt", nil, nil, 1, 2)--P1 Add
 local specWarnCosmicPortal				= mod:NewSpecialWarningCount(1261339, nil, nil, nil, 2, 2)--Mythic only mechanic of unknown nature
@@ -45,7 +45,7 @@ local timerCosmicBarrierCD				= mod:NewCDCountTimer(20.5, 1246918, 151702, nil, 
 local timerAspectoftheEndCD				= mod:NewCDCountTimer(20.5, 1239111, 1234576, nil, nil, 3)--Intermission 2, shortname "Tethers"
 local timerGraspofEmptynessCD			= mod:NewCDCountTimer(20.5, 1232470, 367465, nil, nil, 3)--P1, shortname "Grasp"
 local timerDevouringCosmosCD			= mod:NewCDCountTimer(20.5, 1238843, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--P3
-local timerDarkHandCD					= mod:NewCDCountTimer(20.5, 1238844, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P1 Tank Add
+local timerDarkHandCD					= mod:NewCDCountTimer(20.5, 1233787, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P1 Tank Add
 local timerRavenousAbyssCD				= mod:NewCDCountTimer(20.5, 1243753, DBM_COMMON_L.AVOID.." (%s)", nil, nil, 3)--P1 Add
 local timerInterruptingTremorCD			= mod:NewCDCountTimer(20.5, 1243743, nil, "SpellCaster|HasInterrupt", nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--P1 Add
 --local timerRiftSimulacrumCD			= mod:NewCDCountTimer(20.5, 1261016, nil, nil, nil, 6)--P2 Starting (stage 2 bar does this, this timer never fires)
@@ -85,13 +85,58 @@ mod.vb.aspectoftheEndCount = 0
 mod.vb.graspofEmptynessCount = 0
 mod.vb.devouringCosmosCount = 0
 mod.vb.riftSlashCount = 0
+local badStateDetected = false
 local stage2p5Seen, stage3Recovered = false, false
+local stage2TwentyCount = 0
 local lastTLEvent = 0
+
+local function setFallback(self)
+	--Blizz API fallbacks
+	timerNullCoronaCD:SetTimeline(4)
+	specWarnVoidExpulsion:SetAlert(5, "aesoon", 2, 2, 0)
+	timerVoidExpulsionCD:SetTimeline(5)
+	timerSilverstrikeArrowCD:SetTimeline(6)
+	timerSilverstrikeBarrageCD:SetTimeline(7)
+--	specWarnSingularityEruption:SetAlert(8, "watchstep", 2, 2)
+--	timerSingularityEruptionCD:SetTimeline(8)
+	timerVoidstalkerStingCD:SetTimeline(9)
+	specWarnCalloftheVoid:SetAlert(10, "mobsoon", 2, 2)
+	timerCalloftheVoidCD:SetTimeline(10)
+	timerRangerCaptainsMarkCD:SetTimeline({11, 131})--Regular, Mythic?
+	specWarnCosmicBarrier:SetAlert(12, "attackshield", 2, 2, 0)
+	timerCosmicBarrierCD:SetTimeline(12)
+	timerAspectoftheEndCD:SetTimeline(13)
+	timerGraspofEmptynessCD:SetTimeline({14, 132})--Regular, Mythic?
+	specWarnDevouringCosmos:SetAlert(15, "changeplatform", 19, 4)
+	timerDevouringCosmosCD:SetTimeline(15)
+	if self:IsTank() then
+		specWarnDarkHand:SetAlert(64, "defensive", 2, 2)
+	end
+	timerDarkHandCD:SetTimeline(64)
+	specWarnRavenousAbyss:SetAlert(65, "watchstep", 2, 2)
+	timerRavenousAbyssCD:SetTimeline(65)
+	if self:IsSpellCaster() then
+		specWarnInterruptingTremor:SetAlert(66, "kickorstopcast", 2, 2, 0)
+	else
+		specWarnInterruptingTremor:SetAlert(66, "kickcast", 2, 2, 0)
+	end
+	timerInterruptingTremorCD:SetTimeline(66)
+	warnRiftSimulacrum:SetAlert(135, "ptwo", 2, 2, 0)--Verify
+--	timerRiftSimulacrumCD:SetTimeline(135)
+	specWarnCosmicPortal:SetAlert(136, "bigmobsoon", 2, 2)
+	timerCosmicPortalCD:SetTimeline(136)
+	if self:IsTank() then
+		specWarnRiftSlash:SetAlert(137, "defensive", 2, 2)
+	end
+	timerRiftSlashCD:SetTimeline(137)
+	timerStage2CD:SetTimeline(351)
+end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self:TLResolveReset()
 	stage2p5Seen, stage3Recovered = false, false
+	stage2TwentyCount = 0
 	lastTLEvent = 0
 	self.vb.coronaCount = 1
 	self.vb.expulsionCount = 1
@@ -112,7 +157,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.riftSlashCount = 1
 	self:SetStage(1)
 
-	if DBM.Options.HardcodedTimer and self:IsEasy() then
+	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -135,47 +180,8 @@ function mod:OnLimitedCombatStart()
 		end
 		timerInterruptingTremorCD:Start(4, 1)
 	else
-		--Blizz API fallbacks
-		timerNullCoronaCD:SetTimeline(4)
-		specWarnVoidExpulsion:SetAlert(5, "aesoon", 2, 2, 0)
-		timerVoidExpulsionCD:SetTimeline(5)
-		timerSilverstrikeArrowCD:SetTimeline(6)
-		timerSilverstrikeBarrageCD:SetTimeline(7)
---		specWarnSingularityEruption:SetAlert(8, "watchstep", 2, 2)
---		timerSingularityEruptionCD:SetTimeline(8)
-		timerVoidstalkerStingCD:SetTimeline(9)
-		specWarnCalloftheVoid:SetAlert(10, "mobsoon", 2, 2)
-		timerCalloftheVoidCD:SetTimeline(10)
-		timerRangerCaptainsMarkCD:SetTimeline({11, 131})--Regular, Mythic?
-		specWarnCosmicBarrier:SetAlert(12, "attackshield", 2, 2, 0)
-		timerCosmicBarrierCD:SetTimeline(12)
-		timerAspectoftheEndCD:SetTimeline(13)
-		timerGraspofEmptynessCD:SetTimeline({14, 132})--Regular, Mythic?
-		specWarnDevouringCosmos:SetAlert(15, "changeplatform", 19, 4)
-		timerDevouringCosmosCD:SetTimeline(15)
-		if self:IsTank() then
-			specWarnDarkHand:SetAlert(64, "defensive", 2, 2)
-		end
-		timerDarkHandCD:SetTimeline(64)
-		specWarnRavenousAbyss:SetAlert(65, "watchstep", 2, 2)
-		timerRavenousAbyssCD:SetTimeline(65)
-		if self:IsSpellCaster() then
-			specWarnInterruptingTremor:SetAlert(66, "kickorstopcast", 2, 2, 0)
-		else
-			specWarnInterruptingTremor:SetAlert(66, "kickcast", 2, 2, 0)
-		end
-		timerInterruptingTremorCD:SetTimeline(66)
-		warnRiftSimulacrum:SetAlert(135, "ptwo", 2, 2, 0)--Verify
---		timerRiftSimulacrumCD:SetTimeline(135)
-		specWarnCosmicPortal:SetAlert(136, "bigmobsoon", 2, 2)
-		timerCosmicPortalCD:SetTimeline(136)
-		if self:IsTank() then
-			specWarnRiftSlash:SetAlert(137, "defensive", 2, 2)
-		end
-		timerRiftSlashCD:SetTimeline(137)
-		timerStage2CD:SetTimeline(351)
+		setFallback(self)
 	end
-
 --	self:EnablePrivateAuraSound(1234570, "debuffyou", 17)--Phase soft enrage, probably not worth annoucning, it kinda just persistently stacks
 end
 
@@ -183,6 +189,7 @@ function mod:OnCombatEnd()
 	self:TLCountReset()
 	self:TLResolveReset()
 	stage2p5Seen, stage3Recovered = false, false
+	stage2TwentyCount = 0
 	self:UnregisterShortTermEvents()
 end
 
@@ -202,67 +209,66 @@ do
 			--Recurring casts are now split by exact duration: 19.5 (Abyss) vs 20.0 (Tremor).
 			if timer == 60 or timer == 39 then--Void Expulsion
 				timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
-				return true
 			elseif timer == 46 or timer == 47 or timer == 48 then--Null Corona
 				timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
-				return true
 			elseif timer == 21 or timer == 23 or timer == 24 then--Silverstrike Arrow
 				timerSilverstrikeArrowCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
-				return true
 			elseif timer == 5 or timer == 28 or timer == 32 then--Grasp of Emptiness
 				timerGraspofEmptynessCD:TLStart(timer, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
-				return true
 			elseif timer == 17 then--Dark Hand
 				timerDarkHandCD:TLStart(timer, eventID, self:TLCountStart(eventID, "darkHand", "darkHandCount"))
-				return true
 			elseif timer == 20 then--Ravenous Abyss (19.5) OR Interrupting Tremor (20.0)
 				if timerExact and timerExact < 19.75 then
 					timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
-					return true
 				elseif timerExact and timerExact >= 19.75 then
 					timerInterruptingTremorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "interruptingTremor", "interruptingTremorCount"))
-					return true
 				end
+			elseif timer == 4 then
+				--Unresolveable initial casts, we just return to prevent fallback
+				--Those initial 4 second timers and cast warnings are prescheduled on pull instead
+				return
 			elseif (timer == 2) and (GetTime() - lastTLEvent > 10) then--Initial 1.5 (2 rounded) Silverstrike Barrage starts Intermission 1 (Stage 1.5)
 				--Time since last TL event is usually around 12-14
 				--Phase tranition cancels P1 timers and then has 3 CHAT_MSG_MONSTER_YELL events
 				self:SetStage(1.5)
 				timerSilverstrikeBarrageCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
-				return true
+			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			end
 		elseif stage == 1.5 then
 			--Intermission 1 (Stage 1.5)
 			if timer == 2 or timer == 3 or timer == 6 then--Silverstrike Barrage sequence
 				timerSilverstrikeBarrageCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
-				return true
 			elseif timer == 25 then--Stage 2 marker; phase actually starts on STATE_CHANGED.
 				timerStage2CD:TLStart(timer, eventID)
 				self:TLCountStart(eventID, "stage2Start")
-				return true
 			end
 		elseif stage == 2 then
 			--Stage 2
-			--NOTE: 20s overlap is inferred using recent cast context when available:
-			--Voidstalker(5/6) -> Voidstalker(20), Void Expulsion(14/16) -> Void Expulsion(20).
+			--NOTE: Stage 2 20s buckets are resolved by Stage 2-local occurrence index
+			--using validated Easy-log ordering: 1st=Void Expulsion, 2nd=Voidstalker Sting,
+			--then repeating for the rest of Stage 2.
 			--Opener adds additional duration buckets not seen in later loops:
 			--Null Corona(13), Void Expulsion(16), Voidstalker(8), Call(12), Ranger's Mark(21), Cosmic Barrier(24), Rift Slash(6).
-			--Unknown contexts intentionally fall through to Blizzard passthrough.
 			if timer == 11 or timer == 13 then--Null Corona
 				timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
 				self:TLResolvePush("nullCorona", timer)
-				return true
 			elseif timer == 16 or timer == 14 then--Void Expulsion
 				timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
 				self:TLResolvePush("voidExpulsion", timer)
-				return true
 			elseif timer == 8 then--Voidstalker Sting opener
 				timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
 				self:TLResolvePush("voidstalkerSting", timer)
-				return true
 			elseif timer == 10 then--Call of the Void recurring
 				timerCalloftheVoidCD:TLStart(timer, eventID, self:TLCountStart(eventID, "calloftheVoid", "calloftheVoidCount"))
 				self:TLResolvePush("calloftheVoid", timer)
-				return true
 			elseif timer == 12 then--Ambiguous opener Call of the Void (12) vs Rift Slash (12)
 				local lastResolvedType, lastResolvedTimer = self:TLResolvePeek()
 				if lastResolvedType == "voidstalkerSting" and lastResolvedTimer == 8 then
@@ -272,7 +278,6 @@ do
 					timerRiftSlashCD:TLStart(timer, eventID, self:TLCountStart(eventID, "riftSlash", "riftSlashCount"))
 					self:TLResolvePush("riftSlash", timer)
 				end
-				return true
 			elseif timer == 6 then--Ambiguous opener Rift Slash (6) vs recurring Voidstalker Sting (6)
 				local lastResolvedType, lastResolvedTimer = self:TLResolvePeek()
 				if lastResolvedType == "cosmicBarrier" and lastResolvedTimer == 24 then
@@ -282,36 +287,32 @@ do
 					timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
 					self:TLResolvePush("voidstalkerSting", timer)
 				end
-				return true
 			elseif timer == 5 then--Voidstalker Sting recurring
 				timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
 				self:TLResolvePush("voidstalkerSting", timer)
-				return true
 			elseif timer == 21 or timer == 19 then--Ranger Captain's Mark
 				timerRangerCaptainsMarkCD:TLStart(timer, eventID, self:TLCountStart(eventID, "rangerMark", "rangerMarkCount"))
 				self:TLResolvePush("rangerMark", timer)
-				return true
 			elseif timer == 20 then--Ambiguous: Voidstalker Sting OR Void Expulsion
-				local lastResolvedType, lastResolvedTimer = self:TLResolvePeek()
-				if lastResolvedType == "voidstalkerSting" and (lastResolvedTimer == 5 or lastResolvedTimer == 6) then
-					timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
-					self:TLResolvePush("voidstalkerSting", timer)
-					return true
-				elseif lastResolvedType == "voidExpulsion" and (lastResolvedTimer == 14 or lastResolvedTimer == 16) then
+				--Observed complete Easy logs show a strict alternation for Stage 2 20s buckets:
+				--1st=Void Expulsion, 2nd=Voidstalker Sting, then repeating.
+				--Use Stage 2-local occurrence index for deterministic routing.
+				stage2TwentyCount = stage2TwentyCount + 1
+				if stage2TwentyCount % 2 == 1 then
 					timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
 					self:TLResolvePush("voidExpulsion", timer)
-					return true
+				else
+					timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+					self:TLResolvePush("voidstalkerSting", timer)
 				end
 			elseif timer == 24 or timer == 22 then--Cosmic Barrier
 				timerCosmicBarrierCD:TLStart(timer, eventID, self:TLCountStart(eventID, "cosmicBarrier", "cosmicBarrierCount"))
 				self:TLResolvePush("cosmicBarrier", timer)
-				return true
 			elseif timer == 2 then--Silverstrike Barrage starts Intermission 2 (Stage 2.5)
 				self:SetStage(2.5)
 				stage2p5Seen = true
 				timerSilverstrikeBarrageCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
 				self:TLResolvePush("silverstrikeBarrage", timer)
-				return true
 			end
 		elseif stage == 2.5 then
 			--Intermission 2 (Stage 2.5)
@@ -326,11 +327,9 @@ do
 			if timer == 10 or timer == 3 then--Silverstrike Barrage sequence
 				timerSilverstrikeBarrageCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
 				self:TLResolvePush("silverstrikeBarrage", timer)
-				return true
 			elseif timer == 20 then--Stage 3 marker; phase actually starts on STATE_CHANGED.
 				timerStage3CD:TLStart(timer, eventID)
 				self:TLCountStart(eventID, "stage3Start")
-				return true
 			end
 		elseif stage == 3 then
 			--Stage 3
@@ -346,34 +345,27 @@ do
 			if timer == 29 or timer == 30 then--Null Corona
 				timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
 				self:TLResolvePush("nullCorona", timer)
-				return true
 			elseif timer == 59 or timer == 60 then--Devouring Cosmos
 				timerDevouringCosmosCD:TLStart(timer, eventID, self:TLCountStart(eventID, "devouringCosmos", "devouringCosmosCount"))
 				self:TLResolvePush("devouringCosmos", timer)
-				return true
 			elseif timer == 8 or timer == 9 or timer == 21 or timer == 39 then--Aspect of the End
 				timerAspectoftheEndCD:TLStart(timer, eventID, self:TLCountStart(eventID, "aspectoftheEnd", "aspectoftheEndCount"))
 				self:TLResolvePush("aspectoftheEnd", timer)
-				return true
 			elseif timer == 12 or timer == 14 or timer == 15 then--Voidstalker Sting
 				timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
 				self:TLResolvePush("voidstalkerSting", timer)
-				return true
 			elseif timer == 18 then--Ambiguous: Voidstalker Sting OR Grasp of Emptiness
 				local lastResolvedType, lastResolvedTimer = self:TLResolvePeek()
 				if (lastResolvedType == "aspectoftheEnd" and lastResolvedTimer == 8) then
 					timerGraspofEmptynessCD:TLStart(timer, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
 					self:TLResolvePush("grasp", timer)
-					return true
 				elseif (lastResolvedType == "aspectoftheEnd" and lastResolvedTimer == 39) or (lastResolvedType == "voidstalkerSting" and lastResolvedTimer == 15) then
 					timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
 					self:TLResolvePush("voidstalkerSting", timer)
-					return true
 				end
 			elseif timer == 17 or timer == 19 or timer == 20 then--Grasp of Emptiness
 				timerGraspofEmptynessCD:TLStart(timer, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
 				self:TLResolvePush("grasp", timer)
-				return true
 			end
 		end
 	end
@@ -384,13 +376,12 @@ do
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
-		lastTLEvent = GetTime()
-		if self:IsEasy() then
-			local handled = timersEasy(self, timer, timerExact, eventID)
-			if not handled then--Ambiguous/unresolvable duration; let Blizzard show its own bar
-				DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, nil, nil, nil, true)
+		if not badStateDetected then
+			if self:IsEasy() then
+				timersEasy(self, timer, timerExact, eventID)
 			end
 		end
+		lastTLEvent = GetTime()
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
@@ -401,6 +392,7 @@ do
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end
 			if eventType == "stage2Start" then
+				stage2TwentyCount = 0
 				self:SetStage(2)
 				return
 			elseif eventType == "stage3Start" then
@@ -450,7 +442,18 @@ do
 				specWarnDevouringCosmos:Play("changeplatform")
 			end
 		elseif eventState == 3 then
-			self:TLCountCancel(eventID)
+			local eventType = self:TLCountCancel(eventID)
+			if not eventType then return end
+			if eventType == "stage2Start" then
+				stage2TwentyCount = 0
+				self:SetStage(2)
+				return
+			elseif eventType == "stage3Start" then
+				stage2p5Seen = true
+				stage3Recovered = true
+				self:SetStage(3)
+				return
+			end
 		end
 	end
 end

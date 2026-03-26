@@ -41,7 +41,6 @@ mod.vb.voidFallCount = 0
 mod.vb.voidMarkCount = 0
 local badStateDetected = false
 local next72IsShadow = false
-local buggedUmbral = 0
 
 local function setFallback(self)
 	--Blizz API fallbacks
@@ -69,7 +68,6 @@ function mod:OnLimitedCombatStart()
 	self.vb.voidFallCount = 1
 	self.vb.voidMarkCount = 1
 	next72IsShadow = false
-	buggedUmbral = 0
 	if DBM.Options.HardcodedTimer and self:IsDifficulty("lfr", "normal", "heroic") and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
@@ -89,15 +87,16 @@ end
 do
 	---@param self DBMMod
 	---@param timer number
+	---@param timerExact number
 	---@param eventID number
-	local function timersEasy(self, timer, eventID, timeInCombat)
+	local function timersEasy(self, timer, timerExact, eventID, timeInCombat)
 		--Logic confirmed against normal, heroic, and LFR
 		if timer == 4 or timer == 36 then--Dark Upheaval
-			timerDarkUpheavalCD:TLStart(timer, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
+			timerDarkUpheavalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
 		elseif timer == 48 or timer == 18 then--Oblivion's Wrath
-			timerOblivionWrathCD:TLStart(timer, eventID, self:TLCountStart(eventID, "oblivion", "oblivionCount"))
+			timerOblivionWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "oblivion", "oblivionCount"))
 		elseif timer == 125 then--Void Fall
-			timerVoidFallCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidfall", "voidFallCount"))
+			timerVoidFallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidfall", "voidFallCount"))
 			if timeInCombat >= 2 then
 				next72IsShadow = true
 			end
@@ -112,17 +111,17 @@ do
 				timerShadowsAdvanceCD:TLStart(12, eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
 			end
 		elseif timer == 20 then--Umbral Collapse
-			timerUmbralCollapseCD:TLStart(timer, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
+			timerUmbralCollapseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
 		elseif timer == 72 then--Can be Shadow's Advance or Umbral Collapse in this pull
 			if next72IsShadow then
-				timerShadowsAdvanceCD:TLStart(timer, eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
+				timerShadowsAdvanceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
 				next72IsShadow = false
 			else
-				timerUmbralCollapseCD:TLStart(timer, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
-				if buggedUmbral == 0 then--We haven't seen the bugged 72 yet
+				timerUmbralCollapseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
+				if not timerUmbralCollapseCD:IsBuggedEventID(eventID) then--We haven't seen the bugged 72 yet
 					--Currently, blizzard has a bug where the 2nd umbral timer that starts for the fight (first 72 second timer)
 					--immediately cancels itself with a state of 2, despite fact the timer is actually accurate.
-					buggedUmbral = eventID
+					timerUmbralCollapseCD:SetBuggedEventID(eventID)
 					--Hard schedule alert here since blizzard is going to finish their own timer due to a bug on their end
 					specWarnUmbralCollapse:Schedule(72, 2)
 					specWarnUmbralCollapse:ScheduleVoice(72, "gathershare")
@@ -150,11 +149,12 @@ do
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
 --		local eventState = C_EncounterTimeline.GetEventState(eventID)
-		local timer = math.floor(eventInfo.duration + 0.5)
+		local timerExact = eventInfo.duration
+		local timer = math.floor(timerExact + 0.5)
 		local timeInCombat = GetTime() - self.combatInfo.pull
 		if not badStateDetected then
 			if self:IsDifficulty("lfr", "normal", "heroic") then
-				timersEasy(self, timer, eventID, timeInCombat)
+				timersEasy(self, timer, timerExact, eventID, timeInCombat)
 			end
 		end
 	end
@@ -178,7 +178,8 @@ do
 					specWarnShadowsAdvance:Show(eventCount)
 					specWarnShadowsAdvance:Play("mobsoon")
 				elseif eventType == "collapse" then
-					if buggedUmbral == eventID then--This is the bugged umbral timer, we need to ignore it
+					if timerUmbralCollapseCD:IsBuggedEventID(eventID) then--This is the bugged umbral timer, we need to ignore it
+						timerUmbralCollapseCD:UnsetBuggedEventID(eventID)
 						return
 					end
 					specWarnUmbralCollapse:Show(eventCount)
