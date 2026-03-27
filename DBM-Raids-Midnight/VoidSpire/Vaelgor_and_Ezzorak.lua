@@ -12,13 +12,14 @@ mod:RegisterCombat("combat")
 
 --NOTE: hardcode can probably combine cosmisis abilities into a single https://www.wowhead.com/ptr/spell=1263623/cosmosis timer
 --local warnRadiantBarrier			= mod:NewCountAnnounce(1248847, 1)
+local warnGrabblingMaw				= mod:NewCountAnnounce(1280458, 2, nil, "Tank")
 
 local specWarnNullBeam				= mod:NewSpecialWarningCount(1262623, nil, nil, nil, 2, 2)
 local specWarnVoidHowl				= mod:NewSpecialWarningCount(1244917, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
 local specWarnGloom					= mod:NewSpecialWarningCount(1245391, nil, nil, nil, 2, 2)
 local specWarnDreadBreath			= mod:NewSpecialWarningCount(1244221, nil, 17088, nil, 2, 2)
 local specWarnMidnightFlames		= mod:NewSpecialWarningCount(1249748, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
-local specWarnGrabblingMaw			= mod:NewSpecialWarningCount(1280458, nil, nil, 56689, 1, 2)
+--local specWarnGrabblingMaw		= mod:NewSpecialWarningCount(1280458, nil, nil, nil, 1, 2)
 local specWarnRakfang				= mod:NewSpecialWarningDefensive(1245645, nil, nil, nil, 1, 2)
 local specWarnVaelwing				= mod:NewSpecialWarningDefensive(1265131, nil, nil, nil, 1, 2)
 local specWarnCosmosisGloom			= mod:NewSpecialWarningCount(1277470, nil, nil, nil, 2, 2)
@@ -32,7 +33,7 @@ local timerVoidHowlCD				= mod:NewCDCountTimer(20.5, 1244917, DBM_COMMON_L.ORBS.
 local timerGloomCD					= mod:NewCDCountTimer(20.5, 1245391, nil, nil, nil, 3)
 local timerDreadBreathCD			= mod:NewCDCountTimer(20.5, 1244221, 17088, nil, nil, 3)
 local timerMidnightFlamesCD			= mod:NewCDCountTimer(20.5, 1249748, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2)
-local timerGrabblingMawCD			= mod:NewCDCountTimer(20.5, 1280458, 56689, nil, nil, 2, nil, DBM_COMMON_L.TANK_ICON)--Shortname "Grip"
+local timerGrabblingMawCD			= mod:NewCDCountTimer(20.5, 1280458, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerRakfangCD				= mod:NewCDCountTimer(20.5, 1245645, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerVaelwingCD				= mod:NewCDCountTimer("d20.5", 1265131, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerCosmosisGloomCD			= mod:NewCDCountTimer(20.5, 1277470, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -42,15 +43,15 @@ local timerCosmosisVoidHowlCD		= mod:NewCDCountTimer(20.5, 1277473, nil, nil, ni
 local timerRadiantBarrierCD			= mod:NewCDCountTimer(20.5, 1248847, nil, nil, nil, 5)
 
 mod:AddPrivateAuraSoundOption({1262999,1262676,1262656}, true, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
-mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2, "watchfeet", 8)--Null Zone (GTFO from null beam)
+mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2, "lineapart", 2)--Null Zone Grippy hand
 mod:AddPrivateAuraSoundOption(1252157, true, 1262623, 1, 1, "debuffyou", 17)--Null Implosion
 mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3, "gloomyou", 19)--Gloomtouched (soaked Gloom)
 mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3, "debuffyou", 17)--Diminish (Gloomtouched ended, don't soak again)
 mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2, "watchfeet", 8)--Gloomfield (GTFO left by gloom)
-mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 1, "targetyou", 2)--Dread Breath Target
+mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 3, "runout", 2)--Dread Breath Target
 --mod:AddPrivateAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
 mod:AddPrivateAuraSoundOption(1265152, true, 1245645, 1, 3, "stunyou", 19)--Impale (secondary attack of Rakfang)
-mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1, "barrieryou", 19)--Radiant Barrier
+--mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1, "barrieryou", 19)--Radiant Barrier (Ultra Spammy)
 mod:AddPrivateAuraSoundOption(1270497, true, 1270497, 1, 1, "shadowyou", 15)--Shadowmark
 
 mod.vb.beamCount = 0
@@ -75,6 +76,13 @@ local next31S3IsVaelwing = true
 local next63S3IsNullbeam = true
 local next25S3Type = "voidhowl"
 local lastS3Type = nil
+--Heroic state variables
+local next25H1Type = "vaelwing"
+local next50H1IsGloom = true
+local next25H2Type = "rakfang"
+local next31H3IsVaelwing = true
+local next62H3IsNullbeam = true
+local next25H3Type = "voidhowl"
 
 local function setFallback(self)
 	--Blizz API fallbacks
@@ -88,7 +96,9 @@ local function setFallback(self)
 	timerDreadBreathCD:SetTimeline(104)
 	specWarnMidnightFlames:SetAlert(105, "aesoon", 2, 2, 0)
 	timerMidnightFlamesCD:SetTimeline(105)
-	specWarnGrabblingMaw:SetAlert(219, "pullin", 2, 3)
+	if self:IsTank() then
+		warnGrabblingMaw:SetAlert(219, "pullin", 2, 3)
+	end
 	timerGrabblingMawCD:SetTimeline(219)
 	if self:IsTank() then
 		specWarnRakfang:SetAlert(220, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
@@ -131,8 +141,14 @@ function mod:OnLimitedCombatStart()
 	next63S3IsNullbeam = true
 	next25S3Type = "voidhowl"
 	lastS3Type = nil
+	next25H1Type = "vaelwing"
+	next50H1IsGloom = true
+	next25H2Type = "rakfang"
+	next31H3IsVaelwing = true
+	next62H3IsNullbeam = true
+	next25H3Type = "voidhowl"
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:SetStage(1)
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
@@ -377,6 +393,189 @@ do
 			return
 		end
 	end
+
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersHeroic(self, timer, timerExact, eventID)
+		--Logic confirmed against heroic week 2 pulls. All 3 stages hardcoded.
+		local stage = self:GetStage()
+		if stage == 1 then--Stage 1
+			if self:IsRoundedTimer(timer, 6) then--Vaelwing (initial)
+				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
+			elseif self:IsRoundedTimer(timer, 10) then--Nullbeam (initial)
+				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+			elseif self:IsRoundedTimer(timer, 12) then--Rakfang (initial)
+				timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+			elseif self:IsRoundedTimer(timer, 18) then--Grappling Maw (initial)
+				timerGrabblingMawCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
+			elseif self:IsRoundedTimer(timer, 27) then--Dread Breath (initial)
+				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+			elseif self:IsRoundedTimer(timer, 30) then--Void Howl (initial)
+				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+			elseif self:IsRoundedTimer(timer, 105) then--Radiant Barrier
+				timerRadiantBarrierCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
+			elseif self:IsRoundedTimer(timer, 50) then--Gloom (first) then Nullbeam (recurring)
+				if next50H1IsGloom then
+					timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
+					next50H1IsGloom = false
+				else
+					timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+				end
+			elseif self:IsRoundedTimer(timer, 20) then--Dread Breath (recurring)
+				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+			elseif self:IsRoundedTimer(timer, 16) then--Dread Breath (short variant)
+				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+			elseif self:IsRoundedTimer(timer, 45) then--Void Howl (recurring)
+				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+			elseif self:IsRoundedTimer(timer, 90) then--Gloom (recurring)
+				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
+			elseif self:IsRoundedTimer(timer, 25) then--Vaelwing, Rakfang, Grappling Maw cycle
+				if next25H1Type == "vaelwing" then
+					timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
+					next25H1Type = "rakfang"
+				elseif next25H1Type == "rakfang" then
+					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+					next25H1Type = "maw"
+				else
+					timerGrabblingMawCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
+					next25H1Type = "vaelwing"
+				end
+			elseif self:IsRoundedTimer(timer, 8) then--Midnight Flames (stage 1 → 2)
+				next25H2Type = "rakfang"
+				self:SetStage(0)
+				return
+			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif stage == 2 then--Stage 2
+			if self:IsRoundedTimer(timer, 6) then--Rakfang (initial)
+				timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+			elseif self:IsRoundedTimer(timer, 10) then--Gloom (initial)
+				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
+			elseif self:IsRoundedTimer(timer, 12) then--Vaelwing (initial)
+				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
+			elseif self:IsRoundedTimer(timer, 15) then--Void Howl (initial)
+				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+			elseif self:IsRoundedTimer(timer, 18) then--Grappling Maw (initial)
+				timerGrabblingMawCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
+			elseif self:IsRoundedTimer(timer, 27) then--Dread Breath (initial); must be before ~25 catch-all
+				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+			elseif self:IsRoundedTimer(timer, 45) then--Nullbeam (initial)
+				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+			elseif self:IsRoundedTimer(timer, 85) then--Nullbeam (recurring)
+				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+			elseif self:IsRoundedTimer(timer, 105) then--Radiant Barrier
+				timerRadiantBarrierCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
+			elseif self:IsRoundedTimer(timer, 49) then--Dread Breath (raw ~48.7-49.0) or Gloom (raw ~49.96-49.97); disambiguate by rounded value
+				--Keep an eye on this rule as more data comes in to make sure this doesn't become a point of failure
+				if timerExact >= 50 then--Gloom recurring (rounds to 50)
+					timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
+				else--Dread Breath recurring (rounds to 49)
+					timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				end
+			elseif self:IsRoundedTimer(timer, 25, 2) then--4-way cycle: Rakfang → Vaelwing → VoidHowl → Maw (raw 23.5-25.0)
+				if next25H2Type == "rakfang" then
+					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+					next25H2Type = "vaelwing"
+				elseif next25H2Type == "vaelwing" then
+					timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
+					next25H2Type = "voidhowl"
+				elseif next25H2Type == "voidhowl" then
+					timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+					next25H2Type = "maw"
+				else--maw
+					timerGrabblingMawCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
+					next25H2Type = "rakfang"
+				end
+			elseif self:IsRoundedTimer(timer, 8) then--Midnight Flames (stage 2 → 3)
+				next31H3IsVaelwing = true
+				next62H3IsNullbeam = true
+				next25H3Type = "voidhowl"
+				self:SetStage(0)
+				return
+			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif stage == 3 then--Stage 3
+			if self:IsRoundedTimer(timer, 225) then--Radiant Barrier
+				timerRadiantBarrierCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
+			elseif self:IsRoundedTimer(timer, 65) then--Dread Breath (initial); must be before ~62 variance 2
+				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+			elseif self:IsRoundedTimer(timer, 81) then--Dread Breath (recurring)
+				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+			elseif self:IsRoundedTimer(timer, 76) then--Dread Breath (recurring variant)
+				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+			elseif self:IsRoundedTimer(timer, 50) then--Gloom (initial); must be before ~51 to prevent overlap
+				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
+			elseif self:IsRoundedTimer(timer, 51) then--Void Howl (recurring)
+				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+			elseif self:IsRoundedTimer(timer, 46) then--Void Howl (late-stage variant)
+				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+			elseif self:IsRoundedTimer(timer, 13) then--Nullbeam (initial)
+				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+			elseif self:IsRoundedTimer(timer, 8) then--Vaelwing (initial)
+				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
+			elseif self:IsRoundedTimer(timer, 15) then--Rakfang (initial)
+				timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+			elseif self:IsRoundedTimer(timer, 31) then--Vaelwing / Rakfang alternating (starts Vaelwing)
+				if next31H3IsVaelwing then
+					timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
+					next31H3IsVaelwing = false
+				else
+					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+					next31H3IsVaelwing = true
+				end
+			elseif self:IsRoundedTimer(timer, 62, 2) then--Nullbeam / Gloom alternating (starts Nullbeam); raw 61.2-62.5
+				if next62H3IsNullbeam then
+					timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+					next62H3IsNullbeam = false
+				else
+					timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
+					next62H3IsNullbeam = true
+				end
+			elseif self:IsRoundedTimer(timer, 25) then--Void Howl (first) then drifted Rakfang (subsequent)
+				if next25H3Type == "voidhowl" then
+					timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+					next25H3Type = "rakfang"
+				else
+					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+					next31H3IsVaelwing = true--Drifted Rakfang consumed outside ~31 alternator, reset to Vaelwing
+				end
+			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
+				if not DBM.Options.DebugMode then
+					badStateDetected = true
+					if DBM.Options.IgnoreBlizzAPI then
+						DBM.Options.IgnoreBlizzAPI = false
+						DBM:FireEvent("DBM_ResumeBlizzAPI")
+					end
+					self:UnregisterShortTermEvents()
+					setFallback(self)
+					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				else
+					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+				end
+			end
+		else--Unknown stage
+			return
+		end
+	end
+
 	--Note, bar stage changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
@@ -386,6 +585,8 @@ do
 		if not badStateDetected then
 			if self:IsEasy() then
 				timersEasy(self, timer, timerExact, eventID)
+			else
+				timersHeroic(self, timer, timerExact, eventID)
 			end
 		end
 	end
@@ -409,8 +610,7 @@ do
 					specWarnDreadBreath:Show(eventCount)
 					specWarnDreadBreath:Play("breathsoon")
 				elseif eventType == "maw" then
-					specWarnGrabblingMaw:Show(eventCount)
-					specWarnGrabblingMaw:Play("pullin")
+					warnGrabblingMaw:Show(eventCount)
 				elseif eventType == "vaelwing" then
 					specWarnVaelwing:Show()
 					specWarnVaelwing:Play("defensive")
