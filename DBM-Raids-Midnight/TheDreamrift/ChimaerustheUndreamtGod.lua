@@ -271,7 +271,7 @@ do
 					end
 				end
 			end
-			local text = DBM_CORE_L.AUTO_SPEC_WARN_TEXTS["targetcount"].text:format(spellName, showOnNextWarning, formattedTargetName)
+			local text = DBM_CORE_L.AUTO_SPEC_WARN_TEXTS.targetcount:format(spellName, showOnNextWarning, formattedTargetName)
 			self:AddSpecialWarning(text, nil, nil, 2, iconFileID)--Hacky replacement for specWarnAlndustUpheaval with actual target name and class color
 			showOnNextWarning = 0
 		end
