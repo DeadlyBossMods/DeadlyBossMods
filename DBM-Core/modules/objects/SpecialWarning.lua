@@ -104,8 +104,8 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 	if customIcon and self.Options.HideDBMWarnings or (self.Options.DontPlaySpecialWarningSound and self.Options.DontShowSpecialWarningFlash and self.Options.DontShowSpecialWarningText) then return end
 	local added = false
 	local formatedText
-	if C_StringUtil and customIcon then
-		formatedText = C_StringUtil.WrapString(text, self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "", self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "")
+	if C_StringUtil and customIcon and self.Options.SpecialWarningIcon then
+		formatedText = C_StringUtil.WrapString(text, customIcon and textureCode:format(customIcon) or "", self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "")
 	else
 		formatedText = text
 	end
