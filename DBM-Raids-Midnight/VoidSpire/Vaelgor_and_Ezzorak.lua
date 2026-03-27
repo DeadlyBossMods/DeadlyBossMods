@@ -96,11 +96,9 @@ local function setFallback(self)
 	timerDreadBreathCD:SetTimeline(104)
 	specWarnMidnightFlames:SetAlert(105, "aesoon", 2, 2, 0)
 	timerMidnightFlamesCD:SetTimeline(105)
-	if self:IsTank() then
-		warnGrabblingMaw:SetAlert(219, "pullin", 2, 3)
-	end
 	timerGrabblingMawCD:SetTimeline(219)
 	if self:IsTank() then
+		warnGrabblingMaw:SetAlert(219, "pullin", 2, 3)
 		specWarnRakfang:SetAlert(220, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
 		specWarnVaelwing:SetAlert(221, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
 	end
