@@ -38,33 +38,12 @@ frame:SetFrameStrata("HIGH")
 frame:SetClampedToScreen(true)
 frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 
----@param anchor FontString
----@return Texture left
----@return Texture right
-local function createSideIcon(anchor)
-	local left = frame:CreateTexture(nil, "OVERLAY")
-	left:SetSize(12, 12)
-	left:SetPoint("RIGHT", anchor, "LEFT", -4, 0)
-	left:Hide()
-	local right = frame:CreateTexture(nil, "OVERLAY")
-	right:SetSize(12, 12)
-	right:SetPoint("LEFT", anchor, "RIGHT", 4, 0)
-	right:Hide()
-	return left, right
-end
-
-local font1LeftIcon, font1RightIcon = createSideIcon(font1)
-local font2LeftIcon, font2RightIcon = createSideIcon(font2)
-local font2IconValue
-
 local font1elapsed, font2elapsed, moving
 
 local function fontHide1()
 	local duration = DBM.Options.SpecialWarningDuration2
 	if font1elapsed > duration * 1.3 then
 		font1:Hide()
-		font1LeftIcon:Hide()
-		font1RightIcon:Hide()
 		if frame.font1ticker then
 			frame.font1ticker:Cancel()
 			frame.font1ticker = nil
@@ -72,15 +51,10 @@ local function fontHide1()
 	elseif font1elapsed > duration then
 		font1elapsed = font1elapsed + 0.05
 		local alpha = 1 - (font1elapsed - duration) / (duration * 0.3)
-		alpha = alpha > 0 and alpha or 0
-		font1:SetAlpha(alpha)
-		font1LeftIcon:SetAlpha(alpha)
-		font1RightIcon:SetAlpha(alpha)
+		font1:SetAlpha(alpha > 0 and alpha or 0)
 	else
 		font1elapsed = font1elapsed + 0.05
 		font1:SetAlpha(1)
-		font1LeftIcon:SetAlpha(1)
-		font1RightIcon:SetAlpha(1)
 	end
 end
 
@@ -88,9 +62,6 @@ local function fontHide2()
 	local duration = DBM.Options.SpecialWarningDuration2
 	if font2elapsed > duration * 1.3 then
 		font2:Hide()
-		font2LeftIcon:Hide()
-		font2RightIcon:Hide()
-		font2IconValue = nil
 		if frame.font2ticker then
 			frame.font2ticker:Cancel()
 			frame.font2ticker = nil
@@ -98,30 +69,10 @@ local function fontHide2()
 	elseif font2elapsed > duration then
 		font2elapsed = font2elapsed + 0.05
 		local alpha = 1 - (font2elapsed - duration) / (duration * 0.3)
-		alpha = alpha > 0 and alpha or 0
-		font2:SetAlpha(alpha)
-		font2LeftIcon:SetAlpha(alpha)
-		font2RightIcon:SetAlpha(alpha)
+		font2:SetAlpha(alpha > 0 and alpha or 0)
 	else
 		font2elapsed = font2elapsed + 0.05
 		font2:SetAlpha(1)
-		font2LeftIcon:SetAlpha(1)
-		font2RightIcon:SetAlpha(1)
-	end
-end
-
----@param leftIcon Texture
----@param rightIcon Texture
----@param icon string|number?
-local function setLineIcons(leftIcon, rightIcon, icon)
-	if icon and DBM.Options.SpecialWarningIcon then
-		leftIcon:SetTexture(icon)
-		rightIcon:SetTexture(icon)
-		leftIcon:Show()
-		rightIcon:Show()
-	else
-		leftIcon:Hide()
-		rightIcon:Hide()
 	end
 end
 
@@ -152,21 +103,25 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 	--Now, check if all special warning filters are enabled to save cpu and abort immediately if true and it comes from RAID_WARNING API
 	if customIcon and self.Options.HideDBMWarnings or (self.Options.DontPlaySpecialWarningSound and self.Options.DontShowSpecialWarningFlash and self.Options.DontShowSpecialWarningText) then return end
 	local added = false
+	local formatedText
+	if C_StringUtil and customIcon and self.Options.SpecialWarningIcon then
+		local iconText = textureCode:format(customIcon)
+		formatedText = C_StringUtil.WrapString(text, iconText, iconText)
+	else
+		formatedText = text
+	end
 	if not self.Options.DontShowSpecialWarningText then
 		if not frame.font1ticker then
 			font1elapsed = 0
 			font1.lastUpdate = GetTime()
-			font1:SetText(text)
-			setLineIcons(font1LeftIcon, font1RightIcon, customIcon)
+			font1:SetText(formatedText)
 			font1:Show()
 			added = true
 			frame.font1ticker = frame.font1ticker or C_Timer.NewTicker(0.05, fontHide1)
 		elseif not frame.font2ticker or force then
 			font2elapsed = 0
 			font2.lastUpdate = GetTime()
-			font2:SetText(text)
-			setLineIcons(font2LeftIcon, font2RightIcon, customIcon)
-			font2IconValue = customIcon
+			font2:SetText(formatedText)
 			font2:Show()
 			added = true
 			frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, fontHide2)
@@ -176,7 +131,6 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 				--GetText can't be called on secrets, so if customIcon exists this code path is skipped
 				local prevText1 = font2:GetText()
 				font1:SetText(prevText1)
-				setLineIcons(font1LeftIcon, font1RightIcon, font2IconValue)
 				font1elapsed = font2elapsed
 				self:AddSpecialWarning(text, true, specWarnObject, number, customIcon, noSound)
 			end
@@ -203,7 +157,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 		end
 		if self.Options.ShowSWarningsInChat then
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-			local combinedText = colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "]|r " .. text
+			local combinedText = colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "]|r " .. formatedText
 			self:AddMsg(combinedText)
 		end
 		--DUPLICATE CODE
