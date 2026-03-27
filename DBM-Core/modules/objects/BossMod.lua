@@ -1267,6 +1267,7 @@ do
 	---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
 	---@param customOption string? Used when event supports hardcoded timers and needs different option table lookup
 	function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId, customOption)
+		if DBM.Options.HideDBMBars then return end
 		--Set Color (done outside option check since right now option check isnt supported until 12.0.5
 		--And we want to set colors on any bar even if it's "disabled" for now
 		if not DBM.Options.DontSetTimelineColors then
@@ -1354,7 +1355,7 @@ do
 	---@param customOption string? Used when event supports hardcoded warnings and needs different option table lookup
 	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, color, overrideType, customOption)
 		--Use same global disable as special warning sounds (since UI is indistinguishable between custom alert sounds and special warning sounds, might as well just have one global disable for both)
-		if DBM.Options.DontPlaySpecialWarningSound then return end
+		if DBM.Options.HideDBMWarnings or DBM.Options.DontPlaySpecialWarningSound then return end
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
 		if (voice == "changemt" or voice == "tauntboss") and not self:IsTank() then return end
 		if optionId then
