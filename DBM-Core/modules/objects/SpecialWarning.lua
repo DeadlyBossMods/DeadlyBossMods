@@ -104,9 +104,8 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 	if customIcon and self.Options.HideDBMWarnings or (self.Options.DontPlaySpecialWarningSound and self.Options.DontShowSpecialWarningFlash and self.Options.DontShowSpecialWarningText) then return end
 	local added = false
 	local formatedText
-	if C_StringUtil and customIcon and self.Options.SpecialWarningIcon then
-		local iconText = textureCode:format(customIcon)
-		formatedText = C_StringUtil.WrapString(text, iconText, iconText)
+	if C_StringUtil and customIcon then
+		formatedText = C_StringUtil.WrapString(text, self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "", self.Options.SpecialWarningIcon and customIcon and textureCode:format(customIcon) or "")
 	else
 		formatedText = text
 	end
@@ -157,7 +156,12 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 		end
 		if self.Options.ShowSWarningsInChat then
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-			local combinedText = colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "]|r " .. formatedText
+			local combinedText
+			if C_StringUtil then
+				combinedText = C_StringUtil.WrapString(formatedText, colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] ", "|r")
+			else
+				combinedText = colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] " .. formatedText .. "|r"
+			end
 			self:AddMsg(combinedText)
 		end
 		--DUPLICATE CODE
