@@ -4,6 +4,9 @@ if not DBM_COMMON_L then DBM_COMMON_L = {} end
 local CL = DBM_COMMON_L
 
 --General
+--CL.ALPHABETICAL           = "Alphabetical"
+--CL.DURATION               = "Duration"
+--CL.SORTING                = "Sorting"
 CL.NONE						= "Нет"
 CL.RANDOM		  			= "Случайно"
 CL.UNKNOWN					= "неизвестно"

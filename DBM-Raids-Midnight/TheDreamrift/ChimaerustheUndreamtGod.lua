@@ -60,6 +60,7 @@ mod.vb.consumeCount = 0
 local badStateDetected = false
 local sawPhlegm53 = false
 local next12IsDevastation = false
+local showOnNextWarning = 0
 
 local function setFallback(self)
 	--Blizz API fallbacks
@@ -99,12 +100,14 @@ function mod:OnLimitedCombatStart()
 	self.vb.consumeCount = 1
 	sawPhlegm53 = false
 	next12IsDevastation = false
+	showOnNextWarning = 0
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
-			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+			"ENCOUNTER_WARNING"
 		)
 	else
 		setFallback(self)
@@ -231,8 +234,10 @@ do
 					specWarnCausticPhlegm:Show(eventCount)
 					specWarnCausticPhlegm:Play("aesoon")
 				elseif eventType == "upheaval" then
-					specWarnAlndustUpheaval:Show(eventCount)
+					showOnNextWarning = eventCount
+--					specWarnAlndustUpheaval:Show(eventCount)
 					specWarnAlndustUpheaval:Play("soakincoming")
+					--We timestamp this then let local ENCOUNTER_WARNING event handle it
 				elseif eventType == "devastation" then
 					specWarnCorruptedDevastation:Show(eventCount)
 					specWarnCorruptedDevastation:Play("breathsoon")
@@ -245,6 +250,31 @@ do
 			end
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)
+		end
+	end
+end
+
+do
+	local spellName = DBM:GetSpellInfo(1262289)
+	function mod:ENCOUNTER_WARNING(encounterWarningInfo)
+		if showOnNextWarning > 0 then
+			--Secrets
+			local targetName = encounterWarningInfo.targetName
+			local targetGUID = encounterWarningInfo.targetGUID
+			local iconFileID = encounterWarningInfo.iconFileID
+			local formattedTargetName = targetName
+			if targetGUID then
+				local _, className = GetPlayerInfoByGUID(targetGUID)
+				if className then
+					local classColor = C_ClassColor.GetClassColor(className)
+					if classColor then
+					    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
+					end
+				end
+			end
+			local text = DBM_CORE_L.AUTO_SPEC_WARN_TEXTS.targetcount:format(spellName, showOnNextWarning, formattedTargetName)
+			DBM:AddSpecialWarning(text, nil, nil, 2, iconFileID)--Hacky replacement for specWarnAlndustUpheaval with actual target name and class color
+			showOnNextWarning = 0
 		end
 	end
 end
