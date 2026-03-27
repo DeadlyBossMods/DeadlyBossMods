@@ -106,7 +106,8 @@ function mod:OnLimitedCombatStart()
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
-			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+			"ENCOUNTER_WARNING"
 		)
 	else
 		setFallback(self)
@@ -255,7 +256,7 @@ end
 
 do
 	local spellName = DBM:GetSpellInfo(1262289)
-	function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
+	function mod:ENCOUNTER_WARNING(encounterWarningInfo)
 		if showOnNextWarning > 0 then
 			--Secrets
 			local targetName = encounterWarningInfo.targetName
