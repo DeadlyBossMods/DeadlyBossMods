@@ -126,7 +126,7 @@ do
 					specWarnUmbralCollapse:Schedule(72, 2)
 					specWarnUmbralCollapse:ScheduleVoice(72, "gathershare")
 					timerUmbralCollapseCD:Stop()
-					timerUmbralCollapseCD:Start(72, 2)
+					timerUmbralCollapseCD:Start(72, self.vb.CollapseCount+1)
 				end
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API

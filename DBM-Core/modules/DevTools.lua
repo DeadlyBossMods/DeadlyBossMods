@@ -58,6 +58,15 @@ do
 		debugLogContent:SetPoint("TOPLEFT", debugLogViewport, "TOPLEFT", 0, ((debugLogTopVisibleLine - 1) * lineHeight))
 	end
 
+	local function scrollDebugLogByLines(lineDelta)
+		debugLogTopVisibleLine = debugLogTopVisibleLine + lineDelta
+		refreshDebugLog(false)
+	end
+
+	local function scrollDebugLogByPage(pageDelta)
+		scrollDebugLogByLines(getVisibleLineCount() * pageDelta)
+	end
+
 	local function setDebugLogSoftClosed(softClosed)
 		if not debugLogFrame then return end
 		debugLogSoftClosed = softClosed
@@ -125,7 +134,7 @@ do
 		}
 		debugLogFrame:ApplyBackdrop()
 		debugLogFrame:SetPoint("CENTER")
-		debugLogFrame:SetSize(1200, 800)
+		debugLogFrame:SetSize(1200, 808)
 		debugLogFrame:SetBackdropColor(0, 0, 0, 1)
 		debugLogFrame:SetClampedToScreen(false)
 		-- Store the normal position for later restoration
@@ -186,19 +195,33 @@ do
 		local scrollUpButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
 		scrollUpButton:SetPoint("TOPRIGHT", debugLogFrame, "TOPRIGHT", -12, -40)
 		scrollUpButton:SetSize(28, 20)
-		scrollUpButton:SetText("▲")
+		scrollUpButton:SetText("^")
 		scrollUpButton:SetScript("OnClick", function()
-			debugLogTopVisibleLine = debugLogTopVisibleLine - 1
-			refreshDebugLog(false)
+			scrollDebugLogByLines(-1)
 		end)
 
 		local scrollDownButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
 		scrollDownButton:SetPoint("TOPRIGHT", scrollUpButton, "BOTTOMRIGHT", 0, -4)
 		scrollDownButton:SetSize(28, 20)
-		scrollDownButton:SetText("▼")
+		scrollDownButton:SetText("v")
 		scrollDownButton:SetScript("OnClick", function()
-			debugLogTopVisibleLine = debugLogTopVisibleLine + 1
-			refreshDebugLog(false)
+			scrollDebugLogByLines(1)
+		end)
+
+		local pageUpButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
+		pageUpButton:SetPoint("TOPRIGHT", scrollDownButton, "BOTTOMRIGHT", 0, -8)
+		pageUpButton:SetSize(28, 20)
+		pageUpButton:SetText("^^")
+		pageUpButton:SetScript("OnClick", function()
+			scrollDebugLogByPage(-1)
+		end)
+
+		local pageDownButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
+		pageDownButton:SetPoint("TOPRIGHT", pageUpButton, "BOTTOMRIGHT", 0, -4)
+		pageDownButton:SetSize(28, 20)
+		pageDownButton:SetText("vv")
+		pageDownButton:SetScript("OnClick", function()
+			scrollDebugLogByPage(1)
 		end)
 
 		updateLineLayout()
@@ -439,3 +462,5 @@ end
 
 --Taint the script that disables /run /dump, etc
 --ScriptsDisallowedForBeta = function() return false end
+
+--/run for i = 1, 100 do DBM:Debug("|cffffff00FILLING LOG WITH TRASH" .. i, 2, nil, nil, true) end
