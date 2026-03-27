@@ -56,7 +56,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.breathCount = 1
 	self.vb.expulsionCount = 1
 	self.vb.roarCount = 1
-	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and self:IsDifficulty("lfr", "normal", "heroic") and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -80,7 +80,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersEasy(self, timer, timerExact, eventID)
-		--Logic confirmed against normal and LFR
+		--Logic confirmed against LFR, normal, and heroic
 		if timer == 6 or timer == 120 then--Primordial Roar
 			timerPrimordialRoarCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "roar", "roarCount"))
 		elseif timer == 57 or timer == 123 then--Parasite Expulsion
@@ -115,7 +115,7 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			if self:IsEasy() then
+			if self:IsDifficulty("lfr", "normal", "heroic") then
 				timersEasy(self, timer, timerExact, eventID)
 			end
 		end
