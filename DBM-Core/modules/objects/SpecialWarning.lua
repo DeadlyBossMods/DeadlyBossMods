@@ -203,7 +203,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 		end
 		if self.Options.ShowSWarningsInChat then
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-			local combinedText = string.format("%s[%s]|r %s", colorCode, L.MOVE_SPECIAL_WARNING_TEXT, text)
+			local combinedText = colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "]|r " .. text
 			self:AddMsg(combinedText)
 		end
 		--DUPLICATE CODE
@@ -558,8 +558,7 @@ function specialWarningPrototype:Show(...)
 			DBM:AddSpecialWarning(text, nil, self)
 			if DBM.Options.ShowSWarningsInChat then
 				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-				local combinedText = string.format("%s[%s] %s|r", colorCode, L.MOVE_SPECIAL_WARNING_TEXT, text)
-				self.mod:AddMsg(combinedText, nil)
+				self.mod:AddMsg(colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] " .. text .. "|r", nil)
 			end
 		end
 		self.combinedcount = 0
