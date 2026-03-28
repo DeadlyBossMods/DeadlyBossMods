@@ -396,7 +396,11 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 	if not self.option or self.mod.Options[self.option] then
 		if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
-		local argTable = {...}
+		local argTable
+		if self.announceType ~= "blizztarget" then
+			--Don't create table out of args if it has secrets
+			argTable = {...}
+		end
 		local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 		if #self.combinedtext > 0 then
 			--Throttle spam.
@@ -417,13 +421,21 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 			end
 		end
 		local announceCount
+		--blizztarget purposely omited from here even though it's also a count warning, we don't want to perform any extra actions on secrets
 		if self.announceType and (self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" or self.announceType == "incomingcount") then--Don't use find "count" here, it'll match countdown
 			--Stage triggers don't pass count, but they do not need to, there is a stage callback and trigger option in WA that should be used
 			if type(argTable[1]) == "number" then
 				announceCount = argTable[1]
 			end
 		end
-		local message = stringUtils.pformat(self.text, unpack(argTable))
+		local message
+		if argTable then
+			message = stringUtils.pformat(self.text, unpack(argTable))
+		else
+			--Only time argTable is nil is if it's a blizztarget announce
+			message = string.format(self.text, ...)--Use native format (no pcall frame) to avoid secret args surfacing in error handlers
+		end
+		--This might still throw errors if we don't use C_StringUtil.WrapText instead. Will test
 		local text = ("%s%s%s|r%s"):format(
 			(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
 			colorCode,
@@ -432,35 +444,38 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		)
 		self.combinedcount = 0
 		self.combinedtext = {}
-		if not cachedColorFunctions[self.color] then
-			local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
-			cachedColorFunctions[color] = function(cap)
-				cap = cap:sub(2, -2)
-				local noStrip = cap:match("noStrip ")
-				if not noStrip then
-					local name = cap
-					local playerClass, playerIcon = DBM:GetRaidClass(name)
-					if playerClass ~= "UNKNOWN" then
-						cap = DBM:GetShortServerName(cap)--Only run realm strip function if class color was valid (IE it's an actual playername)
-					end
-					local playerColor = RAID_CLASS_COLORS[playerClass] or color
-					if playerColor then
-						if playerIcon > 0 and playerIcon <= 8 then
-							cap = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(playerIcon) .. ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
-						else
-							cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
+		--Avoid computational actions on blizz target, which is using secret passthrough
+		if self.announceType ~= "blizztarget" then
+			if not cachedColorFunctions[self.color] then
+				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
+				cachedColorFunctions[color] = function(cap)
+					cap = cap:sub(2, -2)
+					local noStrip = cap:match("noStrip ")
+					if not noStrip then
+						local name = cap
+						local playerClass, playerIcon = DBM:GetRaidClass(name)
+						if playerClass ~= "UNKNOWN" then
+							cap = DBM:GetShortServerName(cap)--Only run realm strip function if class color was valid (IE it's an actual playername)
 						end
+						local playerColor = RAID_CLASS_COLORS[playerClass] or color
+						if playerColor then
+							if playerIcon > 0 and playerIcon <= 8 then
+								cap = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(playerIcon) .. ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
+							else
+								cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
+							end
+						end
+					else
+						cap = cap:sub(9)
 					end
-				else
-					cap = cap:sub(9)
+					return cap
 				end
-				return cap
 			end
+			text = text:gsub(">.-<", cachedColorFunctions[self.color])
 		end
-		text = text:gsub(">.-<", cachedColorFunctions[self.color])
 		DBM:AddWarning(text, nil, self)
 		if DBM.Options.ShowWarningsInChat then
-			if not DBM.Options.WarningIconChat then
+			if not DBM.Options.WarningIconChat and self.announceType ~= "blizztarget" then
 				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
 			end
 			self.mod:AddMsg(text, nil)
@@ -763,6 +778,20 @@ end
 function bossModPrototype:NewTargetAnnounce(spellId, color, ...)
 	---@type Announce1
 	return newAnnounce(self, "target", spellId, color or 3, ...)
+end
+
+---Special object used for blizzard target announces using secret target pulled from ENCOUNTER_WARNING
+---@param spellId number|string
+---@param color warningColorType?
+---@param icon number|string?
+---@param optionDefault SpecFlags|boolean?
+---@param optionName string|number|boolean?
+---@param castTime number?
+---@param preWarnTime number|string?
+---@param soundOption number|boolean?
+function bossModPrototype:NewBlizzTargetAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption)
+	--Purposely not typecast, it'll be using secret target we can't validate
+	return newAnnounce(self, "blizztarget", spellId, color or 3, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, true)
 end
 
 ---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|number|boolean?, castTime: number?, preWarnTime: number|string?, soundOption: number|boolean?, noFilter: boolean?): Announce2
