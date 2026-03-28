@@ -13,6 +13,8 @@ mod:RegisterCombat("combat")
 --NOTE, https://www.wowhead.com/spell=1245771/corrupted-feathers has event ID ono boss but isn't in journal, possibly pre boss trash mechanic
 --NOTE, https://www.wowhead.com/spell=1262616/retched-acid not in journal (208)
 --NOTE, https://www.wowhead.com/spell=1280127/stage-two also exists, but based on most recent testing blizzard uses consume for p2 and not this bar anymore
+local warnAlndustUpheaval				= mod:NewBlizzTargetAnnounce(1262289, 2)
+
 local specWarnRavenousDive				= mod:NewSpecialWarningCount(1245404, nil, 218027, nil, 2, 2)
 local specWarnRiftEmergence				= mod:NewSpecialWarningCount(1251021, nil, nil, DBM_COMMON_L.ADDS, 2, 2)
 local specWarnCausticPhlegm				= mod:NewSpecialWarningCount(1246621, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
@@ -318,7 +320,7 @@ do
 					specWarnCausticPhlegm:Play("aesoon")
 				elseif eventType == "upheaval" then
 					showOnNextWarning = eventCount
---					specWarnAlndustUpheaval:Show(eventCount)
+					specWarnAlndustUpheaval:Show(eventCount)
 					specWarnAlndustUpheaval:Play("soakincoming")
 					--We timestamp this then let local ENCOUNTER_WARNING event handle it
 				elseif eventType == "devastation" then
@@ -337,27 +339,22 @@ do
 	end
 end
 
-do
-	local spellName = DBM:GetSpellInfo(1262289)
-	function mod:ENCOUNTER_WARNING(encounterWarningInfo)
-		if showOnNextWarning > 0 then
-			--Secrets
-			local targetName = encounterWarningInfo.targetName
-			local targetGUID = encounterWarningInfo.targetGUID
-			local iconFileID = encounterWarningInfo.iconFileID
-			local formattedTargetName = targetName
-			if targetGUID then
-				local _, className = GetPlayerInfoByGUID(targetGUID)
-				if className then
-					local classColor = C_ClassColor.GetClassColor(className)
-					if classColor then
-					    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
-					end
+function mod:ENCOUNTER_WARNING(encounterWarningInfo)
+	if showOnNextWarning > 0 then
+		--Secrets
+		local targetName = encounterWarningInfo.targetName
+		local targetGUID = encounterWarningInfo.targetGUID
+		local formattedTargetName = targetName
+		if targetGUID then
+			local _, className = GetPlayerInfoByGUID(targetGUID)
+			if className then
+				local classColor = C_ClassColor.GetClassColor(className)
+				if classColor then
+				    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
 				end
 			end
-			local text = DBM_CORE_L.AUTO_SPEC_WARN_TEXTS.targetcount:format(spellName, showOnNextWarning, formattedTargetName)
-			DBM:AddSpecialWarning(text, nil, nil, 2, iconFileID)--Hacky replacement for specWarnAlndustUpheaval with actual target name and class color
-			showOnNextWarning = 0
 		end
+		warnAlndustUpheaval:Show(showOnNextWarning, formattedTargetName)
+		showOnNextWarning = 0
 	end
 end
