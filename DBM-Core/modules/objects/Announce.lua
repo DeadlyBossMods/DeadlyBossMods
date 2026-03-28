@@ -430,10 +430,12 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		end
 		local message
 		if argTable then
-			message = stringUtils.format(self.text, unpack(argTable))
+			message = stringUtils.pformat(self.text, unpack(argTable))
 		else
-			message = stringUtils.format(self.text, ...)
+			--Only time argTable is nil is if it's a blizztarget announce
+			message = string.format(self.text, ...)--Use native format (no pcall frame) to avoid secret args surfacing in error handlers
 		end
+		--This might still throw errors if we don't use C_StringUtil.WrapText instead. Will test
 		local text = ("%s%s%s|r%s"):format(
 			(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
 			colorCode,
