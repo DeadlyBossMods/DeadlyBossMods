@@ -704,7 +704,6 @@ L.ARROW_ERROR_USAGE						= {
 
 L.SPEED_KILL_TIMER_TEXT					= "Record Victory"
 L.SPEED_CLEAR_TIMER_TEXT				= "Best Clear"
-L.COMBAT_RES_TIMER_TEXT					= "Next CR Charge"
 L.TIMER_RESPAWN							= "%s Respawn"
 
 L.LAG_HEADER							= L.DBM.. " - Latency Results"

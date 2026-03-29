@@ -619,7 +619,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT	= "Record Vittoria"
 L.SPEED_CLEAR_TIMER_TEXT	= "Migliore Clear"
-L.COMBAT_RES_TIMER_TEXT	= "Prossima Carica CR"
 L.TIMER_RESPAWN		= "Respawn %s"
 
 L.LAG_HEADER					= L.DBM.." - Risultati Latenza"

@@ -663,7 +663,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT		= "Superar récord"
 L.SPEED_CLEAR_TIMER_TEXT	= "Récord actual"
-L.COMBAT_RES_TIMER_TEXT		= "Siguiente resurrección"
 L.TIMER_RESPAWN				= "%s reaparece"
 
 L.LAG_HEADER				= L.DBM.. " - Resultados de latencia"

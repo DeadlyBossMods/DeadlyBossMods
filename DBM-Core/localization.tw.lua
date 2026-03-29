@@ -664,7 +664,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT			= "勝利紀錄"
 L.SPEED_CLEAR_TIMER_TEXT		= "最佳紀錄"
-L.COMBAT_RES_TIMER_TEXT			= "下一個戰復充能"
 L.TIMER_RESPAWN					= "%s 重生"
 
 L.LAG_HEADER					= ""..L.DBM.." - 網路延遲結果"

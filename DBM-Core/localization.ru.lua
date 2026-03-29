@@ -688,7 +688,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT				= "Рекордная победа"
 L.SPEED_CLEAR_TIMER_TEXT			= "Лучшее прохождение"
-L.COMBAT_RES_TIMER_TEXT				= "След. заряд БР"
 L.TIMER_RESPAWN						= "Появление %s"
 
 L.LAG_HEADER						= L.DBM.. " - результаты проверки задержки"

@@ -665,7 +665,6 @@ L.ARROW_ERROR_USAGE					= {
 
 L.SPEED_KILL_TIMER_TEXT				= "Vitória em tempo recorde"
 L.SPEED_CLEAR_TIMER_TEXT			= "Limpeza mais rápida"
-L.COMBAT_RES_TIMER_TEXT				= "Próxima recarga CR"
 L.TIMER_RESPAWN						= "%s Reaparecimento"
 
 L.LAG_HEADER						= L.DBM .. " - Resultados de latência"

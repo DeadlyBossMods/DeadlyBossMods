@@ -643,7 +643,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT	= "최고 승리 기록"
 L.SPEED_CLEAR_TIMER_TEXT	= "최고 완료 기록"
-L.COMBAT_RES_TIMER_TEXT	= "다음 전투 부활 충전"
 L.TIMER_RESPAWN		= "%s 재생성"
 
 L.LAG_HEADER					= L.DBM .. " - 지연시간 확인 결과"

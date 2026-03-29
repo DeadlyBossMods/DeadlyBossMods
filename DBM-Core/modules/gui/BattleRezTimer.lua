@@ -11,20 +11,16 @@ DBM.BattleRezTimer = BattleRezTimer
 
 local L = DBM_CORE_L
 
-local floor, GetTime, mod = math.floor, GetTime, mod
+local floor, GetTime, mod = math.floor, GetTime, math.fmod
 local standardFont = private.standardFont
 
 -- State
+---@type Frame?
 local frame
+---@type unknown?
 local updateTicker
 local inCombat = false
 local lastCharges = -1
-local lastBarStart = 0
-local lastBarDuration = 0
-local isSupported = false
-
----@type DBT
-local DBT = DBT
 
 ---------------------------------------
 -- Display Frame
@@ -74,11 +70,15 @@ local function CreateDisplayFrame()
 
 	-- Drag handling
 	frame:RegisterForDrag("LeftButton")
-	frame:SetScript("OnDragStart", frame.StartMoving)
+	frame:SetScript("OnDragStart", function(self)
+		self:StartMoving()
+	end)
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
 		local point, _, _, x, y = self:GetPoint(1)
-		DBM.Options.BattleRezPosition = { point, x, y }
+		if point then
+			DBM.Options.BattleRezPosition = { point, x, y }
+		end
 	end)
 
 	ApplyFont()
@@ -88,12 +88,22 @@ local function ApplyPosition()
 	if not frame then return end
 	frame:ClearAllPoints()
 	local pos = DBM.Options.BattleRezPosition
-	frame:SetPoint(pos[1], pos[2], pos[3])
+	if pos and pos[1] then
+		frame:SetPoint(pos[1], UIParent, pos[1], pos[2], pos[3])
+	else
+		-- Default position if not yet saved
+		frame:SetPoint("CENTER", UIParent, "CENTER", 0, 100)
+	end
 end
 
 ApplyFont = function()
 	if not frame then return end
-	local font = DBM.Options.BrezFont == "standardFont" and standardFont or DBM.Options.BrezFont
+	-- Select font with nil fallback to standardFont
+	local fontOption = DBM.Options.BrezFont
+	local font = (not fontOption or fontOption == "standardFont") and standardFont or fontOption
+	if not font then
+		font = standardFont  -- Additional safety fallback
+	end
 	local size = DBM.Options.BrezFontSize or 18
 	frame.charges:SetFont(font, size, "OUTLINE")
 	frame.timer:SetFont(font, size, "OUTLINE")
@@ -119,14 +129,27 @@ local UpdateDisplay
 do
 	local GetSpellCharges = C_Spell.GetSpellCharges
 	UpdateDisplay = function()
+		-- Check if frame should be hidden due to option being disabled
+		if inCombat and not DBM.Options.ShowBrezFrame then
+			if updateTicker then
+				updateTicker:Cancel()
+				updateTicker = nil
+			end
+			if frame then
+				frame:Hide()
+			end
+			-- Reset state for re-enabling
+			inCombat = false
+			lastCharges = -1
+			return
+		end
+
 		local chargeInfo = GetSpellCharges(20484) -- Rebirth (shared combat res pool)
 		if not chargeInfo then
 			-- No longer in applicable combat
 			if inCombat then
 				inCombat = false
 				lastCharges = -1
-				lastBarStart = 0
-				lastBarDuration = 0
 				if updateTicker then
 					updateTicker:Cancel()
 					updateTicker = nil
@@ -134,8 +157,6 @@ do
 				if frame then
 					frame:Hide()
 				end
-				-- Cancel DBM bar if active
-				DBT:CancelBar(L.COMBAT_RES_TIMER_TEXT)
 			end
 			return
 		end
@@ -176,22 +197,13 @@ do
 			local remaining = duration - (GetTime() - startTime)
 			if remaining < 0 then remaining = 0 end
 			local m = floor(remaining / 60)
-			local s = mod(remaining, 60)
+			local s = floor(mod(remaining, 60))
 			if frame then
 				frame.timer:SetText(("%d:%02d"):format(m, s))
-			end
-			-- DBM bar option: only create/reset when cooldown changes
-			if DBM.Options.ShowBrezBar and (startTime ~= lastBarStart or duration ~= lastBarDuration) then
-				lastBarStart = startTime
-				lastBarDuration = duration
-				DBT:CreateBar(remaining, L.COMBAT_RES_TIMER_TEXT, 134222) -- spell_nature_reincarnation
 			end
 		else
 			if frame then
 				frame.timer:SetText("0:00")
-			end
-			if DBM.Options.ShowBrezBar then
-				DBT:CancelBar(L.COMBAT_RES_TIMER_TEXT)
 			end
 		end
 	end
@@ -210,7 +222,7 @@ do
 	}
 	-- Difficulty IDs that use the shared combat res charge pool
 	local function shouldShowFrame()
-		--Active Keystone
+		--Active Keystone (entire dungeon is one encounter)
 		if difficulties.difficultyIndex == 8 then
 			return true
 		end
@@ -226,9 +238,8 @@ do
 	end
 
 	local function frameDelay()
-		local wasSupported = isSupported
 		isSupported = shouldShowFrame()
-		local shouldDisplay = isSupported and (DBM.Options.ShowBrezFrame or DBM.Options.ShowBrezBar)
+		local shouldDisplay = isSupported and DBM.Options.ShowBrezFrame
 		if shouldDisplay then
 			if not updateTicker then
 				updateTicker = C_Timer.NewTicker(1, UpdateDisplay)
@@ -242,12 +253,9 @@ do
 			if frame then
 				frame:Hide()
 			end
-			DBT:CancelBar(L.COMBAT_RES_TIMER_TEXT)
 			-- Always reset tracking state so re-enabling options forces a full refresh
 			inCombat = false
 			lastCharges = -1
-			lastBarStart = 0
-			lastBarDuration = 0
 		end
 	end
 	function BattleRezTimer:CheckSupported()

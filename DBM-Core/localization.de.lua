@@ -617,7 +617,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT	= "Rekordzeit"
 L.SPEED_CLEAR_TIMER_TEXT	= "Abschlussbestzeit"
-L.COMBAT_RES_TIMER_TEXT	= "Kampfbelebung +"
 L.TIMER_RESPAWN		= "%s Wiedererscheinen"
 
 L.LAG_HEADER					= L.DBM.." - Latenzergebnisse"
