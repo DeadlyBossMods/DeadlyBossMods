@@ -19,7 +19,7 @@ local standardFont = private.standardFont
 local frame
 ---@type unknown?
 local updateTicker
-local inCombat = false
+local chargesActive = false
 local lastCharges = -1
 
 ---------------------------------------
@@ -111,17 +111,6 @@ ApplyFont = function()
 	frame:SetSize(size * 7 + 14, size + 12)
 end
 
-local function ApplyLock()
-	if not frame then return end
-	if DBM.Options.LockBrezFrame then
-		frame:EnableMouse(false)
-		frame.header:Hide()
-	else
-		frame:EnableMouse(true)
-		frame.header:Show()
-	end
-end
-
 ---------------------------------------
 -- Update Logic
 ---------------------------------------
@@ -130,7 +119,7 @@ do
 	local GetSpellCharges = C_Spell.GetSpellCharges
 	UpdateDisplay = function()
 		-- Check if frame should be hidden due to option being disabled
-		if inCombat and not DBM.Options.ShowBrezFrame then
+		if chargesActive and not DBM.Options.ShowBrezFrame then
 			if updateTicker then
 				updateTicker:Cancel()
 				updateTicker = nil
@@ -139,7 +128,7 @@ do
 				frame:Hide()
 			end
 			-- Reset state for re-enabling
-			inCombat = false
+			chargesActive = false
 			lastCharges = -1
 			return
 		end
@@ -147,8 +136,8 @@ do
 		local chargeInfo = GetSpellCharges(20484) -- Rebirth (shared combat res pool)
 		if not chargeInfo then
 			-- No longer in applicable combat
-			if inCombat then
-				inCombat = false
+			if chargesActive then
+				chargesActive = false
 				lastCharges = -1
 				if updateTicker then
 					updateTicker:Cancel()
@@ -167,12 +156,13 @@ do
 		local duration = chargeInfo.cooldownDuration
 
 		-- Combat start detection
-		if not inCombat then
-			inCombat = true
+		if not chargesActive then
+			chargesActive = true
 			lastCharges = -1
 			if DBM.Options.ShowBrezFrame and frame then
 				ApplyPosition()
-				ApplyLock()
+				frame:EnableMouse(false)
+				frame.header:Hide()
 				frame:Show()
 			end
 		end
@@ -254,15 +244,11 @@ do
 				frame:Hide()
 			end
 			-- Always reset tracking state so re-enabling options forces a full refresh
-			inCombat = false
+			chargesActive = false
 			lastCharges = -1
 		end
 	end
 	function BattleRezTimer:CheckSupported()
-		-- Apply lock state immediately if the frame is already visible
-		if frame and frame:IsShown() then
-			ApplyLock()
-		end
 		--Frame delay it to allow time for apis or combat to return true
 		DBM:Unschedule(frameDelay)
 		DBM:Schedule(1, frameDelay) -- Delay to allow combat log to update
@@ -284,7 +270,7 @@ function BattleRezTimer:Show()
 	if not frame then return end
 
 	-- Out-of-combat preview: toggle visibility
-	if not inCombat then
+	if not chargesActive then
 		if frame:IsShown() then
 			if self._previewHideTimer then
 				self._previewHideTimer:Cancel()
@@ -302,22 +288,25 @@ function BattleRezTimer:Show()
 	ApplyPosition()
 	ApplyFont()
 
-	-- Temporarily unlock for positioning when out of combat
-	frame:EnableMouse(not inCombat or not DBM.Options.LockBrezFrame)
-	if not inCombat then
+	-- Unlock for positioning when in preview (out of combat)
+	if not chargesActive then
+		frame:EnableMouse(true)
 		frame.header:Show()
 		frame.charges:SetText("0")
 		frame.charges:SetTextColor(1, 1, 1)
 		frame.timer:SetText("0:00")
+	else
+		frame:EnableMouse(false)
+		frame.header:Hide()
 	end
 
 	frame:Show()
 
 	-- Auto-hide preview after 15 seconds if still out of combat
-	if not inCombat then
+	if not chargesActive then
 		local brt = self
 		self._previewHideTimer = C_Timer.NewTimer(15, function()
-			if not inCombat and frame and frame:IsShown() then
+			if not chargesActive and frame and frame:IsShown() then
 				frame:Hide()
 			end
 			brt._previewHideTimer = nil
@@ -328,7 +317,7 @@ end
 --- Hide the frame
 function BattleRezTimer:Hide()
 	if not frame then return end
-	if not inCombat then
+	if not chargesActive then
 		frame:Hide()
 	end
 end
