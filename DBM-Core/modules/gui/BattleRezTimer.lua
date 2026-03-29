@@ -226,7 +226,7 @@ do
 		isSupported = shouldShowFrame()
 		if isSupported and (DBM.Options.ShowBrezFrame or DBM.Options.ShowBrezBar) then
 			if not updateTicker then
-				updateTicker = C_Timer.NewTicker(0.1, UpdateDisplay)
+				updateTicker = C_Timer.NewTicker(1, UpdateDisplay)
 			end
 			UpdateDisplay()
 		elseif not isSupported and wasSupported then
