@@ -282,6 +282,7 @@ L.SLASHCMD_HELP							= {
 	"/dbm key: Performs M+ keystone and rating checks on party/guild and shortcuts to dungeon teleports. (alias: key, keys, keystone)",
 	"/dbm lag: Performs a raid-wide latency check.",
 	"/dbm durability: Performs a raid-wide durability check.",
+	"/dbm brez: Shows the battle resurrection timer frame for positioning. (alias: br)",
 	"/dbm help2: Shows additional slash commands"
 }
 --Less used slash commands
@@ -709,6 +710,7 @@ L.TIMER_RESPAWN							= "%s Respawn"
 L.LAG_HEADER							= L.DBM.. " - Latency Results"
 L.DUR_HEADER							= L.DBM.. " - Durability Results"
 L.KEYSTONES_HEADER						= L.DBM.. " - Keystones"
+L.BREZ_HEADER							= "Battle Res"
 
 L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"
 

@@ -29,6 +29,12 @@ L.Tools_KeystoneCheck				= "Keystone Check"
 L.Tools_BreakTimer					= "Start Break Timer"
 L.Tools_PizzaTimer					= "Start Generic Timer"
 
+L.Tools_BrezArea					= "Battle Res Timer"
+L.Tools_ShowBrezFrame				= "Show Battle Res charges frame during combat"
+L.Tools_ShowBrezBar					= "Show a DBM bar for next charge"
+L.Tools_LockBrezFrame				= "Lock Battle Res frame (click-through)"
+L.Tools_BrezPreview					= "Preview / Move Frame"
+
 L.Tools_Duration					= "Duration"
 L.Tools_Message						= "Timer Message"
 

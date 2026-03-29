@@ -384,6 +384,12 @@ DBM.DefaultOptions = {
 	SettingsMessageShown = false,
 	NewsMessageShown2 = 2,--Apparently variable without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
 	AlwaysShowSpeedKillTimer2 = false,
+	ShowBrezFrame = false,
+	ShowBrezBar = false,
+	LockBrezFrame = false,
+	BrezFont = "standardFont",
+	BrezFontSize = 18,
+	BattleRezPosition = {"CENTER", 0, 100},
 	ShowRespawn = true,
 	ShowQueuePop = true,
 	ShowBerserkWarnings = true,
@@ -4220,6 +4226,9 @@ do
 		-- LoadMod
 		self:LoadModsOnDemand("mapId", mapID, delay or 0)
 		self:CheckAvailableMods()
+		if self.BattleRezTimer then
+			self.BattleRezTimer:CheckSupported()
+		end
 		if private.isRetail then
 			--Handle private aura sounds and anchors
 			syncZonePASounds(self, mapID)
@@ -4311,6 +4320,9 @@ do
 		self:CheckAvailableMods()
 		if not self.Options.RecordOnlyBosses then
 			self:StartLogging(0, nil, true)
+		end
+		if self.BattleRezTimer then
+			self.BattleRezTimer:CheckSupported()
 		end
 	end
 
@@ -4734,6 +4746,9 @@ do
 					end
 				end
 			end
+			if self.BattleRezTimer then
+				self.BattleRezTimer:CheckSupported()
+			end
 		end
 	end
 
@@ -4772,6 +4787,9 @@ do
 				end
 				return
 			end
+		end
+		if self.BattleRezTimer then
+			self.BattleRezTimer:CheckSupported()
 		end
 	end
 
