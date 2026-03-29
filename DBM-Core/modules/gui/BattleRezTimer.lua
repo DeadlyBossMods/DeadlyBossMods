@@ -238,7 +238,7 @@ do
 	end
 
 	local function frameDelay()
-		isSupported = shouldShowFrame()
+		local isSupported = shouldShowFrame()
 		local shouldDisplay = isSupported and DBM.Options.ShowBrezFrame
 		if shouldDisplay then
 			if not updateTicker then
