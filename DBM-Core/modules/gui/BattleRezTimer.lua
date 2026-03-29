@@ -135,9 +135,7 @@ do
 					frame:Hide()
 				end
 				-- Cancel DBM bar if active
-				if DBM.Options.ShowBrezBar then
-					DBT:CancelBar(L.COMBAT_RES_TIMER_TEXT)
-				end
+				DBT:CancelBar(L.COMBAT_RES_TIMER_TEXT)
 			end
 			return
 		end
@@ -230,29 +228,33 @@ do
 	local function frameDelay()
 		local wasSupported = isSupported
 		isSupported = shouldShowFrame()
-		if isSupported and (DBM.Options.ShowBrezFrame or DBM.Options.ShowBrezBar) then
+		local shouldDisplay = isSupported and (DBM.Options.ShowBrezFrame or DBM.Options.ShowBrezBar)
+		if shouldDisplay then
 			if not updateTicker then
 				updateTicker = C_Timer.NewTicker(1, UpdateDisplay)
 			end
 			UpdateDisplay()
-		elseif not isSupported and wasSupported then
+		else
 			if updateTicker then
 				updateTicker:Cancel()
 				updateTicker = nil
 			end
+			if frame then
+				frame:Hide()
+			end
+			DBT:CancelBar(L.COMBAT_RES_TIMER_TEXT)
+			-- Always reset tracking state so re-enabling options forces a full refresh
 			inCombat = false
 			lastCharges = -1
 			lastBarStart = 0
 			lastBarDuration = 0
-			if frame then
-				frame:Hide()
-			end
-			if DBM.Options.ShowBrezBar then
-				DBT:CancelBar(L.COMBAT_RES_TIMER_TEXT)
-			end
 		end
 	end
 	function BattleRezTimer:CheckSupported()
+		-- Apply lock state immediately if the frame is already visible
+		if frame and frame:IsShown() then
+			ApplyLock()
+		end
 		--Frame delay it to allow time for apis or combat to return true
 		DBM:Unschedule(frameDelay)
 		DBM:Schedule(1, frameDelay) -- Delay to allow combat log to update
@@ -272,15 +274,47 @@ end
 --- Show the frame for manual positioning (out of combat preview)
 function BattleRezTimer:Show()
 	if not frame then return end
+
+	-- Out-of-combat preview: toggle visibility
+	if not inCombat then
+		if frame:IsShown() then
+			if self._previewHideTimer then
+				self._previewHideTimer:Cancel()
+				self._previewHideTimer = nil
+			end
+			self:Hide()
+			return
+		end
+		if self._previewHideTimer then
+			self._previewHideTimer:Cancel()
+			self._previewHideTimer = nil
+		end
+	end
+
 	ApplyPosition()
 	ApplyFont()
-	-- Temporarily unlock for positioning
-	frame:EnableMouse(true)
-	frame.header:Show()
-	frame.charges:SetText("0")
-	frame.charges:SetTextColor(1, 1, 1)
-	frame.timer:SetText("0:00")
+
+	-- Temporarily unlock for positioning when out of combat
+	frame:EnableMouse(not inCombat or not DBM.Options.LockBrezFrame)
+	if not inCombat then
+		frame.header:Show()
+		frame.charges:SetText("0")
+		frame.charges:SetTextColor(1, 1, 1)
+		frame.timer:SetText("0:00")
+	end
+
 	frame:Show()
+
+	-- Auto-hide preview after 15 seconds if still out of combat
+	if not inCombat then
+		local brt = self
+		self._previewHideTimer = C_Timer.After(15, function()
+			if not inCombat and frame and frame:IsShown() then
+				frame:Hide()
+			end
+			brt._previewHideTimer = nil
+		end)
+	end
 end
 
 --- Hide the frame

@@ -35,9 +35,23 @@ if DBM:IsRetail() then
 
 	local area1b = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_BrezArea)
 
-	area1b:CreateCheckButton(L.Tools_ShowBrezFrame, true, nil, "ShowBrezFrame")
-	area1b:CreateCheckButton(L.Tools_ShowBrezBar, true, nil, "ShowBrezBar")
-	area1b:CreateCheckButton(L.Tools_LockBrezFrame, true, nil, "LockBrezFrame")
+	local showBrezFrame = area1b:CreateCheckButton(L.Tools_ShowBrezFrame, true, nil, "ShowBrezFrame")
+	local showBrezBar = area1b:CreateCheckButton(L.Tools_ShowBrezBar, true, nil, "ShowBrezBar")
+	local lockBrezFrame = area1b:CreateCheckButton(L.Tools_LockBrezFrame, true, nil, "LockBrezFrame")
+
+	local function attachBrezCheckboxHandler(checkbox)
+		if checkbox then
+			checkbox:HookScript("OnClick", function()
+				if DBM.BattleRezTimer then
+					DBM.BattleRezTimer:CheckSupported()
+				end
+			end)
+		end
+	end
+
+	attachBrezCheckboxHandler(showBrezFrame)
+	attachBrezCheckboxHandler(showBrezBar)
+	attachBrezCheckboxHandler(lockBrezFrame)
 
 	local BrezFonts = DBM_GUI:MixinSharedMedia3("font", {
 		{
