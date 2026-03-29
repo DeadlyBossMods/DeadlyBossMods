@@ -308,7 +308,7 @@ function BattleRezTimer:Show()
 	-- Auto-hide preview after 15 seconds if still out of combat
 	if not inCombat then
 		local brt = self
-		self._previewHideTimer = C_Timer.After(15, function()
+		self._previewHideTimer = C_Timer.NewTimer(15, function()
 			if not inCombat and frame and frame:IsShown() then
 				frame:Hide()
 			end
