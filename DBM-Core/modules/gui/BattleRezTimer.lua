@@ -229,7 +229,7 @@ do
 
 	local function frameDelay()
 		local isSupported = shouldShowFrame()
-		local shouldDisplay = isSupported and DBM.Options.ShowBrezFrame
+		local shouldDisplay = isSupported
 		if shouldDisplay then
 			if not updateTicker then
 				updateTicker = C_Timer.NewTicker(1, UpdateDisplay)
@@ -249,9 +249,11 @@ do
 		end
 	end
 	function BattleRezTimer:CheckSupported()
-		--Frame delay it to allow time for apis or combat to return true
-		DBM:Unschedule(frameDelay)
-		DBM:Schedule(1, frameDelay) -- Delay to allow combat log to update
+		if DBM.Options.ShowBrezFrame then
+			--Frame delay it to allow time for apis or combat to return true
+			DBM:Unschedule(frameDelay)
+			DBM:Schedule(1, frameDelay) -- Delay to allow combat log to update
+		end
 	end
 end
 

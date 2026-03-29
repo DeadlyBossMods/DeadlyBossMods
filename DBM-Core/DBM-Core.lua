@@ -385,8 +385,6 @@ DBM.DefaultOptions = {
 	NewsMessageShown2 = 2,--Apparently variable without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowBrezFrame = false,
-
-	LockBrezFrame = false,
 	BrezFont = "standardFont",
 	BrezFontSize = 18,
 	BattleRezPosition = {"CENTER", 0, 100},
