@@ -19,6 +19,8 @@ local frame
 local updateTicker
 local inCombat = false
 local lastCharges = -1
+local lastBarStart = 0
+local lastBarDuration = 0
 local isSupported = false
 
 ---@type DBT
@@ -123,6 +125,8 @@ do
 			if inCombat then
 				inCombat = false
 				lastCharges = -1
+				lastBarStart = 0
+				lastBarDuration = 0
 				if updateTicker then
 					updateTicker:Cancel()
 					updateTicker = nil
@@ -178,8 +182,10 @@ do
 			if frame then
 				frame.timer:SetText(("%d:%02d"):format(m, s))
 			end
-			-- DBM bar option
-			if DBM.Options.ShowBrezBar then
+			-- DBM bar option: only create/reset when cooldown changes
+			if DBM.Options.ShowBrezBar and (startTime ~= lastBarStart or duration ~= lastBarDuration) then
+				lastBarStart = startTime
+				lastBarDuration = duration
 				DBT:CreateBar(remaining, L.COMBAT_RES_TIMER_TEXT, 134222) -- spell_nature_reincarnation
 			end
 		else
@@ -236,6 +242,8 @@ do
 			end
 			inCombat = false
 			lastCharges = -1
+			lastBarStart = 0
+			lastBarDuration = 0
 			if frame then
 				frame:Hide()
 			end

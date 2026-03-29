@@ -58,14 +58,18 @@ if DBM:IsRetail() then
 		}
 	})
 
-	area1b:CreateDropdown(L.FontType, BrezFonts, "DBM", "BrezFont", function(value)
+	local BrezFontDropDown = area1b:CreateDropdown(L.FontType, BrezFonts, "DBM", "BrezFont", function(value)
 		DBM.Options.BrezFont = value
 		if DBM.BattleRezTimer then
 			DBM.BattleRezTimer:UpdateStyle()
 		end
 	end)
+	local isNewDropdown = BrezFontDropDown.mytype == "dropdown2"
+	BrezFontDropDown:SetPoint("TOPLEFT", area1b.frame, "TOPLEFT", isNewDropdown and 20 or 0, -95)
+	BrezFontDropDown.myheight = isNewDropdown and 25 or 20
 
 	local fontSizeSlider = area1b:CreateSlider(L.FontSize, 8, 40, 1, 180)
+	fontSizeSlider:SetPoint("TOPLEFT", BrezFontDropDown, "BOTTOMLEFT", isNewDropdown and 5 or 20, -20)
 	fontSizeSlider:SetValue(DBM.Options.BrezFontSize or 18)
 	fontSizeSlider:HookScript("OnValueChanged", function(self)
 		DBM.Options.BrezFontSize = self:GetValue()
@@ -75,6 +79,7 @@ if DBM:IsRetail() then
 	end)
 
 	local brezPreview = area1b:CreateButton(L.Tools_BrezPreview, 140, 30)
+	brezPreview:SetPoint("TOPLEFT", fontSizeSlider, "BOTTOMLEFT", 0, -20)
 	brezPreview:SetScript("OnClick", function()
 		if DBM.BattleRezTimer then
 			DBM.BattleRezTimer:Show()
