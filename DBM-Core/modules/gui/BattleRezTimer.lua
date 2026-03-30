@@ -119,7 +119,7 @@ do
 	local GetSpellCharges = C_Spell.GetSpellCharges
 	UpdateDisplay = function()
 		-- Check if frame should be hidden due to option being disabled
-		if chargesActive and not DBM.Options.ShowBrezFrame then
+		if not DBM.Options.ShowBrezFrame then
 			if updateTicker then
 				updateTicker:Cancel()
 				updateTicker = nil
@@ -249,10 +249,21 @@ do
 		end
 	end
 	function BattleRezTimer:CheckSupported()
+		--Frame delay it to allow time for apis or combat to return true
+		DBM:Unschedule(frameDelay)
 		if DBM.Options.ShowBrezFrame then
-			--Frame delay it to allow time for apis or combat to return true
-			DBM:Unschedule(frameDelay)
 			DBM:Schedule(1, frameDelay) -- Delay to allow combat log to update
+		else
+			-- Option disabled: immediately stop ticker, hide frame, reset state
+			if updateTicker then
+				updateTicker:Cancel()
+				updateTicker = nil
+			end
+			if frame then
+				frame:Hide()
+			end
+			chargesActive = false
+			lastCharges = -1
 		end
 	end
 end

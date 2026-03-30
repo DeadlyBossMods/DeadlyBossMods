@@ -281,6 +281,7 @@ L.SLASHCMD_HELP				= {
 	"/dbm key: 执行大秘钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (也可使用: key, keys, keystone)",
 	"/dbm lag: 检测全团网络延时",
 	"/dbm durability: 检测全团装备耐久度",
+	"/dbm brez: 显示战斗复活计时器框架以供定位。",--AI translated (check me)
 	"/dbm help2: 显示额外的/命令"
 }
 L.SLASHCMD_HELP2				= {

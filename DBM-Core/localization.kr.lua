@@ -273,6 +273,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: 파티/길드의 신화+ 쐐기돌 및 평점 확인과 던전 순간이동 스킬 모음을 사용합니다. (별칭: key, keys, keystone)",
 	"/dbm lag: 공격대 전체의 지연 시간을 확인합니다.",
 	"/dbm durability: 공격대 전체의 내구도를 확인합니다.",
+	"/dbm brez: 위치 지정을 위한 전투 부활 타이머 프레임을 표시합니다.",--AI translated (check me)
 	"/dbm help2: 추가 슬래시 명령어를 표시합니다"
 }
 --덜 사용되는 슬래시 명령어

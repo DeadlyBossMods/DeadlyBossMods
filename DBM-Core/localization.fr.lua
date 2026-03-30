@@ -274,6 +274,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: Effectue des vérifications de clé M+ et de notation sur le groupe/guilde et des raccourcis vers les téléportations de donjon. (alias : key, keys, keystone)",
 	"/dbm lag: Effectue une vérification de latence pour tout le raid.",
 	"/dbm durability: Effectue une vérification de durabilité pour tout le raid.",
+	"/dbm brez: Affiche le cadre du chronomètre de résurrection de combat pour le positionnement.",--AI translated (check me)
 	"/dbm help2: Affiche des commandes slash supplémentaires"
 }
 --Less used slash commands

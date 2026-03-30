@@ -278,6 +278,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: 在隊伍/公會上執行 M+ 鑰匙和評分檢查，並快捷方式到地下城傳送。 （別名：key，keys，keystone）",
 	"/dbm lag: 執行全團延遲檢查。",
 	"/dbm durability: 執行全團耐久度檢查。",
+	"/dbm brez: 顯示戰鬥復活計時器框架以供定位。",--AI translated (check me)
 	"/dbm help2: 顯示其他斜線命令"
 }
 --較少使用的斜線命令
