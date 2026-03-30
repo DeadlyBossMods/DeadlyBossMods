@@ -159,6 +159,11 @@ do
 		if not chargesActive then
 			chargesActive = true
 			lastCharges = -1
+			-- Cancel any preview auto-hide timer now that combat has started
+			if BattleRezTimer._previewHideTimer then
+				BattleRezTimer._previewHideTimer:Cancel()
+				BattleRezTimer._previewHideTimer = nil
+			end
 			if DBM.Options.ShowBrezFrame and frame then
 				ApplyPosition()
 				frame:EnableMouse(false)
@@ -291,6 +296,10 @@ end
 --- Show the frame for manual positioning (out of combat preview)
 function BattleRezTimer:Show()
 	if not frame then return end
+	-- When in active combat, respect the ShowBrezFrame option
+	if chargesActive and not DBM.Options.ShowBrezFrame then
+		return
+	end
 
 	-- Out-of-combat preview: toggle visibility
 	if not chargesActive then
