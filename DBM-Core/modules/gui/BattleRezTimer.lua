@@ -1,15 +1,15 @@
 ---@class DBM
 local DBM = DBM
 
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 ---------------
 --  Globals  --
 ---------------
 ---@class DBMBattleRezTimer
 local BattleRezTimer = {}
 DBM.BattleRezTimer = BattleRezTimer
-
----@class DBMCoreNamespace
-local private = select(2, ...)
 
 local difficulties = private:GetPrototype("Difficulties")
 
