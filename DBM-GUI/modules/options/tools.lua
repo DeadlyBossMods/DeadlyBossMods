@@ -71,12 +71,13 @@ if DBM:IsRetail() then
 		end
 	end)
 	local isNewDropdown = BrezFontDropDown.mytype == "dropdown2"
-	BrezFontDropDown:SetPoint("TOPLEFT", area1b.frame, "TOPLEFT", isNewDropdown and 20 or 0, -95)
+	BrezFontDropDown:SetPoint("TOPLEFT", showBrezFrame, "TOPLEFT", isNewDropdown and 20 or 0, -40)
 	BrezFontDropDown.myheight = isNewDropdown and 25 or 20
 
 	local fontSizeSlider = area1b:CreateSlider(L.FontSize, 8, 40, 1, 180)
-	fontSizeSlider:SetPoint("TOPLEFT", BrezFontDropDown, "BOTTOMLEFT", isNewDropdown and 5 or 20, -20)
+	fontSizeSlider:SetPoint("TOPLEFT", BrezFontDropDown, "TOPRIGHT", 50, 0)
 	fontSizeSlider:SetValue(DBM.Options.BrezFontSize or 18)
+	fontSizeSlider.myheight = 0
 	fontSizeSlider:HookScript("OnValueChanged", function(self)
 		DBM.Options.BrezFontSize = self:GetValue()
 		if DBM.BattleRezTimer then
@@ -84,10 +85,14 @@ if DBM:IsRetail() then
 		end
 	end)
 
-	local brezPreview = area1b:CreateButton(L.Tools_BrezPreview, 140, 30)
-	brezPreview:SetPoint("TOPLEFT", fontSizeSlider, "BOTTOMLEFT", 0, -20)
-	brezPreview:SetScript("OnClick", function()
-		if DBM.BattleRezTimer then
+	local movemebutton = area1b:CreateButton(L.MoveMe, 100, 16)
+	movemebutton:SetPoint("TOPRIGHT", area1b.frame, "TOPRIGHT", -2, -4)
+	movemebutton:SetNormalFontObject(GameFontNormalSmall)
+	movemebutton:SetHighlightFontObject(GameFontNormalSmall)
+	movemebutton:SetScript("OnClick", function()
+		if DBM.BattleRezTimer:IsShown() then
+			DBM.BattleRezTimer:Hide()
+		else
 			DBM.BattleRezTimer:Show()
 		end
 	end)
