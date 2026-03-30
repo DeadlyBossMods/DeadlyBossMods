@@ -42,6 +42,7 @@ mod.vb.entropicUnravelingCount = 0
 local badStateDetected = false
 local next45Type = nil
 
+---@param self DBMMod
 local function resetCounts(self)
 	self.vb.convergenceCount = 1
 	self.vb.despoticCommandCount = 1
@@ -50,6 +51,7 @@ local function resetCounts(self)
 	self.vb.twilightObscurityCount = 1
 end
 
+---@param self DBMMod
 local function setFallback(self)
 	--Blizz API fallbacks
 	specWarnVoidConvergence:SetAlert(139, "targetchange", 2, 3)
