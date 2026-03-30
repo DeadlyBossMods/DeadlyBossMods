@@ -85,7 +85,7 @@ local function setFallback(self)
 	timerAlndustUpheavalCD:SetTimeline({149,431})
 	timerBerserkCD:SetTimeline(170)
 	timerRiftMadnessCD:SetTimeline(217)
-	specWarnConsume:SetAlert(307, "phasechange", 2, 3)
+	specWarnConsume:SetAlert(307, "aesoon", 2, 3)
 	timerConsumeCD:SetTimeline(307)
 	specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
 	timerStage2CD:SetTimeline(353)
@@ -319,9 +319,14 @@ do
 					specWarnCausticPhlegm:Show(eventCount)
 					specWarnCausticPhlegm:Play("aesoon")
 				elseif eventType == "upheaval" then
-					showOnNextWarning = eventCount
 					specWarnAlndustUpheaval:Show(eventCount)
-					specWarnAlndustUpheaval:Play("soakincoming")
+					if self:IsLFR() then
+						--LFR has no soak
+						specWarnAlndustUpheaval:Play("raidsplit")
+					else
+						showOnNextWarning = eventCount
+						specWarnAlndustUpheaval:Play("soakincoming")
+					end
 					--We timestamp this then let local ENCOUNTER_WARNING event handle it
 				elseif eventType == "devastation" then
 					specWarnCorruptedDevastation:Show(eventCount)
@@ -344,7 +349,7 @@ function mod:ENCOUNTER_WARNING(encounterWarningInfo)
 		--Secrets
 		local targetName = encounterWarningInfo.targetName
 		local targetGUID = encounterWarningInfo.targetGUID
-		local formattedTargetName = targetName
+		local formattedTargetName = targetName or UNKNOWN
 		if targetGUID then
 			local _, className = GetPlayerInfoByGUID(targetGUID)
 			if className then
