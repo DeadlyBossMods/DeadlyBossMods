@@ -29,7 +29,6 @@ L.Tools_PizzaTimer					= "일반 타이머 시작"
 
 L.Tools_BrezArea					= "전투 부활 타이머"
 L.Tools_ShowBrezFrame				= "보스전 및 신화+ 던전에서 남은 전투 부활 창을 표시합니다."
-L.Tools_BrezPreview					= "미리보기 / 창 이동"
 
 L.Tools_Duration					= "지속시간"
 L.Tools_Message						= "타이머 메시지"
