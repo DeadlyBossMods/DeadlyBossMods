@@ -275,6 +275,7 @@ L.SLASHCMD_HELP						= {
 	"/dbm key: Realiza verificações de keystone e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keys, keystone)",--AI translated (check me)
 	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
 	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide.",
+	"/dbm brez: Exibe o quadro do timer de ressurreição de batalha para posicionamento.",--AI translated (check me)
 	"/dbm help2: Mostra comandos de gerenciamento de raide."--AI translated (check me)
 }
 L.SLASHCMD_HELP2					= {
@@ -325,6 +326,7 @@ L.AUTO_ANNOUNCE_TEXTS.you				= "%s em VÔCE"
 L.AUTO_ANNOUNCE_TEXTS.target			= "%s em >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetsource		= ">%%s< lança %s em >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetcount		= "%s (%%s) em >%%s<"
+L.AUTO_ANNOUNCE_TEXTS.blizztarget		= "%s (%%s) em %%s"
 L.AUTO_ANNOUNCE_TEXTS.spell				= "%s"
 L.AUTO_ANNOUNCE_TEXTS.incoming 			= "Penalidade %s se aproximando"
 L.AUTO_ANNOUNCE_TEXTS.incomingcount 	= "Penalidade %s se aproximando (%%s)"
@@ -352,6 +354,7 @@ L.AUTO_ANNOUNCE_OPTIONS.target			= "Exibir anúncio para alvos de $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.targetNF 		= "Exibir anúncio para alvos de $spell:%s (ignora filtro global de alvos)"
 L.AUTO_ANNOUNCE_OPTIONS.targetsource 	= "Exibir anúncio para alvos de $spell:%s (com fonte)"
 L.AUTO_ANNOUNCE_OPTIONS.targetcount		= "Exibir anúncio para alvos de $spell:%s (com contagem)"
+L.AUTO_ANNOUNCE_OPTIONS.blizztarget		= "Exibir anúncio para alvos de $spell:%s (com contagem)"
 L.AUTO_ANNOUNCE_OPTIONS.spell			= "Exibir anúncio para $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.spellsource		= "Exibir anúncio para $spell:%s (com fonte)"
 L.AUTO_ANNOUNCE_OPTIONS.incoming 		= "Exibir anúncio quando $spell:%s tiver penalidades se aproximando"
@@ -665,7 +668,6 @@ L.ARROW_ERROR_USAGE					= {
 
 L.SPEED_KILL_TIMER_TEXT				= "Vitória em tempo recorde"
 L.SPEED_CLEAR_TIMER_TEXT			= "Limpeza mais rápida"
-L.COMBAT_RES_TIMER_TEXT				= "Próxima recarga CR"
 L.TIMER_RESPAWN						= "%s Reaparecimento"
 
 L.LAG_HEADER						= L.DBM .. " - Resultados de latência"

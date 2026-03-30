@@ -274,6 +274,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: Effectue des vérifications de clé M+ et de notation sur le groupe/guilde et des raccourcis vers les téléportations de donjon. (alias : key, keys, keystone)",
 	"/dbm lag: Effectue une vérification de latence pour tout le raid.",
 	"/dbm durability: Effectue une vérification de durabilité pour tout le raid.",
+	"/dbm brez: Affiche le cadre du chronomètre de résurrection de combat pour le positionnement.",--AI translated (check me)
 	"/dbm help2: Affiche des commandes slash supplémentaires"
 }
 --Less used slash commands
@@ -324,6 +325,7 @@ L.AUTO_ANNOUNCE_TEXTS.you				= "%s sur VOUS"
 L.AUTO_ANNOUNCE_TEXTS.target			= "%s sur >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetsource		= ">%%s< incantation de %s sur >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetcount		= "%s (%%s) sur >%%s<"
+L.AUTO_ANNOUNCE_TEXTS.blizztarget		= "%s (%%s) sur %%s"
 L.AUTO_ANNOUNCE_TEXTS.spell				= "%s"
 L.AUTO_ANNOUNCE_TEXTS.incoming			= "Affaiblissement de %s imminent"
 L.AUTO_ANNOUNCE_TEXTS.incomingcount		= "Affaiblissement de %s imminent (%%s)"
@@ -349,6 +351,7 @@ L.AUTO_ANNOUNCE_OPTIONS.target			= "Afficher une annonce pour les cibles de $spe
 L.AUTO_ANNOUNCE_OPTIONS.targetNF		= "Afficher une annonce pour les cibles de $spell:%s (ignore le filtre de cible global)"
 L.AUTO_ANNOUNCE_OPTIONS.targetsource	= "Afficher une annonce pour les cibles de $spell:%s (avec la source)"
 L.AUTO_ANNOUNCE_OPTIONS.targetcount		= "Afficher une annonce pour les cibles de $spell:%s (avec décompte)"
+L.AUTO_ANNOUNCE_OPTIONS.blizztarget		= "Afficher une annonce pour les cibles de $spell:%s (avec décompte)"
 L.AUTO_ANNOUNCE_OPTIONS.spell			= "Afficher une annonce pour $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.spellsource		= "Afficher une annonce pour $spell:%s (avec la source)"
 L.AUTO_ANNOUNCE_OPTIONS.incoming		= "Afficher une annonce lorsque $spell:%s a des affaiblissements imminents"
@@ -663,7 +666,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT		= "Record à battre"
 L.SPEED_CLEAR_TIMER_TEXT  	= "Meilleur clear"
-L.COMBAT_RES_TIMER_TEXT		= "Prochaine charge de résurrection en combat"
 L.TIMER_RESPAWN				= "%s Réapparition"
 
 L.LAG_HEADER				= L.DBM .. " - Résultats sur la latence"

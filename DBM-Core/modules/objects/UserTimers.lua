@@ -234,7 +234,7 @@ function DBM:CreatePullTimer(timer)
 	if (self:GetRaidRank() == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" then
 		return self:AddMsg(L.ERROR_NO_PERMISSION)
 	end
-	if private.IsEncounterInProgress() then
+	if (InCombatLockdown() and private.isRetail) or private.IsEncounterInProgress() then
 		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
 	if timer > 0 and timer < 3 then
