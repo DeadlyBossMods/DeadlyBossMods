@@ -275,6 +275,7 @@ L.SLASHCMD_HELP						= {
 	"/dbm key: Realiza verificações de keystone e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keys, keystone)",--AI translated (check me)
 	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
 	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide.",
+	"/dbm brez: Exibe o quadro do timer de ressurreição de batalha para posicionamento.",--AI translated (check me)
 	"/dbm help2: Mostra comandos de gerenciamento de raide."--AI translated (check me)
 }
 L.SLASHCMD_HELP2					= {
@@ -667,7 +668,6 @@ L.ARROW_ERROR_USAGE					= {
 
 L.SPEED_KILL_TIMER_TEXT				= "Vitória em tempo recorde"
 L.SPEED_CLEAR_TIMER_TEXT			= "Limpeza mais rápida"
-L.COMBAT_RES_TIMER_TEXT				= "Próxima recarga CR"
 L.TIMER_RESPAWN						= "%s Reaparecimento"
 
 L.LAG_HEADER						= L.DBM .. " - Resultados de latência"

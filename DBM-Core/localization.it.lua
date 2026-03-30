@@ -265,6 +265,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: Esegue controlli delle chiavi M+ e delle valutazioni su party/gilda e scorciatoie per i teletrasporti delle dungeon. (alias: key, keys, keystone)",
 	"/dbm lag: Esegue un controllo della latenza per tutto il raid.",
 	"/dbm durability: Esegue un controllo della durabilità per tutto il raid.",
+	"/dbm brez: Mostra il riquadro del timer di resurrezione da combattimento per il posizionamento.",--AI translated (check me)
 	"/dbm help2: Mostra comandi slash aggiuntivi"
 }
 --Less used slash commands
@@ -619,7 +620,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT	= "Record Vittoria"
 L.SPEED_CLEAR_TIMER_TEXT	= "Migliore Clear"
-L.COMBAT_RES_TIMER_TEXT	= "Prossima Carica CR"
 L.TIMER_RESPAWN		= "Respawn %s"
 
 L.LAG_HEADER					= L.DBM.." - Risultati Latenza"

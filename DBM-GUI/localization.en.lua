@@ -29,6 +29,10 @@ L.Tools_KeystoneCheck				= "Keystone Check"
 L.Tools_BreakTimer					= "Start Break Timer"
 L.Tools_PizzaTimer					= "Start Generic Timer"
 
+L.Tools_BrezArea					= "Battle Res Timer"
+L.Tools_ShowBrezFrame				= "Show Battle Res charges frame during boss encounters and Mythic+ dungeons"
+L.Tools_BrezPreview					= "Preview / Move Frame"
+
 L.Tools_Duration					= "Duration"
 L.Tools_Message						= "Timer Message"
 

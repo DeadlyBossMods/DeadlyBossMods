@@ -282,6 +282,7 @@ L.SLASHCMD_HELP							= {
 	"/dbm key: Performs M+ keystone and rating checks on party/guild and shortcuts to dungeon teleports. (alias: key, keys, keystone)",
 	"/dbm lag: Performs a raid-wide latency check.",
 	"/dbm durability: Performs a raid-wide durability check.",
+	"/dbm brez: Shows the battle resurrection timer frame for positioning.",
 	"/dbm help2: Shows additional slash commands"
 }
 --Less used slash commands
@@ -703,12 +704,12 @@ L.ARROW_ERROR_USAGE						= {
 
 L.SPEED_KILL_TIMER_TEXT					= "Record Victory"
 L.SPEED_CLEAR_TIMER_TEXT				= "Best Clear"
-L.COMBAT_RES_TIMER_TEXT					= "Next CR Charge"
 L.TIMER_RESPAWN							= "%s Respawn"
 
 L.LAG_HEADER							= L.DBM.. " - Latency Results"
 L.DUR_HEADER							= L.DBM.. " - Durability Results"
 L.KEYSTONES_HEADER						= L.DBM.. " - Keystones"
+L.BREZ_HEADER							= "Battle Res"
 
 L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"
 

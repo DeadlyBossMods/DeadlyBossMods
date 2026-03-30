@@ -276,6 +276,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: Realiza comprobaciones de piedra angular y calificación de M+ en el grupo/gremio y accesos directos a teletransportes de mazmorras. (alias: key, keys, keystone)",
 	"/dbm lag: Realiza una comprobación de latencia en toda la banda.",
 	"/dbm durability: Realiza una comprobación de durabilidad en toda la banda.",
+	"/dbm brez: Muestra el marco del temporizador de resurrección de combate para su posicionamiento.",--AI translated (check me)
 	"/dbm help2: Muestra comandos de barra adicionales"
 }
 --Comandos de barra menos utilizados
@@ -665,7 +666,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT		= "Superar récord"
 L.SPEED_CLEAR_TIMER_TEXT	= "Récord actual"
-L.COMBAT_RES_TIMER_TEXT		= "Siguiente resurrección"
 L.TIMER_RESPAWN				= "%s reaparece"
 
 L.LAG_HEADER				= L.DBM.. " - Resultados de latencia"

@@ -278,6 +278,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: 在隊伍/公會上執行 M+ 鑰匙和評分檢查，並快捷方式到地下城傳送。 （別名：key，keys，keystone）",
 	"/dbm lag: 執行全團延遲檢查。",
 	"/dbm durability: 執行全團耐久度檢查。",
+	"/dbm brez: 顯示戰鬥復活計時器框架以供定位。",--AI translated (check me)
 	"/dbm help2: 顯示其他斜線命令"
 }
 --較少使用的斜線命令
@@ -664,7 +665,6 @@ L.ARROW_ERROR_USAGE	= {
 
 L.SPEED_KILL_TIMER_TEXT			= "勝利紀錄"
 L.SPEED_CLEAR_TIMER_TEXT		= "最佳紀錄"
-L.COMBAT_RES_TIMER_TEXT			= "下一個戰復充能"
 L.TIMER_RESPAWN					= "%s 重生"
 
 L.LAG_HEADER					= ""..L.DBM.." - 網路延遲結果"

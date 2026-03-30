@@ -90,6 +90,7 @@ DBM-Nameplate.lua
 modules\gui\Latency.lua
 modules\gui\Durability.lua
 modules\gui\Keystones.lua
+modules\gui\BattleRezTimer.lua
 
 # Modules
 modules\Commands.lua
