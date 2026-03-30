@@ -81,6 +81,7 @@ local timer172Count = 0
 local timer174Count = 0
 local timer175Count = 0
 
+---@param self DBMMod
 local function setFallback(self)
 	--Blizz API fallbacks
 	specWarnAuraofPeace:SetAlert(71, "peaceaura", 19, 2)

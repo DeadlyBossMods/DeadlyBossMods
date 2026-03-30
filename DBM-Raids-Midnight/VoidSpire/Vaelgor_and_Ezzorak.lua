@@ -86,6 +86,7 @@ local next31H3IsVaelwing = true
 local next62H3IsNullbeam = true
 local next25H3Type = "voidhowl"
 
+---@param self DBMMod
 local function setFallback(self)
 	--Blizz API fallbacks
 	specWarnNullBeam:SetAlert(101, "beamincoming", 19, 3)
@@ -626,13 +627,19 @@ do
 					specWarnDreadBreath:Show(eventCount)
 					specWarnDreadBreath:Play("breathsoon")
 				elseif eventType == "maw" then
-					warnGrabblingMaw:Show(eventCount)
+					if self:IsTank() then
+						warnGrabblingMaw:Show(eventCount)
+					end
 				elseif eventType == "vaelwing" then
-					specWarnVaelwing:Show()
-					specWarnVaelwing:Play("defensive")
+					if self:IsTank() then
+						specWarnVaelwing:Show()
+						specWarnVaelwing:Play("defensive")
+					end
 				elseif eventType == "rakfang" then
-					specWarnRakfang:Show()
-					specWarnRakfang:Play("defensive")
+					if self:IsTank() then
+						specWarnRakfang:Show()
+						specWarnRakfang:Play("defensive")
+					end
 				elseif eventType == "radiantbarrier" then
 					specWarnRadiantBarrier:Show(eventCount)
 					specWarnRadiantBarrier:Play("findshield")

@@ -37,6 +37,7 @@ mod.vb.roarCount = 0
 local badStateDetected = false
 local slamEventCounts = {}--Simple eventID to count mapping for slam, since both spellids share a unified count and bars never cancel on this boss
 
+---@param self DBMMod
 local function setFallback(self)
 	--Blizz API fallbacks
 	specWarnShadowclawSlam:SetAlert({59, 60}, "slamincoming", 19, 2)

@@ -66,6 +66,7 @@ local showOnNextWarning = 0
 local timer73Count = 0
 local timer75Count = 0
 
+---@param self DBMMod
 local function setFallback(self)
 	--Blizz API fallbacks
 	specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3, 0)
