@@ -4727,6 +4727,9 @@ do
 			if IsInRaid() then
 				self:CheckAvailableMods()
 			end
+			if self.BattleRezTimer then
+				self.BattleRezTimer:CheckSupported()
+			end
 			if combatInfo[LastInstanceMapID] then
 				for _, v in ipairs(combatInfo[LastInstanceMapID]) do
 					if not v.noESDetection and not (#inCombat > 0 and v.noMultiBoss) then
@@ -4744,9 +4747,6 @@ do
 					end
 				end
 			end
-			if self.BattleRezTimer then
-				self.BattleRezTimer:CheckSupported()
-			end
 		end
 	end
 
@@ -4755,6 +4755,9 @@ do
 		if success == 0 then
 			--Only nag on wipes (in any content)
 			self:CheckAvailableMods()
+		end
+		if self.BattleRezTimer then
+			self.BattleRezTimer:CheckSupported()
 		end
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
@@ -4785,9 +4788,6 @@ do
 				end
 				return
 			end
-		end
-		if self.BattleRezTimer then
-			self.BattleRezTimer:CheckSupported()
 		end
 	end
 
