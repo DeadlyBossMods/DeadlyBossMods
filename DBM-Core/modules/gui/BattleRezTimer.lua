@@ -22,6 +22,13 @@ local updateTicker
 local chargesActive = false
 local lastCharges = -1
 
+local function CancelPreviewTimer()
+	if BattleRezTimer._previewHideTimer then
+		BattleRezTimer._previewHideTimer:Cancel()
+		BattleRezTimer._previewHideTimer = nil
+	end
+end
+
 ---------------------------------------
 -- Display Frame
 ---------------------------------------
@@ -160,10 +167,7 @@ do
 			chargesActive = true
 			lastCharges = -1
 			-- Cancel any preview auto-hide timer now that combat has started
-			if BattleRezTimer._previewHideTimer then
-				BattleRezTimer._previewHideTimer:Cancel()
-				BattleRezTimer._previewHideTimer = nil
-			end
+			CancelPreviewTimer()
 			if DBM.Options.ShowBrezFrame and frame then
 				ApplyPosition()
 				frame:EnableMouse(false)
@@ -246,10 +250,7 @@ do
 				updateTicker = nil
 			end
 			-- Cancel any pending preview auto-hide timer
-			if BattleRezTimer._previewHideTimer then
-				BattleRezTimer._previewHideTimer:Cancel()
-				BattleRezTimer._previewHideTimer = nil
-			end
+			CancelPreviewTimer()
 			if frame then
 				frame:Hide()
 			end
@@ -259,7 +260,7 @@ do
 		end
 	end
 	function BattleRezTimer:CheckSupported()
-		--Frame delay it to allow time for apis or combat to return true
+		--Frame delay it to allow time for APIs or combat to return true
 		DBM:Unschedule(frameDelay)
 		if DBM.Options.ShowBrezFrame then
 			DBM:Schedule(1, frameDelay) -- Delay to allow combat log to update
@@ -270,10 +271,7 @@ do
 				updateTicker = nil
 			end
 			-- Cancel any pending preview auto-hide timer
-			if self._previewHideTimer then
-				self._previewHideTimer:Cancel()
-				self._previewHideTimer = nil
-			end
+			CancelPreviewTimer()
 			if frame then
 				frame:Hide()
 			end
@@ -304,17 +302,11 @@ function BattleRezTimer:Show()
 	-- Out-of-combat preview: toggle visibility
 	if not chargesActive then
 		if frame:IsShown() then
-			if self._previewHideTimer then
-				self._previewHideTimer:Cancel()
-				self._previewHideTimer = nil
-			end
+			CancelPreviewTimer()
 			self:Hide()
 			return
 		end
-		if self._previewHideTimer then
-			self._previewHideTimer:Cancel()
-			self._previewHideTimer = nil
-		end
+		CancelPreviewTimer()
 	end
 
 	ApplyPosition()
@@ -350,10 +342,7 @@ end
 function BattleRezTimer:Hide()
 	if not frame then return end
 	if not chargesActive then
-		if self._previewHideTimer then
-			self._previewHideTimer:Cancel()
-			self._previewHideTimer = nil
-		end
+		CancelPreviewTimer()
 		frame:Hide()
 	end
 end
