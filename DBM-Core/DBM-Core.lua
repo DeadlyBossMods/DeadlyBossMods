@@ -7015,7 +7015,9 @@ do
 		[490] = true, -- Unknown, currently encrypted
 	}
 	local requiresRecentKill = {
-		[2238] = 2519--Fyrakk in Amirdrassil
+		[2238] = 2519,--Fyrakk in Amirdrassil
+		[2529] = 3181,--Crown of the Cosmos
+		[1049] = 3181--Crown of the Cosmos
 	}
 	---@param self DBM
 	local function checkOptions(self, id, mapID)
@@ -7055,7 +7057,8 @@ do
 		self:TransitionToDungeonBGM(false, true)
 		if id and not neverFilter[id] then
 			self:Debug("PLAY_MOVIE fired for ID: " .. id, 2, nil, nil, true)
-			if checkOptions(self, id) then
+			local currentMapID = C_Map.GetBestMapForUnit("player")
+			if checkOptions(self, id, currentMapID) then
 				MovieFrame:Hide()--can only just hide movie frame safely now, which means can't stop audio anymore :\
 				self:AddMsg(L.MOVIE_SKIPPED)
 			end
