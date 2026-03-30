@@ -32,6 +32,65 @@ if DBM:IsRetail() then
 	keystone:SetScript("OnClick", function()
 		DBM.Keystones:Show()
 	end)
+
+	local area1b = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_BrezArea)
+
+	local showBrezFrame = area1b:CreateCheckButton(L.Tools_ShowBrezFrame, true, nil, "ShowBrezFrame")
+
+	if showBrezFrame then
+		showBrezFrame:HookScript("OnClick", function()
+			if DBM.BattleRezTimer then
+				DBM.BattleRezTimer:CheckSupported()
+			end
+		end)
+	end
+
+	local BrezFonts = DBM_GUI:MixinSharedMedia3("font", {
+		{
+			text	= DEFAULT,
+			value	= "standardFont"
+		},
+		{
+			text	= "Arial",
+			value	= "Fonts\\ARIALN.TTF"
+		},
+		{
+			text	= "Skurri",
+			value	= "Fonts\\SKURRI_CYR.ttf"
+		},
+		{
+			text	= "Morpheus",
+			value	= "Fonts\\MORPHEUS_CYR.ttf"
+		}
+	})
+
+	local BrezFontDropDown = area1b:CreateDropdown(L.FontType, BrezFonts, "DBM", "BrezFont", function(value)
+		DBM.Options.BrezFont = value
+		if DBM.BattleRezTimer then
+			DBM.BattleRezTimer:UpdateStyle()
+		end
+	end)
+	local isNewDropdown = BrezFontDropDown.mytype == "dropdown2"
+	BrezFontDropDown:SetPoint("TOPLEFT", area1b.frame, "TOPLEFT", isNewDropdown and 20 or 0, -95)
+	BrezFontDropDown.myheight = isNewDropdown and 25 or 20
+
+	local fontSizeSlider = area1b:CreateSlider(L.FontSize, 8, 40, 1, 180)
+	fontSizeSlider:SetPoint("TOPLEFT", BrezFontDropDown, "BOTTOMLEFT", isNewDropdown and 5 or 20, -20)
+	fontSizeSlider:SetValue(DBM.Options.BrezFontSize or 18)
+	fontSizeSlider:HookScript("OnValueChanged", function(self)
+		DBM.Options.BrezFontSize = self:GetValue()
+		if DBM.BattleRezTimer then
+			DBM.BattleRezTimer:UpdateStyle()
+		end
+	end)
+
+	local brezPreview = area1b:CreateButton(L.Tools_BrezPreview, 140, 30)
+	brezPreview:SetPoint("TOPLEFT", fontSizeSlider, "BOTTOMLEFT", 0, -20)
+	brezPreview:SetScript("OnClick", function()
+		if DBM.BattleRezTimer then
+			DBM.BattleRezTimer:Show()
+		end
+	end)
 end
 
 local area2 = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_BreakTimer)

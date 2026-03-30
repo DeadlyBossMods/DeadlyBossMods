@@ -212,6 +212,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM.Durability:Show()
 	elseif DBM.Keystones and (cmd:sub(1, 3) == "key" or cmd:sub(1, 4) == "keys") then
 		DBM.Keystones:Show()
+	elseif DBM.BattleRezTimer and cmd:sub(1, 4) == "brez" then
+		DBM.BattleRezTimer:Show()
 	elseif cmd:sub(1, 3) == "hud" then
 		DBM:UpdateMapRestrictions()
 		if DBM:HasMapRestrictions() then
