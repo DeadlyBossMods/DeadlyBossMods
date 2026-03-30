@@ -240,6 +240,11 @@ do
 				updateTicker:Cancel()
 				updateTicker = nil
 			end
+			-- Cancel any pending preview auto-hide timer
+			if BattleRezTimer._previewHideTimer then
+				BattleRezTimer._previewHideTimer:Cancel()
+				BattleRezTimer._previewHideTimer = nil
+			end
 			if frame then
 				frame:Hide()
 			end
@@ -258,6 +263,11 @@ do
 			if updateTicker then
 				updateTicker:Cancel()
 				updateTicker = nil
+			end
+			-- Cancel any pending preview auto-hide timer
+			if self._previewHideTimer then
+				self._previewHideTimer:Cancel()
+				self._previewHideTimer = nil
 			end
 			if frame then
 				frame:Hide()
@@ -331,6 +341,10 @@ end
 function BattleRezTimer:Hide()
 	if not frame then return end
 	if not chargesActive then
+		if self._previewHideTimer then
+			self._previewHideTimer:Cancel()
+			self._previewHideTimer = nil
+		end
 		frame:Hide()
 	end
 end
