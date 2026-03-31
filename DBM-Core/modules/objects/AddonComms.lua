@@ -975,28 +975,4 @@ do
 			handleSync("BN_WHISPER", sender, nil, strsplit("\t", msg))
 		end
 	end
-
-	function DBM:START_PLAYER_COUNTDOWN(initiatedByGuid, timeSeconds)
-		if self:hasanysecretvalues(initiatedByGuid, timeSeconds) then
-			return
-		end
-		--Ignore this event in combat
-		if self:InCombat() then return end
---		if timeSeconds > 60 then--treat as a break timer
---			private.breakTimerStart(self, timeSeconds, initiatedBy, true)
---		else--Treat as a pull timer
-			--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
-			private.pullTimerStart(self, initiatedByGuid, timeSeconds, true)
---		end
-	end
-
-	function DBM:CANCEL_PLAYER_COUNTDOWN(initiatedByGuid)
-		if self:issecretvalue(initiatedByGuid) then
-			return
-		end
-		--when CANCEL_PLAYER_COUNTDOWN is called by ENCOUNTER_START, sender is nil
---		private.breakTimerStart(self, 0, initiatedBy, true)
-		--In TWW, initiatedByName is in a diff place. We solve this by simply checking new location cause that'll be nil on live
-		private.pullTimerStart(self, initiatedByGuid, 0, true)
-	end
 end
