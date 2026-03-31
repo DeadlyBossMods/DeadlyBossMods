@@ -85,7 +85,7 @@ function mod:OnLimitedCombatStart()
 	end
 end
 
---Note, bar stage changing and canceling is handled by core
+--Note, bar state changing and canceling is handled by core
 function mod:OnCombatEnd()
 	self:TLCountReset()
 	self:UnregisterShortTermEvents()
