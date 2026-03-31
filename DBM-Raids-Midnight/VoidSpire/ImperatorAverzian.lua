@@ -42,6 +42,7 @@ mod.vb.voidMarkCount = 0
 local badStateDetected = false
 local next72IsShadow = false
 
+---@param self DBMMod
 local function setFallback(self)
 	--Blizz API fallbacks
 	specWarnShadowsAdvance:SetAlert({194, 195}, "mobsoon", 2, 2)
