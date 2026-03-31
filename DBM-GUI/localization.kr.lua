@@ -27,6 +27,9 @@ L.Tools_KeystoneCheck				= "쐐기돌 확인"
 L.Tools_BreakTimer					= "휴식 타이머 시작"
 L.Tools_PizzaTimer					= "일반 타이머 시작"
 
+L.Tools_BrezArea					= "전투 부활 타이머"
+L.Tools_ShowBrezFrame				= "보스전 및 신화+ 던전에서 남은 전투 부활 창을 표시합니다."
+
 L.Tools_Duration					= "지속시간"
 L.Tools_Message						= "타이머 메시지"
 
