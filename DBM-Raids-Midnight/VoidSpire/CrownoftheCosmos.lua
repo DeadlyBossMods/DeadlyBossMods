@@ -53,6 +53,7 @@ local timerCosmicPortalCD				= mod:NewCDCountTimer(20.5, 1261339, nil, nil, nil,
 local timerRiftSlashCD					= mod:NewCDCountTimer(20.5, 1246461, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P2 Rift Simulacrum slash attack
 local timerStage2CD						= mod:NewCDTimer(20.5, 1272966, nil, nil, nil, 6)
 local timerStage3CD						= mod:NewCDTimer(20.5, 1273378, nil, nil, nil, 6)
+local timerBerserkCD					= mod:NewBerserkTimer(600)
 
 mod:AddPrivateAuraSoundOption({1233865,1233887}, true, 1233865, 1, 1, "absorbyou", 19)--Null Corona
 mod:AddPrivateAuraSoundOption(1283236, true, 1283236, 1, 1, "orbrun", 2)--Void Expulsion
@@ -179,6 +180,10 @@ function mod:OnLimitedCombatStart()
 			specWarnInterruptingTremor:ScheduleVoice(4, "kickcast")
 		end
 		timerInterruptingTremorCD:Start(4, 1)
+		if self:IsHeroic() then
+			--Stage 1 has a 2 minute 10 second berserk
+			timerBerserkCD:Start(130)
+		end
 	else
 		setFallback(self)
 	end
@@ -465,6 +470,12 @@ do
 				--Unresolveable initial 4s casts (Tremor, Abyss, Dark Hand)
 				--Those are prescheduled on pull
 				return
+			elseif (timer == 2) and (GetTime() - lastTLEvent > 10) then--Initial 1.5 (2 rounded) Silverstrike Barrage starts Intermission 1 (Stage 1.5)
+				--Time since last TL event is usually around 12-14
+				--Phase tranition cancels P1 timers and then has 3 CHAT_MSG_MONSTER_YELL events
+				self:SetStage(1.5)
+				--timerSilverstrikeBarrageCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
+				timerBerserkCD:Cancel()
 			else
 				--Reached end of chain without finding a valid timer
 				badStateDetected = true
