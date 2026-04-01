@@ -43,9 +43,9 @@ local timerCosmosisDreadBreathCD	= mod:NewCDCountTimer(20.5, 1277472, nil, nil, 
 local timerCosmosisVoidHowlCD		= mod:NewCDCountTimer(20.5, 1277473, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerRadiantBarrierCD			= mod:NewCDCountTimer(20.5, 1248847, nil, nil, nil, 5)
 
-mod:AddPrivateAuraSoundOption({1262999,1262676,1262656}, true, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
+mod:AddPrivateAuraSoundOption({1262999,1262676,1262656}, false, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
 mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2, "lineapart", 2)--Null Zone Grippy hand
-mod:AddPrivateAuraSoundOption(1252157, true, 1262623, 1, 1, "debuffyou", 17)--Null Implosion
+mod:AddPrivateAuraSoundOption(1252157, false, 1262623, 1, 1, "debuffyou", 17)--Null Implosion
 mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3, "gloomyou", 19)--Gloomtouched (soaked Gloom)
 mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3, "debuffyou", 17)--Diminish (Gloomtouched ended, don't soak again)
 mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2, "watchfeet", 8)--Gloomfield (GTFO left by gloom)
