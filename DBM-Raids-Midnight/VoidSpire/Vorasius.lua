@@ -108,11 +108,10 @@ do
 			end
 		end
 	end
-	--Note, bar stage changing and canceling is handled by core
+	--Note, bar state changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
---		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
