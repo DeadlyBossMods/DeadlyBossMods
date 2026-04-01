@@ -15,7 +15,7 @@ function module:OnModuleLoad()
 	self:OnDebugToggle()
 end
 
-local mfloor, mmax = math.floor, math.max
+local mfloor, mmax, mceil = math.floor, math.max, math.ceil
 
 do
 	local debugLogFrame, debugLogViewport, debugLogContent, clearButton
@@ -30,7 +30,7 @@ do
 
 	local function getVisibleLineCount()
 		if not debugLogViewport then return 1 end
-		return mmax(1, mfloor(debugLogViewport:GetHeight() / lineHeight))
+		return mmax(1, mceil(debugLogViewport:GetHeight() / lineHeight))
 	end
 
 	local function getMaxTopVisibleLine()

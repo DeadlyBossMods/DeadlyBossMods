@@ -164,7 +164,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		--Ignore Finished or canceled event for a bugged ID, since it's onen of blizzards early cancel bugs
 		if ignoredEventID then
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring cancel for eventID: "..tostring(eventID).." (timerID belongs to a known bugged Blizzard timer)", 2, nil, nil, DBM.Options.DebugLevel == 3)
-			private.buggedBlizzardTimers[eventID] = nil--Clear it here since we know for certain this timer is now gone
+			--Don't clear buggedBlizzardTimers here; the module's handler still needs to check IsBuggedEventID and will call UnsetBuggedEventID itself
 		else
 			if bar then
 				bar:Cancel()

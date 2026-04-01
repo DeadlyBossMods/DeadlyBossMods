@@ -259,7 +259,7 @@ end
 ---Used to set fallback options to blizzard encounter API for hardcoded timers to fall back on
 ---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
 function timerPrototype:SetTimeline(encounterEventId)
-	if self.option and self.mod.Options[self.option] then
+	if self.option then
 		self.mod:EnableTimelineOptions(self.spellId, encounterEventId, self.option)
 	end
 end

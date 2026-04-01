@@ -120,20 +120,20 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
-	self.vb.auraofPeaceCount = 0
-	self.vb.sacredShieldCount = 0
-	self.vb.tyrsWrathCount = 0
-	self.vb.auraofDevotionCount = 0
-	self.vb.searingRadianceCount = 0
-	self.vb.judgementShieldCount = 0
-	self.vb.avengerShieldCount = 0
-	self.vb.divineTollCount = 0
-	self.vb.auraofWrathCount = 0
-	self.vb.judgementFinalCount = 0
-	self.vb.divineStormCount = 0
-	self.vb.sacredTollCount = 0
-	self.vb.executionSentenceCount = 0
-	self.vb.zealousSpiritCount = 0
+	self.vb.auraofPeaceCount = 1
+	self.vb.sacredShieldCount = 1
+	self.vb.tyrsWrathCount = 1
+	self.vb.auraofDevotionCount = 1
+	self.vb.searingRadianceCount = 1
+	self.vb.judgementShieldCount = 1
+	self.vb.avengerShieldCount = 1
+	self.vb.divineTollCount = 1
+	self.vb.auraofWrathCount = 1
+	self.vb.judgementFinalCount = 1
+	self.vb.divineStormCount = 1
+	self.vb.sacredTollCount = 1
+	self.vb.executionSentenceCount = 1
+	self.vb.zealousSpiritCount = 1
 	timer17Count = 0
 	timer20Count = 0
 	timer23Count = 0
