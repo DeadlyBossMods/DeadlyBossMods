@@ -302,7 +302,9 @@ do
 					timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
 					self:TLResolvePush("voidExpulsion", timer)
 				else
-					timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+					--Blizzards timer is actually wrong, it starts a 20 second timer but it's cast 14 seconds later
+					--This can be verified in week3 normal log where you can see every 20 second sting timer refreshed before expire with 6 sec remaining
+					timerVoidstalkerStingCD:TLStart(14, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
 					self:TLResolvePush("voidstalkerSting", timer)
 				end
 			elseif timer == 24 or timer == 22 then--Cosmic Barrier
@@ -349,6 +351,11 @@ do
 				timerDevouringCosmosCD:TLStart(timer, eventID, self:TLCountStart(eventID, "devouringCosmos", "devouringCosmosCount"))
 				self:TLResolvePush("devouringCosmos", timer)
 			elseif timer == 8 or timer == 9 or timer == 21 or timer == 39 then--Aspect of the End
+				if timer == 21 then
+					--Blizzards timer is actually wrong, it starts a 21 second timer but it's cast 13 seconds later
+					--This can be verified in week3 normal log where you can see the 21 second aspect timer refreshed before expire with 8 sec remaining
+					timer = 13
+				end
 				timerAspectoftheEndCD:TLStart(timer, eventID, self:TLCountStart(eventID, "aspectoftheEnd", "aspectoftheEndCount"))
 				self:TLResolvePush("aspectoftheEnd", timer)
 			elseif timer == 12 or timer == 14 or timer == 15 then--Voidstalker Sting
