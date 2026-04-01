@@ -85,6 +85,7 @@ local next25H2Type = "rakfang"
 local next31H3IsVaelwing = true
 local next62H3IsNullbeam = true
 local next25H3Type = "voidhowl"
+local nullbeamH3InitialDone = false
 
 ---@param self DBMMod
 local function setFallback(self)
@@ -149,6 +150,7 @@ function mod:OnLimitedCombatStart()
 	next31H3IsVaelwing = true
 	next62H3IsNullbeam = true
 	next25H3Type = "voidhowl"
+	nullbeamH3InitialDone = false
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:SetStage(1)
@@ -415,7 +417,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersHeroic(self, timer, timerExact, eventID)
-		--Logic confirmed against heroic week 2 pulls. All 3 stages hardcoded.
+		--Logic confirmed against heroic week 2+3 pulls. All 3 stages hardcoded.
 		local stage = self:GetStage()
 		if stage == 1 then--Stage 1
 			if self:IsRoundedTimer(timer, 6) then--Vaelwing (initial)
@@ -516,6 +518,7 @@ do
 				next31H3IsVaelwing = true
 				next62H3IsNullbeam = true
 				next25H3Type = "voidhowl"
+				nullbeamH3InitialDone = false
 				self:SetStage(0)
 				return
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
@@ -543,8 +546,14 @@ do
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif self:IsRoundedTimer(timer, 46) then--Void Howl (late-stage variant)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
-			elseif self:IsRoundedTimer(timer, 13) then--Nullbeam (initial)
-				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+			elseif self:IsRoundedTimer(timer, 13) then--Nullbeam (initial) or Rakfang (late-stage compressed cadence)
+				if not nullbeamH3InitialDone then
+					timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+					nullbeamH3InitialDone = true
+				else
+					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+					next31H3IsVaelwing = true
+				end
 			elseif self:IsRoundedTimer(timer, 8) then--Vaelwing (initial)
 				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
 			elseif self:IsRoundedTimer(timer, 15) then--Rakfang (initial)
@@ -573,6 +582,10 @@ do
 					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
 					next31H3IsVaelwing = true--Drifted Rakfang consumed outside ~31 alternator, reset to Vaelwing
 				end
+			elseif self:IsRoundedTimer(timer, 21) then--Void Howl (late-stage compressed cadence)
+				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+			elseif self:IsRoundedTimer(timer, 26) then--Gloom (late-stage compressed cadence)
+				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
 				if not DBM.Options.DebugMode then
 					badStateDetected = true
