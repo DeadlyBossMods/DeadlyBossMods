@@ -380,7 +380,7 @@ DBM.DefaultOptions = {
 	DontShowPTNoID = false,
 	PTCountThreshold2 = 5,
 	LatencyThreshold = 250,
-	oRA3AnnounceConsumables = false,
+	--AnnounceConsumables = false,
 	SettingsMessageShown = false,
 	NewsMessageShown2 = 2,--Apparently variable without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
 	AlwaysShowSpeedKillTimer2 = false,
@@ -3874,11 +3874,7 @@ end
 function DBM:READY_CHECK()
 	if self.Options.RLReadyCheckSound then--readycheck sound, if ora3 not installed (bad to have 2 mods do it)
 		self:FlashClientIcon()
-		--LuaLS doesn't like Plater
-		---@diagnostic disable-next-line: undefined-global
-		if not BINDING_HEADER_oRA3 then
-			DBM:PlaySoundFile(567478, true)--Because regular sound uses SFX channel which is too low of volume most of time
-		end
+		DBM:PlaySoundFile(567478, true)--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 	self:TransitionToDungeonBGM(false, true)
 	self:Schedule(4, self.TransitionToDungeonBGM, self)
@@ -5335,16 +5331,10 @@ do
 						end
 					end
 				end
-				if self.Options.oRA3AnnounceConsumables and _G["oRA3Frame"] then
-					local oRA3 = LibStub and LibStub("AceAddon-3.0"):GetAddon("oRA3", true)
-					if oRA3 then
-						local consumables = oRA3:GetModule("Consumables", true)
-						if consumables then
-							---@diagnostic disable-next-line: undefined-field
-							consumables:OutputResults()
-						end
-					end
-				end
+				--Ora3 is deprecated, this should be replaced with DBMs checks when they're added
+				--if self.Options.AnnounceConsumables then
+
+				--end
 				--show engage message
 				if self.Options.ShowEngageMessage and not mod.noStatistics then
 					if mod.ignoreBestkill and (difficulties.savedDifficulty == "worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
