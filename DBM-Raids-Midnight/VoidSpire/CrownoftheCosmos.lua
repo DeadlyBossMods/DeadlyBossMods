@@ -157,7 +157,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.riftSlashCount = 1
 	self:SetStage(1)
 
-	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -377,6 +377,118 @@ do
 		end
 	end
 
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersHeroic(self, timer, timerExact, eventID)
+		local stage = self:GetStage()
+		if stage == 1 then
+			--Stage 1 Heroic (Week 3 validated)
+			--Heroic has much more duration variation than Easy. Using exact duration matching
+			--and TLResolve context for disambiguation of repeated abilities with multiple durations.
+			--Occurrence counts help resolve ambiguities in the highly variable timeline.
+			if timer == 2 then--Null Corona opener (occurs as 2 multiple times early)
+				timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+				self:TLResolvePush("nullCorona", timer)
+			elseif timer == 5 then--Grasp of Emptiness (first occurrence) or Null Corona late
+				local lastResolvedType, lastResolvedTimer = self:TLResolvePeek()
+				if lastResolvedType == "nullCorona" and lastResolvedTimer == 2 then
+					timerGraspofEmptynessCD:TLStart(timer, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+					self:TLResolvePush("grasp", timer)
+				else
+					--Late Null Corona at 5s (rare)
+					timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 12 or timer == 11 or timer == 13 then--Void Expulsion (early occurrences vary)
+				timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+				self:TLResolvePush("voidExpulsion", timer)
+			elseif timer == 24 or timer == 23 then--Silverstrike Arrow
+				timerSilverstrikeArrowCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
+				self:TLResolvePush("silverstrikeArrow", timer)
+			elseif timer == 21 then--Silverstrike Arrow or Aspect of the End (P3 only)
+				--In S1 Heroic, 21s is always Silverstrike Arrow
+				timerSilverstrikeArrowCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
+				self:TLResolvePush("silverstrikeArrow", timer)
+			elseif timer == 26 or timer == 27 then--Dark Hand (26) or Null Corona (27)
+				--26 = Dark Hand, 27 = Null Corona
+				if timer == 26 then
+					timerDarkHandCD:TLStart(timer, eventID, self:TLCountStart(eventID, "darkHand", "darkHandCount"))
+					self:TLResolvePush("darkHand", timer)
+				else
+					timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 20 then--Ravenous Abyss (19.5 rounds to 20) OR Interrupting Tremor (20.0)
+				if timerExact and timerExact < 19.75 then
+					timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
+					self:TLResolvePush("ravenousAbyss", timerExact)
+				elseif timerExact and timerExact >= 19.75 then
+					timerInterruptingTremorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "interruptingTremor", "interruptingTremorCount"))
+					self:TLResolvePush("interruptingTremor", timerExact)
+				end
+			elseif timer == 28 or timer == 29 then--Grasp of Emptiness (28) or Null Corona (27-29 range)
+				--Use exact timer to disambiguate: 28 = Grasp, 27 = Null Corona, 31-32 = Grasp
+				if timerExact and timerExact < 27.5 then
+					--4.5 Grasp or similar low value
+					timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+					self:TLResolvePush("grasp", timerExact)
+				elseif timerExact and timerExact >= 27.5 and timerExact < 29.5 then
+					--28 range = Grasp
+					timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+					self:TLResolvePush("grasp", timerExact)
+				else
+					--29-30 range Null Corona
+					timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 31 or timer == 32 then--Grasp of Emptiness
+				timerGraspofEmptynessCD:TLStart(timer, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+				self:TLResolvePush("grasp", timer)
+			elseif timer == 39 or timer == 40 then--Void Expulsion (39) or Null Corona (44-45)
+				if timer == 39 then
+					timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+					self:TLResolvePush("voidExpulsion", timer)
+				else
+					--40 rounds from higher value
+					timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 44 or timer == 45 then--Null Corona
+				timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+				self:TLResolvePush("nullCorona", timer)
+			elseif timer == 48 then--Void Expulsion (48)
+				timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+				self:TLResolvePush("voidExpulsion", timer)
+			elseif timer == 4 then
+				--Unresolveable initial 4s casts (Tremor, Abyss, Dark Hand)
+				--Those are prescheduled on pull
+				return
+			else
+				--Reached end of chain without finding a valid timer
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match Heroic encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif stage == 1.5 or stage == 2 or stage == 2.5 or stage == 3 then
+			--Heroic stages beyond S1 have not been hardcoded, switch to fallback
+			badStateDetected = true
+			if DBM.Options.IgnoreBlizzAPI then
+				DBM.Options.IgnoreBlizzAPI = false
+				DBM:FireEvent("DBM_ResumeBlizzAPI")
+			end
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Heroic stage " .. stage .. " not hardcoded, falling back to Blizzard API|r", nil, nil, nil, true)
+		end
+	end
+
 	--Note, bar state changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
@@ -386,6 +498,8 @@ do
 		if not badStateDetected then
 			if self:IsEasy() then
 				timersEasy(self, timer, timerExact, eventID)
+			elseif self:IsHeroic() then
+				timersHeroic(self, timer, timerExact, eventID)
 			end
 		end
 		lastTLEvent = GetTime()
