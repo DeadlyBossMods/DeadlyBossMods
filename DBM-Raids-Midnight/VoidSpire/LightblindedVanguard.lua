@@ -24,7 +24,7 @@ local specWarnJudgementShield				= mod:NewSpecialWarningCount(1251857, nil, nil,
 local specWarnDivineToll					= mod:NewSpecialWarningDodgeCount(1248652, nil, nil, DBM_COMMON_L.DODGES, 2, 2)
 local specWarnAuraofWrath					= mod:NewSpecialWarningCount(1248449, nil, nil, nil, 2, 2)
 local specWarnjudgementFinal				= mod:NewSpecialWarningCount(1246736, nil, nil, L.JudgementFV, 2, 2)
-local specWarnDivineStorm					= mod:NewSpecialWarningCount(1246765, "Melee", nil, nil, 2, 2)--review default later
+local specWarnDivineStorm					= mod:NewSpecialWarningCount(1246765, "MeleeDps", nil, nil, 2, 2)--review default later
 local specWarnSacredToll					= mod:NewSpecialWarningCount(1246749, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
 local specWarnExecutionSentence				= mod:NewSpecialWarningSoakCount(1276368, nil, nil, DBM_COMMON_L.GROUPSOAKS, 2, 2)
 
@@ -38,7 +38,7 @@ local timerJudgementShieldCD				= mod:NewCDCountTimer(20.5, 1251857, L.Judgement
 local timerAvengerShieldCD					= mod:NewCDCountTimer(20.5, 1246487, nil, nil, nil, 3)
 local timerDivineTollCD						= mod:NewCDCountTimer(20.5, 1248652, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 3)
 local timerAuraofWrathCD					= mod:NewCDCountTimer(20.5, 1248449, nil, nil, nil, 5)
-local timerjudgementFinalCD					= mod:NewCDCountTimer(20.5, 1246736, L.JudgementFV.." (%s)", "Tank", nil, 5)
+local timerjudgementFinalCD					= mod:NewCDCountTimer(20.5, 1246736, L.JudgementFV.." (%s)", "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerDivineStormCD					= mod:NewCDCountTimer(20.5, 1246765, nil, nil, nil, 3)
 local timerSacredTollCD						= mod:NewCDCountTimer(20.5, 1246749, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2)
 local timerExecutionSentenceCD				= mod:NewCDCountTimer(20.5, 1276368, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)
@@ -80,6 +80,15 @@ local timer92Count = 0
 local timer172Count = 0
 local timer174Count = 0
 local timer175Count = 0
+local timer15Count = 0
+local timer16Count = 0
+local timer22Count = 0
+local timer24Count = 0
+local timer45Count = 0
+local timer50Count = 0
+local timer52Count = 0
+local timer53Count = 0
+local timer60Count = 0
 
 ---@param self DBMMod
 local function setFallback(self)
@@ -120,20 +129,20 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
-	self.vb.auraofPeaceCount = 0
-	self.vb.sacredShieldCount = 0
-	self.vb.tyrsWrathCount = 0
-	self.vb.auraofDevotionCount = 0
-	self.vb.searingRadianceCount = 0
-	self.vb.judgementShieldCount = 0
-	self.vb.avengerShieldCount = 0
-	self.vb.divineTollCount = 0
-	self.vb.auraofWrathCount = 0
-	self.vb.judgementFinalCount = 0
-	self.vb.divineStormCount = 0
-	self.vb.sacredTollCount = 0
-	self.vb.executionSentenceCount = 0
-	self.vb.zealousSpiritCount = 0
+	self.vb.auraofPeaceCount = 1
+	self.vb.sacredShieldCount = 1
+	self.vb.tyrsWrathCount = 1
+	self.vb.auraofDevotionCount = 1
+	self.vb.searingRadianceCount = 1
+	self.vb.judgementShieldCount = 1
+	self.vb.avengerShieldCount = 1
+	self.vb.divineTollCount = 1
+	self.vb.auraofWrathCount = 1
+	self.vb.judgementFinalCount = 1
+	self.vb.divineStormCount = 1
+	self.vb.sacredTollCount = 1
+	self.vb.executionSentenceCount = 1
+	self.vb.zealousSpiritCount = 1
 	timer17Count = 0
 	timer20Count = 0
 	timer23Count = 0
@@ -143,8 +152,17 @@ function mod:OnLimitedCombatStart()
 	timer172Count = 0
 	timer174Count = 0
 	timer175Count = 0
+	timer15Count = 0
+	timer16Count = 0
+	timer22Count = 0
+	timer24Count = 0
+	timer45Count = 0
+	timer50Count = 0
+	timer52Count = 0
+	timer53Count = 0
+	timer60Count = 0
 	--TODO, hardcoded features
-	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -166,6 +184,15 @@ function mod:OnCombatEnd()
 	timer172Count = 0
 	timer174Count = 0
 	timer175Count = 0
+	timer15Count = 0
+	timer16Count = 0
+	timer22Count = 0
+	timer24Count = 0
+	timer45Count = 0
+	timer50Count = 0
+	timer52Count = 0
+	timer53Count = 0
+	timer60Count = 0
 	self:UnregisterShortTermEvents()
 end
 
@@ -300,6 +327,235 @@ do
 			end
 		end
 	end
+
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersHeroic(self, timer, timerExact, eventID)
+		--Logic confirmed against Heroic Week3 logs
+		if timer == 131 then--Aura of Peace (opener)
+			timerAuraofPeaceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraPeace", "auraofPeaceCount"))
+		elseif timer == 86 then--Execution Sentence (opener)
+			timerExecutionSentenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "executionSentence", "executionSentenceCount"))
+		elseif timer == 83 then--Aura of Wrath (opener)
+			timerAuraofWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraWrath", "auraofWrathCount"))
+		elseif timer == 10 then--Sacred Toll (opener)
+			timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+		elseif timer == 18 then--Divine Storm (opener)
+			timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
+		elseif timer == 26 then--Judgement Shield (opener)
+			timerJudgementShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementShield", "judgementShieldCount"))
+		elseif timer == 30 then--Judgement Final (opener)
+			timerjudgementFinalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementFinal", "judgementFinalCount"))
+		elseif timer == 35 then--Aura of Devotion (opener)
+			timerAuraofDevotionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraDevotion", "auraofDevotionCount"))
+		elseif timer == 38 then--Divine Toll (opener)
+			timerDivineTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineToll", "divineTollCount"))
+		elseif timer == 47 then--Searing Radiance (opener)
+			timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
+		elseif timer == 176 then--Aura of Peace
+			timerAuraofPeaceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraPeace", "auraofPeaceCount"))
+		elseif timer == 12 then--Avenger's Shield
+			timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+		elseif timer == 13 then--Sacred Toll
+			timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+		elseif timer == 19 then--Divine Storm
+			timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
+		elseif timer == 21 then--Sacred Toll
+			timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+		elseif timer == 25 then--Avenger's Shield
+			timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+		elseif timer == 39 then--Sacred Toll
+			timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+		elseif timer == 43 then--Divine Storm
+			timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
+		elseif timer == 57 then--Sacred Shield
+			timerSacredShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredShield", "sacredShieldCount"))
+		elseif timer == 59 then--Sacred Toll
+			timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+		elseif timer == 62 then--Sacred Shield
+			timerSacredShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredShield", "sacredShieldCount"))
+		elseif timer == 65 then--Avenger's Shield
+			timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+		elseif timer == 72 then--Sacred Toll
+			timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+		elseif timer == 82 then--Searing Radiance
+			timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
+		elseif timer == 87 then--Sacred Shield
+			timerSacredShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredShield", "sacredShieldCount"))
+		elseif timer == 130 then--Searing Radiance
+			timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
+		elseif timer == 15 then--Opener Avenger's Shield, then Sacred Toll, Divine Storm, Avenger's Shield
+			timer15Count = timer15Count + 1
+			if timer15Count == 1 then
+				timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+			elseif timer15Count == 2 then
+				timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+			elseif timer15Count == 3 then
+				timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
+			else
+				timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+			end
+		elseif timer == 16 then--Judgement pair (Shield then Final)
+			timer16Count = timer16Count + 1
+			if timer16Count % 2 == 1 then
+				timerJudgementShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementShield", "judgementShieldCount"))
+			else
+				timerjudgementFinalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementFinal", "judgementFinalCount"))
+			end
+		elseif timer == 17 then--Sacred Shield opener, then Avenger's Shield
+			timer17Count = timer17Count + 1
+			if timer17Count == 1 then
+				timerSacredShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredShield", "sacredShieldCount"))
+			else
+				timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+			end
+		elseif timer == 22 then--Divine Storm, then Avenger's Shield
+			timer22Count = timer22Count + 1
+			if timer22Count == 1 then
+				timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
+			else
+				timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+			end
+		elseif timer == 23 then--Sacred Toll, then Judgement Shield, Judgement Final
+			timer23Count = timer23Count + 1
+			if timer23Count == 1 then
+				timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+			elseif timer23Count == 2 then
+				timerJudgementShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementShield", "judgementShieldCount"))
+			else
+				timerjudgementFinalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementFinal", "judgementFinalCount"))
+			end
+		elseif timer == 24 then--Judgement pair (Shield then Final)
+			timer24Count = timer24Count + 1
+			if timer24Count % 2 == 1 then
+				timerJudgementShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementShield", "judgementShieldCount"))
+			else
+				timerjudgementFinalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementFinal", "judgementFinalCount"))
+			end
+		elseif timer == 40 then--Judgement pair (Shield then Final)
+			timer40Count = timer40Count + 1
+			if timer40Count % 2 == 1 then
+				timerJudgementShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementShield", "judgementShieldCount"))
+			else
+				timerjudgementFinalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementFinal", "judgementFinalCount"))
+			end
+		elseif timer == 42 then--Judgement pair (Shield then Final)
+			timer42Count = timer42Count + 1
+			if timer42Count % 2 == 1 then
+				timerJudgementShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementShield", "judgementShieldCount"))
+			else
+				timerjudgementFinalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementFinal", "judgementFinalCount"))
+			end
+		elseif timer == 45 then--Divine Storm then Sacred Toll
+			timer45Count = timer45Count + 1
+			if timer45Count == 1 then
+				timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
+			else
+				timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+			end
+		elseif timer == 50 then--Sacred Shield then Divine Storm
+			timer50Count = timer50Count + 1
+			if timer50Count == 1 then
+				timerSacredShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredShield", "sacredShieldCount"))
+			else
+				timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
+			end
+		elseif timer == 52 then--Searing Radiance, Judgement Shield, Judgement Final
+			timer52Count = timer52Count + 1
+			if timer52Count == 1 then
+				timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
+			elseif timer52Count == 2 then
+				timerJudgementShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementShield", "judgementShieldCount"))
+			else
+				timerjudgementFinalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementFinal", "judgementFinalCount"))
+			end
+		elseif timer == 53 then--Searing Radiance, Avenger's Shield, Sacred Shield
+			timer53Count = timer53Count + 1
+			if timer53Count == 1 then
+				timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
+			elseif timer53Count == 2 then
+				timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+			else
+				timerSacredShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredShield", "sacredShieldCount"))
+			end
+		elseif timer == 60 then--Judgement Shield, Judgement Final, Sacred Shield
+			timer60Count = timer60Count + 1
+			if timer60Count == 1 then
+				timerJudgementShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementShield", "judgementShieldCount"))
+			elseif timer60Count == 2 then
+				timerjudgementFinalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementFinal", "judgementFinalCount"))
+			else
+				timerSacredShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredShield", "sacredShieldCount"))
+			end
+		elseif timer == 172 then--Aura of Wrath, Execution Sentence, Aura of Peace
+			timer172Count = timer172Count + 1
+			if timer172Count == 1 then
+				timerAuraofWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraWrath", "auraofWrathCount"))
+			elseif timer172Count == 2 then
+				timerExecutionSentenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "executionSentence", "executionSentenceCount"))
+			else
+				timerAuraofPeaceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraPeace", "auraofPeaceCount"))
+			end
+		elseif timer == 174 then--Aura of Devotion, Divine Toll alternating
+			timer174Count = timer174Count + 1
+			if timer174Count % 2 == 1 then
+				timerAuraofDevotionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraDevotion", "auraofDevotionCount"))
+			else
+				timerDivineTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineToll", "divineTollCount"))
+			end
+		elseif timer == 175 then--Aura of Wrath then Execution Sentence
+			timer175Count = timer175Count + 1
+			if timer175Count == 1 then
+				timerAuraofWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraWrath", "auraofWrathCount"))
+			else
+				timerExecutionSentenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "executionSentence", "executionSentenceCount"))
+			end
+		elseif timer == 20 then
+			--Observed Heroic Week3 20s sequence (single full pull):
+			--1 DS, 2 ST, 3 DS, 4 ST, 5 AS, 6 AS, 7 JS, 8 JF, 9 AS, 10 JS, 11 JF, 12 AS, 13 DS, 14 DS, 15 ST, 16 DS, 17 JS, 18 JF, 19 DS, 20 DS
+			timer20Count = timer20Count + 1
+			if timer20Count == 1 or timer20Count == 3 or timer20Count == 13 or timer20Count == 14 or timer20Count == 16 or timer20Count == 19 or timer20Count == 20 then
+				timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
+			elseif timer20Count == 2 or timer20Count == 4 or timer20Count == 15 then
+				timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+			elseif timer20Count == 5 or timer20Count == 6 or timer20Count == 9 or timer20Count == 12 then
+				timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+			elseif timer20Count == 7 or timer20Count == 10 or timer20Count == 17 then
+				timerJudgementShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementShield", "judgementShieldCount"))
+			elseif timer20Count == 8 or timer20Count == 11 or timer20Count == 18 then
+				timerjudgementFinalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "judgementFinal", "judgementFinalCount"))
+			else
+				--Unexpected additional 20s outside observed sequence
+				if not DBM.Options.DebugMode then
+					badStateDetected = true
+					if DBM.Options.IgnoreBlizzAPI then
+						DBM.Options.IgnoreBlizzAPI = false
+						DBM:FireEvent("DBM_ResumeBlizzAPI")
+					end
+					self:UnregisterShortTermEvents()
+					setFallback(self)
+					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				else
+					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+				end
+			end
+		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			if not DBM.Options.DebugMode then
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			else
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+			end
+		end
+	end
 	--Note, bar state changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
@@ -310,6 +566,8 @@ do
 		if not badStateDetected then
 			if self:IsEasy() then
 				timersEasy(self, timer, timerExact, eventID)
+			elseif self:IsHeroic() then
+				timersHeroic(self, timer, timerExact, eventID)
 			end
 		end
 	end
@@ -352,6 +610,12 @@ do
 			elseif eventType == "executionSentence" then
 				specWarnExecutionSentence:Show(eventCount)
 				specWarnExecutionSentence:Play("soakincoming")
+			elseif eventType == "divineStorm" then
+				specWarnDivineStorm:Show(eventCount)
+				specWarnDivineStorm:Play("justrun")
+			elseif eventType == "searingRadiance" then
+				specWarnSearingRadiance:Show(eventCount)
+				specWarnSearingRadiance:Play("aesoon")
 			elseif eventType == "zealousSpirit" then
 				warnZealousSpirit:Show(eventCount)
 			end
