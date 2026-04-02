@@ -74,7 +74,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.entropicUnravelingCount = 1
 	next45Type = nil
 
-	if DBM.Options.HardcodedTimer and not self:IsMythic() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -161,13 +161,87 @@ do
 		end
 	end
 
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	---@param eventState number
+	local function timersMythic(self, timer, timerExact, eventID, eventState)
+		--Logic confirmed against Mythic Week3 logs
+		if timer == 370 then--Berserk
+			timerBerserkCD:Start(370)
+		elseif timer == 100 then--Entropic Unraveling, phase change marker
+			if not self:AntiSpam(2, 1) then
+				return--Bugged duplicate add at the same moment, ignore second event
+			end
+			next45Type = "twisted"--Shared 45s open as Twisted/Fractured after phase transition
+			timerEntropicUnravelingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "entropic", "entropicUnravelingCount"))
+		elseif timer == 22 or timer == 46 then--Despotic Command
+			timerDespoticCommandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "despotic", "despoticCommandCount"))
+			if timer == 46 then
+				next45Type = "fractured"
+			end
+		elseif timer == 27 then--Fractured Projection
+			timerFracturedProjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "fractured", "fracturedProjectionCount"))
+		elseif timer == 44 then--Shattering Twilight
+			timerShatteringTwilightCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shattering", "shatteringTwilightCount"))
+		elseif eventState == 1 and self:IsRoundedTimer(timerExact, 34.7, 1) then--Carryover bar during Entropic overwrite window (covers 33.7-35.7 instant-cancel artifacts)
+			return
+		elseif timer == 11 or timer == 47 then--Void Convergence
+			timerVoidConvergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
+			next45Type = "twisted"
+		elseif timer == 15 then--Twisting Obscurity opener
+			timerTwilightObscurityCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
+			--If a prior event already seeded the shared 45s chain (e.g. 11/47/100), keep that seed.
+			--Only force fractured when no seed exists yet.
+			if not next45Type then
+				next45Type = "fractured"
+			end
+		elseif timer == 45 then--Shared duration among Twisted/Fractured/Shattering
+			if next45Type == "twisted" then
+				timerTwilightObscurityCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "twisted", "twilightObscurityCount"))
+				next45Type = "fractured"
+			elseif next45Type == "fractured" then
+				timerFracturedProjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "fractured", "fracturedProjectionCount"))
+				next45Type = "shattering"
+			elseif next45Type == "shattering" then
+				timerShatteringTwilightCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shattering", "shatteringTwilightCount"))
+				next45Type = nil
+			else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			if not DBM.Options.DebugMode then
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			else
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+			end
+		end
+	end
+
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
+		local eventState = eventInfo.state
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			if not self:IsMythic() then
+			if self:IsMythic() then
+				timersMythic(self, timer, timerExact, eventID, eventState)
+			else
 				timersNonMythic(self, timer, timerExact, eventID)
 			end
 		end
