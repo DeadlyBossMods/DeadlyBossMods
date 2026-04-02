@@ -62,6 +62,10 @@ mod.vb.consumeCount = 0
 local badStateDetected = false
 local sawPhlegm53 = false
 local next12IsDevastation = false
+local diveEventID = 0
+local diveEventCount = 0
+local diveExpireAt = 0
+local diveFallbackToken = 0
 local showOnNextWarning = 0
 local timer73Count = 0
 local timer75Count = 0
@@ -105,6 +109,10 @@ function mod:OnLimitedCombatStart()
 	self.vb.consumeCount = 1
 	sawPhlegm53 = false
 	next12IsDevastation = false
+	diveEventID = 0
+	diveEventCount = 0
+	diveExpireAt = 0
+	diveFallbackToken = diveFallbackToken + 1
 	showOnNextWarning = 0
 	timer73Count = 0
 	timer75Count = 0
@@ -124,6 +132,10 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	diveEventID = 0
+	diveEventCount = 0
+	diveExpireAt = 0
+	diveFallbackToken = diveFallbackToken + 1
 	self:UnregisterShortTermEvents()
 end
 
@@ -141,8 +153,43 @@ do
 		self.vb.miasmaCount = 1--Used on Heroic+
 		sawPhlegm53 = false
 		next12IsDevastation = false
+		diveEventID = 0
+		diveEventCount = 0
+		diveExpireAt = 0
+		diveFallbackToken = diveFallbackToken + 1
 		timer73Count = 0
 		timer75Count = 0
+	end
+	---@param self DBMMod
+	---@param eventCount number
+	local function handleDiveTransition(self, eventCount)
+		specWarnRavenousDive:Show(eventCount)
+		specWarnRavenousDive:Play("phasechange")
+		phaseReset(self)--Phase transition ends, reset all timers
+		DBM:Debug("Phase reset applied by Ravenous Dive", nil, nil, nil, true)
+	end
+	---@param self DBMMod
+	---@param token number
+	---@param eventCount number
+	local function finishPendingDive(self, token, eventCount)
+		if token ~= diveFallbackToken then return end
+		handleDiveTransition(self, eventCount)
+	end
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function startDiveTimer(self, timer, timerExact, eventID)
+		--Blizzard can end add phase in two ways: let the base dive bar expire naturally (30 non-Mythic/20 Mythic)
+		--or cancel it early and replace it with a 1s dive. In some logs the active dive only reaches state 3 very
+		--near expiry, so we track whichever dive event is currently active and let STATE_CHANGED apply a tiny fallback.
+		local eventCount = self:TLCountStart(eventID, "dive", "diveCount")
+		timerRavenousDiveCD:Stop()
+		timerRavenousDiveCD:TLStart(timerExact, eventID, eventCount)
+		diveEventID = eventID
+		diveEventCount = eventCount
+		diveExpireAt = GetTime() + timerExact
+		diveFallbackToken = diveFallbackToken + 1
 	end
 	---@param self DBMMod
 	---@param timer number
@@ -190,8 +237,7 @@ do
 			end
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
 			--30 is max time, but when all adds die, 30 is canceled and replaced with 1 second timer
-			timerRavenousDiveCD:Stop()--Terminate to avoid debug from early phase transition ends
-			timerRavenousDiveCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dive", "diveCount"))
+			startDiveTimer(self, timer, timerExact, eventID)
 		elseif timer == 165 or timer == 10 then--Stage Two markers
 			--Used by blizzard as phase markers
 			timerStage2CD:Stop()
@@ -266,8 +312,7 @@ do
 				next12IsDevastation = true
 			end
 		elseif timer == 30 or timer == 1 then--Ravenous Dive (30s max, 1s early-kill replacement when adds die early)
-			timerRavenousDiveCD:Stop()
-			timerRavenousDiveCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dive", "diveCount"))
+			startDiveTimer(self, timer, timerExact, eventID)
 		elseif timer == 10 then--Stage Two (phase 2 transition marker)
 			timerStage2CD:Stop()
 			timerStage2CD:TLStart(timerExact, eventID)
@@ -341,9 +386,8 @@ do
 				timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				next12IsDevastation = true
 			end
-		elseif timer == 30 or timer == 1 then--Ravenous Dive (early-kill replacement at 1)
-			timerRavenousDiveCD:Stop()
-			timerRavenousDiveCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dive", "diveCount"))
+		elseif timer == 20 or timer == 1 then--Ravenous Dive (20s base on Mythic, 1s when adds die early)
+			startDiveTimer(self, timer, timerExact, eventID)
 		else--Reached end of chain without finding a valid timer
 			if not DBM.Options.DebugMode then
 				badStateDetected = true
@@ -408,13 +452,30 @@ do
 					specWarnCorruptedDevastation:Show(eventCount)
 					specWarnCorruptedDevastation:Play("breathsoon")
 				elseif eventType == "dive" then
-					specWarnRavenousDive:Show(eventCount)
-					specWarnRavenousDive:Play("phasechange")
-					phaseReset(self)--Phase transition ends, reset all timers
-					DBM:Debug("Phase reset applied by Ravenous Dive", nil, nil, nil, true)
+					diveEventID = 0
+					diveEventCount = 0
+					diveExpireAt = 0
+					diveFallbackToken = diveFallbackToken + 1
+					handleDiveTransition(self, eventCount)
 				end
 			end
 		elseif eventState == 3 then
+			if eventID == diveEventID and diveEventCount > 0 and diveExpireAt > 0 and GetTime() >= (diveExpireAt - 0.3) then
+				local eventType = self:TLCountCancel(eventID)
+				if eventType == "dive" then
+					diveEventID = 0
+					diveExpireAt = 0
+					diveFallbackToken = diveFallbackToken + 1
+					self:Schedule(0.2, finishPendingDive, self, diveFallbackToken, diveEventCount)
+					return
+				end
+			end
+			if eventID == diveEventID then
+				diveEventID = 0
+				diveEventCount = 0
+				diveExpireAt = 0
+				diveFallbackToken = diveFallbackToken + 1
+			end
 			self:TLCountCancel(eventID)
 		end
 	end
