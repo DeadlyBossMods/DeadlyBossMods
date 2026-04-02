@@ -13,6 +13,7 @@ mod:RegisterCombat("combat")
 --NOTE: hardcode can probably combine cosmisis abilities into a single https://www.wowhead.com/ptr/spell=1263623/cosmosis timer
 --local warnRadiantBarrier			= mod:NewCountAnnounce(1248847, 1)
 local warnGrabblingMaw				= mod:NewCountAnnounce(1280458, 2, nil, "Tank")
+local warnDreadBreath				= mod:NewBlizzTargetAnnounce(1244221, 4)
 
 local specWarnNullBeam				= mod:NewSpecialWarningCount(1262623, nil, nil, nil, 2, 2)
 local specWarnVoidHowl				= mod:NewSpecialWarningCount(1244917, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
@@ -42,9 +43,9 @@ local timerCosmosisDreadBreathCD	= mod:NewCDCountTimer(20.5, 1277472, nil, nil, 
 local timerCosmosisVoidHowlCD		= mod:NewCDCountTimer(20.5, 1277473, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerRadiantBarrierCD			= mod:NewCDCountTimer(20.5, 1248847, nil, nil, nil, 5)
 
-mod:AddPrivateAuraSoundOption({1262999,1262676,1262656}, true, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
+mod:AddPrivateAuraSoundOption({1262999,1262676,1262656}, false, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
 mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2, "lineapart", 2)--Null Zone Grippy hand
-mod:AddPrivateAuraSoundOption(1252157, true, 1262623, 1, 1, "debuffyou", 17)--Null Implosion
+mod:AddPrivateAuraSoundOption(1252157, false, 1262623, 1, 1, "debuffyou", 17)--Null Implosion
 mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3, "gloomyou", 19)--Gloomtouched (soaked Gloom)
 mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3, "debuffyou", 17)--Diminish (Gloomtouched ended, don't soak again)
 mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2, "watchfeet", 8)--Gloomfield (GTFO left by gloom)
@@ -67,6 +68,7 @@ mod.vb.cosmosisNullbeamCount = 0
 mod.vb.cosmosisDreadBreathCount = 0
 mod.vb.cosmosisVoidHowlCount = 0
 mod.vb.radiantBarrierCount = 0
+local showOnNextWarning = 0
 local badStateDetected = false
 local next53IsGloom = false
 local next26S1Type = "vaelwing"
@@ -83,7 +85,9 @@ local next25H2Type = "rakfang"
 local next31H3IsVaelwing = true
 local next62H3IsNullbeam = true
 local next25H3Type = "voidhowl"
+local nullbeamH3InitialDone = false
 
+---@param self DBMMod
 local function setFallback(self)
 	--Blizz API fallbacks
 	specWarnNullBeam:SetAlert(101, "beamincoming", 19, 3)
@@ -131,6 +135,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.cosmosisDreadBreathCount = 1
 	self.vb.cosmosisVoidHowlCount = 1
 	self.vb.radiantBarrierCount = 1
+	showOnNextWarning = 0
 	next53IsGloom = true
 	next26S1Type = "vaelwing"
 	next26S2Type = "rakfang"
@@ -145,13 +150,15 @@ function mod:OnLimitedCombatStart()
 	next31H3IsVaelwing = true
 	next62H3IsNullbeam = true
 	next25H3Type = "voidhowl"
+	nullbeamH3InitialDone = false
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:SetStage(1)
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
-			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+			"ENCOUNTER_WARNING"
 		)
 	else
 		setFallback(self)
@@ -410,7 +417,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersHeroic(self, timer, timerExact, eventID)
-		--Logic confirmed against heroic week 2 pulls. All 3 stages hardcoded.
+		--Logic confirmed against heroic week 2+3 pulls. All 3 stages hardcoded.
 		local stage = self:GetStage()
 		if stage == 1 then--Stage 1
 			if self:IsRoundedTimer(timer, 6) then--Vaelwing (initial)
@@ -511,6 +518,7 @@ do
 				next31H3IsVaelwing = true
 				next62H3IsNullbeam = true
 				next25H3Type = "voidhowl"
+				nullbeamH3InitialDone = false
 				self:SetStage(0)
 				return
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
@@ -538,8 +546,14 @@ do
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif self:IsRoundedTimer(timer, 46) then--Void Howl (late-stage variant)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
-			elseif self:IsRoundedTimer(timer, 13) then--Nullbeam (initial)
-				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+			elseif self:IsRoundedTimer(timer, 13) then--Nullbeam (initial) or Rakfang (late-stage compressed cadence)
+				if not nullbeamH3InitialDone then
+					timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+					nullbeamH3InitialDone = true
+				else
+					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+					next31H3IsVaelwing = true
+				end
 			elseif self:IsRoundedTimer(timer, 8) then--Vaelwing (initial)
 				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
 			elseif self:IsRoundedTimer(timer, 15) then--Rakfang (initial)
@@ -568,6 +582,10 @@ do
 					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
 					next31H3IsVaelwing = true--Drifted Rakfang consumed outside ~31 alternator, reset to Vaelwing
 				end
+			elseif self:IsRoundedTimer(timer, 21) then--Void Howl (late-stage compressed cadence)
+				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+			elseif self:IsRoundedTimer(timer, 26) then--Gloom (late-stage compressed cadence)
+				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
 				if not DBM.Options.DebugMode then
 					badStateDetected = true
@@ -587,7 +605,7 @@ do
 		end
 	end
 
-	--Note, bar stage changing and canceling is handled by core
+	--Note, bar state changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
@@ -618,16 +636,23 @@ do
 					specWarnGloom:Show(eventCount)
 					specWarnGloom:Play("gloomincoming")
 				elseif eventType == "dread" then
+					showOnNextWarning = eventCount
 					specWarnDreadBreath:Show(eventCount)
 					specWarnDreadBreath:Play("breathsoon")
 				elseif eventType == "maw" then
-					warnGrabblingMaw:Show(eventCount)
+					if self:IsTank() then
+						warnGrabblingMaw:Show(eventCount)
+					end
 				elseif eventType == "vaelwing" then
-					specWarnVaelwing:Show()
-					specWarnVaelwing:Play("defensive")
+					if self:IsTank() then
+						specWarnVaelwing:Show()
+						specWarnVaelwing:Play("defensive")
+					end
 				elseif eventType == "rakfang" then
-					specWarnRakfang:Show()
-					specWarnRakfang:Play("defensive")
+					if self:IsTank() then
+						specWarnRakfang:Show()
+						specWarnRakfang:Play("defensive")
+					end
 				elseif eventType == "radiantbarrier" then
 					specWarnRadiantBarrier:Show(eventCount)
 					specWarnRadiantBarrier:Play("findshield")
@@ -636,5 +661,25 @@ do
 		elseif eventState == 3 then--Canceled/removed
 			self:TLCountCancel(eventID)
 		end
+	end
+end
+
+function mod:ENCOUNTER_WARNING(encounterWarningInfo)
+	if showOnNextWarning > 0 then
+		--Secrets
+		local targetName = encounterWarningInfo.targetName
+		local targetGUID = encounterWarningInfo.targetGUID
+		local formattedTargetName = targetName or UNKNOWN
+		if targetGUID then
+			local _, className = GetPlayerInfoByGUID(targetGUID)
+			if className then
+				local classColor = C_ClassColor.GetClassColor(className)
+				if classColor then
+				    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
+				end
+			end
+		end
+		warnDreadBreath:Show(showOnNextWarning, formattedTargetName)
+		showOnNextWarning = 0
 	end
 end

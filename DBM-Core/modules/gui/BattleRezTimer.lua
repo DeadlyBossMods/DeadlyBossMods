@@ -1,13 +1,17 @@
+---@class DBM
+local DBM = DBM
+
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
----@class DBM
-local DBM = private:GetPrototype("DBM")
-local difficulties = private:GetPrototype("Difficulties")
-
+---------------
+--  Globals  --
+---------------
 ---@class DBMBattleRezTimer
 local BattleRezTimer = {}
 DBM.BattleRezTimer = BattleRezTimer
+
+local difficulties = private:GetPrototype("Difficulties")
 
 local L = DBM_CORE_L
 
@@ -105,6 +109,8 @@ end
 
 ApplyFont = function()
 	if not frame then return end
+	-- Guard against DBM.Options not being initialized yet (race condition during load)
+	if not DBM.Options then return end
 	-- Select font with nil fallback to standardFont
 	local fontOption = DBM.Options.BrezFont
 	local font = (not fontOption or fontOption == "standardFont") and standardFont or fontOption
@@ -345,4 +351,8 @@ function BattleRezTimer:Hide()
 		CancelPreviewTimer()
 		frame:Hide()
 	end
+end
+
+function BattleRezTimer:IsShown()
+	return frame and frame:IsShown()
 end

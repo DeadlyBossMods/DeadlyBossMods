@@ -7,11 +7,11 @@ local pbcPanel = DBM_GUI.Cat_Timers:CreateNewPanel(L.Panel_PullBreakCombat, "opt
 local pbcPTArea = pbcPanel:CreateArea(L.Area_PullTimer)
 pbcPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")
 pbcPTArea:CreateCheckButton(L.DontShowPT, true, nil, "DontShowPT2")
-pbcPTArea:CreateCheckButton(L.DontShowPTText, true, nil, "DontShowPTText")
-local SPTCDA = pbcPTArea:CreateCheckButton(L.DontPlayPTCountdown, true, nil, "DontPlayPTCountdown")
+local PTText = pbcPTArea:CreateCheckButton(L.DontShowPTText, true, nil, "DontShowPTText")
+--local SPTCDA = pbcPTArea:CreateCheckButton(L.DontPlayPTCountdown, true, nil, "DontPlayPTCountdown")--hasn't worked in ages
 
 local PTSlider = pbcPTArea:CreateSlider(L.PT_Threshold, 1, 10, 1, 300)
-PTSlider:SetPoint("BOTTOMLEFT", SPTCDA, "BOTTOMLEFT", 80, -40)
+PTSlider:SetPoint("BOTTOMLEFT", PTText, "BOTTOMLEFT", 80, -40)
 PTSlider:SetValue(math.floor(DBM.Options.PTCountThreshold2))
 PTSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.PTCountThreshold2 = math.floor(self:GetValue())

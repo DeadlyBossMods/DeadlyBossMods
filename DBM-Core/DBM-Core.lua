@@ -83,10 +83,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 407, "a0f5bf5"--407.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.35 alpha"--Core version
+DBM.DisplayVersion = "12.0.36 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 3, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 3, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -380,14 +380,14 @@ DBM.DefaultOptions = {
 	DontShowPTNoID = false,
 	PTCountThreshold2 = 5,
 	LatencyThreshold = 250,
-	oRA3AnnounceConsumables = false,
+	--AnnounceConsumables = false,
 	SettingsMessageShown = false,
 	NewsMessageShown2 = 2,--Apparently variable without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowBrezFrame = false,
 	BrezFont = "standardFont",
 	BrezFontSize = 18,
-	BattleRezPosition = {"CENTER", 0, 100},
+	BattleRezPosition = {"TOPLEFT", 214, -29},
 	ShowRespawn = true,
 	ShowQueuePop = true,
 	ShowBerserkWarnings = true,
@@ -3874,11 +3874,7 @@ end
 function DBM:READY_CHECK()
 	if self.Options.RLReadyCheckSound then--readycheck sound, if ora3 not installed (bad to have 2 mods do it)
 		self:FlashClientIcon()
-		--LuaLS doesn't like Plater
-		---@diagnostic disable-next-line: undefined-global
-		if not BINDING_HEADER_oRA3 then
-			DBM:PlaySoundFile(567478, true)--Because regular sound uses SFX channel which is too low of volume most of time
-		end
+		DBM:PlaySoundFile(567478, true)--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 	self:TransitionToDungeonBGM(false, true)
 	self:Schedule(4, self.TransitionToDungeonBGM, self)
@@ -4721,11 +4717,14 @@ do
 	end
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
-		self:Debug("|cffffff00ENCOUNTER_START: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size, 1, nil, nil, true)
+		self:Debug("|cffff8800ENCOUNTER_START: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size, 1, nil, nil, true)
 		if dbmIsEnabled then
 			--Only nag in raids on engage
 			if IsInRaid() then
 				self:CheckAvailableMods()
+			end
+			if self.BattleRezTimer then
+				self.BattleRezTimer:CheckSupported()
 			end
 			if combatInfo[LastInstanceMapID] then
 				for _, v in ipairs(combatInfo[LastInstanceMapID]) do
@@ -4744,17 +4743,17 @@ do
 					end
 				end
 			end
-			if self.BattleRezTimer then
-				self.BattleRezTimer:CheckSupported()
-			end
 		end
 	end
 
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
-		self:Debug("|cffffff00ENCOUNTER_END: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size .. " " .. success, 1, nil, nil, true)
+		self:Debug("|cffff8800ENCOUNTER_END: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size .. " " .. success, 1, nil, nil, true)
 		if success == 0 then
 			--Only nag on wipes (in any content)
 			self:CheckAvailableMods()
+		end
+		if self.BattleRezTimer then
+			self.BattleRezTimer:CheckSupported()
 		end
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
@@ -4785,9 +4784,6 @@ do
 				end
 				return
 			end
-		end
-		if self.BattleRezTimer then
-			self.BattleRezTimer:CheckSupported()
 		end
 	end
 
@@ -5335,16 +5331,10 @@ do
 						end
 					end
 				end
-				if self.Options.oRA3AnnounceConsumables and _G["oRA3Frame"] then
-					local oRA3 = LibStub and LibStub("AceAddon-3.0"):GetAddon("oRA3", true)
-					if oRA3 then
-						local consumables = oRA3:GetModule("Consumables", true)
-						if consumables then
-							---@diagnostic disable-next-line: undefined-field
-							consumables:OutputResults()
-						end
-					end
-				end
+				--Ora3 is deprecated, this should be replaced with DBMs checks when they're added
+				--if self.Options.AnnounceConsumables then
+
+				--end
 				--show engage message
 				if self.Options.ShowEngageMessage and not mod.noStatistics then
 					if mod.ignoreBestkill and (difficulties.savedDifficulty == "worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
@@ -7015,7 +7005,9 @@ do
 		[490] = true, -- Unknown, currently encrypted
 	}
 	local requiresRecentKill = {
-		[2238] = 2519--Fyrakk in Amirdrassil
+		[2238] = 2519,--Fyrakk in Amirdrassil
+		[2529] = 3181,--Crown of the Cosmos
+		[1049] = 3181--Crown of the Cosmos
 	}
 	---@param self DBM
 	local function checkOptions(self, id, mapID)
@@ -7055,7 +7047,8 @@ do
 		self:TransitionToDungeonBGM(false, true)
 		if id and not neverFilter[id] then
 			self:Debug("PLAY_MOVIE fired for ID: " .. id, 2, nil, nil, true)
-			if checkOptions(self, id) then
+			local currentMapID = C_Map.GetBestMapForUnit("player")
+			if checkOptions(self, id, currentMapID) then
 				MovieFrame:Hide()--can only just hide movie frame safely now, which means can't stop audio anymore :\
 				self:AddMsg(L.MOVIE_SKIPPED)
 			end

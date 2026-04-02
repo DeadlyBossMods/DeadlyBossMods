@@ -40,15 +40,15 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 			end
 		end
 		if tooltipSpellID then
-			self:Debug("|cffffff00ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 2, nil, nil, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 2, nil, nil, true)
 		else
-			self:Debug("|cffffff00ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 2, nil, nil, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 2, nil, nil, true)
 		end
 	else
 		if tooltipSpellID then
-			self:Debug("|cffffff00ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID, 2, nil, nil, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID, 2, nil, nil, true)
 		else
-			self:Debug("|cffffff00ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName, 2, nil, nil, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName, 2, nil, nil, true)
 		end
 	end
 	if not self:AntiSpam(0.5, "ENCOUNTER_WARNING") then return end--Designers can't be assed to make sure event isn't buggy and spammy so we're forced to hard throttle
@@ -164,7 +164,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		--Ignore Finished or canceled event for a bugged ID, since it's onen of blizzards early cancel bugs
 		if ignoredEventID then
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring cancel for eventID: "..tostring(eventID).." (timerID belongs to a known bugged Blizzard timer)", 2, nil, nil, DBM.Options.DebugLevel == 3)
-			private.buggedBlizzardTimers[eventID] = nil--Clear it here since we know for certain this timer is now gone
+			--Don't clear buggedBlizzardTimers here; the module's handler still needs to check IsBuggedEventID and will call UnsetBuggedEventID itself
 		else
 			if bar then
 				bar:Cancel()

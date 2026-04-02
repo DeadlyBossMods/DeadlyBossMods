@@ -66,6 +66,7 @@ local showOnNextWarning = 0
 local timer73Count = 0
 local timer75Count = 0
 
+---@param self DBMMod
 local function setFallback(self)
 	--Blizz API fallbacks
 	specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3, 0)
@@ -85,7 +86,7 @@ local function setFallback(self)
 	timerAlndustUpheavalCD:SetTimeline({149,431})
 	timerBerserkCD:SetTimeline(170)
 	timerRiftMadnessCD:SetTimeline(217)
-	specWarnConsume:SetAlert(307, "phasechange", 2, 3)
+	specWarnConsume:SetAlert(307, "aesoon", 2, 3)
 	timerConsumeCD:SetTimeline(307)
 	specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
 	timerStage2CD:SetTimeline(353)
@@ -285,7 +286,7 @@ do
 			end
 		end
 	end
-	--Note, bar stage changing and canceling is handled by core
+	--Note, bar state changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
@@ -319,9 +320,14 @@ do
 					specWarnCausticPhlegm:Show(eventCount)
 					specWarnCausticPhlegm:Play("aesoon")
 				elseif eventType == "upheaval" then
-					showOnNextWarning = eventCount
 					specWarnAlndustUpheaval:Show(eventCount)
-					specWarnAlndustUpheaval:Play("soakincoming")
+					if self:IsLFR() then
+						--LFR has no soak
+						specWarnAlndustUpheaval:Play("raidsplit")
+					else
+						showOnNextWarning = eventCount
+						specWarnAlndustUpheaval:Play("soakincoming")
+					end
 					--We timestamp this then let local ENCOUNTER_WARNING event handle it
 				elseif eventType == "devastation" then
 					specWarnCorruptedDevastation:Show(eventCount)
@@ -344,7 +350,7 @@ function mod:ENCOUNTER_WARNING(encounterWarningInfo)
 		--Secrets
 		local targetName = encounterWarningInfo.targetName
 		local targetGUID = encounterWarningInfo.targetGUID
-		local formattedTargetName = targetName
+		local formattedTargetName = targetName or UNKNOWN
 		if targetGUID then
 			local _, className = GetPlayerInfoByGUID(targetGUID)
 			if className then

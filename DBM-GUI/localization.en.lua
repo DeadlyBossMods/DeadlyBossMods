@@ -31,7 +31,6 @@ L.Tools_PizzaTimer					= "Start Generic Timer"
 
 L.Tools_BrezArea					= "Battle Res Timer"
 L.Tools_ShowBrezFrame				= "Show Battle Res charges frame during boss encounters and Mythic+ dungeons"
-L.Tools_BrezPreview					= "Preview / Move Frame"
 
 L.Tools_Duration					= "Duration"
 L.Tools_Message						= "Timer Message"
@@ -166,7 +165,7 @@ L.ShowQueuePop						= "Show time remaining to accept a queue pop (LFG,BG,etc)"
 L.ShowBerserkWarnings				= "Show announcements at 10/5/3/1 minutes and at 30/10 seconds remaining on $spell:26662 timer"
 --
 L.Area_3rdParty						= "3rd Party Addon Options"
-L.oRA3AnnounceConsumables			= "Announce oRA3 consumables check on combat start"
+L.AnnounceConsumables				= "Announce consumables check on combat start"
 L.Area_Invite						= "Invite Options"
 L.AutoAcceptFriendInvite			= "Automatically accept group invites from friends"
 L.AutoAcceptGuildInvite				= "Automatically accept group invites from guild members"

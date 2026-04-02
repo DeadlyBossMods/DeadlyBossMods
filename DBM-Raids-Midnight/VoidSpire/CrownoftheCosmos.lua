@@ -53,6 +53,7 @@ local timerCosmicPortalCD				= mod:NewCDCountTimer(20.5, 1261339, nil, nil, nil,
 local timerRiftSlashCD					= mod:NewCDCountTimer(20.5, 1246461, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P2 Rift Simulacrum slash attack
 local timerStage2CD						= mod:NewCDTimer(20.5, 1272966, nil, nil, nil, 6)
 local timerStage3CD						= mod:NewCDTimer(20.5, 1273378, nil, nil, nil, 6)
+local timerBerserkCD					= mod:NewBerserkTimer(600)
 
 mod:AddPrivateAuraSoundOption({1233865,1233887}, true, 1233865, 1, 1, "absorbyou", 19)--Null Corona
 mod:AddPrivateAuraSoundOption(1283236, true, 1283236, 1, 1, "orbrun", 2)--Void Expulsion
@@ -157,7 +158,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.riftSlashCount = 1
 	self:SetStage(1)
 
-	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -179,6 +180,10 @@ function mod:OnLimitedCombatStart()
 			specWarnInterruptingTremor:ScheduleVoice(4, "kickcast")
 		end
 		timerInterruptingTremorCD:Start(4, 1)
+		if self:IsHeroic() then
+			--Stage 1 has a 2 minute 10 second berserk
+			timerBerserkCD:Start(130)
+		end
 	else
 		setFallback(self)
 	end
@@ -302,7 +307,9 @@ do
 					timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
 					self:TLResolvePush("voidExpulsion", timer)
 				else
-					timerVoidstalkerStingCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+					--Blizzards timer is actually wrong, it starts a 20 second timer but it's cast 14 seconds later
+					--This can be verified in week3 normal log where you can see every 20 second sting timer refreshed before expire with 6 sec remaining
+					timerVoidstalkerStingCD:TLStart(14, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
 					self:TLResolvePush("voidstalkerSting", timer)
 				end
 			elseif timer == 24 or timer == 22 then--Cosmic Barrier
@@ -349,6 +356,11 @@ do
 				timerDevouringCosmosCD:TLStart(timer, eventID, self:TLCountStart(eventID, "devouringCosmos", "devouringCosmosCount"))
 				self:TLResolvePush("devouringCosmos", timer)
 			elseif timer == 8 or timer == 9 or timer == 21 or timer == 39 then--Aspect of the End
+				if timer == 21 then
+					--Blizzards timer is actually wrong, it starts a 21 second timer but it's cast 13 seconds later
+					--This can be verified in week3 normal log where you can see the 21 second aspect timer refreshed before expire with 8 sec remaining
+					timer = 13
+				end
 				timerAspectoftheEndCD:TLStart(timer, eventID, self:TLCountStart(eventID, "aspectoftheEnd", "aspectoftheEndCount"))
 				self:TLResolvePush("aspectoftheEnd", timer)
 			elseif timer == 12 or timer == 14 or timer == 15 then--Voidstalker Sting
@@ -370,7 +382,125 @@ do
 		end
 	end
 
-	--Note, bar stage changing and canceling is handled by core
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersHeroic(self, timer, timerExact, eventID)
+		local stage = self:GetStage()
+		if stage == 1 then
+			--Stage 1 Heroic (Week 3 validated)
+			--Heroic has much more duration variation than Easy. Using exact duration matching
+			--and TLResolve context for disambiguation of repeated abilities with multiple durations.
+			--Occurrence counts help resolve ambiguities in the highly variable timeline.
+			if timer == 2 then--Null Corona opener (occurs as 2 multiple times early)
+				timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+				self:TLResolvePush("nullCorona", timer)
+			elseif timer == 5 then--Grasp of Emptiness (first occurrence) or Null Corona late
+				local lastResolvedType, lastResolvedTimer = self:TLResolvePeek()
+				if lastResolvedType == "nullCorona" and lastResolvedTimer == 2 then
+					timerGraspofEmptynessCD:TLStart(timer, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+					self:TLResolvePush("grasp", timer)
+				else
+					--Late Null Corona at 5s (rare)
+					timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 12 or timer == 11 or timer == 13 then--Void Expulsion (early occurrences vary)
+				timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+				self:TLResolvePush("voidExpulsion", timer)
+			elseif timer == 24 or timer == 23 then--Silverstrike Arrow
+				timerSilverstrikeArrowCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
+				self:TLResolvePush("silverstrikeArrow", timer)
+			elseif timer == 21 then--Silverstrike Arrow or Aspect of the End (P3 only)
+				--In S1 Heroic, 21s is always Silverstrike Arrow
+				timerSilverstrikeArrowCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
+				self:TLResolvePush("silverstrikeArrow", timer)
+			elseif timer == 26 or timer == 27 then--Dark Hand (26) or Null Corona (27)
+				--26 = Dark Hand, 27 = Null Corona
+				if timer == 26 then
+					timerDarkHandCD:TLStart(timer, eventID, self:TLCountStart(eventID, "darkHand", "darkHandCount"))
+					self:TLResolvePush("darkHand", timer)
+				else
+					timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 20 then--Ravenous Abyss (19.5 rounds to 20) OR Interrupting Tremor (20.0)
+				if timerExact and timerExact < 19.75 then
+					timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
+					self:TLResolvePush("ravenousAbyss", timerExact)
+				elseif timerExact and timerExact >= 19.75 then
+					timerInterruptingTremorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "interruptingTremor", "interruptingTremorCount"))
+					self:TLResolvePush("interruptingTremor", timerExact)
+				end
+			elseif timer == 28 or timer == 29 then--Grasp of Emptiness (28) or Null Corona (27-29 range)
+				--Use exact timer to disambiguate: 28 = Grasp, 27 = Null Corona, 31-32 = Grasp
+				if timerExact and timerExact < 27.5 then
+					--4.5 Grasp or similar low value
+					timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+					self:TLResolvePush("grasp", timerExact)
+				elseif timerExact and timerExact >= 27.5 and timerExact < 29.5 then
+					--28 range = Grasp
+					timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+					self:TLResolvePush("grasp", timerExact)
+				else
+					--29-30 range Null Corona
+					timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 31 or timer == 32 then--Grasp of Emptiness
+				timerGraspofEmptynessCD:TLStart(timer, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+				self:TLResolvePush("grasp", timer)
+			elseif timer == 39 or timer == 40 then--Void Expulsion (39) or Null Corona (44-45)
+				if timer == 39 then
+					timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+					self:TLResolvePush("voidExpulsion", timer)
+				else
+					--40 rounds from higher value
+					timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 44 or timer == 45 then--Null Corona
+				timerNullCoronaCD:TLStart(timer, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+				self:TLResolvePush("nullCorona", timer)
+			elseif timer == 48 then--Void Expulsion (48)
+				timerVoidExpulsionCD:TLStart(timer, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+				self:TLResolvePush("voidExpulsion", timer)
+			elseif timer == 4 then
+				--Unresolveable initial 4s casts (Tremor, Abyss, Dark Hand)
+				--Those are prescheduled on pull
+				return
+			elseif (timer == 2) and (GetTime() - lastTLEvent > 10) then--Initial 1.5 (2 rounded) Silverstrike Barrage starts Intermission 1 (Stage 1.5)
+				--Time since last TL event is usually around 12-14
+				--Phase tranition cancels P1 timers and then has 3 CHAT_MSG_MONSTER_YELL events
+				self:SetStage(1.5)
+				--timerSilverstrikeBarrageCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
+				timerBerserkCD:Cancel()
+			else
+				--Reached end of chain without finding a valid timer
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match Heroic encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif stage == 1.5 or stage == 2 or stage == 2.5 or stage == 3 then
+			--Heroic stages beyond S1 have not been hardcoded, switch to fallback
+			badStateDetected = true
+			if DBM.Options.IgnoreBlizzAPI then
+				DBM.Options.IgnoreBlizzAPI = false
+				DBM:FireEvent("DBM_ResumeBlizzAPI")
+			end
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Heroic stage " .. stage .. " not hardcoded, falling back to Blizzard API|r", nil, nil, nil, true)
+		end
+	end
+
+	--Note, bar state changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
@@ -379,6 +509,8 @@ do
 		if not badStateDetected then
 			if self:IsEasy() then
 				timersEasy(self, timer, timerExact, eventID)
+			elseif self:IsHeroic() then
+				timersHeroic(self, timer, timerExact, eventID)
 			end
 		end
 		lastTLEvent = GetTime()
