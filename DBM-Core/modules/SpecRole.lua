@@ -632,7 +632,6 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["CasterDps"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
-				["RemovePoison"] = true,
 			},
 			[263] = {	--Enhancement Shaman
 				["Dps"] = true,
@@ -644,7 +643,6 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
-				["RemovePoison"] = true,
 			},
 			[262] = {	--Restoration Shaman
 				["Healer"] = true,
@@ -653,7 +651,6 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
-				["RemovePoison"] = true,
 			},
 			[871] = { --Affliction Warlock
 				["Dps"] = true,
@@ -781,7 +778,6 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["MeleeDps"] = true,
 				["Physical"] = true,
 				["RemoveCurse"] = true,
-				["RemovePoison"] = true,
 			},
 			["DRUID3"] = { -- Restoration Druid
 				["Healer"] = true,
@@ -852,6 +848,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["CasterDps"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
+				["RemovePoison"] = true,
 			},
 			["SHAMAN2"] = {	--Enhancement Shaman
 				["Dps"] = true,
@@ -863,6 +860,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
+				["RemovePoison"] = true,
 			},
 			["SHAMAN3"] = {	--Restoration Shaman
 				["Healer"] = true,
@@ -871,6 +869,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
+				["RemovePoison"] = true,
 			},
 			["WARLOCK1"] = { --Affliction Warlock
 				["Dps"] = true,
