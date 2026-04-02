@@ -632,6 +632,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["CasterDps"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
+				["RemovePoison"] = true,
 			},
 			[263] = {	--Enhancement Shaman
 				["Dps"] = true,
@@ -643,6 +644,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
+				["RemovePoison"] = true,
 			},
 			[262] = {	--Restoration Shaman
 				["Healer"] = true,
@@ -651,6 +653,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
+				["RemovePoison"] = true,
 			},
 			[871] = { --Affliction Warlock
 				["Dps"] = true,
