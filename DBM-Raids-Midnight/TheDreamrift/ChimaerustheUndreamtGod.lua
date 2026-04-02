@@ -109,7 +109,7 @@ function mod:OnLimitedCombatStart()
 	timer73Count = 0
 	timer75Count = 0
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic()) and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic() or self:IsMythic()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -286,6 +286,79 @@ do
 			end
 		end
 	end
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersMythic(self, timer, timerExact, eventID)
+		--Logic confirmed against Mythic Week 3
+		if timer == 510 then--Rift Cataclysm
+			timerBerserkCD:Start(timer)
+		elseif timer == 65 then--Consume opener
+			timerConsumeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "consume", "consumeCount"))
+		elseif timer == 36 then--Rending Tear opener
+			timerRendingTearCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "tear", "tearCount"))
+		elseif timer == 148 then--Stage Two marker
+			timerStage2CD:Stop()
+			timerStage2CD:TLStart(timerExact, eventID)
+		elseif timer == 14 then--Alndust Upheaval opener, later reused by Corrupted Devastation
+			if self.vb.upheavalCount == 1 then
+				timerAlndustUpheavalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
+			else
+				timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+				next12IsDevastation = true
+			end
+		elseif timer == 6 then--Rift Emergence opener
+			timerRiftEmergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rift", "riftCount"))
+		elseif timer == 32 or timer == 51 or timer == 37 or timer == 29 or timer == 23 then--Consuming Miasma
+			timerConsumingMiasmaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "miasma", "miasmaCount"))
+		elseif timer == 39 then--Rift Madness opener
+			timerRiftMadnessCD:TLStart(timerExact, eventID)
+			self:TLCountStart(eventID, "riftMadness", "riftMadnessCount")
+		elseif timer == 75 then--Rift Emergence reload
+			timerRiftEmergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rift", "riftCount"))
+		elseif timer == 73 then--Alndust Upheaval, Rending Tear, Rift Madness (in order)
+			timer73Count = timer73Count + 1
+			if timer73Count % 3 == 1 then
+				timerAlndustUpheavalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
+			elseif timer73Count % 3 == 2 then
+				timerRendingTearCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "tear", "tearCount"))
+			else
+				timerRiftMadnessCD:TLStart(timerExact, eventID)
+				self:TLCountStart(eventID, "riftMadness", "riftMadnessCount")
+			end
+		elseif timer == 24 or timer == 26 or timer == 48 or timer == 18 or timer == 9 then--Caustic Phlegm
+			timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
+		elseif timer == 72 then--Consume reload
+			timerConsumeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "consume", "consumeCount"))
+		elseif timer == 10 then--Alndust Upheaval phase 2
+			timerAlndustUpheavalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
+		elseif timer == 12 then--Corrupted Devastation/Caustic Phlegm alternating pair
+			if next12IsDevastation then
+				timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+				next12IsDevastation = false
+			else
+				timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
+				next12IsDevastation = true
+			end
+		elseif timer == 30 or timer == 1 then--Ravenous Dive (early-kill replacement at 1)
+			timerRavenousDiveCD:Stop()
+			timerRavenousDiveCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dive", "diveCount"))
+		else--Reached end of chain without finding a valid timer
+			if not DBM.Options.DebugMode then
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			else
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+			end
+		end
+	end
 	--Note, bar state changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
@@ -297,6 +370,8 @@ do
 				timersEasy(self, timer, timerExact, eventID)
 			elseif self:IsHeroic() then
 				timersHeroic(self, timer, timerExact, eventID)
+			elseif self:IsMythic() then
+				timersMythic(self, timer, timerExact, eventID)
 			end
 		end
 	end
