@@ -36,7 +36,7 @@ local timerCorruptedDevastationCD		= mod:NewCDCountTimer(20.5, 1245452, 17088, n
 local timerConsumingMiasmaCD			= mod:NewCDCountTimer(20.5, 1257087, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--Heroic+Mythic only
 local timerAlndustUpheavalCD			= mod:NewCDCountTimer(20.5, 1262289, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5)
 local timerRiftMadnessCD				= mod:NewNextTimer(20.5, 1264780, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
-local timerConsumeCD					= mod:NewCDCountTimer(20.5, 1245396, nil, nil, nil, 5)
+local timerConsumeCD					= mod:NewCDCountTimer(20.5, 1245396, nil, nil, 2, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerStage2CD						= mod:NewCDTimer(20.5, 1280127, nil, nil, nil, 6)--Hardcoded stage 2 timer for when blizz doesn't provide consume timers in stage 2, or provides them with wrong timers. Will be removed if blizz provides accurate consume timers in stage 2
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
@@ -428,7 +428,7 @@ do
 			if eventType and eventCount then
 				if eventType == "consume" then
 					specWarnConsume:Show(eventCount)
-					specWarnConsume:Play("phasechange")
+					specWarnConsume:Play("aesoon")
 				elseif eventType == "tear" then
 					specWarnRendingTear:Show(eventCount)
 					specWarnRendingTear:Play("frontal")
