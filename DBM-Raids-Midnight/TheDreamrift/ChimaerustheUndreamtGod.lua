@@ -183,7 +183,7 @@ do
 		--Blizzard can end add phase in two ways: let the base dive bar expire naturally (30 non-Mythic/20 Mythic)
 		--or cancel it early and replace it with a 1s dive. In some logs the active dive only reaches state 3 very
 		--near expiry, so we track whichever dive event is currently active and let STATE_CHANGED apply a tiny fallback.
-		local eventCount = self:TLCountStart(eventID, "dive", "diveCount")
+		local eventCount = self:TLCountStart(eventID, "dive", "diveCount") or self.vb.diveCount
 		timerRavenousDiveCD:Stop()
 		timerRavenousDiveCD:TLStart(timerExact, eventID, eventCount)
 		diveEventID = eventID
