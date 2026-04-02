@@ -801,6 +801,32 @@ function DBM:IgnoreBlizzardAPI()
 end
 bossModPrototype.IgnoreBlizzardAPI = DBM.IgnoreBlizzardAPI
 
+---Resumes Blizzard API processing after a hardcoded mod failure: restores IgnoreBlizzAPI flag,
+---cancels any orphaned hardcoded bars, then re-creates Blizzard bars from the active event list.
+---Call this from module fallback paths instead of manually setting IgnoreBlizzAPI.
+---@param self DBMModOrDBM
+function DBM:ResumeBlizzardAPI()
+	if DBM.Options.IgnoreBlizzAPI then
+		DBM.Options.IgnoreBlizzAPI = false
+		fireEvent("DBM_ResumeBlizzAPI")
+	end
+	--Cancel any hardcoded bars that are still running to avoid duplicates once Blizzard bars are recovered
+	if private.hardCodedTimers then
+		for _, timerIds in pairs(private.hardCodedTimers) do
+			if type(timerIds) == "table" then
+				for _, timerId in ipairs(timerIds) do
+					DBT:CancelBar(timerId)
+				end
+			else
+				DBT:CancelBar(timerIds)
+			end
+		end
+		wipe(private.hardCodedTimers)
+	end
+	DBM:RecoverBlizzardTimers()
+end
+bossModPrototype.ResumeBlizzardAPI = DBM.ResumeBlizzardAPI
+
 ---@param self DBMModOrDBM
 function DBM:FixBlizzardAPI()
 	DBM.Options.fixBlizzApi = true
