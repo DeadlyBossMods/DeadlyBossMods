@@ -771,6 +771,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["CasterDps"] = true,
 				["RemoveCurse"] = true,
+				["RemovePoison"] = true,
 			},
 			["DRUID2"] = { --Feral Druid
 				["Healer"] = private.isClassic and true or false,
@@ -780,6 +781,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["MeleeDps"] = true,
 				["Physical"] = true,
 				["RemoveCurse"] = true,
+				["RemovePoison"] = true,
 			},
 			["DRUID3"] = { -- Restoration Druid
 				["Healer"] = true,
@@ -788,6 +790,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["RaidCooldown"] = true,--Tranquility
 				["RemoveCurse"] = true,
+				["RemovePoison"] = true,
 			},
 			["HUNTER1"] = {	--Beastmaster Hunter
 				["Dps"] = true,
