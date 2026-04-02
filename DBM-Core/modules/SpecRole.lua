@@ -709,7 +709,6 @@ function DBMExtraGlobal:rebuildSpecTable()
 			},
 			["PALADIN1"] = {	--Holy Paladin
 				["Healer"] = true,
-				["Melee"] = true,--They melee when oom?
 				["Ranged"] = true,
 				["CasterDps"] = true,--Judgements, exorcism, etc
 				["ManaUser"] = true,
@@ -820,6 +819,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["CasterDps"] = true,--Iffy. Technically yes, but this can't be used to determine eligable target for dps only debuffs
 				["RaidCooldown"] = true,--Power Word: Barrier(Discipline) / Divine Hymn (Holy)
 				["MagicDispeller"] = true,
+				["RemoveDisease"] = true,
 				["RemoveMagic"] = true,
 			},
 			["PRIEST3"] = {	--Shadow Priest
@@ -831,6 +831,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["CasterDps"] = true,
 				["MagicDispeller"] = true,
 				["RemoveMagic"] = true,
+				["RemoveDisease"] = true,
 			},
 			["ROGUE1"] = { --Assassination Rogue
 				["Dps"] = true,
