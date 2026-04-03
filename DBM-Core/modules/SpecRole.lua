@@ -745,7 +745,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 			},
 			["WARRIOR1"] = {	--Arms Warrior
 				["Dps"] = true,
-				["Tank"] = private.isClassic and true or false,
+				["Tank"] = private.isClassic and DBMExtraGlobal:IsSpellKnown(12975) and true or false,
 				["Melee"] = true,
 				["MeleeDps"] = true,
 				["Physical"] = true,
