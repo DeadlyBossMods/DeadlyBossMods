@@ -68,15 +68,36 @@ local function normalizeSearchText(text)
 	if not text then
 		return ""
 	end
-	text = tostring(text)
-	text = strgsub(text, "|c%x%x%x%x%x%x%x%x", "")
-	text = strgsub(text, "|r", "")
-	text = strgsub(text, "|T.-|t", " ")
-	text = strgsub(text, "|H.-|h(.-)|h", "%1")
-	text = strgsub(text, "<.->", " ")
-	text = strgsub(text, "%s+", " ")
-	return strlower(text:match("^%s*(.-)%s*$") or "")
+	if DBM:issecretvalue(text) then
+		return ""
+	end
+	local ok, normalized = pcall(function(value)
+		value = tostring(value)
+		value = strgsub(value, "|c%x%x%x%x%x%x%x%x", "")
+		value = strgsub(value, "|r", "")
+		value = strgsub(value, "|T.-|t", " ")
+		value = strgsub(value, "|H.-|h(.-)|h", "%1")
+		value = strgsub(value, "<.->", " ")
+		value = strgsub(value, "%s+", " ")
+		return strlower(value:match("^%s*(.-)%s*$") or "")
+	end, text)
+	if ok and normalized then
+		return normalized
+	end
+	return ""
 end
+
+local function safeGetText(control)
+	if not control or not control.GetText then
+		return nil
+	end
+	local ok, text = pcall(control.GetText, control)
+	if ok and not DBM:issecretvalue(text) then
+		return text
+	end
+	return nil
+end
+
 
 local function appendSearchText(parts, text)
 	local normalized = normalizeSearchText(text)
@@ -87,32 +108,22 @@ end
 
 local function appendControlSearchText(parts, control)
 	appendSearchText(parts, control.text)
-	if control.textObj and control.textObj.GetText then
-		appendSearchText(parts, control.textObj:GetText())
-	end
-	if control.GetText then
-		appendSearchText(parts, control:GetText())
-	end
+	appendSearchText(parts, safeGetText(control.textObj))
+	appendSearchText(parts, safeGetText(control))
 	if control.GetName then
 		local name = control:GetName()
 		if name then
 			local textRegion = _G[name .. "Text"]
-			if textRegion and textRegion.GetText then
-				appendSearchText(parts, textRegion:GetText())
-			end
+			appendSearchText(parts, safeGetText(textRegion))
 			local titleRegion = _G[name .. "Title"]
-			if titleRegion and titleRegion.GetText then
-				appendSearchText(parts, titleRegion:GetText())
-			end
+			appendSearchText(parts, safeGetText(titleRegion))
 			local titleTextRegion = _G[name .. "TitleText"]
-			if titleTextRegion and titleTextRegion.GetText then
-				appendSearchText(parts, titleTextRegion:GetText())
-			end
+			appendSearchText(parts, safeGetText(titleTextRegion))
 		end
 	end
 	for _, region in ipairs({ control:GetRegions() }) do
 		if region.GetObjectType and region:GetObjectType() == "FontString" then
-			appendSearchText(parts, region:GetText())
+			appendSearchText(parts, safeGetText(region))
 		end
 	end
 end
