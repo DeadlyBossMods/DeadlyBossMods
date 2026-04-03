@@ -222,7 +222,10 @@ frameSearchBox:SetScript("OnTextChanged", function(self)
 		searchUpdateTimer:Cancel()
 		searchUpdateTimer = nil
 	end
-	local text = self:GetText()
+	local ok, text = pcall(self.GetText, self)
+	if not ok or DBM:issecretvalue(text) then
+		text = ""
+	end
 	searchUpdateTimer = C_Timer.NewTimer(0.2, function()
 		frame:SetSearchQuery(text)
 		searchUpdateTimer = nil
