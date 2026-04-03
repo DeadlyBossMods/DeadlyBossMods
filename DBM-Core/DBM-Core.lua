@@ -1947,6 +1947,8 @@ do
 								tinsert(self.Voices, {text = C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue})
 							end
 							self.VoiceVersions[voiceValue] = voiceVersion
+							--Run immediately so startup zone syncs (e.g. reload inside instance) don't evaluate PA voice gates with stale defaults.
+							self:CheckVoicePackVersion(voiceValue)
 							self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
 							if C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-HasCount") then--Supports adding countdown options, insert new countdown into table
 								if C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-MidnightCompat") then--Add to TOC only if your count pack supports "fivecount.ogg"

@@ -9,7 +9,7 @@ local L = DBM_CORE_L
 local DBM = private:GetPrototype("DBM")
 
 private.voiceSessionDisabled = false
-private.swFilterDisabled = 12
+private.swFilterDisabled = 19
 
 local minVoicePackVersion = 19
 
