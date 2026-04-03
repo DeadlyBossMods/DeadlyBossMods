@@ -859,7 +859,20 @@ do
 
 	---@param self DBMModOrDBM
 	function DBM:issecretunit(unit)
-		return issecretunit(unit)
+		local success, isSecret = pcall(issecretunit, unit)
+		if not success then
+			return true
+		end
+		if isSecret then
+			return true
+		end
+		-- Temporary workaround for Blizzard API bug where ShouldUnitIdentityBeSecret may incorrectly return false.
+		-- If querying UnitGUID throws a secret-identity error OR returns nil, treat the unit as secret.
+		local guidSuccess, guid = pcall(UnitGUID, unit)
+		if not guidSuccess or guid == nil then
+			return true
+		end
+		return false
 	end
 	bossModPrototype.issecretunit = DBM.issecretunit
 
@@ -2911,12 +2924,11 @@ do
 		else
 			local usedTable = bossOnly and bossTargetuIds or fullEnemyUids
 			for _, unitId in ipairs(usedTable) do
-				if self:issecretunit(unitId) then
-					return
-				end
-				local guid2 = UnitGUID(unitId)
-				if enemyGUID == guid2 then
-					return unitId
+				if not self:issecretunit(unitId) then
+					local guid2 = UnitGUID(unitId)
+					if enemyGUID == guid2 then
+						return unitId
+					end
 				end
 			end
 		end
@@ -4609,23 +4621,23 @@ do
 		end)
 	end
 
-	-- TODO: fix the duplicate code that was added for quick & dirty support of zone IDs
-
-	-- detects a boss pull based on combat state, this is required for pre-ICC bosses that do not fire INSTANCE_ENCOUNTER_ENGAGE_UNIT events on engage
 	function DBM:PLAYER_REGEN_DISABLED()
 		lastCombatStarted = GetTime()
 		if not combatInitialized then return end
+		-- detects a boss pull based on combat state, this is required for legacy or outdoor bosses that do not fire ENCOUNTER_START event on engage
 		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
-			for _, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if v.type:find("combat") and not v.noRegenDetection and not (#inCombat > 0 and v.noMultiBoss) then
-					if v.multiMobPullDetection then
-						for _, mob in ipairs(v.multiMobPullDetection) do
-							if checkForPull(mob, v) then
-								break
+			if not private.isRetail or not IsInInstance() then
+				for _, v in ipairs(combatInfo[LastInstanceMapID]) do
+					if v.type:find("combat") and not v.noRegenDetection and not (#inCombat > 0 and v.noMultiBoss) then
+						if v.multiMobPullDetection then
+							for _, mob in ipairs(v.multiMobPullDetection) do
+								if checkForPull(mob, v) then
+									break
+								end
 							end
+						else
+							checkForPull(v.mob, v)
 						end
-					else
-						checkForPull(v.mob, v)
 					end
 				end
 			end
