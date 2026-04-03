@@ -301,10 +301,7 @@ do
 				--Unexpected additional 20s outside observed sequence
 				if not DBM.Options.DebugMode then
 					badStateDetected = true
-					if DBM.Options.IgnoreBlizzAPI then
-						DBM.Options.IgnoreBlizzAPI = false
-						DBM:FireEvent("DBM_ResumeBlizzAPI")
-					end
+					self:ResumeBlizzardAPI()
 					self:UnregisterShortTermEvents()
 					setFallback(self)
 					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
@@ -315,10 +312,7 @@ do
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
 				badStateDetected = true
-				if DBM.Options.IgnoreBlizzAPI then
-					DBM.Options.IgnoreBlizzAPI = false
-					DBM:FireEvent("DBM_ResumeBlizzAPI")
-				end
+				self:ResumeBlizzardAPI()
 				self:UnregisterShortTermEvents()
 				setFallback(self)
 				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
@@ -530,10 +524,7 @@ do
 				--Unexpected additional 20s outside observed sequence
 				if not DBM.Options.DebugMode then
 					badStateDetected = true
-					if DBM.Options.IgnoreBlizzAPI then
-						DBM.Options.IgnoreBlizzAPI = false
-						DBM:FireEvent("DBM_ResumeBlizzAPI")
-					end
+					self:ResumeBlizzardAPI()
 					self:UnregisterShortTermEvents()
 					setFallback(self)
 					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
@@ -544,10 +535,7 @@ do
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
 				badStateDetected = true
-				if DBM.Options.IgnoreBlizzAPI then
-					DBM.Options.IgnoreBlizzAPI = false
-					DBM:FireEvent("DBM_ResumeBlizzAPI")
-				end
+				self:ResumeBlizzardAPI()
 				self:UnregisterShortTermEvents()
 				setFallback(self)
 				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
