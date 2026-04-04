@@ -440,7 +440,7 @@ function PrivateAuras:RegisterAllUnits()
     local maxCoTanks = DBM.Options.PrivateAurasCoTankShowSecond and 2 or 1
     local registeredCoTanks = 0
     for unit in DBM:GetGroupMembers() do
-        if not UnitIsUnit(unit, "player") and DBM:IsTanking(unit) then
+        if not UnitIsUnit("player", unit) and DBM:IsTanking(unit) then
             registeredCoTanks = registeredCoTanks + 1
             self:RegisterPrivateAuras(unit, GetCoTankSettings(registeredCoTanks))
             if registeredCoTanks >= maxCoTanks then
