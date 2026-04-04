@@ -859,15 +859,11 @@ do
 
 	---@param self DBMModOrDBM
 	function DBM:issecretunit(unit)
-		local success, isSecret = pcall(issecretunit, unit)
-		if not success then
+		if issecretunit(unit) then
 			return true
 		end
-		if isSecret then
-			return true
-		end
-		-- Temporary workaround for Blizzard API bug where ShouldUnitIdentityBeSecret may incorrectly return false.
-		-- If querying UnitGUID throws a secret-identity error OR returns nil, treat the unit as secret.
+		-- Workaround for Blizzard API where ShouldUnitIdentityBeSecret returns false
+		--but compound unit tokens throw error on UnitGUID
 		local guidSuccess, guid = pcall(UnitGUID, unit)
 		if not guidSuccess or guid == nil then
 			return true
