@@ -577,7 +577,7 @@ do
 				end
 			end
 			if uId then--Now we have a valid uId
-				if UnitIsUnit(uId, "player") then return true end--If "player" is target, avoid doing any complicated stuff
+				if UnitIsUnit("player", uId) then return true end--If "player" is target, avoid doing any complicated stuff
 				if not UnitIsPlayer(uId) then
 					local inRange2, checkedRange = UnitInRange(uId)--43
 					if checkedRange then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc

@@ -775,7 +775,7 @@ L.KEYSTONE_NAMES = {
 	[227] = 'LKARA', -- Return to Karazhan: Lower
 	[233] = 'COEN', -- Cathedral of Eternal Night
 	[234] = 'UKARA', -- Return to Karazhan: Upper
-	[239] = 'SOTT', -- Seat of the Triumvirate
+	[239] = 'SEAT', -- Seat of the Triumvirate
 
 	[378] = 'HOA', -- Halls of Atonement
 	[391] = 'STREET', -- Tazavesh: Streets of Wonder
