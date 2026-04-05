@@ -4722,6 +4722,7 @@ do
 		until not bossGUID
 	end
 
+	local existShown = {}
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		self:Debug("|cffffff00INSTANCE_ENCOUNTER_ENGAGE_UNIT: |r event fired for zoneId" .. LastInstanceMapID, 3, nil, nil, true)
 		if not timerRequestInProgress then--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
@@ -4735,20 +4736,37 @@ do
 				end
 			end
 		end
-		if UnitExists("boss1") then
-			self:Debug("|cffffff00boss1: |r " .. UnitName("boss1"), 3, nil, nil, true)
-		end
-		if UnitExists("boss2") then
-			self:Debug("|cffffff00boss2: |r " .. UnitName("boss2"), 3, nil, nil, true)
-		end
-		if UnitExists("boss3") then
-			self:Debug("|cffffff00boss3: |r " .. UnitName("boss3"), 3, nil, nil, true)
-		end
-		if UnitExists("boss4") then
-			self:Debug("|cffffff00boss4: |r " .. UnitName("boss4"), 3, nil, nil, true)
-		end
-		if UnitExists("boss5") then
-			self:Debug("|cffffff00boss5: |r " .. UnitName("boss5"), 3, nil, nil, true)
+		if self.Options.DebugLevel > 3 then
+			if UnitExists("boss1") and not existShown[1] then
+				self:Debug("|cffffff00boss1 exists", 3, nil, nil, true)
+				existShown[1] = true
+			elseif not UnitExists("boss1") then
+				existShown[1] = nil
+			end
+			if UnitExists("boss2") and not existShown[2] then
+				self:Debug("|cffffff00boss2 exists", 3, nil, nil, true)
+				existShown[2] = true
+			elseif not UnitExists("boss2") then
+				existShown[2] = nil
+			end
+			if UnitExists("boss3") and not existShown[3] then
+				self:Debug("|cffffff00boss3 exists", 3, nil, nil, true)
+				existShown[3] = true
+			elseif not UnitExists("boss3") then
+				existShown[3] = nil
+			end
+			if UnitExists("boss4") and not existShown[4] then
+				self:Debug("|cffffff00boss4 exists", 3, nil, nil, true)
+				existShown[4] = true
+			elseif not UnitExists("boss4") then
+				existShown[4] = nil
+			end
+			if UnitExists("boss5") and not existShown[5] then
+				self:Debug("|cffffff00boss5 exists", 3, nil, nil, true)
+				existShown[5] = true
+			elseif not UnitExists("boss5") then
+				existShown[5] = nil
+			end
 		end
 	end
 
