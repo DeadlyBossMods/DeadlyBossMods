@@ -4736,19 +4736,19 @@ do
 			end
 		end
 		if UnitExists("boss1") then
-			self:Debug("|cffffff00boss1: |r " .. UnitName("boss1"), 3, nil, nil, true)
+			self:Debug("|cffffff00boss1 exists", 3, nil, nil, true)
 		end
 		if UnitExists("boss2") then
-			self:Debug("|cffffff00boss2: |r " .. UnitName("boss2"), 3, nil, nil, true)
+			self:Debug("|cffffff00boss2 exists", 3, nil, nil, true)
 		end
 		if UnitExists("boss3") then
-			self:Debug("|cffffff00boss3: |r " .. UnitName("boss3"), 3, nil, nil, true)
+			self:Debug("|cffffff00boss3 exists", 3, nil, nil, true)
 		end
 		if UnitExists("boss4") then
-			self:Debug("|cffffff00boss4: |r " .. UnitName("boss4"), 3, nil, nil, true)
+			self:Debug("|cffffff00boss4 exists", 3, nil, nil, true)
 		end
 		if UnitExists("boss5") then
-			self:Debug("|cffffff00boss5: |r " .. UnitName("boss5"), 3, nil, nil, true)
+			self:Debug("|cffffff00boss5 exists", 3, nil, nil, true)
 		end
 	end
 
