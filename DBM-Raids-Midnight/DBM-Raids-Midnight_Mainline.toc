@@ -32,6 +32,7 @@
 ## X-Wago-ID: qv633o6b
 
 localization.en.lua
+localization.kr.lua
 localization.ru.lua
 
 VoidSpire\ImperatorAverzian.lua
