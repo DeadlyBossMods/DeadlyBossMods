@@ -1135,15 +1135,16 @@ do
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number
 	---@param customOption string? Used when event supports hardcoded warnings and needs different option table lookup
+	---@param notSpecial boolean? Used to determine if this is for a special warning or not
 	---@return number|string
-	local function checkValidVPSound(self, optionType, optionId, voice, voiceVersion, customOption)
+	local function checkValidVPSound(self, optionType, optionId, voice, voiceVersion, customOption, notSpecial)
 		local soundId = customOption and self.Options[customOption .. "SWSound"] or self.Options[optionType .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
 		local chosenVoice = DBM.Options.ChosenVoicePack2
 		if chosenVoice ~= "None" and not private.voiceSessionDisabled and voiceVersion <= private.swFilterDisabled then
 			local isVoicePackUsed
 			--Vet if user has voice pack enabled by sound ID
-			if type(soundId) == "number" and soundId < 5 then--Value 1-4 are SW1 defaults, otherwise it's file data ID and handled by Custom
+			if notSpecial or type(soundId) == "number" and soundId < 5 then--Value 1-4 are SW1 defaults, otherwise it's file data ID and handled by Custom
 				isVoicePackUsed = DBM.Options.VPReplacesSADefault
 			end
 			if isVoicePackUsed then
@@ -1353,7 +1354,8 @@ do
 	---@param color warningColorType? ColorId 1-4
 	---@param overrideType number? Used when we explicitely need to set sound to play on a specific type of event (0 - Text Event, 1 - Timer Finished, 2 - 5 seconds before Timer Finished)
 	---@param customOption string? Used when event supports hardcoded warnings and needs different option table lookup
-	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, color, overrideType, customOption)
+	---@param notSpecial boolean? Used to determine if this is for a special warning or not
+	function bossModPrototype:EnableAlertOptions(optionId, encounterEventId, voice, voiceVersion, color, overrideType, customOption, notSpecial)
 		--Use same global disable as special warning sounds (since UI is indistinguishable between custom alert sounds and special warning sounds, might as well just have one global disable for both)
 		if DBM.Options.HideDBMWarnings or DBM.Options.DontPlaySpecialWarningSound then return end
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
@@ -1361,7 +1363,7 @@ do
 		if optionId then
 			--if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
 			local enabled = customOption and self.Options[customOption] or self.Options["CustomAlertOption" .. optionId]
-			local mediaPath = checkValidVPSound(self, "CustomAlertOption", optionId, voice, voiceVersion, customOption)
+			local mediaPath = checkValidVPSound(self, "CustomAlertOption", optionId, voice, voiceVersion, customOption, notSpecial)
 			if enabled and mediaPath ~= "None" then
 				if not self.tlSoundEvents then
 					self.tlSoundEvents = {}

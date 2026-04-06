@@ -387,7 +387,7 @@ end
 ---@param overrideType number? Optional override type for the alert
 function announcePrototype:SetAlert(encounterEventId, voice, voiceVersion, color, overrideType)
 	if self.option and self.mod.Options[self.option] then
-		self.mod:EnableAlertOptions(self.spellId, encounterEventId, voice, voiceVersion, color, overrideType, self.option)
+		self.mod:EnableAlertOptions(self.spellId, encounterEventId, voice, voiceVersion, color, overrideType, self.option, true)
 	end
 end
 
