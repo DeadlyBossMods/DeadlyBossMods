@@ -27,5 +27,5 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2740)
 
 L:SetMiscLocalization({
-	MemoryGame		= "Игра на память"
+	MemoryGame		= "Игра на запоминание"
 })
