@@ -71,6 +71,7 @@ mod:AddPrivateAuraSoundOption(1262055, false, 1261871, 1, 3, "absorbyou", 19)--E
 mod:AddPrivateAuraSoundOption(1275429, true, 1276202, 1, 1, "moveright", 2)--Severance (right)
 mod:AddPrivateAuraSoundOption(1266946, true, 1276202, 1, 1, "moveleft", 2)--Severance (left?)
 --mod:AddPrivateAuraSoundOption({1266113,1266627{, true, 1266113, 1, 1, "torchyou", 2)--Torchbearer (Reundant with glimmering? or maybe buff players who get near person holding it get?)
+mod:AddPrivateAuraSoundOption(1276527, true, 1276527, 1, 1, "debuffyou", 17)--Heaven and Hell (secret Mythic phase 4 mechanic) (customize sound later)
 
 mod.vb.deathCount = 0--Used for both Dirge and requiem
 mod.vb.glaivesCount = 0

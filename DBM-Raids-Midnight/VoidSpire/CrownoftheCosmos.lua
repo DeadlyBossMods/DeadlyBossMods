@@ -89,6 +89,7 @@ mod.vb.riftSlashCount = 0
 local badStateDetected = false
 local stage2p5Seen, stage3Recovered = false, false
 local stage2TwentyCount = 0
+local stage1FortyEightCount = 0
 local lastTLEvent = 0
 
 --Heroic Stage 3 disambiguation micro-table built from CrownWipe5.
@@ -174,6 +175,7 @@ function mod:OnLimitedCombatStart()
 	self:TLResolveReset()
 	stage2p5Seen, stage3Recovered = false, false
 	stage2TwentyCount = 0
+	stage1FortyEightCount = 0
 	lastTLEvent = 0
 	self.vb.coronaCount = 1
 	self.vb.expulsionCount = 1
@@ -231,6 +233,7 @@ function mod:OnCombatEnd()
 	self:TLResolveReset()
 	stage2p5Seen, stage3Recovered = false, false
 	stage2TwentyCount = 0
+	stage1FortyEightCount = 0
 	self:UnregisterShortTermEvents()
 end
 
@@ -268,11 +271,24 @@ do
 				--Unresolveable initial casts, we just return to prevent fallback
 				--Those initial 4 second timers and cast warnings are prescheduled on pull instead
 				return
-			elseif (timer == 2) and (GetTime() - lastTLEvent > 10) then--Initial 1.5 (2 rounded) Silverstrike Barrage starts Intermission 1 (Stage 1.5)
-				--Time since last TL event is usually around 12-14
-				--Phase tranition cancels P1 timers and then has 3 CHAT_MSG_MONSTER_YELL events
-				self:SetStage(1.5)
-				timerSilverstrikeBarrageCD:TLStart(timer, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
+			elseif timer == 2 then
+				--Intermission 1 starts with Silverstrike Barrage 1.5s (rounded 2).
+				--Prefer exact-duration signal; keep legacy gap-check as backup.
+				if (timerExact and timerExact < 1.75) and (GetTime() - lastTLEvent > 10) then
+					self:SetStage(1.5)
+					timerSilverstrikeBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
+					timerBerserkCD:Cancel()
+				else
+					timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 25 then
+				--Recovery: if Stage Two marker appears while still in stage 1, transition chain was missed.
+				if self:GetStage(1) then
+					self:SetStage(1.5)
+				end
+				timerStage2CD:TLStart(timerExact, eventID)
+				self:TLCountStart(eventID, "stage2Start")
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
 				badStateDetected = true
 				self:ResumeBlizzardAPI()
@@ -430,7 +446,7 @@ do
 			elseif timer == 2 then
 				--Intermission 1 starts with Silverstrike Barrage 1.5s (rounded 2).
 				--Prefer exact-duration signal; keep legacy gap-check as backup.
-				if (timerExact and timerExact < 1.75) or (GetTime() - lastTLEvent > 10) then
+				if (timerExact and timerExact < 1.75) and (GetTime() - lastTLEvent > 10) then
 					self:SetStage(1.5)
 					timerSilverstrikeBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
 					timerBerserkCD:Cancel()
@@ -440,7 +456,9 @@ do
 				end
 			elseif timer == 25 then
 				--Recovery: if Stage Two marker appears while still in stage 1, transition chain was missed.
-				self:SetStage(1.5)
+				if self:GetStage(1) then
+					self:SetStage(1.5)
+				end
 				timerStage2CD:TLStart(timerExact, eventID)
 				self:TLCountStart(eventID, "stage2Start")
 			elseif timer == 5 then--Grasp opener/late Grasp(4.5 rounded) OR late Null Corona(5)
@@ -475,9 +493,18 @@ do
 			elseif timer == 28 or timer == 29 or timer == 31 or timer == 32 then--Grasp of Emptiness
 				timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
 				self:TLResolvePush("grasp", timer)
-			elseif timer == 39 or timer == 48 then--Void Expulsion
+			elseif timer == 39 then--Void Expulsion
 				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
 				self:TLResolvePush("voidExpulsion", timer)
+			elseif timer == 48 then--Void Expulsion (2nd cast) OR Null Corona (3rd cast); first occurrence is VE, second is NC
+				stage1FortyEightCount = stage1FortyEightCount + 1
+				if stage1FortyEightCount == 1 then
+					timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+					self:TLResolvePush("voidExpulsion", timer)
+				else
+					timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
 			else
 				badStateDetected = true
 				self:ResumeBlizzardAPI()
