@@ -29,11 +29,11 @@ local specWarnCosmosisDreadBreath	= mod:NewSpecialWarningCount(1277472, nil, nil
 local specWarnCosmosisVoidHowl		= mod:NewSpecialWarningCount(1277473, nil, nil, nil, 2, 2)
 local specWarnRadiantBarrier		= mod:NewSpecialWarningCount(1248847, nil, nil, nil, 2, 2)
 
-local timerNullBeamCD				= mod:NewCDCountTimer(20.5, 1262623, nil, nil, nil, 3)
+local timerNullBeamCD				= mod:NewCDCountTimer(20.5, 1262623, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerVoidHowlCD				= mod:NewCDCountTimer(20.5, 1244917, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 2)
-local timerGloomCD					= mod:NewCDCountTimer(20.5, 1245391, nil, nil, nil, 3)
-local timerDreadBreathCD			= mod:NewCDCountTimer(20.5, 1244221, 17088, nil, nil, 3)
-local timerMidnightFlamesCD			= mod:NewCDCountTimer(20.5, 1249748, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2)
+local timerGloomCD					= mod:NewCDCountTimer(20.5, 1245391, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
+local timerDreadBreathCD			= mod:NewCDCountTimer(20.5, 1244221, 17088, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerMidnightFlamesCD			= mod:NewCDCountTimer(20.5, 1249748, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerGrabblingMawCD			= mod:NewCDCountTimer(20.5, 1280458, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerRakfangCD				= mod:NewCDCountTimer(20.5, 1245645, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerVaelwingCD				= mod:NewCDCountTimer("d20.5", 1265131, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -41,7 +41,7 @@ local timerCosmosisGloomCD			= mod:NewCDCountTimer(20.5, 1277470, nil, nil, nil,
 local timerCosmosisNullbeamCD		= mod:NewCDCountTimer(20.5, 1277471, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerCosmosisDreadBreathCD	= mod:NewCDCountTimer(20.5, 1277472, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerCosmosisVoidHowlCD		= mod:NewCDCountTimer(20.5, 1277473, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerRadiantBarrierCD			= mod:NewCDCountTimer(20.5, 1248847, nil, nil, nil, 5)
+local timerRadiantBarrierCD			= mod:NewCDCountTimer(20.5, 1248847, nil, nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
 
 mod:AddPrivateAuraSoundOption({1262999,1262676,1262656}, false, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
 mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2, "lineapart", 2)--Null Zone Grippy hand

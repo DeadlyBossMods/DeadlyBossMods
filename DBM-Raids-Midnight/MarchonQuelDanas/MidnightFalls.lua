@@ -38,26 +38,26 @@ local specWarnTerminationPrism		= mod:NewSpecialWarningSwitchCount(1284931, nil,
 local specWarnGrimSymphony			= mod:NewSpecialWarningCount(1284980, nil, nil, L.MemoryGame, 2, 2, 4)--Stage 1 Mythic version of DeathsDirge
 local specWarnDarkQuasar			= mod:NewSpecialWarningCount(1279420, nil, 207544, nil, 2, 2)--Stage 1 ability
 
-local timerDeathsDirgeCD			= mod:NewCDCountTimer(20.5, 1249620, L.MemoryGame.." (%s)", nil, nil, 5)
+local timerDeathsDirgeCD			= mod:NewCDCountTimer(20.5, 1249620, L.MemoryGame.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerHeavensGlaivesCD			= mod:NewCDCountTimer(20.5, 1253915, 289465, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortnmae "Glaives"
 local timerSafeguaredPrismCD		= mod:NewCDCountTimer(20.5, 1251386, DBM_COMMON_L.INTERRUPTS.." (%s)", nil, 2, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
-local timerShatteredSkyCD			= mod:NewCDCountTimer(20.5, 1249796, nil, nil, nil, 2)
-local timerTotalEclipseCD			= mod:NewCDTimer(60, 1261871, DBM_COMMON_L.INTERMISSION, nil, nil, 6)--Stage 1.5 intermisison start
+local timerShatteredSkyCD			= mod:NewCDCountTimer(20.5, 1249796, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerTotalEclipseCD			= mod:NewCDTimer(60, 1261871, DBM_COMMON_L.INTERMISSION, nil, nil, 6, nil, DBM_COMMON_L.IMPORTANT_ICON)--Stage 1.5 intermisison start
 --local timerMidnightCD				= mod:NewCDCountTimer(60, 1263514, nil, nil, nil, 3)--iffy, Stage 3
 local timerLightSiphonCD			= mod:NewCDCountTimer(20.5, 1266897, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 5)--Stage 3
-local timerDarkConstellationCD		= mod:NewCDCountTimer(20.5, 1266388, nil, nil, nil, 3)--Stage 3
-local timerDarkArchangelCD			= mod:NewCDCountTimer(20.5, 1250898, nil, nil, nil, 2)--Stage 3
+local timerDarkConstellationCD		= mod:NewCDCountTimer(20.5, 1266388, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 3
+local timerDarkArchangelCD			= mod:NewCDCountTimer(20.5, 1250898, nil, nil, 2, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 3
 local timerDeathsRequiemCD			= mod:NewCDCountTimer(20.5, 1249619, L.MemoryGame.." (%s)", nil, nil, 3)--Stage 3
 local timerSeveranceCD				= mod:NewCDCountTimer(20.5, 1276202, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Stage 3 mythic
 local timerHeavensLanceCD			= mod:NewCDCountTimer(20.5, 1267049, 361324, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname Lance
-local timerIntoDarkwellCD			= mod:NewCDTimer(60, 1282047, nil, nil, nil, 6)--Stage 2 Start
+local timerIntoDarkwellCD			= mod:NewCDTimer(60, 1282047, nil, nil, nil, 6, nil, DBM_COMMON_L.IMPORTANT_ICON)--Stage 2 Start
 local timerCoreHarvestCD			= mod:NewCDCountTimer(20.5, 1282412, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Stage 2
 local timerDarkMeltdownCD			= mod:NewCDTimer(20.5, 1281194, 1273378, nil, nil, 2)--Stage 2 (timer for stage 3 begin). Shorttest "Stage Three"
 local timerStarSplinterCD			= mod:NewCDCountTimer(20.5, 1282441, nil, nil, nil, 3)--Stage 1.5 intermission
 local timerGalvanizeCD				= mod:NewCDCountTimer(20.5, 1284525, nil, nil, nil, 2)--Stage 2 Core ability (so maybe no timer?)
 local timerTerminationPrismCD		= mod:NewCDCountTimer(20.5, 1284931, DBM_COMMON_L.INTERRUPTS.." (%s)", nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Stage 1 mythic
 local timerGrimSymphonyCD			= mod:NewCDCountTimer(20.5, 1284980, L.MemoryGame.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)--Stage 1 mythic version of DeathsDirge
-local timerDarkQuasarCD				= mod:NewCDCountTimer(20.5, 1279420, 207544, nil, nil, 3)--Stage 1 (shortname "Beams")
+local timerDarkQuasarCD				= mod:NewCDCountTimer(20.5, 1279420, 207544, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 1 (shortname "Beams")
 
 mod:AddPrivateAuraSoundOption({1249609,1249565,1249566,1273133,1249550,1249558,1249562}, true, 1249620, 1, 2, "runeyou", 19)--Dark Rune (sub spell of Death's Dirge & Death's Requiem)
 mod:AddPrivateAuraSoundOption(1263514, false, 1253915, 1, 2, "watchfeet", 8)--Midnight (could be spammy if group is poor and not using lightbearers well)

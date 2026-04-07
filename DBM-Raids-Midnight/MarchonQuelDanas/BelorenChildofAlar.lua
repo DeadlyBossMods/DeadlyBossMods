@@ -31,9 +31,9 @@ local specWarnVoidDiver					= mod:NewSpecialWarningYou(1241339, nil, nil, DBM_CO
 local timerEmbersofBelorenCD			= mod:NewCDCountTimer(20.5, 1241282, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerRadiantEchoesCD				= mod:NewCDCountTimer(20.5, 1242981, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5)
 local timerGuardiansEdictCD				= mod:NewCDCountTimer(20.5, 1260763, DBM_COMMON_L.TANKCOMBO.." (%s)", "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK)
-local timerEternalBurnsCD				= mod:NewCDCountTimer(20.5, 1244344, nil, nil, nil, 3)
-local timerInfusedQuillsCD				= mod:NewCDCountTimer(20.5, 1242260, nil, nil, nil, 3)
-local timerVoidlightConvergenceCD		= mod:NewCDCountTimer(20.5, 1242515, L.ColorSwap.." (%s)", nil, nil, 2)
+local timerEternalBurnsCD				= mod:NewCDCountTimer(20.5, 1244344, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
+local timerInfusedQuillsCD				= mod:NewCDCountTimer(20.5, 1242260, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerVoidlightConvergenceCD		= mod:NewCDCountTimer(20.5, 1242515, L.ColorSwap.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerDeathDropCD					= mod:NewCDCountTimer(20.5, 1246709, nil, nil, nil, 6)--Stage bar, unless fight actually fires a diff stage bar then we'll use that
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 

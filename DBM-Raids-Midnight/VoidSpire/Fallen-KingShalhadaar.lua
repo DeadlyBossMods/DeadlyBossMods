@@ -18,7 +18,7 @@ local specWarnShatteringTwilight			= mod:NewSpecialWarningCount(1253024, nil, ni
 local specWarnTwilightObscurity				= mod:NewSpecialWarningCount(1250686, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
 local specWarnEntropicUnraveling			= mod:NewSpecialWarningCount(1246175, nil, nil, nil, 2, 2)
 
-local timerVoidConvergenceCD				= mod:NewCDCountTimer(20.5, 1243453, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5)
+local timerVoidConvergenceCD				= mod:NewCDCountTimer(20.5, 1243453, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerDespoticCommandCD				= mod:NewCDCountTimer(20.5, 1248697, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
 local timerFracturedProjectionCD			= mod:NewCDCountTimer(20.5, 1254081, DBM_COMMON_L.INTERRUPTS.." (%s)", nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerShatteringTwilightCD				= mod:NewCDCountTimer(20.5, 1253024, 1248137, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--shortname "Dark Star"

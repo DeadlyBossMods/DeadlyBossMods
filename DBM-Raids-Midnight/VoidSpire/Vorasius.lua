@@ -19,10 +19,10 @@ local specWarnParasiteExpulsion			= mod:NewSpecialWarningDodgeCount(1254199, nil
 local specWarnPrimordialRoar			= mod:NewSpecialWarningCount(1260046, nil, 140459, nil, 2, 2)
 --local specWarnFixateParasite			= mod:NewSpecialWarningYou(1254112, nil, nil, nil, 1, 2)
 
-local timerShadowclawSlamCD				= mod:NewCDCountTimer("d20.5", 1241836, 182557, nil, nil, 2)--Shortname "Slam"
+local timerShadowclawSlamCD				= mod:NewCDCountTimer("d20.5", 1241836, 182557, nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname "Slam"
 --local timerVoidBreathCD				= mod:NewCDCountTimer(20.5, 1243853, 17088, nil, nil, 3)--Shortname "Breath"
 local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
-local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2)--Shortname "Roar"
+local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Roar"
 
 mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2, "watchfeet", 8)--Dark Goo
 mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3, "debuffyou", 17)--Smashed (debuff from shadowclaw slam)
