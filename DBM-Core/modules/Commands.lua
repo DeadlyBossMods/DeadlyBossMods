@@ -351,7 +351,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 10) == "debugsound" then
 		DBM.Options.DebugSound = not DBM.Options.DebugSound
 		DBM:AddMsg("Debug Sound is " .. (DBM.Options.DebugSound and "ON" or "OFF"))
-	elseif cmd:sub(1, 8) == "debuglog" then
+	elseif cmd:sub(1, 4) == "dlog" then
 		if not DBM.Options.DebugMode then
 			DBM:AddMsg("Debug Log requires Debug Mode. Use '/dbm debug' to enable it first.")
 			return
