@@ -11,13 +11,11 @@ mod:SetZone(2913)
 mod:RegisterCombat("combat")
 
 --TODO, each rune might be a specific private aura. Although I suspect if we solve that, blizzard will disable PAs for it near immediately
---TODO, appropriate glaive audio
 --TODO, midnight has an eventID but it seems a bit more passive (https://www.wowhead.com/spell=1266622/midnight 260)
 --TODO, https://www.wowhead.com/spell=1284525/galvanize has event of 632 but I'm pretty sure it's just to flag personal announce (which alreaedy has PA)
 --TODO, switch to https://www.wowhead.com/spell=1249609/dark-rune event if PAs get disabled (and they probably will be once players figure out which is which) ID 650
 --TODO, add PAs for https://www.wowhead.com/beta/spell=1286294/grim-symphony and https://www.wowhead.com/beta/spell=1284984/grim-symphony ? they seem to overlap with dark runes though
 --TODO, figure out which torchbearer is which. One is for player holding it and one is for standing near them i'm pretty sure
---TODO, do a thorough audit of private auras, timers, and alerts and remove what isn't actually used and eliminate redundancies or fix anything missing
 local warnTotalEclipse				= mod:NewSpellAnnounce(1261871, 2)--Intermission 1.5 Start
 
 local specWarnHeavensLance			= mod:NewSpecialWarningCount(1267049, nil, nil, nil, 1, 2)--Stage 1 tank ability
@@ -30,10 +28,10 @@ local specWarnDarkConstellation		= mod:NewSpecialWarningCount(1266388, nil, nil,
 local specWarnDarkArchangel			= mod:NewSpecialWarningCount(1250898, nil, nil, nil, 3, 2)--Stage 3 ability
 local specWarnDeathsRequiem			= mod:NewSpecialWarningCount(1249619, nil, nil, L.MemoryGame, 2, 2)--Stage 3 ability
 local specWarnSeverance				= mod:NewSpecialWarningCount(1276202, nil, nil, nil, 2, 2, 4)--Stage 3 mythic ability
-local specWarnIntoDarkwell			= mod:NewSpecialWarningCount(1282047, nil, nil, nil, 2, 2)--Stage 2 Start
+local specWarnIntoDarkwell			= mod:NewSpecialWarningSpell(1282047, nil, nil, nil, 2, 2)--Stage 2 Start
 local specWarnCosmicFission			= mod:NewSpecialWarningCount(1282249, nil, nil, nil, 2, 2)--Stage 2 triggered ability (not timer one)
 local specWarnCoreHarvest			= mod:NewSpecialWarningCount(1282412, nil, nil, nil, 2, 2)--Stage 2 ability
-local specWarnDarkMeltdown			= mod:NewSpecialWarningCount(1281194, nil, nil, nil, 2, 2)--Stage 2 ability
+local specWarnDarkMeltdown			= mod:NewSpecialWarningSpell(1281194, nil, nil, nil, 2, 2)--Stage 2 End
 local specWarnTerminationPrism		= mod:NewSpecialWarningSwitchCount(1284931, nil, nil, DBM_COMMON_L.INTERRUPTS, 2, 2, 4)--Stage 1 Mythic version of Safeguarded Prism
 local specWarnGrimSymphony			= mod:NewSpecialWarningCount(1284980, nil, nil, L.MemoryGame, 2, 2, 4)--Stage 1 Mythic version of DeathsDirge
 local specWarnDarkQuasar			= mod:NewSpecialWarningCount(1279420, nil, 207544, nil, 2, 2)--Stage 1 ability
@@ -43,7 +41,6 @@ local timerHeavensGlaivesCD			= mod:NewCDCountTimer(20.5, 1253915, 289465, nil, 
 local timerSafeguaredPrismCD		= mod:NewCDCountTimer(20.5, 1251386, DBM_COMMON_L.INTERRUPTS.." (%s)", nil, 2, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerShatteredSkyCD			= mod:NewCDCountTimer(20.5, 1249796, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerTotalEclipseCD			= mod:NewCDTimer(60, 1261871, DBM_COMMON_L.INTERMISSION, nil, nil, 6, nil, DBM_COMMON_L.IMPORTANT_ICON)--Stage 1.5 intermisison start
---local timerMidnightCD				= mod:NewCDCountTimer(60, 1263514, nil, nil, nil, 3)--iffy, Stage 3
 local timerLightSiphonCD			= mod:NewCDCountTimer(20.5, 1266897, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 5)--Stage 3
 local timerDarkConstellationCD		= mod:NewCDCountTimer(20.5, 1266388, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 3
 local timerDarkArchangelCD			= mod:NewCDCountTimer(20.5, 1250898, nil, nil, 2, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 3
@@ -77,19 +74,23 @@ mod.vb.deathCount = 0--Used for both Dirge and requiem
 mod.vb.glaivesCount = 0
 mod.vb.prismCount = 0
 mod.vb.shatteredSkyCount = 0
-mod.vb.midnightCount = 0
 mod.vb.lightSiphonCount = 0
 mod.vb.darkConstellationCount = 0
 mod.vb.darkArchangelCount = 0
 mod.vb.severanceCount = 0
 mod.vb.heavensLanceCount = 0
 mod.vb.harvestCount = 0
-mod.vb.meltdownCount = 0
 mod.vb.starSplinterCount = 0
 mod.vb.galvanizeCount = 0
 mod.vb.terminationPrismCount = 0
 mod.vb.grimSymphonyCount = 0--Mythic version of Deaths Dirge, combine count if this is confirmed
 mod.vb.darkQuasarCount = 0
+local badStateDetected = false
+local ignoreInitialBuggedSet = true
+local stage1SeventySlot = 0
+local stage2ThirtySlot = 0
+local totalEclipseStartTimes = {}
+local totalEclipseExpected = 180
 
 ---@param self DBMMod
 local function setFallback(self)
@@ -103,7 +104,6 @@ local function setFallback(self)
 	timerShatteredSkyCD:SetTimeline(258)
 	warnTotalEclipse:SetAlert(259, "phasechange", 2, 1)
 	timerTotalEclipseCD:SetTimeline(259)
-	--timerMidnightCD:SetTimeline(260)
 	specWarnLightSiphon:SetAlert(261, "lightrifts", 19, 3)
 	timerLightSiphonCD:SetTimeline(261)
 	specWarnDarkConstellation:SetAlert(262, "watchstep", 2, 3)
@@ -136,31 +136,250 @@ local function setFallback(self)
 end
 
 function mod:OnLimitedCombatStart(delay)
+	self:TLCountReset()
+	self:SetStage(1)
 	self.vb.deathCount = 1
 	self.vb.glaivesCount = 1
 	self.vb.prismCount = 1
 	self.vb.shatteredSkyCount = 1
-	self.vb.midnightCount = 1
 	self.vb.lightSiphonCount = 1
 	self.vb.darkConstellationCount = 1
 	self.vb.darkArchangelCount = 1
 	self.vb.severanceCount = 1
 	self.vb.heavensLanceCount = 1
 	self.vb.harvestCount = 1
-	self.vb.meltdownCount = 1
 	self.vb.starSplinterCount = 1
 	self.vb.galvanizeCount = 1
 	self.vb.terminationPrismCount = 1
 	self.vb.grimSymphonyCount = 1
 	self.vb.darkQuasarCount = 1
-	--Hardcode features first
-	--if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
-	--	self:IgnoreBlizzardAPI()
-	--	self:RegisterShortTermEvents(
-	--		"ENCOUNTER_TIMELINE_EVENT_ADDED",
-	--		"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
-	--	)
-	--else
+	ignoreInitialBuggedSet = true
+	stage1SeventySlot = 0
+	stage2ThirtySlot = 0
+	totalEclipseStartTimes = {}
+	if DBM.Options.HardcodedTimer and self:IsDifficulty("normal", "heroic") and not badStateDetected then
+		self:IgnoreBlizzardAPI()
+		self:RegisterShortTermEvents(
+			"ENCOUNTER_TIMELINE_EVENT_ADDED",
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+		)
+	else
 		setFallback(self)
-	--end
+	end
+end
+
+function mod:OnCombatEnd()
+	self:TLCountReset()
+	self:UnregisterShortTermEvents()
+end
+
+do
+	---@param self DBMMod
+	local function setStage15IfNeeded(self)
+		if self:GetStage(1.5, 1) then
+			self:SetStage(1.5)
+		end
+	end
+
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersAll(self, timer, timerExact, eventID)
+		if ignoreInitialBuggedSet then
+			if timer == 180 then
+				ignoreInitialBuggedSet = false
+			end
+			return
+		end
+
+		local handled = false
+		local stage = self:GetStage()
+		if stage == 1 then
+			if timer == 10 then
+				timerDeathsDirgeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathsDirge", "deathCount"))
+				handled = true
+			elseif timer == 20 then
+				timerHeavensLanceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "heavensLance", "heavensLanceCount"))
+				handled = true
+			elseif timer == 35 then
+				timerHeavensGlaivesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "heavensGlaives", "glaivesCount"))
+				handled = true
+			elseif timer == 40 then
+				timerDarkQuasarCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkQuasar", "darkQuasarCount"))
+				handled = true
+			elseif timer == 45 then
+				timerIntoDarkwellCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "intoDarkwell"))
+				setStage15IfNeeded(self)--Into the Darkwell is stage 1.5 intermission timer start
+				handled = true
+			elseif timer == 55 then
+				timerSafeguaredPrismCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "safeguardPrism", "prismCount"))
+				handled = true
+			elseif timer == 70 then
+				stage1SeventySlot = stage1SeventySlot + 1
+				local slot = ((stage1SeventySlot - 1) % 4) + 1
+				if slot == 1 then
+					timerDeathsDirgeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathsDirge", "deathCount"))
+				elseif slot == 2 then
+					timerHeavensGlaivesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "heavensGlaives", "glaivesCount"))
+				elseif slot == 3 then
+					timerDarkQuasarCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkQuasar", "darkQuasarCount"))
+				else
+					timerSafeguaredPrismCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "safeguardPrism", "prismCount"))
+				end
+				handled = true
+			elseif timer == 180 then
+				timerTotalEclipseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "totalEclipse"))
+				totalEclipseStartTimes[eventID] = GetTime()
+				handled = true
+			end
+		elseif stage == 1.5 then
+			if timer == 97 then
+				timerDarkMeltdownCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkMeltdown"))
+				if self:GetStage(2, 1) then--Dark Meltdown start marks stage 2 start
+					self:SetStage(2)
+				end
+				handled = true
+			end
+		elseif stage == 2 then
+			if timer == 13 then
+				timerGalvanizeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "galvanize", "galvanizeCount"))
+				handled = true
+			elseif timer == 20 then
+				timerHeavensLanceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "heavensLance", "heavensLanceCount"))
+				handled = true
+			elseif timer == 30 then
+				stage2ThirtySlot = stage2ThirtySlot + 1
+				if stage2ThirtySlot % 2 == 1 then
+					timerGalvanizeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "galvanize", "galvanizeCount"))
+				else
+					timerCoreHarvestCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coreHarvest", "harvestCount"))
+				end
+				handled = true
+			elseif timer == 33 then
+				timerCoreHarvestCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coreHarvest", "harvestCount"))
+				handled = true
+			end
+		elseif stage == 3 then
+			if timer == 14 or timer == 38 then
+				timerDarkArchangelCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkArchangel", "darkArchangelCount"))
+				handled = true
+			elseif timer == 23 then
+				timerHeavensLanceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "heavensLance", "heavensLanceCount"))
+				handled = true
+			elseif timer == 31 then
+				timerLightSiphonCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "lightSiphon", "lightSiphonCount"))
+				handled = true
+			elseif timer == 33 then
+				timerDarkConstellationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkConstellation", "darkConstellationCount"))
+				handled = true
+			elseif timer == 180 then
+				timerShatteredSkyCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shatteredSky", "shatteredSkyCount"))
+				handled = true
+			end
+		end
+
+		if not handled then
+			if not DBM.Options.DebugMode then
+				badStateDetected = true
+				self:ResumeBlizzardAPI()
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			else
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+			end
+		end
+	end
+
+	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
+		if eventInfo.source ~= 0 then return end
+		local eventID = eventInfo.id
+		local timerExact = eventInfo.duration
+		local timer = math.floor(timerExact + 0.5)
+		if not badStateDetected then
+			timersAll(self, timer, timerExact, eventID)
+		end
+	end
+
+	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		local eventState = C_EncounterTimeline.GetEventState(eventID)
+		if not eventID or not eventState then return end
+		if eventState == 2 then
+			local eventType, eventCount = self:TLCountFinish(eventID)
+			if not eventType then return end
+			if eventType == "totalEclipse" then
+				totalEclipseStartTimes[eventID] = nil
+				setStage15IfNeeded(self)
+				warnTotalEclipse:Show()
+				return
+			elseif eventType == "intoDarkwell" then
+				setStage15IfNeeded(self)
+				specWarnIntoDarkwell:Show()
+				specWarnIntoDarkwell:Play("pullin")
+				return
+			elseif eventType == "darkMeltdown" then
+				if self:GetStage(3, 1) then
+					self:SetStage(3)
+				end
+				specWarnDarkMeltdown:Show()
+				specWarnDarkMeltdown:Play("carefly")
+			end
+			if not eventCount then return end
+			if eventType == "deathsDirge" then
+				specWarnDeathsDirge:Show(eventCount)
+				specWarnDeathsDirge:Play("runesincoming")
+			elseif eventType == "heavensGlaives" then
+				specWarnHeavensGlaives:Show(eventCount)
+				specWarnHeavensGlaives:Play("watchstep")
+			elseif eventType == "safeguardPrism" then
+				specWarnSafeguaredPrism:Show(eventCount)
+				specWarnSafeguaredPrism:Play("targetchange")
+			elseif eventType == "shatteredSky" then
+				specWarnShatteredSky:Show(eventCount)
+				specWarnShatteredSky:Play("aesoon")
+			elseif eventType == "lightSiphon" then
+				specWarnLightSiphon:Show(eventCount)
+				specWarnLightSiphon:Play("lightrifts")
+			elseif eventType == "darkConstellation" then
+				specWarnDarkConstellation:Show(eventCount)
+				specWarnDarkConstellation:Play("watchstep")
+			elseif eventType == "darkArchangel" then
+				specWarnDarkArchangel:Show(eventCount)
+				specWarnDarkArchangel:Play("findshield")
+			elseif eventType == "heavensLance" then
+				if self:IsTank() then
+					specWarnHeavensLance:Show(eventCount)
+					specWarnHeavensLance:Play("defensive")
+				end
+			elseif eventType == "coreHarvest" then
+				specWarnCoreHarvest:Show(eventCount)
+				specWarnCoreHarvest:Play("farfromline")
+			elseif eventType == "galvanize" then
+				--No direct special warning currently used for Galvanize in this mod
+			elseif eventType == "darkQuasar" then
+				specWarnDarkQuasar:Show(eventCount)
+				specWarnDarkQuasar:Play("watchstep")
+			end
+		elseif eventState == 3 then
+			local eclipseStart = totalEclipseStartTimes[eventID]
+			if eclipseStart then
+				local elapsed = GetTime() - eclipseStart
+				if math.abs(elapsed - totalEclipseExpected) <= 1 then
+					local eventType = self:TLCountFinish(eventID)
+					if eventType == "totalEclipse" then
+						totalEclipseStartTimes[eventID] = nil
+						setStage15IfNeeded(self)
+						warnTotalEclipse:Show()
+						return
+					end
+				end
+			end
+			local eventType = self:TLCountCancel(eventID)
+			if not eventType then return end
+			if eventType == "totalEclipse" then
+				totalEclipseStartTimes[eventID] = nil
+			end
+		end
+	end
 end
