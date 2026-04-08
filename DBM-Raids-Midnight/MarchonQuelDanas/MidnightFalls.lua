@@ -348,9 +348,12 @@ do
 				specWarnDarkArchangel:Show(eventCount)
 				specWarnDarkArchangel:Play("findshield")
 			elseif eventType == "heavensLance" then
-				if self:IsTank() then
+				if self:IsTanking("player", "boss1", nil, true) then
 					specWarnHeavensLance:Show(eventCount)
 					specWarnHeavensLance:Play("defensive")
+				elseif self:IsTank() then
+					specWarnHeavensLance:Schedule(5, eventCount)
+					specWarnHeavensLance:ScheduleVoice(5, "tauntboss")
 				end
 			elseif eventType == "coreHarvest" then
 				specWarnCoreHarvest:Show(eventCount)
