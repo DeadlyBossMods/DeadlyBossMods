@@ -21,7 +21,7 @@ local specWarnVoidFall					= mod:NewSpecialWarningCount(1258880, nil, 28405, nil
 local specWarnMarchofEndless			= mod:NewSpecialWarningSpell(1260203, nil, nil, nil, 3, 2)
 local specWarnPitchBulwark				= mod:NewSpecialWarningInterrupt(1255702, false, nil, nil, 1, 2)--Probably spammy
 
-local timerShadowsAdvanceCD				= mod:NewCDCountTimer("d20.5", 1262776, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
+local timerShadowsAdvanceCD				= mod:NewCDCountTimer("d20.5", 1262776, DBM_COMMON_L.ADDS.." (%s)", nil, 2, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerDarkUpheavalCD				= mod:NewCDCountTimer(20.5, 1249251, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerUmbralCollapseCD				= mod:NewCDCountTimer(20.5, 1249265, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 3)
 local timerOblivionWrathCD				= mod:NewCDCountTimer(20.5, 1260712, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 3)

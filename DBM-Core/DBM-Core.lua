@@ -80,13 +80,13 @@ end
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
-private.fakeBWVersion, private.fakeBWHash = 407, "a0f5bf5"--407.0
+private.fakeBWVersion, private.fakeBWHash = 412, "5f04367"--412.7
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.36 alpha"--Core version
+DBM.DisplayVersion = "12.0.38 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 3, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 4, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -859,7 +859,16 @@ do
 
 	---@param self DBMModOrDBM
 	function DBM:issecretunit(unit)
-		return issecretunit(unit)
+		if issecretunit(unit) then
+			return true
+		end
+		-- Workaround for Blizzard API where ShouldUnitIdentityBeSecret returns false
+		--but compound unit tokens throw error on UnitGUID
+		local guidSuccess, guid = pcall(UnitGUID, unit)
+		if not guidSuccess or guid == nil then
+			return true
+		end
+		return false
 	end
 	bossModPrototype.issecretunit = DBM.issecretunit
 
@@ -1947,6 +1956,8 @@ do
 								tinsert(self.Voices, {text = C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue})
 							end
 							self.VoiceVersions[voiceValue] = voiceVersion
+							--Run immediately so startup zone syncs (e.g. reload inside instance) don't evaluate PA voice gates with stale defaults.
+							self:CheckVoicePackVersion(voiceValue)
 							self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
 							if C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-HasCount") then--Supports adding countdown options, insert new countdown into table
 								if C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-MidnightCompat") then--Add to TOC only if your count pack supports "fivecount.ogg"
@@ -2909,12 +2920,11 @@ do
 		else
 			local usedTable = bossOnly and bossTargetuIds or fullEnemyUids
 			for _, unitId in ipairs(usedTable) do
-				if self:issecretunit(unitId) then
-					return
-				end
-				local guid2 = UnitGUID(unitId)
-				if enemyGUID == guid2 then
-					return unitId
+				if not self:issecretunit(unitId) then
+					local guid2 = UnitGUID(unitId)
+					if enemyGUID == guid2 then
+						return unitId
+					end
 				end
 			end
 		end
@@ -4607,23 +4617,23 @@ do
 		end)
 	end
 
-	-- TODO: fix the duplicate code that was added for quick & dirty support of zone IDs
-
-	-- detects a boss pull based on combat state, this is required for pre-ICC bosses that do not fire INSTANCE_ENCOUNTER_ENGAGE_UNIT events on engage
 	function DBM:PLAYER_REGEN_DISABLED()
 		lastCombatStarted = GetTime()
 		if not combatInitialized then return end
+		-- detects a boss pull based on combat state, this is required for legacy or outdoor bosses that do not fire ENCOUNTER_START event on engage
 		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
-			for _, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if v.type:find("combat") and not v.noRegenDetection and not (#inCombat > 0 and v.noMultiBoss) then
-					if v.multiMobPullDetection then
-						for _, mob in ipairs(v.multiMobPullDetection) do
-							if checkForPull(mob, v) then
-								break
+			if not private.isRetail or not IsInInstance() then
+				for _, v in ipairs(combatInfo[LastInstanceMapID]) do
+					if v.type:find("combat") and not v.noRegenDetection and not (#inCombat > 0 and v.noMultiBoss) then
+						if v.multiMobPullDetection then
+							for _, mob in ipairs(v.multiMobPullDetection) do
+								if checkForPull(mob, v) then
+									break
+								end
 							end
+						else
+							checkForPull(v.mob, v)
 						end
-					else
-						checkForPull(v.mob, v)
 					end
 				end
 			end
@@ -4712,6 +4722,7 @@ do
 		until not bossGUID
 	end
 
+	local existShown = {}
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		self:Debug("|cffffff00INSTANCE_ENCOUNTER_ENGAGE_UNIT: |r event fired for zoneId" .. LastInstanceMapID, 3, nil, nil, true)
 		if not timerRequestInProgress then--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
@@ -4725,20 +4736,37 @@ do
 				end
 			end
 		end
-		if UnitExists("boss1") then
-			self:Debug("|cffffff00boss1: |r " .. UnitName("boss1"), 3, nil, nil, true)
-		end
-		if UnitExists("boss2") then
-			self:Debug("|cffffff00boss2: |r " .. UnitName("boss2"), 3, nil, nil, true)
-		end
-		if UnitExists("boss3") then
-			self:Debug("|cffffff00boss3: |r " .. UnitName("boss3"), 3, nil, nil, true)
-		end
-		if UnitExists("boss4") then
-			self:Debug("|cffffff00boss4: |r " .. UnitName("boss4"), 3, nil, nil, true)
-		end
-		if UnitExists("boss5") then
-			self:Debug("|cffffff00boss5: |r " .. UnitName("boss5"), 3, nil, nil, true)
+		if self.Options.DebugLevel > 3 then
+			if UnitExists("boss1") and not existShown[1] then
+				self:Debug("|cffffff00boss1 exists", 3, nil, nil, true)
+				existShown[1] = true
+			elseif not UnitExists("boss1") then
+				existShown[1] = nil
+			end
+			if UnitExists("boss2") and not existShown[2] then
+				self:Debug("|cffffff00boss2 exists", 3, nil, nil, true)
+				existShown[2] = true
+			elseif not UnitExists("boss2") then
+				existShown[2] = nil
+			end
+			if UnitExists("boss3") and not existShown[3] then
+				self:Debug("|cffffff00boss3 exists", 3, nil, nil, true)
+				existShown[3] = true
+			elseif not UnitExists("boss3") then
+				existShown[3] = nil
+			end
+			if UnitExists("boss4") and not existShown[4] then
+				self:Debug("|cffffff00boss4 exists", 3, nil, nil, true)
+				existShown[4] = true
+			elseif not UnitExists("boss4") then
+				existShown[4] = nil
+			end
+			if UnitExists("boss5") and not existShown[5] then
+				self:Debug("|cffffff00boss5 exists", 3, nil, nil, true)
+				existShown[5] = true
+			elseif not UnitExists("boss5") then
+				existShown[5] = nil
+			end
 		end
 	end
 
@@ -5453,7 +5481,7 @@ do
 				end
 			end
 			if private.isRetail then return end
-			if UnitIsUnit(uId, "player") and health < 100 and not private.IsEncounterInProgress() then
+			if UnitIsUnit("player", uId) and health < 100 and not private.IsEncounterInProgress() then
 				--PRIO afk alert first (still disabled on retail because UnitIsAFK is restricted in combat)
 				if self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
 					local voice = DBM.Options.ChosenVoicePack2
@@ -6227,7 +6255,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitAura(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId or self:issecretvalue(uId) then return end
-		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
+		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit("player", uId) then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable or self:issecretvalue(spellTable.name) then return end
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
@@ -6261,7 +6289,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId or self:issecretvalue(uId) then return end
-		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
+		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit("player", uId) then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable or self:issecretvalue(spellTable.name) then return end
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
@@ -6293,7 +6321,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		if not uId or self:issecretvalue(uId) then return end
-		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit(uId, "player") then--A simple single spellId check should use more efficent direct blizzard method
+		if private.isRetail and type(spellInput) == "number" and not spellInput2 and UnitIsUnit("player", uId) then--A simple single spellId check should use more efficent direct blizzard method
 			local spellTable = GetPlayerAuraBySpellID(spellInput)
 			if not spellTable or self:issecretvalue(spellTable.name) then return end
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil

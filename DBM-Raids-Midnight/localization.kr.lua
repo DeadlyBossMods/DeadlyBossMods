@@ -1,3 +1,4 @@
+if GetLocale() ~= "koKR" then return end
 local L
 
 ---------------------------
@@ -6,8 +7,8 @@ local L
 L= DBM:GetModLocalization(2737)
 
 L:SetMiscLocalization({
-	JudgementShield	= "Judgment-SotR)",
-	JudgementFV		= "Judgment-FV)"
+	JudgementShield	= "심판-응방)",
+	JudgementFV		= "심판-선고)"
 })
 
 ---------------------------
@@ -16,7 +17,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2739)
 
 L:SetMiscLocalization({
-	ColorSwap		= "Color Swap"
+	ColorSwap		= "색 교체"
 })
 
 ---------------------------
@@ -26,5 +27,5 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2740)
 
 L:SetMiscLocalization({
-	MemoryGame		= "Memory Game"
+	MemoryGame		= "메모리 게임"
 })
