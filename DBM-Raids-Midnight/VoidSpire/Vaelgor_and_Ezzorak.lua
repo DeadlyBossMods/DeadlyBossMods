@@ -717,18 +717,23 @@ do
 					specWarnDreadBreath:Show(eventCount)
 					specWarnDreadBreath:Play("breathsoon")
 				elseif eventType == "maw" then
-					if self:IsTank() then
-						warnGrabblingMaw:Show(eventCount)
-					end
+					warnGrabblingMaw:Show(eventCount)
 				elseif eventType == "vaelwing" then
-					if self:IsTank() then
+					if self:IsTanking("player", "boss1", nil, true) then--Vaelgor
 						specWarnVaelwing:Show()
 						specWarnVaelwing:Play("defensive")
 					end
 				elseif eventType == "rakfang" then
-					if self:IsTank() then
-						specWarnRakfang:Show()
-						specWarnRakfang:Play("defensive")
+					if UnitExists("boss2") then
+						if self:IsTanking("player", "boss2", nil, true) then--Ezzorak
+							specWarnRakfang:Show()
+							specWarnRakfang:Play("defensive")
+						end
+					else--Vaelgor dead, Ezzorak moved to boss1
+						if self:IsTanking("player", "boss1", nil, true) then
+							specWarnRakfang:Show()
+							specWarnRakfang:Play("defensive")
+						end
 					end
 				elseif eventType == "radiantbarrier" then
 					specWarnRadiantBarrier:Show(eventCount)
