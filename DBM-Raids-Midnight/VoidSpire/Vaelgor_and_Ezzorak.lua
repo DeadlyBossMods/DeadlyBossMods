@@ -86,6 +86,7 @@ local next31H3IsVaelwing = true
 local next62H3IsNullbeam = true
 local next25H3Type = "voidhowl"
 local nullbeamH3InitialDone = false
+local next19H3Type = "nullbeam"
 --Mythic stage 1 state variables
 local next50M1IsGloom = true
 local next25M1Type = "rakfang"
@@ -155,6 +156,7 @@ function mod:OnLimitedCombatStart()
 	next62H3IsNullbeam = true
 	next25H3Type = "voidhowl"
 	nullbeamH3InitialDone = false
+	next19H3Type = "nullbeam"
 	next50M1IsGloom = true
 	next25M1Type = "rakfang"
 	mythicStage2TransitionSeen = false
@@ -581,6 +583,7 @@ do
 				next62H3IsNullbeam = true
 				next25H3Type = "voidhowl"
 				nullbeamH3InitialDone = false
+				next19H3Type = "nullbeam"
 				self:SetStage(0)
 				return
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
@@ -641,10 +644,26 @@ do
 					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
 					next31H3IsVaelwing = true--Drifted Rakfang consumed outside ~31 alternator, reset to Vaelwing
 				end
+			elseif self:IsRoundedTimer(timer, 29) then--Week4 late-stage Dread Breath variant after the final cadence shift
+				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+			elseif self:IsRoundedTimer(timer, 19) then--Week4 finale bundle: Nullbeam first, then Radiant Barrier
+				if next19H3Type == "nullbeam" then
+					timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+					next19H3Type = "radiantbarrier"
+				else
+					timerRadiantBarrierCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
+					next19H3Type = "nullbeam"
+				end
+			elseif self:IsRoundedTimer(timer, 12) then--Week3 late-tail Rakfang before the 21/26 compressed pair
+				timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+				next31H3IsVaelwing = true
 			elseif self:IsRoundedTimer(timer, 21) then--Void Howl (late-stage compressed cadence)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif self:IsRoundedTimer(timer, 26) then--Gloom (late-stage compressed cadence)
 				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
+			elseif self:IsRoundedTimer(timer, 5) then--Week4 late-stage Vaelwing finisher before the final barrier combo
+				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
+				next19H3Type = "nullbeam"
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
 				if not DBM.Options.DebugMode then
 					badStateDetected = true

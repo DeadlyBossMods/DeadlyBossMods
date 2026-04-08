@@ -7061,7 +7061,8 @@ do
 	local requiresRecentKill = {
 		[2238] = 2519,--Fyrakk in Amirdrassil
 		[2529] = 3181,--Crown of the Cosmos
-		[1049] = 3181--Crown of the Cosmos
+		[1049] = 3181,--Crown of the Cosmos
+		[1050] = 3183--Midnight Falls
 	}
 	---@param self DBM
 	local function checkOptions(self, id, mapID)
