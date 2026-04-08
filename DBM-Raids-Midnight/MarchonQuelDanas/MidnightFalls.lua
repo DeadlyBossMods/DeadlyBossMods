@@ -157,7 +157,7 @@ function mod:OnLimitedCombatStart(delay)
 	stage1SeventySlot = 0
 	stage2ThirtySlot = 0
 	totalEclipseStartTimes = {}
-	if DBM.Options.HardcodedTimer and self:IsDifficulty("normal", "heroic") and not badStateDetected then
+	if DBM.Options.HardcodedTimer and self:IsDifficulty("lfr", "normal", "heroic") and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
