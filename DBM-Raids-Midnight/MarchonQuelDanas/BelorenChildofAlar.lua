@@ -63,6 +63,7 @@ mod.vb.deathDropCount = 0
 mod.vb.incubationCount = 0
 local badStateDetected = false
 local lastEmbersEventID = 0
+local heroicSequenceSlot = 0
 
 ---@param self DBMMod
 local function setFallback(self)
@@ -95,6 +96,7 @@ end
 function mod:OnLimitedCombatStart(delay)
 	self:TLCountReset()
 	lastEmbersEventID = 0
+	heroicSequenceSlot = 0
 	self.vb.embersCount = 1
 	self.vb.echoesCount = 1
 	self.vb.edictCount = 1
@@ -104,7 +106,7 @@ function mod:OnLimitedCombatStart(delay)
 	self.vb.deathDropCount = 1
 	self.vb.incubationCount = 1
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and self:IsEasy() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic()) and not badStateDetected then
 		self:SetStage(1)
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
@@ -119,6 +121,7 @@ end
 function mod:OnCombatEnd()
 	self:TLCountReset()
 	lastEmbersEventID = 0
+	heroicSequenceSlot = 0
 	self:UnregisterShortTermEvents()
 end
 
@@ -174,13 +177,130 @@ do
 		end
 	end
 
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersHeroic(self, timer, timerExact, eventID)
+		if self:GetStage(2) then
+			if timer == 30 then
+				timerRebirthCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rebirth"))
+				return
+			elseif timer == 10 or timer == 21 or timer == 6 or timer == 18 or timer == 20 or timer == 34 or timer == 50 then
+				self:SetStage(1)
+				heroicSequenceSlot = 0
+				return timersHeroic(self, timer, timerExact, eventID)
+			end
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			return
+		end
+
+		-- Logic confirmed against Heroic Week4 logs.
+		if timer == 10 then--Cycle opener Embers, or follow-up Infused Quills
+			if heroicSequenceSlot == 0 or heroicSequenceSlot == 9 then
+				heroicSequenceSlot = 1
+				timerEmbersofBelorenCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "embers", "embersCount"))
+			elseif heroicSequenceSlot == 7 or heroicSequenceSlot == 8 then
+				heroicSequenceSlot = heroicSequenceSlot + 1
+				timerInfusedQuillsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "quills", "quillsCount"))
+			else
+				badStateDetected = true
+				self:ResumeBlizzardAPI()
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif timer == 21 then--Cycle opener Infused Quills
+			if heroicSequenceSlot == 1 then
+				heroicSequenceSlot = 2
+				timerInfusedQuillsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "quills", "quillsCount"))
+			else
+				badStateDetected = true
+				self:ResumeBlizzardAPI()
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif timer == 6 then--Radiant Echoes opener, otherwise Death Drop transition
+			if heroicSequenceSlot == 2 then
+				heroicSequenceSlot = 3
+				timerRadiantEchoesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "echoes", "echoesCount"))
+			else
+				heroicSequenceSlot = 0
+				timerDeathDropCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathDrop", "deathDropCount"))
+			end
+		elseif timer == 34 then--Eternal Burns
+			if heroicSequenceSlot == 3 then
+				heroicSequenceSlot = 4
+				timerEternalBurnsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "burns", "burnsCount"))
+			else
+				badStateDetected = true
+				self:ResumeBlizzardAPI()
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif timer == 20 then--Cycle opener Guardian's Edict
+			if heroicSequenceSlot == 4 then
+				heroicSequenceSlot = 5
+				timerGuardiansEdictCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "edict", "edictCount"))
+			else
+				badStateDetected = true
+				self:ResumeBlizzardAPI()
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif timer == 50 then--Voidlight Convergence
+			if heroicSequenceSlot == 5 then
+				heroicSequenceSlot = 6
+				timerVoidlightConvergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
+			else
+				badStateDetected = true
+				self:ResumeBlizzardAPI()
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif timer == 18 then--Follow-up Guardian's Edict
+			if heroicSequenceSlot == 6 then
+				heroicSequenceSlot = 7
+				timerGuardiansEdictCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "edict", "edictCount"))
+			else
+				badStateDetected = true
+				self:ResumeBlizzardAPI()
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif timer == 30 then--Rebirth stage transition (health based)
+			self:SetStage(2)
+			heroicSequenceSlot = 0
+			timerRebirthCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rebirth"))
+		else
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+		end
+	end
+
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
-		if not badStateDetected and self:IsEasy() then
-			timersEasy(self, timer, timerExact, eventID)
+		if not badStateDetected then
+			if self:IsEasy() then
+				timersEasy(self, timer, timerExact, eventID)
+			elseif self:IsHeroic() then
+				timersHeroic(self, timer, timerExact, eventID)
+			end
 		end
 	end
 
@@ -193,6 +313,7 @@ do
 			if eventType == "rebirth" then
 				self:SetStage(1)
 				lastEmbersEventID = 0
+				heroicSequenceSlot = 0
 			end
 			if not eventCount then return end
 			if eventType == "embers" then
@@ -218,6 +339,7 @@ do
 			if eventType == "rebirth" then
 				self:SetStage(1)
 				lastEmbersEventID = 0
+				heroicSequenceSlot = 0
 			end
 		end
 	end

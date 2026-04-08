@@ -732,6 +732,16 @@ L.KEYSTONE_NAMES[505] = 'AUBE' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = 'VANNES' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = 'DÔME' -- Eco-Dome Al'dani
 
+L.KEYSTONE_NAMES[161] = 'ORÉE' -- Skyreach
+L.KEYSTONE_NAMES[402] = 'ACADÉM' -- Algeth'ar Academy
+L.KEYSTONE_NAMES[556] = 'FOSSE' -- Pit of Saron
+L.KEYSTONE_NAMES[557] = 'FLÈCHE' -- Windrunner Spire
+L.KEYSTONE_NAMES[558] = 'TERRAS' -- Magister's Terrace
+L.KEYSTONE_NAMES[559] = 'NEXUS' -- Nexus-Point Xenas
+L.KEYSTONE_NAMES[560] = 'CAVERN' -- Maisara Caverns
+L.KEYSTONE_NAMES[583] = 'SIÈGE' -- Seat of the Triumvirate
+
+
 -- Midnight
 L.MN_TIMELINE_HEADER   = "Voulez-vous utiliser la ligne temporelle de Blizzard ou les barres de DBM ?"
 L.MN_BLIZZARD_TIMELINE = "Ligne temporelle de Blizzard"
