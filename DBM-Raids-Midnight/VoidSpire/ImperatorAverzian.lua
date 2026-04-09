@@ -23,7 +23,7 @@ local specWarnPitchBulwark				= mod:NewSpecialWarningInterrupt(1255702, false, n
 
 local timerShadowsAdvanceCD				= mod:NewCDCountTimer("d20.5", 1262776, DBM_COMMON_L.ADDS.." (%s)", nil, 2, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerDarkUpheavalCD				= mod:NewCDCountTimer(20.5, 1249251, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerUmbralCollapseCD				= mod:NewCDCountTimer(20.5, 1249265, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 3)
+local timerUmbralCollapseCD				= mod:NewCDCountTimer("d20.5", 1249265, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 3)
 local timerOblivionWrathCD				= mod:NewCDCountTimer(20.5, 1260712, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 3)
 local timerVoidFallCD					= mod:NewCDCountTimer(20.5, 1258880, 28405, nil, nil, 2)--Shortname "Knockback"
 local timerVoidMarkCD					= mod:NewCDCountTimer(20.5, 1280023, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.MAGIC_ICON)
@@ -41,6 +41,8 @@ mod.vb.voidFallCount = 0
 mod.vb.voidMarkCount = 0
 local badStateDetected = false
 local next72IsShadow = false
+local next80IsShadow = false
+local next80IsVoidMark = false
 
 ---@param self DBMMod
 local function setFallback(self)
@@ -69,7 +71,9 @@ function mod:OnLimitedCombatStart()
 	self.vb.voidFallCount = 1
 	self.vb.voidMarkCount = 1
 	next72IsShadow = false
-	if DBM.Options.HardcodedTimer and self:IsDifficulty("lfr", "normal", "heroic") and not badStateDetected then
+	next80IsShadow = false
+	next80IsVoidMark = false
+	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -152,6 +156,51 @@ do
 			end
 		end
 	end
+
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersMythic(self, timer, timerExact, eventID, timeInCombat)
+		--Logic confirmed against Mythic Week4 logs
+		if timer == 4 or timer == 36 or timer == 48 then--Dark Upheaval
+			timerDarkUpheavalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
+		elseif timer == 60 or timer == 18 then--Oblivion's Wrath
+			timerOblivionWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "oblivion", "oblivionCount"))
+		elseif timer == 160 then--Void Fall
+			timerVoidFallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidfall", "voidFallCount"))
+			if timeInCombat >= 2 then
+				next80IsShadow = true
+			end
+		elseif timer == 94 or timer == 14 then--Shadow's Advance
+			timerShadowsAdvanceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
+		elseif timer == 32 then--Umbral Collapse
+			timerUmbralCollapseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
+		elseif timer == 20 then--Void Marked
+			timerVoidMarkCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidmark", "voidMarkCount"))
+			next80IsVoidMark = true
+		elseif timer == 80 then--Can be Shadow's Advance, Void Marked, or Umbral Collapse
+			if next80IsShadow then
+				timerShadowsAdvanceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shadow", "shadowCount"))
+				next80IsShadow = false
+			elseif next80IsVoidMark then
+				timerVoidMarkCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidmark", "voidMarkCount"))
+				next80IsVoidMark = false
+			else
+				timerUmbralCollapseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
+			end
+		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			if not DBM.Options.DebugMode then
+				badStateDetected = true
+				self:ResumeBlizzardAPI()
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			else
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+			end
+		end
+	end
 	--Note, bar state changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
@@ -163,6 +212,8 @@ do
 		if not badStateDetected then
 			if self:IsDifficulty("lfr", "normal", "heroic") then
 				timersEasy(self, timer, timerExact, eventID, timeInCombat)
+			else--Mythic
+				timersMythic(self, timer, timerExact, eventID, timeInCombat)
 			end
 		end
 	end
