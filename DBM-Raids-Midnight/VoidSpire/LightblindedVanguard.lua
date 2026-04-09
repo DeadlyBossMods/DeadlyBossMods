@@ -33,16 +33,16 @@ local timerSacredShieldCD					= mod:NewCDCountTimer(20.5, 1248674, nil, nil, nil
 --local timerElekkChargeCD					= mod:NewCDCountTimer(20.5, 1249130, nil, nil, nil, 3)--redundant
 local timerTyrsWrathCD						= mod:NewCDCountTimer(20.5, 1248721, DBM_COMMON_L.HEALABSORBS.." (%s)", "Healer", nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 local timerAuraofDevotionCD					= mod:NewCDCountTimer(20.5, 1246162, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
-local timerSearingRadianceCD				= mod:NewCDCountTimer(20.5, 1255738, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerSearingRadianceCD				= mod:NewCDCountTimer("d20.5", 1255738, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerJudgementShieldCD				= mod:NewCDCountTimer(20.5, 1251857, L.JudgementShield.." (%s)", "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerAvengerShieldCD					= mod:NewCDCountTimer(20.5, 1246487, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
+local timerAvengerShieldCD					= mod:NewCDCountTimer("d20.5", 1246487, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerDivineTollCD						= mod:NewCDCountTimer(20.5, 1248652, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 3)
 local timerAuraofWrathCD					= mod:NewCDCountTimer(20.5, 1248449, nil, nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerjudgementFinalCD					= mod:NewCDCountTimer(20.5, 1246736, L.JudgementFV.." (%s)", "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerDivineStormCD					= mod:NewCDCountTimer(20.5, 1246765, nil, nil, nil, 3)
+local timerDivineStormCD					= mod:NewCDCountTimer("d20.5", 1246765, nil, nil, nil, 3)
 local timerSacredTollCD						= mod:NewCDCountTimer(20.5, 1246749, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerExecutionSentenceCD				= mod:NewCDCountTimer(20.5, 1276368, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)
-local timerZealousSpiritCD					= mod:NewCDCountTimer(20.5, 1276243, nil, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerZealousSpiritCD					= mod:NewCDCountTimer("d20.5", 1276243, nil, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddPrivateAuraSoundOption(1276982, true, 1276982, 1, 2, "watchfeet", 8)--Divine Consecration (mythic version) (drops under various auras)
 mod:AddPrivateAuraSoundOption(1246158, true, 1246158, 1, 2, "watchfeet", 8)--Consecration (non mythic version) (drops under various auras)
@@ -161,7 +161,8 @@ function mod:OnLimitedCombatStart()
 	timer52Count = 0
 	timer53Count = 0
 	timer60Count = 0
-	--TODO, hardcoded features
+	--Use FixBlizzardAPI to force fight to only show bars < 60 seconds by default since blizzard EXCESSIVELY overschedules timers on this fight
+	self:FixBlizzardAPI()
 	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
