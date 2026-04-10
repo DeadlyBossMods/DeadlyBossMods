@@ -720,7 +720,7 @@ do
 				specWarnCalloftheVoid:Show(eventCount)
 				specWarnCalloftheVoid:Play("mobsoon")
 			elseif eventType == "riftSlash" then
-				if self:IsTank() then
+				if self:IsTanking("player", "boss2", nil, true) then
 					specWarnRiftSlash:Show()
 					specWarnRiftSlash:Play("defensive")
 				end
