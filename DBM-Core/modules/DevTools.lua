@@ -9,7 +9,7 @@ local module = private:NewModule("DevToolsModule")
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
 
-local appendToDebugLog, showDebugLog, hideDebugLog, clearDebugLog
+local appendToDebugLog, showDebugLog, hideDebugLog
 
 function module:OnModuleLoad()
 	self:OnDebugToggle()
@@ -20,7 +20,7 @@ local mfloor, mmax, mceil = math.floor, math.max, math.ceil
 do
 	local debugLogFrame, debugLogViewport, debugLogContent, clearButton
 	local debugLogLineFrames = {}
-	local maxDebugLogEntries = 750
+	local maxDebugLogEntries = 1000
 	local debugLogSoftClosed = true
 	local lineHeight = 14
 	local debugLogLineCount = 0
@@ -298,11 +298,6 @@ do
 		end
 	end
 
-	function clearDebugLog()
-		clearAllLines()
-		refreshDebugLog()
-	end
-
 	function module:UpdateDebugLogStateFromDebugMode()
 		if not DBM.Options then return end
 		if DBM.Options.DebugMode then
@@ -313,7 +308,6 @@ do
 			setDebugLogSoftClosed(true)
 		else
 			if debugLogFrame then
-				clearDebugLog()
 				debugLogFrame:Hide()
 			end
 		end

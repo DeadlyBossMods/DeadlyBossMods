@@ -14,12 +14,12 @@ mod:RegisterCombat("combat")
 --https://www.wowhead.com/spell=1242091/void-quill is 385
 --Twilight Seal is a mechanic not in journal but has both private auras and encounter events 417 and 418
 --Stage 1
---local warnVoidlightConveergence		= mod:NewCountAnnounce(1242515, 3)
+local warnVoidlightConvergenceSoon		= mod:NewSoonAnnounce(1242515, 3)
 
 local specWarnEmbersofBeloren			= mod:NewSpecialWarningCount(1241282, nil, nil, DBM_COMMON_L.ADDS, 1, 2)
 local specWarnRadiantEchoes				= mod:NewSpecialWarningCount(1242981, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
 local specWarnGuardiansEdict			= mod:NewSpecialWarningCount(1260763, nil, nil, DBM_COMMON_L.TANKCOMBO, 1, 2)
---local specWarnVoidlightConveergence	= mod:NewSpecialWarningCount(1242515, nil, nil, nil, 2, 2)--No PA to detect color, can only just warn to check color
+local specWarnVoidlightConvergence		= mod:NewSpecialWarningCount(1242515, nil, nil, nil, 2, 2)--No PA to detect color, can only just warn to check color
 local specWarnLightFeather				= mod:NewSpecialWarningYou(1241162, nil, nil, nil, 1, 2)--Untested
 local specWarnVoidFeather				= mod:NewSpecialWarningYou(1241163, nil, nil, nil, 1, 2)--Untested
 --mod:GroupSpells(1242515, 1241162, 1241163)--Uncomment group when hardcode enables parent warning
@@ -78,7 +78,7 @@ local function setFallback(self)
 	timerGuardiansEdictCD:SetTimeline(134)
 	timerEternalBurnsCD:SetTimeline(138)
 	timerInfusedQuillsCD:SetTimeline(161)
-	--warnVoidlightConveergence:SetAlert(218, "colorchange", 19, 3)
+	specWarnVoidlightConvergence:SetAlert(218, "colorchange", 19, 3)
 	timerVoidlightConvergenceCD:SetTimeline(218)
 	specWarnDeathDrop:SetAlert(272, "justrun", 2, 3)
 	timerDeathDropCD:SetTimeline(272)
@@ -164,6 +164,8 @@ do
 			timerEternalBurnsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "burns", "burnsCount"))
 		elseif timer == 50 then--Voidlight Convergence
 			timerVoidlightConvergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
+			warnVoidlightConvergenceSoon:Schedule(timerExact - 5)
+			warnVoidlightConvergenceSoon:ScheduleVoice(timerExact - 5, "colorchangesoon")
 		elseif timer == 30 then--Rebirth stage transition (health based)
 			self:SetStage(2)
 			lastEmbersEventID = 0
@@ -333,6 +335,9 @@ do
 			elseif eventType == "rebirth" then
 				specWarnRebirth:Show(eventCount)
 				specWarnRebirth:Play("dpshard")
+			elseif eventType == "convergence" then
+				specWarnVoidlightConvergence:Show(eventCount)
+				specWarnVoidlightConvergence:Play("colorchange")
 			end
 		elseif eventState == 3 then
 			local eventType = self:TLCountCancel(eventID)
@@ -340,6 +345,9 @@ do
 				self:SetStage(1)
 				lastEmbersEventID = 0
 				heroicSequenceSlot = 0
+			elseif eventType == "convergence" then
+				warnVoidlightConvergenceSoon:Cancel()
+				warnVoidlightConvergenceSoon:CancelVoice()
 			end
 		end
 	end
