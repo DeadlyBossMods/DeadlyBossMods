@@ -23,6 +23,7 @@ L.SearchMatches						= "%d개 발견"
 L.Tools_LatencyCheck				= "지연시간 검사"
 L.Tools_DurabilityCheck				= "내구도 검사"
 L.Tools_KeystoneCheck				= "쐐기돌 확인"
+L.Tools_GearCheck					= "장비 검사"
 
 L.Tools_BreakTimer					= "휴식 타이머 시작"
 L.Tools_PizzaTimer					= "일반 타이머 시작"

@@ -310,6 +310,7 @@ DBM.DefaultOptions = {
 	ArrowPosX = 0,
 	ArrowPosY = -150,
 	ArrowPoint = "TOP",
+	GearPosition = {"RIGHT", -150, 0},
 	DurabilityPosition = {"RIGHT", -150, 0},
 	LatencyPosition = {"RIGHT", -150, 0},
 	KeystonesPosition = {"LEFT", 30, 0},

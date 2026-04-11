@@ -25,6 +25,7 @@ L.SearchMatches						= "%d matches"
 L.Tools_LatencyCheck				= "Latency Check"
 L.Tools_DurabilityCheck				= "Durability Check"
 L.Tools_KeystoneCheck				= "Keystone Check"
+L.Tools_GearCheck					= "Gear Check"
 
 L.Tools_BreakTimer					= "Start Break Timer"
 L.Tools_PizzaTimer					= "Start Generic Timer"

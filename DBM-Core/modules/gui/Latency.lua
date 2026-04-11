@@ -186,6 +186,9 @@ function Latency:Show()
 	if DBM.Keystones then
 		DBM.Keystones:Hide()
 	end
+	if DBM.GearCheck then
+		DBM.GearCheck:Hide()
+	end
 	DBM.Durability:Hide()
 	LibLatency:RequestLatency()
 	if _G["DBM_GUI_OptionsFrame"] then
