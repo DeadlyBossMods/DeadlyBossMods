@@ -624,6 +624,7 @@ L.TIMER_RESPAWN		= "Respawn %s"
 
 L.LAG_HEADER					= L.DBM.." - Risultati Latenza"
 L.DUR_HEADER					= L.DBM.." - Risultati Stato Equipaggiamento"
+L.GEAR_HEADER					= L.DBM.. " - Controllo equipaggiamento"
 --L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
 
 --L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"

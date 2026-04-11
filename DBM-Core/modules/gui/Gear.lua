@@ -24,7 +24,7 @@ frame:SetFrameStrata("DIALOG")
 frame:SetMovable(true)
 frame:EnableMouse(true)
 frame:RegisterForDrag("LeftButton")
-frame:SetTitle(L.GEAR_HEADER or (L.DBM .. " - Gear Results"))
+frame:SetTitle(L.GEAR_HEADER)
 frame:SetScript("OnDragStart", frame.StartMoving)
 frame:SetScript("OnDragStop", function(self)
 	self:StopMovingOrSizing()
@@ -200,6 +200,7 @@ end
 
 local function ClearInspectQueue()
 	inspectToken = inspectToken + 1
+	ClearInspectPlayer()
 	wipe(pendingInspects)
 	wipe(activeInspect)
 end
@@ -339,7 +340,6 @@ frame:SetScript("OnHide", function()
 	pendingRosterRefresh = false
 	inspectUpdateElapsed = 0
 	ClearInspectQueue()
-	ClearInspectPlayer()
 end)
 
 --SUPER generic ilvl check for now.

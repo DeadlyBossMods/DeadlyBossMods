@@ -671,6 +671,7 @@ L.TIMER_RESPAWN				= "%s reaparece"
 L.LAG_HEADER				= L.DBM.. " - Resultados de latencia"
 L.DUR_HEADER				= L.DBM.. " - Resultados de durabilidad"
 L.KEYSTONES_HEADER			= L.DBM.. " - Piedras angulares"
+L.GEAR_HEADER				= L.DBM.. " - Resultados de equipo"
 L.BREZ_HEADER				= "Res en combate"
 
 L.OVERRIDE_ACTIVATED		= "Líder de banda ha activado las anulaciones de configuración para este encuentro"

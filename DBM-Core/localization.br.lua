@@ -673,6 +673,7 @@ L.TIMER_RESPAWN						= "%s Reaparecimento"
 L.LAG_HEADER						= L.DBM .. " - Resultados de latência"
 L.DUR_HEADER						= L.DBM .. " - Resultados de durabilidade"
 L.KEYSTONES_HEADER					= L.DBM.. " - Pedra-chaves"
+L.GEAR_HEADER						= L.DBM .. " - Resultados de equipamento"
 L.BREZ_HEADER						= "Res em combate"
 
 L.OVERRIDE_ACTIVATED				= "As configurações substituídas foram ativadas para este encontro pelo RL"
