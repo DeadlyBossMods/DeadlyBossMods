@@ -13,8 +13,8 @@ local tinsert, tremove, tsort, mmax, mfloor = table.insert, table.remove, table.
 local L = DBM_CORE_L
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
----@class DBMGearFrame: DefaultPanelTemplate
-local frame = CreateFrame("Frame", "DBMGearFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+---@class DBMGearCheckFrame: DefaultPanelTemplate
+local frame = CreateFrame("Frame", "DBMGearCheckFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
 tinsert(_G["UISpecialFrames"], frame:GetName())
 frame:Hide()
 frame:SetSize(330, 300)
