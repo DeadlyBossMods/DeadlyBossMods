@@ -579,7 +579,7 @@ L.AUTO_INFO_FRAME_OPTION_TEXT	= "Zeige Infofenster für $spell:%s"
 L.AUTO_INFO_FRAME_OPTION_TEXT2	= "Zeige Infofenster für Kampfübersicht"
 L.AUTO_INFO_FRAME_OPTION_TEXT3	= "Zeige Infofenster für $spell:%s (falls der Schwellwert von %%s übertroffen ist)"
 L.AUTO_READY_CHECK_OPTION_TEXT	= "Spiele \"Bereitschaftscheck\"-Sound, wenn der Boss angegriffen wird (auch wenn er nicht als Ziel gesetzt ist)"
-L.AUTO_SPEEDCLEAR_OPTION_TEXT	= "Zeige Timer für den schnellsten Clear von %s"
+L.AUTO_SPEEDCLEAR_OPTION_TEXT	= "Zeige Timer für den schnellsten Clear dieser Zone"
 --L.AUTO_PRIVATEAURA_OPTION_TEXT= "Play DBM sound alerts for $spell:%s private auras on this fight."
 
 -- New special warnings
