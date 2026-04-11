@@ -279,7 +279,8 @@ local function ScanGear(unit)
 	if DBM:issecretunit(unit) then
 		return
 	end
-	local averageItemLevel, missingGems, missingEnchants = 0, 0, 0
+	local averageItemLevel
+	local missingGems, missingEnchants = 0, 0
 	for i = 1, 17 do
 		local itemLink = GetInventoryItemLink(unit, i)
 		if itemLink then
