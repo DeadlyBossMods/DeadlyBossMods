@@ -4,9 +4,9 @@ if not DBM_COMMON_L then DBM_COMMON_L = {} end
 local CL = DBM_COMMON_L
 
 --General
---CL.ALPHABETICAL           = "Alphabetical"
---CL.DURATION               = "Duration"
---CL.SORTING                = "Sorting"
+CL.ALPHABETICAL             = "字母順序"
+CL.DURATION                 = "持續時間"
+CL.SORTING                  = "排序"
 CL.NONE						= "無"
 CL.RANDOM					= "隨機"
 CL.UNKNOWN					= "未知"--UNKNOWN which is "Unknown" (does u vs U matter?)
@@ -86,9 +86,11 @@ CL.GROUPSOAK				= "隊伍分傷"
 CL.GROUPSOAKS				= "隊伍分傷"
 CL.HEALABSORB				= "治療吸收"
 CL.HEALABSORBS				= "治療吸收"
+CL.INTERRUPT				= "打斷"
 CL.DODGES					= "躲避"
 CL.POOL						= "圈"
 CL.POOLS					= "圈"
+CL.DEBUFF					= "減益"
 CL.DEBUFFS					= "減益"
 CL.DISPELS					= "驅散"
 CL.PUSHBACK					= "推後"
