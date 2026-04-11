@@ -354,13 +354,15 @@ function GearCheck:ScanGear(unit)
 	local averageItemLevel
 	if UnitIsUnit(unit, "player") then
 		local _, equipped = GetAverageItemLevel()
+		--Player returns decimal precision
 		averageItemLevel = RoundItemLevel(equipped)
 	else
 		if not (C_PaperDollInfo and C_PaperDollInfo.GetInspectItemLevel) then
 			return
 		end
 		averageItemLevel = C_PaperDollInfo.GetInspectItemLevel(unit)
-		averageItemLevel = RoundItemLevel(averageItemLevel)
+		--Unfortunately, this api does NOT return decimal precision
+--		averageItemLevel = RoundItemLevel(averageItemLevel)
 	end
 	return averageItemLevel
 end
