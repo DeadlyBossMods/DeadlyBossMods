@@ -695,6 +695,8 @@ L.LAG_HEADER						= L.DBM.. " - результаты проверки задер
 L.DUR_HEADER						= L.DBM.. " - результаты проверки прочности"
 L.KEYSTONES_HEADER					= L.DBM.. " - ключи М+"
 L.GEAR_HEADER						= L.DBM.. " - результаты проверки экипировки"
+L.GEAR_MISSING_GEMS				= "Отсутствуют самоцветы"
+L.GEAR_MISSING_ENCHANTS			= "Отсутствуют чары"
 
 L.OVERRIDE_ACTIVATED					= "Для этого сражения лидер рейда активировал перезапись конфигурации."
 

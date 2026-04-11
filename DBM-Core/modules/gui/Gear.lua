@@ -17,7 +17,7 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for P
 local frame = CreateFrame("Frame", "DBMGearCheckFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
 tinsert(_G["UISpecialFrames"], frame:GetName())
 frame:Hide()
-frame:SetSize(330, 300)
+frame:SetSize(380, 300)
 frame:SetClampedToScreen(true)
 frame:SetPoint("LEFT")
 frame:SetFrameStrata("DIALOG")
@@ -111,26 +111,47 @@ titlePlayer.Keep = true
 titlePlayer:SetFontObject(GameFontNormalLarge)
 titlePlayer:SetText(PLAYER)
 titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
-titlePlayer:SetWidth(220)
+local playerWidth = 120
+titlePlayer:SetWidth(playerWidth)
 
 local titleItemLevel = GetTextFrame()
 titleItemLevel.Keep = true
 titleItemLevel:SetFontObject(GameFontNormalLarge)
-titleItemLevel:SetText(_G["ITEM_LEVEL_ABBR"] or _G["ITEM_LEVEL"] or "iLvl")
+titleItemLevel:SetText(_G["ITEM_LEVEL_ABBR"] or "iLvl")
 titleItemLevel:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
 
 local itemLevelWidth = mmax(75, titleItemLevel:GetStringWidth() + 20)
 titleItemLevel:SetWidth(itemLevelWidth)
 
-child:SetWidth(220 + itemLevelWidth + 8)
+local titleMissingGems = GetTextFrame()
+titleMissingGems.Keep = true
+titleMissingGems:SetFontObject(GameFontNormalLarge)
+titleMissingGems:SetText(L.GEAR_MISSING_GEMS)
+titleMissingGems:SetPoint("LEFT", titleItemLevel, "RIGHT", 0, 0)
+
+local missingGemsWidth = mmax(55, titleMissingGems:GetStringWidth() + 20)
+titleMissingGems:SetWidth(missingGemsWidth)
+
+local titleMissingEnchants = GetTextFrame()
+titleMissingEnchants.Keep = true
+titleMissingEnchants:SetFontObject(GameFontNormalLarge)
+titleMissingEnchants:SetText(L.GEAR_MISSING_ENCHANTS)
+titleMissingEnchants:SetPoint("LEFT", titleMissingGems, "RIGHT", 0, 0)
+
+local missingEnchantsWidth = mmax(55, titleMissingEnchants:GetStringWidth() + 20)
+titleMissingEnchants:SetWidth(missingEnchantsWidth)
+
+child:SetWidth(playerWidth + itemLevelWidth + missingGemsWidth + missingEnchantsWidth + 8)
 frame:SetWidth(child:GetWidth() + 32)
 
-local function SetPlayerGearState(name, itemLevel, pending, unavailable)
+local function SetPlayerGearState(name, itemLevel, missingGems, missingEnchants, pending, unavailable)
 	local player = DBM:GetRaidRoster()[name]
 	if not player then
 		return
 	end
 	player.gearilvl = itemLevel
+	player.gearmissinggems = missingGems
+	player.gearmissingenchants = missingEnchants
 	player.gearpending = pending or false
 	player.gearunavailable = unavailable or false
 end
@@ -145,6 +166,19 @@ end
 local function GetGearText(player)
 	if type(player.gearilvl) == "number" then
 		return ("%.1f"):format(player.gearilvl)
+	end
+	if player.gearpending then
+		return "..."
+	end
+	if player.gearunavailable then
+		return "?"
+	end
+	return "-"
+end
+
+local function GetGearCountText(player, key)
+	if type(player[key]) == "number" then
+		return tostring(player[key])
 	end
 	if player.gearpending then
 		return "..."
@@ -177,22 +211,31 @@ local function Update()
 	WipeTextFrames()
 
 	for i, v in ipairs(sortGear) do
-		local name = v.name
-		local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
+		local fullName = v.name
+		local name = DBM:GetShortServerName(fullName) or fullName
+		local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(fullName)]
 		if playerColor then
 			name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
 		end
 
 		local offset = -((i - 1) * 14) - 4
-		local textPlayer, textItemLevel = GetTextFrame(), GetTextFrame()
+		local textPlayer, textItemLevel, textMissingGems, textMissingEnchants = GetTextFrame(), GetTextFrame(), GetTextFrame(), GetTextFrame()
 
 		textPlayer:SetText(name)
 		textPlayer:SetPoint("TOP", titlePlayer, "BOTTOM", 0, offset)
-		textPlayer:SetWidth(220)
+		textPlayer:SetWidth(playerWidth)
 
 		textItemLevel:SetText(GetGearText(v))
 		textItemLevel:SetPoint("TOP", titleItemLevel, "BOTTOM", 0, offset)
 		textItemLevel:SetWidth(itemLevelWidth)
+
+		textMissingGems:SetText(GetGearCountText(v, "gearmissinggems"))
+		textMissingGems:SetPoint("TOP", titleMissingGems, "BOTTOM", 0, offset)
+		textMissingGems:SetWidth(missingGemsWidth)
+
+		textMissingEnchants:SetText(GetGearCountText(v, "gearmissingenchants"))
+		textMissingEnchants:SetPoint("TOP", titleMissingEnchants, "BOTTOM", 0, offset)
+		textMissingEnchants:SetWidth(missingEnchantsWidth)
 	end
 
 	child:SetHeight(mmax(300, 50 + #sortGear * 14))
@@ -208,8 +251,27 @@ end
 local RequestNextInspect
 local Refresh
 
---SUPER generic ilvl check for now.
---Will be expanded in future with socket and enchant checks and cooperation with other addons via libraries.
+--Only valid for midnight. No classic flavors supported since I don't play those
+local enchantableSlots = {
+	[1] = true,--Helm
+--	[2] = true,--Neck
+	[3] = true,--Shoulder
+--	[4] = true,--Shirt
+	[5] = true,--Chest
+--	[6] = true,--Waist
+	[7] = true,--Legs
+	[8] = true,--Feet
+--	[9] = true,--Wrist
+--	[10] = true,--Hands
+	[11] = true,--Finger1
+	[12] = true,--Finger2
+--	[15] = true,--Back
+	[16] = true,--MainHand
+--	[17] = true,--OffHand
+}
+
+--TODO, replace with a sync based approach that can remove some limitations like decimal ilvl on players other than self
+--TODO, collect list of enchant Ids and show a () next to count showing number of cheap enchants in use
 local function ScanGear(unit)
 	if not unit then
 		return
@@ -217,7 +279,46 @@ local function ScanGear(unit)
 	if DBM:issecretunit(unit) then
 		return
 	end
-	local averageItemLevel
+	local averageItemLevel, missingGems, missingEnchants = 0, 0, 0
+	for i = 1, 17 do
+		local itemLink = GetInventoryItemLink(unit, i)
+		if itemLink then
+			--[1]="|cn|Q4:|Hitem:49812:8025:240894::::::90:73::16:5:12795:13440:6652:13668:12699:1:28:1279:::::|h[Purloined Wedding Ring]|h|r"
+			local enchant, gem1, gem2, gem3, gem4 = itemLink:match("item:%d+:(%d*):(%d*):(%d*):(%d*):(%d*):")
+			local expectedGems, filledSockets = 0, 0
+
+			--https://warcraft.wiki.gg/wiki/API_C_Item.GetItemStats
+			local statTable = C_Item.GetItemStats(itemLink)
+			if statTable then
+				for mod, count in next, statTable do
+					--https://www.townlong-yak.com/framexml/10.2.0/GlobalStrings.lua#6196
+					if mod:find("EMPTY_SOCKET_", nil, true) then
+						expectedGems = expectedGems + count
+					end
+				end
+			end
+			if gem1 and gem1 ~= "" then
+				filledSockets = filledSockets + 1
+			end
+			if gem2 and gem2 ~= "" then
+				filledSockets = filledSockets + 1
+			end
+			if gem3 and gem3 ~= "" then
+				filledSockets = filledSockets + 1
+			end
+			if gem4 and gem4 ~= "" then
+				filledSockets = filledSockets + 1
+			end
+			local newMissing = expectedGems - filledSockets
+			if newMissing > 0 then
+				missingGems = missingGems + newMissing
+			end
+
+			if enchantableSlots[i] and enchant == "" then
+				missingEnchants = missingEnchants + 1
+			end
+		end
+	end
 	if UnitIsUnit(unit, "player") then
 		local _, equipped = GetAverageItemLevel()
 		--Player returns decimal precision
@@ -230,10 +331,10 @@ local function ScanGear(unit)
 		--Unfortunately, this api does NOT return decimal precision
 --		averageItemLevel = RoundItemLevel(averageItemLevel)
 	end
-	return averageItemLevel
+	return averageItemLevel, missingGems, missingEnchants
 end
 
-local function FinishInspect(token, itemLevel)
+local function FinishInspect(token, itemLevel, missingGems, missingEnchants)
 	if not activeInspect.name then
 		return
 	end
@@ -246,7 +347,7 @@ local function FinishInspect(token, itemLevel)
 		end
 		return
 	end
-	SetPlayerGearState(activeInspect.name, itemLevel, false, type(itemLevel) ~= "number")
+	SetPlayerGearState(activeInspect.name, itemLevel, missingGems, missingEnchants, false, type(itemLevel) ~= "number")
 	wipe(activeInspect)
 	ClearInspectPlayer()
 	Update()
@@ -290,7 +391,7 @@ function RequestNextInspect()
 				return
 			end
 		end
-		SetPlayerGearState(name, nil, false, true)
+		SetPlayerGearState(name, nil, nil, nil, false, true)
 	end
 	Update()
 end
@@ -299,13 +400,13 @@ local function SeedRaid()
 	local playerName = DBM:GetUnitFullName("player")
 	for name in pairs(DBM:GetRaidRoster()) do
 		if name == playerName then
-			SetPlayerGearState(name, ScanGear("player"), false, false)
+			SetPlayerGearState(name, ScanGear("player"))
 		else
 			local unit = DBM:GetRaidUnitId(name, true)
 			if unit and DBM:issecretunit(unit) then
-				SetPlayerGearState(name, nil, false, true)
+				SetPlayerGearState(name, nil, nil, nil, false, true)
 			else
-				SetPlayerGearState(name, nil, true, false)
+				SetPlayerGearState(name, nil, nil, nil, true, false)
 				tinsert(pendingInspects, name)
 			end
 		end
@@ -339,11 +440,11 @@ local function OnEvent(_, event, arg1)
 	elseif event == "INSPECT_READY" then
 		if type(arg1) == "string" and arg1 == activeInspect.guid then
 			local unit = DBM:GetRaidUnitId(activeInspect.name, true)
-			local itemLevel
+			local itemLevel, missingGems, missingEnchants
 			if unit and not DBM:issecretunit(unit) and UnitExists(unit) and UnitGUID(unit) == arg1 then
-				itemLevel = ScanGear(unit)
+				itemLevel, missingGems, missingEnchants = ScanGear(unit)
 			end
-			FinishInspect(activeInspect.token, itemLevel)
+			FinishInspect(activeInspect.token, itemLevel, missingGems, missingEnchants)
 		end
 	end
 end

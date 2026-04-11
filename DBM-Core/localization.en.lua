@@ -710,6 +710,8 @@ L.LAG_HEADER							= L.DBM.. " - Latency Results"
 L.DUR_HEADER							= L.DBM.. " - Durability Results"
 L.KEYSTONES_HEADER						= L.DBM.. " - Keystones"
 L.GEAR_HEADER							= L.DBM.. " - Gear Check Results"
+L.GEAR_MISSING_GEMS						= "Missing Gems"
+L.GEAR_MISSING_ENCHANTS					= "Missing Enchants"
 L.BREZ_HEADER							= "Battle Res"
 
 L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"

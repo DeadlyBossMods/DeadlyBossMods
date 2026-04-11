@@ -623,6 +623,8 @@ L.TIMER_RESPAWN		= "%s Wiedererscheinen"
 L.LAG_HEADER					= L.DBM.." - Latenzergebnisse"
 L.DUR_HEADER					= L.DBM.." - Haltbarkeitergebnisse"
 L.GEAR_HEADER					= L.DBM.. " - Ausrüstungsprüfung"
+L.GEAR_MISSING_GEMS			= "Fehlende Edelsteine"
+L.GEAR_MISSING_ENCHANTS		= "Fehlende Verzauberungen"
 --L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
 
 --L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"

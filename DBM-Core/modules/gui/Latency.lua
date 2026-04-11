@@ -106,7 +106,7 @@ titlePlayer.Keep = true
 titlePlayer:SetFontObject(GameFontNormalLarge)
 titlePlayer:SetText(PLAYER)
 titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
-titlePlayer:SetWidth(200)
+titlePlayer:SetWidth(120)
 
 local titleWorld = GetTextFrame()
 titleWorld.Keep = true
@@ -127,7 +127,7 @@ titleWorld:SetWidth(worldWidth)
 titleHome:SetWidth(homeWidth)
 
 -- Update main frame width
-child:SetWidth(200 + worldWidth + homeWidth + 8)
+child:SetWidth(120 + worldWidth + homeWidth + 8)
 frame:SetWidth(child:GetWidth() + 32)
 
 local function SortLag(v1, v2)
@@ -144,8 +144,9 @@ local function Update()
 	WipeTextFrames()
 
 	for i, v in ipairs(sortLag) do
-		local name = v.name
-		local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
+		local fullName = v.name
+		local name = DBM:GetShortServerName(fullName) or fullName
+		local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(fullName)]
 		if playerColor then
 			name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
 		end
@@ -155,7 +156,7 @@ local function Update()
 
 		textPlayer:SetText(name)
 		textPlayer:SetPoint("TOP", titlePlayer, "BOTTOM", 0, offset)
-		textPlayer:SetWidth(200)
+		textPlayer:SetWidth(120)
 
 		textWorld:SetText(v.worldlag or '?')
 		textWorld:SetPoint("TOP", titleWorld, "BOTTOM", 0, offset)

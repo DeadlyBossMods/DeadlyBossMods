@@ -316,9 +316,10 @@ function PartyGuildUpdate(table)
 	titleRating:SetWidth(mmax(75, titleRating.Text:GetStringWidth() + 20))
 
 	for i, v in ipairs(sortTable) do
-		local name = v.name
-		if v.specID or playerSpecs[name] then
-			local _, _, _, _, _, class = GetSpecializationInfoByID(v.specID or playerSpecs[name])
+		local fullName = v.name
+		local name = DBM:GetShortServerName(fullName) or fullName
+		if v.specID or playerSpecs[fullName] then
+			local _, _, _, _, _, class = GetSpecializationInfoByID(v.specID or playerSpecs[fullName])
 			local playerColor = RAID_CLASS_COLORS[class]
 			if playerColor then
 				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
@@ -328,7 +329,7 @@ function PartyGuildUpdate(table)
 		local offset = -((i - 1) * 14) - 4
 		local textPlayer, textLevel, textDungeon, textRating = GetTextFrame(), GetTextFrame(), GetTextFrame(), GetTextFrame()
 
-		textPlayer.Text:SetText(name:gsub("%-.*$", "*"))
+		textPlayer.Text:SetText(name)
 		textPlayer:SetPoint("TOP", titlePlayer, "BOTTOM", 0, offset)
 		textPlayer:SetWidth(120)
 		textPlayer:SetAttribute("type", "macro")

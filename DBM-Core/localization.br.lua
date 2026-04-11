@@ -674,6 +674,8 @@ L.LAG_HEADER						= L.DBM .. " - Resultados de latência"
 L.DUR_HEADER						= L.DBM .. " - Resultados de durabilidade"
 L.KEYSTONES_HEADER					= L.DBM.. " - Pedra-chaves"
 L.GEAR_HEADER						= L.DBM .. " - Resultados de equipamento"
+L.GEAR_MISSING_GEMS				= "Gemas faltando"
+L.GEAR_MISSING_ENCHANTS			= "Encantamentos faltando"
 L.BREZ_HEADER						= "Res em combate"
 
 L.OVERRIDE_ACTIVATED				= "As configurações substituídas foram ativadas para este encontro pelo RL"
