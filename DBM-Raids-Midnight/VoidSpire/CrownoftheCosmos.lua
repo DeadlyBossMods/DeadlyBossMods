@@ -129,6 +129,7 @@ local function resolveHeroicStage3Ambiguous(timer, lastResolvedType, lastResolve
 	return timerTable.default
 end
 
+---@param self DBMMod
 local function setFallback(self)
 	--Blizz API fallbacks
 	timerNullCoronaCD:SetTimeline(4)
@@ -171,6 +172,14 @@ local function setFallback(self)
 	timerStage2CD:SetTimeline(351)
 end
 
+---@param self DBMMod
+local function moriumIsTanked(self)
+	if self:IsTanking("player", "boss1", nil, true) then
+		specWarnDarkHand:Show()
+		specWarnDarkHand:Play("defensive")
+	end
+end
+
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self:TLResolveReset()
@@ -204,11 +213,8 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		if self:IsTank() then
-			specWarnDarkHand:Schedule(4, 1)
-			specWarnDarkHand:ScheduleVoice(4, "defensive")
-		end
 		--pre Schedule first 3 abilities that have ambigous timers
+		self:Schedule(4, moriumIsTanked, self)
 		timerDarkHandCD:Start(4, 1)
 		specWarnRavenousAbyss:Schedule(4, 1)
 		specWarnRavenousAbyss:ScheduleVoice(4, "watchstep")
@@ -700,10 +706,7 @@ do
 			elseif eventType == "silverstrikeArrow" then
 				warnSilverStrikeArrow:Show(eventCount)
 			elseif eventType == "darkHand" then
-				if self:IsTank() then
-					specWarnDarkHand:Show()
-					specWarnDarkHand:Play("defensive")
-				end
+				moriumIsTanked(self)
 			elseif eventType == "ravenousAbyss" then
 				specWarnRavenousAbyss:Show(eventCount)
 				specWarnRavenousAbyss:Play("watchstep")
@@ -720,7 +723,7 @@ do
 				specWarnCalloftheVoid:Show(eventCount)
 				specWarnCalloftheVoid:Play("mobsoon")
 			elseif eventType == "riftSlash" then
-				if self:IsTank() then
+				if self:IsTanking("player", "boss2", nil, true) then
 					specWarnRiftSlash:Show()
 					specWarnRiftSlash:Play("defensive")
 				end
