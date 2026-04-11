@@ -281,7 +281,7 @@ L.SLASHCMD_HELP				= {
 	"/dbm key: 执行大秘钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (也可使用: key, keys, keystone)",
 	"/dbm lag: 检测全团网络延时",
 	"/dbm durability: 检测全团装备耐久度",
-	"/dbm brez: 显示战斗复活计时器框架以供定位。",--AI translated (check me)
+	"/dbm brez: 显示战复计时器框架以供定位。",
 	"/dbm help2: 显示额外的/命令"
 }
 L.SLASHCMD_HELP2				= {
@@ -714,8 +714,6 @@ L.KEYSTONE_NAMES[227] = '卡下' -- Return to Karazhan: Lower
 L.KEYSTONE_NAMES[233] = '教堂' -- Cathedral of Eternal Night
 L.KEYSTONE_NAMES[234] = '卡上' -- Return to Karazhan: Upper
 L.KEYSTONE_NAMES[239] = '执政' -- Seat of the Triumvirate
-
--- S3大秘
 L.KEYSTONE_NAMES[378] = '赎罪' -- Halls of Atonement
 L.KEYSTONE_NAMES[391] = '天街' -- Tazavesh: Streets of Wonder
 L.KEYSTONE_NAMES[392] = '宏图' -- Tazavesh: So'leah's Gambit
@@ -724,6 +722,14 @@ L.KEYSTONE_NAMES[503] = '回响' -- Ara-Kara, City of Echoes
 L.KEYSTONE_NAMES[505] = '破晨' -- The Dawnbreaker
 L.KEYSTONE_NAMES[525] = '水闸' -- Operation Floodgate
 L.KEYSTONE_NAMES[542] = '生态' -- Eco-Dome Al'dani
+L.KEYSTONE_NAMES[161] = '通天' -- Skyreach
+L.KEYSTONE_NAMES[402] = '学院' -- Algeth'ar Academy
+L.KEYSTONE_NAMES[556] = '萨隆' -- Pit of Saron
+L.KEYSTONE_NAMES[557] = '风行' -- Windrunner Spire
+L.KEYSTONE_NAMES[558] = '魔导' -- Magister's Terrace
+L.KEYSTONE_NAMES[559] = '节点' -- Nexus-Point Xenas
+L.KEYSTONE_NAMES[560] = '迈萨拉' -- Maisara Caverns
+L.KEYSTONE_NAMES[583] = '执政' -- Seat of the Triumvirate
 
 -- Midnight jazz
 L.MN_TIMELINE_HEADER	= "你想使用游戏自带的计时条还是DBM的计时条？"
