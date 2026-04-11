@@ -184,6 +184,9 @@ function Durability:Show()
 	if DBM.Keystones then
 		DBM.Keystones:Hide()
 	end
+	if DBM.GearCheck then
+		DBM.GearCheck:Hide()
+	end
 	DBM.Latency:Hide()
 	LibDurability:RequestDurability()
 	if _G["DBM_GUI_OptionsFrame"] then
