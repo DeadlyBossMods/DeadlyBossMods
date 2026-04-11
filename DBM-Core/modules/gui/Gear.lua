@@ -205,6 +205,34 @@ local function ClearInspectQueue()
 	wipe(activeInspect)
 end
 
+local RequestNextInspect
+local Refresh
+
+--SUPER generic ilvl check for now.
+--Will be expanded in future with socket and enchant checks and cooperation with other addons via libraries.
+local function ScanGear(unit)
+	if not unit then
+		return
+	end
+	if DBM:issecretunit(unit) then
+		return
+	end
+	local averageItemLevel
+	if UnitIsUnit(unit, "player") then
+		local _, equipped = GetAverageItemLevel()
+		--Player returns decimal precision
+		averageItemLevel = RoundItemLevel(equipped)
+	else
+		if not (C_PaperDollInfo and C_PaperDollInfo.GetInspectItemLevel) then
+			return
+		end
+		averageItemLevel = C_PaperDollInfo.GetInspectItemLevel(unit)
+		--Unfortunately, this api does NOT return decimal precision
+--		averageItemLevel = RoundItemLevel(averageItemLevel)
+	end
+	return averageItemLevel
+end
+
 local function FinishInspect(token, itemLevel)
 	if not activeInspect.name then
 		return
@@ -214,7 +242,7 @@ local function FinishInspect(token, itemLevel)
 		ClearInspectPlayer()
 		if pendingRosterRefresh and frame:IsShown() then
 			pendingRosterRefresh = false
-			GearCheck:Refresh()
+			Refresh()
 		end
 		return
 	end
@@ -224,19 +252,19 @@ local function FinishInspect(token, itemLevel)
 	Update()
 	if pendingRosterRefresh and frame:IsShown() then
 		pendingRosterRefresh = false
-		GearCheck:Refresh()
+		Refresh()
 		return
 	end
 	if frame:IsShown() and #pendingInspects > 0 then
 		C_Timer.After(0.1, function()
 			if frame:IsShown() and not activeInspect.name then
-				GearCheck:RequestNextInspect()
+				RequestNextInspect()
 			end
 		end)
 	end
 end
 
-function GearCheck:RequestNextInspect()
+function RequestNextInspect()
 	if not frame:IsShown() or activeInspect.name then
 		return
 	end
@@ -271,7 +299,7 @@ local function SeedRaid()
 	local playerName = DBM:GetUnitFullName("player")
 	for name in pairs(DBM:GetRaidRoster()) do
 		if name == playerName then
-			SetPlayerGearState(name, GearCheck:ScanGear("player"), false, false)
+			SetPlayerGearState(name, ScanGear("player"), false, false)
 		else
 			local unit = DBM:GetRaidUnitId(name, true)
 			if unit and DBM:issecretunit(unit) then
@@ -284,15 +312,15 @@ local function SeedRaid()
 	end
 end
 
-function GearCheck:Refresh()
+function Refresh()
 	ClearInspectQueue()
 	SeedRaid()
 	Update()
-	self:RequestNextInspect()
+	RequestNextInspect()
 end
 
 refresh:SetScript("OnClick", function()
-	GearCheck:Refresh()
+	Refresh()
 end)
 
 local function OnEvent(_, event, arg1)
@@ -301,19 +329,19 @@ local function OnEvent(_, event, arg1)
 			if activeInspect.name then
 				pendingRosterRefresh = true
 			else
-				GearCheck:Refresh()
+				Refresh()
 			end
 		end
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		if frame:IsShown() and #pendingInspects > 0 and not activeInspect.name then
-			GearCheck:RequestNextInspect()
+			RequestNextInspect()
 		end
 	elseif event == "INSPECT_READY" then
 		if type(arg1) == "string" and arg1 == activeInspect.guid then
 			local unit = DBM:GetRaidUnitId(activeInspect.name, true)
 			local itemLevel
 			if unit and not DBM:issecretunit(unit) and UnitExists(unit) and UnitGUID(unit) == arg1 then
-				itemLevel = GearCheck:ScanGear(unit)
+				itemLevel = ScanGear(unit)
 			end
 			FinishInspect(activeInspect.token, itemLevel)
 		end
@@ -327,7 +355,7 @@ local function OnUpdate(_, elapsed)
 	end
 	inspectUpdateElapsed = 0
 	if frame:IsShown() and #pendingInspects > 0 and not activeInspect.name then
-		GearCheck:RequestNextInspect()
+		RequestNextInspect()
 	end
 end
 
@@ -341,31 +369,6 @@ frame:SetScript("OnHide", function()
 	inspectUpdateElapsed = 0
 	ClearInspectQueue()
 end)
-
---SUPER generic ilvl check for now.
---Will be expanded in future with socket and enchant checks and cooperation with other addons via libraries.
-function GearCheck:ScanGear(unit)
-	if not unit then
-		return
-	end
-	if DBM:issecretunit(unit) then
-		return
-	end
-	local averageItemLevel
-	if UnitIsUnit(unit, "player") then
-		local _, equipped = GetAverageItemLevel()
-		--Player returns decimal precision
-		averageItemLevel = RoundItemLevel(equipped)
-	else
-		if not (C_PaperDollInfo and C_PaperDollInfo.GetInspectItemLevel) then
-			return
-		end
-		averageItemLevel = C_PaperDollInfo.GetInspectItemLevel(unit)
-		--Unfortunately, this api does NOT return decimal precision
---		averageItemLevel = RoundItemLevel(averageItemLevel)
-	end
-	return averageItemLevel
-end
 
 function GearCheck:Show()
 	if DBM.Keystones then
@@ -388,7 +391,7 @@ function GearCheck:Show()
 	frame:SetScript("OnEvent", OnEvent)
 	frame:SetScript("OnUpdate", OnUpdate)
 	frame:Show()
-	self:Refresh()
+	Refresh()
 end
 
 function GearCheck:Hide()
