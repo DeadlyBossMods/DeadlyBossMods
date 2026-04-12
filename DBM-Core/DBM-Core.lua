@@ -349,6 +349,7 @@ DBM.DefaultOptions = {
 	ArrowPosX = 0,
 	ArrowPosY = -150,
 	ArrowPoint = "TOP",
+	GearPosition = {"RIGHT", -150, 0},
 	DurabilityPosition = {"RIGHT", -150, 0},
 	LatencyPosition = {"RIGHT", -150, 0},
 	KeystonesPosition = {"LEFT", 30, 0},
@@ -7101,6 +7102,7 @@ do
 		[2238] = 2519,--Fyrakk in Amirdrassil
 		[2529] = 3181,--Crown of the Cosmos
 		[1049] = 3181--Crown of the Cosmos
+		[1050] = 3183--Midnight Falls
 	}
 	---@param self DBM
 	local function checkOptions(self, id, mapID)
@@ -7460,7 +7462,13 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	--We have both units. No need to find unitID
 	if enemyUnitID then
 		--Check threat first
-		local tanking, status = UnitDetailedThreatSituation(playerUnitID, enemyUnitID)
+		local tanking, status
+		if private.isRetail then
+			--UnitDetailedThreatSituation is secret on retail even if you only read bool value
+			status = UnitThreatSituation(playerUnitID, enemyUnitID)
+		else
+			tanking, status = UnitDetailedThreatSituation(playerUnitID, enemyUnitID)
+		end
 		if (not onlyS3 and tanking) or (status == 3) then
 			return true
 		end
@@ -8087,7 +8095,7 @@ function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 	end
 end
 
----@param revision number|string Either a number in the format "202101010000" (year, month, day, hour, minute) or string "20260407044947" to be auto set by packager
+---@param revision number|string Either a number in the format "202101010000" (year, month, day, hour, minute) or string "@file-date-integer@" to be auto set by packager
 function bossModPrototype:SetRevision(revision)
 	revision = parseCurseDate(revision or "")
 	if not revision or type(revision) == "string" then
