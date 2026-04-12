@@ -109,7 +109,7 @@ CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
 
 local scroll = CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
 scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
-scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 5)
+scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
 
 local child = CreateFrame("Frame", nil, scroll)
 scroll:SetScrollChild(child)
@@ -194,9 +194,9 @@ function frame:ShowTab(tab)
 	tabs[tab]()
 end
 
-local refresh = CreateFrame("Button", nil, child)
+local refresh = CreateFrame("Button", nil, frame)
 refresh:SetSize(20, 20)
-refresh:SetPoint("BOTTOMLEFT", child)
+refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
 refresh:SetText("REFRESH")
 refresh:Show()
 refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
