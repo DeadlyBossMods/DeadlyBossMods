@@ -87,6 +87,7 @@ DBM-HudMap.lua
 DBM-Nameplate.lua
 
 # GUI Features
+modules\gui\Gear.lua
 modules\gui\Latency.lua
 modules\gui\Durability.lua
 modules\gui\Keystones.lua

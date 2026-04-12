@@ -579,7 +579,7 @@ L.AUTO_INFO_FRAME_OPTION_TEXT	= "Zeige Infofenster für $spell:%s"
 L.AUTO_INFO_FRAME_OPTION_TEXT2	= "Zeige Infofenster für Kampfübersicht"
 L.AUTO_INFO_FRAME_OPTION_TEXT3	= "Zeige Infofenster für $spell:%s (falls der Schwellwert von %%s übertroffen ist)"
 L.AUTO_READY_CHECK_OPTION_TEXT	= "Spiele \"Bereitschaftscheck\"-Sound, wenn der Boss angegriffen wird (auch wenn er nicht als Ziel gesetzt ist)"
-L.AUTO_SPEEDCLEAR_OPTION_TEXT	= "Zeige Timer für den schnellsten Clear von %s"
+L.AUTO_SPEEDCLEAR_OPTION_TEXT	= "Zeige Timer für den schnellsten Clear dieser Zone"
 --L.AUTO_PRIVATEAURA_OPTION_TEXT= "Play DBM sound alerts for $spell:%s private auras on this fight."
 
 -- New special warnings
@@ -622,6 +622,9 @@ L.TIMER_RESPAWN		= "%s Wiedererscheinen"
 
 L.LAG_HEADER					= L.DBM.." - Latenzergebnisse"
 L.DUR_HEADER					= L.DBM.." - Haltbarkeitergebnisse"
+L.GEAR_HEADER					= L.DBM.. " - Ausrüstungsprüfung"
+L.GEAR_MISSING_GEMS			= "Fehlende Edelsteine"
+L.GEAR_MISSING_ENCHANTS		= "Fehlende Verzauberungen"
 --L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
 
 --L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"
