@@ -16,6 +16,7 @@
 --    * ruRU: TOM_RUS					https://curseforge.com/profiles/TOM_RUS/
 --    * zhTW: Whyv						ultrashining@gmail.com
 --    * koKR: Elnarfim					---
+--	  * esES, esMX, frFR, ptBR: Anon	---
 --    * zhCN: Mini Dragon				projecteurs@gmail.com
 --
 --
@@ -23,6 +24,7 @@
 --    * Arta
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --    * nBlueWiz (a lot of previous fixes in the koKR localization as well as boss mod work) Contact: everfinale@gmail.com
+-- 	  * Anon (localization for esES, esMX, frFR, ptBR and vanilla boss mod work)
 --
 ---@class DBMCoreNamespace
 local private = select(2, ...)
@@ -115,6 +117,7 @@ if playerClass == "MAGE" or playerClass == "WARLOCK" or playerClass == "ROGUE" o
 	DBM_UseDualProfile = false
 end
 DBM_CharSavedRevision = 2
+local locale = GetLocale()
 
 DBM.DefaultOptions = {
 	WarningColors = {
@@ -130,12 +133,48 @@ DBM.DefaultOptions = {
 	SpecialWarningSound4 = not private.isClassic and 552035 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\HoodWolfTransformPlayer01.ogg",--"Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg"
 	SpecialWarningSound5 = 554236,--"Sound\\Creature\\Loathstare\\Loa_Naxx_Aggro02.ogg"
 	ModelSoundValue = "Short",
-	CountdownVoice = "Corsica",
-	CountdownVoice2 = "Kolt",
-	CountdownVoice3 = "Smooth",
+	CountdownVoice = ((locale == "enUS" or locale == "enGB") and "Corsica") or
+					(locale == "deDE" and "Karl") or
+					(locale == "esES" and "Mateo") or
+					(locale == "esMX" and "Juan") or
+					(locale == "frFR" and "Jérémy") or
+					(locale == "koKR" and "도현원") or
+					(locale == "ptBR" and "Anshlun") or
+					(locale == "ruRU" and "Александр") or
+					(locale == "zhCN" and "瑞辰") or
+					(locale == "zhCN" and "浩"),
+	CountdownVoice2 = ((locale == "enUS" or locale == "enGB") and "Kolt") or
+					(locale == "deDE" and "Franziska") or
+					(locale == "esES" and "Fernanda") or
+					(locale == "esMX" and "Isabel") or
+					(locale == "frFR" and "Élise") or
+					(locale == "koKR" and "하민지") or
+					(locale == "ptBR" and "Neryssa") or
+					(locale == "ruRU" and "Надежда") or
+					(locale == "zhCN" and "纯如") or
+					(locale == "zhCN" and "玲"),
+	CountdownVoice3 = ((locale == "enUS" or locale == "enGB") and "Smooth") or
+					(locale == "deDE" and "Franziska") or
+					(locale == "esES" and "Fernanda") or
+					(locale == "esMX" and "Isabel") or
+					(locale == "frFR" and "Élise") or
+					(locale == "koKR" and "하민지") or
+					(locale == "ptBR" and "Neryssa") or
+					(locale == "ruRU" and "Надежда") or
+					(locale == "zhCN" and "纯如") or
+					(locale == "zhCN" and "玲"),
 	CountSize = 5,
-	PullVoice = "Corsica",
-	ChosenVoicePack2 = (GetLocale() == "enUS" or GetLocale() == "enGB") and "VEM" or "None",
+	PullVoice = ((locale == "enUS" or locale == "enGB") and "Corsica") or
+					(locale == "deDE" and "Karl") or
+					(locale == "esES" and "Mateo") or
+					(locale == "esMX" and "Juan") or
+					(locale == "frFR" and "Jérémy") or
+					(locale == "koKR" and "도현원") or
+					(locale == "ptBR" and "Anshlun") or
+					(locale == "ruRU" and "Александр") or
+					(locale == "zhCN" and "瑞辰") or
+					(locale == "zhCN" and "浩"),
+	ChosenVoicePack2 = (locale == "enUS" or locale == "enGB") and "VEM" or "None",
 	VPReplacesAnnounce = true,
 	VPReplacesSADefault = true,
 	EventSoundVictory2 = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",
@@ -310,7 +349,6 @@ DBM.DefaultOptions = {
 	ArrowPosX = 0,
 	ArrowPosY = -150,
 	ArrowPoint = "TOP",
-	GearPosition = {"RIGHT", -150, 0},
 	DurabilityPosition = {"RIGHT", -150, 0},
 	LatencyPosition = {"RIGHT", -150, 0},
 	KeystonesPosition = {"LEFT", 30, 0},
@@ -7062,8 +7100,7 @@ do
 	local requiresRecentKill = {
 		[2238] = 2519,--Fyrakk in Amirdrassil
 		[2529] = 3181,--Crown of the Cosmos
-		[1049] = 3181,--Crown of the Cosmos
-		[1050] = 3183--Midnight Falls
+		[1049] = 3181--Crown of the Cosmos
 	}
 	---@param self DBM
 	local function checkOptions(self, id, mapID)
@@ -7423,13 +7460,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	--We have both units. No need to find unitID
 	if enemyUnitID then
 		--Check threat first
-		local tanking, status
-		if private.isRetail then
-			--UnitDetailedThreatSituation is secret on retail even if you only read bool value
-			status = UnitThreatSituation(playerUnitID, enemyUnitID)
-		else
-			tanking, status = UnitDetailedThreatSituation(playerUnitID, enemyUnitID)
-		end
+		local tanking, status = UnitDetailedThreatSituation(playerUnitID, enemyUnitID)
 		if (not onlyS3 and tanking) or (status == 3) then
 			return true
 		end
@@ -8056,7 +8087,7 @@ function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 	end
 end
 
----@param revision number|string Either a number in the format "202101010000" (year, month, day, hour, minute) or string "@file-date-integer@" to be auto set by packager
+---@param revision number|string Either a number in the format "202101010000" (year, month, day, hour, minute) or string "20260407044947" to be auto set by packager
 function bossModPrototype:SetRevision(revision)
 	revision = parseCurseDate(revision or "")
 	if not revision or type(revision) == "string" then
