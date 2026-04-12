@@ -26,9 +26,16 @@ end)
 --TODO, when buffs is added, anchor keystones to buffs instead of durability.
 --we'll want it to be last button so it's easier to hide on classic
 if DBM:IsRetail() then
+	local gear = area:CreateButton(L.Tools_GearCheck, 120, 30)
+	gear.myheight = 0
+	gear:SetPoint("LEFT", durability, "RIGHT", 10, 0)
+	gear:SetScript("OnClick", function()
+		DBM.GearCheck:Show()
+	end)
+
 	local keystone = area:CreateButton(L.Tools_KeystoneCheck, 120, 30)
 	keystone.myheight = 0
-	keystone:SetPoint("LEFT", durability, "RIGHT", 10, 0)
+	keystone:SetPoint("LEFT", gear, "RIGHT", 10, 0)
 	keystone:SetScript("OnClick", function()
 		DBM.Keystones:Show()
 	end)

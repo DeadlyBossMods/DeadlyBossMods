@@ -421,7 +421,7 @@ function bossModPrototype:AddSpeedClearOption(name, default)
 	self.Options["SpeedClearTimer"] = (default == nil) or default
 	if self.noHardcodedOptions then return end
 	self:SetOptionCategory("SpeedClearTimer", "timer")
-	self.localization.options["SpeedClearTimer"] = L.AUTO_SPEEDCLEAR_OPTION_TEXT:format(name)
+	self.localization.options["SpeedClearTimer"] = L.AUTO_SPEEDCLEAR_OPTION_TEXT
 end
 
 -- FIXME: this function does not reset any settings to default if you remove an option in a later revision and a user has selected this option in an earlier revision were it still was available

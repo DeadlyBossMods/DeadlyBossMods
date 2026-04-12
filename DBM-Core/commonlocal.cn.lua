@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
-----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20250106
+----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20260411
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_COMMON_L then DBM_COMMON_L = {} end
@@ -8,9 +8,9 @@ if not DBM_COMMON_L then DBM_COMMON_L = {} end
 local CL = DBM_COMMON_L
 
 -- 基本
---CL.ALPHABETICAL                   = "Alphabetical"
---CL.DURATION                       = "Duration"
---CL.SORTING                        = "Sorting"
+CL.ALPHABETICAL						= "按字母"
+CL.DURATION							= "持续时间"
+CL.SORTING							= "排序"
 CL.NONE								= "无"
 CL.RANDOM							= "随机"
 CL.UNKNOWN							= "未知"
@@ -90,9 +90,12 @@ CL.GROUPSOAK						= "吸收"
 CL.GROUPSOAKS						= "吸收"
 CL.HEALABSORB						= "治疗吸收"
 CL.HEALABSORBS						= "治疗吸收"
+CL.INTERRUPT						= "打断"
+CL.INTERRUPTS						= "打断"
 CL.DODGES							= "躲闪"
 CL.POOL								= "池子"
 CL.POOLS							= "池子"
+CL.DEBUFF							= "Debuff"
 CL.DEBUFFS							= "Debuffs"
 CL.DISPELS 							= "驱散"
 CL.PUSHBACK							= "推回"
@@ -104,6 +107,8 @@ CL.SPREADDEBUFF						= "分散"
 CL.SPREADDEBUFFS					= "分散"
 CL.LASER							= "射线"
 CL.LASERS							= "射线"
+CL.LINE								= "连线"
+CL.LINES							= "连线"
 CL.RIFT								= "裂隙"
 CL.RIFTS							= "裂隙"
 CL.TRAPS							= "陷阱"
@@ -127,5 +132,5 @@ CL.RED		= "红"
 CL.BRONZE	= "黄"
 
 -- Conjunctions, used to join words, e.g., "Spell1 *and* Spell2 on you!"
-CL.AND		= "以及"
+CL.AND		= "和"
 CL.OR		= "或"
