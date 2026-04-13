@@ -7336,8 +7336,13 @@ do
 		end
 		if not private.isRetail and not private.isMop then
 			if private.specRoleTable[currentSpecID]["Tank"] then
-				-- 17 defensive stance, 5487 bear form, 9634 dire bear, 25780 righteous fury
+				-- 18 defensive stance, 5487 bear form, 9634 dire bear, 25780 righteous fury
 				if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff("player", 5487, 9634) then
+					playerIsTank = true
+					return true
+				end
+				--Flagged as one of main tanks
+				if GetPartyAssignment("MAINTANK", "player", true) then
 					playerIsTank = true
 					return true
 				end
@@ -7354,6 +7359,7 @@ end
 function bossModPrototype:IsDps(uId)
 	if uId then--External unit call.
 		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
+		--This check is VERY problematic in classic if raid doesn't set main tanks correctly cause it'll also flag tanks as dps without question
 		return (private.isRetail or private.isMop) and UnitGroupRolesAssigned(uId) == "DAMAGER" or not GetPartyAssignment("MAINTANK", uId, true)
 	end
 	if (not currentSpecID or currentSpecID == 0) then

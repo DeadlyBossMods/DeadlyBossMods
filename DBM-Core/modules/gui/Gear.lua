@@ -39,16 +39,16 @@ CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
 
 local scroll = CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
 scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
-scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 5)
+scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
 
 local child = CreateFrame("Frame", nil, scroll)
 scroll:SetScrollChild(child)
 child:SetSize(scroll:GetWidth(), scroll:GetHeight())
 child:SetPoint("LEFT")
 
-local refresh = CreateFrame("Button", nil, child)
+local refresh = CreateFrame("Button", nil, frame)
 refresh:SetSize(20, 20)
-refresh:SetPoint("BOTTOMLEFT", child)
+refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
 refresh:SetText("REFRESH")
 refresh:Show()
 refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
@@ -57,11 +57,17 @@ refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
 
 local spareTextFrames, usedTextFrames = {}, {}
 local pendingInspects = {}
+local inspectRetryCounts = {}
+local inspectRetryDeadlines = {}
+local knownRosterMembers = {}
 local activeInspect = {}
 local inspectToken = 0
 local inspectUpdateElapsed = 0
 local pendingRosterRefresh = false
 local sortGear = {}
+local inspectTimeoutSeconds = 4
+local inspectMaxRetries = 6
+local inspectRetryWindowSeconds = 30
 local validAnchorPoints = {
 	TOP = true,
 	BOTTOM = true,
@@ -238,18 +244,50 @@ local function Update()
 		textMissingEnchants:SetWidth(missingEnchantsWidth)
 	end
 
-	child:SetHeight(mmax(300, 50 + #sortGear * 14))
+	local scrollHeight = scroll:GetHeight()
+	child:SetHeight(mmax(scrollHeight, 50 + #sortGear * 14))
+	scroll:UpdateScrollChildRect()
 end
 
 local function ClearInspectQueue()
 	inspectToken = inspectToken + 1
 	ClearInspectPlayer()
 	wipe(pendingInspects)
+	wipe(inspectRetryCounts)
+	wipe(inspectRetryDeadlines)
+	wipe(knownRosterMembers)
 	wipe(activeInspect)
+end
+
+local function MarkInspectUnavailable(name)
+	inspectRetryCounts[name] = nil
+	inspectRetryDeadlines[name] = nil
+	SetPlayerGearState(name, nil, nil, nil, false, true)
+end
+
+local function QueueInspectRetry(name)
+	local now = GetTime()
+	local deadline = inspectRetryDeadlines[name]
+	if not deadline then
+		deadline = now + inspectRetryWindowSeconds
+		inspectRetryDeadlines[name] = deadline
+	end
+	local retryCount = (inspectRetryCounts[name] or 0) + 1
+	if retryCount <= inspectMaxRetries and now <= deadline then
+		inspectRetryCounts[name] = retryCount
+		SetPlayerGearState(name, nil, nil, nil, true, false)
+		tinsert(pendingInspects, name)
+		return true
+	end
+	inspectRetryCounts[name] = nil
+	inspectRetryDeadlines[name] = nil
+	SetPlayerGearState(name, nil, nil, nil, false, true)
+	return false
 end
 
 local RequestNextInspect
 local Refresh
+local HandleRosterUpdate
 
 --Only valid for midnight. No classic flavors supported since I don't play those
 local enchantableSlots = {
@@ -344,17 +382,23 @@ local function FinishInspect(token, itemLevel, missingGems, missingEnchants)
 		ClearInspectPlayer()
 		if pendingRosterRefresh and frame:IsShown() then
 			pendingRosterRefresh = false
-			Refresh()
+			HandleRosterUpdate()
 		end
 		return
 	end
-	SetPlayerGearState(activeInspect.name, itemLevel, missingGems, missingEnchants, false, type(itemLevel) ~= "number")
+	if type(itemLevel) ~= "number" then
+		QueueInspectRetry(activeInspect.name)
+	else
+		inspectRetryCounts[activeInspect.name] = nil
+		inspectRetryDeadlines[activeInspect.name] = nil
+		SetPlayerGearState(activeInspect.name, itemLevel, missingGems, missingEnchants, false, false)
+	end
 	wipe(activeInspect)
 	ClearInspectPlayer()
 	Update()
 	if pendingRosterRefresh and frame:IsShown() then
 		pendingRosterRefresh = false
-		Refresh()
+		HandleRosterUpdate()
 		return
 	end
 	if frame:IsShown() and #pendingInspects > 0 then
@@ -373,45 +417,110 @@ function RequestNextInspect()
 	if InCombatLockdown() or UnitAffectingCombat("player") or (InspectFrame and InspectFrame:IsShown()) then
 		return
 	end
-	while #pendingInspects > 0 do
+	local inspectAttemptsThisPass = #pendingInspects
+	for _ = 1, inspectAttemptsThisPass do
+		if #pendingInspects == 0 then
+			break
+		end
 		local name = tremove(pendingInspects, 1)
 		local unit = DBM:GetRaidUnitId(name, true)
-		if unit and not DBM:issecretunit(unit) and UnitExists(unit) and UnitIsConnected(unit) and not UnitIsUnit(unit, "player") and CheckInteractDistance(unit, 1) and CanInspect(unit) then
-			local guid = UnitGUID(unit)
-			if guid then
-				activeInspect.name = name
-				activeInspect.guid = guid
-				activeInspect.token = inspectToken
-				NotifyInspect(unit)
-				local token = inspectToken
-				C_Timer.After(2, function()
-					if activeInspect.name == name and activeInspect.guid == guid and activeInspect.token == token then
-						FinishInspect(token)
-					end
-				end)
-				return
+		if unit and DBM:issecretunit(unit) then
+			MarkInspectUnavailable(name)
+		else
+			local canInspect = unit and UnitExists(unit) and UnitIsConnected(unit) and not UnitIsUnit(unit, "player") and CheckInteractDistance(unit, 1) and CanInspect(unit)
+			if canInspect then
+				local guid = UnitGUID(unit)
+				if guid then
+					activeInspect.name = name
+					activeInspect.guid = guid
+					activeInspect.token = inspectToken
+					NotifyInspect(unit)
+					local token = inspectToken
+					C_Timer.After(inspectTimeoutSeconds, function()
+						if activeInspect.name == name and activeInspect.guid == guid and activeInspect.token == token then
+							FinishInspect(token)
+						end
+					end)
+					return
+				end
 			end
+			MarkInspectUnavailable(name)
 		end
-		SetPlayerGearState(name, nil, nil, nil, false, true)
 	end
 	Update()
 end
 
 local function SeedRaid()
 	local playerName = DBM:GetUnitFullName("player")
+	wipe(knownRosterMembers)
 	for name in pairs(DBM:GetRaidRoster()) do
+		knownRosterMembers[name] = true
 		if name == playerName then
 			SetPlayerGearState(name, ScanGear("player"))
 		else
 			local unit = DBM:GetRaidUnitId(name, true)
 			if unit and DBM:issecretunit(unit) then
-				SetPlayerGearState(name, nil, nil, nil, false, true)
+				MarkInspectUnavailable(name)
 			else
 				SetPlayerGearState(name, nil, nil, nil, true, false)
 				tinsert(pendingInspects, name)
 			end
 		end
 	end
+end
+
+function HandleRosterUpdate()
+	local roster = DBM:GetRaidRoster()
+	local playerName = DBM:GetUnitFullName("player")
+	local currentMembers = {}
+
+	for i = #pendingInspects, 1, -1 do
+		if not roster[pendingInspects[i]] then
+			tremove(pendingInspects, i)
+		end
+	end
+
+	for name in next, inspectRetryCounts do
+		if not roster[name] then
+			inspectRetryCounts[name] = nil
+			inspectRetryDeadlines[name] = nil
+		end
+	end
+	for name in next, inspectRetryDeadlines do
+		if not roster[name] then
+			inspectRetryDeadlines[name] = nil
+		end
+	end
+
+	if activeInspect.name and not roster[activeInspect.name] then
+		wipe(activeInspect)
+		ClearInspectPlayer()
+	end
+
+	for name in pairs(roster) do
+		currentMembers[name] = true
+		if not knownRosterMembers[name] then
+			if name == playerName then
+				SetPlayerGearState(name, ScanGear("player"))
+			else
+				local unit = DBM:GetRaidUnitId(name, true)
+				if unit and DBM:issecretunit(unit) then
+					MarkInspectUnavailable(name)
+				else
+					SetPlayerGearState(name, nil, nil, nil, true, false)
+					tinsert(pendingInspects, name)
+				end
+			end
+		end
+	end
+
+	wipe(knownRosterMembers)
+	for name in pairs(currentMembers) do
+		knownRosterMembers[name] = true
+	end
+
+	Update()
+	RequestNextInspect()
 end
 
 function Refresh()
@@ -431,7 +540,7 @@ local function OnEvent(_, event, arg1)
 			if activeInspect.name then
 				pendingRosterRefresh = true
 			else
-				Refresh()
+				HandleRosterUpdate()
 			end
 		end
 	elseif event == "PLAYER_REGEN_ENABLED" then
