@@ -558,7 +558,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 			[750] = { --Feral Druid
 				["Healer"] = false,
 				["Dps"] = true,
-				["Tank"] = DBMExtraGlobal:IsSpellKnown(57880) and true or false,--uses same assumption as libspec, if Natural Reaction is rank 2 you're a tank
+				["Tank"] = DBMExtraGlobal:IsSpellKnown(57880),--uses same assumption as libspec, if Natural Reaction is rank 2 you're a tank
 				["Melee"] = true,
 				["MeleeDps"] = true,
 				["Physical"] = true,
@@ -745,7 +745,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 			},
 			["WARRIOR1"] = {	--Arms Warrior
 				["Dps"] = true,
-				["Tank"] = private.isClassic and DBMExtraGlobal:IsSpellKnown(12975) and true or false,
+				["Tank"] = private.isClassic and DBMExtraGlobal:IsSpellKnown(12975) or false,
 				["Melee"] = true,
 				["MeleeDps"] = true,
 				["Physical"] = true,
@@ -772,7 +772,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 			["DRUID2"] = { --Feral Druid
 				["Healer"] = private.isClassic and true or false,
 				["Dps"] = true,
-				["Tank"] = DBMExtraGlobal:IsSpellKnown(23922) and true or private.isClassic and true or false,--Only sets true if Nuturing Instinct is learned for non vanilla
+				["Tank"] = private.isClassic and true or DBMExtraGlobal:IsSpellKnown(23922),--Only sets true if Nuturing Instinct is learned for non vanilla
 				["Melee"] = true,
 				["MeleeDps"] = true,
 				["Physical"] = true,
