@@ -497,10 +497,19 @@ do
 					self:TLResolvePush("interruptingTremor", timer)
 				end
 			elseif timer == 27 or timer == 44 or timer == 45 then--Null Corona
+				if timer == 27 then
+					--Blizzard timer is wrong here. We need to adjust it
+					timerExact = 25.5
+				end
 				timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
 				self:TLResolvePush("nullCorona", timer)
 			elseif timer == 28 or timer == 29 or timer == 31 or timer == 32 then--Grasp of Emptiness
-				timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+				local count = self:TLCountStart(eventID, "grasp", "graspofEmptynessCount")
+				if count == 5 and timer == 28 then
+					--Blizzard timer is wrong here. We need to adjust it
+					timerExact = 23.5
+				end
+				timerGraspofEmptynessCD:TLStart(timerExact, eventID, count)
 				self:TLResolvePush("grasp", timer)
 			elseif timer == 39 then--Void Expulsion
 				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
