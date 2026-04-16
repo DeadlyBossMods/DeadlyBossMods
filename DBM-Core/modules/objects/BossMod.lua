@@ -1080,6 +1080,8 @@ end
 --  Private/Secret API Methods  --
 ----------------------------------
 do
+	local wowToC = DBM:GetTOC()
+
 	-- Helper function to register a private aura sound for a single spell ID
 	---@param self DBMMod
 	---@param optionId number
@@ -1238,6 +1240,7 @@ do
 	---Refresh currently active private aura sounds for this mod using the player's current zone.
 	---@return boolean refreshed Returns false if the refresh could not be performed safely.
 	function bossModPrototype:RefreshPrivateAuraSounds()
+		--Restriction must remain because adding sounds still combat restricted
 		if InCombatLockdown() then
 			return false
 		end
@@ -1250,7 +1253,9 @@ do
 	end
 
 	function bossModPrototype:DisablePrivateAuraSounds()
-		if InCombatLockdown() then
+		--Remove when 12.0.5 is live
+		--Removal doesn't have same restrictions as adding (allowed in combat)
+		if InCombatLockdown() and wowToC < 120005 then
 			DBM:Debug("Attempting to unregister private aura sounds for mod " .. self.id .. " failed due to combat restriction. This unregister will be deferred.", 2)
 			return
 		end

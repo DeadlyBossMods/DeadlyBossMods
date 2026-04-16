@@ -199,6 +199,7 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
                 parent = self.PAStackFrames[unit][auraIndex],
                 showCountdownFrame = false,
                 showCountdownNumbers = false,
+				isContainer = false,
                 iconInfo = {
                     iconAnchor = {
                         point = "BOTTOMRIGHT",
@@ -451,13 +452,16 @@ function PrivateAuras:RegisterAllUnits()
 end
 
 do
+	local wowToC = DBM:GetTOC()
 	local function IsInValidInstance()
 		local inInstance, instanceType = IsInInstance()
 		return inInstance and instanceType ~= "pvp" and instanceType ~= "arena"
 	end
 
 	function PrivateAuras:UpdatePrivateAuraAnchors()
-		if InCombatLockdown() then
+		--Remove after 12.0.5 is launched in all regions
+		--Combat restriction is removed in that patch
+		if InCombatLockdown() and wowToC < 120005 then
 			return false
 		end
 		if PAAnchorsRegistered then
