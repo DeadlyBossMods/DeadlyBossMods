@@ -52,7 +52,15 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 		end
 	end
 	if not self:AntiSpam(0.5, "ENCOUNTER_WARNING") then return end--Designers can't be assed to make sure event isn't buggy and spammy so we're forced to hard throttle
-	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
+	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then
+		--Special cases where blizz warning is only warning possible (ie spell doesn't have timeline event)
+		--For these, we have mod allow next warning through as a one time exception
+		if self.Options.BlizzAPIAllowOnce then
+			self.Options.BlizzAPIAllowOnce = false
+		else
+			return
+		end
+	end--Set by modules, not core options to filter blizz events for hard coded mods
 	if self.Options.HideDBMWarnings then return end
 	local iconFileID = encounterWarningInfo.iconFileID
 	--Non secrets

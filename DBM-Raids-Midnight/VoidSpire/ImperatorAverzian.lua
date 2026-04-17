@@ -188,6 +188,16 @@ do
 				next80IsVoidMark = false
 			else
 				timerUmbralCollapseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
+				if not timerUmbralCollapseCD:IsBuggedEventID(eventID) then--We haven't seen the bugged 80 yet
+					--Currently, blizzard has a bug where the 2nd umbral timer that starts for the fight (first 80 second timer)
+					--immediately cancels itself with a state of 2, despite fact the timer is actually accurate.
+					timerUmbralCollapseCD:SetBuggedEventID(eventID)
+					--Hard schedule alert here since blizzard is going to finish their own timer due to a bug on their end
+					specWarnUmbralCollapse:Schedule(80, 2)
+					specWarnUmbralCollapse:ScheduleVoice(80, "gathershare")
+					timerUmbralCollapseCD:Stop()
+					timerUmbralCollapseCD:Start(80, self.vb.CollapseCount+1)
+				end
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			if not DBM.Options.DebugMode then
