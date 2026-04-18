@@ -227,7 +227,7 @@ do
 		elseif timer == 8 then--Corrupted Devastation opener before mixed 12s
 			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			next12IsDevastation = true
-		elseif timer == 12 or timer == 2 then--Can be Corrupted Devastation or Caustic Phlegm
+		elseif timer == 12 then--Can be Corrupted Devastation or Caustic Phlegm
 			if next12IsDevastation then
 				timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 				next12IsDevastation = false
@@ -235,6 +235,9 @@ do
 				timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				next12IsDevastation = true
 			end
+		elseif timer == 2 then
+			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			next12IsDevastation = false
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
 			--30 is max time, but when all adds die, 30 is canceled and replaced with 1 second timer
 			startDiveTimer(self, timer, timerExact, eventID)
@@ -308,6 +311,9 @@ do
 				timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				next12IsDevastation = true
 			end
+		elseif timer == 2 then
+			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			next12IsDevastation = false
 		elseif timer == 30 or timer == 1 then--Ravenous Dive (30s max, 1s early-kill replacement when adds die early)
 			startDiveTimer(self, timer, timerExact, eventID)
 		elseif timer == 10 then--Stage Two (phase 2 transition marker)
@@ -380,6 +386,9 @@ do
 				timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				next12IsDevastation = true
 			end
+		elseif timer == 2 then
+			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			next12IsDevastation = false
 		elseif timer == 20 or timer == 1 then--Ravenous Dive (20s base on Mythic, 1s when adds die early)
 			startDiveTimer(self, timer, timerExact, eventID)
 		else--Reached end of chain without finding a valid timer

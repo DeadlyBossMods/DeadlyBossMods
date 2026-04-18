@@ -86,12 +86,21 @@ mod.vb.aspectoftheEndCount = 0
 mod.vb.graspofEmptynessCount = 0
 mod.vb.devouringCosmosCount = 0
 mod.vb.riftSlashCount = 0
+mod.vb.cosmicPortalCount = 0
 local badStateDetected = false
 local stage2p5Seen, stage3Recovered = false, false
 local stage2TwentyCount = 0
 local heroicStage2InitialRiftSeen = false
+local mythicStage1SAOpenerSeen = false
 local stage1FortyEightCount = 0
 local lastTLEvent = 0
+local mythicStage2RiftSimulacrumSeen = false
+local mythicStage2VoidstalkerOpenerDone = false
+local mythicStage2SixCount = 0
+local mythicStage2FourCount = 0
+local mythicStage2TwentyFiveCount = 0
+local mythicStage1FortyCount = 0
+local mythicStage3RiftSimulacrumSeen = false
 
 --Heroic Stage 3 disambiguation micro-table built from CrownWipe5.
 --Key format: "<lastResolvedType>:<lastResolvedRoundedTimer>" -> current eventType.
@@ -186,8 +195,16 @@ function mod:OnLimitedCombatStart()
 	stage2p5Seen, stage3Recovered = false, false
 	stage2TwentyCount = 0
 	heroicStage2InitialRiftSeen = false
+	mythicStage1SAOpenerSeen = false
 	stage1FortyEightCount = 0
+	mythicStage1FortyCount = 0
 	lastTLEvent = 0
+	mythicStage2RiftSimulacrumSeen = false
+	mythicStage2VoidstalkerOpenerDone = false
+	mythicStage2SixCount = 0
+	mythicStage2FourCount = 0
+	mythicStage2TwentyFiveCount = 0
+	mythicStage3RiftSimulacrumSeen = false
 	self.vb.coronaCount = 1
 	self.vb.expulsionCount = 1
 	self.vb.voidExpulsionCount = 1
@@ -205,9 +222,10 @@ function mod:OnLimitedCombatStart()
 	self.vb.graspofEmptynessCount = 1
 	self.vb.devouringCosmosCount = 1
 	self.vb.riftSlashCount = 1
+	self.vb.cosmicPortalCount = 1
 	self:SetStage(1)
 
-	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic()) and not badStateDetected then
+	if DBM.Options.HardcodedTimer and not self:IsStory() and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -242,7 +260,15 @@ function mod:OnCombatEnd()
 	stage2p5Seen, stage3Recovered = false, false
 	stage2TwentyCount = 0
 	heroicStage2InitialRiftSeen = false
+	mythicStage1SAOpenerSeen = false
 	stage1FortyEightCount = 0
+	mythicStage1FortyCount = 0
+	mythicStage2RiftSimulacrumSeen = false
+	mythicStage2VoidstalkerOpenerDone = false
+	mythicStage2SixCount = 0
+	mythicStage2FourCount = 0
+	mythicStage2TwentyFiveCount = 0
+	mythicStage3RiftSimulacrumSeen = false
 	self:UnregisterShortTermEvents()
 end
 
@@ -672,6 +698,232 @@ do
 		end
 	end
 
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersMythic(self, timer, timerExact, eventID)
+		local stage = self:GetStage()
+		if stage == 1 then
+			--Stage 1 Mythic (Week 5 validated from CrownWipe1/2)
+			--Opener 4s casts (Dark Hand, Grasp, Interrupting Tremor, Ravenous Abyss) are pre-scheduled.
+			if timer == 4 then
+				return
+			elseif timer == 103 or timer == 104 then
+				--Long-duration Grasp of Emptiness passive, skip
+				return
+			elseif timer == 2 then
+				--Intermission 1 starts with Silverstrike Barrage at ~1.5s (rounded 2).
+				--NC(1) also fires as timer 2 (exact 1.666) at t=0 but prior t=0 events
+				--have already updated lastTLEvent so the gap check correctly fails.
+				if (timerExact and timerExact < 1.75) and (GetTime() - lastTLEvent > 10) then
+					self:SetStage(1.5)
+					timerSilverstrikeBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
+				else
+					timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 1 then
+				--Null Corona end-of-stage cast (exact ~1.25), cancelled by core when adds die
+				timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+				self:TLResolvePush("nullCorona", timer)
+			elseif timer == 10 then
+				--Void Expulsion (exact 10.0 opener and 9.583 recurring)
+				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+				self:TLResolvePush("voidExpulsion", timer)
+			elseif timer == 33 then
+				--Void Expulsion (exact 32.5)
+				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+				self:TLResolvePush("voidExpulsion", timer)
+			elseif timer == 37 then
+				--Null Corona
+				timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+				self:TLResolvePush("nullCorona", timer)
+			elseif timer == 40 then
+				--Ambiguous: Void Expulsion (odd) OR Null Corona (even) - occurrence count
+				mythicStage1FortyCount = mythicStage1FortyCount + 1
+				if mythicStage1FortyCount % 2 == 1 then
+					timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+					self:TLResolvePush("voidExpulsion", timer)
+				else
+					timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 23 then
+				--Ambiguous: Grasp of Emptiness (G2/G6, each following Null Corona) OR Null Corona (NC4)
+				local lastResolvedType = self:TLResolvePeek()
+				if lastResolvedType == "nullCorona" then
+					timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+					self:TLResolvePush("grasp", timer)
+				else
+					timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+					self:TLResolvePush("nullCorona", timer)
+				end
+			elseif timer == 20 then
+				--Ravenous Abyss (exact 19.5), Silverstrike Arrow opener (exact 20.0), or Interrupting Tremor (exact 20.0)
+				if timerExact and timerExact < 19.75 then
+					timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
+					self:TLResolvePush("ravenousAbyss", timer)
+				elseif not mythicStage1SAOpenerSeen then
+					--First exact-20 is Silverstrike Arrow opener (SA1 at t=0)
+					mythicStage1SAOpenerSeen = true
+					timerSilverstrikeArrowCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
+					self:TLResolvePush("silverstrikeArrow", timer)
+				else
+					--Subsequent exact-20 is Interrupting Tremor
+					timerInterruptingTremorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "interruptingTremor", "interruptingTremorCount"))
+					self:TLResolvePush("interruptingTremor", timer)
+				end
+			elseif timer == 18 or timer == 19 then
+				--Silverstrike Arrow (exact 17.5 or 19.166)
+				timerSilverstrikeArrowCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
+				self:TLResolvePush("silverstrikeArrow", timer)
+			elseif timer == 26 then
+				--Ambiguous: Dark Hand (recurring) OR Grasp of Emptiness (G4, always preceded by Ravenous Abyss)
+				local lastResolvedType = self:TLResolvePeek()
+				if lastResolvedType == "ravenousAbyss" then
+					timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+					self:TLResolvePush("grasp", timer)
+				else
+					timerDarkHandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkHand", "darkHandCount"))
+					self:TLResolvePush("darkHand", timer)
+				end
+			elseif timer == 27 then
+				--Grasp of Emptiness (G3, exact 26.666)
+				timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+				self:TLResolvePush("grasp", timer)
+			elseif timer == 25 then
+				--Recovery: Stage Two marker appearing while still in stage 1
+				if self:GetStage(1) then
+					self:SetStage(1.5)
+				end
+				timerStage2CD:TLStart(timerExact, eventID)
+				self:TLCountStart(eventID, "stage2Start")
+			else
+				badStateDetected = true
+				self:ResumeBlizzardAPI()
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match Mythic stage 1 timeline events, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif stage == 1.5 then
+			--Intermission 1
+			if timer == 2 or timer == 6 then--Silverstrike Barrage sequence
+				timerSilverstrikeBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeBarrage", "silverstrikeBarrageCount"))
+			elseif timer == 25 then--Stage 2 marker; phase actually starts on STATE_CHANGED.
+				timerStage2CD:TLStart(timerExact, eventID)
+				self:TLCountStart(eventID, "stage2Start")
+			end
+		elseif stage == 2 then
+			--Stage 2 Mythic (Week 5 validated from CrownWipe1)
+			--Stage 2.5 has no routeable signals on mythic; Stage 3 is detected by a long
+			--silence followed by a new batch of timeline events.
+			if GetTime() - lastTLEvent > 14 then
+				self:SetStage(3)
+				return timersMythic(self, timer, timerExact, eventID)
+			end
+			if timer == 2 then
+				--Rift Simulacrum opener (first 2s) OR Voidstalker Sting recurring (2s)
+				if not mythicStage2RiftSimulacrumSeen then
+					mythicStage2RiftSimulacrumSeen = true
+					self:TLCountStart(eventID, "riftSimulacrum")
+				else
+					timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+				end
+			elseif timer == 4 then
+				--Rift Slash (short, after cancel) fires first; Call of the Void (short) fires second
+				mythicStage2FourCount = mythicStage2FourCount + 1
+				if mythicStage2FourCount % 2 == 1 then
+					timerRiftSlashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "riftSlash", "riftSlashCount"))
+				else
+					timerCalloftheVoidCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "calloftheVoid", "calloftheVoidCount"))
+				end
+			elseif timer == 6 then
+				--Rift Slash opener fires first; Call of the Void opener fires second
+				mythicStage2SixCount = mythicStage2SixCount + 1
+				if mythicStage2SixCount == 1 then
+					timerRiftSlashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "riftSlash", "riftSlashCount"))
+				else
+					timerCalloftheVoidCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "calloftheVoid", "calloftheVoidCount"))
+				end
+			elseif timer == 10 then--Voidstalker Sting recurring
+				timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+			elseif timer == 11 then--Grasp of Emptiness short recurring
+				timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+			elseif timer == 12 then
+				--Voidstalker Sting opener (first 12s in Stage 2) then Rift Slash recurring
+				if not mythicStage2VoidstalkerOpenerDone then
+					mythicStage2VoidstalkerOpenerDone = true
+					timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+				else
+					timerRiftSlashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "riftSlash", "riftSlashCount"))
+				end
+			elseif timer == 13 then--Grasp of Emptiness opener
+				timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+			elseif timer == 16 then--Rift Slash longer interval (will be cancelled by core)
+				timerRiftSlashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "riftSlash", "riftSlashCount"))
+			elseif timer == 18 then--Void Expulsion recurring
+				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+			elseif timer == 20 then--Void Expulsion opener
+				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+			elseif timer == 23 then--Voidstalker Sting recurring
+				timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+			elseif timer == 25 then
+				--Ambiguous: Grasp of Emptiness OR Void Expulsion OR Ranger Captain's Mark
+				--Mod-4 cycle from CrownWipe1: 1=GoE, 2=VE, 3=RCM, 0=RCM
+				mythicStage2TwentyFiveCount = mythicStage2TwentyFiveCount + 1
+				local mod4 = mythicStage2TwentyFiveCount % 4
+				if mod4 == 1 then
+					timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+				elseif mod4 == 2 then
+					timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+				else--mod4 == 3 or 0
+					timerRangerCaptainsMarkCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rangerMark", "rangerMarkCount"))
+				end
+			elseif timer == 27 then--Ranger Captain's Mark opener
+				timerRangerCaptainsMarkCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rangerMark", "rangerMarkCount"))
+			elseif timer == 50 then--Call of the Void long (will be cancelled by core)
+				timerCalloftheVoidCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "calloftheVoid", "calloftheVoidCount"))
+			end
+		elseif stage == 3 then
+			--Stage 3 Mythic (initial, CrownWipe1/2 - both wipes incomplete, more data needed)
+			--Opener batch confirmed across both wipes: Grasp(10), Aspect(7), VoidExpulsion(37),
+			--DevouringCosmos(60), CosmicPortal(15), NullCorona(30), RiftSimulacrum(12), Voidstalker(16).
+			if timer == 7 then--Aspect of the End
+				timerAspectoftheEndCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "aspectoftheEnd", "aspectoftheEndCount"))
+			elseif timer == 8 then--Ravenous Abyss (exact ~8.0)
+				timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
+			elseif timer == 9 or timer == 10 or timer == 35 then--Grasp of Emptiness
+				timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+			elseif timer == 12 then--Rift Simulacrum opener (first) OR Voidstalker Sting (subsequent)
+				if not mythicStage3RiftSimulacrumSeen then
+					mythicStage3RiftSimulacrumSeen = true
+					self:TLCountStart(eventID, "riftSimulacrum")
+				else
+					timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+				end
+			elseif timer == 14 or timer == 16 then--Voidstalker Sting
+				timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+			elseif timer == 15 then--Cosmic Portal (Mythic only)
+				timerCosmicPortalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "cosmicPortal", "cosmicPortalCount"))
+			elseif timer == 17 then--Ambiguous: Ravenous Abyss (exact ~16.5) OR Voidstalker Sting (exact ~17+)
+				if timerExact and timerExact < 16.75 then
+					timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
+				else
+					timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+				end
+			elseif timer == 19 or timer == 41 then--Aspect of the End (recurring)
+				timerAspectoftheEndCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "aspectoftheEnd", "aspectoftheEndCount"))
+			elseif timer == 30 then--Null Corona
+				timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
+			elseif timer == 37 then--Void Expulsion
+				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
+			elseif timer == 60 then--Devouring Cosmos
+				timerDevouringCosmosCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devouringCosmos", "devouringCosmosCount"))
+			end
+		end
+	end
+
 	--Note, bar state changing and canceling is handled by core
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
@@ -683,6 +935,8 @@ do
 				timersEasy(self, timer, timerExact, eventID)
 			elseif self:IsHeroic() then
 				timersHeroic(self, timer, timerExact, eventID)
+			elseif self:IsMythic() then
+				timersMythic(self, timer, timerExact, eventID)
 			end
 		end
 		lastTLEvent = GetTime()
@@ -698,12 +952,22 @@ do
 			if eventType == "stage2Start" then
 				stage2TwentyCount = 0
 				heroicStage2InitialRiftSeen = false
+				mythicStage2RiftSimulacrumSeen = false
+				mythicStage2VoidstalkerOpenerDone = false
+				mythicStage2SixCount = 0
+				mythicStage2FourCount = 0
+				mythicStage2TwentyFiveCount = 0
 				self:SetStage(2)
 				return
 			elseif eventType == "stage3Start" then
 				stage2p5Seen = true
 				stage3Recovered = true
 				self:SetStage(3)
+				return
+			end
+			if eventType == "riftSimulacrum" then
+				warnRiftSimulacrum:Show()
+				warnRiftSimulacrum:Play("ptwo")
 				return
 			end
 			if not eventCount then return end
@@ -749,6 +1013,11 @@ do
 			if eventType == "stage2Start" then
 				stage2TwentyCount = 0
 				heroicStage2InitialRiftSeen = false
+				mythicStage2RiftSimulacrumSeen = false
+				mythicStage2VoidstalkerOpenerDone = false
+				mythicStage2SixCount = 0
+				mythicStage2FourCount = 0
+				mythicStage2TwentyFiveCount = 0
 				self:SetStage(2)
 				return
 			elseif eventType == "stage3Start" then
