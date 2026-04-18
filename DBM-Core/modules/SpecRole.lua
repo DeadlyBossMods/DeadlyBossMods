@@ -418,6 +418,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["Physical"] = true,
 				["HasInterrupt"] = true,
 				["MagicDispeller"] = true,
+				["SpellCaster"] = true,
 			},
 			[581] = {	--Vengeance Demon Hunter
 				["Tank"] = true,
