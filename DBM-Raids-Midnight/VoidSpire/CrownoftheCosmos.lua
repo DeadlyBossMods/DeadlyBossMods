@@ -185,7 +185,7 @@ end
 local function moriumIsTanked(self)
 	if self:IsTanking("player", "boss1", nil, true) then
 		specWarnDarkHand:Show()
-		specWarnDarkHand:Play("defensive")
+		specWarnDarkHand:Play("carefly")
 	end
 end
 

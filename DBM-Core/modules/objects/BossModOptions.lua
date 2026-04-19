@@ -137,8 +137,8 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["PrivateAuraSound" .. optionId] = (default == nil) or default
-	--Temp hide UI options for private auras that are flagged not private until 12.0.5 because reasons.
 	if not C_UnitAuras.AuraIsPrivate(optionId) then
+		DBM:Debug("Attempting to add private aura sound failed because spell ID " .. optionId .. " is not a private aura. Check spell ID and try again for mod " .. self.id, 1)
 		return
 	end
 	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
