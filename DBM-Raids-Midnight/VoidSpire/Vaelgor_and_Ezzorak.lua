@@ -49,7 +49,7 @@ mod:AddPrivateAuraSoundOption(1252157, false, 1262623, 1, 1, "debuffyou", 17)--N
 mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3, "gloomyou", 19)--Gloomtouched (soaked Gloom)
 mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3, "debuffyou", 17)--Diminish (Gloomtouched ended, don't soak again)
 mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2, "watchfeet", 8)--Gloomfield (GTFO left by gloom)
-mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 3, "runout", 2)--Dread Breath Target
+mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 1, "runout", 2)--Dread Breath Target
 --mod:AddPrivateAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
 mod:AddPrivateAuraSoundOption(1265152, true, 1245645, 1, 3, "stunyou", 19)--Impale (secondary attack of Rakfang)
 --mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1, "barrieryou", 19)--Radiant Barrier (Ultra Spammy)
