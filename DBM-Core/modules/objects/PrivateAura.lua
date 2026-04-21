@@ -177,6 +177,7 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
             auraIndex = auraIndex,
             parent = frame,
             showCountdownFrame = true,
+			isContainer = false,
             showCountdownNumbers = not settings.UpscaleDuration,
             iconInfo = {
                 iconAnchor = {
