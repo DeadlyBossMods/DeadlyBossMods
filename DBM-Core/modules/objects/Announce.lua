@@ -149,9 +149,9 @@ function DBM:UpdateWarningOptions()
 	frame:ClearAllPoints()
 	frame:SetPoint(self.Options.WarningPoint, UIParent, self.Options.WarningPoint, self.Options.WarningX, self.Options.WarningY)
 	local font = self.Options.WarningFont == "standardFont" and private.standardFont or self.Options.WarningFont
-	font1:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
-	font2:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
-	font3:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
+	font1:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and "" or self.Options.WarningFontStyle)
+	font2:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and "" or self.Options.WarningFontStyle)
+	font3:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and "" or self.Options.WarningFontStyle)
 	if self.Options.WarningFontShadow then
 		font1:SetShadowOffset(1, -1)
 		font2:SetShadowOffset(1, -1)

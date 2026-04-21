@@ -80,8 +80,8 @@ function DBM:UpdateSpecialWarningOptions()
 	frame:ClearAllPoints()
 	local font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
 	frame:SetPoint(self.Options.SpecialWarningPoint, UIParent, self.Options.SpecialWarningPoint, self.Options.SpecialWarningX, self.Options.SpecialWarningY)
-	font1:SetFont(font, self.Options.SpecialWarningFontSize2, self.Options.SpecialWarningFontStyle == "None" and nil or self.Options.SpecialWarningFontStyle)
-	font2:SetFont(font, self.Options.SpecialWarningFontSize2, self.Options.SpecialWarningFontStyle == "None" and nil or self.Options.SpecialWarningFontStyle)
+	font1:SetFont(font, self.Options.SpecialWarningFontSize2, self.Options.SpecialWarningFontStyle == "None" and "" or self.Options.SpecialWarningFontStyle)
+	font2:SetFont(font, self.Options.SpecialWarningFontSize2, self.Options.SpecialWarningFontStyle == "None" and "" or self.Options.SpecialWarningFontStyle)
 	font1:SetTextColor(unpack(self.Options.SpecialWarningFontCol))
 	font2:SetTextColor(unpack(self.Options.SpecialWarningFontCol))
 	if self.Options.SpecialWarningFontShadow then

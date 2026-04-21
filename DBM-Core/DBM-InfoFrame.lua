@@ -1285,7 +1285,7 @@ function infoFrame:UpdateStyle()
 	prevLines = 0
 	local font = DBM.Options.InfoFrameFont == "standardFont" and standardFont or DBM.Options.InfoFrameFont
 	local size = DBM.Options.InfoFrameFontSize
-	local style = DBM.Options.InfoFrameFontStyle == "none" and nil or DBM.Options.InfoFrameFontStyle
+	local style = DBM.Options.InfoFrameFontStyle == "none" and "" or DBM.Options.InfoFrameFontStyle
 	for i = 1, #frame.lines do
 		frame.lines[i]:SetFont(font, size, style)
 	end
@@ -1299,7 +1299,7 @@ function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB,
 	if not frame.lines[lineNum] then
 		local font = DBM.Options.InfoFrameFont == "standardFont" and standardFont or DBM.Options.InfoFrameFont
 		local size = DBM.Options.InfoFrameFontSize
-		local style = DBM.Options.InfoFrameFontStyle == "none" and nil or DBM.Options.InfoFrameFontStyle
+		local style = DBM.Options.InfoFrameFontStyle == "none" and "" or DBM.Options.InfoFrameFontStyle
 		frame.lines[lineNum] = frame:CreateFontString("Line" .. lineNum, "OVERLAY", "GameFontNormal")
 		frame.lines[lineNum]:SetFont(font, size, style)
 		frame.lines[lineNum + 1] = frame:CreateFontString("Line" .. lineNum + 1, "OVERLAY", "GameFontNormal")
