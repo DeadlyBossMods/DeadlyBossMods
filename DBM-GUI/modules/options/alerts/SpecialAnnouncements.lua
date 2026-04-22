@@ -36,7 +36,7 @@ local color0 = specArea:CreateColorSelect(L.FontColor, function(_, r, g, b)
 end, function(self)
 	self:SetColorRGB(DBM.DefaultOptions.SpecialWarningFontCol[1], DBM.DefaultOptions.SpecialWarningFontCol[2], DBM.DefaultOptions.SpecialWarningFontCol[3], true)
 end)
-color0:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, DBM:IsPostMidnight() and -90 or -220)
+color0:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, DBM:IsPostMidnight() and -122 or -220)
 color0:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
 color0.myheight = 74
 
