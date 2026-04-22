@@ -38,8 +38,6 @@ end
 
 local nameplateTimerFontResetNotified = false
 local nameplateTextFontResetNotified = false
-local npTimerFontProbe = CreateFont("DBM_NPTimerFontProbe")
-local npTextFontProbe = CreateFont("DBM_NPTextFontProbe")
 local npTimerFont, npTimerFontSize, npTimerStyle
 local npTextFont, npTextFontSize, npTextStyle
 local npFontSettingsValidated = false
@@ -48,7 +46,7 @@ function nameplateFrame:ValidateFontSettings()
 	local timerFont = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
 	local timerFontSize = DBM.Options.NPIconTimerFontSize
 	local timerStyle = (DBM.Options.NPIconTimerFontStyle and DBM.Options.NPIconTimerFontStyle ~= "None" and DBM.Options.NPIconTimerFontStyle ~= "none") and DBM.Options.NPIconTimerFontStyle or ""
-	if not pcall(npTimerFontProbe.SetFont, npTimerFontProbe, timerFont, timerFontSize, timerStyle) then
+	if not DBM:IsFontValid(timerFont, standardFont) then
 		DBM.Options.NPIconTimerFont = DBM.DefaultOptions.NPIconTimerFont
 		DBM.Options.NPIconTimerFontSize = DBM.DefaultOptions.NPIconTimerFontSize
 		DBM.Options.NPIconTimerFontStyle = DBM.DefaultOptions.NPIconTimerFontStyle
@@ -65,7 +63,7 @@ function nameplateFrame:ValidateFontSettings()
 	local textFont = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
 	local textFontSize = DBM.Options.NPIconTextFontSize
 	local textStyle = (DBM.Options.NPIconTextFontStyle and DBM.Options.NPIconTextFontStyle ~= "None" and DBM.Options.NPIconTextFontStyle ~= "none") and DBM.Options.NPIconTextFontStyle or ""
-	if not pcall(npTextFontProbe.SetFont, npTextFontProbe, textFont, textFontSize, textStyle) then
+	if not DBM:IsFontValid(textFont, standardFont) then
 		DBM.Options.NPIconTextFont = DBM.DefaultOptions.NPIconTextFont
 		DBM.Options.NPIconTextFontSize = DBM.DefaultOptions.NPIconTextFontSize
 		DBM.Options.NPIconTextFontStyle = DBM.DefaultOptions.NPIconTextFontStyle

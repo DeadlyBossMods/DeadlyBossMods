@@ -81,7 +81,7 @@ local function getSafeSpecialWarningFontSettings(self)
 	local font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
 	local size = self.Options.SpecialWarningFontSize2
 	local style = (self.Options.SpecialWarningFontStyle and self.Options.SpecialWarningFontStyle ~= "None" and self.Options.SpecialWarningFontStyle ~= "none") and self.Options.SpecialWarningFontStyle or ""
-	if not pcall(font1.SetFont, font1, font, size, style) then
+	if not DBM:IsFontValid(font, private.standardFont) then
 		self.Options.SpecialWarningFont = self.DefaultOptions.SpecialWarningFont
 		self.Options.SpecialWarningFontSize2 = self.DefaultOptions.SpecialWarningFontSize2
 		self.Options.SpecialWarningFontStyle = self.DefaultOptions.SpecialWarningFontStyle
