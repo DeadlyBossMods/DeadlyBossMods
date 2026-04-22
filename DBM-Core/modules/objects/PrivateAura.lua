@@ -177,6 +177,7 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
             auraIndex = auraIndex,
             parent = frame,
             showCountdownFrame = true,
+			isContainer = false,
             showCountdownNumbers = not settings.UpscaleDuration,
             iconInfo = {
                 iconAnchor = {
@@ -459,11 +460,6 @@ do
 	end
 
 	function PrivateAuras:UpdatePrivateAuraAnchors()
-		--Remove after 12.0.5 is launched in all regions
-		--Combat restriction is removed in that patch
-		if InCombatLockdown() and wowToC < 120005 then
-			return false
-		end
 		if PAAnchorsRegistered then
 			PAAnchorsRegistered = false
 			PrivateAuras:UnregisterPrivateAuras()

@@ -145,13 +145,33 @@ font3u:SetScript("OnUpdate", function(self)
 	end
 end)
 
+local warningFontResetNotified = false
+local function getSafeWarningFontSettings(self)
+	local font = self.Options.WarningFont == "standardFont" and private.standardFont or self.Options.WarningFont
+	local size = self.Options.WarningFontSize
+	local style = (self.Options.WarningFontStyle and self.Options.WarningFontStyle ~= "None" and self.Options.WarningFontStyle ~= "none") and self.Options.WarningFontStyle or ""
+	if not pcall(font1.SetFont, font1, font, size, style) then
+		self.Options.WarningFont = self.DefaultOptions.WarningFont
+		self.Options.WarningFontSize = self.DefaultOptions.WarningFontSize
+		self.Options.WarningFontStyle = self.DefaultOptions.WarningFontStyle
+		if not warningFontResetNotified then
+			self:AddMsg("Invalid Warning font settings were detected and reset to defaults.")
+			warningFontResetNotified = true
+		end
+		font = self.Options.WarningFont == "standardFont" and private.standardFont or self.Options.WarningFont
+		size = self.Options.WarningFontSize
+		style = (self.Options.WarningFontStyle and self.Options.WarningFontStyle ~= "None" and self.Options.WarningFontStyle ~= "none") and self.Options.WarningFontStyle or ""
+	end
+	return font, size, style
+end
+
 function DBM:UpdateWarningOptions()
 	frame:ClearAllPoints()
 	frame:SetPoint(self.Options.WarningPoint, UIParent, self.Options.WarningPoint, self.Options.WarningX, self.Options.WarningY)
-	local font = self.Options.WarningFont == "standardFont" and private.standardFont or self.Options.WarningFont
-	font1:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
-	font2:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
-	font3:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
+	local font, size, style = getSafeWarningFontSettings(self)
+	font1:SetFont(font, size, style)
+	font2:SetFont(font, size, style)
+	font3:SetFont(font, size, style)
 	if self.Options.WarningFontShadow then
 		font1:SetShadowOffset(1, -1)
 		font2:SetShadowOffset(1, -1)

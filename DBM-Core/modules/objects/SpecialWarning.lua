@@ -76,12 +76,32 @@ local function fontHide2()
 	end
 end
 
+local specialWarningFontResetNotified = false
+local function getSafeSpecialWarningFontSettings(self)
+	local font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
+	local size = self.Options.SpecialWarningFontSize2
+	local style = (self.Options.SpecialWarningFontStyle and self.Options.SpecialWarningFontStyle ~= "None" and self.Options.SpecialWarningFontStyle ~= "none") and self.Options.SpecialWarningFontStyle or ""
+	if not pcall(font1.SetFont, font1, font, size, style) then
+		self.Options.SpecialWarningFont = self.DefaultOptions.SpecialWarningFont
+		self.Options.SpecialWarningFontSize2 = self.DefaultOptions.SpecialWarningFontSize2
+		self.Options.SpecialWarningFontStyle = self.DefaultOptions.SpecialWarningFontStyle
+		if not specialWarningFontResetNotified then
+			self:AddMsg("Invalid Special Warning font settings were detected and reset to defaults.")
+			specialWarningFontResetNotified = true
+		end
+		font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
+		size = self.Options.SpecialWarningFontSize2
+		style = (self.Options.SpecialWarningFontStyle and self.Options.SpecialWarningFontStyle ~= "None" and self.Options.SpecialWarningFontStyle ~= "none") and self.Options.SpecialWarningFontStyle or ""
+	end
+	return font, size, style
+end
+
 function DBM:UpdateSpecialWarningOptions()
 	frame:ClearAllPoints()
-	local font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
 	frame:SetPoint(self.Options.SpecialWarningPoint, UIParent, self.Options.SpecialWarningPoint, self.Options.SpecialWarningX, self.Options.SpecialWarningY)
-	font1:SetFont(font, self.Options.SpecialWarningFontSize2, self.Options.SpecialWarningFontStyle == "None" and nil or self.Options.SpecialWarningFontStyle)
-	font2:SetFont(font, self.Options.SpecialWarningFontSize2, self.Options.SpecialWarningFontStyle == "None" and nil or self.Options.SpecialWarningFontStyle)
+	local font, size, style = getSafeSpecialWarningFontSettings(self)
+	font1:SetFont(font, size, style)
+	font2:SetFont(font, size, style)
 	font1:SetTextColor(unpack(self.Options.SpecialWarningFontCol))
 	font2:SetTextColor(unpack(self.Options.SpecialWarningFontCol))
 	if self.Options.SpecialWarningFontShadow then

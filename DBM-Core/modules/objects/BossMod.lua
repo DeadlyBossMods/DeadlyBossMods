@@ -1253,12 +1253,7 @@ do
 	end
 
 	function bossModPrototype:DisablePrivateAuraSounds()
-		--Remove when 12.0.5 is live
 		--Removal doesn't have same restrictions as adding (allowed in combat)
-		if InCombatLockdown() and wowToC < 120005 then
-			DBM:Debug("Attempting to unregister private aura sounds for mod " .. self.id .. " failed due to combat restriction. This unregister will be deferred.", 2)
-			return
-		end
 		while self.paSounds do
 			local optionId = next(self.paSounds)
 			if not optionId then
@@ -1274,7 +1269,7 @@ do
 	---@param customOption string? Used when event supports hardcoded timers and needs different option table lookup
 	function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId, customOption)
 		if DBM.Options.HideDBMBars then return end
-		--Set Color (done outside option check since right now option check isnt supported until 12.0.5
+		--Set Color (done outside option check since right now option check isnt supported until a future patch
 		--And we want to set colors on any bar even if it's "disabled" for now
 		if not DBM.Options.DontSetTimelineColors then
 			local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0

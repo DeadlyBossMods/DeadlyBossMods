@@ -83,10 +83,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 412, "5f04367"--412.7
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.39 alpha"--Core version
+DBM.DisplayVersion = "12.0.41 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 4, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 4, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -5367,7 +5367,7 @@ do
 						mod:OnLimitedCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
 					end
 					if self.Options.HideBlizzardTimeline then
-						--Temporary. Will be removed in 12.0.5 when api for supporting sounds works without forcing this
+						--Temporary. Will be removed in a future patch when api for supporting sounds works without forcing this
 						C_CVar.SetCVar("encounterTimelineEnabled", "1")
 						EncounterTimeline.TrackView:SetAlpha(0)
 						EncounterTimeline.TimerView:SetAlpha(0)
@@ -7464,7 +7464,12 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 					--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
 					if not enemyGUID or (guid and guid == enemyGUID) then
 						--Check threat first
-						local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
+						if private.isRetail then
+							--UnitDetailedThreatSituation is secret on retail even if you only read bool value
+							status = UnitThreatSituation(playerUnitID, unitID)
+						else
+							tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
+						end
 						if (not onlyS3 and tanking) or (status == 3) then
 							return true
 						end

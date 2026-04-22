@@ -20,7 +20,7 @@ local cSyncSender, eeSyncSender = {}, {}
 local eeSyncReceived, cSyncReceived, updateSubNotificationDisplayed = 0, 0, 0
 local newerVersionPerson, newersubVersionPerson, forceDisablePerson, iconSetRevision, iconSetPerson = {}, {}, {}, {}, {}
 local handleSync
-local PForceDisable = 23--When this is incremented, trigger force disable regardless of major patch
+local PForceDisable = 24--When this is incremented, trigger force disable regardless of major patch
 -- Localize frequently accessed private namespace items for performance (avoid table lookups on hot paths)
 local DBMPrefix = private.DBMPrefix
 local DBMSyncProtocol = private.DBMSyncProtocol
@@ -720,7 +720,11 @@ do
 				end
 			else--Vanilla and TBC single format raids
 				if wipe == "1" then
-					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader or CL.UNKNOWN, bossName, wipeHP, time))
+					if wipeHP then
+						DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader or CL.UNKNOWN, bossName, wipeHP, time))
+					else
+						DBM:AddMsg(L.GUILD_COMBAT_ENDED:format(groupLeader or CL.UNKNOWN, bossName, time))
+					end
 				else
 					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(bossName, groupLeader or CL.UNKNOWN, time))
 				end

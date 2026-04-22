@@ -236,7 +236,7 @@ do
 			for i = #inCombat, 1, -1 do
 				local mod = inCombat[i]
 				if mod and mod.combatInfo then
-					return mfloor(GetTime() - (mod.combatInfo.pull or 0) + 0.5)
+					return mfloor((GetTime() - (mod.combatInfo.pull or 0)) * 100 + 0.5) / 100
 				end
 			end
 		else
