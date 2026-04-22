@@ -202,6 +202,8 @@ local barPrototype = {}
 local unusedBarObjects, barIsAnimating = {}, false
 local smallBars, largeBars, hiddenBars = {}, {}, {}
 
+local dbtFontResetNotified = false
+
 local smallBarsAnchor, largeBarsAnchor, hiddenBarsAnchor = CreateFrame("Frame", nil, UIParent), CreateFrame("Frame", nil, UIParent), CreateFrame("Frame", nil, UIParent)
 smallBarsAnchor:SetSize(1, 1)
 smallBarsAnchor:SetPoint("TOPRIGHT", 223, -260)
@@ -1570,6 +1572,18 @@ function barPrototype:ApplyStyle()
 	bar:SetStatusBarTexture(barOptions.Texture)
 	local barFont = barOptions.Font == "standardFont" and standardFont or barOptions.Font
 	local barFontSize, barFontFlag = barOptions.FontSize, (barOptions.FontFlag and barOptions.FontFlag ~= "None") and barOptions.FontFlag or ""
+	if not pcall(name.SetFont, name, barFont, barFontSize, barFontFlag) then
+		barOptions.Font = DBT.DefaultOptions.Font
+		barOptions.FontSize = DBT.DefaultOptions.FontSize
+		barOptions.FontFlag = DBT.DefaultOptions.FontFlag
+		barFont = barOptions.Font == "standardFont" and standardFont or barOptions.Font
+		barFontSize = barOptions.FontSize
+		barFontFlag = (barOptions.FontFlag and barOptions.FontFlag ~= "None" and barOptions.FontFlag ~= "none") and barOptions.FontFlag or ""
+		if not dbtFontResetNotified then
+			DBM:AddMsg("Invalid timer bar font settings were detected and reset to defaults.")
+			dbtFontResetNotified = true
+		end
+	end
 	name:SetFont(barFont, barFontSize, barFontFlag)
 	timer:SetFont(barFont, barFontSize, barFontFlag)
 	local textXOffset = enlarged and (barOptions.HugeTextXOffset or 0) or (barOptions.TextXOffset or 0)

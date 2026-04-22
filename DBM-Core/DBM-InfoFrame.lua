@@ -42,6 +42,26 @@ else
 	standardFont = "Fonts\\FRIZQT__.TTF"
 end
 
+local infoFrameFontResetNotified = false
+local function getSafeInfoFrameFontSettings(testFontString)
+	local font = DBM.Options.InfoFrameFont == "standardFont" and standardFont or DBM.Options.InfoFrameFont
+	local size = DBM.Options.InfoFrameFontSize
+	local style = (DBM.Options.InfoFrameFontStyle and DBM.Options.InfoFrameFontStyle ~= "None" and DBM.Options.InfoFrameFontStyle ~= "none") and DBM.Options.InfoFrameFontStyle or ""
+	if not pcall(testFontString.SetFont, testFontString, font, size, style) then
+		DBM.Options.InfoFrameFont = DBM.DefaultOptions.InfoFrameFont
+		DBM.Options.InfoFrameFontSize = DBM.DefaultOptions.InfoFrameFontSize
+		DBM.Options.InfoFrameFontStyle = DBM.DefaultOptions.InfoFrameFontStyle
+		if not infoFrameFontResetNotified then
+			DBM:AddMsg("Invalid InfoFrame font settings were detected and reset to defaults.")
+			infoFrameFontResetNotified = true
+		end
+		font = DBM.Options.InfoFrameFont == "standardFont" and standardFont or DBM.Options.InfoFrameFont
+		size = DBM.Options.InfoFrameFontSize
+		style = (DBM.Options.InfoFrameFontStyle and DBM.Options.InfoFrameFontStyle ~= "None" and DBM.Options.InfoFrameFontStyle ~= "none") and DBM.Options.InfoFrameFontStyle or ""
+	end
+	return font, size, style
+end
+
 --------------
 --  Locals  --
 --------------
@@ -1283,9 +1303,7 @@ function infoFrame:UpdateStyle()
 		createFrame()
 	end
 	prevLines = 0
-	local font = DBM.Options.InfoFrameFont == "standardFont" and standardFont or DBM.Options.InfoFrameFont
-	local size = DBM.Options.InfoFrameFontSize
-	local style = (DBM.Options.InfoFrameFontStyle and DBM.Options.InfoFrameFontStyle ~= "none") and DBM.Options.InfoFrameFontStyle or ""
+	local font, size, style = getSafeInfoFrameFontSettings(frame.header)
 	for i = 1, #frame.lines do
 		frame.lines[i]:SetFont(font, size, style)
 	end
@@ -1297,9 +1315,7 @@ function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB,
 	end
 	lineNum = lineNum * 2 - 1
 	if not frame.lines[lineNum] then
-		local font = DBM.Options.InfoFrameFont == "standardFont" and standardFont or DBM.Options.InfoFrameFont
-		local size = DBM.Options.InfoFrameFontSize
-		local style = (DBM.Options.InfoFrameFontStyle and DBM.Options.InfoFrameFontStyle ~= "none") and DBM.Options.InfoFrameFontStyle or ""
+		local font, size, style = getSafeInfoFrameFontSettings(frame.header)
 		frame.lines[lineNum] = frame:CreateFontString("Line" .. lineNum, "OVERLAY", "GameFontNormal")
 		frame.lines[lineNum]:SetFont(font, size, style)
 		frame.lines[lineNum + 1] = frame:CreateFontString("Line" .. lineNum + 1, "OVERLAY", "GameFontNormal")

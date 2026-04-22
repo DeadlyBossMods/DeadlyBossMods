@@ -1,5 +1,3 @@
---NOBODY, except Keseva touches this file.
-
 ---@class DBM
 local DBM = DBM
 
@@ -36,6 +34,47 @@ elseif LOCALE_ruRU then
 	standardFont = "Fonts\\FRIZQT___CYR.TTF"
 else
 	standardFont = "Fonts\\FRIZQT__.TTF"
+end
+
+local nameplateTimerFontResetNotified = false
+local nameplateTextFontResetNotified = false
+
+local function getSafeNameplateTimerFontSettings(iconFrame)
+	local timerFont = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
+	local timerFontSize = DBM.Options.NPIconTimerFontSize
+	local timerStyle = (DBM.Options.NPIconTimerFontStyle and DBM.Options.NPIconTimerFontStyle ~= "None" and DBM.Options.NPIconTimerFontStyle ~= "none") and DBM.Options.NPIconTimerFontStyle or ""
+	if not pcall(iconFrame.cooldown.timer.SetFont, iconFrame.cooldown.timer, timerFont, timerFontSize, timerStyle) then
+		DBM.Options.NPIconTimerFont = DBM.DefaultOptions.NPIconTimerFont
+		DBM.Options.NPIconTimerFontSize = DBM.DefaultOptions.NPIconTimerFontSize
+		DBM.Options.NPIconTimerFontStyle = DBM.DefaultOptions.NPIconTimerFontStyle
+		if not nameplateTimerFontResetNotified then
+			DBM:AddMsg("Invalid Nameplate timer font settings were detected and reset to defaults.")
+			nameplateTimerFontResetNotified = true
+		end
+		timerFont = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
+		timerFontSize = DBM.Options.NPIconTimerFontSize
+		timerStyle = (DBM.Options.NPIconTimerFontStyle and DBM.Options.NPIconTimerFontStyle ~= "None" and DBM.Options.NPIconTimerFontStyle ~= "none") and DBM.Options.NPIconTimerFontStyle or ""
+	end
+	return timerFont, timerFontSize, timerStyle
+end
+
+local function getSafeNameplateTextFontSettings(iconFrame)
+	local textFont = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
+	local textFontSize = DBM.Options.NPIconTextFontSize
+	local textStyle = (DBM.Options.NPIconTextFontStyle and DBM.Options.NPIconTextFontStyle ~= "None" and DBM.Options.NPIconTextFontStyle ~= "none") and DBM.Options.NPIconTextFontStyle or ""
+	if not pcall(iconFrame.text.SetFont, iconFrame.text, textFont, textFontSize, textStyle) then
+		DBM.Options.NPIconTextFont = DBM.DefaultOptions.NPIconTextFont
+		DBM.Options.NPIconTextFontSize = DBM.DefaultOptions.NPIconTextFontSize
+		DBM.Options.NPIconTextFontStyle = DBM.DefaultOptions.NPIconTextFontStyle
+		if not nameplateTextFontResetNotified then
+			DBM:AddMsg("Invalid Nameplate text font settings were detected and reset to defaults.")
+			nameplateTextFontResetNotified = true
+		end
+		textFont = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
+		textFontSize = DBM.Options.NPIconTextFontSize
+		textStyle = (DBM.Options.NPIconTextFontStyle and DBM.Options.NPIconTextFontStyle ~= "None" and DBM.Options.NPIconTextFontStyle ~= "none") and DBM.Options.NPIconTextFontStyle or ""
+	end
+	return textFont, textFontSize, textStyle
 end
 
 --------------------
@@ -85,14 +124,10 @@ do
 
 		iconFrame.__DBM_NPIconGlowFrame:SetSize(DBM.Options.NPIconSize, DBM.Options.NPIconSize)
 
-		local timerFont = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
-		local timerFontSize = DBM.Options.NPIconTimerFontSize
-		local timerStyle = (DBM.Options.NPIconTimerFontStyle and DBM.Options.NPIconTimerFontStyle ~= "None") and DBM.Options.NPIconTimerFontStyle or ""
+		local timerFont, timerFontSize, timerStyle = getSafeNameplateTimerFontSettings(iconFrame)
 		iconFrame.cooldown.timer:SetFont(timerFont, timerFontSize, timerStyle)
 
-		local textFont = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
-		local textFontSize = DBM.Options.NPIconTextFontSize
-		local textStyle = (DBM.Options.NPIconTextFontStyle and DBM.Options.NPIconTextFontStyle ~= "None") and DBM.Options.NPIconTextFontStyle or ""
+		local textFont, textFontSize, textStyle = getSafeNameplateTextFontSettings(iconFrame)
 		iconFrame.text:SetFont(textFont, textFontSize, textStyle)
 
 		iconFrame.lastOptionsUpdateTime = GetTime()
