@@ -7466,9 +7466,9 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 						--Check threat first
 						if private.isRetail then
 							--UnitDetailedThreatSituation is secret on retail even if you only read bool value
-							status = UnitThreatSituation(playerUnitID, enemyUnitID)
+							status = UnitThreatSituation(playerUnitID, unitID)
 						else
-							tanking, status = UnitDetailedThreatSituation(playerUnitID, enemyUnitID)
+							tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
 						end
 						if (not onlyS3 and tanking) or (status == 3) then
 							return true
