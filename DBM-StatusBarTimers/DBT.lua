@@ -203,15 +203,12 @@ local unusedBarObjects, barIsAnimating = {}, false
 local smallBars, largeBars, hiddenBars = {}, {}, {}
 
 local dbtFontResetNotified = false
-local dbtFontProbe = CreateFont("DBT_FontProbe")
 
 function DBT:ValidateFontSettings()
 	local opts = self.Options
 	if not opts then return end
 	local font = opts.Font == "standardFont" and standardFont or opts.Font
-	local size = opts.FontSize
-	local flag = (opts.FontFlag and opts.FontFlag ~= "None") and opts.FontFlag or ""
-	if not pcall(dbtFontProbe.SetFont, dbtFontProbe, font, size, flag) then
+	if not DBM:IsFontValid(font, standardFont) then
 		opts.Font = self.DefaultOptions.Font
 		opts.FontSize = self.DefaultOptions.FontSize
 		opts.FontFlag = self.DefaultOptions.FontFlag

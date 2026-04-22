@@ -119,7 +119,7 @@ ApplyFont = function()
 		font = standardFont  -- Additional safety fallback
 	end
 	local size = DBM.Options.BrezFontSize or 18
-	if not pcall(frame.charges.SetFont, frame.charges, font, size, "OUTLINE") then
+	if not DBM:IsFontValid(font, standardFont) then
 		DBM.Options.BrezFont = DBM.DefaultOptions.BrezFont
 		DBM.Options.BrezFontSize = DBM.DefaultOptions.BrezFontSize
 		fontOption = DBM.Options.BrezFont

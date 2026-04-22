@@ -6138,6 +6138,20 @@ do
 		end
 		test:Trace(self, "PlaySound", path)
 	end
+
+	function DBM:IsFontValid(fontPath, standardFont)
+		-- "standardFont" is always valid (maps to locale-specific standard)
+		if fontPath == "standardFont" then
+			return true
+		end
+		-- Check LibSharedMedia registry if available
+		local LSM = LibStub and LibStub("LibSharedMedia-3.0", true)
+		if LSM then
+			return LSM:IsValid("font", fontPath) or false
+		end
+		-- If LibSharedMedia not available, assume valid (graceful degradation)
+		return true
+	end
 end
 
 ---Future proofing EJ_GetSectionInfo compat layer to make it easier updatable.
