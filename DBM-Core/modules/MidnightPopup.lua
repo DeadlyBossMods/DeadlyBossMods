@@ -46,7 +46,7 @@ function MidnightPopup:ShowMidnightPopup()
 		if index == 1 then
 			DBM.Options.HideBlizzardTimeline = not DBM.Options.HideBlizzardTimeline
 			if DBM.Options.HideBlizzardTimeline then
-				--We temp force cvar for now, ignore comment below, that's for 12.0.5
+				--We temp force cvar for now, ignore comment below, that's for a future patch
 				C_CVar.SetCVar("encounterTimelineEnabled", "1")
 				EncounterTimeline.TrackView:SetAlpha(0)
 				EncounterTimeline.TimerView:SetAlpha(0)

@@ -87,12 +87,12 @@ do
 
 		local timerFont = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
 		local timerFontSize = DBM.Options.NPIconTimerFontSize
-		local timerStyle = DBM.Options.NPIconTimerFontStyle == "None" and "" or DBM.Options.NPIconTimerFontStyle
+		local timerStyle = (DBM.Options.NPIconTimerFontStyle and DBM.Options.NPIconTimerFontStyle ~= "None") and DBM.Options.NPIconTimerFontStyle or ""
 		iconFrame.cooldown.timer:SetFont(timerFont, timerFontSize, timerStyle)
 
 		local textFont = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
 		local textFontSize = DBM.Options.NPIconTextFontSize
-		local textStyle = DBM.Options.NPIconTextFontStyle == "None" and "" or DBM.Options.NPIconTextFontStyle
+		local textStyle = (DBM.Options.NPIconTextFontStyle and DBM.Options.NPIconTextFontStyle ~= "None") and DBM.Options.NPIconTextFontStyle or ""
 		iconFrame.text:SetFont(textFont, textFontSize, textStyle)
 
 		iconFrame.lastOptionsUpdateTime = GetTime()
