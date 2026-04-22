@@ -1569,7 +1569,7 @@ function barPrototype:ApplyStyle()
 --	bar:SetStatusBarColor(r, g, b, 1)--GetStatusBarTexture():SetVertexColor
 	bar:SetStatusBarTexture(barOptions.Texture)
 	local barFont = barOptions.Font == "standardFont" and standardFont or barOptions.Font
-	local barFontSize, barFontFlag = barOptions.FontSize, barOptions.FontFlag
+	local barFontSize, barFontFlag = barOptions.FontSize, barOptions.FontFlag == "None" and "" or barOptions.FontFlag
 	name:SetFont(barFont, barFontSize, barFontFlag)
 	timer:SetFont(barFont, barFontSize, barFontFlag)
 	local textXOffset = enlarged and (barOptions.HugeTextXOffset or 0) or (barOptions.TextXOffset or 0)
