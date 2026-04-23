@@ -6140,6 +6140,27 @@ do
 	end
 
 	local LSMFontCacheBuilt, sharedMediaFontCache = false, {}
+	local fontValidationProbe
+
+	local function getFontValidationProbe()
+		if fontValidationProbe and fontValidationProbe.SetFont then
+			return fontValidationProbe
+		end
+		local existingProbe = _G["DBM_FontValidationProbe"]
+		if existingProbe and existingProbe.SetFont then
+			fontValidationProbe = existingProbe
+			return fontValidationProbe
+		end
+		if type(CreateFont) ~= "function" then
+			return nil
+		end
+		local ok, probe = pcall(CreateFont, "DBM_FontValidationProbe")
+		if ok and probe and probe.SetFont then
+			fontValidationProbe = probe
+			return fontValidationProbe
+		end
+		return nil
+	end
 
 	local function buildLSMFontCache()
 		local LSM = LibStub and LibStub("LibSharedMedia-3.0", true)
@@ -6193,6 +6214,13 @@ do
 		-- Cache may be stale if media registered after first build; rebuild once and re-check
 		buildLSMFontCache()
 		if sharedMediaFontCache[fontPath] then
+			return true
+		end
+		-- Final fallback: validate directly against WoW API.
+		-- This handles media paths that are valid files but not yet registered in LSM.
+		local probe = getFontValidationProbe()
+		if type(fontPath) == "string" and probe and pcall(probe.SetFont, probe, fontPath, 12, "") then
+			sharedMediaFontCache[fontPath] = true
 			return true
 		end
 		return false
