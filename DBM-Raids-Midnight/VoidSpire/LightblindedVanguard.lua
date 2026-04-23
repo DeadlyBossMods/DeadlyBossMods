@@ -109,40 +109,43 @@ local timer159Uses156Variant = false
 local timer159Uses172Variant = false
 
 ---@param self DBMMod
-local function setFallback(self)
+	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
+local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
-	specWarnAuraofPeace:SetAlert(71, "peaceaura", 19, 2)
+	if not dontSetAlerts then
+		specWarnAuraofPeace:SetAlert(71, "peaceaura", 19, 2)
+		specWarnSacredShield:SetAlert(74, "attackshield", 2, 2)
+		warnAuraofDevotion:SetAlert(76, "devotionaura", 19, 2)
+		specWarnSearingRadiance:SetAlert({77,373}, "aesoon", 2, 2)
+		if self:IsTank() then
+			specWarnJudgementShield:SetAlert(78, "changemt", 2, 2)
+		end
+		specWarnDivineToll:SetAlert(80, "watchstep", 2, 3)
+		specWarnAuraofWrath:SetAlert(81, "wrathaura", 19, 4)
+		if self:IsTank() then
+			specWarnjudgementFinal:SetAlert(82, "changemt", 2, 2)
+		end
+		specWarnDivineStorm:SetAlert({83,374}, "justrun", 2, 3)--very iffy
+		specWarnSacredToll:SetAlert(84, "aesoon", 2, 2)
+		specWarnExecutionSentence:SetAlert(85, "soakincoming", 19, 2)
+		warnZealousSpirit:SetAlert({358,359,360}, "phasechange", 2, 2)
+	end
 	timerAuraofPeaceCD:SetTimeline(71)
 --	specWarnElekkCharge:SetAlert(73, "chargemove", 2, 2, 0)
 --	timerElekkChargeCD:SetTimeline(73)
-	specWarnSacredShield:SetAlert(74, "attackshield", 2, 2)
 	timerSacredShieldCD:SetTimeline(74)
 	timerTyrsWrathCD:SetTimeline(75)
-	warnAuraofDevotion:SetAlert(76, "devotionaura", 19, 2)
 	timerAuraofDevotionCD:SetTimeline(76)
-	specWarnSearingRadiance:SetAlert({77,373}, "aesoon", 2, 2)
 	timerSearingRadianceCD:SetTimeline(77)--Normal, mythic empowered
 	timerEmpoweredSearingRadianceCD:SetTimeline(373)--mythic empowered
-	if self:IsTank() then
-		specWarnJudgementShield:SetAlert(78, "changemt", 2, 2)
-	end
 	timerJudgementShieldCD:SetTimeline(78)
 	timerAvengerShieldCD:SetTimeline({79, 365})--Normal, mythic empowered
-	specWarnDivineToll:SetAlert(80, "watchstep", 2, 3)
 	timerDivineTollCD:SetTimeline(80)
-	specWarnAuraofWrath:SetAlert(81, "wrathaura", 19, 4)
 	timerAuraofWrathCD:SetTimeline(81)
-	if self:IsTank() then
-		specWarnjudgementFinal:SetAlert(82, "changemt", 2, 2)
-	end
 	timerjudgementFinalCD:SetTimeline(82)
-	specWarnDivineStorm:SetAlert({83,374}, "justrun", 2, 3)--very iffy
 	timerDivineStormCD:SetTimeline({83,374})--Normal, mythic empowered
-	specWarnSacredToll:SetAlert(84, "aesoon", 2, 2)
 	timerSacredTollCD:SetTimeline(84)
-	specWarnExecutionSentence:SetAlert(85, "soakincoming", 19, 2)
 	timerExecutionSentenceCD:SetTimeline(85)
-	warnZealousSpirit:SetAlert({358,359,360}, "phasechange", 2, 2)
 	timerZealousSpiritCD:SetTimeline({358,359,360})--one for each boss
 end
 
@@ -201,6 +204,9 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
+		end
 	else
 		setFallback(self)
 	end

@@ -139,44 +139,47 @@ local function resolveHeroicStage3Ambiguous(timer, lastResolvedType, lastResolve
 end
 
 ---@param self DBMMod
-local function setFallback(self)
+	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
+local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	timerNullCoronaCD:SetTimeline(4)
-	specWarnVoidExpulsion:SetAlert(5, "aesoon", 2, 2, 0)
+	if not dontSetAlerts then
+		specWarnVoidExpulsion:SetAlert(5, "aesoon", 2, 2, 0)
+		specWarnCalloftheVoid:SetAlert(10, "mobsoon", 2, 2)
+		specWarnCosmicBarrier:SetAlert(12, "attackshield", 2, 2, 0)
+		specWarnDevouringCosmos:SetAlert(15, "changeplatform", 19, 4)
+		if self:IsTank() then
+			specWarnDarkHand:SetAlert(64, "defensive", 2, 2)
+		end
+		specWarnRavenousAbyss:SetAlert(65, "watchstep", 2, 2)
+		if self:IsSpellCaster() then
+			specWarnInterruptingTremor:SetAlert(66, "stopcast", 2, 2, 0)
+		else
+			specWarnInterruptingTremor:SetAlert(66, "aesoon", 2, 2, 0)
+		end
+		warnRiftSimulacrum:SetAlert(135, "ptwo", 2, 2, 0)--Verify
+		specWarnCosmicPortal:SetAlert(136, "bigmobsoon", 2, 2)
+		if self:IsTank() then
+			specWarnRiftSlash:SetAlert(137, "defensive", 2, 2)
+		end
+	end
 	timerVoidExpulsionCD:SetTimeline(5)
 	timerSilverstrikeArrowCD:SetTimeline(6)
 	timerSilverstrikeBarrageCD:SetTimeline(7)
 --	specWarnSingularityEruption:SetAlert(8, "watchstep", 2, 2)
 --	timerSingularityEruptionCD:SetTimeline(8)
 	timerVoidstalkerStingCD:SetTimeline(9)
-	specWarnCalloftheVoid:SetAlert(10, "mobsoon", 2, 2)
 	timerCalloftheVoidCD:SetTimeline(10)
 	timerRangerCaptainsMarkCD:SetTimeline({11, 131})--Regular, Mythic?
-	specWarnCosmicBarrier:SetAlert(12, "attackshield", 2, 2, 0)
 	timerCosmicBarrierCD:SetTimeline(12)
 	timerAspectoftheEndCD:SetTimeline(13)
 	timerGraspofEmptynessCD:SetTimeline({14, 132})--Regular, Mythic?
-	specWarnDevouringCosmos:SetAlert(15, "changeplatform", 19, 4)
 	timerDevouringCosmosCD:SetTimeline(15)
-	if self:IsTank() then
-		specWarnDarkHand:SetAlert(64, "defensive", 2, 2)
-	end
 	timerDarkHandCD:SetTimeline(64)
-	specWarnRavenousAbyss:SetAlert(65, "watchstep", 2, 2)
 	timerRavenousAbyssCD:SetTimeline(65)
-	if self:IsSpellCaster() then
-		specWarnInterruptingTremor:SetAlert(66, "stopcast", 2, 2, 0)
-	else
-		specWarnInterruptingTremor:SetAlert(66, "aesoon", 2, 2, 0)
-	end
 	timerInterruptingTremorCD:SetTimeline(66)
-	warnRiftSimulacrum:SetAlert(135, "ptwo", 2, 2, 0)--Verify
 --	timerRiftSimulacrumCD:SetTimeline(135)
-	specWarnCosmicPortal:SetAlert(136, "bigmobsoon", 2, 2)
 	timerCosmicPortalCD:SetTimeline(136)
-	if self:IsTank() then
-		specWarnRiftSlash:SetAlert(137, "defensive", 2, 2)
-	end
 	timerRiftSlashCD:SetTimeline(137)
 	timerStage2CD:SetTimeline(351)
 end
@@ -231,6 +234,9 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
+		end
 		--pre Schedule first 3 abilities that have ambigous timers
 		self:Schedule(4, moriumIsTanked, self)
 		timerDarkHandCD:Start(4, 1)

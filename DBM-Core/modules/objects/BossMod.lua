@@ -1254,11 +1254,6 @@ do
 
 	function bossModPrototype:DisablePrivateAuraSounds()
 		--Removal doesn't have same restrictions as adding (allowed in combat)
-		--Remove when 12.0.5 is live
-		if InCombatLockdown() and wowToC < 120005 then
-			DBM:Debug("Attempting to unregister private aura sounds for mod " .. self.id .. " failed due to combat restriction. This unregister will be deferred.", 2)
-			return
-		end
 		while self.paSounds do
 			local optionId = next(self.paSounds)
 			if not optionId then
