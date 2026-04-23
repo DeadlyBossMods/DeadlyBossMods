@@ -93,35 +93,38 @@ local next25M1Type = "rakfang"
 local mythicStage2TransitionSeen = false
 
 ---@param self DBMMod
-local function setFallback(self)
+	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
+local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
-	specWarnNullBeam:SetAlert(101, "beamincoming", 19, 3)
+	if not dontSetAlerts then
+		specWarnNullBeam:SetAlert(101, "beamincoming", 19, 3)
+		specWarnVoidHowl:SetAlert(102, "range5", 2, 2)
+		specWarnGloom:SetAlert(103, "gloomincoming", 19, 3)
+		specWarnDreadBreath:SetAlert(104, "breathsoon", 2, 3, 0)
+		specWarnMidnightFlames:SetAlert(105, "aesoon", 2, 2, 0)
+		if self:IsTank() then
+			warnGrabblingMaw:SetAlert(219, "pullin", 2, 3)
+			specWarnRakfang:SetAlert(220, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
+			specWarnVaelwing:SetAlert(221, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
+		end
+		specWarnCosmosisGloom:SetAlert(377, "gloomincoming", 19, 3)
+		specWarnCosmosisNullbeam:SetAlert(378, "beamincoming", 19, 3)
+		specWarnCosmosisDreadBreath:SetAlert(379, "breathsoon", 19, 3)
+		specWarnCosmosisVoidHowl:SetAlert(380, "range5", 2, 2)
+		specWarnRadiantBarrier:SetAlert(381, "findshield", 2, 3, 0)
+	end
 	timerNullBeamCD:SetTimeline(101)
-	specWarnVoidHowl:SetAlert(102, "range5", 2, 2)
 	timerVoidHowlCD:SetTimeline(102)
-	specWarnGloom:SetAlert(103, "gloomincoming", 19, 3)
 	timerGloomCD:SetTimeline(103)
-	specWarnDreadBreath:SetAlert(104, "breathsoon", 2, 3, 0)
 	timerDreadBreathCD:SetTimeline(104)
-	specWarnMidnightFlames:SetAlert(105, "aesoon", 2, 2, 0)
 	timerMidnightFlamesCD:SetTimeline(105)
 	timerGrabblingMawCD:SetTimeline(219)
-	if self:IsTank() then
-		warnGrabblingMaw:SetAlert(219, "pullin", 2, 3)
-		specWarnRakfang:SetAlert(220, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
-		specWarnVaelwing:SetAlert(221, "defensive", 2, 3, 0)--Assumed 0 will scope it to player only, needs vetting
-	end
 	timerRakfangCD:SetTimeline(220)
 	timerVaelwingCD:SetTimeline(221)
-	specWarnCosmosisGloom:SetAlert(377, "gloomincoming", 19, 3)
 	timerCosmosisGloomCD:SetTimeline(377)
-	specWarnCosmosisNullbeam:SetAlert(378, "beamincoming", 19, 3)
 	timerCosmosisNullbeamCD:SetTimeline(378)
-	specWarnCosmosisDreadBreath:SetAlert(379, "breathsoon", 19, 3)
 	timerCosmosisDreadBreathCD:SetTimeline(379)
-	specWarnCosmosisVoidHowl:SetAlert(380, "range5", 2, 2)
 	timerCosmosisVoidHowlCD:SetTimeline(380)
-	specWarnRadiantBarrier:SetAlert(381, "findshield", 2, 3, 0)
 	timerRadiantBarrierCD:SetTimeline(381)
 end
 
@@ -169,6 +172,9 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
 			"ENCOUNTER_WARNING"
 		)
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
+		end
 	else
 		setFallback(self)
 	end

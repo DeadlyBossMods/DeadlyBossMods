@@ -99,45 +99,48 @@ local totalEclipseStartTimes = {}
 local totalEclipseExpected = 180
 
 ---@param self DBMMod
-local function setFallback(self)
-	specWarnDeathsDirge:SetAlert(255, "runesincoming", 19, 4)
-	timerDeathsDirgeCD:SetTimeline(255)
-	specWarnHeavensGlaives:SetAlert(256, "watchstep", 2, 3)
-	timerHeavensGlaivesCD:SetTimeline(256)
-	specWarnSafeguaredPrism:SetAlert(257, "targetchange", 2, 3)
-	timerSafeguaredPrismCD:SetTimeline(257)
-	specWarnShatteredSky:SetAlert(258, "aesoon", 2, 2)
-	timerShatteredSkyCD:SetTimeline(258)
-	warnTotalEclipse:SetAlert(259, "phasechange", 2, 1)
-	timerTotalEclipseCD:SetTimeline(259)
-	specWarnLightSiphon:SetAlert(261, "lightrifts", 19, 3)
-	timerLightSiphonCD:SetTimeline(261)
-	specWarnDarkConstellation:SetAlert(262, "watchstep", 2, 3)
-	timerDarkConstellationCD:SetTimeline(262)
-	specWarnDarkArchangel:SetAlert(263, "findshield", 2, 2)
-	timerDarkArchangelCD:SetTimeline(263)
-	specWarnDeathsRequiem:SetAlert(362, "runesincoming", 19, 4)
-	timerDeathsRequiemCD:SetTimeline(362)
-	specWarnSeverance:SetAlert(363, "raidsplit", 19, 4)
-	timerSeveranceCD:SetTimeline(363)
-	if self:IsTank() then
-		specWarnHeavensLance:SetAlert(364, "defensive", 2, 2)
+	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
+local function setFallback(self, dontSetAlerts)
+	if not dontSetAlerts then
+		specWarnDeathsDirge:SetAlert(255, "runesincoming", 19, 4)
+		specWarnHeavensGlaives:SetAlert(256, "watchstep", 2, 3)
+		specWarnSafeguaredPrism:SetAlert(257, "targetchange", 2, 3)
+		specWarnShatteredSky:SetAlert(258, "aesoon", 2, 2)
+		warnTotalEclipse:SetAlert(259, "phasechange", 2, 1)
+		specWarnLightSiphon:SetAlert(261, "lightrifts", 19, 3)
+		specWarnDarkConstellation:SetAlert(262, "watchstep", 2, 3)
+		specWarnDarkArchangel:SetAlert(263, "findshield", 2, 2)
+		specWarnDeathsRequiem:SetAlert(362, "runesincoming", 19, 4)
+		specWarnSeverance:SetAlert(363, "raidsplit", 19, 4)
+		if self:IsTank() then
+			specWarnHeavensLance:SetAlert(364, "defensive", 2, 2)
+		end
+		specWarnIntoDarkwell:SetAlert(433, "pullin", 12, 2)
+		specWarnCosmicFission:SetAlert(434, "pullin", 12, 2, 0)--Guessed. it's not on a timer it's triggered by players hitting cores
+		specWarnCoreHarvest:SetAlert(435, "farfromline", 2, 2)
+		specWarnDarkMeltdown:SetAlert(436, "carefly", 2, 2)
+		specWarnTerminationPrism:SetAlert(636, "targetchange", 2, 3)
+		specWarnGrimSymphony:SetAlert(644, "runesincoming", 19, 4)
+		specWarnDarkQuasar:SetAlert(649, "watchstep", 2, 3)
 	end
+	timerDeathsDirgeCD:SetTimeline(255)
+	timerHeavensGlaivesCD:SetTimeline(256)
+	timerSafeguaredPrismCD:SetTimeline(257)
+	timerShatteredSkyCD:SetTimeline(258)
+	timerTotalEclipseCD:SetTimeline(259)
+	timerLightSiphonCD:SetTimeline(261)
+	timerDarkConstellationCD:SetTimeline(262)
+	timerDarkArchangelCD:SetTimeline(263)
+	timerDeathsRequiemCD:SetTimeline(362)
+	timerSeveranceCD:SetTimeline(363)
 	timerHeavensLanceCD:SetTimeline(364)
-	specWarnIntoDarkwell:SetAlert(433, "pullin", 12, 2)
 	timerIntoDarkwellCD:SetTimeline(433)
-	specWarnCosmicFission:SetAlert(434, "pullin", 12, 2, 0)--Guessed. it's not on a timer it's triggered by players hitting cores
-	specWarnCoreHarvest:SetAlert(435, "farfromline", 2, 2)
 	timerCoreHarvestCD:SetTimeline(435)
-	specWarnDarkMeltdown:SetAlert(436, "carefly", 2, 2)
 	timerDarkMeltdownCD:SetTimeline(436)
 	timerStarSplinterCD:SetTimeline(437)
 	timerGalvanizeCD:SetTimeline(632)
-	specWarnTerminationPrism:SetAlert(636, "targetchange", 2, 3)
 	timerTerminationPrismCD:SetTimeline(636)
-	specWarnGrimSymphony:SetAlert(644, "runesincoming", 19, 4)
 	timerGrimSymphonyCD:SetTimeline(644)
-	specWarnDarkQuasar:SetAlert(649, "watchstep", 2, 3)
 	timerDarkQuasarCD:SetTimeline(649)
 end
 
@@ -181,6 +184,9 @@ function mod:OnLimitedCombatStart(delay)
 				"ENCOUNTER_TIMELINE_EVENT_ADDED",
 				"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 			)
+		end
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
 		end
 	else
 		setFallback(self)

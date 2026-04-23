@@ -45,20 +45,23 @@ local next80IsShadow = false
 local next80IsVoidMark = false
 
 ---@param self DBMMod
-local function setFallback(self)
+	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
+local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
-	specWarnShadowsAdvance:SetAlert({194, 195}, "mobsoon", 2, 2)
+	if not dontSetAlerts then
+		specWarnShadowsAdvance:SetAlert({194, 195}, "mobsoon", 2, 2)
+		specWarnDarkUpheaval:SetAlert(196, "aesoon", 2, 2)
+		specWarnUmbralCollapse:SetAlert(197, "gathershare", 2, 2)
+		specWarnOblivionWrath:SetAlert(198, "watchstep", 2, 2)
+		specWarnVoidFall:SetAlert({199, 209}, "carefly", 2, 2)
+		specWarnMarchofEndless:SetAlert(200, "stilldanger", 2, 4)
+		specWarnPitchBulwark:SetAlert(201, "kickcast", 2, 2, 0)
+	end
 	timerShadowsAdvanceCD:SetTimeline({194, 195})
-	specWarnDarkUpheaval:SetAlert(196, "aesoon", 2, 2)
 	timerDarkUpheavalCD:SetTimeline(196)
-	specWarnUmbralCollapse:SetAlert(197, "gathershare", 2, 2)
 	timerUmbralCollapseCD:SetTimeline(197)
-	specWarnOblivionWrath:SetAlert(198, "watchstep", 2, 2)
 	timerOblivionWrathCD:SetTimeline(198)
-	specWarnVoidFall:SetAlert({199, 209}, "carefly", 2, 2)
 	timerVoidFallCD:SetTimeline({199, 209})
-	specWarnMarchofEndless:SetAlert(200, "stilldanger", 2, 4)
-	specWarnPitchBulwark:SetAlert(201, "kickcast", 2, 2, 0)
 	timerVoidMarkCD:SetTimeline(419)
 end
 
@@ -79,6 +82,9 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
+		end
 	else
 		setFallback(self)
 	end
