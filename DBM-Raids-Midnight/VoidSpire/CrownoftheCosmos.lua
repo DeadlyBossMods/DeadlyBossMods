@@ -18,7 +18,7 @@ mod:RegisterCombat("combat")
 --TODO, add https://www.wowhead.com/beta/spell=1227557/devouring-cosmos private aura if it's NOT berserk
 local warnSilverStrikeArrow				= mod:NewCountAnnounce(1233602, 2)--P1/P3
 local warnNullCorona					= mod:NewCountAnnounce(1233865, 2, nil, "Healer")--P1+
-local warnRiftSimulacrum				= mod:NewSpellAnnounce(1261016, 2)--P2 Starting
+local warnRiftSimulacrum				= mod:NewCountAnnounce(1261016, 2)--P2 Starting
 local warnVoidStalkerSting				= mod:NewCountAnnounce(1237035, 2)--Stage 2 non mythic
 
 local specWarnVoidExpulsion				= mod:NewSpecialWarningCount(1283236, nil, nil, nil, 2, 2)--P1+
@@ -48,7 +48,7 @@ local timerDevouringCosmosCD			= mod:NewCDCountTimer(20.5, 1238843, nil, nil, ni
 local timerDarkHandCD					= mod:NewCDCountTimer(20.5, 1233787, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P1 Tank Add
 local timerRavenousAbyssCD				= mod:NewCDCountTimer(20.5, 1243753, DBM_COMMON_L.AVOID.." (%s)", nil, nil, 3)--P1 Add
 local timerInterruptingTremorCD			= mod:NewCDCountTimer(20.5, 1243743, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--P1 Add
---local timerRiftSimulacrumCD			= mod:NewCDCountTimer(20.5, 1261016, nil, nil, nil, 6)--P2 Starting (stage 2 bar does this, this timer never fires)
+local timerRiftSimulacrumCD				= mod:NewCDCountTimer(20.5, 1261016, nil, nil, nil, 1)--P2/P3 mythic add spawn
 local timerCosmicPortalCD				= mod:NewCDCountTimer(20.5, 1261339, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic only mechanic of unknown nature
 local timerRiftSlashCD					= mod:NewCDCountTimer(20.5, 1246461, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P2 Rift Simulacrum slash attack
 local timerStage2CD						= mod:NewCDTimer(20.5, 1272966, nil, nil, nil, 6)
@@ -87,11 +87,13 @@ mod.vb.graspofEmptynessCount = 0
 mod.vb.devouringCosmosCount = 0
 mod.vb.riftSlashCount = 0
 mod.vb.cosmicPortalCount = 0
+mod.vb.riftSimulacrumCount = 0
 local badStateDetected = false
 local stage2p5Seen, stage3Recovered = false, false
 local stage2TwentyCount = 0
 local heroicStage2InitialRiftSeen = false
 local mythicStage1SAOpenerSeen = false
+local mythicStage1SAErrataAnchorTime = 0
 local stage1FortyEightCount = 0
 local lastTLEvent = 0
 local mythicStage2RiftSimulacrumSeen = false
@@ -101,6 +103,9 @@ local mythicStage2FourCount = 0
 local mythicStage2TwentyFiveCount = 0
 local mythicStage1FortyCount = 0
 local mythicStage3RiftSimulacrumSeen = false
+local mythicStage3FourteenCount = 0
+local mythicStage3FourteenDarkHandMode = false
+local mythicStage3TremorWindow = 0
 
 --Heroic Stage 3 disambiguation micro-table built from CrownWipe5.
 --Key format: "<lastResolvedType>:<lastResolvedRoundedTimer>" -> current eventType.
@@ -157,7 +162,7 @@ local function setFallback(self, dontSetAlerts)
 		else
 			specWarnInterruptingTremor:SetAlert(66, "aesoon", 2, 2, 0)
 		end
-		warnRiftSimulacrum:SetAlert(135, "ptwo", 2, 2, 0)--Verify
+	--	warnRiftSimulacrum:SetAlert(135, "bigmob", 2, 2, 0)
 		specWarnCosmicPortal:SetAlert(136, "bigmobsoon", 2, 2)
 		if self:IsTank() then
 			specWarnRiftSlash:SetAlert(137, "defensive", 2, 2)
@@ -178,10 +183,10 @@ local function setFallback(self, dontSetAlerts)
 	timerDarkHandCD:SetTimeline(64)
 	timerRavenousAbyssCD:SetTimeline(65)
 	timerInterruptingTremorCD:SetTimeline(66)
---	timerRiftSimulacrumCD:SetTimeline(135)
 	timerCosmicPortalCD:SetTimeline(136)
 	timerRiftSlashCD:SetTimeline(137)
 	timerStage2CD:SetTimeline(351)
+	timerRiftSimulacrumCD:SetTimeline(135)
 end
 
 ---@param self DBMMod
@@ -199,6 +204,7 @@ function mod:OnLimitedCombatStart()
 	stage2TwentyCount = 0
 	heroicStage2InitialRiftSeen = false
 	mythicStage1SAOpenerSeen = false
+	mythicStage1SAErrataAnchorTime = 0
 	stage1FortyEightCount = 0
 	mythicStage1FortyCount = 0
 	lastTLEvent = 0
@@ -208,6 +214,9 @@ function mod:OnLimitedCombatStart()
 	mythicStage2FourCount = 0
 	mythicStage2TwentyFiveCount = 0
 	mythicStage3RiftSimulacrumSeen = false
+	mythicStage3FourteenCount = 0
+	mythicStage3FourteenDarkHandMode = false
+	mythicStage3TremorWindow = 0
 	self.vb.coronaCount = 1
 	self.vb.expulsionCount = 1
 	self.vb.voidExpulsionCount = 1
@@ -226,6 +235,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.devouringCosmosCount = 1
 	self.vb.riftSlashCount = 1
 	self.vb.cosmicPortalCount = 1
+	self.vb.riftSimulacrumCount = 1
 	self:SetStage(1)
 
 	if DBM.Options.HardcodedTimer and not self:IsStory() and not badStateDetected then
@@ -267,6 +277,7 @@ function mod:OnCombatEnd()
 	stage2TwentyCount = 0
 	heroicStage2InitialRiftSeen = false
 	mythicStage1SAOpenerSeen = false
+	mythicStage1SAErrataAnchorTime = 0
 	stage1FortyEightCount = 0
 	mythicStage1FortyCount = 0
 	mythicStage2RiftSimulacrumSeen = false
@@ -275,6 +286,9 @@ function mod:OnCombatEnd()
 	mythicStage2FourCount = 0
 	mythicStage2TwentyFiveCount = 0
 	mythicStage3RiftSimulacrumSeen = false
+	mythicStage3FourteenCount = 0
+	mythicStage3FourteenDarkHandMode = false
+	mythicStage3TremorWindow = 0
 	self:UnregisterShortTermEvents()
 end
 
@@ -284,6 +298,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersEasy(self, timer, timerExact, eventID)
+		if timer == 0 then return end--Absolute errata introduced into timeline by patch 12.0.5
 		local stage = self:GetStage()
 		if stage == 1 then
 			--Stage 1
@@ -477,6 +492,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersHeroic(self, timer, timerExact, eventID)
+		if timer == 0 then return end--Absolute errata introduced into timeline by patch 12.0.5
 		local stage = self:GetStage()
 		if stage == 1 then
 			--Stage 1 Heroic (Week 3 validated from CrownWipe2-5)
@@ -709,14 +725,18 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersMythic(self, timer, timerExact, eventID)
+		if timer == 0 then return end--Absolute errata introduced into timeline by patch 12.0.5
 		local stage = self:GetStage()
 		if stage == 1 then
 			--Stage 1 Mythic (Week 5 validated from CrownWipe1/2)
 			--Opener 4s casts (Dark Hand, Grasp, Interrupting Tremor, Ravenous Abyss) are pre-scheduled.
 			if timer == 4 then
 				return
-			elseif timer == 103 or timer == 104 then
-				--Long-duration Grasp of Emptiness passive, skip
+			elseif timer == 84 or timer == 103 or timer == 104 then
+				--Long-duration Grasp of Emptiness passive, skip (84 = week 6 errata re-broadcast with remaining time)
+				return
+			elseif timer == 5 or timer == 7 or timer == 11 or timer == 30 then
+				--Week 6 patch bug: re-broadcasts of already-active bars at T=20.04 with remaining durations (IT=5, GoE=7, DH=11, VE=30)
 				return
 			elseif timer == 2 then
 				--Intermission 1 starts with Silverstrike Barrage at ~1.5s (rounded 2).
@@ -767,9 +787,13 @@ do
 				end
 			elseif timer == 20 then
 				--Ravenous Abyss (exact 19.5), Silverstrike Arrow opener (exact 20.0), or Interrupting Tremor (exact 20.0)
-				if timerExact and timerExact < 19.75 then
+				if timerExact and timerExact < 19.55 then
 					timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
 					self:TLResolvePush("ravenousAbyss", timer)
+				elseif self:IsRoundedTimer(timerExact, 19.583, 0.2) then
+					--Week 6 stage-end SA can arrive as exact ~19.58 (rounded 20)
+					timerSilverstrikeArrowCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
+					self:TLResolvePush("silverstrikeArrow", timer)
 				elseif not mythicStage1SAOpenerSeen then
 					--First exact-20 is Silverstrike Arrow opener (SA1 at t=0)
 					mythicStage1SAOpenerSeen = true
@@ -780,10 +804,19 @@ do
 					timerInterruptingTremorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "interruptingTremor", "interruptingTremorCount"))
 					self:TLResolvePush("interruptingTremor", timer)
 				end
-			elseif timer == 18 or timer == 19 then
-				--Silverstrike Arrow (exact 17.5 or 19.166)
-				timerSilverstrikeArrowCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
-				self:TLResolvePush("silverstrikeArrow", timer)
+			elseif timer == 17 or timer == 18 or timer == 19 then
+				--Silverstrike Arrow durations (17.5/19.166). Week 6 errata can rebroadcast NC as timer=19
+				--immediately after the true SA event. Anchor off exact SA(17.5±0.3), not rounded timer value.
+				if self:IsRoundedTimer(timerExact, 17.5, 0.3) then
+					mythicStage1SAErrataAnchorTime = GetTime()
+					timerSilverstrikeArrowCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
+					self:TLResolvePush("silverstrikeArrow", timer)
+				elseif timer == 19 and mythicStage1SAErrataAnchorTime > 0 and GetTime() - mythicStage1SAErrataAnchorTime < 2 then
+					return
+				else
+					timerSilverstrikeArrowCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "silverstrikeArrow", "silverstrikeArrowCount"))
+					self:TLResolvePush("silverstrikeArrow", timer)
+				end
 			elseif timer == 26 then
 				--Ambiguous: Dark Hand (recurring) OR Grasp of Emptiness (G4, always preceded by Ravenous Abyss)
 				local lastResolvedType = self:TLResolvePeek()
@@ -832,7 +865,7 @@ do
 				--Rift Simulacrum opener (first 2s) OR Voidstalker Sting recurring (2s)
 				if not mythicStage2RiftSimulacrumSeen then
 					mythicStage2RiftSimulacrumSeen = true
-					self:TLCountStart(eventID, "riftSimulacrum")
+					timerRiftSimulacrumCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "riftSimulacrum", "riftSimulacrumCount"))
 				else
 					timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
 				end
@@ -892,40 +925,117 @@ do
 				timerCalloftheVoidCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "calloftheVoid", "calloftheVoidCount"))
 			end
 		elseif stage == 3 then
-			--Stage 3 Mythic (initial, CrownWipe1/2 - both wipes incomplete, more data needed)
-			--Opener batch confirmed across both wipes: Grasp(10), Aspect(7), VoidExpulsion(37),
-			--DevouringCosmos(60), CosmicPortal(15), NullCorona(30), RiftSimulacrum(12), Voidstalker(16).
-			if timer == 7 then--Aspect of the End
+			--Stage 3 Mythic (expanded with Week 6 Crown6-9)
+			--Aspect: 6/7/19/41
+			--Grasp: 9/10/16/35
+			--Rift Simulacrum: 11/12
+			--Voidstalker Sting: 12/14/15/16 (+17 ambiguous)
+			--Cosmic Portal: 15 opener, recurring 14 after Devouring batch
+			--Dark Hand: 20 and 14 (late loop, alternates with Voidstalker 14)
+			--Null Corona: 29/30
+			--Void Expulsion: 36/37
+			--Devouring Cosmos: 59/60
+			if timer == 6 or timer == 7 then--Aspect of the End
 				timerAspectoftheEndCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "aspectoftheEnd", "aspectoftheEndCount"))
+				self:TLResolvePush("aspectoftheEnd", timer)
 			elseif timer == 8 then--Ravenous Abyss (exact ~8.0)
 				timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
+				self:TLResolvePush("ravenousAbyss", timer)
 			elseif timer == 9 or timer == 10 or timer == 35 then--Grasp of Emptiness
 				timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+				self:TLResolvePush("grasp", timer)
+			elseif timer == 11 then--Rift Simulacrum recurring
+				timerRiftSimulacrumCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "riftSimulacrum", "riftSimulacrumCount"))
+				self:TLResolvePush("riftSimulacrum", timer)
 			elseif timer == 12 then--Rift Simulacrum opener (first) OR Voidstalker Sting (subsequent)
 				if not mythicStage3RiftSimulacrumSeen then
 					mythicStage3RiftSimulacrumSeen = true
-					self:TLCountStart(eventID, "riftSimulacrum")
+					timerRiftSimulacrumCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "riftSimulacrum", "riftSimulacrumCount"))
+					self:TLResolvePush("riftSimulacrum", timer)
 				else
 					timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+					self:TLResolvePush("voidstalkerSting", timer)
 				end
-			elseif timer == 14 or timer == 16 then--Voidstalker Sting
-				timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
-			elseif timer == 15 then--Cosmic Portal (Mythic only)
-				timerCosmicPortalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "cosmicPortal", "cosmicPortalCount"))
-			elseif timer == 17 then--Ambiguous: Ravenous Abyss (exact ~16.5) OR Voidstalker Sting (exact ~17+)
+			elseif timer == 14 then--Ambiguous: Cosmic Portal recurring OR Dark Hand OR Voidstalker Sting
+				local lastResolvedType, lastResolvedTimer = self:TLResolvePeek()
+				if lastResolvedType == "devouringCosmos" and (lastResolvedTimer == 59 or lastResolvedTimer == 60) then
+					timerCosmicPortalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "cosmicPortal", "cosmicPortalCount"))
+					self:TLResolvePush("cosmicPortal", timer)
+				elseif not mythicStage3FourteenDarkHandMode then
+					if lastResolvedType == "voidstalkerSting" and lastResolvedTimer == 12 then
+						mythicStage3FourteenDarkHandMode = true
+						mythicStage3FourteenCount = 1
+						timerDarkHandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkHand", "darkHandCount"))
+						self:TLResolvePush("darkHand", timer)
+					else
+						timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+						self:TLResolvePush("voidstalkerSting", timer)
+					end
+				else
+					mythicStage3FourteenCount = mythicStage3FourteenCount + 1
+					if mythicStage3FourteenCount % 2 == 1 then
+						timerDarkHandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkHand", "darkHandCount"))
+						self:TLResolvePush("darkHand", timer)
+					else
+						timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+						self:TLResolvePush("voidstalkerSting", timer)
+					end
+				end
+			elseif timer == 15 then--Ambiguous: Cosmic Portal opener OR Voidstalker Sting recurring
+				if self.vb.cosmicPortalCount == 1 then
+					timerCosmicPortalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "cosmicPortal", "cosmicPortalCount"))
+					self:TLResolvePush("cosmicPortal", timer)
+				else
+					timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+					self:TLResolvePush("voidstalkerSting", timer)
+				end
+			elseif timer == 16 then--Ambiguous: Voidstalker Sting opener OR Grasp of Emptiness recurring
+				local lastResolvedType, lastResolvedTimer = self:TLResolvePeek()
+				if (lastResolvedType == "aspectoftheEnd" and (lastResolvedTimer == 19 or lastResolvedTimer == 6))
+					or (lastResolvedType == "darkHand" and lastResolvedTimer == 14) then
+					timerGraspofEmptynessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspofEmptynessCount"))
+					self:TLResolvePush("grasp", timer)
+				else
+					timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+					self:TLResolvePush("voidstalkerSting", timer)
+				end
+			elseif timer == 17 then--Ambiguous: Ravenous Abyss (exact ~16.5) OR Interrupting Tremor (late Stage 3 window) OR Voidstalker Sting (exact ~17+)
 				if timerExact and timerExact < 16.75 then
 					timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
+					self:TLResolvePush("ravenousAbyss", timer)
+				elseif mythicStage3TremorWindow > 0 then
+					mythicStage3TremorWindow = mythicStage3TremorWindow - 1
+					timerInterruptingTremorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "interruptingTremor", "interruptingTremorCount"))
+					self:TLResolvePush("interruptingTremor", timer)
 				else
 					timerVoidstalkerStingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidstalkerSting", "voidstalkerStingCount"))
+					self:TLResolvePush("voidstalkerSting", timer)
+				end
+			elseif timer == 8 then--Ambiguous: Ravenous Abyss OR Interrupting Tremor (late Stage 3)
+				local lastResolvedType, lastResolvedTimer = self:TLResolvePeek()
+				if self.vb.devouringCosmosCount >= 3 and lastResolvedType == "voidstalkerSting" and lastResolvedTimer == 17 then
+					mythicStage3TremorWindow = 2
+					timerInterruptingTremorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "interruptingTremor", "interruptingTremorCount"))
+					self:TLResolvePush("interruptingTremor", timer)
+				else
+					timerRavenousAbyssCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenousAbyss", "ravenousAbyssCount"))
+					self:TLResolvePush("ravenousAbyss", timer)
 				end
 			elseif timer == 19 or timer == 41 then--Aspect of the End (recurring)
 				timerAspectoftheEndCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "aspectoftheEnd", "aspectoftheEndCount"))
-			elseif timer == 30 then--Null Corona
+				self:TLResolvePush("aspectoftheEnd", timer)
+			elseif timer == 20 then--Dark Hand
+				timerDarkHandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkHand", "darkHandCount"))
+				self:TLResolvePush("darkHand", timer)
+			elseif timer == 29 or timer == 30 then--Null Corona
 				timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
-			elseif timer == 37 then--Void Expulsion
+				self:TLResolvePush("nullCorona", timer)
+			elseif timer == 36 or timer == 37 then--Void Expulsion
 				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
-			elseif timer == 60 then--Devouring Cosmos
+				self:TLResolvePush("voidExpulsion", timer)
+			elseif timer == 59 or timer == 60 then--Devouring Cosmos
 				timerDevouringCosmosCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devouringCosmos", "devouringCosmosCount"))
+				self:TLResolvePush("devouringCosmos", timer)
 			end
 		end
 	end
@@ -971,11 +1081,6 @@ do
 				self:SetStage(3)
 				return
 			end
-			if eventType == "riftSimulacrum" then
-				warnRiftSimulacrum:Show()
-				warnRiftSimulacrum:Play("ptwo")
-				return
-			end
 			if not eventCount then return end
 			if eventType == "voidExpulsion" then
 				specWarnVoidExpulsion:Show(eventCount)
@@ -1012,6 +1117,8 @@ do
 			elseif eventType == "devouringCosmos" then
 				specWarnDevouringCosmos:Show(eventCount)
 				specWarnDevouringCosmos:Play("changeplatform")
+			elseif eventType == "riftSimulacrum" then
+				warnRiftSimulacrum:Show(eventCount)
 			end
 		elseif eventState == 3 then
 			local eventType = self:TLCountCancel(eventID)
