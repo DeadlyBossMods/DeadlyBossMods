@@ -750,9 +750,8 @@ do
 					self:TLResolvePush("nullCorona", timer)
 				end
 			elseif timer == 1 then
-				--Null Corona end-of-stage cast (exact ~1.25), cancelled by core when adds die
-				timerNullCoronaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullCorona", "coronaCount"))
-				self:TLResolvePush("nullCorona", timer)
+				--Null Corona timer resend for an existing timer that's about to expire naturally. Ignore
+				return
 			elseif timer == 10 then
 				--Void Expulsion (exact 10.0 opener and 9.583 recurring)
 				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
@@ -962,7 +961,7 @@ do
 					timerCosmicPortalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "cosmicPortal", "cosmicPortalCount"))
 					self:TLResolvePush("cosmicPortal", timer)
 				elseif not mythicStage3FourteenDarkHandMode then
-					if lastResolvedType == "voidstalkerSting" and lastResolvedTimer == 12 then
+					if lastResolvedType == "voidstalkerSting" and lastResolvedTimer == 12 and self.vb.devouringCosmosCount >= 4 then
 						mythicStage3FourteenDarkHandMode = true
 						mythicStage3FourteenCount = 1
 						timerDarkHandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkHand", "darkHandCount"))
@@ -1034,6 +1033,7 @@ do
 				timerVoidExpulsionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidExpulsion", "voidExpulsionCount"))
 				self:TLResolvePush("voidExpulsion", timer)
 			elseif timer == 59 or timer == 60 then--Devouring Cosmos
+				mythicStage3TremorWindow = 0--Reset per-batch window so VS(timer=17) after this DC can't be mis-routed as IT
 				timerDevouringCosmosCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devouringCosmos", "devouringCosmosCount"))
 				self:TLResolvePush("devouringCosmos", timer)
 			end
