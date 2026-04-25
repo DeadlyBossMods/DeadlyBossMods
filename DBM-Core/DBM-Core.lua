@@ -6139,52 +6139,8 @@ do
 		test:Trace(self, "PlaySound", path)
 	end
 
-	local LSMFontCacheBuilt, sharedMediaFontCache = false, {}
-	local fontValidationProbe
-
-	local function getFontValidationProbe()
-		if fontValidationProbe and fontValidationProbe.SetFont then
-			return fontValidationProbe
-		end
-		local existingProbe = _G["DBM_FontValidationProbe"]
-		if existingProbe and existingProbe.SetFont then
-			fontValidationProbe = existingProbe
-			return fontValidationProbe
-		end
-		if type(CreateFont) ~= "function" then
-			return nil
-		end
-		local ok, probe = pcall(CreateFont, "DBM_FontValidationProbe")
-		if ok and probe and probe.SetFont then
-			fontValidationProbe = probe
-			return fontValidationProbe
-		end
-		return nil
-	end
-
-	local function buildLSMFontCache()
-		local LSM = LibStub and LibStub("LibSharedMedia-3.0", true)
-		if LSM then
-			for k in pairs(sharedMediaFontCache) do
-				sharedMediaFontCache[k] = nil
-			end
-			local hashtable = LSM:HashTable("font")
-			local keytable = {}
-			for k in next, hashtable do
-				tinsert(keytable, k)
-			end
-			for i = 1, #keytable do
-				local key = keytable[i]
-				local value = hashtable[key]
-				sharedMediaFontCache[key] = true
-				if type(value) == "string" then
-					sharedMediaFontCache[value] = true
-				end
-			end
-			LSMFontCacheBuilt = true
-		end
-	end
-
+	local fontProbe = UIParent:CreateFontString()
+	fontProbe:Hide()
 	function DBM:IsFontValid(fontPath, standardFont)
 		-- "standardFont" is always valid (maps to locale-specific standard)
 		if fontPath == "standardFont" then
@@ -6194,36 +6150,7 @@ do
 		if standardFont and fontPath == standardFont then
 			return true
 		end
-		-- Built-in WoW fonts are valid even when not registered in LibSharedMedia
-		if type(fontPath) == "string" and fontPath:lower():find("^fonts[\\/]+") then
-			return true
-		end
-		-- Build font cache from LibSharedMedia if needed
-		if not LSMFontCacheBuilt then
-			buildLSMFontCache()
-		end
-		local LSM = LibStub and LibStub("LibSharedMedia-3.0", true)
-		if not LSM then
-			-- If LibSharedMedia not available, assume valid (graceful degradation)
-			return true
-		end
-		-- Check cache for font path
-		if sharedMediaFontCache[fontPath] then
-			return true
-		end
-		-- Cache may be stale if media registered after first build; rebuild once and re-check
-		buildLSMFontCache()
-		if sharedMediaFontCache[fontPath] then
-			return true
-		end
-		-- Final fallback: validate directly against WoW API.
-		-- This handles media paths that are valid files but not yet registered in LSM.
-		local probe = getFontValidationProbe()
-		if type(fontPath) == "string" and probe and pcall(probe.SetFont, probe, fontPath, 12, "") then
-			sharedMediaFontCache[fontPath] = true
-			return true
-		end
-		return false
+		return pcall(fontProbe.SetFont, fontProbe, fontPath, 12, "")
 	end
 end
 
