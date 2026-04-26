@@ -325,9 +325,20 @@ do
 		end
 	end
 
+	function module:UNIT_SPELLCAST_START(uId, _, spellId)
+		local inCombat = private.getInCombat()
+		if #inCombat > 0 then--At least one boss is engaged
+			local spellName = DBM:GetSpellName(spellId)
+			DBM:Debug("UNIT_SPELLCAST_START fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3, nil, nil, true)
+		end
+	end
+
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-		local spellName = DBM:GetSpellName(spellId)
-		DBM:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
+		local inCombat = private.getInCombat()
+		if #inCombat > 0 then--At least one boss is engaged
+			local spellName = DBM:GetSpellName(spellId)
+			DBM:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3, nil, nil, true)
+		end
 	end
 
 	--Spammy events that core doesn't otherwise need are now dynamically registered/unregistered based on whether or not user is actually debugging
@@ -335,9 +346,9 @@ do
 		if DBM.Options.DebugMode and not eventsRegistered then
 			eventsRegistered = true
 			if isRetail then
-				self:RegisterShortTermEvents("UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5", "UNIT_TARGETABLE_CHANGED")
+				self:RegisterShortTermEvents("UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5", "UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5", "UNIT_TARGETABLE_CHANGED")
 			else--No Boss unit Ids in classic, register backups
-				self:RegisterShortTermEvents("UNIT_SPELLCAST_SUCCEEDED target focus", "UNIT_TARGETABLE_CHANGED")
+				self:RegisterShortTermEvents("UNIT_SPELLCAST_START target focus", "UNIT_SPELLCAST_SUCCEEDED target focus", "UNIT_TARGETABLE_CHANGED")
 			end
 		elseif not DBM.Options.DebugMode and eventsRegistered then
 			eventsRegistered = false
