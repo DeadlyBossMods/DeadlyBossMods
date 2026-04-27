@@ -52,8 +52,8 @@ end
 ---@param specWarnObject SpecialWarning
 ---@param count number?
 ---@param voiceName string?
----@param voiceCustomPath string|number?
-function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count, voiceName, voiceCustomPath)
+---@param expireOverride number?
+function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count, voiceName, expireOverride)
 	if not specWarnObject or specWarnObject.announceType ~= "blizztarget" then return end
 	local mod = specWarnObject.mod
 	if not mod then return end
@@ -65,11 +65,12 @@ function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count, voiceName, vo
 		}
 		blizzTargetSpecialWarningQueue[mod] = queue
 	end
+	local expireSeconds = type(expireOverride) == "number" and expireOverride > 0 and expireOverride or 1.5
 	local entry = {
 		specWarn = specWarnObject,
 		count = count,
 		voiceName = voiceName,
-		voiceCustomPath = voiceCustomPath,
+		expireSeconds = expireSeconds,
 		queueTime = GetTime()
 	}
 	table.insert(queue.ordered, entry)
@@ -88,7 +89,7 @@ function DBM:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTar
 	local now = GetTime()
 	local consumed = false
 	for mod, queue in pairs(blizzTargetSpecialWarningQueue) do
-		while #queue.ordered > 0 and now - (queue.ordered[1].queueTime or 0) > 3.0 do
+		while #queue.ordered > 0 and now - (queue.ordered[1].queueTime or 0) > (queue.ordered[1].expireSeconds or 1.5) do
 			removeBlizzTargetSpecialWarningQueueEntry(queue, queue.ordered[1])
 		end
 		local entry
@@ -111,7 +112,7 @@ function DBM:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTar
 			entry.specWarn:Show(entry.count, formattedTargetName)
 			private.blizzTargetConsuming = false
 			if entry.voiceName then
-				entry.specWarn:Play(entry.voiceName, entry.voiceCustomPath)
+				entry.specWarn:Play(entry.voiceName)
 			end
 			consumed = true
 		end
@@ -136,8 +137,8 @@ end
 ---@param specWarnObject SpecialWarning
 ---@param count number?
 ---@param voiceName string?
----@param voiceCustomPath string|number?
-function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, voiceCustomPath)
+---@param expireOverride number?
+function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, expireOverride)
 	if not specWarnObject or specWarnObject.announceType ~= "blizzyou" then return end
 	local mod = specWarnObject.mod
 	if not mod then return end
@@ -146,11 +147,12 @@ function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, voice
 		queue = { ordered = {} }
 		blizzYouSpecialWarningQueue[mod] = queue
 	end
+	local expireSeconds = type(expireOverride) == "number" and expireOverride > 0 and expireOverride or 1.5
 	local entry = {
 		specWarn = specWarnObject,
 		count = count,
 		voiceName = voiceName,
-		voiceCustomPath = voiceCustomPath,
+		expireSeconds = expireSeconds,
 		queueTime = GetTime()
 	}
 	table.insert(queue.ordered, entry)
@@ -165,7 +167,7 @@ function DBM:ConsumeBlizzYouSpecialWarning()
 		local found = false
 		while i <= #queue.ordered do
 			local entry = queue.ordered[i]
-			if now - entry.queueTime > 1.0 then
+			if now - entry.queueTime > (entry.expireSeconds or 1.5) then
 				-- Stale, discard
 				removeBlizzYouSpecialWarningQueueEntry(queue, entry)
 			elseif not found then
@@ -175,7 +177,7 @@ function DBM:ConsumeBlizzYouSpecialWarning()
 					entry.specWarn:Show(entry.count)
 					private.blizzYouConsuming = false
 					if entry.voiceName then
-						entry.specWarn:Play(entry.voiceName, entry.voiceCustomPath)
+						entry.specWarn:Play(entry.voiceName)
 					end
 					consumed = true
 				end
@@ -596,6 +598,8 @@ local specTypeFilterTable = {
 ---@field Show fun(self: SpecAnnounce2strnum, arg1: string, arg2: number)
 ---@class SpecAnnounce2numstr: SpecialWarning
 ---@field Show fun(self: SpecAnnounce2numstr, arg1: number, arg2: string)
+---@class SpecAnnounce3numstrnum: SpecialWarning
+---@field Show fun(self: SpecAnnounce3numstrnum, arg1: number, arg2: string, arg3: number|nil)
 
 ---Used to set fallback options to blizzard encounter API for hardcoded warnings to fall back on
 ---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
@@ -612,14 +616,14 @@ end
 function specialWarningPrototype:Show(...)
 	if self.announceType == "blizztarget" then
 		if not private.blizzTargetConsuming then
-			local count, voiceName, voiceCustomPath = ...
-			DBM:QueueBlizzTargetSpecialWarning(self, count, voiceName, voiceCustomPath)
+			local count, voiceName, expireOverride = ...
+			DBM:QueueBlizzTargetSpecialWarning(self, count, voiceName, expireOverride)
 			return
 		end
 	elseif self.announceType == "blizzyou" then
 		if not private.blizzYouConsuming then
-			local count, voiceName, voiceCustomPath = ...
-			DBM:QueueBlizzYouSpecialWarning(self, count, voiceName, voiceCustomPath)
+			local count, voiceName, expireOverride = ...
+			DBM:QueueBlizzYouSpecialWarning(self, count, voiceName, expireOverride)
 			return
 		end
 	end
@@ -1219,16 +1223,16 @@ function bossModPrototype:NewSpecialWarningTargetCount(spellId, optionDefault, .
 end
 
 ---Special object used for blizzard target announces using secret target pulled from ENCOUNTER_WARNING
----@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce2numstr
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce3numstrnum
 function bossModPrototype:NewSpecialWarningBlizzTarget(spellId, optionDefault, ...)
-	---@type SpecAnnounce2numstr
+	---@type SpecAnnounce3numstrnum
 	return newSpecialWarning(self, "blizztarget", spellId, nil, optionDefault, ...)
 end
 
 ---Special object used for "on you" announces triggered by next ENCOUNTER_WARNING within 1 second; mirrors youcount but consumes any ENCOUNTER_WARNING as trigger
----@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce2numstr
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce3numstrnum
 function bossModPrototype:NewSpecialWarningBlizzYou(spellId, optionDefault, ...)
-	---@type SpecAnnounce2numstr
+	---@type SpecAnnounce3numstrnum
 	return newSpecialWarning(self, "blizzyou", spellId, nil, optionDefault, ...)
 end
 
