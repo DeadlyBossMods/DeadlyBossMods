@@ -51,7 +51,9 @@ end
 
 ---@param specWarnObject SpecialWarning
 ---@param count number?
-function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count)
+---@param voiceName string?
+---@param voiceCustomPath string|number?
+function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count, voiceName, voiceCustomPath)
 	if not specWarnObject or specWarnObject.announceType ~= "blizztarget" then return end
 	local mod = specWarnObject.mod
 	if not mod then return end
@@ -66,6 +68,8 @@ function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count)
 	local entry = {
 		specWarn = specWarnObject,
 		count = count,
+		voiceName = voiceName,
+		voiceCustomPath = voiceCustomPath,
 		queueTime = GetTime()
 	}
 	table.insert(queue.ordered, entry)
@@ -103,7 +107,9 @@ function DBM:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTar
 			blizzTargetSpecialWarningQueue[mod] = nil
 		end
 		if entry and entry.specWarn then
+			private.blizzTargetConsuming = true
 			entry.specWarn:Show(entry.count, formattedTargetName)
+			private.blizzTargetConsuming = false
 			if entry.voiceName then
 				entry.specWarn:Play(entry.voiceName, entry.voiceCustomPath)
 			end
@@ -129,7 +135,9 @@ end
 
 ---@param specWarnObject SpecialWarning
 ---@param count number?
-function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count)
+---@param voiceName string?
+---@param voiceCustomPath string|number?
+function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, voiceCustomPath)
 	if not specWarnObject or specWarnObject.announceType ~= "blizzyou" then return end
 	local mod = specWarnObject.mod
 	if not mod then return end
@@ -141,6 +149,8 @@ function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count)
 	local entry = {
 		specWarn = specWarnObject,
 		count = count,
+		voiceName = voiceName,
+		voiceCustomPath = voiceCustomPath,
 		queueTime = GetTime()
 	}
 	table.insert(queue.ordered, entry)
@@ -601,14 +611,15 @@ end
 
 function specialWarningPrototype:Show(...)
 	if self.announceType == "blizztarget" then
-		local count, targetName = ...
-		if select("#", ...) < 2 or type(targetName) ~= "string" then
-			DBM:QueueBlizzTargetSpecialWarning(self, count)
+		if not private.blizzTargetConsuming then
+			local count, voiceName, voiceCustomPath = ...
+			DBM:QueueBlizzTargetSpecialWarning(self, count, voiceName, voiceCustomPath)
 			return
 		end
 	elseif self.announceType == "blizzyou" then
 		if not private.blizzYouConsuming then
-			DBM:QueueBlizzYouSpecialWarning(self, ...)
+			local count, voiceName, voiceCustomPath = ...
+			DBM:QueueBlizzYouSpecialWarning(self, count, voiceName, voiceCustomPath)
 			return
 		end
 	end
@@ -924,19 +935,6 @@ local specInstructionalRemapVoiceTable = {
 ---@param name VPSound?
 ---@param customPath? string|number
 function specialWarningPrototype:Play(name, customPath)
-	if self.announceType == "blizztarget" or self.announceType == "blizzyou" then
-		local queue = self.announceType == "blizztarget" and blizzTargetSpecialWarningQueue[self.mod] or blizzYouSpecialWarningQueue[self.mod]
-		if queue then
-			for _, entry in ipairs(queue.ordered) do
-				if entry.specWarn == self then
-					entry.voiceName = name
-					entry.voiceCustomPath = customPath
-					return
-				end
-			end
-		end
-		return
-	end
 	local voice = DBM.Options.ChosenVoicePack2
 	local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 	if not canVoiceReplace(self, soundId) then return end
@@ -1221,16 +1219,16 @@ function bossModPrototype:NewSpecialWarningTargetCount(spellId, optionDefault, .
 end
 
 ---Special object used for blizzard target announces using secret target pulled from ENCOUNTER_WARNING
----@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce1num
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce2numstr
 function bossModPrototype:NewSpecialWarningBlizzTarget(spellId, optionDefault, ...)
-	---@type SpecAnnounce1num
+	---@type SpecAnnounce2numstr
 	return newSpecialWarning(self, "blizztarget", spellId, nil, optionDefault, ...)
 end
 
 ---Special object used for "on you" announces triggered by next ENCOUNTER_WARNING within 1 second; mirrors youcount but consumes any ENCOUNTER_WARNING as trigger
----@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce1num
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce2numstr
 function bossModPrototype:NewSpecialWarningBlizzYou(spellId, optionDefault, ...)
-	---@type SpecAnnounce1num
+	---@type SpecAnnounce2numstr
 	return newSpecialWarning(self, "blizzyou", spellId, nil, optionDefault, ...)
 end
 

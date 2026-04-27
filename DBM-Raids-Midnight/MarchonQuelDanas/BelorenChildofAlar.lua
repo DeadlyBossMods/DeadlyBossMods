@@ -173,8 +173,7 @@ do
 		elseif timer == 50 then--Voidlight Convergence
 			--Blizzard fires ENCOUNTER_WARNING immediately after starting timer for NEXT cast
 			--Blizzard warning does NOT line up with state changes. So we dispatch here
-			specWarnVoidlightConvergence:Show(self.vb.convergenceCount)
-			specWarnVoidlightConvergence:Play("colorchange")
+			specWarnVoidlightConvergence:Show(self.vb.convergenceCount, "colorchange")
 
 			timerVoidlightConvergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
 			warnVoidlightConvergenceSoon:Schedule(timerExact - 5)

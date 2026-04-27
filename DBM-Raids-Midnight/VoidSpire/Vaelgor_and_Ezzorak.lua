@@ -712,11 +712,9 @@ do
 					specWarnVoidHowl:Show(eventCount)
 					specWarnVoidHowl:Play("range5")
 				elseif eventType == "gloom" then
-					specWarnGloom:Show(eventCount)
-					specWarnGloom:Play("gloomincoming")
+					specWarnGloom:Show(eventCount, "gloomincoming")
 				elseif eventType == "dread" then
-					specWarnDreadBreath:Show(eventCount)
-					specWarnDreadBreath:Play("breathsoon")
+					specWarnDreadBreath:Show(eventCount, "breathsoon")
 				elseif eventType == "maw" then
 					warnGrabblingMaw:Show(eventCount)
 				elseif eventType == "vaelwing" then
