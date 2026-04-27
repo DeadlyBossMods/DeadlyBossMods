@@ -51,6 +51,10 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName, 2, nil, nil, true)
 		end
 	end
+	local consumedBlizzTargetAnnounce = self:ConsumeBlizzTargetAnnounce(encounterWarningInfo, formattedTargetName or UNKNOWN)
+	local consumedBlizzTargetSpecWarn = self:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTargetName or UNKNOWN)
+	local consumedBlizzYouSpecWarn = self:ConsumeBlizzYouSpecialWarning()
+	if consumedBlizzTargetAnnounce or consumedBlizzTargetSpecWarn or consumedBlizzYouSpecWarn then return end
 	if not self:AntiSpam(0.5, "ENCOUNTER_WARNING") then return end--Designers can't be assed to make sure event isn't buggy and spammy so we're forced to hard throttle
 	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then
 		--Special cases where blizz warning is only warning possible (ie spell doesn't have timeline event)

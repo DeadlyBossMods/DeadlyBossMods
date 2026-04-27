@@ -66,7 +66,6 @@ local diveEventID = 0
 local diveEventCount = 0
 local diveExpireAt = 0
 local diveFallbackToken = 0
-local showOnNextWarning = 0
 local timer73Count = 0
 local timer75Count = 0
 
@@ -116,7 +115,6 @@ function mod:OnLimitedCombatStart()
 	diveEventCount = 0
 	diveExpireAt = 0
 	diveFallbackToken = diveFallbackToken + 1
-	showOnNextWarning = 0
 	timer73Count = 0
 	timer75Count = 0
 	--Hardcode features first
@@ -124,8 +122,7 @@ function mod:OnLimitedCombatStart()
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
-			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
-			"ENCOUNTER_WARNING"
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
 		if DBM.Options.HideDBMBars then
 			setFallback(self, true)
@@ -452,10 +449,9 @@ do
 						--LFR has no soak
 						specWarnAlndustUpheaval:Play("raidsplit")
 					else
-						showOnNextWarning = eventCount
+						warnAlndustUpheaval:Show(eventCount)
 						specWarnAlndustUpheaval:Play("soakincoming")
 					end
-					--We timestamp this then let local ENCOUNTER_WARNING event handle it
 				elseif eventType == "devastation" then
 					specWarnCorruptedDevastation:Show(eventCount)
 					specWarnCorruptedDevastation:Play("breathsoon")
@@ -486,25 +482,5 @@ do
 			end
 			self:TLCountCancel(eventID)
 		end
-	end
-end
-
-function mod:ENCOUNTER_WARNING(encounterWarningInfo)
-	if showOnNextWarning > 0 then
-		--Secrets
-		local targetName = encounterWarningInfo.targetName
-		local targetGUID = encounterWarningInfo.targetGUID
-		local formattedTargetName = targetName or UNKNOWN
-		if targetGUID then
-			local _, className = GetPlayerInfoByGUID(targetGUID)
-			if className then
-				local classColor = C_ClassColor.GetClassColor(className)
-				if classColor then
-				    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
-				end
-			end
-		end
-		warnAlndustUpheaval:Show(showOnNextWarning, formattedTargetName)
-		showOnNextWarning = 0
 	end
 end

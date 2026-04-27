@@ -13,12 +13,11 @@ mod:RegisterCombat("combat")
 --NOTE: hardcode can probably combine cosmisis abilities into a single https://www.wowhead.com/ptr/spell=1263623/cosmosis timer
 --local warnRadiantBarrier			= mod:NewCountAnnounce(1248847, 1)
 local warnGrabblingMaw				= mod:NewCountAnnounce(1280458, 2, nil, "Tank")
-local warnDreadBreath				= mod:NewBlizzTargetAnnounce(1244221, 4)
 
 local specWarnNullBeam				= mod:NewSpecialWarningCount(1262623, nil, nil, nil, 2, 2)
 local specWarnVoidHowl				= mod:NewSpecialWarningCount(1244917, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
 local specWarnGloom					= mod:NewSpecialWarningCount(1245391, nil, nil, nil, 2, 2)
-local specWarnDreadBreath			= mod:NewSpecialWarningCount(1244221, nil, 17088, nil, 2, 2)
+local specWarnDreadBreath			= mod:NewSpecialWarningBlizzTarget(1244221, nil, 17088, nil, 2, 2)
 local specWarnMidnightFlames		= mod:NewSpecialWarningCount(1249748, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
 --local specWarnGrabblingMaw		= mod:NewSpecialWarningCount(1280458, nil, nil, nil, 1, 2)
 local specWarnRakfang				= mod:NewSpecialWarningDefensive(1245645, nil, nil, nil, 1, 2)
@@ -68,7 +67,6 @@ mod.vb.cosmosisNullbeamCount = 0
 mod.vb.cosmosisDreadBreathCount = 0
 mod.vb.cosmosisVoidHowlCount = 0
 mod.vb.radiantBarrierCount = 0
-local showOnNextWarning = 0
 local badStateDetected = false
 local next53IsGloom = false
 local next26S1Type = "vaelwing"
@@ -143,7 +141,6 @@ function mod:OnLimitedCombatStart()
 	self.vb.cosmosisDreadBreathCount = 1
 	self.vb.cosmosisVoidHowlCount = 1
 	self.vb.radiantBarrierCount = 1
-	showOnNextWarning = 0
 	next53IsGloom = true
 	next26S1Type = "vaelwing"
 	next26S2Type = "rakfang"
@@ -169,8 +166,7 @@ function mod:OnLimitedCombatStart()
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
-			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
-			"ENCOUNTER_WARNING"
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
 		if DBM.Options.HideDBMBars then
 			setFallback(self, true)
@@ -719,7 +715,6 @@ do
 					specWarnGloom:Show(eventCount)
 					specWarnGloom:Play("gloomincoming")
 				elseif eventType == "dread" then
-					showOnNextWarning = eventCount
 					specWarnDreadBreath:Show(eventCount)
 					specWarnDreadBreath:Play("breathsoon")
 				elseif eventType == "maw" then
@@ -749,25 +744,5 @@ do
 		elseif eventState == 3 then--Canceled/removed
 			self:TLCountCancel(eventID)
 		end
-	end
-end
-
-function mod:ENCOUNTER_WARNING(encounterWarningInfo)
-	if showOnNextWarning > 0 then
-		--Secrets
-		local targetName = encounterWarningInfo.targetName
-		local targetGUID = encounterWarningInfo.targetGUID
-		local formattedTargetName = targetName or UNKNOWN
-		if targetGUID then
-			local _, className = GetPlayerInfoByGUID(targetGUID)
-			if className then
-				local classColor = C_ClassColor.GetClassColor(className)
-				if classColor then
-				    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
-				end
-			end
-		end
-		warnDreadBreath:Show(showOnNextWarning, formattedTargetName)
-		showOnNextWarning = 0
 	end
 end
