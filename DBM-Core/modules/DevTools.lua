@@ -329,7 +329,7 @@ do
 		local inCombat = private.getInCombat()
 		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("UNIT_SPELLCAST_START fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3, nil, nil, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired: "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true)
 		end
 	end
 
@@ -337,7 +337,7 @@ do
 		local inCombat = private.getInCombat()
 		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3, nil, nil, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired: "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true)
 		end
 	end
 
