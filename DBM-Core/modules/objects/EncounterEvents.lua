@@ -40,15 +40,15 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 			end
 		end
 		if tooltipSpellID then
-			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 3, nil, nil, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 4, nil, nil, true)
 		else
-			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 3, nil, nil, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 4, nil, nil, true)
 		end
 	else
 		if tooltipSpellID then
-			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID, 3, nil, nil, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID, 4, nil, nil, true)
 		else
-			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName, 3, nil, nil, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName, 4, nil, nil, true)
 		end
 	end
 	local consumedBlizzTargetAnnounce = self:ConsumeBlizzTargetAnnounce(encounterWarningInfo, formattedTargetName or UNKNOWN)
@@ -97,7 +97,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
 	local iconId = eventInfo.iconFileID
 	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
-	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for eventID: "..eventID.." with spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(tostring(duration).." (Rounded: "..tostring(durationRounded)..")", color).." and state: "..tostring(eventState), 3, nil, nil, true)
+	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for eventID: "..eventID.." with spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(tostring(duration).." (Rounded: "..tostring(durationRounded)..")", color).." and state: "..tostring(eventState), 4, nil, nil, true)
 	if self.Options.HideDBMBars then return end
 	if self.Options.DontShowBossTimers and source == 0 then return end
 	if self.Options.DontShowUserTimers and source == 1 then return end
@@ -161,7 +161,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 				DBM:FireEvent("DBM_TimerPause", hardcodedTimerId)
 			end
 		elseif staleHardcodedEvent then
-			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale pause for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale pause for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel >= 3)
 		end
 	elseif eventState == 0 then
 		if bar then
@@ -170,12 +170,12 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 				DBM:FireEvent("DBM_TimerResume", hardcodedTimerId)
 			end
 		elseif staleHardcodedEvent then
-			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale resume for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale resume for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel >= 3)
 		end
 	else--Finished or canceled (sometimes blizzard sends state changed instead of event removed when canceling events)
 		--Ignore Finished or canceled event for a bugged ID, since it's onen of blizzards early cancel bugs
 		if ignoredEventID then
-			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring cancel for eventID: "..tostring(eventID).." (timerID belongs to a known bugged Blizzard timer)", 2, nil, nil, DBM.Options.DebugLevel == 3)
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring cancel for eventID: "..tostring(eventID).." (timerID belongs to a known bugged Blizzard timer)", 2, nil, nil, DBM.Options.DebugLevel >= 3)
 			--Don't clear buggedBlizzardTimers here; the module's handler still needs to check IsBuggedEventID and will call UnsetBuggedEventID itself
 		else
 			if bar then
@@ -184,7 +184,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 					DBM:FireEvent("DBM_TimerStop", hardcodedTimerId)
 				end
 			elseif staleHardcodedEvent then
-				self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel == 3)
+				self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel >= 3)
 			end
 			if hardcodedTimerId then
 				if private.hardCodedTimerEvents[hardcodedTimerId] == eventID then
@@ -198,11 +198,11 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 				else
 					private.hardCodedTimers[eventID] = nil
 				end
-				self:Debug("|cffffff00Hardcoded timer terminated for eventID: |r"..tostring(eventID).." (timerID: "..tostring(hardcodedTimerId)..")", 3, nil, nil, true)
+				self:Debug("|cffffff00Hardcoded timer terminated for eventID: |r"..tostring(eventID).." (timerID: "..tostring(hardcodedTimerId)..")", 4, nil, nil, true)
 			end
 		end
 	end
-	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r fired for eventID: "..tostring(eventID).." with state: "..tostring(eventState), 3, nil, nil, true)
+	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r fired for eventID: "..tostring(eventID).." with state: "..tostring(eventState), 4, nil, nil, true)
 end
 
 --[[
