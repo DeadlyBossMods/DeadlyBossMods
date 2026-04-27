@@ -1522,11 +1522,11 @@ do
 					end
 					if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
 						unregisterUEvent(self, event)
-						DBM:Debug("unregisterUEvent for unit event " .. event .. " unregistered", 3)
+						--DBM:Debug("unregisterUEvent for unit event " .. event .. " unregistered", 3)
 					end
 					if #mods == 0 then
 						registeredEvents[event] = nil
-						DBM:Debug("registeredEvents for event " .. event .. " nilled", 3)
+						--DBM:Debug("registeredEvents for event " .. event .. " nilled", 3)
 					end
 				end
 			end
@@ -1548,11 +1548,11 @@ do
 			else
 				if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
 					unregisterUEvent(self, event)
-					DBM:Debug("unregisterUEvent for unit event " .. event .. " unregistered", 3)
+					--DBM:Debug("unregisterUEvent for unit event " .. event .. " unregistered", 3)
 				else
 					registeredEvents[event] = nil
 					mainFrame:UnregisterEvent(event)
-					DBM:Debug("UnregisteredEvents for event " .. event .. " nilled", 3)
+					--DBM:Debug("UnregisteredEvents for event " .. event .. " nilled", 3)
 				end
 			end
 		end
@@ -1785,7 +1785,7 @@ do
 				---@type string|number
 				local version = C_AddOns.GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 				version = tonumber(string.sub(version, 2, 4)) or 0
-				if version < 122 and not self.Options.DebugMode then
+				if version < 122 then
 					self:Disable(true)
 					self:Schedule(15, infiniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
 					return
@@ -2424,7 +2424,7 @@ do
 			---@type number|string
 			local version = C_AddOns.GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 			version = tonumber(string.sub(version, 2, 4)) or 0
-			if version < 122 and not self.Options.DebugMode then
+			if version < 122 then
 				self:AddMsg(L.OUTDATEDSPELLTIMERS)
 				return
 			end
@@ -4324,10 +4324,10 @@ do
 	---@param oldZone number if oldZone is -1, it means it's a loading screen
 	---@param newZone number
 	function DBM:PLAYER_MAP_CHANGED(oldZone, newZone)
-		self:Debug("PLAYER_MAP_CHANGED fired with oldZone " .. oldZone .. " and newZone " .. newZone, 2)
+		self:Debug("PLAYER_MAP_CHANGED fired with oldZone " .. oldZone .. " (" .. (GetRealZoneText(oldZone) or "Unknown") .. ") and newZone " .. newZone .. " (" .. (GetRealZoneText(newZone) or "Unknown") .. ")", 2, nil, nil, true)
 		if oldZone == -1 then return end--Let legacy LOADING_SCREEN_DISABLED handle it for now. In future, PLAYER_MAP_CHANGED may replace LSD if classic gets it
 		if LastInstanceMapID ~= newZone then
-			self:Debug("Zone changed, firing secondary load check", 2)
+			--self:Debug("Zone changed, firing secondary load check", 3)
 			--Different ID than cached, run secondary load checks
 			--Delay is still needed due to GetInstanceInfo not returning new information yet instantly on PLAYER_MAP_CHANGED
 			self:TransitionToDungeonBGM(false, true)
@@ -4723,9 +4723,7 @@ do
 		until not bossGUID
 	end
 
-	local existShown = {}
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		self:Debug("|cffffff00INSTANCE_ENCOUNTER_ENGAGE_UNIT: |r event fired for zoneId" .. LastInstanceMapID, 3, nil, nil, true)
 		if not timerRequestInProgress then--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
 			if dbmIsEnabled and combatInfo[LastInstanceMapID] then
 				for _, v in ipairs(combatInfo[LastInstanceMapID]) do
@@ -4735,38 +4733,6 @@ do
 						end
 					end
 				end
-			end
-		end
-		if self.Options.DebugLevel > 3 then
-			if UnitExists("boss1") and not existShown[1] then
-				self:Debug("|cffffff00boss1 exists", 3, nil, nil, true)
-				existShown[1] = true
-			elseif not UnitExists("boss1") then
-				existShown[1] = nil
-			end
-			if UnitExists("boss2") and not existShown[2] then
-				self:Debug("|cffffff00boss2 exists", 3, nil, nil, true)
-				existShown[2] = true
-			elseif not UnitExists("boss2") then
-				existShown[2] = nil
-			end
-			if UnitExists("boss3") and not existShown[3] then
-				self:Debug("|cffffff00boss3 exists", 3, nil, nil, true)
-				existShown[3] = true
-			elseif not UnitExists("boss3") then
-				existShown[3] = nil
-			end
-			if UnitExists("boss4") and not existShown[4] then
-				self:Debug("|cffffff00boss4 exists", 3, nil, nil, true)
-				existShown[4] = true
-			elseif not UnitExists("boss4") then
-				existShown[4] = nil
-			end
-			if UnitExists("boss5") and not existShown[5] then
-				self:Debug("|cffffff00boss5 exists", 3, nil, nil, true)
-				existShown[5] = true
-			elseif not UnitExists("boss5") then
-				existShown[5] = nil
 			end
 		end
 	end
@@ -6113,7 +6079,7 @@ do
 		end
 		local soundSetting = self.Options.UseSoundChannel
 		if type(path) == "number" then--Build in media using FileDataID
-			self:Debug("PlaySoundFile playing with FileDataID " .. path, 3)
+			--self:Debug("PlaySoundFile playing with FileDataID " .. path, 3)
 			if soundSetting == "Dialog" then
 				PlaySoundFile(path, "Dialog")
 			elseif ignoreSFX or soundSetting == "Master" then
@@ -6126,7 +6092,7 @@ do
 			if validate and not self:ValidateSound(path, true, true) then
 				return
 			end
-			self:Debug("PlaySoundFile playing with file path " .. path, 3)
+			--self:Debug("PlaySoundFile playing with file path " .. path, 3)
 			if soundSetting == "Dialog" then
 				PlaySoundFile(path, "Dialog")
 			elseif ignoreSFX or soundSetting == "Master" then
@@ -6460,7 +6426,7 @@ do
 			end
 		end
 		if not selectedClient then return end
-		self:Debug("Requesting timer recovery to " .. selectedClient.name)
+		self:Debug("Requesting timer recovery to " .. selectedClient.name, 2)
 		requestedFrom[selectedClient.name] = true
 		requestTime = GetTime()
 		private.sendWhisperSync(DBMSyncProtocol, "RT", "", selectedClient.name, "ALERT")
