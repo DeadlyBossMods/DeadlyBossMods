@@ -20,7 +20,7 @@ local mfloor, mmax, mceil = math.floor, math.max, math.ceil
 do
 	local debugLogFrame, debugLogViewport, debugLogContent, clearButton
 	local debugLogLineFrames = {}
-	local maxDebugLogEntries = 1000
+	local maxDebugLogEntries = 2000
 	local debugLogSoftClosed = true
 	local lineHeight = 14
 	local debugLogLineCount = 0
@@ -316,18 +316,78 @@ end
 
 do
 	local eventsRegistered = false
-	local UnitName, UnitExists = UnitName, UnitExists
+	local UnitName, UnitExists, UnitIsVisible, UnitCanAttack = UnitName, UnitExists, UnitIsVisible, UnitCanAttack
+	local bossUnits = {
+		"boss1", "boss2", "boss3", "boss4", "boss5",
+		"boss6", "boss7", "boss8", "boss9", "boss10",
+		"arena1", "arena2", "arena3", "arena4", "arena5",
+	}
 	function module:UNIT_TARGETABLE_CHANGED(uId)
-		local transcriptor = _G["Transcriptor"]
-		if DBM.Options.DebugLevel > 2 or (transcriptor and transcriptor:IsLogging()) then
-			local active = UnitExists(uId) and "true" or "false"
-			DBM:Debug("UNIT_TARGETABLE_CHANGED event fired for "..UnitName(uId)..". Active: "..active)
+		if DBM.Options.DebugLevel < 3 then return end
+		local inCombat = private.getInCombat()
+		if #inCombat == 0 then return end
+		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).."Exists:"..tostring(UnitExists(uId)).."IsVisible:"..tostring(UnitIsVisible(uId)).."]", 4, nil, nil, true)
+	end
+
+	function module:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+		if DBM.Options.DebugLevel < 3 then return end
+		local inCombat = private.getInCombat()
+		if #inCombat == 0 then return end
+		local hasBossUnits = false
+		for i = 1, #bossUnits do
+			local unit = bossUnits[i]
+			if UnitExists(unit) then
+				hasBossUnits = true
+				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).."Exists:"..tostring(UnitExists(unit)).."IsVisible:"..tostring(UnitIsVisible(unit)).."]", 4, nil, nil, true)
+			end
+		end
+		if not hasBossUnits then
+			DBM:Debug("|c00D8B4FEIEEU|r: no boss units found", 4, nil, nil, true)
+		end
+	end
+
+	function module:UNIT_SPELLCAST_START(uId, _, spellId)
+		if DBM.Options.DebugLevel < 2 then return end
+		local inCombat = private.getInCombat()
+		if #inCombat > 0 then--At least one boss is engaged
+			local spellName = DBM:GetSpellName(spellId)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
+		end
+	end
+	function module:UNIT_SPELLCAST_STOP(uId, _, spellId)
+		if DBM.Options.DebugLevel < 2 then return end
+		local inCombat = private.getInCombat()
+		if #inCombat > 0 then--At least one boss is engaged
+			local spellName = DBM:GetSpellName(spellId)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
 		end
 	end
 
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-		local spellName = DBM:GetSpellName(spellId)
-		DBM:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
+		if DBM.Options.DebugLevel < 2 then return end
+		local inCombat = private.getInCombat()
+		if #inCombat > 0 then--At least one boss is engaged
+			local spellName = DBM:GetSpellName(spellId)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
+		end
+	end
+
+	function module:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
+		if DBM.Options.DebugLevel < 2 then return end
+		local inCombat = private.getInCombat()
+		if #inCombat > 0 then--At least one boss is engaged
+			local spellName = DBM:GetSpellName(spellId)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
+		end
+	end
+
+	function module:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
+		if DBM.Options.DebugLevel < 2 then return end
+		local inCombat = private.getInCombat()
+		if #inCombat > 0 then--At least one boss is engaged
+			local spellName = DBM:GetSpellName(spellId)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
+		end
 	end
 
 	--Spammy events that core doesn't otherwise need are now dynamically registered/unregistered based on whether or not user is actually debugging
@@ -335,9 +395,20 @@ do
 		if DBM.Options.DebugMode and not eventsRegistered then
 			eventsRegistered = true
 			if isRetail then
-				self:RegisterShortTermEvents("UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5", "UNIT_TARGETABLE_CHANGED")
+				self:RegisterShortTermEvents(
+					"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+					"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5",
+					"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5",
+					"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
+					"UNIT_SPELLCAST_CHANNEL_START boss1 boss2 boss3 boss4 boss5",
+					"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5",
+					"UNIT_TARGETABLE_CHANGED")
 			else--No Boss unit Ids in classic, register backups
-				self:RegisterShortTermEvents("UNIT_SPELLCAST_SUCCEEDED target focus", "UNIT_TARGETABLE_CHANGED")
+				self:RegisterShortTermEvents(
+	--				"UNIT_SPELLCAST_START target focus",
+					"UNIT_SPELLCAST_SUCCEEDED target focus",
+	--				"UNIT_SPELLCAST_STOP target focus",
+					"UNIT_TARGETABLE_CHANGED")
 			end
 		elseif not DBM.Options.DebugMode and eventsRegistered then
 			eventsRegistered = false

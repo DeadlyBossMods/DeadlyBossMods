@@ -17,8 +17,92 @@ local announcePrototype = private:GetPrototype("Announce")
 local bossModPrototype = private:GetPrototype("DBMMod")
 
 local test = private:GetPrototype("DBMTest")
+private.blizzTargetQueue = private.blizzTargetQueue or setmetatable({}, {__mode = "k"})
+local blizzTargetQueue = private.blizzTargetQueue
 
 local mt = {__index = announcePrototype}
+
+---@param queue table
+---@param entry table
+local function removeBlizzTargetQueueEntry(queue, entry)
+	for i = #queue.ordered, 1, -1 do
+		if queue.ordered[i] == entry then
+			table.remove(queue.ordered, i)
+			break
+		end
+	end
+	local announce = entry.announce
+	local spellId = announce and announce.spellId
+	if spellId then
+		local bucket = queue.bySpell[spellId]
+		if bucket then
+			for i = #bucket, 1, -1 do
+				if bucket[i] == entry then
+					table.remove(bucket, i)
+					break
+				end
+			end
+			if #bucket == 0 then
+				queue.bySpell[spellId] = nil
+			end
+		end
+	end
+end
+
+---@param announceObject Announce
+---@param count number?
+function DBM:QueueBlizzTargetAnnounce(announceObject, count)
+	if not announceObject or announceObject.announceType ~= "blizztarget" then return end
+	local mod = announceObject.mod
+	if not mod then return end
+	local queue = blizzTargetQueue[mod]
+	if not queue then
+		queue = {
+			ordered = {},
+			bySpell = {}
+		}
+		blizzTargetQueue[mod] = queue
+	end
+	local entry = {
+		announce = announceObject,
+		count = count
+	}
+	table.insert(queue.ordered, entry)
+	local spellId = announceObject.spellId
+	if spellId then
+		queue.bySpell[spellId] = queue.bySpell[spellId] or {}
+		table.insert(queue.bySpell[spellId], entry)
+	end
+end
+
+---@param encounterWarningInfo table
+---@param formattedTargetName string
+---@return boolean
+function DBM:ConsumeBlizzTargetAnnounce(encounterWarningInfo, formattedTargetName)
+	local tooltipSpellID = encounterWarningInfo and encounterWarningInfo.tooltipSpellID
+	for mod, queue in pairs(blizzTargetQueue) do
+		local entry
+		if tooltipSpellID then
+			local bucket = queue.bySpell[tooltipSpellID]
+			if bucket and #bucket > 0 then
+				entry = bucket[1]
+				removeBlizzTargetQueueEntry(queue, entry)
+			end
+		end
+		if not entry and #queue.ordered > 0 then
+			entry = queue.ordered[1]
+			removeBlizzTargetQueueEntry(queue, entry)
+		end
+		if #queue.ordered == 0 then
+			blizzTargetQueue[mod] = nil
+		end
+		if entry and entry.announce then
+			entry.announce:Show(entry.count, formattedTargetName)
+			return true
+		end
+	end
+	return false
+end
 
 ---@diagnostic disable: inject-field
 local frame = CreateFrame("Frame", "DBMWarning", UIParent)
@@ -413,6 +497,13 @@ end
 
 -- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
 function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
+	if self.announceType == "blizztarget" then
+		local count, targetName = ...
+		if select("#", ...) < 2 or type(targetName) ~= "string" then
+			DBM:QueueBlizzTargetAnnounce(self, count)
+			return
+		end
+	end
 	if not self.option or self.mod.Options[self.option] then
 		if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
