@@ -19,7 +19,7 @@ local warnVoidlightConvergenceSoon		= mod:NewSoonAnnounce(1242515, 3)
 local specWarnEmbersofBeloren			= mod:NewSpecialWarningCount(1241282, nil, nil, DBM_COMMON_L.ADDS, 1, 2)
 local specWarnRadiantEchoes				= mod:NewSpecialWarningCount(1242981, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
 local specWarnGuardiansEdict			= mod:NewSpecialWarningCount(1260763, nil, nil, DBM_COMMON_L.TANKCOMBO, 1, 2)
-local specWarnVoidlightConvergence		= mod:NewSpecialWarningCount(1242515, nil, nil, nil, 2, 2)--No PA to detect color, can only just warn to check color
+local specWarnVoidlightConvergence		= mod:NewSpecialWarningBlizzYou(1242515, nil, nil, nil, 2, 2)--No PA to detect color, can only just warn to check color
 local specWarnLightFeather				= mod:NewSpecialWarningYou(1241162, nil, nil, nil, 1, 2)--Untested
 local specWarnVoidFeather				= mod:NewSpecialWarningYou(1241163, nil, nil, nil, 1, 2)--Untested
 --mod:GroupSpells(1242515, 1241162, 1241163)--Uncomment group when hardcode enables parent warning
@@ -171,6 +171,11 @@ do
 		elseif timer == 34 then--Eternal Burns
 			timerEternalBurnsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "burns", "burnsCount"))
 		elseif timer == 50 then--Voidlight Convergence
+			--Blizzard fires ENCOUNTER_WARNING immediately after starting timer for NEXT cast
+			--Blizzard warning does NOT line up with state changes. So we dispatch here
+			specWarnVoidlightConvergence:Show(self.vb.convergenceCount)
+			specWarnVoidlightConvergence:Play("colorchange")
+
 			timerVoidlightConvergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
 			warnVoidlightConvergenceSoon:Schedule(timerExact - 5)
 			warnVoidlightConvergenceSoon:ScheduleVoice(timerExact - 5, "colorchangesoon")
@@ -343,9 +348,8 @@ do
 			elseif eventType == "rebirth" then
 				specWarnRebirth:Show(eventCount)
 				specWarnRebirth:Play("dpshard")
-			elseif eventType == "convergence" then
-				specWarnVoidlightConvergence:Show(eventCount)
-				specWarnVoidlightConvergence:Play("colorchange")
+--			elseif eventType == "convergence" then
+
 			end
 		elseif eventState == 3 then
 			local eventType = self:TLCountCancel(eventID)

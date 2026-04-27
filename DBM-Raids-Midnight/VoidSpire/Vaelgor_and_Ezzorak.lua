@@ -16,7 +16,7 @@ local warnGrabblingMaw				= mod:NewCountAnnounce(1280458, 2, nil, "Tank")
 
 local specWarnNullBeam				= mod:NewSpecialWarningCount(1262623, nil, nil, nil, 2, 2)
 local specWarnVoidHowl				= mod:NewSpecialWarningCount(1244917, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
-local specWarnGloom					= mod:NewSpecialWarningCount(1245391, nil, nil, nil, 2, 2)
+local specWarnGloom					= mod:NewSpecialWarningBlizzTarget(1245391, nil, nil, nil, 2, 2)
 local specWarnDreadBreath			= mod:NewSpecialWarningBlizzTarget(1244221, nil, 17088, nil, 2, 2)
 local specWarnMidnightFlames		= mod:NewSpecialWarningCount(1249748, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
 --local specWarnGrabblingMaw		= mod:NewSpecialWarningCount(1280458, nil, nil, nil, 1, 2)

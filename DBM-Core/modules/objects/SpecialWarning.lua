@@ -65,7 +65,8 @@ function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count)
 	end
 	local entry = {
 		specWarn = specWarnObject,
-		count = count
+		count = count,
+		queueTime = GetTime()
 	}
 	table.insert(queue.ordered, entry)
 	local spellId = specWarnObject.spellId
@@ -80,8 +81,12 @@ end
 ---@return boolean
 function DBM:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTargetName)
 	local tooltipSpellID = encounterWarningInfo and encounterWarningInfo.tooltipSpellID
+	local now = GetTime()
 	local consumed = false
 	for mod, queue in pairs(blizzTargetSpecialWarningQueue) do
+		while #queue.ordered > 0 and now - (queue.ordered[1].queueTime or 0) > 3.0 do
+			removeBlizzTargetSpecialWarningQueueEntry(queue, queue.ordered[1])
+		end
 		local entry
 		if tooltipSpellID then
 			local bucket = queue.bySpell[tooltipSpellID]
