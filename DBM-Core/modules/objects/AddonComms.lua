@@ -453,7 +453,7 @@ do
 			if #newerVersionPerson < 4 then
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
-					DBM:Debug("Newer version detected from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
+					--DBM:Debug("Newer version detected from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
 					if (forceDisable > PForceDisable) and not checkEntry(forceDisablePerson, sender) then
 						forceDisablePerson[#forceDisablePerson + 1] = sender
 						DBM:Debug("Newer force disable detected from " .. sender .. " : Rev - " .. forceDisable, 3)
@@ -519,7 +519,7 @@ do
 			if #newersubVersionPerson < 4 then
 				if not checkEntry(newersubVersionPerson, sender) then
 					newersubVersionPerson[#newersubVersionPerson + 1] = sender
-					DBM:Debug("Newer classic subversion detected from " .. sender .. " : Rev - " .. classicSubVers .. ", Rev Diff - " .. (classicSubVers - DBM.classicSubVersion), 3)
+					--DBM:Debug("Newer classic subversion detected from " .. sender .. " : Rev - " .. classicSubVers .. ", Rev Diff - " .. (classicSubVers - DBM.classicSubVersion), 3)
 				end
 				if #newersubVersionPerson == 2 and updateSubNotificationDisplayed < 2 then--Only requires 2 for update notification.
 					updateSubNotificationDisplayed = 2
@@ -592,7 +592,7 @@ do
 				properties.classicSubVers = classicSubVers
 			end
 			private.setRaidMemberProperties(sender, properties)
-			DBM:Debug("Received version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
+			--DBM:Debug("Received version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
 			HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
 		end
 		DBM:GROUP_ROSTER_UPDATE()
@@ -609,7 +609,7 @@ do
 			end
 		end
 		if revision and version and displayVersion then
-			DBM:Debug("Received G version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision) .. ", Display Version " .. displayVersion, 3)
+			--DBM:Debug("Received G version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision) .. ", Display Version " .. displayVersion, 3)
 			HandleVersion(revision, version, displayVersion, forceDisable, sender, classicSubVers)
 		end
 	end
