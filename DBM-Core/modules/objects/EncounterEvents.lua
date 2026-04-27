@@ -56,7 +56,7 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	local consumedBlizzYouSpecWarn = self:ConsumeBlizzYouSpecialWarning()
 	if consumedBlizzTargetAnnounce or consumedBlizzTargetSpecWarn or consumedBlizzYouSpecWarn then return end
 	if not self:AntiSpam(0.5, "ENCOUNTER_WARNING") then return end--Designers can't be assed to make sure event isn't buggy and spammy so we're forced to hard throttle
-	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then
+	if self.Options.IgnoreBlizzAPI then
 		--Special cases where blizz warning is only warning possible (ie spell doesn't have timeline event)
 		--For these, we have mod allow next warning through as a one time exception
 		if self.Options.BlizzAPIAllowOnce then
@@ -101,7 +101,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	if self.Options.HideDBMBars then return end
 	if self.Options.DontShowBossTimers and source == 0 then return end
 	if self.Options.DontShowUserTimers and source == 1 then return end
-	if self.Options.IgnoreBlizzAPI and self.Options.DebugLevel ~= 3 then return end--Set by modules, not core options to filter blizz events for hard coded mods
+	if self.Options.IgnoreBlizzAPI then return end--Set by modules, not core options to filter blizz events for hard coded mods
 	--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
 	if not DBT.Options.ColorByType or not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
 		color = nil
