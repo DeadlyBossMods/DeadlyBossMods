@@ -326,7 +326,7 @@ do
 		if DBM.Options.DebugLevel < 3 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
-		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).."Exists:"..tostring(UnitExists(uId)).."IsVisible:"..tostring(UnitIsVisible(uId)).."]", 4, nil, nil, true)
+		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 4, nil, nil, true)
 	end
 
 	function module:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
@@ -338,7 +338,7 @@ do
 			local unit = bossUnits[i]
 			if UnitExists(unit) then
 				hasBossUnits = true
-				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).."Exists:"..tostring(UnitExists(unit)).."IsVisible:"..tostring(UnitIsVisible(unit)).."]", 4, nil, nil, true)
+				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 4, nil, nil, true)
 			end
 		end
 		if not hasBossUnits then
