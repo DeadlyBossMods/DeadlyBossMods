@@ -31,22 +31,6 @@ local function removeBlizzTargetSpecialWarningQueueEntry(queue, entry)
 			break
 		end
 	end
-	local specWarn = entry.specWarn
-	local spellId = specWarn and specWarn.spellId
-	if spellId then
-		local bucket = queue.bySpell[spellId]
-		if bucket then
-			for i = #bucket, 1, -1 do
-				if bucket[i] == entry then
-					table.remove(bucket, i)
-					break
-				end
-			end
-			if #bucket == 0 then
-				queue.bySpell[spellId] = nil
-			end
-		end
-	end
 end
 
 ---@param specWarnObject SpecialWarning
@@ -60,8 +44,7 @@ function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count, voiceName, ex
 	local queue = blizzTargetSpecialWarningQueue[mod]
 	if not queue then
 		queue = {
-			ordered = {},
-			bySpell = {}
+			ordered = {}
 		}
 		blizzTargetSpecialWarningQueue[mod] = queue
 	end
@@ -74,18 +57,11 @@ function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count, voiceName, ex
 		queueTime = GetTime()
 	}
 	table.insert(queue.ordered, entry)
-	local spellId = specWarnObject.spellId
-	if spellId then
-		queue.bySpell[spellId] = queue.bySpell[spellId] or {}
-		table.insert(queue.bySpell[spellId], entry)
-	end
 end
 
----@param encounterWarningInfo table
 ---@param formattedTargetName string
 ---@return boolean
-function DBM:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTargetName)
-	local tooltipSpellID = encounterWarningInfo and encounterWarningInfo.tooltipSpellID
+function DBM:ConsumeBlizzTargetSpecialWarning(formattedTargetName)
 	local now = GetTime()
 	local consumed = false
 	for mod, queue in pairs(blizzTargetSpecialWarningQueue) do
@@ -93,14 +69,7 @@ function DBM:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTar
 			removeBlizzTargetSpecialWarningQueueEntry(queue, queue.ordered[1])
 		end
 		local entry
-		if tooltipSpellID then
-			local bucket = queue.bySpell[tooltipSpellID]
-			if bucket and #bucket > 0 then
-				entry = bucket[1]
-				removeBlizzTargetSpecialWarningQueueEntry(queue, entry)
-			end
-		end
-		if not entry and #queue.ordered > 0 then
+		if #queue.ordered > 0 then
 			entry = queue.ordered[1]
 			removeBlizzTargetSpecialWarningQueueEntry(queue, entry)
 		end
