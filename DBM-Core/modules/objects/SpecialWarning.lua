@@ -598,6 +598,7 @@ function specialWarningPrototype:Show(...)
 	end
 	--Check if option for this warning is even enabled
 	if (not self.option or self.mod.Options[self.option]) and not moving and frame then
+		local isSecretBlizzType = self.announceType == "blizztarget" or self.announceType == "blizzyou"
 		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
 		if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
 		--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
@@ -610,8 +611,8 @@ function specialWarningPrototype:Show(...)
 		--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
 		if self.announceType == "taunt" and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 		local argTable
-		if self.announceType ~= "blizztarget" then
-			-- blizztarget receives secret args (...) via string.format below; all other types including blizzyou use argTable safely
+		if not isSecretBlizzType then
+			-- Secret passthrough warnings avoid materializing arg tables from potentially secret args.
 			argTable = {...}
 		end
 		-- add a default parameter for move away warnings
@@ -686,7 +687,7 @@ function specialWarningPrototype:Show(...)
 					if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
 						noteHasName = 5
 					end
-					if self.announceType and not self.announceType:find("switch") then
+					if not isSecretBlizzType and self.announceType and not self.announceType:find("switch") then
 						noteText = noteText:gsub(">.-<", classColoringFunction)--Class color note text before combining with warning text.
 					end
 					noteText = " (" .. noteText .. ")"
@@ -697,7 +698,7 @@ function specialWarningPrototype:Show(...)
 		--Text is disabled, suresss text from screen and chat frame
 		if not DBM.Options.DontShowSpecialWarningText then
 			--No stripping on switch warnings, ever. They will NEVER have player name, but often have adds with "-" in name
-			if self.announceType and not self.announceType:find("switch") then
+			if not isSecretBlizzType and self.announceType and not self.announceType:find("switch") then
 				text = text:gsub(">.-<", classColoringFunction)
 			end
 			DBM:AddSpecialWarning(text, nil, self)

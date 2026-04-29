@@ -347,47 +347,52 @@ do
 	end
 
 	function module:UNIT_SPELLCAST_START(uId, _, spellId)
+		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
-		local inCombat = private.getInCombat()
-		if #inCombat > 0 then--At least one boss is engaged
+--		local inCombat = private.getInCombat()
+--		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
 			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
-		end
+--		end
 	end
 	function module:UNIT_SPELLCAST_STOP(uId, _, spellId)
+		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
-		local inCombat = private.getInCombat()
-		if #inCombat > 0 then--At least one boss is engaged
+--		local inCombat = private.getInCombat()
+--		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
 			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
-		end
+--		end
 	end
 
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
-		local inCombat = private.getInCombat()
-		if #inCombat > 0 then--At least one boss is engaged
+--		local inCombat = private.getInCombat()
+--		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
 			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
-		end
+--		end
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
+		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
-		local inCombat = private.getInCombat()
-		if #inCombat > 0 then--At least one boss is engaged
+--		local inCombat = private.getInCombat()
+--		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
 			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
-		end
+--		end
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
+		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
-		local inCombat = private.getInCombat()
-		if #inCombat > 0 then--At least one boss is engaged
+--		local inCombat = private.getInCombat()
+--		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
 			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
-		end
+--		end
 	end
 
 	--Spammy events that core doesn't otherwise need are now dynamically registered/unregistered based on whether or not user is actually debugging
@@ -397,11 +402,11 @@ do
 			if isRetail then
 				self:RegisterShortTermEvents(
 					"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-					"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5",
-					"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5",
-					"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
-					"UNIT_SPELLCAST_CHANNEL_START boss1 boss2 boss3 boss4 boss5",
-					"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5",
+					"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5 target",
+					"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5 target",
+					"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5 target",
+					"UNIT_SPELLCAST_CHANNEL_START boss1 boss2 boss3 boss4 boss5 target",
+					"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5 target",
 					"UNIT_TARGETABLE_CHANGED")
 			else--No Boss unit Ids in classic, register backups
 				self:RegisterShortTermEvents(
