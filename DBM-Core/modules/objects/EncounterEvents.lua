@@ -51,8 +51,8 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName, 4, nil, nil, true)
 		end
 	end
-	local consumedBlizzTargetAnnounce = self:ConsumeBlizzTargetAnnounce(encounterWarningInfo, formattedTargetName or UNKNOWN)
-	local consumedBlizzTargetSpecWarn = self:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTargetName or UNKNOWN)
+	local consumedBlizzTargetAnnounce = self:ConsumeBlizzTargetAnnounce(formattedTargetName or UNKNOWN)
+	local consumedBlizzTargetSpecWarn = self:ConsumeBlizzTargetSpecialWarning(formattedTargetName or UNKNOWN)
 	local consumedBlizzYouSpecWarn = self:ConsumeBlizzYouSpecialWarning()
 	if consumedBlizzTargetAnnounce or consumedBlizzTargetSpecWarn or consumedBlizzYouSpecWarn then return end
 	if not self:AntiSpam(0.5, "ENCOUNTER_WARNING") then return end--Designers can't be assed to make sure event isn't buggy and spammy so we're forced to hard throttle

@@ -31,22 +31,6 @@ local function removeBlizzTargetQueueEntry(queue, entry)
 			break
 		end
 	end
-	local announce = entry.announce
-	local spellId = announce and announce.spellId
-	if spellId then
-		local bucket = queue.bySpell[spellId]
-		if bucket then
-			for i = #bucket, 1, -1 do
-				if bucket[i] == entry then
-					table.remove(bucket, i)
-					break
-				end
-			end
-			if #bucket == 0 then
-				queue.bySpell[spellId] = nil
-			end
-		end
-	end
 end
 
 ---@param announceObject Announce
@@ -58,8 +42,7 @@ function DBM:QueueBlizzTargetAnnounce(announceObject, count)
 	local queue = blizzTargetQueue[mod]
 	if not queue then
 		queue = {
-			ordered = {},
-			bySpell = {}
+			ordered = {}
 		}
 		blizzTargetQueue[mod] = queue
 	end
@@ -68,28 +51,14 @@ function DBM:QueueBlizzTargetAnnounce(announceObject, count)
 		count = count
 	}
 	table.insert(queue.ordered, entry)
-	local spellId = announceObject.spellId
-	if spellId then
-		queue.bySpell[spellId] = queue.bySpell[spellId] or {}
-		table.insert(queue.bySpell[spellId], entry)
-	end
 end
 
----@param encounterWarningInfo table
 ---@param formattedTargetName string
 ---@return boolean
-function DBM:ConsumeBlizzTargetAnnounce(encounterWarningInfo, formattedTargetName)
-	local tooltipSpellID = encounterWarningInfo and encounterWarningInfo.tooltipSpellID
+function DBM:ConsumeBlizzTargetAnnounce(formattedTargetName)
 	for mod, queue in pairs(blizzTargetQueue) do
 		local entry
-		if tooltipSpellID then
-			local bucket = queue.bySpell[tooltipSpellID]
-			if bucket and #bucket > 0 then
-				entry = bucket[1]
-				removeBlizzTargetQueueEntry(queue, entry)
-			end
-		end
-		if not entry and #queue.ordered > 0 then
+		if #queue.ordered > 0 then
 			entry = queue.ordered[1]
 			removeBlizzTargetQueueEntry(queue, entry)
 		end

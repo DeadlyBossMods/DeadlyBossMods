@@ -31,22 +31,6 @@ local function removeBlizzTargetSpecialWarningQueueEntry(queue, entry)
 			break
 		end
 	end
-	local specWarn = entry.specWarn
-	local spellId = specWarn and specWarn.spellId
-	if spellId then
-		local bucket = queue.bySpell[spellId]
-		if bucket then
-			for i = #bucket, 1, -1 do
-				if bucket[i] == entry then
-					table.remove(bucket, i)
-					break
-				end
-			end
-			if #bucket == 0 then
-				queue.bySpell[spellId] = nil
-			end
-		end
-	end
 end
 
 ---@param specWarnObject SpecialWarning
@@ -60,8 +44,7 @@ function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count, voiceName, ex
 	local queue = blizzTargetSpecialWarningQueue[mod]
 	if not queue then
 		queue = {
-			ordered = {},
-			bySpell = {}
+			ordered = {}
 		}
 		blizzTargetSpecialWarningQueue[mod] = queue
 	end
@@ -74,18 +57,11 @@ function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count, voiceName, ex
 		queueTime = GetTime()
 	}
 	table.insert(queue.ordered, entry)
-	local spellId = specWarnObject.spellId
-	if spellId then
-		queue.bySpell[spellId] = queue.bySpell[spellId] or {}
-		table.insert(queue.bySpell[spellId], entry)
-	end
 end
 
----@param encounterWarningInfo table
 ---@param formattedTargetName string
 ---@return boolean
-function DBM:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTargetName)
-	local tooltipSpellID = encounterWarningInfo and encounterWarningInfo.tooltipSpellID
+function DBM:ConsumeBlizzTargetSpecialWarning(formattedTargetName)
 	local now = GetTime()
 	local consumed = false
 	for mod, queue in pairs(blizzTargetSpecialWarningQueue) do
@@ -93,14 +69,7 @@ function DBM:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTar
 			removeBlizzTargetSpecialWarningQueueEntry(queue, queue.ordered[1])
 		end
 		local entry
-		if tooltipSpellID then
-			local bucket = queue.bySpell[tooltipSpellID]
-			if bucket and #bucket > 0 then
-				entry = bucket[1]
-				removeBlizzTargetSpecialWarningQueueEntry(queue, entry)
-			end
-		end
-		if not entry and #queue.ordered > 0 then
+		if #queue.ordered > 0 then
 			entry = queue.ordered[1]
 			removeBlizzTargetSpecialWarningQueueEntry(queue, entry)
 		end
@@ -109,12 +78,12 @@ function DBM:ConsumeBlizzTargetSpecialWarning(encounterWarningInfo, formattedTar
 		end
 		if entry and entry.specWarn then
 			private.blizzTargetConsuming = true
-			entry.specWarn:Show(entry.count, formattedTargetName)
+			local ok = xpcall(entry.specWarn.Show, geterrorhandler(), entry.specWarn, entry.count, formattedTargetName)
 			private.blizzTargetConsuming = false
-			if entry.voiceName then
+			if ok and entry.voiceName then
 				entry.specWarn:Play(entry.voiceName)
 			end
-			consumed = true
+			consumed = consumed or ok
 		end
 	end
 	return consumed
@@ -174,12 +143,12 @@ function DBM:ConsumeBlizzYouSpecialWarning()
 				removeBlizzYouSpecialWarningQueueEntry(queue, entry)
 				if entry.specWarn then
 					private.blizzYouConsuming = true
-					entry.specWarn:Show(entry.count)
+					local ok = xpcall(entry.specWarn.Show, geterrorhandler(), entry.specWarn, entry.count)
 					private.blizzYouConsuming = false
-					if entry.voiceName then
+					if ok and entry.voiceName then
 						entry.specWarn:Play(entry.voiceName)
 					end
-					consumed = true
+					consumed = consumed or ok
 				end
 				found = true
 			else
@@ -629,6 +598,7 @@ function specialWarningPrototype:Show(...)
 	end
 	--Check if option for this warning is even enabled
 	if (not self.option or self.mod.Options[self.option]) and not moving and frame then
+		local isSecretBlizzType = self.announceType == "blizztarget" or self.announceType == "blizzyou"
 		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
 		if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
 		--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
@@ -641,8 +611,8 @@ function specialWarningPrototype:Show(...)
 		--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
 		if self.announceType == "taunt" and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 		local argTable
-		if self.announceType ~= "blizztarget" then
-			-- blizztarget receives secret args (...) via string.format below; all other types including blizzyou use argTable safely
+		if not isSecretBlizzType then
+			-- Secret passthrough warnings avoid materializing arg tables from potentially secret args.
 			argTable = {...}
 		end
 		-- add a default parameter for move away warnings
@@ -717,7 +687,7 @@ function specialWarningPrototype:Show(...)
 					if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
 						noteHasName = 5
 					end
-					if self.announceType and not self.announceType:find("switch") then
+					if not isSecretBlizzType and self.announceType and not self.announceType:find("switch") then
 						noteText = noteText:gsub(">.-<", classColoringFunction)--Class color note text before combining with warning text.
 					end
 					noteText = " (" .. noteText .. ")"
@@ -728,7 +698,7 @@ function specialWarningPrototype:Show(...)
 		--Text is disabled, suresss text from screen and chat frame
 		if not DBM.Options.DontShowSpecialWarningText then
 			--No stripping on switch warnings, ever. They will NEVER have player name, but often have adds with "-" in name
-			if self.announceType and not self.announceType:find("switch") then
+			if not isSecretBlizzType and self.announceType and not self.announceType:find("switch") then
 				text = text:gsub(">.-<", classColoringFunction)
 			end
 			DBM:AddSpecialWarning(text, nil, self)
