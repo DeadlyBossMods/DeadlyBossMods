@@ -12,6 +12,8 @@ The sounds for voice "Bear" ("1"-"10") and "Pewsey" ("1"-"10") were created and 
 
 The sounds for voice "Anshlun" ("1"-"10") and "Neryssa" ("1"-"10") were created and used with permission of https://twitter.com/anshlun for use by this mod.
 
+The sounds for voice "Karl" ("1"-"10"), "Franziska" ("1"-"10"), "Mateo" ("1"-"10"), "Fernanda" ("1"-"10"), "Juan" ("1"-"10"), "Isabel" ("1"-"10"), "Jérémy" ("1"-"10"), "Élise" ("1"-"10"), "도현원" ("1"-"10"), "하민지" ("1"-"10"), "Александр" ("1"-"10"), "Надежда" ("1"-"10"), "瑞辰" ("1"-"10"), "纯如" ("1"-"10"), "浩" ("1"-"10"), and "玲" ("1"-"10") were created and used with permission of anon for use by this mod.
+
 Heroes of the Storm & Overwatch sounds are copyright Blizzard Entertainment and used without modification and with permission from Blizzard.
 
 http://soundbible.com/1542-Air-Horn.html
