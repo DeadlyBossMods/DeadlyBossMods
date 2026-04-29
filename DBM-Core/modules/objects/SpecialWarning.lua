@@ -78,12 +78,12 @@ function DBM:ConsumeBlizzTargetSpecialWarning(formattedTargetName)
 		end
 		if entry and entry.specWarn then
 			private.blizzTargetConsuming = true
-			entry.specWarn:Show(entry.count, formattedTargetName)
+			local ok = xpcall(entry.specWarn.Show, geterrorhandler(), entry.specWarn, entry.count, formattedTargetName)
 			private.blizzTargetConsuming = false
-			if entry.voiceName then
+			if ok and entry.voiceName then
 				entry.specWarn:Play(entry.voiceName)
 			end
-			consumed = true
+			consumed = consumed or ok
 		end
 	end
 	return consumed
@@ -143,12 +143,12 @@ function DBM:ConsumeBlizzYouSpecialWarning()
 				removeBlizzYouSpecialWarningQueueEntry(queue, entry)
 				if entry.specWarn then
 					private.blizzYouConsuming = true
-					entry.specWarn:Show(entry.count)
+					local ok = xpcall(entry.specWarn.Show, geterrorhandler(), entry.specWarn, entry.count)
 					private.blizzYouConsuming = false
-					if entry.voiceName then
+					if ok and entry.voiceName then
 						entry.specWarn:Play(entry.voiceName)
 					end
-					consumed = true
+					consumed = consumed or ok
 				end
 				found = true
 			else
