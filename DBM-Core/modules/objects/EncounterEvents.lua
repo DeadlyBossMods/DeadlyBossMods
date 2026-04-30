@@ -96,7 +96,14 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local spellName = eventInfo.spellName or C_Spell.GetSpellName(spellId)--Spell name associated with this event. For script events, this may instead be the contents of the 'overrideName' field if it wasn't empty."
 	local source = eventInfo.source--(0-Encounter, 1-Script, 2-EditMode)
 	local iconId = eventInfo.iconFileID
-	local color = eventInfo.color--Color table { r = 1, g = 1, b = 1 }
+	local color
+	--Color no longer sent in 12.0.7 and instead must be requested
+	--TODO, verify this
+	if eventInfo.color then
+		color = eventInfo.color
+	else
+		color = C_EncounterTimeline.GetEventColor(eventID)
+	end
 	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_ADDED: |r fired for eventID: "..eventID.." with spellID: "..C_ColorUtil.WrapTextInColor(spellId, color).." with spellName: "..C_ColorUtil.WrapTextInColor(spellName, color).." and duration: "..C_ColorUtil.WrapTextInColor(tostring(duration).." (Rounded: "..tostring(durationRounded)..")", color).." and state: "..tostring(eventState), 4, nil, nil, true)
 	if self.Options.HideDBMBars then return end
 	if self.Options.DontShowBossTimers and source == 0 then return end
@@ -203,6 +210,18 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		end
 	end
 	self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r fired for eventID: "..tostring(eventID).." with state: "..tostring(eventState), 4, nil, nil, true)
+end
+
+function DBM:ENCOUNTER_TIMELINE_EVENT_COLOR_CHANGED(eventID)
+	--Find existing bar, and update it's color if found
+	--This is only used for non hardcoded bars so no hardcode checks needed
+	local bar = DBT:GetBar(eventID)
+	if bar then
+		local color = C_EncounterTimeline.GetEventColor(eventID)
+		if color then
+			bar:SetColor(color)
+		end
+	end
 end
 
 --[[
