@@ -17,8 +17,61 @@ local announcePrototype = private:GetPrototype("Announce")
 local bossModPrototype = private:GetPrototype("DBMMod")
 
 local test = private:GetPrototype("DBMTest")
+private.blizzTargetQueue = private.blizzTargetQueue or setmetatable({}, {__mode = "k"})
+local blizzTargetQueue = private.blizzTargetQueue
 
 local mt = {__index = announcePrototype}
+
+---@param queue table
+---@param entry table
+local function removeBlizzTargetQueueEntry(queue, entry)
+	for i = #queue.ordered, 1, -1 do
+		if queue.ordered[i] == entry then
+			table.remove(queue.ordered, i)
+			break
+		end
+	end
+end
+
+---@param announceObject Announce
+---@param count number?
+function DBM:QueueBlizzTargetAnnounce(announceObject, count)
+	if not announceObject or announceObject.announceType ~= "blizztarget" then return end
+	local mod = announceObject.mod
+	if not mod then return end
+	local queue = blizzTargetQueue[mod]
+	if not queue then
+		queue = {
+			ordered = {}
+		}
+		blizzTargetQueue[mod] = queue
+	end
+	local entry = {
+		announce = announceObject,
+		count = count
+	}
+	table.insert(queue.ordered, entry)
+end
+
+---@param formattedTargetName string
+---@return boolean
+function DBM:ConsumeBlizzTargetAnnounce(formattedTargetName)
+	for mod, queue in pairs(blizzTargetQueue) do
+		local entry
+		if #queue.ordered > 0 then
+			entry = queue.ordered[1]
+			removeBlizzTargetQueueEntry(queue, entry)
+		end
+		if #queue.ordered == 0 then
+			blizzTargetQueue[mod] = nil
+		end
+		if entry and entry.announce then
+			entry.announce:Show(entry.count, formattedTargetName)
+			return true
+		end
+	end
+	return false
+end
 
 ---@diagnostic disable: inject-field
 local frame = CreateFrame("Frame", "DBMWarning", UIParent)
@@ -145,13 +198,33 @@ font3u:SetScript("OnUpdate", function(self)
 	end
 end)
 
+local warningFontResetNotified = false
+local function getSafeWarningFontSettings(self)
+	local font = self.Options.WarningFont == "standardFont" and private.standardFont or self.Options.WarningFont
+	local size = self.Options.WarningFontSize
+	local style = (self.Options.WarningFontStyle and self.Options.WarningFontStyle ~= "None" and self.Options.WarningFontStyle ~= "none") and self.Options.WarningFontStyle or ""
+	if not DBM:IsFontValid(font, private.standardFont) then
+		self.Options.WarningFont = self.DefaultOptions.WarningFont
+		self.Options.WarningFontSize = self.DefaultOptions.WarningFontSize
+		self.Options.WarningFontStyle = self.DefaultOptions.WarningFontStyle
+		if not warningFontResetNotified then
+			self:AddMsg("Invalid Warning font settings were detected and reset to defaults.")
+			warningFontResetNotified = true
+		end
+		font = self.Options.WarningFont == "standardFont" and private.standardFont or self.Options.WarningFont
+		size = self.Options.WarningFontSize
+		style = (self.Options.WarningFontStyle and self.Options.WarningFontStyle ~= "None" and self.Options.WarningFontStyle ~= "none") and self.Options.WarningFontStyle or ""
+	end
+	return font, size, style
+end
+
 function DBM:UpdateWarningOptions()
 	frame:ClearAllPoints()
 	frame:SetPoint(self.Options.WarningPoint, UIParent, self.Options.WarningPoint, self.Options.WarningX, self.Options.WarningY)
-	local font = self.Options.WarningFont == "standardFont" and private.standardFont or self.Options.WarningFont
-	font1:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
-	font2:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
-	font3:SetFont(font, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
+	local font, size, style = getSafeWarningFontSettings(self)
+	font1:SetFont(font, size, style)
+	font2:SetFont(font, size, style)
+	font3:SetFont(font, size, style)
 	if self.Options.WarningFontShadow then
 		font1:SetShadowOffset(1, -1)
 		font2:SetShadowOffset(1, -1)
@@ -393,6 +466,13 @@ end
 
 -- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
 function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
+	if self.announceType == "blizztarget" then
+		local count, targetName = ...
+		if select("#", ...) < 2 or type(targetName) ~= "string" then
+			DBM:QueueBlizzTargetAnnounce(self, count)
+			return
+		end
+	end
 	if not self.option or self.mod.Options[self.option] then
 		if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces

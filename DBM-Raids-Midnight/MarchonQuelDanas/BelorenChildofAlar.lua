@@ -19,7 +19,7 @@ local warnVoidlightConvergenceSoon		= mod:NewSoonAnnounce(1242515, 3)
 local specWarnEmbersofBeloren			= mod:NewSpecialWarningCount(1241282, nil, nil, DBM_COMMON_L.ADDS, 1, 2)
 local specWarnRadiantEchoes				= mod:NewSpecialWarningCount(1242981, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
 local specWarnGuardiansEdict			= mod:NewSpecialWarningCount(1260763, nil, nil, DBM_COMMON_L.TANKCOMBO, 1, 2)
-local specWarnVoidlightConvergence		= mod:NewSpecialWarningCount(1242515, nil, nil, nil, 2, 2)--No PA to detect color, can only just warn to check color
+local specWarnVoidlightConvergence		= mod:NewSpecialWarningBlizzYou(1242515, nil, nil, nil, 2, 2)--No PA to detect color, can only just warn to check color
 local specWarnLightFeather				= mod:NewSpecialWarningYou(1241162, nil, nil, nil, 1, 2)--Untested
 local specWarnVoidFeather				= mod:NewSpecialWarningYou(1241163, nil, nil, nil, 1, 2)--Untested
 --mod:GroupSpells(1242515, 1241162, 1241163)--Uncomment group when hardcode enables parent warning
@@ -66,29 +66,33 @@ local lastEmbersEventID = 0
 local heroicSequenceSlot = 0
 
 ---@param self DBMMod
-local function setFallback(self)
+---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is ONLY using timeline, therefor we must enable SetTimeline calls even in hardcodes
+local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
-	specWarnEmbersofBeloren:SetAlert(128, "mobsoon", 2, 3)
-	timerEmbersofBelorenCD:SetTimeline(128)
-	specWarnRadiantEchoes:SetAlert(130, "orbsincoming", 19, 3)
-	timerRadiantEchoesCD:SetTimeline(130)
-	if self:IsTank() or self:IsHealer() then
-		specWarnGuardiansEdict:SetAlert(134, "tankcombo", 19, 3)
+	if not dontSetAlerts then
+		specWarnEmbersofBeloren:SetAlert(128, "mobsoon", 2, 3)
+		specWarnRadiantEchoes:SetAlert(130, "orbsincoming", 19, 3)
+		if self:IsTank() or self:IsHealer() then
+			specWarnGuardiansEdict:SetAlert(134, "tankcombo", 19, 3)
+		end
+		specWarnVoidlightConvergence:SetAlert(218, "colorchange", 19, 3)
+		specWarnDeathDrop:SetAlert(272, "justrun", 2, 3)
+		specWarnIncubationofFlames:SetAlert(273, "watchstep", 2, 3)
+		specWarnLightFeather:SetAlert(482, "lightyou", 19, 3, 0)
+		specWarnVoidFeather:SetAlert(483, "voidyou", 19, 3, 0)
+		specWarnLightDiver:SetAlert(494, "lightsoak", 19, 3, 0)
+		specWarnVoidDiver:SetAlert(495, "voidsoak", 19, 3, 0)
+		specWarnRebirth:SetAlert(497, "dpshard", 16, 3, 0)
 	end
+
+	timerEmbersofBelorenCD:SetTimeline(128)
+	timerRadiantEchoesCD:SetTimeline(130)
 	timerGuardiansEdictCD:SetTimeline(134)
 	timerEternalBurnsCD:SetTimeline(138)
 	timerInfusedQuillsCD:SetTimeline(161)
-	specWarnVoidlightConvergence:SetAlert(218, "colorchange", 19, 3)
 	timerVoidlightConvergenceCD:SetTimeline(218)
-	specWarnDeathDrop:SetAlert(272, "justrun", 2, 3)
 	timerDeathDropCD:SetTimeline(272)
-	specWarnIncubationofFlames:SetAlert(273, "watchstep", 2, 3)
 	timerIncubationofFlamesCD:SetTimeline(273)
-	specWarnLightFeather:SetAlert(482, "lightyou", 19, 3, 0)
-	specWarnVoidFeather:SetAlert(483, "voidyou", 19, 3, 0)
-	specWarnLightDiver:SetAlert(494, "lightsoak", 19, 3, 0)
-	specWarnVoidDiver:SetAlert(495, "voidsoak", 19, 3, 0)
-	specWarnRebirth:SetAlert(497, "dpshard", 16, 3, 0)
 	timerRebirthCD:SetTimeline(497)
 	timerBerserkCD:SetTimeline(500)
 end
@@ -113,6 +117,10 @@ function mod:OnLimitedCombatStart(delay)
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
+		--SetTimeline events since user has disabled DBM Bars (so they can still get countdowns in blizzard timeline API instead)
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
+		end
 	else
 		setFallback(self)
 	end
@@ -163,6 +171,10 @@ do
 		elseif timer == 34 then--Eternal Burns
 			timerEternalBurnsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "burns", "burnsCount"))
 		elseif timer == 50 then--Voidlight Convergence
+			--Blizzard fires ENCOUNTER_WARNING immediately after starting timer for NEXT cast
+			--Blizzard warning does NOT line up with state changes. So we dispatch here
+			specWarnVoidlightConvergence:Show(self.vb.convergenceCount, "colorchange")
+
 			timerVoidlightConvergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
 			warnVoidlightConvergenceSoon:Schedule(timerExact - 5)
 			warnVoidlightConvergenceSoon:ScheduleVoice(timerExact - 5, "colorchangesoon")
@@ -335,9 +347,8 @@ do
 			elseif eventType == "rebirth" then
 				specWarnRebirth:Show(eventCount)
 				specWarnRebirth:Play("dpshard")
-			elseif eventType == "convergence" then
-				specWarnVoidlightConvergence:Show(eventCount)
-				specWarnVoidlightConvergence:Play("colorchange")
+--			elseif eventType == "convergence" then
+
 			end
 		elseif eventState == 3 then
 			local eventType = self:TLCountCancel(eventID)

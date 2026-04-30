@@ -25,6 +25,7 @@ local frame
 local updateTicker
 local chargesActive = false
 local lastCharges = -1
+local brezFontResetNotified = false
 
 local function CancelPreviewTimer()
 	if BattleRezTimer._previewHideTimer then
@@ -118,6 +119,17 @@ ApplyFont = function()
 		font = standardFont  -- Additional safety fallback
 	end
 	local size = DBM.Options.BrezFontSize or 18
+	if not DBM:IsFontValid(font, standardFont) then
+		DBM.Options.BrezFont = DBM.DefaultOptions.BrezFont
+		DBM.Options.BrezFontSize = DBM.DefaultOptions.BrezFontSize
+		fontOption = DBM.Options.BrezFont
+		font = (not fontOption or fontOption == "standardFont") and standardFont or fontOption
+		size = DBM.Options.BrezFontSize or 18
+		if not brezFontResetNotified then
+			DBM:AddMsg("Invalid Battle Resurrection font settings were detected and reset to defaults.")
+			brezFontResetNotified = true
+		end
+	end
 	frame.charges:SetFont(font, size, "OUTLINE")
 	frame.timer:SetFont(font, size, "OUTLINE")
 	-- Resize frame to fit font: height = font + padding for backdrop insets, width scales proportionally

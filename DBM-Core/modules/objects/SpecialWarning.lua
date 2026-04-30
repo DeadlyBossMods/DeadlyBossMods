@@ -17,9 +17,150 @@ local announcePrototype = private:GetPrototype("Announce")
 local bossModPrototype = private:GetPrototype("DBMMod")
 
 local test = private:GetPrototype("DBMTest")
+private.blizzTargetSpecialWarningQueue = private.blizzTargetSpecialWarningQueue or setmetatable({}, {__mode = "k"})
+local blizzTargetSpecialWarningQueue = private.blizzTargetSpecialWarningQueue
+private.blizzYouSpecialWarningQueue = private.blizzYouSpecialWarningQueue or setmetatable({}, {__mode = "k"})
+local blizzYouSpecialWarningQueue = private.blizzYouSpecialWarningQueue
+
+---@param queue table
+---@param entry table
+local function removeBlizzTargetSpecialWarningQueueEntry(queue, entry)
+	for i = #queue.ordered, 1, -1 do
+		if queue.ordered[i] == entry then
+			table.remove(queue.ordered, i)
+			break
+		end
+	end
+end
+
+---@param specWarnObject SpecialWarning
+---@param count number?
+---@param voiceName string?
+---@param expireOverride number?
+function DBM:QueueBlizzTargetSpecialWarning(specWarnObject, count, voiceName, expireOverride)
+	if not specWarnObject or specWarnObject.announceType ~= "blizztarget" then return end
+	local mod = specWarnObject.mod
+	if not mod then return end
+	local queue = blizzTargetSpecialWarningQueue[mod]
+	if not queue then
+		queue = {
+			ordered = {}
+		}
+		blizzTargetSpecialWarningQueue[mod] = queue
+	end
+	local expireSeconds = type(expireOverride) == "number" and expireOverride > 0 and expireOverride or 1.5
+	local entry = {
+		specWarn = specWarnObject,
+		count = count,
+		voiceName = voiceName,
+		expireSeconds = expireSeconds,
+		queueTime = GetTime()
+	}
+	table.insert(queue.ordered, entry)
+end
+
+---@param formattedTargetName string
+---@return boolean
+function DBM:ConsumeBlizzTargetSpecialWarning(formattedTargetName)
+	local now = GetTime()
+	local consumed = false
+	for mod, queue in pairs(blizzTargetSpecialWarningQueue) do
+		while #queue.ordered > 0 and now - (queue.ordered[1].queueTime or 0) > (queue.ordered[1].expireSeconds or 1.5) do
+			removeBlizzTargetSpecialWarningQueueEntry(queue, queue.ordered[1])
+		end
+		local entry
+		if #queue.ordered > 0 then
+			entry = queue.ordered[1]
+			removeBlizzTargetSpecialWarningQueueEntry(queue, entry)
+		end
+		if #queue.ordered == 0 then
+			blizzTargetSpecialWarningQueue[mod] = nil
+		end
+		if entry and entry.specWarn then
+			private.blizzTargetConsuming = true
+			local ok = xpcall(entry.specWarn.Show, geterrorhandler(), entry.specWarn, entry.count, formattedTargetName)
+			private.blizzTargetConsuming = false
+			if ok and entry.voiceName then
+				entry.specWarn:Play(entry.voiceName)
+			end
+			consumed = consumed or ok
+		end
+	end
+	return consumed
+end
 
 local playerName = UnitName("player")
 local textureCode = " |T%s:12:12|t "
+
+---@param queue table
+---@param entry table
+local function removeBlizzYouSpecialWarningQueueEntry(queue, entry)
+	for i = #queue.ordered, 1, -1 do
+		if queue.ordered[i] == entry then
+			table.remove(queue.ordered, i)
+			break
+		end
+	end
+end
+
+---@param specWarnObject SpecialWarning
+---@param count number?
+---@param voiceName string?
+---@param expireOverride number?
+function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, expireOverride)
+	if not specWarnObject or specWarnObject.announceType ~= "blizzyou" then return end
+	local mod = specWarnObject.mod
+	if not mod then return end
+	local queue = blizzYouSpecialWarningQueue[mod]
+	if not queue then
+		queue = { ordered = {} }
+		blizzYouSpecialWarningQueue[mod] = queue
+	end
+	local expireSeconds = type(expireOverride) == "number" and expireOverride > 0 and expireOverride or 1.5
+	local entry = {
+		specWarn = specWarnObject,
+		count = count,
+		voiceName = voiceName,
+		expireSeconds = expireSeconds,
+		queueTime = GetTime()
+	}
+	table.insert(queue.ordered, entry)
+end
+
+---@return boolean
+function DBM:ConsumeBlizzYouSpecialWarning()
+	local now = GetTime()
+	local consumed = false
+	for mod, queue in pairs(blizzYouSpecialWarningQueue) do
+		local i = 1
+		local found = false
+		while i <= #queue.ordered do
+			local entry = queue.ordered[i]
+			if now - entry.queueTime > (entry.expireSeconds or 1.5) then
+				-- Stale, discard
+				removeBlizzYouSpecialWarningQueueEntry(queue, entry)
+			elseif not found then
+				removeBlizzYouSpecialWarningQueueEntry(queue, entry)
+				if entry.specWarn then
+					private.blizzYouConsuming = true
+					local ok = xpcall(entry.specWarn.Show, geterrorhandler(), entry.specWarn, entry.count)
+					private.blizzYouConsuming = false
+					if ok and entry.voiceName then
+						entry.specWarn:Play(entry.voiceName)
+					end
+					consumed = consumed or ok
+				end
+				found = true
+			else
+				i = i + 1
+			end
+		end
+		if #queue.ordered == 0 then
+			blizzYouSpecialWarningQueue[mod] = nil
+		end
+	end
+	return consumed
+end
 
 ---@diagnostic disable: inject-field
 local frame = CreateFrame("Frame", "DBMSpecialWarning", UIParent)
@@ -76,12 +217,32 @@ local function fontHide2()
 	end
 end
 
+local specialWarningFontResetNotified = false
+local function getSafeSpecialWarningFontSettings(self)
+	local font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
+	local size = self.Options.SpecialWarningFontSize2
+	local style = (self.Options.SpecialWarningFontStyle and self.Options.SpecialWarningFontStyle ~= "None" and self.Options.SpecialWarningFontStyle ~= "none") and self.Options.SpecialWarningFontStyle or ""
+	if not DBM:IsFontValid(font, private.standardFont) then
+		self.Options.SpecialWarningFont = self.DefaultOptions.SpecialWarningFont
+		self.Options.SpecialWarningFontSize2 = self.DefaultOptions.SpecialWarningFontSize2
+		self.Options.SpecialWarningFontStyle = self.DefaultOptions.SpecialWarningFontStyle
+		if not specialWarningFontResetNotified then
+			self:AddMsg("Invalid Special Warning font settings were detected and reset to defaults.")
+			specialWarningFontResetNotified = true
+		end
+		font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
+		size = self.Options.SpecialWarningFontSize2
+		style = (self.Options.SpecialWarningFontStyle and self.Options.SpecialWarningFontStyle ~= "None" and self.Options.SpecialWarningFontStyle ~= "none") and self.Options.SpecialWarningFontStyle or ""
+	end
+	return font, size, style
+end
+
 function DBM:UpdateSpecialWarningOptions()
 	frame:ClearAllPoints()
-	local font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
 	frame:SetPoint(self.Options.SpecialWarningPoint, UIParent, self.Options.SpecialWarningPoint, self.Options.SpecialWarningX, self.Options.SpecialWarningY)
-	font1:SetFont(font, self.Options.SpecialWarningFontSize2, self.Options.SpecialWarningFontStyle == "None" and nil or self.Options.SpecialWarningFontStyle)
-	font2:SetFont(font, self.Options.SpecialWarningFontSize2, self.Options.SpecialWarningFontStyle == "None" and nil or self.Options.SpecialWarningFontStyle)
+	local font, size, style = getSafeSpecialWarningFontSettings(self)
+	font1:SetFont(font, size, style)
+	font2:SetFont(font, size, style)
 	font1:SetTextColor(unpack(self.Options.SpecialWarningFontCol))
 	font2:SetTextColor(unpack(self.Options.SpecialWarningFontCol))
 	if self.Options.SpecialWarningFontShadow then
@@ -304,6 +465,8 @@ local function setText(announceType, spellId, stacks, customName, alternateSpell
 		else
 			text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName, L.SEC_FMT:format(tostring(stacks or 5)))
 		end
+	elseif announceType == "blizztarget" then
+		text = L.AUTO_ANNOUNCE_TEXTS.blizztarget:format(spellName)
 	else
 		if DBM.Options.SpamSpecInformationalOnly then
 			local remapType = specInstructionalRemapTable[announceType]
@@ -404,6 +567,8 @@ local specTypeFilterTable = {
 ---@field Show fun(self: SpecAnnounce2strnum, arg1: string, arg2: number)
 ---@class SpecAnnounce2numstr: SpecialWarning
 ---@field Show fun(self: SpecAnnounce2numstr, arg1: number, arg2: string)
+---@class SpecAnnounce3numstrnum: SpecialWarning
+---@field Show fun(self: SpecAnnounce3numstrnum, arg1: number, arg2: string, arg3: number|nil)
 
 ---Used to set fallback options to blizzard encounter API for hardcoded warnings to fall back on
 ---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
@@ -418,8 +583,22 @@ function specialWarningPrototype:SetAlert(encounterEventId, voice, voiceVersion,
 end
 
 function specialWarningPrototype:Show(...)
+	if self.announceType == "blizztarget" then
+		if not private.blizzTargetConsuming then
+			local count, voiceName, expireOverride = ...
+			DBM:QueueBlizzTargetSpecialWarning(self, count, voiceName, expireOverride)
+			return
+		end
+	elseif self.announceType == "blizzyou" then
+		if not private.blizzYouConsuming then
+			local count, voiceName, expireOverride = ...
+			DBM:QueueBlizzYouSpecialWarning(self, count, voiceName, expireOverride)
+			return
+		end
+	end
 	--Check if option for this warning is even enabled
 	if (not self.option or self.mod.Options[self.option]) and not moving and frame then
+		local isSecretBlizzType = self.announceType == "blizztarget" or self.announceType == "blizzyou"
 		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
 		if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
 		--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
@@ -431,7 +610,11 @@ function specialWarningPrototype:Show(...)
 		end
 		--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
 		if self.announceType == "taunt" and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
-		local argTable = {...}
+		local argTable
+		if not isSecretBlizzType then
+			-- Secret passthrough warnings avoid materializing arg tables from potentially secret args.
+			argTable = {...}
+		end
 		-- add a default parameter for move away warnings
 		if self.announceType == "gtfo" then
 			if DBM:UnitBuff("player", 27827) then return end--Don't tell a priest in spirit of redemption form to GTFO, they can't, and they don't take damage from it anyhow
@@ -459,11 +642,11 @@ function specialWarningPrototype:Show(...)
 		end
 		--Grab count for both the callback and the notes feature
 		local announceCount
-		if self.announceType and self.announceType:find("count") then
+		if self.announceType and (self.announceType:find("count") or self.announceType == "blizztarget" or self.announceType == "blizzyou") then
 			if self.announceType == "interruptcount" then
 				announceCount = argTable[2]--Count should be second arg in table
 			else
-				announceCount = argTable[1]--Count should be first arg in table
+				announceCount = argTable and argTable[1] or select(1, ...)--Count should be first arg in table
 			end
 			if type(announceCount) == "string" then
 				--Probably a hypehnated double count like inferno slice or marked for death
@@ -472,7 +655,12 @@ function specialWarningPrototype:Show(...)
 				announceCount = tonumber(mainCount)
 			end
 		end
-		local message = stringUtils.pformat(self.text, unpack(argTable))
+		local message
+		if argTable then
+			message = stringUtils.pformat(self.text, unpack(argTable))
+		else
+			message = string.format(self.text, ...)--Use native format to avoid secret args surfacing in error handlers
+		end
 		local text = ("%s%s%s"):format(
 			(DBM.Options.SpecialWarningIcon and self.icon and textureCode:format(self.icon)) or "",
 			message,
@@ -499,7 +687,7 @@ function specialWarningPrototype:Show(...)
 					if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
 						noteHasName = 5
 					end
-					if self.announceType and not self.announceType:find("switch") then
+					if not isSecretBlizzType and self.announceType and not self.announceType:find("switch") then
 						noteText = noteText:gsub(">.-<", classColoringFunction)--Class color note text before combining with warning text.
 					end
 					noteText = " (" .. noteText .. ")"
@@ -510,7 +698,7 @@ function specialWarningPrototype:Show(...)
 		--Text is disabled, suresss text from screen and chat frame
 		if not DBM.Options.DontShowSpecialWarningText then
 			--No stripping on switch warnings, ever. They will NEVER have player name, but often have adds with "-" in name
-			if self.announceType and not self.announceType:find("switch") then
+			if not isSecretBlizzType and self.announceType and not self.announceType:find("switch") then
 				text = text:gsub(">.-<", classColoringFunction)
 			end
 			DBM:AddSpecialWarning(text, nil, self)
@@ -1002,6 +1190,20 @@ end
 function bossModPrototype:NewSpecialWarningTargetCount(spellId, optionDefault, ...)
 	---@type SpecAnnounce2numstr
 	return newSpecialWarning(self, "targetcount", spellId, nil, optionDefault, ...)
+end
+
+---Special object used for blizzard target announces using secret target pulled from ENCOUNTER_WARNING
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce3numstrnum
+function bossModPrototype:NewSpecialWarningBlizzTarget(spellId, optionDefault, ...)
+	---@type SpecAnnounce3numstrnum
+	return newSpecialWarning(self, "blizztarget", spellId, nil, optionDefault, ...)
+end
+
+---Special object used for "on you" announces triggered by next ENCOUNTER_WARNING within 1 second; mirrors youcount but consumes any ENCOUNTER_WARNING as trigger
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce3numstrnum
+function bossModPrototype:NewSpecialWarningBlizzYou(spellId, optionDefault, ...)
+	---@type SpecAnnounce3numstrnum
+	return newSpecialWarning(self, "blizzyou", spellId, nil, optionDefault, ...)
 end
 
 ---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: number|string|boolean?, optionVersion: number|string?, runSound: acceptedSASounds|boolean?, hasVoice: number?, difficulty: number?): SpecAnnounce0

@@ -1080,6 +1080,8 @@ end
 --  Private/Secret API Methods  --
 ----------------------------------
 do
+	local wowToC = DBM:GetTOC()
+
 	-- Helper function to register a private aura sound for a single spell ID
 	---@param self DBMMod
 	---@param optionId number
@@ -1238,6 +1240,7 @@ do
 	---Refresh currently active private aura sounds for this mod using the player's current zone.
 	---@return boolean refreshed Returns false if the refresh could not be performed safely.
 	function bossModPrototype:RefreshPrivateAuraSounds()
+		--Restriction must remain because adding sounds still combat restricted
 		if InCombatLockdown() then
 			return false
 		end
@@ -1250,10 +1253,7 @@ do
 	end
 
 	function bossModPrototype:DisablePrivateAuraSounds()
-		if InCombatLockdown() then
-			DBM:Debug("Attempting to unregister private aura sounds for mod " .. self.id .. " failed due to combat restriction. This unregister will be deferred.", 2)
-			return
-		end
+		--Removal doesn't have same restrictions as adding (allowed in combat)
 		while self.paSounds do
 			local optionId = next(self.paSounds)
 			if not optionId then
@@ -1269,7 +1269,7 @@ do
 	---@param customOption string? Used when event supports hardcoded timers and needs different option table lookup
 	function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId, customOption)
 		if DBM.Options.HideDBMBars then return end
-		--Set Color (done outside option check since right now option check isnt supported until 12.0.5
+		--Set Color (done outside option check since right now option check isnt supported until a future patch
 		--And we want to set colors on any bar even if it's "disabled" for now
 		if not DBM.Options.DontSetTimelineColors then
 			local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0

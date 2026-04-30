@@ -38,14 +38,17 @@ local badStateDetected = false
 local slamEventCounts = {}--Simple eventID to count mapping for slam, since both spellids share a unified count and bars never cancel on this boss
 
 ---@param self DBMMod
-local function setFallback(self)
+	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
+local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
-	specWarnShadowclawSlam:SetAlert({59, 60}, "slamincoming", 19, 2)
+	if not dontSetAlerts then
+		specWarnShadowclawSlam:SetAlert({59, 60}, "slamincoming", 19, 2)
+		specWarnParasiteExpulsion:SetAlert(62, "watchstep", 2, 2)
+		specWarnPrimordialRoar:SetAlert(133, "pullin", 12, 3)
+	end
 	timerShadowclawSlamCD:SetTimeline({59, 60})
 --	timerVoidBreathCD:SetTimeline(61)
-	specWarnParasiteExpulsion:SetAlert(62, "watchstep", 2, 2)
 	timerParasiteExpulsionCD:SetTimeline(62)
-	specWarnPrimordialRoar:SetAlert(133, "pullin", 12, 3)
 	timerPrimordialRoarCD:SetTimeline(133)
 --	specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)
 end
@@ -63,6 +66,9 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
+		end
 	else
 		setFallback(self)
 	end
@@ -94,15 +100,11 @@ do
 			slamEventCounts[eventID] = count
 			timerShadowclawSlamCD:TLStart(timerExact, eventID, count)
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
-			if not DBM.Options.DebugMode then
-				badStateDetected = true
-				self:ResumeBlizzardAPI()
-				self:UnregisterShortTermEvents()
-				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
-			else
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
-			end
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	--Note, bar state changing and canceling is handled by core

@@ -45,20 +45,23 @@ local next80IsShadow = false
 local next80IsVoidMark = false
 
 ---@param self DBMMod
-local function setFallback(self)
+	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
+local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
-	specWarnShadowsAdvance:SetAlert({194, 195}, "mobsoon", 2, 2)
+	if not dontSetAlerts then
+		specWarnShadowsAdvance:SetAlert({194, 195}, "mobsoon", 2, 2)
+		specWarnDarkUpheaval:SetAlert(196, "aesoon", 2, 2)
+		specWarnUmbralCollapse:SetAlert(197, "gathershare", 2, 2)
+		specWarnOblivionWrath:SetAlert(198, "watchstep", 2, 2)
+		specWarnVoidFall:SetAlert({199, 209}, "carefly", 2, 2)
+		specWarnMarchofEndless:SetAlert(200, "stilldanger", 2, 4)
+		specWarnPitchBulwark:SetAlert(201, "kickcast", 2, 2, 0)
+	end
 	timerShadowsAdvanceCD:SetTimeline({194, 195})
-	specWarnDarkUpheaval:SetAlert(196, "aesoon", 2, 2)
 	timerDarkUpheavalCD:SetTimeline(196)
-	specWarnUmbralCollapse:SetAlert(197, "gathershare", 2, 2)
 	timerUmbralCollapseCD:SetTimeline(197)
-	specWarnOblivionWrath:SetAlert(198, "watchstep", 2, 2)
 	timerOblivionWrathCD:SetTimeline(198)
-	specWarnVoidFall:SetAlert({199, 209}, "carefly", 2, 2)
 	timerVoidFallCD:SetTimeline({199, 209})
-	specWarnMarchofEndless:SetAlert(200, "stilldanger", 2, 4)
-	specWarnPitchBulwark:SetAlert(201, "kickcast", 2, 2, 0)
 	timerVoidMarkCD:SetTimeline(419)
 end
 
@@ -79,6 +82,9 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
+		end
 	else
 		setFallback(self)
 	end
@@ -145,15 +151,11 @@ do
 				end
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
-			if not DBM.Options.DebugMode then
-				badStateDetected = true
-				self:ResumeBlizzardAPI()
-				self:UnregisterShortTermEvents()
-				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
-			else
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
-			end
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 
@@ -188,17 +190,23 @@ do
 				next80IsVoidMark = false
 			else
 				timerUmbralCollapseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "collapse", "CollapseCount"))
+				if not timerUmbralCollapseCD:IsBuggedEventID(eventID) then--We haven't seen the bugged 80 yet
+					--Currently, blizzard has a bug where the 2nd umbral timer that starts for the fight (first 80 second timer)
+					--immediately cancels itself with a state of 2, despite fact the timer is actually accurate.
+					timerUmbralCollapseCD:SetBuggedEventID(eventID)
+					--Hard schedule alert here since blizzard is going to finish their own timer due to a bug on their end
+					specWarnUmbralCollapse:Schedule(80, 2)
+					specWarnUmbralCollapse:ScheduleVoice(80, "gathershare")
+					timerUmbralCollapseCD:Stop()
+					timerUmbralCollapseCD:Start(80, self.vb.CollapseCount+1)
+				end
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
-			if not DBM.Options.DebugMode then
-				badStateDetected = true
-				self:ResumeBlizzardAPI()
-				self:UnregisterShortTermEvents()
-				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
-			else
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
-			end
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	--Note, bar state changing and canceling is handled by core

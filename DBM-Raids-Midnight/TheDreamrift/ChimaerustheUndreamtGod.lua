@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 --NOTE, https://www.wowhead.com/spell=1245771/corrupted-feathers has event ID ono boss but isn't in journal, possibly pre boss trash mechanic
 --NOTE, https://www.wowhead.com/spell=1262616/retched-acid not in journal (208)
 --NOTE, https://www.wowhead.com/spell=1280127/stage-two also exists, but based on most recent testing blizzard uses consume for p2 and not this bar anymore
-local warnAlndustUpheaval				= mod:NewBlizzTargetAnnounce(1262289, 2)
+--local warnAlndustUpheaval				= mod:NewBlizzTargetAnnounce(1262289, 2)
 
 local specWarnRavenousDive				= mod:NewSpecialWarningCount(1245404, nil, 218027, nil, 2, 2)
 local specWarnRiftEmergence				= mod:NewSpecialWarningCount(1251021, nil, nil, DBM_COMMON_L.ADDS, 2, 2)
@@ -22,7 +22,7 @@ local specWarnRendingTear				= mod:NewSpecialWarningDodgeCount(1272726, nil, nil
 local specWarnCorruptedDevastation		= mod:NewSpecialWarningDodgeCount(1245452, nil, 17088, nil, 2, 2)
 local specWarnFearsomecry				= mod:NewSpecialWarningInterrupt(1249017, "HasInterrupt", nil, nil, 1, 2)--Add alert
 local specWarnDiscordantRoar			= mod:NewSpecialWarningCount(1245451, false, nil, nil, 2, 2)--Add alert (evalulate default by cast frequency)
-local specWarnAlndustUpheaval			= mod:NewSpecialWarningSoakCount(1262289, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
+local specWarnAlndustUpheaval			= mod:NewSpecialWarningBlizzTarget(1262289, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
 local specWarnConsume					= mod:NewSpecialWarningCount(1245396, nil, nil, nil, 2, 2)
 local specWarnCannibalized				= mod:NewSpecialWarningSpell(1245844, nil, nil, nil, 1, 2)--Basically screwing up the add killing
 mod:GroupSpells(1245396, 1245844)--Group Cannibalized with Consume
@@ -66,33 +66,35 @@ local diveEventID = 0
 local diveEventCount = 0
 local diveExpireAt = 0
 local diveFallbackToken = 0
-local showOnNextWarning = 0
 local timer73Count = 0
 local timer75Count = 0
 
 ---@param self DBMMod
-local function setFallback(self)
+	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
+local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
-	specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3, 0)
+	if not dontSetAlerts then
+		specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3, 0)
+		specWarnRiftEmergence:SetAlert(49, "mobsoon", 2, 2)
+		specWarnCausticPhlegm:SetAlert(50, "aesoon", 2, 2)
+		specWarnRendingTear:SetAlert(51, "frontal", 15, 2)
+		specWarnCorruptedDevastation:SetAlert({53,458}, "breathsoon", 2, 2, 0)
+		specWarnFearsomecry:SetAlert(117, "kickcast", 1, 2, 0)--Needs vetting, it's an add ability but has event Id, so it might fire an ECOUNTER_WARNING based on blizz set conditionals
+		specWarnDiscordantRoar:SetAlert(118, "aesoon", 2, 2, 0)--^
+		specWarnAlndustUpheaval:SetAlert({149,431}, "soakincoming", 19, 2)--Can't count casts with blizz API, but hardcode will be able to use group1 and group 2 soak sounds
+		specWarnConsume:SetAlert(307, "aesoon", 2, 3)
+		specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
+	end
 	timerRavenousDiveCD:SetTimeline(48)
-	specWarnRiftEmergence:SetAlert(49, "mobsoon", 2, 2)
 	timerRiftEmergenceCD:SetTimeline(49)
-	specWarnCausticPhlegm:SetAlert(50, "aesoon", 2, 2)
 	timerCausticPhlegmCD:SetTimeline(50)
-	specWarnRendingTear:SetAlert(51, "frontal", 15, 2)
 	timerRendingTearCD:SetTimeline(51)
-	specWarnCorruptedDevastation:SetAlert({53,458}, "breathsoon", 2, 2, 0)
 	timerCorruptedDevastationCD:SetTimeline({53,458})
-	specWarnFearsomecry:SetAlert(117, "kickcast", 1, 2, 0)--Needs vetting, it's an add ability but has event Id, so it might fire an ECOUNTER_WARNING based on blizz set conditionals
-	specWarnDiscordantRoar:SetAlert(118, "aesoon", 2, 2, 0)--^
 	timerConsumingMiasmaCD:SetTimeline(119)
-	specWarnAlndustUpheaval:SetAlert({149,431}, "soakincoming", 19, 2)--Can't count casts with blizz API, but hardcode will be able to use group1 and group 2 soak sounds
 	timerAlndustUpheavalCD:SetTimeline({149,431})
 	timerBerserkCD:SetTimeline(170)
 	timerRiftMadnessCD:SetTimeline(217)
-	specWarnConsume:SetAlert(307, "aesoon", 2, 3)
 	timerConsumeCD:SetTimeline(307)
-	specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
 	timerStage2CD:SetTimeline(353)
 end
 
@@ -113,17 +115,19 @@ function mod:OnLimitedCombatStart()
 	diveEventCount = 0
 	diveExpireAt = 0
 	diveFallbackToken = diveFallbackToken + 1
-	showOnNextWarning = 0
 	timer73Count = 0
 	timer75Count = 0
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic() or self:IsMythic()) and not badStateDetected then
+		self:SetStage(1)
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
-			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
-			"ENCOUNTER_WARNING"
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
+		end
 	else
 		setFallback(self)
 	end
@@ -142,6 +146,7 @@ end
 do
 	local function phaseReset(self)
 		self:TLCountReset()
+		self:SetStage(1)
 --		self.vb.diveCount = 1--NOT reset, because dive is phase change ending
 		self.vb.riftCount = 1
 		self.vb.phlegmCount = 1
@@ -227,7 +232,7 @@ do
 		elseif timer == 8 then--Corrupted Devastation opener before mixed 12s
 			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			next12IsDevastation = true
-		elseif timer == 12 or timer == 2 then--Can be Corrupted Devastation or Caustic Phlegm
+		elseif timer == 12 then--Can be Corrupted Devastation or Caustic Phlegm
 			if next12IsDevastation then
 				timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 				next12IsDevastation = false
@@ -235,6 +240,9 @@ do
 				timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				next12IsDevastation = true
 			end
+		elseif timer == 2 then
+			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			next12IsDevastation = false
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
 			--30 is max time, but when all adds die, 30 is canceled and replaced with 1 second timer
 			startDiveTimer(self, timer, timerExact, eventID)
@@ -242,16 +250,15 @@ do
 			--Used by blizzard as phase markers
 			timerStage2CD:Stop()
 			timerStage2CD:TLStart(timerExact, eventID)
-		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
-			if not DBM.Options.DebugMode then
-				badStateDetected = true
-				self:ResumeBlizzardAPI()
-				self:UnregisterShortTermEvents()
-				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
-			else
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
+			if timer == 10 then
+				self:SetStage(2)
 			end
+		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	---@param self DBMMod
@@ -308,21 +315,21 @@ do
 				timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				next12IsDevastation = true
 			end
+		elseif timer == 2 then
+			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			next12IsDevastation = false
 		elseif timer == 30 or timer == 1 then--Ravenous Dive (30s max, 1s early-kill replacement when adds die early)
 			startDiveTimer(self, timer, timerExact, eventID)
 		elseif timer == 10 then--Stage Two (phase 2 transition marker)
+			self:SetStage(2)
 			timerStage2CD:Stop()
 			timerStage2CD:TLStart(timerExact, eventID)
 		else--Reached end of chain without finding a valid timer
-			if not DBM.Options.DebugMode then
-				badStateDetected = true
-								self:ResumeBlizzardAPI()
-				self:UnregisterShortTermEvents()
-				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
-			else
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
-			end
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	---@param self DBMMod
@@ -367,11 +374,14 @@ do
 				self:TLCountStart(eventID, "riftMadness", "riftMadnessCount")
 			end
 		elseif timer == 24 or timer == 26 or timer == 48 or timer == 18 or timer == 9 then--Caustic Phlegm
-			timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
+			if timer ~= 9 then--Invalid timer blizzard sends that we need to outright ignore
+				timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
+			end
 		elseif timer == 72 then--Consume reload
 			timerConsumeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "consume", "consumeCount"))
 		elseif timer == 10 then--Alndust Upheaval phase 2
 			timerAlndustUpheavalCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "upheaval", "upheavalCount"))
+			self:SetStage(2)
 		elseif timer == 12 then--Corrupted Devastation/Caustic Phlegm alternating pair
 			if next12IsDevastation then
 				timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
@@ -380,18 +390,17 @@ do
 				timerCausticPhlegmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "phlegm", "phlegmCount"))
 				next12IsDevastation = true
 			end
+		elseif timer == 2 then
+			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			next12IsDevastation = false
 		elseif timer == 20 or timer == 1 then--Ravenous Dive (20s base on Mythic, 1s when adds die early)
 			startDiveTimer(self, timer, timerExact, eventID)
 		else--Reached end of chain without finding a valid timer
-			if not DBM.Options.DebugMode then
-				badStateDetected = true
-								self:ResumeBlizzardAPI()
-				self:UnregisterShortTermEvents()
-				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
-			else
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers|r", nil, nil, nil, true)
-			end
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 		end
 	end
 	--Note, bar state changing and canceling is handled by core
@@ -430,15 +439,8 @@ do
 					specWarnCausticPhlegm:Show(eventCount)
 					specWarnCausticPhlegm:Play("aesoon")
 				elseif eventType == "upheaval" then
-					specWarnAlndustUpheaval:Show(eventCount)
-					if self:IsLFR() then
-						--LFR has no soak
-						specWarnAlndustUpheaval:Play("raidsplit")
-					else
-						showOnNextWarning = eventCount
-						specWarnAlndustUpheaval:Play("soakincoming")
-					end
-					--We timestamp this then let local ENCOUNTER_WARNING event handle it
+					local sound = self:IsLFR() and "raidsplit" or "soakincoming"
+					specWarnAlndustUpheaval:Show(eventCount, sound)
 				elseif eventType == "devastation" then
 					specWarnCorruptedDevastation:Show(eventCount)
 					specWarnCorruptedDevastation:Play("breathsoon")
@@ -469,25 +471,5 @@ do
 			end
 			self:TLCountCancel(eventID)
 		end
-	end
-end
-
-function mod:ENCOUNTER_WARNING(encounterWarningInfo)
-	if showOnNextWarning > 0 then
-		--Secrets
-		local targetName = encounterWarningInfo.targetName
-		local targetGUID = encounterWarningInfo.targetGUID
-		local formattedTargetName = targetName or UNKNOWN
-		if targetGUID then
-			local _, className = GetPlayerInfoByGUID(targetGUID)
-			if className then
-				local classColor = C_ClassColor.GetClassColor(className)
-				if classColor then
-				    formattedTargetName = classColor:WrapTextInColorCode(formattedTargetName);
-				end
-			end
-		end
-		warnAlndustUpheaval:Show(showOnNextWarning, formattedTargetName)
-		showOnNextWarning = 0
 	end
 end
