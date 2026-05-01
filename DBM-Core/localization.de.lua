@@ -27,7 +27,7 @@ L.LOAD_MOD_DISABLED			= "%s ist installiert, aber derzeit nicht aktiviert. Diese
 L.LOAD_MOD_DISABLED_PLURAL	= "%s sind installiert, aber derzeit nicht aktiviert. Diese Mods werden nicht geladen, falls du sie nicht aktivierst."
 
 L.COPY_URL_DIALOG					= "Kopiere URL"
-L.COPY_WA_DIALOG					= "WA-Schlüssel kopieren"
+L.COPY_WA_DIALOG					= "Zauberschlüssel kopieren"
 
 --Post Patch 7.1
 L.TEXT_ONLY_RANGE			= "Das Reichweitenfenster ist aufgrund von API-Einschränkungen in diesem Bereich auf reinen Text beschränkt."
@@ -183,7 +183,7 @@ L.VOICE_MISSING					= "Du hast einen "..L.DBM.." Sprachpack ausgewählt, der nic
 L.VOICE_DISABLED				= "Du hast derzeit mindestens einen "..L.DBM.." Sprachpack installiert, aber keinen aktiviert. Falls du einen Sprachpack nutzen möchtest, dann wähle ihn unter \"Gesprochene Warnungen\" aus. Ansonsten kannst du die ungenutzten Sprachpacks deinstallieren, um diese Meldung zu unterdrücken."
 L.VOICE_COUNT_MISSING			= "Für die Countdown-Stimme %d ist ein Sprach-/Zählpack ausgewählt, der nicht gefunden werden konnte. Die Stimme wurde auf die Standardeinstellung zurückgesetzt: %s."
 L.BIG_WIGS						= "BigWigs" -- OPTIONAL
-L.WEAKAURA_KEY					= " (|cff308530WA-Schlüssel:|r %s)"
+L.WEAKAURA_KEY					= " (|cff308530Zauberschlüssel:|r %s)"
 
 L.UPDATEREMINDER_HEADER 		= "Deine Version von " .. L.DEADLY_BOSS_MODS .. " ist veraltet.\nVersion %s (%s) kann über Curse, Wago, WoWI oder von der GitHub-Releases-Seite heruntergeladen werden."
 L.UPDATEREMINDER_HEADER_SUBMODULE = "Dein %s-Modul ist veraltet.\nVersion %s ist über Curse, Wago, WoWI oder die GitHub-Releases-Seite verfügbar."
