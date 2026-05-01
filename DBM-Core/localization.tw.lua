@@ -687,17 +687,15 @@ L.LDB_TOOLTIP_HELP1				= "點擊開啟" .. L.DBM
 L.LDB_TOOLTIP_HELP2				= "Alt+右鍵點擊切換到無聲模式"
 L.SILENTMODE_IS                 = "無聲模式是 "
 
-L.WORLD_BUFFS = {
-	hordeOny							= "部落的人民，奧格瑪的城民，來吧，聚集到一起歡慶部落英雄的誕生。",
-	allianceOny							= "暴風城的城民和盟友們，今天，有人創造了歷史。",
-	hordeNef							= "奈法利安被!@#掉了！奧格瑪的人們",
-	allianceNef							= "聯盟的人民們，黑石領主已經被幹掉了！",
-	zgHeart								= "只差最後一步，我們就可以擺脫靈魂掠奪者的威脅了……",
-	zgHeartBooty						= "靈魂掠奪者血神已經被打敗了！我們不再有危險了！",
-	zgHeartYojamba						= "開始儀式，我的僕從們。我們必須把哈卡完全打回扭曲虛空中！",
-	rendHead							= "那個假的酋長，雷德·黑手，已經倒下了！",
-	blackfathomBoon						= "黑澗深淵的恩賜"
-}
+L.WORLD_BUFFS.hordeOny			= "部落的人民，奧格瑪的城民，來吧，聚集到一起歡慶部落英雄的誕生。"
+L.WORLD_BUFFS.allianceOny		= "暴風城的城民和盟友們，今天，有人創造了歷史。"
+L.WORLD_BUFFS.hordeNef			= "奈法利安被!@#掉了！奧格瑪的人們"
+L.WORLD_BUFFS.allianceNef		= "聯盟的人民們，黑石領主已經被幹掉了！"
+L.WORLD_BUFFS.zgHeart			= "只差最後一步，我們就可以擺脫靈魂掠奪者的威脅了……"
+L.WORLD_BUFFS.zgHeartBooty		= "靈魂掠奪者血神已經被打敗了！我們不再有危險了！"
+L.WORLD_BUFFS.zgHeartYojamba	= "開始儀式，我的僕從們。我們必須把哈卡完全打回扭曲虛空中！"
+L.WORLD_BUFFS.rendHead			= "那個假的酋長，雷德·黑手，已經倒下了！"
+L.WORLD_BUFFS.blackfathomBoon	= "黑澗深淵的恩賜"
 
 -- Annoying popup, especially for classic players
 L.DBM_INSTALL_REMINDER_HEADER		= "檢測到不完整的DBM安裝！"
