@@ -590,7 +590,7 @@ L.SelectPerspective					= "Log-Perspektive (simulierter Spieler)"
 L.ImportTranscriptor				= "Transcriptor-Log importieren"
 L.ImportTranscriptorHeader			= [[
 Importiere ein Transcriptor-Log, indem du es irgendwo in das Eingabefeld unten einfügst. Die Einfügegeschwindigkeit liegt bei ca. 2 MiB/s, das bedeutet, dass dein Spiel bei sehr großen Logdateien für mehrere Sekunden einfriert.
-Du kannst außerdem die aktuelle Transcriptor-Sitzung aus den gespeicherten Variablen von Transcriptor über den Import-Button rechts importieren.]] 
+Du kannst außerdem die aktuelle Transcriptor-Sitzung aus den gespeicherten Variablen von Transcriptor über den Import-Button rechts importieren.]]
 
 L.PasteLogHere						= "Drücke " .. (IsMacClient() and "Cmd-V" or "Strg-V") .. " um ein Log hier einzufügen."
 L.LogPasted							= "%.2f MiB in %.1f Sekunden eingefügt (%.2f MiB/s)."
