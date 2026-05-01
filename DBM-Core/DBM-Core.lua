@@ -1726,6 +1726,7 @@ do
 				EncounterTimeline.TrackView:SetAlpha(0)
 				EncounterTimeline.TimerView:SetAlpha(0)
 			else
+				--User has timeline enabled
 				C_CVar.SetCVar("encounterTimelineEnabled", "1")--Force enable timeline, otherwise custom sounds don't play
 			end
 			if not self.Options.HasShownMidnightPopup then

@@ -357,6 +357,10 @@ do
 		elseif timer == 6 then--Rift Emergence opener
 			timerRiftEmergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rift", "riftCount"))
 		elseif timer == 32 or timer == 51 or timer == 37 or timer == 29 or timer == 23 then--Consuming Miasma
+			--if timer == 29 then--Blizzard sends 29 but it's actually 33
+			--	DBM:Debug("Encounter timeline has a known incorrect timer for Consuming Miasma at 29 seconds in Mythic difficulty, treating this timer as 33 seconds instead", nil, nil, nil, true)
+			--	timerExact = 33.3
+			--end
 			timerConsumingMiasmaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "miasma", "miasmaCount"))
 		elseif timer == 39 then--Rift Madness opener
 			timerRiftMadnessCD:TLStart(timerExact, eventID)
