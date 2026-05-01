@@ -27,7 +27,7 @@ L.LOAD_MOD_DISABLED			= "%s ist installiert, aber derzeit nicht aktiviert. Diese
 L.LOAD_MOD_DISABLED_PLURAL	= "%s sind installiert, aber derzeit nicht aktiviert. Diese Mods werden nicht geladen, falls du sie nicht aktivierst."
 
 L.COPY_URL_DIALOG					= "Kopiere URL"
-L.COPY_WA_DIALOG					= "WA-Key kopieren"
+L.COPY_WA_DIALOG					= "WA-Schlüssel kopieren"
 
 --Post Patch 7.1
 L.TEXT_ONLY_RANGE			= "Das Reichweitenfenster ist aufgrund von API-Einschränkungen in diesem Bereich auf reinen Text beschränkt."
