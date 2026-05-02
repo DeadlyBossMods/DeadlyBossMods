@@ -1178,7 +1178,7 @@ do
 			DBM:Debug("Attempting to register private aura sound failed due to invalid optionId type for mod " .. mod.id, 2)
 			return
 		end
-		if InCombatLockdown() then
+		if C_ChatInfo.InChatMessagingLockdown() then
 			DBM:Debug("Attempting to register private aura sound for spell ID " .. optionId .. " failed due to combat restriction. This sound will not be registered.", 2)
 			return
 		end
@@ -1216,7 +1216,7 @@ do
 	---@param optionId number
 	---@return boolean refreshed Returns false if the refresh could not be performed safely.
 	function bossModPrototype:RefreshPrivateAuraSound(optionId)
-		if InCombatLockdown() then
+		if C_ChatInfo.InChatMessagingLockdown() then
 			return false
 		end
 		disablePrivateAuraSoundOption(self, optionId)
@@ -1241,7 +1241,7 @@ do
 	---@return boolean refreshed Returns false if the refresh could not be performed safely.
 	function bossModPrototype:RefreshPrivateAuraSounds()
 		--Restriction must remain because adding sounds still combat restricted
-		if InCombatLockdown() then
+		if C_ChatInfo.InChatMessagingLockdown() then
 			return false
 		end
 		self:DisablePrivateAuraSounds()
