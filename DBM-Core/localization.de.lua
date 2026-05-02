@@ -205,7 +205,7 @@ L.DBMLOOTREMINDER				= "WARNUNG: 3rd party mod DBM-LootReminder ist installiert.
 L.UPDATE_REQUIRES_RELAUNCH		= "WARNUNG: Dieses Update von "..L.DBM.." arbeitet erst nach einem vollständigem Neustart des Spielclients korrekt. Das Update enthält neue Dateien oder Änderungen an .toc-Dateien, die nicht mit \"/reload\" geladen werden können. Die Funktionsfähigkeit von DBM kann beeinträchtigt sein und es können Fehler auftreten, bis du den Spielclient neu startest."
 L.OUT_OF_DATE_NAG				= "Deine Version von "..L.DEADLY_BOSS_MODS.." ist veraltet. Du solltest eine Aktualisierung für diesen Kampf durchführen, da du sonst wichtige Warnungen oder Timer verpassen könntest oder automatische \"Schreie\" fehlen, die der Rest deines Schlachtzuges von dir erwartet."
 L.HARDCODED_FALLBACK				= L.DBM .. " hat in einem fest kodierten Bossmod ein unerwartetes Ergebnis erkannt. " .. L.DBM .. " greift für diese Begegnung auf Blizzard-Timer und -Warnungen zurück."
-L.PLATER_NP_AURAS_MSG = L.DBM .. " enthält eine erweiterte Funktion, um gegnerische Abklingzeiten als Symbole auf Namensplaketten anzuzeigen. Diese ist für die meisten Nutzer standardmäßig aktiviert, für Plater-Nutzer jedoch in den Plater-Optionen standardmäßig deaktiviert, sofern sie nicht manuell aktiviert wird. Um DBM (und Plater) optimal zu nutzen, wird empfohlen, diese Funktion in Plater im Abschnitt „Buff Special“ zu aktivieren. Wenn du diese Nachricht nicht erneut sehen möchtest, kannst du alternativ auch die Option „Abklingzeit-Icons auf Namensplaketten“ in den globalen DBM-Deaktivierungs- oder Namensplaketten-Einstellungen vollständig deaktivieren."
+L.PLATER_NP_AURAS_MSG = L.DBM .. " enthält eine erweiterte Funktion, um gegnerische Abklingzeiten als Icons auf Namensplaketten anzuzeigen. Diese ist für die meisten Nutzer standardmäßig aktiviert, für Plater-Nutzer jedoch in den Plater-Optionen standardmäßig deaktiviert, sofern sie nicht manuell aktiviert wird. Um DBM (und Plater) optimal zu nutzen, wird empfohlen, diese Funktion in Plater im Abschnitt „Buff Special“ zu aktivieren. Wenn du diese Nachricht nicht erneut sehen möchtest, kannst du alternativ auch die Option „Abklingzeit-Icons auf Namensplaketten“ in den globalen DBM-Deaktivierungs- oder Namensplaketten-Einstellungen vollständig deaktivieren."
 
 L.MOVABLE_BAR					= "Zieh mich!"
 
@@ -539,8 +539,8 @@ L.AUTO_TIMER_OPTIONS.roleplay	= "Dauer des Rollenspiels anzeigen"
 L.AUTO_TIMER_OPTIONS.combat		= "Zeige Zeit bis Kampfbeginn"
 
 L.AUTO_ICONS_OPTION_TARGETS				= "Setze Zeichen auf Ziele von $spell:%s"
-L.AUTO_ICONS_OPTION_TARGETS_TANK_A		= "Setze Symbole auf Ziele von $spell:%s mit Priorität Tank vor Nahkampf vor Fernkampf und alphabetischem Fallback"
-L.AUTO_ICONS_OPTION_TARGETS_TANK_R		= "Setze Symbole auf Ziele von $spell:%s mit Priorität Tank vor Nahkampf vor Fernkampf und Raid-Roster-Fallback"
+L.AUTO_ICONS_OPTION_TARGETS_TANK_A		= "Setze Icons auf Ziele von $spell:%s mit Priorität Tank vor Nahkampf vor Fernkampf und alphabetischem Fallback"
+L.AUTO_ICONS_OPTION_TARGETS_TANK_R		= "Setze Icons auf Ziele von $spell:%s mit Priorität Tank vor Nahkampf vor Fernkampf und Raid-Roster-Fallback"
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_A		= "Setze Zeichen auf Ziele von $spell:%s beginnend mit melee und nach Alphabetischer Reihenfolge"
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_R		= "Setze Zeichen auf Ziele von $spell:%s beginnend mit melee und nach Raidroster Reihenfolge"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_A	= "Setze Zeichen auf Ziele von $spell:%s beginnend mit ranged und nach Alphabetischer Reihenfolge"
