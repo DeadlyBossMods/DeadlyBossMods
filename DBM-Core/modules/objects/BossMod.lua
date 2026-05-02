@@ -1080,8 +1080,6 @@ end
 --  Private/Secret API Methods  --
 ----------------------------------
 do
-	local wowToC = DBM:GetTOC()
-
 	-- Helper function to register a private aura sound for a single spell ID
 	---@param self DBMMod
 	---@param optionId number
