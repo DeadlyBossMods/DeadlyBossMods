@@ -48,7 +48,7 @@ local specWarnIncubationofFlames		= mod:NewSpecialWarningCount(1242792, nil, nil
 local specWarnRebirth					= mod:NewSpecialWarningCount(1241313, nil, nil, nil, 1, 2)
 
 local timerIncubationofFlamesCD			= mod:NewCDCountTimer(20.5, 1242792, nil, nil, nil, 3)--Might not even have a timer, if not kill object
-local timerRebirthCD					= mod:NewCDCountTimer(20.5, 1241313, nil, nil, nil, 6)--Iffy
+local timerRebirthCD					= mod:NewCastTimer(20.5, 1241313, nil, nil, nil, 6)--Iffy
 
 mod:AddPrivateAuraSoundOption(1242803, true, 1242792, 1, 2, "watchfeet", 8)--Light Flames (dropped by Incubation of Flames)
 mod:AddPrivateAuraSoundOption(1242815, true, 1242792, 1, 2, "watchfeet", 8)--Void Flames (dropped by Incubation of Flames)
@@ -141,8 +141,9 @@ do
 	local function timersEasy(self, timer, timerExact, eventID)
 		if self:GetStage(2) then
 			--Rebirth stage. Any bars ending/restarting around here are treated as cycle boundary.
-			if timer == 30 then
-				timerRebirthCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rebirth"))
+			if timer == 30 or timer == 40 then
+				self:TLCountStart(eventID, "rebirth")
+				timerRebirthCD:TLStart(timerExact, eventID)
 				return
 			elseif timer == 10 or timer == 6 or timer == 18 or timer == 20 or timer == 34 or timer == 50 then
 				self:SetStage(1)
@@ -178,7 +179,7 @@ do
 			timerVoidlightConvergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
 			warnVoidlightConvergenceSoon:Schedule(timerExact - 5)
 			warnVoidlightConvergenceSoon:ScheduleVoice(timerExact - 5, "colorchangesoon")
-		elseif timer == 30 then--Rebirth stage transition (health based)
+		elseif timer == 30 or timer == 40 then--Rebirth stage transition (health based)
 			self:SetStage(2)
 			lastEmbersEventID = 0
 			timerRebirthCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rebirth"))
@@ -197,8 +198,9 @@ do
 	---@param eventID number
 	local function timersHeroic(self, timer, timerExact, eventID)
 		if self:GetStage(2) then
-			if timer == 30 then
-				timerRebirthCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rebirth"))
+			if timer == 30 or timer == 40 then
+				self:TLCountStart(eventID, "rebirth")
+				timerRebirthCD:TLStart(timerExact, eventID)
 				return
 			elseif timer == 10 or timer == 21 or timer == 6 or timer == 18 or timer == 20 or timer == 34 or timer == 50 then
 				self:SetStage(1)
@@ -291,10 +293,11 @@ do
 				setFallback(self)
 				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			end
-		elseif timer == 30 then--Rebirth stage transition (health based)
+		elseif timer == 30 or timer == 40 then--Rebirth stage transition (health based)
 			self:SetStage(2)
 			heroicSequenceSlot = 0
-			timerRebirthCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rebirth"))
+			self:TLCountStart(eventID, "rebirth")
+			timerRebirthCD:TLStart(timerExact, eventID)
 		else
 			badStateDetected = true
 			self:ResumeBlizzardAPI()

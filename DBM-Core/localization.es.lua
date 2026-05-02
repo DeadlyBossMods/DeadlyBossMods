@@ -29,7 +29,7 @@ L.LOAD_MOD_DISABLED			= "%s está instalado pero se encuentra desactivado. Este 
 L.LOAD_MOD_DISABLED_PLURAL	= "%s están instalados pero se encuentran desactivados. Estos módulos no se cargarán hasta que los actives."
 
 L.COPY_URL_DIALOG			= "Copiar enlace"
-L.COPY_WA_DIALOG			= "Copiar clave WA"
+L.COPY_WA_DIALOG			= "Copiar clave de hechizo"
 
 --Post Patch 7.1
 L.TEXT_ONLY_RANGE			= "El marco de distancia está limitado a texto únicamente debido a restricciones de API en esta área."
@@ -193,7 +193,7 @@ L.VOICE_MISSING				= "Tenías seleccionado un paquete de voces que no se ha podi
 L.VOICE_DISABLED			= "Tienes al menos un paquete de voces de " .. L.DBM .. " instalado, pero ninguno está activado. Si quieres usar un paquete de voces, asegúrate de que lo has asignado en 'Alertas de voz'. Desinstala los paquetes de voces que no estés utilizando para ocultar este mensaje."
 L.VOICE_COUNT_MISSING		= "La voz de cuenta atrás %d está asignada a un paquete de voces que no se ha podido encontrar o que no es compatible actualmente. Se ha restablecido a la configuración predeterminada: %s."
 L.BIG_WIGS					= "BigWigs"
-L.WEAKAURA_KEY				= " (|cff308530Clave WA:|r %s)"
+L.WEAKAURA_KEY				= " (|cff308530Clave de hechizo:|r %s)"
 
 L.UPDATEREMINDER_HEADER				= "Tu versión de " .. L.DEADLY_BOSS_MODS .. " está desactualizada.\nPuedes descargar la versión %s (%s) a través de Curse, Wago, Github o WoWInterface."
 L.UPDATEREMINDER_HEADER_SUBMODULE	= "Tu módulo de %s está desactualizada.\nPuedes descargar la versión %s a través de Curse, Wago, Github o WoWInterface."

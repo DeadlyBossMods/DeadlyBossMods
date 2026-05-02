@@ -29,7 +29,7 @@ L.LOAD_MOD_DISABLED 		= "%s est installé mais actuellement désactivé. Ce mod 
 L.LOAD_MOD_DISABLED_PLURAL 	= "%s sont installés mais actuellement désactivés. Ces mods ne seront pas chargés à moins que vous ne les activiez."
 
 L.COPY_URL_DIALOG 			= "Copier l'URL"
-L.COPY_WA_DIALOG 			= "Copier la clé WA"
+L.COPY_WA_DIALOG 			= "Copier la clé de sort"
 
 --Post Patch 7.1
 L.TEXT_ONLY_RANGE 			= "La fenêtre de portée est limitée au texte uniquement en raison des restrictions de l'API dans cette zone."
@@ -193,7 +193,7 @@ L.VOICE_MISSING				= "Vous aviez un paquet de voix sélectionné qui ne pouvait 
 L.VOICE_DISABLED			= "Vous avez actuellement au moins un paquet de voix " .. L.DBM .. " installé, mais aucun n'est activé. Si vous prévoyez d'utiliser un paquet de voix, assurez-vous qu'il est sélectionné dans 'Alertes vocales'. Sinon, désinstallez les paquets de voix inutilisés pour cacher ce message."
 L.VOICE_COUNT_MISSING		= "Le compte à rebours de la voix %d est défini sur un paquet de voix qui n’a pas pu être trouvé ou qui n’est actuellement pas pris en charge. Il a été réinitialisé au paramètre par défaut : %s."
 L.BIG_WIGS					= "BigWigs" -- OPTIONAL
-L.WEAKAURA_KEY				= " (|cff308530Clé WA:|r %s)"
+L.WEAKAURA_KEY				= " (|cff308530Clé de sort :|r %s)"
 
 L.UPDATEREMINDER_HEADER 			= "Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée.\nLa version %s (%s) est disponible sur Curse, Wago, WoWInterface ou Github."
 L.UPDATEREMINDER_HEADER_SUBMODULE 	= "Votre module %s est périmé.\nLa version %s est disponible sur Curse, Wago, WoWInterface ou Github."
