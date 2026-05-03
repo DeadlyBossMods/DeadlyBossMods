@@ -17,14 +17,15 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: ./workspace
       - name: Install and run Luacheck
-        uses: nebularg/actions-luacheck@v1
+        uses: BigWigsMods/luacheck@main
         with:
           args: "--no-color -q"
-          path:  ${{ github.workspace }}/workspace
+          config: https://raw.githubusercontent.com/DeadlyBossMods/DBM-Retail/refs/heads/master/.luacheckrc
+          path: ./workspace
 
       - name: LuaLS check
         uses: DeadlyBossMods/LuaLS-config@main
@@ -48,7 +49,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Create Package
