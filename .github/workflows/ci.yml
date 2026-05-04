@@ -21,10 +21,11 @@ jobs:
         with:
           path: ./workspace
       - name: Install and run Luacheck
-        uses: nebularg/actions-luacheck@v1
+        uses: BigWigsMods/luacheck@main
         with:
           args: "--no-color -q"
-          path:  ${{ github.workspace }}/workspace
+          config: https://raw.githubusercontent.com/DeadlyBossMods/DBM-Retail/refs/heads/master/.luacheckrc
+          path: ./workspace
 
       - name: LuaLS check
         uses: DeadlyBossMods/LuaLS-config@main
