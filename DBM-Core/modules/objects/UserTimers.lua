@@ -9,6 +9,14 @@ local L = DBM_CORE_L
 local stringUtils = private:GetPrototype("StringUtils")
 local difficulties = private:GetPrototype("Difficulties")
 
+local function getPTCountThreshold(self)
+	return floor(self.Options.PTCountThreshold2)
+end
+
+local function refreshPTThreshold(self, timerObj)
+	timerObj.countdownMax = getPTCountThreshold(self)
+end
+
 ------------------------
 --  Break/Pull Timer  --
 ------------------------
@@ -54,8 +62,7 @@ do
 		end
 		if timer <= 0 or self:AntiSpam(1, "PT" .. (sender or "SYSTEM")) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time (DELETE AntiSpam Later)
 			if not dummyMod then
-				local threshold = self.Options.PTCountThreshold2
-				threshold = floor(threshold)
+				local threshold = getPTCountThreshold(self)
 				---@class DBMDummyMod: DBMMod
 				dummyMod = self:NewMod("PullTimerCountdownDummy")
 				dummyMod.isDummyMod = true
@@ -64,6 +71,7 @@ do
 				dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
 				dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, self.Options.DontPlayPTCountdown and 0 or 4, threshold, nil, nil, nil, nil, nil, nil, "pull")
 			end
+			refreshPTThreshold(self, dummyMod.timer)
 			--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
 			if not self.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
 				dummyMod.timer:Stop()
@@ -172,8 +180,7 @@ do
 			return
 		end
 		if not dummyMod2 then
-			local threshold = self.Options.PTCountThreshold2
-			threshold = floor(threshold)
+			local threshold = getPTCountThreshold(self)
 			---@class DBMDummyMod2: DBMMod
 			dummyMod2 = self:NewMod("BreakTimerCountdownDummy")
 			dummyMod2.isDummyMod = true
@@ -182,6 +189,7 @@ do
 			--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
 			dummyMod2.timer = dummyMod2:NewTimer(20, L.TIMER_BREAK, private.isRetail and "237538" or "136106", nil, nil, 0, nil, nil, self.Options.DontPlayPTCountdown and 0 or 1, threshold, nil, nil, nil, nil, nil, nil, "break")
 		end
+		refreshPTThreshold(self, dummyMod2.timer)
 		--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
 		if not self.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_BREAK)
 			dummyMod2.timer:Stop()
