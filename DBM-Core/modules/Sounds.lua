@@ -35,12 +35,12 @@ do
 		{	text	= "浩 (zhTW)",value = "浩", path = "Interface\\AddOns\\DBM-Core\\Sounds\\浩\\", max = 10},
 		{	text	= "玲 (zhTW)",value = "玲", path = "Interface\\AddOns\\DBM-Core\\Sounds\\玲\\", max = 10},
 	}
-	--Countdown audio that's been specifically edited to be a single 5 second count file
+	--Countdown audio that's been specifically edited to be a single 5/3 second count file
 	local midnightCounts = {
-		{	text	= "Corsica",value 	= "Corsica", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\", max = 5},
-		{	text	= "Koltrane",value 	= "Kolt", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\", max = 5},
-		{	text	= "Smooth",value 	= "Smooth", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\", max = 5},
-		{	text	= "Smooth (Reverb)",value 	= "SmoothR", path = "Interface\\AddOns\\DBM-Core\\Sounds\\SmoothReverb\\", max = 5},
+		{	text	= "Corsica",value 	= "Corsica", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\", max = 10},
+		{	text	= "Koltrane",value 	= "Kolt", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\", max = 10},
+		{	text	= "Smooth",value 	= "Smooth", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\", max = 10},
+		{	text	= "Smooth (Reverb)",value 	= "SmoothR", path = "Interface\\AddOns\\DBM-Core\\Sounds\\SmoothReverb\\", max = 10},
 	}
 	local hasCached = false
 	local cachedTable
