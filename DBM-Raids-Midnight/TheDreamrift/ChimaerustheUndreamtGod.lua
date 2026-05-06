@@ -241,8 +241,8 @@ do
 				next12IsDevastation = true
 			end
 		elseif timer == 2 then
-			--Don't start a timer, when it sends a 2 it's just resending the previous 12
-			--timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			timerCorruptedDevastationCD:Stop()
+			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			next12IsDevastation = false
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
 			--30 is max time, but when all adds die, 30 is canceled and replaced with 1 second timer
@@ -317,8 +317,8 @@ do
 				next12IsDevastation = true
 			end
 		elseif timer == 2 then
-			--Don't start a timer, when it sends a 2 it's just resending the previous 12
-			--timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			timerCorruptedDevastationCD:Stop()
+			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			next12IsDevastation = false
 		elseif timer == 30 or timer == 1 then--Ravenous Dive (30s max, 1s early-kill replacement when adds die early)
 			startDiveTimer(self, timer, timerExact, eventID)
@@ -397,8 +397,8 @@ do
 				next12IsDevastation = true
 			end
 		elseif timer == 2 then
-			--Don't start a timer, when it sends a 2 it's just resending the previous 12
-			--timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			timerCorruptedDevastationCD:Stop()
+			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			next12IsDevastation = false
 		elseif timer == 20 or timer == 1 then--Ravenous Dive (20s base on Mythic, 1s when adds die early)
 			startDiveTimer(self, timer, timerExact, eventID)
