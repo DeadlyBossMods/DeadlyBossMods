@@ -33,7 +33,7 @@ L.LOAD_MOD_DISABLED						= "%s is installed but currently disabled. This mod wil
 L.LOAD_MOD_DISABLED_PLURAL				= "%s are installed but currently disabled. These mods will not be loaded unless you enable them."
 
 L.COPY_URL_DIALOG						= "Copy URL"
-L.COPY_WA_DIALOG						= "Copy WA Key"
+L.COPY_WA_DIALOG						= "Copy Spell Key"
 
 --Post Patch 7.1
 L.TEXT_ONLY_RANGE						= "Range frame is limited to text only due to Blizzard disabling some functionality in this area."
@@ -198,7 +198,7 @@ L.VOICE_MISSING							= "You have a " .. L.DBM .. " voice pack selected that cou
 L.VOICE_DISABLED						= "You currently have at least one " .. L.DBM .. " voice pack installed but none enabled. If you intend to use a voice pack, make sure it's chosen in 'Spoken Alerts', else uninstall unused voice packs to hide this message"
 L.VOICE_COUNT_MISSING					= "Countdown voice %d is set to a voice/count pack that could not be found or is not currently supported. It has been reset to default setting: %s."
 L.BIG_WIGS								= "BigWigs" -- OPTIONAL
-L.WEAKAURA_KEY							= " (|cff308530WA Key:|r %s)"
+L.WEAKAURA_KEY							= " (|cff308530Spell Key:|r %s)"
 
 L.UPDATEREMINDER_HEADER					= "Your version of " .. L.DEADLY_BOSS_MODS.. " is out-of-date.\n Version %s (%s) is available for download through Curse, Wago, WoWI, or from GitHub Releases page"
 L.UPDATEREMINDER_HEADER_SUBMODULE		= "Your %s module is out-of-date.\n Version %s is available for download through Curse, Wago, WoWI, or from GitHub Releases page"

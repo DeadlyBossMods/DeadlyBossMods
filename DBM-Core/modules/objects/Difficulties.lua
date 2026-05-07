@@ -347,7 +347,7 @@ end
 ---Pretty much ANYTHING that has mythic mode, with mythic+ included
 function bossModPrototype:IsMythic()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "mythic" or (diff == "challenge5" and not self:IsMop()) or diff == "mythicisland" or diff == "mythic5"
+	return diff == "mythic" or (diff == "challenge5" and not self:IsMop()) or diff == "mythicisland" or diff == "mythic5" or self:IsMop() and (diff == "heroic10" or diff == "heroic25")
 end
 
 function bossModPrototype:IsMythicPlus()
@@ -517,7 +517,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "normal", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 15 then--Flexible Heroic Raid
 		return "heroic", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 16 then--Mythic 20 man Raid
+	elseif difficulty == 16 or difficulty == 233 then--Mythic 20 man Raid/15-25 man Mythic Flex
 		return "mythic", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 17 or difficulty == 151 then--Flexible LFR (ie post WoD zones)/8.3+ LFR
 		return "lfr", difficultyName .. " - ", difficulty, instanceGroupSize, 0

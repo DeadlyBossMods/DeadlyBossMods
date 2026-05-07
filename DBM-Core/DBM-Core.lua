@@ -1765,6 +1765,7 @@ do
 				EncounterTimeline.TrackView:SetAlpha(0)
 				EncounterTimeline.TimerView:SetAlpha(0)
 			else
+				--User has timeline enabled
 				C_CVar.SetCVar("encounterTimelineEnabled", "1")--Force enable timeline, otherwise custom sounds don't play
 			end
 			if not self.Options.HasShownMidnightPopup then
@@ -5519,8 +5520,8 @@ do
 	---@param wipe boolean?
 	---@param srmIncluded boolean? unregister all events including SPELL_AURA_REMOVED events
 	---@param event string?
-	---@param bossHealth any Not sure if it's sent as secret or not yet, so allowing any for now
-	function DBM:EndCombat(mod, wipe, srmIncluded, event, bossHealth)
+	---@param wipeHealthPct any Not sure if it's sent as secret or not yet, so allowing any for now
+	function DBM:EndCombat(mod, wipe, srmIncluded, event, wipeHealthPct)
 		---@class DBMMod
 		mod = mod
 		if removeEntry(inCombat, mod) then
@@ -5596,7 +5597,7 @@ do
 						wipeHP = wipeHP .. " (" .. BOSSES_KILLED:format(bossesKilled, mod.numBoss) .. ")"
 					end
 				else
-					wipeHP = bossHealth
+					wipeHP = wipeHealthPct
 				end
 				local totalPulls = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Pulls"]
 				local totalKills = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"]
