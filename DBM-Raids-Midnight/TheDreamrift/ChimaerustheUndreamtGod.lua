@@ -241,6 +241,7 @@ do
 				next12IsDevastation = true
 			end
 		elseif timer == 2 then
+			timerCorruptedDevastationCD:Stop()
 			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			next12IsDevastation = false
 		elseif timer == 30 or timer == 1 then--Ravenous Dive
@@ -316,6 +317,7 @@ do
 				next12IsDevastation = true
 			end
 		elseif timer == 2 then
+			timerCorruptedDevastationCD:Stop()
 			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			next12IsDevastation = false
 		elseif timer == 30 or timer == 1 then--Ravenous Dive (30s max, 1s early-kill replacement when adds die early)
@@ -395,6 +397,7 @@ do
 				next12IsDevastation = true
 			end
 		elseif timer == 2 then
+			timerCorruptedDevastationCD:Stop()
 			timerCorruptedDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			next12IsDevastation = false
 		elseif timer == 20 or timer == 1 then--Ravenous Dive (20s base on Mythic, 1s when adds die early)
