@@ -59,27 +59,15 @@ local function CreateOurFrame()
 end
 
 local function LinkHook(self, link)
-	if type(link) ~= "string" then
+	local linkType, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(":", link)
+	if linkType ~= "addon" or arg1 ~= "DBM" then
 		return
 	end
-	if DBM:issecretvalue(link) then
-		return
-	end
-	-- SetItemRef callbacks can provide either the full link (garrmission:DBM:...) or payload-only (DBM:...).
-	if link:sub(1, 4) == "DBM:" then
-		link = "garrmission:" .. link
-	end
-	if link:sub(1, 7) == "cancel:" or link:sub(1, 7) == "ignore:" or link:sub(1, 7) == "update:" or link:sub(1, 5) == "news:" or link:sub(1, 10) == "noteshare:" then
-		link = "garrmission:DBM:" .. link
-	end
-	local _, linkType, arg1, arg2, arg3, arg4, arg5, arg6 = strsplit(":", link)
-	if linkType ~= "DBM" then
-		return
-	end
+	arg1, arg2, arg3, arg4, arg5, arg6 = arg2, arg3, arg4, arg5, arg6, arg7
 	if arg1 == "cancel" then
-		DBT:CancelBar(link:match("garrmission:DBM:cancel:(.+):nil$"))
+		DBT:CancelBar(link:match("addon:DBM:cancel:(.+):nil$"))
 	elseif arg1 == "ignore" then
-		cancel = link:match("garrmission:DBM:ignore:(.+):[^%s:]+$")
+		cancel = link:match("addon:DBM:ignore:(.+):[^%s:]+$")
 		ignore = link:match(":([^:]+)$")
 		if not frame then
 			CreateOurFrame()
@@ -100,34 +88,9 @@ local function LinkHook(self, link)
 	end
 end
 
--- Prefer SetItemRef callback when available so we don't taint chat frame execution paths.
-local function TryHandleSetItemRef(...)
-	for i = 1, select("#", ...) do
-		local arg = select(i, ...)
-		if type(arg) == "string" and not DBM:issecretvalue(arg) then
-			if arg:find("garrmission:DBM:", 1, true) or arg:find("DBM:", 1, true) or arg:find("cancel:", 1, true) or arg:find("ignore:", 1, true) or arg:find("noteshare:", 1, true) or arg:find("update:", 1, true) or arg:find("news:", 1, true) then
-				LinkHook(nil, arg)
-				return
-			end
-		end
+-- Use native addon hyperlink routing so we don't sit in generic SetItemRef execution paths.
+EventRegistry:RegisterCallback("SetItemRef", function(_, link)
+	if type(link) == "string" and not DBM:issecretvalue(link) and link:find("addon:DBM:", 1, true) then
+		LinkHook(nil, link)
 	end
-end
-
-local hasSafeSetItemRefHook = false
---Callback doesn't actuallyw ork
---if EventRegistry and EventRegistry.RegisterCallback then
---	EventRegistry:RegisterCallback("SetItemRef", function(...)
---		TryHandleSetItemRef(...)
---	end)
---	hasSafeSetItemRefHook = true
---end
---This is probably still tainty but hopefully less so than old way
-if hooksecurefunc and type(SetItemRef) == "function" then
-	hooksecurefunc("SetItemRef", function(...)
-		TryHandleSetItemRef(...)
-	end)
-	hasSafeSetItemRefHook = true
-end
-if not hasSafeSetItemRefHook then
-	DBM:Debug("Hyperlinks: no safe SetItemRef hook path available; DBM links disabled to avoid taint-prone chat frame hooks")
-end
+end)

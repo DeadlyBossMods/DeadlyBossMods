@@ -653,9 +653,9 @@ function PanelPrototype:CreateArea(name)
 end
 
 local function handleWAKeyHyperlink(_, link)
-	local _, linkType, arg1, arg2 = strsplit(":", link)
-	if linkType == "DBM" and arg1 == "wacopy" then
-		DBM:ShowUpdateReminder(nil, nil, DBM_CORE_L.COPY_WA_DIALOG, arg2)
+	local linkType, arg1, arg2, arg3 = strsplit(":", link)
+	if linkType == "addon" and arg1 == "DBM" and arg2 == "wacopy" then
+		DBM:ShowUpdateReminder(nil, nil, DBM_CORE_L.COPY_WA_DIALOG, arg3)
 	end
 end
 
