@@ -59,6 +59,19 @@ local function CreateOurFrame()
 end
 
 local function LinkHook(self, link)
+	if type(link) ~= "string" then
+		return
+	end
+	if DBM:issecretvalue(link) then
+		return
+	end
+	-- SetItemRef callbacks can provide either the full link (garrmission:DBM:...) or payload-only (DBM:...).
+	if link:sub(1, 4) == "DBM:" then
+		link = "garrmission:" .. link
+	end
+	if link:sub(1, 7) == "cancel:" or link:sub(1, 7) == "ignore:" or link:sub(1, 7) == "update:" or link:sub(1, 5) == "news:" or link:sub(1, 10) == "noteshare:" then
+		link = "garrmission:DBM:" .. link
+	end
 	local _, linkType, arg1, arg2, arg3, arg4, arg5, arg6 = strsplit(":", link)
 	if linkType ~= "DBM" then
 		return
@@ -87,11 +100,32 @@ local function LinkHook(self, link)
 	end
 end
 
-DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", LinkHook) -- Handles the weird case that the default chat frame is not one of the normal chat frames (3rd party chat frames or whatever causes this)
-local i = 1
-while _G["ChatFrame" .. i] do
-	if _G["ChatFrame" .. i] ~= DEFAULT_CHAT_FRAME then
-		_G["ChatFrame" .. i]:HookScript("OnHyperlinkClick", LinkHook)
+-- Prefer SetItemRef callback when available so we don't taint chat frame execution paths.
+local function TryHandleSetItemRef(...)
+	for i = 1, select("#", ...) do
+		local arg = select(i, ...)
+		if type(arg) == "string" and not DBM:issecretvalue(arg) then
+			if arg:find("garrmission:DBM:", 1, true) or arg:find("DBM:", 1, true) or arg:find("cancel:", 1, true) or arg:find("ignore:", 1, true) or arg:find("noteshare:", 1, true) or arg:find("update:", 1, true) or arg:find("news:", 1, true) then
+				LinkHook(nil, arg)
+				return
+			end
+		end
 	end
-	i = i + 1
+end
+
+local hasSafeSetItemRefHook = false
+if EventRegistry and EventRegistry.RegisterCallback then
+	EventRegistry:RegisterCallback("SetItemRef", function(...)
+		TryHandleSetItemRef(...)
+	end)
+	hasSafeSetItemRefHook = true
+end
+if hooksecurefunc and type(SetItemRef) == "function" then
+	hooksecurefunc("SetItemRef", function(...)
+		TryHandleSetItemRef(...)
+	end)
+	hasSafeSetItemRefHook = true
+end
+if not hasSafeSetItemRefHook then
+	DBM:Debug("Hyperlinks: no safe SetItemRef hook path available; DBM links disabled to avoid taint-prone chat frame hooks")
 end
