@@ -114,12 +114,14 @@ local function TryHandleSetItemRef(...)
 end
 
 local hasSafeSetItemRefHook = false
-if EventRegistry and EventRegistry.RegisterCallback then
-	EventRegistry:RegisterCallback("SetItemRef", function(...)
-		TryHandleSetItemRef(...)
-	end)
-	hasSafeSetItemRefHook = true
-end
+--Callback doesn't actuallyw ork
+--if EventRegistry and EventRegistry.RegisterCallback then
+--	EventRegistry:RegisterCallback("SetItemRef", function(...)
+--		TryHandleSetItemRef(...)
+--	end)
+--	hasSafeSetItemRefHook = true
+--end
+--This is probably still tainty but hopefully less so than old way
 if hooksecurefunc and type(SetItemRef) == "function" then
 	hooksecurefunc("SetItemRef", function(...)
 		TryHandleSetItemRef(...)
