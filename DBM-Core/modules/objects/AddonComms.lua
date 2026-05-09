@@ -300,7 +300,7 @@ do
 		end
 	end
 
-	syncHandlers["GGQ"] = function(sender)
+	guildSyncHandlers["GGQ"] = function(sender)
 		if sender == playerName then
 			return
 		end
@@ -309,12 +309,13 @@ do
 		end
 	end
 
-	syncHandlers["GGR"] = function(sender, _, playerNameField, itemLevel, missingGems, missingEnchants)
+	guildSyncHandlers["GGR"] = function(sender, _, playerNameField, itemLevel, missingGems, missingEnchants)
 		if sender == playerName then
 			return
 		end
+		local gearCheckPlayer = playerNameField or sender
 		if DBM.GearCheck and DBM.GearCheck.OnSync then
-			DBM.GearCheck:OnSync("GGR", sender, itemLevel, missingGems, missingEnchants)
+			DBM.GearCheck:OnSync("GGR", gearCheckPlayer, itemLevel, missingGems, missingEnchants)
 		end
 	end
 

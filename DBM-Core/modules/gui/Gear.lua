@@ -41,7 +41,6 @@ local spareTextFrames, usedTextFrames = {}, {}
 local pendingInspects = {}
 local pendingCommReplies = {}
 local guildGearData = {}
-local pendingGuildReplies = {}
 local inspectRetryCounts = {}
 local inspectRetryDeadlines = {}
 local knownRosterMembers = {}
@@ -70,7 +69,7 @@ local validAnchorPoints = {
 
 local tabs, tabsBtn, selectedTab = {}, {}, 1
 
-local WipeTextFrames, Refresh, SendGuildGearSyncRequest, ShouldUseCommScan
+local WipeTextFrames, Refresh, SendGuildGearSyncRequest, ShouldUseCommScan, RequestNextInspect, HandleRosterUpdate
 
 function frame:CreateTab(title, OnShowFn)
 	local i = #tabs + 1
@@ -120,14 +119,13 @@ refresh:SetScript("OnClick", function()
 		Refresh()
 	elseif selectedTab == 2 then
 		wipe(guildGearData)
-		wipe(pendingGuildReplies)
 		if ShouldUseCommScan() and IsInGuild() then
 			SendGuildGearSyncRequest()
 		end
 	end
 end)
 
-local function WipeTextFrames()
+function WipeTextFrames()
 	for _frame in next, usedTextFrames do
 		if not _frame.Keep and not _frame.IsSpare then
 			_frame.IsSpare = true
@@ -410,11 +408,7 @@ local function QueueInspectRetry(name)
 	return false
 end
 
-local RequestNextInspect
-local Refresh
-local HandleRosterUpdate
-
-local function ShouldUseCommScan()
+function ShouldUseCommScan()
 	if not (C_ChatInfo and C_ChatInfo.InChatMessagingLockdown) then
 		return false
 	end
@@ -459,13 +453,13 @@ local function SendGearSyncRequest()
 	end)
 end
 
-local function SendGuildGearSyncRequest()
-	if not frame:IsShown() or not private.sendSync or not ShouldUseCommScan() or not IsInGuild() then
+function SendGuildGearSyncRequest()
+	if not frame:IsShown() or not private.sendGuildSync or not ShouldUseCommScan() or not IsInGuild() then
 		return
 	end
 	guildSyncToken = guildSyncToken + 1
 	local requestToken = guildSyncToken
-	private.sendSync(private.DBMSyncProtocol or 1, "GGQ", nil, "NORMAL")
+	private.sendGuildSync(private.DBMSyncProtocol or 1, "GGQ", nil)
 	C_Timer.After(commReplyTimeoutSeconds + 2, function()
 		if not frame:IsShown() or requestToken ~= guildSyncToken or selectedTab ~= 2 then
 			return
@@ -748,10 +742,6 @@ function Refresh()
 	RequestNextInspect()
 end
 
-refresh:SetScript("OnClick", function()
-	Refresh()
-end)
-
 local function OnEvent(_, event, arg1)
 	if event == "GROUP_ROSTER_UPDATE" then
 		if frame:IsShown() then
@@ -879,7 +869,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 			end
 		end
 	elseif event == "GGQ" then
-		if not private.sendSync or sender == DBM:GetUnitFullName("player") or not IsInGuild() then
+		if not private.sendGuildSync or sender == DBM:GetUnitFullName("player") or not IsInGuild() then
 			return
 		end
 		if C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown() then
@@ -887,7 +877,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		end
 		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
 		if type(selfItemLevel) == "number" then
-			private.sendSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%s\t%d\t%d"):format(tostring(DBM:GetUnitFullName("player")), tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0), "NORMAL")
+			private.sendGuildSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%s\t%d\t%d"):format(tostring(DBM:GetUnitFullName("player")), tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0))
 		end
 	elseif event == "GGR" then
 		if sender == DBM:GetUnitFullName("player") then
@@ -901,7 +891,6 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		missingEnchants = tonumber(missingEnchants)
 		if type(itemLevel) == "number" then
 			guildGearData[sender] = {itemLevel = itemLevel, missingGems = missingGems or 0, missingEnchants = missingEnchants or 0}
-			pendingGuildReplies[sender] = nil
 			if frame:IsShown() and selectedTab == 2 then
 				Update()
 			end
