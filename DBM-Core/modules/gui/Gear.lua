@@ -479,7 +479,6 @@ local enchantableSlots = {
 --	[17] = true,--OffHand
 }
 
---TODO, replace with a sync based approach that can remove some limitations like decimal ilvl on players other than self
 --TODO, collect list of enchant Ids and show a () next to count showing number of cheap enchants in use
 function ScanGear(unit)
 	if not unit then
