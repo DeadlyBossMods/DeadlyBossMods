@@ -182,7 +182,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	else--Finished or canceled (sometimes blizzard sends state changed instead of event removed when canceling events)
 		--Ignore Finished or canceled event for a bugged ID, since it's onen of blizzards early cancel bugs
 		if ignoredEventID then
-			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring cancel for eventID: "..tostring(eventID).." (timerID belongs to a known bugged Blizzard timer)", 2, nil, nil, DBM.Options.DebugLevel >= 3)
+			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring cancel for eventID: "..tostring(eventID).." (timerID belongs to a known bugged Blizzard timer)", 4, nil, nil, DBM.Options.DebugLevel >= 3)
 			--Don't clear buggedBlizzardTimers here; the module's handler still needs to check IsBuggedEventID and will call UnsetBuggedEventID itself
 		else
 			if bar then
@@ -191,7 +191,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 					DBM:FireEvent("DBM_TimerStop", hardcodedTimerId)
 				end
 			elseif staleHardcodedEvent then
-				self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 3, nil, nil, DBM.Options.DebugLevel >= 3)
+				self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 4, nil, nil, DBM.Options.DebugLevel >= 3)
 			end
 			if hardcodedTimerId then
 				if private.hardCodedTimerEvents[hardcodedTimerId] == eventID then

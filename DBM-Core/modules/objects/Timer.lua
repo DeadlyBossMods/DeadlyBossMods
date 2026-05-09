@@ -319,7 +319,7 @@ function timerPrototype:TLStart(timer, eventID, ...)
 		end
 		argsText = " args |cff69ccf0" .. table.concat(argValues, ", ") .. "|r"
 	end
-	DBM:Debug("|cff00ff00Starting hardcoded timer for eventID " .. eventID .. ":|r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. (self.originalName or self.name) .. "|r" .. argsText .. " timer |cff69ccf0" .. timer .. "|r", 3, nil, nil, true)
+	DBM:Debug("|cff00ff00Starting hardcoded timer for eventID " .. eventID .. ":|r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. (self.originalName or self.name) .. "|r" .. argsText .. " timer |cff69ccf0" .. timer .. "|r", 4, nil, nil, true)
 	return self:Start(timer, ...)
 end
 
