@@ -66,10 +66,10 @@ mod:AddPrivateAuraSoundOption(1282470, true, 1279420, 1, 2, "watchfeet", 8)--Dar
 mod:AddPrivateAuraSoundOption(1253031, true, 1253031, 1, 1, "dawncrystal", 19)--Glimmering (Holding Dawn Crystal)
 mod:AddPrivateAuraSoundOption(1253770, false, 1250898, 1, 3, "safenow", 2)--Dawnlight barrier (needed to survive Archangel))
 mod:AddPrivateAuraSoundOption(1262055, false, 1261871, 1, 3, "absorbyou", 19)--Eclipsed (Total Eclipse debuff)
-mod:AddPrivateAuraSoundOption(1275429, true, 1276202, 1, 1, "moveright", 2)--Severance (right)
-mod:AddPrivateAuraSoundOption(1266946, true, 1276202, 1, 1, "moveleft", 2)--Severance (left?)
+--mod:AddPrivateAuraSoundOption(1275429, true, 1276202, 1, 1, "moveright", 2)--Severance (right) (no longer private aura)
+--mod:AddPrivateAuraSoundOption(1266946, true, 1276202, 1, 1, "moveleft", 2)--Severance (left?) (no longer private aura)
 --mod:AddPrivateAuraSoundOption({1266113,1266627{, true, 1266113, 1, 1, "torchyou", 2)--Torchbearer (Reundant with glimmering? or maybe buff players who get near person holding it get?)
-mod:AddPrivateAuraSoundOption(1276527, true, 1276527, 1, 1, "debuffyou", 17)--Heaven and Hell (secret Mythic phase 4 mechanic) (customize sound later)
+--mod:AddPrivateAuraSoundOption(1276527, true, 1276527, 1, 1, "debuffyou", 17)--Heaven and Hell (secret Mythic phase 4 mechanic) (no longer private aura)
 
 mod.vb.deathCount = 0--Used for both Dirge and requiem
 mod.vb.glaivesCount = 0
