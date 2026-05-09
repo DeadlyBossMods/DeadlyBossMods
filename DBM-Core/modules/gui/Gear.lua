@@ -801,12 +801,12 @@ function GearCheck:Show()
 	frame:SetScript("OnEvent", OnEvent)
 	frame:SetScript("OnUpdate", OnUpdate)
 	if #tabs == 0 then
-		frame:CreateTab("Raid", function()
+		frame:CreateTab(GROUP, function()
 			if frame:IsShown() then
 				Refresh()
 			end
 		end)
-		frame:CreateTab("Guild", function()
+		frame:CreateTab(GUILD, function()
 			if ShouldUseCommScan() and IsInGuild() then
 				SendGuildGearSyncRequest()
 			end
