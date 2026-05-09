@@ -250,6 +250,10 @@ do
 	-- WBE = World Boss engage info
 	-- WBD = World Boss defeat info
 	-- WBA = World Buff Activation
+	-- GIQ = Gear Inspect Query (instance channel)
+	-- GIR = Gear Inspect Reply (instance channel)
+	-- GGQ = Guild Gear Query (guild channel)
+	-- GGR = Guild Gear Reply (guild channel)
 	-- RLO = Raid Leader Override
 	-- NS = Note Share
 
@@ -309,13 +313,12 @@ do
 		end
 	end
 
-	guildSyncHandlers["GGR"] = function(sender, _, playerNameField, itemLevel, missingGems, missingEnchants)
+	guildSyncHandlers["GGR"] = function(sender, _, itemLevel, missingGems, missingEnchants)
 		if sender == playerName then
 			return
 		end
-		local gearCheckPlayer = playerNameField or sender
 		if DBM.GearCheck and DBM.GearCheck.OnSync then
-			DBM.GearCheck:OnSync("GGR", gearCheckPlayer, itemLevel, missingGems, missingEnchants)
+			DBM.GearCheck:OnSync("GGR", sender, itemLevel, missingGems, missingEnchants)
 		end
 	end
 

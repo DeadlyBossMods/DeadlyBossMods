@@ -311,7 +311,7 @@ local function UpdateGuildTab()
 
 	local guildPlayers = {}
 	for name in pairs(guildGearData) do
-		tinsert(guildPlayers, {name = name, itemLevel = guildGearData[name].itemLevel, gearmissinggems = guildGearData[name].missingGems, gearmissingenchants = guildGearData[name].missingEnchants})
+		tinsert(guildPlayers, {name = name, gearilvl = guildGearData[name].itemLevel, gearmissinggems = guildGearData[name].missingGems, gearmissingenchants = guildGearData[name].missingEnchants})
 	end
 	tsort(guildPlayers, SortGear)
 
@@ -343,7 +343,7 @@ local function UpdateGuildTab()
 		textPlayer:SetPoint("TOP", titlePlayer, "BOTTOM", 0, offset)
 		textPlayer:SetWidth(playerWidth)
 
-		textItemLevel:SetText(("%.1f"):format(tonumber(v.itemLevel) or 0))
+		textItemLevel:SetText(GetGearText(v))
 		textItemLevel:SetPoint("TOP", titleItemLevel, "BOTTOM", 0, offset)
 		textItemLevel:SetWidth(itemLevelWidth)
 
@@ -456,6 +456,12 @@ end
 function SendGuildGearSyncRequest()
 	if not frame:IsShown() or not private.sendGuildSync or not ShouldUseCommScan() or not IsInGuild() then
 		return
+	end
+	-- Seed our own data since self-sent GGR messages are filtered out in AddonComms
+	local selfFullName = DBM:GetUnitFullName("player")
+	local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
+	if type(selfItemLevel) == "number" then
+		guildGearData[selfFullName] = {itemLevel = selfItemLevel, missingGems = selfMissingGems or 0, missingEnchants = selfMissingEnchants or 0}
 	end
 	guildSyncToken = guildSyncToken + 1
 	local requestToken = guildSyncToken
@@ -872,12 +878,15 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		if not private.sendGuildSync or sender == DBM:GetUnitFullName("player") or not IsInGuild() then
 			return
 		end
+		if not DBM:AntiSpam(30, "GGQ") then
+			return
+		end
 		if C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown() then
 			return
 		end
 		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
 		if type(selfItemLevel) == "number" then
-			private.sendGuildSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%s\t%d\t%d"):format(tostring(DBM:GetUnitFullName("player")), tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0))
+			private.sendGuildSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0))
 		end
 	elseif event == "GGR" then
 		if sender == DBM:GetUnitFullName("player") then
