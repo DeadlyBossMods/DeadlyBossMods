@@ -919,6 +919,16 @@ do
 	bossModPrototype.issecrethealth = DBM.issecrethealth
 end
 
+---@param self DBMModOrDBM
+function DBM:CheckDBM(name)
+	if raid[name] and raid[name].version then
+		return raid[name].version
+	else
+		return false
+	end
+end
+bossModPrototype.CheckDBM = DBM.CheckDBM
+
 function bossModPrototype:CheckBigWigs(name)
 	if raid[name] and raid[name].bwversion then
 		return raid[name].bwversion

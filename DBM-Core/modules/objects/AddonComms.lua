@@ -228,7 +228,7 @@ private.sendWhisper = sendWhisper
 do
 	local DBMZoneCombatScanner = private:GetModule("TrashCombatScanningModule")
 
-	local syncHandlers, whisperSyncHandlers, guildSyncHandlers = {}, {}, {}
+	local syncHandlers, whisperSyncHandlers, guildSyncHandlers, guildWhisperSyncHandlers = {}, {}, {}, {}
 
 	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anyway, so this is the perfect opportunity to throw away the old and long names
 	-- M = Mod
@@ -250,6 +250,10 @@ do
 	-- WBE = World Boss engage info
 	-- WBD = World Boss defeat info
 	-- WBA = World Buff Activation
+	-- GIQ = Gear Inspect Query (instance channel)
+	-- GIR = Gear Inspect Reply (instance channel)
+	-- GGQ = Guild Gear Query (guild channel)
+	-- GGR = Guild Gear Reply (whisper back to requester)
 	-- RLO = Raid Leader Override
 	-- NS = Note Share
 
@@ -297,6 +301,24 @@ do
 		end
 		if DBM.GearCheck and DBM.GearCheck.OnSync then
 			DBM.GearCheck:OnSync("GIR", sender, itemLevel, missingGems, missingEnchants)
+		end
+	end
+
+	guildSyncHandlers["GGQ"] = function(sender)
+		if sender == playerName then
+			return
+		end
+		if DBM.GearCheck and DBM.GearCheck.OnSync then
+			DBM.GearCheck:OnSync("GGQ", sender)
+		end
+	end
+
+	guildWhisperSyncHandlers["GGR"] = function(sender, _, itemLevel, missingGems, missingEnchants)
+		if sender == playerName then
+			return
+		end
+		if DBM.GearCheck and DBM.GearCheck.OnSync then
+			DBM.GearCheck:OnSync("GGR", sender, itemLevel, missingGems, missingEnchants)
 		end
 	end
 
@@ -896,6 +918,8 @@ do
 		elseif channel == "WHISPER" and sender ~= playerName then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
 			if (checkForSafeSender(sender, true) or DBM:GetRaidUnitId(sender)) then--Sender passes safety check, or is in group
 				handler = whisperSyncHandlers[prefix]
+			elseif guildWhisperSyncHandlers[prefix] and checkForSafeSender(sender, false, true) then--Guild-only whisper handlers accept messages from guild members
+				handler = guildWhisperSyncHandlers[prefix]
 			end
 		elseif channel == "GUILD" then
 			handler = guildSyncHandlers[prefix]
