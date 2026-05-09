@@ -428,7 +428,8 @@ do
 	---@param useSound boolean? Play 'ding' sound when displaying message
 	---@param alwaysFireEvent boolean? Used specifically for transcriptor logging
 	---@param isLogged boolean? Used specifically for events we want logged in the DBM Debug Log frame
-	function DBM:Debug(text, level, useSound, alwaysFireEvent, isLogged)
+	---@param combatFiltered boolean? Used specifically for events we want filtered by combat state
+	function DBM:Debug(text, level, useSound, alwaysFireEvent, isLogged, combatFiltered)
 		if isLogged and DBM.Options and DBM.Options.DebugMode then
 			appendToDebugLog(text)
 		end
@@ -438,6 +439,7 @@ do
 			DBM:FireEvent("DBM_Debug", text, level)
 		end
 		if not DBM.Options or not DBM.Options.DebugMode then return end
+		if combatFiltered and IsEncounterInProgress() then return end
 		if (level or 1) <= DBM.Options.DebugLevel then
 			local frame = _G[tostring(DBM.Options.ChatFrame)]
 			frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
