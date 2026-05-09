@@ -37,33 +37,18 @@ frame.Bg:SetColorTexture(0, 0, 0, 0.8)
 
 CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
 
-local scroll = CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
-scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
-scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
-
-local child = CreateFrame("Frame", nil, scroll)
-scroll:SetScrollChild(child)
-child:SetSize(scroll:GetWidth(), scroll:GetHeight())
-child:SetPoint("LEFT")
-
-local refresh = CreateFrame("Button", nil, frame)
-refresh:SetSize(20, 20)
-refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
-refresh:SetText("REFRESH")
-refresh:Show()
-refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
-refresh:SetPushedTexture("Interface\\Buttons\\UI-RefreshButton-Down")
-refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
-
 local spareTextFrames, usedTextFrames = {}, {}
 local pendingInspects = {}
 local pendingCommReplies = {}
+local guildGearData = {}
+local pendingGuildReplies = {}
 local inspectRetryCounts = {}
 local inspectRetryDeadlines = {}
 local knownRosterMembers = {}
 local activeInspect = {}
 local inspectToken = 0
 local commRequestToken = 0
+local guildSyncToken = 0
 local inspectUpdateElapsed = 0
 local pendingRosterRefresh = false
 local sortGear = {}
@@ -82,6 +67,65 @@ local validAnchorPoints = {
 	BOTTOMLEFT = true,
 	BOTTOMRIGHT = true
 }
+
+local tabs, tabsBtn, selectedTab = {}, {}, 1
+
+local WipeTextFrames, Refresh, SendGuildGearSyncRequest, ShouldUseCommScan
+
+function frame:CreateTab(title, OnShowFn)
+	local i = #tabs + 1
+	tabs[i] = OnShowFn
+	---@class DBMGearTabButton: Button
+	---@field Text FontString
+	local _tab = CreateFrame("Button", nil, frame, "PanelTabButtonTemplate")
+	tabsBtn[i] = _tab
+	PanelTemplates_SetNumTabs(self, i)
+	if i == 1 then
+		_tab:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 11, 2)
+	else
+		_tab:SetPoint("TOPLEFT", tabsBtn[i - 1], "TOPRIGHT", 1, 0)
+	end
+	_tab.Text:SetText(title)
+	_tab:SetScript("OnClick", function()
+		self:ShowTab(i)
+	end)
+end
+
+function frame:ShowTab(tab)
+	PanelTemplates_SetTab(self, tab)
+	WipeTextFrames()
+	selectedTab = tab
+	tabs[tab]()
+end
+
+local scroll = CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
+scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -50)
+scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
+
+local child = CreateFrame("Frame", nil, scroll)
+scroll:SetScrollChild(child)
+child:SetSize(scroll:GetWidth(), scroll:GetHeight())
+child:SetPoint("LEFT")
+
+local refresh = CreateFrame("Button", nil, frame)
+refresh:SetSize(20, 20)
+refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
+refresh:SetText("REFRESH")
+refresh:Show()
+refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
+refresh:SetPushedTexture("Interface\\Buttons\\UI-RefreshButton-Down")
+refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
+refresh:SetScript("OnClick", function()
+	if selectedTab == 1 then
+		Refresh()
+	elseif selectedTab == 2 then
+		wipe(guildGearData)
+		wipe(pendingGuildReplies)
+		if ShouldUseCommScan() and IsInGuild() then
+			SendGuildGearSyncRequest()
+		end
+	end
+end)
 
 local function WipeTextFrames()
 	for _frame in next, usedTextFrames do
@@ -210,7 +254,7 @@ local function SortGear(v1, v2)
 	return v1.name < v2.name
 end
 
-local function Update()
+local function UpdateRaidTab()
 	wipe(sortGear)
 	for _, v in pairs(DBM:GetRaidRoster()) do
 		tinsert(sortGear, v)
@@ -218,6 +262,18 @@ local function Update()
 	tsort(sortGear, SortGear)
 
 	WipeTextFrames()
+
+	titlePlayer:SetText(PLAYER)
+	titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
+
+	titleItemLevel:SetText(_G["ITEM_LEVEL_ABBR"] or "iLvl")
+	titleItemLevel:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
+
+	titleMissingGems:SetText(L.GEAR_MISSING_GEMS)
+	titleMissingGems:SetPoint("LEFT", titleItemLevel, "RIGHT", 0, 0)
+
+	titleMissingEnchants:SetText(L.GEAR_MISSING_ENCHANTS)
+	titleMissingEnchants:SetPoint("LEFT", titleMissingGems, "RIGHT", 0, 0)
 
 	for i, v in ipairs(sortGear) do
 		local fullName = v.name
@@ -250,6 +306,69 @@ local function Update()
 	local scrollHeight = scroll:GetHeight()
 	child:SetHeight(mmax(scrollHeight, 50 + #sortGear * 14))
 	scroll:UpdateScrollChildRect()
+end
+
+local function UpdateGuildTab()
+	WipeTextFrames()
+
+	local guildPlayers = {}
+	for name in pairs(guildGearData) do
+		tinsert(guildPlayers, {name = name, itemLevel = guildGearData[name].itemLevel, gearmissinggems = guildGearData[name].missingGems, gearmissingenchants = guildGearData[name].missingEnchants})
+	end
+	tsort(guildPlayers, SortGear)
+
+	titlePlayer:SetText(PLAYER)
+	titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
+
+	titleItemLevel:SetText(_G["ITEM_LEVEL_ABBR"] or "iLvl")
+	titleItemLevel:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
+
+	titleMissingGems:SetText(L.GEAR_MISSING_GEMS)
+	titleMissingGems:SetPoint("LEFT", titleItemLevel, "RIGHT", 0, 0)
+
+	titleMissingEnchants:SetText(L.GEAR_MISSING_ENCHANTS)
+	titleMissingEnchants:SetPoint("LEFT", titleMissingGems, "RIGHT", 0, 0)
+
+	for i, v in ipairs(guildPlayers) do
+		local fullName = v.name
+		local name = DBM:GetShortServerName(fullName) or fullName
+		local playerClass = DBM:GetRaidClass(fullName)
+		local playerColor = RAID_CLASS_COLORS[playerClass]
+		if playerColor then
+			name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+		end
+
+		local offset = -((i - 1) * 14) - 4
+		local textPlayer, textItemLevel, textMissingGems, textMissingEnchants = GetTextFrame(), GetTextFrame(), GetTextFrame(), GetTextFrame()
+
+		textPlayer:SetText(name)
+		textPlayer:SetPoint("TOP", titlePlayer, "BOTTOM", 0, offset)
+		textPlayer:SetWidth(playerWidth)
+
+		textItemLevel:SetText(("%.1f"):format(tonumber(v.itemLevel) or 0))
+		textItemLevel:SetPoint("TOP", titleItemLevel, "BOTTOM", 0, offset)
+		textItemLevel:SetWidth(itemLevelWidth)
+
+		textMissingGems:SetText(tostring(v.gearmissinggems or 0))
+		textMissingGems:SetPoint("TOP", titleMissingGems, "BOTTOM", 0, offset)
+		textMissingGems:SetWidth(missingGemsWidth)
+
+		textMissingEnchants:SetText(tostring(v.gearmissingenchants or 0))
+		textMissingEnchants:SetPoint("TOP", titleMissingEnchants, "BOTTOM", 0, offset)
+		textMissingEnchants:SetWidth(missingEnchantsWidth)
+	end
+
+	local scrollHeight = scroll:GetHeight()
+	child:SetHeight(mmax(scrollHeight, 50 + #guildPlayers * 14))
+	scroll:UpdateScrollChildRect()
+end
+
+local function Update()
+	if selectedTab == 1 then
+		UpdateRaidTab()
+	elseif selectedTab == 2 then
+		UpdateGuildTab()
+	end
 end
 
 local function ClearInspectQueue()
@@ -302,6 +421,10 @@ local function ShouldUseCommScan()
 	return not C_ChatInfo.InChatMessagingLockdown()
 end
 
+local function ShouldAwaitCommReply(name)
+	return DBM:CheckDBM(name) and true or false
+end
+
 local function RemovePendingInspect(name)
 	for i = #pendingInspects, 1, -1 do
 		if pendingInspects[i] == name then
@@ -333,6 +456,21 @@ local function SendGearSyncRequest()
 			Update()
 			RequestNextInspect()
 		end
+	end)
+end
+
+local function SendGuildGearSyncRequest()
+	if not frame:IsShown() or not private.sendSync or not ShouldUseCommScan() or not IsInGuild() then
+		return
+	end
+	guildSyncToken = guildSyncToken + 1
+	local requestToken = guildSyncToken
+	private.sendSync(private.DBMSyncProtocol or 1, "GGQ", nil, "NORMAL")
+	C_Timer.After(commReplyTimeoutSeconds + 2, function()
+		if not frame:IsShown() or requestToken ~= guildSyncToken or selectedTab ~= 2 then
+			return
+		end
+		Update()
 	end)
 end
 
@@ -513,7 +651,7 @@ local function SeedRaid()
 				MarkInspectUnavailable(name)
 			else
 				SetPlayerGearState(name, nil, nil, nil, true, false)
-				if useComms then
+				if useComms and ShouldAwaitCommReply(name) then
 					pendingCommReplies[name] = true
 				else
 					tinsert(pendingInspects, name)
@@ -572,7 +710,7 @@ function HandleRosterUpdate()
 					MarkInspectUnavailable(name)
 				else
 					SetPlayerGearState(name, nil, nil, nil, true, false)
-					if useComms then
+					if useComms and ShouldAwaitCommReply(name) then
 						pendingCommReplies[name] = true
 						needsCommRequest = true
 					else
@@ -681,8 +819,20 @@ function GearCheck:Show()
 	frame:RegisterEvent("PLAYER_REGEN_ENABLED")
 	frame:SetScript("OnEvent", OnEvent)
 	frame:SetScript("OnUpdate", OnUpdate)
+	if #tabs == 0 then
+		frame:CreateTab("Raid", function()
+			if frame:IsShown() then
+				Refresh()
+			end
+		end)
+		frame:CreateTab("Guild", function()
+			if ShouldUseCommScan() and IsInGuild() then
+				SendGuildGearSyncRequest()
+			end
+		end)
+	end
 	frame:Show()
-	Refresh()
+	frame:ShowTab(1)
 end
 
 function GearCheck:Hide()
@@ -726,6 +876,34 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 			Update()
 			if #pendingInspects > 0 and not activeInspect.name then
 				RequestNextInspect()
+			end
+		end
+	elseif event == "GGQ" then
+		if not private.sendSync or sender == DBM:GetUnitFullName("player") or not IsInGuild() then
+			return
+		end
+		if C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown() then
+			return
+		end
+		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
+		if type(selfItemLevel) == "number" then
+			private.sendSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%s\t%d\t%d"):format(tostring(DBM:GetUnitFullName("player")), tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0), "NORMAL")
+		end
+	elseif event == "GGR" then
+		if sender == DBM:GetUnitFullName("player") then
+			return
+		end
+		if not IsInGuild() then
+			return
+		end
+		itemLevel = tonumber(itemLevel)
+		missingGems = tonumber(missingGems)
+		missingEnchants = tonumber(missingEnchants)
+		if type(itemLevel) == "number" then
+			guildGearData[sender] = {itemLevel = itemLevel, missingGems = missingGems or 0, missingEnchants = missingEnchants or 0}
+			pendingGuildReplies[sender] = nil
+			if frame:IsShown() and selectedTab == 2 then
+				Update()
 			end
 		end
 	end

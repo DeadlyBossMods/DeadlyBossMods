@@ -300,6 +300,24 @@ do
 		end
 	end
 
+	syncHandlers["GGQ"] = function(sender)
+		if sender == playerName then
+			return
+		end
+		if DBM.GearCheck and DBM.GearCheck.OnSync then
+			DBM.GearCheck:OnSync("GGQ", sender)
+		end
+	end
+
+	syncHandlers["GGR"] = function(sender, _, playerNameField, itemLevel, missingGems, missingEnchants)
+		if sender == playerName then
+			return
+		end
+		if DBM.GearCheck and DBM.GearCheck.OnSync then
+			DBM.GearCheck:OnSync("GGR", sender, itemLevel, missingGems, missingEnchants)
+		end
+	end
+
 	syncHandlers["C"] = function(sender, _, delay, mod, modRevision, startHp, dbmRevision, modHFRevision, event)
 		if not DBM:IsEnabled() or sender == playerName then return end
 		if private.LastInstanceType == "pvp" then return end
