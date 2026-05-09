@@ -48,12 +48,17 @@ local activeInspect = {}
 local inspectToken = 0
 local commRequestToken = 0
 local guildSyncToken = 0
+local guildGearQuerySent = false
+local guildUpdatePending = false
 local inspectUpdateElapsed = 0
 local pendingRosterRefresh = false
 local sortGear = {}
 local commReplyTimeoutSeconds = 3
 local inspectTimeoutSeconds = 4
 local inspectMaxRetries = 6
+local guildGearQuerySpamSeconds = 60
+local maxReasonableItemLevel = 10000
+local guildUpdateDebounceSeconds = 0.2
 local inspectRetryWindowSeconds = 30
 local validAnchorPoints = {
 	TOP = true,
@@ -260,18 +265,6 @@ local function UpdateRaidTab()
 
 	WipeTextFrames()
 
-	titlePlayer:SetText(PLAYER)
-	titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
-
-	titleItemLevel:SetText(_G["ITEM_LEVEL_ABBR"] or "iLvl")
-	titleItemLevel:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
-
-	titleMissingGems:SetText(L.GEAR_MISSING_GEMS)
-	titleMissingGems:SetPoint("LEFT", titleItemLevel, "RIGHT", 0, 0)
-
-	titleMissingEnchants:SetText(L.GEAR_MISSING_ENCHANTS)
-	titleMissingEnchants:SetPoint("LEFT", titleMissingGems, "RIGHT", 0, 0)
-
 	for i, v in ipairs(sortGear) do
 		local fullName = v.name
 		local name = DBM:GetShortServerName(fullName) or fullName
@@ -313,18 +306,6 @@ local function UpdateGuildTab()
 		tinsert(guildPlayers, {name = name, gearilvl = guildGearData[name].itemLevel, gearmissinggems = guildGearData[name].missingGems, gearmissingenchants = guildGearData[name].missingEnchants})
 	end
 	tsort(guildPlayers, SortGear)
-
-	titlePlayer:SetText(PLAYER)
-	titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
-
-	titleItemLevel:SetText(_G["ITEM_LEVEL_ABBR"] or "iLvl")
-	titleItemLevel:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
-
-	titleMissingGems:SetText(L.GEAR_MISSING_GEMS)
-	titleMissingGems:SetPoint("LEFT", titleItemLevel, "RIGHT", 0, 0)
-
-	titleMissingEnchants:SetText(L.GEAR_MISSING_ENCHANTS)
-	titleMissingEnchants:SetPoint("LEFT", titleMissingGems, "RIGHT", 0, 0)
 
 	for i, v in ipairs(guildPlayers) do
 		local fullName = v.name
@@ -453,10 +434,11 @@ local function SendGearSyncRequest()
 end
 
 function SendGuildGearSyncRequest()
-	wipe(guildGearData)
 	if not frame:IsShown() or not private.sendGuildSync or not ShouldUseCommScan() or not IsInGuild() then
 		return
 	end
+	wipe(guildGearData)
+	guildGearQuerySent = true
 	-- Seed our own data since self-sent GGR messages are filtered out in AddonComms.
 	-- UnitName("player") has no realm suffix, matching the key format GetCorrectSender produces
 	-- for same-realm WHISPER senders. Cross-realm peers arrive as "Name-Realm" via GetCorrectSender,
@@ -470,6 +452,7 @@ function SendGuildGearSyncRequest()
 	local requestToken = guildSyncToken
 	private.sendGuildSync(private.DBMSyncProtocol or 1, "GGQ", nil)
 	C_Timer.After(commReplyTimeoutSeconds + 2, function()
+		guildGearQuerySent = false
 		if not frame:IsShown() or requestToken ~= guildSyncToken or selectedTab ~= 2 then
 			return
 		end
@@ -826,7 +809,6 @@ function GearCheck:Show()
 		end)
 		frame:CreateTab("Guild", function()
 			if ShouldUseCommScan() and IsInGuild() then
-				wipe(guildGearData)
 				SendGuildGearSyncRequest()
 			end
 		end)
@@ -885,25 +867,34 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		if C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown() then
 			return
 		end
-		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
-		if type(selfItemLevel) == "number" then
-			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0), sender, "NORMAL")
-		end
-	elseif event == "GGR" then
-		if sender == DBM:GetUnitFullName("player") then
+		if not DBM:AntiSpam(guildGearQuerySpamSeconds, "GGQ") then
 			return
 		end
-		if not IsInGuild() then
+		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
+		if type(selfItemLevel) == "number" then
+			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0), sender, "BULK")
+		end
+	elseif event == "GGR" then
+		if not guildGearQuerySent or not IsInGuild() then
 			return
 		end
 		itemLevel = tonumber(itemLevel)
 		missingGems = tonumber(missingGems)
 		missingEnchants = tonumber(missingEnchants)
-		if type(itemLevel) == "number" then
-			guildGearData[sender] = {itemLevel = itemLevel, missingGems = missingGems or 0, missingEnchants = missingEnchants or 0}
-			if frame:IsShown() and selectedTab == 2 then
-				Update()
-			end
+		if type(itemLevel) ~= "number" or itemLevel < 0 or itemLevel > maxReasonableItemLevel then
+			return
+		end
+		missingGems = mmax(0, mfloor(missingGems or 0))
+		missingEnchants = mmax(0, mfloor(missingEnchants or 0))
+		guildGearData[sender] = {itemLevel = itemLevel, missingGems = missingGems, missingEnchants = missingEnchants}
+		if frame:IsShown() and selectedTab == 2 and not guildUpdatePending then
+			guildUpdatePending = true
+			C_Timer.After(0.2, function()
+				guildUpdatePending = false
+				if frame:IsShown() and selectedTab == 2 then
+					Update()
+				end
+			end)
 		end
 	end
 end
