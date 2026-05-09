@@ -272,13 +272,31 @@ do
 		if mod and modvar and text and text ~= "" then
 			if DBM:AntiSpam(5, modvar) then--Don't allow calling same note more than once per 5 seconds
 				DBM:AddMsg(L.NOTE_SHARE_SUCCESS:format(sender, ability))
-				DBM:AddMsg(("|Hgarrmission:DBM:noteshare:%s:%s:%s:%s:%s|h|cff3588ff[%s]|r|h"):format(modid, modvar, ability, text, sender, L.NOTE_SHARE_LINK))
+				DBM:AddMsg(("|Haddon:DBM:noteshare:%s:%s:%s:%s:%s|h|cff3588ff[%s]|r|h"):format(modid, modvar, ability, text, sender, L.NOTE_SHARE_LINK))
 --				DBM:ShowNoteEditor(mod, modvar, ability, text, sender)
 			else
 				DBM:Debug(sender .. " is attempting to send too many notes so notes are being throttled")
 			end
 		else
 			DBM:AddMsg(L.NOTE_SHARE_FAIL:format(sender, ability))
+		end
+	end
+
+	syncHandlers["GIQ"] = function(sender)
+		if sender == playerName then
+			return
+		end
+		if DBM.GearCheck and DBM.GearCheck.OnSync then
+			DBM.GearCheck:OnSync("GIQ", sender)
+		end
+	end
+
+	syncHandlers["GIR"] = function(sender, _, itemLevel, missingGems, missingEnchants)
+		if sender == playerName then
+			return
+		end
+		if DBM.GearCheck and DBM.GearCheck.OnSync then
+			DBM.GearCheck:OnSync("GIR", sender, itemLevel, missingGems, missingEnchants)
 		end
 	end
 
@@ -679,7 +697,7 @@ do
 
 	guildSyncHandlers["GCE"] = function(_, protocol, modId, wipe, time, difficulty, difficultyModifier, name, groupLeader, wipeHP)
 		if not DBM.Options.ShowGuildMessages or not difficulty or DBM:GetRaidRank(groupLeader or "") == 2 then return end
-		if not protocol or protocol ~= 10 then return end--Ignore old versions
+		if not protocol or protocol ~= 11 then return end--Ignore old versions
 		if DBM:AntiSpam(isRetail and 10 or 20, "GCE") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)

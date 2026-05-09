@@ -20,7 +20,7 @@ local mfloor, mmax, mceil = math.floor, math.max, math.ceil
 do
 	local debugLogFrame, debugLogViewport, debugLogContent, clearButton
 	local debugLogLineFrames = {}
-	local maxDebugLogEntries = 2000
+	local maxDebugLogEntries = 1500--Performance begins to degrade past 1500 entries
 	local debugLogSoftClosed = true
 	local lineHeight = 14
 	local debugLogLineCount = 0

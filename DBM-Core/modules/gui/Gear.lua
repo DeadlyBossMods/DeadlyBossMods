@@ -57,14 +57,17 @@ refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
 
 local spareTextFrames, usedTextFrames = {}, {}
 local pendingInspects = {}
+local pendingCommReplies = {}
 local inspectRetryCounts = {}
 local inspectRetryDeadlines = {}
 local knownRosterMembers = {}
 local activeInspect = {}
 local inspectToken = 0
+local commRequestToken = 0
 local inspectUpdateElapsed = 0
 local pendingRosterRefresh = false
 local sortGear = {}
+local commReplyTimeoutSeconds = 3
 local inspectTimeoutSeconds = 4
 local inspectMaxRetries = 6
 local inspectRetryWindowSeconds = 30
@@ -251,8 +254,10 @@ end
 
 local function ClearInspectQueue()
 	inspectToken = inspectToken + 1
+	commRequestToken = commRequestToken + 1
 	ClearInspectPlayer()
 	wipe(pendingInspects)
+	wipe(pendingCommReplies)
 	wipe(inspectRetryCounts)
 	wipe(inspectRetryDeadlines)
 	wipe(knownRosterMembers)
@@ -260,6 +265,7 @@ local function ClearInspectQueue()
 end
 
 local function MarkInspectUnavailable(name)
+	pendingCommReplies[name] = nil
 	inspectRetryCounts[name] = nil
 	inspectRetryDeadlines[name] = nil
 	SetPlayerGearState(name, nil, nil, nil, false, true)
@@ -288,6 +294,47 @@ end
 local RequestNextInspect
 local Refresh
 local HandleRosterUpdate
+
+local function ShouldUseCommScan()
+	if not (C_ChatInfo and C_ChatInfo.InChatMessagingLockdown) then
+		return false
+	end
+	return not C_ChatInfo.InChatMessagingLockdown()
+end
+
+local function RemovePendingInspect(name)
+	for i = #pendingInspects, 1, -1 do
+		if pendingInspects[i] == name then
+			tremove(pendingInspects, i)
+		end
+	end
+end
+
+local function SendGearSyncRequest()
+	if not frame:IsShown() or not private.sendSync or not ShouldUseCommScan() or not next(pendingCommReplies) then
+		return
+	end
+	commRequestToken = commRequestToken + 1
+	local requestToken = commRequestToken
+	private.sendSync(private.DBMSyncProtocol or 1, "GIQ", nil, "NORMAL")
+	C_Timer.After(commReplyTimeoutSeconds, function()
+		if not frame:IsShown() or requestToken ~= commRequestToken then
+			return
+		end
+		local queuedInspect = false
+		for name in pairs(pendingCommReplies) do
+			pendingCommReplies[name] = nil
+			if knownRosterMembers[name] then
+				tinsert(pendingInspects, name)
+				queuedInspect = true
+			end
+		end
+		if queuedInspect then
+			Update()
+			RequestNextInspect()
+		end
+	end)
+end
 
 --Only valid for midnight. No classic flavors supported since I don't play those
 local enchantableSlots = {
@@ -389,6 +436,7 @@ local function FinishInspect(token, itemLevel, missingGems, missingEnchants)
 	if type(itemLevel) ~= "number" then
 		QueueInspectRetry(activeInspect.name)
 	else
+		pendingCommReplies[activeInspect.name] = nil
 		inspectRetryCounts[activeInspect.name] = nil
 		inspectRetryDeadlines[activeInspect.name] = nil
 		SetPlayerGearState(activeInspect.name, itemLevel, missingGems, missingEnchants, false, false)
@@ -452,7 +500,9 @@ end
 
 local function SeedRaid()
 	local playerName = DBM:GetUnitFullName("player")
+	local useComms = private.sendSync and ShouldUseCommScan()
 	wipe(knownRosterMembers)
+	wipe(pendingCommReplies)
 	for name in pairs(DBM:GetRaidRoster()) do
 		knownRosterMembers[name] = true
 		if name == playerName then
@@ -463,15 +513,24 @@ local function SeedRaid()
 				MarkInspectUnavailable(name)
 			else
 				SetPlayerGearState(name, nil, nil, nil, true, false)
-				tinsert(pendingInspects, name)
+				if useComms then
+					pendingCommReplies[name] = true
+				else
+					tinsert(pendingInspects, name)
+				end
 			end
 		end
+	end
+	if useComms then
+		SendGearSyncRequest()
 	end
 end
 
 function HandleRosterUpdate()
 	local roster = DBM:GetRaidRoster()
 	local playerName = DBM:GetUnitFullName("player")
+	local useComms = private.sendSync and ShouldUseCommScan()
+	local needsCommRequest = false
 	local currentMembers = {}
 
 	for i = #pendingInspects, 1, -1 do
@@ -491,6 +550,11 @@ function HandleRosterUpdate()
 			inspectRetryDeadlines[name] = nil
 		end
 	end
+	for name in next, pendingCommReplies do
+		if not roster[name] then
+			pendingCommReplies[name] = nil
+		end
+	end
 
 	if activeInspect.name and not roster[activeInspect.name] then
 		wipe(activeInspect)
@@ -508,15 +572,31 @@ function HandleRosterUpdate()
 					MarkInspectUnavailable(name)
 				else
 					SetPlayerGearState(name, nil, nil, nil, true, false)
-					tinsert(pendingInspects, name)
+					if useComms then
+						pendingCommReplies[name] = true
+						needsCommRequest = true
+					else
+						tinsert(pendingInspects, name)
+					end
 				end
 			end
+		end
+	end
+
+	if not useComms and next(pendingCommReplies) then
+		for name in pairs(pendingCommReplies) do
+			pendingCommReplies[name] = nil
+			tinsert(pendingInspects, name)
 		end
 	end
 
 	wipe(knownRosterMembers)
 	for name in pairs(currentMembers) do
 		knownRosterMembers[name] = true
+	end
+
+	if useComms and needsCommRequest then
+		SendGearSyncRequest()
 	end
 
 	Update()
@@ -607,4 +687,46 @@ end
 
 function GearCheck:Hide()
 	frame:Hide()
+end
+
+function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants)
+	if event == "GIQ" then
+		if not private.sendSync or sender == DBM:GetUnitFullName("player") or not DBM:GetRaidRoster(sender) then
+			return
+		end
+		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
+		if type(selfItemLevel) == "number" then
+			private.sendSync(private.DBMSyncProtocol or 1, "GIR", ("%s\t%d\t%d"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0), "NORMAL")
+		end
+	elseif event == "GIR" then
+		if sender == DBM:GetUnitFullName("player") then
+			return
+		end
+		if not DBM:GetRaidRoster(sender) then
+			return
+		end
+		pendingCommReplies[sender] = nil
+		RemovePendingInspect(sender)
+		if activeInspect.name == sender then
+			wipe(activeInspect)
+			ClearInspectPlayer()
+		end
+		itemLevel = tonumber(itemLevel)
+		missingGems = tonumber(missingGems)
+		missingEnchants = tonumber(missingEnchants)
+		if type(itemLevel) == "number" then
+			inspectRetryCounts[sender] = nil
+			inspectRetryDeadlines[sender] = nil
+			SetPlayerGearState(sender, RoundItemLevel(itemLevel), missingGems or 0, missingEnchants or 0, false, false)
+		else
+			SetPlayerGearState(sender, nil, nil, nil, true, false)
+			tinsert(pendingInspects, sender)
+		end
+		if frame:IsShown() then
+			Update()
+			if #pendingInspects > 0 and not activeInspect.name then
+				RequestNextInspect()
+			end
+		end
+	end
 end
