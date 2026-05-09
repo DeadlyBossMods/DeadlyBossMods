@@ -118,7 +118,6 @@ refresh:SetScript("OnClick", function()
 	if selectedTab == 1 then
 		Refresh()
 	elseif selectedTab == 2 then
-		wipe(guildGearData)
 		if ShouldUseCommScan() and IsInGuild() then
 			SendGuildGearSyncRequest()
 		end
@@ -454,14 +453,18 @@ local function SendGearSyncRequest()
 end
 
 function SendGuildGearSyncRequest()
+	wipe(guildGearData)
 	if not frame:IsShown() or not private.sendGuildSync or not ShouldUseCommScan() or not IsInGuild() then
 		return
 	end
-	-- Seed our own data since self-sent GGR messages are filtered out in AddonComms
-	local selfFullName = DBM:GetUnitFullName("player")
+	-- Seed our own data since self-sent GGR messages are filtered out in AddonComms.
+	-- UnitName("player") has no realm suffix, matching the key format GetCorrectSender produces
+	-- for same-realm WHISPER senders. Cross-realm peers arrive as "Name-Realm" via GetCorrectSender,
+	-- so there is no collision between the local player and any same-name cross-realm guild member.
+	local selfName = UnitName("player")
 	local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
 	if type(selfItemLevel) == "number" then
-		guildGearData[selfFullName] = {itemLevel = selfItemLevel, missingGems = selfMissingGems or 0, missingEnchants = selfMissingEnchants or 0}
+		guildGearData[selfName] = {itemLevel = selfItemLevel, missingGems = selfMissingGems or 0, missingEnchants = selfMissingEnchants or 0}
 	end
 	guildSyncToken = guildSyncToken + 1
 	local requestToken = guildSyncToken
@@ -823,6 +826,7 @@ function GearCheck:Show()
 		end)
 		frame:CreateTab("Guild", function()
 			if ShouldUseCommScan() and IsInGuild() then
+				wipe(guildGearData)
 				SendGuildGearSyncRequest()
 			end
 		end)
