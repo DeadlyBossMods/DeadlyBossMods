@@ -11,7 +11,7 @@ end
 
 L.HOW_TO_USE_MOD			= "Willkommen bei "..L.DBM..". Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. "..L.DBM.." setzt Standardeinstellungen für deine Spezialisierung, die du aber noch genauer anpassen kannst."
 L.SILENT_REMINDER			= "Erinnerung: "..L.DBM.." befindet sich noch im Lautlos-Modus."
-L.NEWS_UPDATE				= "|h|c11ff1111News|r|h: This update changes mod structure around so classic and mainline now use unified (same) modules. This means that Vanilla, TBC, Wrath, and Cata modules are now installed separately using same packages as retail. Read more about it |Hgarrmission:DBM:news|h|cff3588ff[here]|r|h"--UPDATE ME
+L.NEWS_UPDATE				= "|h|c11ff1111News|r|h: This update changes mod structure around so classic and mainline now use unified (same) modules. This means that Vanilla, TBC, Wrath, and Cata modules are now installed separately using same packages as retail. Read more about it |Haddon:DBM:news|h|cff3588ff[here]|r|h"--UPDATE ME
 L.COPY_URL_DIALOG_NEWS		= "Die aktuellsten Meldungen findest du immer unter dem unten stehenden Link"
 
 L.LOAD_MOD_ERROR			= "Fehler beim Laden der Boss Mods für %s: %s"
@@ -209,7 +209,7 @@ L.PLATER_NP_AURAS_MSG = L.DBM .. " enthält eine erweiterte Funktion, um gegneri
 
 L.MOVABLE_BAR					= "Zieh mich!"
 
-L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h hat dir einen DBM-Timer geschickt: '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Diesen Timer abbrechen]|r|h  |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Timer von %1$s ignorieren]|r|h"
+L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h hat dir einen DBM-Timer geschickt: '%2$s'\n|Haddon:DBM:cancel:%2$s:nil|h|cff3588ff[Diesen Timer abbrechen]|r|h  |Haddon:DBM:ignore:%2$s:%1$s|h|cff3588ff[Timer von %1$s ignorieren]|r|h"
 --L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h hat dir einen DBM-Timer geschickt"
 L.PIZZA_CONFIRM_IGNORE			= "Willst du wirklich DBM-Timer von %s für diese Sitzung ignorieren?"
 L.PIZZA_ERROR_USAGE				= "Benutzung: /dbm [broadcast] timer <Sekunden> <Text>. <Sekunden> muss größer als 1 sein."

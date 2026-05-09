@@ -563,7 +563,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 					title, desc, icon = spellID, L.NoDescription, 136116
 				end
 				if not usedSpellID then
-					usedSpellID = "|Hgarrmission:DBM:wacopy:"..spellID.."|h|cff69ccf0"..spellID.."|r|h"
+					usedSpellID = "|Haddon:DBM:wacopy:"..spellID.."|h|cff69ccf0"..spellID.."|r|h"
 				end
 				local catpanel = panel:CreateAbility(title, icon, usedSpellID, hasPrivate)
 				if desc then
