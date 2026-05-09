@@ -128,7 +128,7 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 		optionId = auraspellId
 	end
 	if type(optionId) ~= "number" then
-		DBM:Debug("Attempting to add private aura sound failed due to invalid optionId type for mod " .. self.id, 2)
+		DBM:Debug("Attempting to add private aura sound failed due to invalid optionId type for mod " .. self.id, 2, nil, nil, true)
 		return
 	end
 	self.DefaultOptions["PrivateAuraSound" .. optionId] = (default == nil) or default
@@ -138,7 +138,7 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 	end
 	self.Options["PrivateAuraSound" .. optionId] = (default == nil) or default
 	if not C_UnitAuras.AuraIsPrivate(optionId) then
-		DBM:Debug("Attempting to add private aura sound failed because spell ID " .. optionId .. " is not a private aura. Check spell ID and try again for mod " .. self.id, 1)
+		DBM:Debug("Attempting to add private aura sound failed because spell ID " .. optionId .. " is not a private aura. Check spell ID and try again for mod " .. self.id, 1, nil, nil, true)
 		return
 	end
 	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
