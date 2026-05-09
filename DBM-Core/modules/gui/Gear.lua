@@ -875,10 +875,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 			end
 		end
 	elseif event == "GGQ" then
-		if not private.sendGuildSync or sender == DBM:GetUnitFullName("player") or not IsInGuild() then
-			return
-		end
-		if not DBM:AntiSpam(30, "GGQ") then
+		if not private.sendWhisperSync or sender == DBM:GetUnitFullName("player") or not IsInGuild() then
 			return
 		end
 		if C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown() then
@@ -886,7 +883,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		end
 		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
 		if type(selfItemLevel) == "number" then
-			private.sendGuildSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0))
+			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0), sender, "NORMAL")
 		end
 	elseif event == "GGR" then
 		if sender == DBM:GetUnitFullName("player") then
