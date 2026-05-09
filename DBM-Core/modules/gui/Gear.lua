@@ -69,7 +69,7 @@ local validAnchorPoints = {
 
 local tabs, tabsBtn, selectedTab = {}, {}, 1
 
-local WipeTextFrames, Refresh, SendGuildGearSyncRequest, ShouldUseCommScan, RequestNextInspect, HandleRosterUpdate
+local WipeTextFrames, Refresh, SendGuildGearSyncRequest, ShouldUseCommScan, RequestNextInspect, HandleRosterUpdate, ScanGear
 
 function frame:CreateTab(title, OnShowFn)
 	local i = #tabs + 1
@@ -498,7 +498,7 @@ local enchantableSlots = {
 
 --TODO, replace with a sync based approach that can remove some limitations like decimal ilvl on players other than self
 --TODO, collect list of enchant Ids and show a () next to count showing number of cheap enchants in use
-local function ScanGear(unit)
+function ScanGear(unit)
 	if not unit then
 		return
 	end
