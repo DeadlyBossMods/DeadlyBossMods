@@ -875,6 +875,9 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0), sender, "BULK")
 		end
 	elseif event == "GGR" then
+		if sender == DBM:GetUnitFullName("player") then
+			return
+		end
 		if not guildGearQuerySent or not IsInGuild() then
 			return
 		end
@@ -889,7 +892,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		guildGearData[sender] = {itemLevel = itemLevel, missingGems = missingGems, missingEnchants = missingEnchants}
 		if frame:IsShown() and selectedTab == 2 and not guildUpdatePending then
 			guildUpdatePending = true
-			C_Timer.After(0.2, function()
+			C_Timer.After(guildUpdateDebounceSeconds, function()
 				guildUpdatePending = false
 				if frame:IsShown() and selectedTab == 2 then
 					Update()

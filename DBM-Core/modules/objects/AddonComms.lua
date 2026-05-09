@@ -308,6 +308,9 @@ do
 		if sender == playerName then
 			return
 		end
+		if not checkForSafeSender(sender, false, true) then--Verify sender is a guild member before responding with gear data
+			return
+		end
 		if DBM.GearCheck and DBM.GearCheck.OnSync then
 			DBM.GearCheck:OnSync("GGQ", sender)
 		end
