@@ -348,6 +348,7 @@ do
 
 	function module:UNIT_SPELLCAST_START(uId, _, spellId)
 		if DBM.Options.DebugLevel < 2 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
@@ -356,6 +357,7 @@ do
 	end
 	function module:UNIT_SPELLCAST_STOP(uId, _, spellId)
 		if DBM.Options.DebugLevel < 2 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
@@ -365,6 +367,7 @@ do
 
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if DBM.Options.DebugLevel < 2 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
@@ -374,6 +377,7 @@ do
 
 	function module:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
 		if DBM.Options.DebugLevel < 2 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
@@ -383,6 +387,7 @@ do
 
 	function module:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
 		if DBM.Options.DebugLevel < 2 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
@@ -434,7 +439,7 @@ do
 			DBM:FireEvent("DBM_Debug", text, level)
 		end
 		if not DBM.Options or not DBM.Options.DebugMode then return end
-		if combatFiltered and IsEncounterInProgress() then return end
+		if combatFiltered and InCombatLockdown() then return end
 		if (level or 1) <= DBM.Options.DebugLevel then
 			local frame = _G[tostring(DBM.Options.ChatFrame)]
 			frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
