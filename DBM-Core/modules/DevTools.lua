@@ -326,7 +326,7 @@ do
 		if DBM.Options.DebugLevel < 3 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
-		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 4, nil, nil, true)
+		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 3, nil, nil, true, true)
 	end
 
 	function module:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
@@ -338,60 +338,55 @@ do
 			local unit = bossUnits[i]
 			if UnitExists(unit) then
 				hasBossUnits = true
-				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 4, nil, nil, true)
+				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 3, nil, nil, true, true)
 			end
 		end
 		if not hasBossUnits then
-			DBM:Debug("|c00D8B4FEIEEU|r: no boss units found", 4, nil, nil, true)
+			DBM:Debug("|c00D8B4FEIEEU|r: no boss units found", 3, nil, nil, true, true)
 		end
 	end
 
 	function module:UNIT_SPELLCAST_START(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 	function module:UNIT_SPELLCAST_STOP(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
 		if DBM.Options.DebugLevel < 2 then return end
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 
@@ -428,7 +423,8 @@ do
 	---@param useSound boolean? Play 'ding' sound when displaying message
 	---@param alwaysFireEvent boolean? Used specifically for transcriptor logging
 	---@param isLogged boolean? Used specifically for events we want logged in the DBM Debug Log frame
-	function DBM:Debug(text, level, useSound, alwaysFireEvent, isLogged)
+	---@param combatFiltered boolean? Used specifically for events we want filtered by combat state
+	function DBM:Debug(text, level, useSound, alwaysFireEvent, isLogged, combatFiltered)
 		if isLogged and DBM.Options and DBM.Options.DebugMode then
 			appendToDebugLog(text)
 		end
@@ -438,6 +434,7 @@ do
 			DBM:FireEvent("DBM_Debug", text, level)
 		end
 		if not DBM.Options or not DBM.Options.DebugMode then return end
+		if combatFiltered and IsEncounterInProgress() then return end
 		if (level or 1) <= DBM.Options.DebugLevel then
 			local frame = _G[tostring(DBM.Options.ChatFrame)]
 			frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME

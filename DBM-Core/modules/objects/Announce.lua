@@ -575,9 +575,9 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		DBM:FireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false, announceCount)
 		if DBM.Options.IgnoreBlizzAPI and self.spellId and self.spellName then
 			if announceCount then
-				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. " (" .. announceCount .. ")|r", 4, nil, nil, true)
+				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. " (" .. announceCount .. ")|r", 3, nil, nil, true, true)
 			else
-				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. "|r", 4, nil, nil, true)
+				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. "|r", 3, nil, nil, true, true)
 			end
 		end
 		if self.sound > 0 then--0 means muted, 1 means no voice pack support, 2 means voice pack version/support
