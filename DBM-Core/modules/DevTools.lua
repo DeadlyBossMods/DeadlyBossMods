@@ -351,7 +351,7 @@ do
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 	function module:UNIT_SPELLCAST_STOP(uId, _, spellId)
@@ -359,7 +359,7 @@ do
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 
@@ -368,7 +368,7 @@ do
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 
@@ -377,7 +377,7 @@ do
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 
@@ -386,7 +386,7 @@ do
 --		local inCombat = private.getInCombat()
 --		if #inCombat > 0 then--At least one boss is engaged
 			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
+			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 --		end
 	end
 
