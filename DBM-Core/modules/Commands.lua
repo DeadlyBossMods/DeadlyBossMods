@@ -349,6 +349,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return
 		end
 		DBM.Options.DebugLevel = level
+		private:GetModule("DevToolsModule"):OnDebugLevelChanged()
 		DBM:AddMsg("Debug Level is " .. level)
 	elseif cmd:sub(1, 10) == "debugsound" then
 		DBM.Options.DebugSound = not DBM.Options.DebugSound

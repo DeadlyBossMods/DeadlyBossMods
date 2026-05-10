@@ -333,14 +333,14 @@ do
 		"arena1", "arena2", "arena3", "arena4", "arena5",
 	}
 	function module:UNIT_TARGETABLE_CHANGED(uId)
-		if DBM.Options.DebugLevel < 3 then return end
+		if DBM.Options.DebugLevel < 2 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
 		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 3, nil, nil, true, true)
 	end
 
 	function module:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		if DBM.Options.DebugLevel < 3 then return end
+		if DBM.Options.DebugLevel < 2 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
 		local hasBossUnits = false
@@ -357,34 +357,34 @@ do
 	end
 
 	function module:UNIT_SPELLCAST_START(uId, _, spellId)
-		if DBM.Options.DebugLevel < 2 then return end
+		if DBM.Options.DebugLevel < 3 then return end
 		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 	function module:UNIT_SPELLCAST_STOP(uId, _, spellId)
-		if DBM.Options.DebugLevel < 2 then return end
+		if DBM.Options.DebugLevel < 3 then return end
 		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-		if DBM.Options.DebugLevel < 2 then return end
+		if DBM.Options.DebugLevel < 3 then return end
 		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
-		if DBM.Options.DebugLevel < 2 then return end
+		if DBM.Options.DebugLevel < 3 then return end
 		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
-		if DBM.Options.DebugLevel < 2 then return end
+		if DBM.Options.DebugLevel < 3 then return end
 		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
@@ -392,29 +392,52 @@ do
 
 	--Spammy events that core doesn't otherwise need are now dynamically registered/unregistered based on whether or not user is actually debugging
 	function module:OnDebugToggle()
-		if DBM.Options.DebugMode and not eventsRegistered then
-			eventsRegistered = true
-			if isRetail then
-				self:RegisterShortTermEvents(
-					"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-					"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_SPELLCAST_CHANNEL_START boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_TARGETABLE_CHANGED")
-			else--No Boss unit Ids in classic, register backups
-				self:RegisterShortTermEvents(
-	--				"UNIT_SPELLCAST_START target focus",
-					"UNIT_SPELLCAST_SUCCEEDED target focus",
-	--				"UNIT_SPELLCAST_STOP target focus",
-					"UNIT_TARGETABLE_CHANGED")
+		if DBM.Options.DebugMode then
+			if eventsRegistered then
+				self:UnregisterShortTermEvents()
+				eventsRegistered = false
 			end
-		elseif not DBM.Options.DebugMode and eventsRegistered then
+			if isRetail then
+				if DBM.Options.DebugLevel >= 3 then
+					self:RegisterShortTermEvents(
+						"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5 target",
+						"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5 target",
+						"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5 target",
+						"UNIT_SPELLCAST_CHANNEL_START boss1 boss2 boss3 boss4 boss5 target",
+						"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5 target"
+					)
+					eventsRegistered = true
+				elseif DBM.Options.DebugLevel >= 2 then
+					self:RegisterShortTermEvents(
+						"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+						"UNIT_TARGETABLE_CHANGED"
+					)
+					eventsRegistered = true
+				end
+			else--No Boss unit Ids in classic, register backups
+				if DBM.Options.DebugLevel >= 3 then
+					self:RegisterShortTermEvents(
+	--					"UNIT_SPELLCAST_START target focus",
+						"UNIT_SPELLCAST_SUCCEEDED target focus",
+	--					"UNIT_SPELLCAST_STOP target focus",
+						"UNIT_TARGETABLE_CHANGED"
+					)
+					eventsRegistered = true
+				elseif DBM.Options.DebugLevel >= 2 then
+					self:RegisterShortTermEvents("UNIT_TARGETABLE_CHANGED")
+					eventsRegistered = true
+				end
+			end
+		elseif eventsRegistered then
 			eventsRegistered = false
 			self:UnregisterShortTermEvents()
 		end
 		self:UpdateDebugLogStateFromDebugMode()
+	end
+
+	function module:OnDebugLevelChanged()
+		if not DBM.Options or not DBM.Options.DebugMode then return end
+		self:OnDebugToggle()
 	end
 
 	---Utility function for debugging DBM and blizzard events
