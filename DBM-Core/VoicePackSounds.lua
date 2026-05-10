@@ -308,6 +308,7 @@ local VPSound = {
 	["runoverflowers"] = 12,
 	["runovermobs"] = 17,
 	["runtoedge"] = 0,
+	["runtotrap"] = 19,--Neuro Done
 	["safenow"] = 0,
 	["scatter"] = 0,
 	["scattersoon"] = 0,
