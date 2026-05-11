@@ -313,12 +313,12 @@ do
 		end
 	end
 
-	guildWhisperSyncHandlers["GGR"] = function(sender, _, itemLevel, missingGems, missingEnchants)
+	guildWhisperSyncHandlers["GGR"] = function(sender, _, itemLevel, missingGems, missingEnchants, classToken)
 		if sender == playerName then
 			return
 		end
 		if DBM.GearCheck and DBM.GearCheck.OnSync then
-			DBM.GearCheck:OnSync("GGR", sender, itemLevel, missingGems, missingEnchants)
+			DBM.GearCheck:OnSync("GGR", sender, itemLevel, missingGems, missingEnchants, classToken)
 		end
 	end
 
