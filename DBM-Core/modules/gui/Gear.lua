@@ -303,14 +303,14 @@ local function UpdateGuildTab()
 
 	local guildPlayers = {}
 	for name in pairs(guildGearData) do
-		tinsert(guildPlayers, {name = name, gearilvl = guildGearData[name].itemLevel, gearmissinggems = guildGearData[name].missingGems, gearmissingenchants = guildGearData[name].missingEnchants})
+		tinsert(guildPlayers, {name = name, class = guildGearData[name].class, gearilvl = guildGearData[name].itemLevel, gearmissinggems = guildGearData[name].missingGems, gearmissingenchants = guildGearData[name].missingEnchants})
 	end
 	tsort(guildPlayers, SortGear)
 
 	for i, v in ipairs(guildPlayers) do
 		local fullName = v.name
 		local name = DBM:GetShortServerName(fullName) or fullName
-		local playerClass = DBM:GetRaidClass(fullName)
+		local playerClass = v.class
 		local playerColor = RAID_CLASS_COLORS[playerClass]
 		if playerColor then
 			name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
@@ -446,7 +446,8 @@ function SendGuildGearSyncRequest()
 	local selfName = UnitName("player")
 	local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
 	if type(selfItemLevel) == "number" then
-		guildGearData[selfName] = {itemLevel = selfItemLevel, missingGems = selfMissingGems or 0, missingEnchants = selfMissingEnchants or 0}
+		local selfClass = select(2, UnitClass("player"))
+		guildGearData[selfName] = {class = selfClass, itemLevel = selfItemLevel, missingGems = selfMissingGems or 0, missingEnchants = selfMissingEnchants or 0}
 	end
 	guildSyncToken = guildSyncToken + 1
 	local requestToken = guildSyncToken
@@ -820,7 +821,7 @@ function GearCheck:Hide()
 	frame:Hide()
 end
 
-function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants)
+function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants, classToken)
 	if event == "GIQ" then
 		if not private.sendSync or sender == DBM:GetUnitFullName("player") or not DBM:GetRaidRoster(sender) then
 			return
@@ -871,7 +872,8 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		end
 		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
 		if type(selfItemLevel) == "number" then
-			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0), sender, "BULK")
+			local selfClass = select(2, UnitClass("player")) or ""
+			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d\t%s"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0, selfClass), sender, "BULK")
 		end
 	elseif event == "GGR" then
 		if sender == DBM:GetUnitFullName("player") then
@@ -883,12 +885,15 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		itemLevel = tonumber(itemLevel)
 		missingGems = tonumber(missingGems)
 		missingEnchants = tonumber(missingEnchants)
+		if type(classToken) ~= "string" or classToken == "" then
+			classToken = nil
+		end
 		if type(itemLevel) ~= "number" or itemLevel < 0 or itemLevel > maxReasonableItemLevel then
 			return
 		end
 		missingGems = mmax(0, mfloor(missingGems or 0))
 		missingEnchants = mmax(0, mfloor(missingEnchants or 0))
-		guildGearData[sender] = {itemLevel = itemLevel, missingGems = missingGems, missingEnchants = missingEnchants}
+		guildGearData[sender] = {class = classToken, itemLevel = itemLevel, missingGems = missingGems, missingEnchants = missingEnchants}
 		if frame:IsShown() and selectedTab == 2 and not guildUpdatePending then
 			guildUpdatePending = true
 			C_Timer.After(guildUpdateDebounceSeconds, function()
