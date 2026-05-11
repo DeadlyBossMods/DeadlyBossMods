@@ -828,7 +828,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		end
 		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
 		if type(selfItemLevel) == "number" then
-			private.sendSync(private.DBMSyncProtocol or 1, "GIR", ("%s\t%d\t%d"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0), "NORMAL")
+			private.sendSync(private.DBMSyncProtocol or 1, "GIR", ("%s\t%d\t%d"):format(selfItemLevel, selfMissingGems or 0, selfMissingEnchants or 0), "NORMAL")
 		end
 	elseif event == "GIR" then
 		if sender == DBM:GetUnitFullName("player") then
@@ -867,13 +867,13 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		if C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown() then
 			return
 		end
-		if not DBM:AntiSpam(guildGearQuerySpamSeconds, "GGQ") then
+		if not DBM:AntiSpam(guildGearQuerySpamSeconds, "GGQ:" .. sender) then
 			return
 		end
 		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
 		if type(selfItemLevel) == "number" then
 			local selfClass = select(2, UnitClass("player")) or ""
-			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d\t%s"):format(tostring(selfItemLevel), selfMissingGems or 0, selfMissingEnchants or 0, selfClass), sender, "BULK")
+			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d\t%s"):format(selfItemLevel, selfMissingGems or 0, selfMissingEnchants or 0, selfClass), sender, "NORMAL")
 		end
 	elseif event == "GGR" then
 		if sender == DBM:GetUnitFullName("player") then
