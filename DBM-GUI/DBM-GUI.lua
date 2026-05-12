@@ -185,7 +185,7 @@ do
 			end
 		end
 		for i = 1, #keytable do
-			if mediatype ~= "sound" or (keytable[i] ~= "None" and keytable[i] ~= "NPCScan") then
+			if mediatype ~= "sound" or (not DBM:IsNoneValue(keytable[i]) and keytable[i] ~= "NPCScan") then
 				local v = hashtable[keytable[i]]
 				-- Filter duplicates
 				local insertme = true
@@ -760,7 +760,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 					for settingName, settingValue in pairs(table) do
 						local ending = settingName:sub(-6):lower()
 						if ending == "cvoice" or ending == "wsound" then -- CVoice or SWSound (s is ignored so we only have to sub once)
-							if type(settingValue) == "string" and settingValue:lower() ~= "none" and not DBM:ValidateSound(settingValue, true, true) then
+							if type(settingValue) == "string" and not DBM:IsNoneValue(settingValue) and not DBM:ValidateSound(settingValue, true, true) then
 								tinsert(errors, id .. "-" .. settingName)
 							end
 						end
@@ -945,12 +945,10 @@ do
 			local challengeMode = challengeModeIds[challengeMap]
 			local id = challengeMode
 			--For handling zones like Warfront: Arathi - Alliance
-			local mapName = GetRealZoneText(id):trim() or id
-			for w in string.gmatch(mapName, " - ") do
-				if w:trim() ~= "" then
-					mapName = w
-					break
-				end
+			local mapName = strtrim(GetRealZoneText(id) or tostring(id))
+			local splitName = strsplit(" - ", mapName)
+			if splitName and splitName ~= "" then
+				mapName = splitName
 			end
 			if not currentSeasons[mapName] then
 				local modId

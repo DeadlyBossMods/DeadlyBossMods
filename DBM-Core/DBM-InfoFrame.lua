@@ -46,8 +46,8 @@ local infoFrameFontResetNotified = false
 local function getSafeInfoFrameFontSettings(testFontString)
 	local font = DBM.Options.InfoFrameFont == "standardFont" and standardFont or DBM.Options.InfoFrameFont
 	local size = DBM.Options.InfoFrameFontSize
-	local style = (DBM.Options.InfoFrameFontStyle and DBM.Options.InfoFrameFontStyle ~= "None" and DBM.Options.InfoFrameFontStyle ~= "none") and DBM.Options.InfoFrameFontStyle or ""
-	if not DBM:IsFontValid(font, standardFont) then
+	local style = (DBM.Options.InfoFrameFontStyle and not DBM:IsNoneValue(DBM.Options.InfoFrameFontStyle)) and DBM.Options.InfoFrameFontStyle or ""
+	if not DBM:IsFontValid(font, standardFont, size, style) then
 		DBM.Options.InfoFrameFont = DBM.DefaultOptions.InfoFrameFont
 		DBM.Options.InfoFrameFontSize = DBM.DefaultOptions.InfoFrameFontSize
 		DBM.Options.InfoFrameFontStyle = DBM.DefaultOptions.InfoFrameFontStyle
@@ -57,7 +57,7 @@ local function getSafeInfoFrameFontSettings(testFontString)
 		end
 		font = DBM.Options.InfoFrameFont == "standardFont" and standardFont or DBM.Options.InfoFrameFont
 		size = DBM.Options.InfoFrameFontSize
-		style = (DBM.Options.InfoFrameFontStyle and DBM.Options.InfoFrameFontStyle ~= "None" and DBM.Options.InfoFrameFontStyle ~= "none") and DBM.Options.InfoFrameFontStyle or ""
+		style = (DBM.Options.InfoFrameFontStyle and not DBM:IsNoneValue(DBM.Options.InfoFrameFontStyle)) and DBM.Options.InfoFrameFontStyle or ""
 	end
 	return font, size, style
 end

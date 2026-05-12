@@ -97,7 +97,7 @@ do
 					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
 				end
 			end
-			if self.Options.EventSoundPullTimer and self.Options.EventSoundPullTimer ~= "" and self.Options.EventSoundPullTimer ~= "None" then
+			if self.Options.EventSoundPullTimer and self.Options.EventSoundPullTimer ~= "" and not self:IsNoneValue(self.Options.EventSoundPullTimer) then
 				self:PlaySoundFile(self.Options.EventSoundPullTimer, nil, true)
 			end
 			if self.Options.RecordOnlyBosses then

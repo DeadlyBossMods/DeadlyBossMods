@@ -123,7 +123,7 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 		local errors = {}
 		-- Check if voice pack missing
 		local activeVP = importTable.DBM.ChosenVoicePack2
-		if activeVP ~= "None" then
+		if not DBM:IsNoneValue(activeVP) then
 			if not DBM.VoiceVersions[activeVP] or (DBM.VoiceVersions[activeVP] and DBM.VoiceVersions[activeVP] == 0) then
 				if activeVP ~= "VEM" then
 					DBM:AddMsg(L.ImportVoiceMissing:format(activeVP))
@@ -137,7 +137,7 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 			"EventSoundWipe", "EventSoundEngage2", "EventSoundMusic", "EventSoundDungeonBGM", "RangeFrameSound1", "RangeFrameSound2"
 		}) do
 			local activeSound = importTable.DBM[soundSetting]
-			if type(activeSound) == "string" and activeSound:lower() ~= "none" and not DBM:ValidateSound(activeSound, true, true) then
+			if type(activeSound) == "string" and not DBM:IsNoneValue(activeSound) and not DBM:ValidateSound(activeSound, true, true) then
 				DBM:AddMsg(L.ImportErrorOn:format(L[localeTable[soundSetting]] or soundSetting))
 				tinsert(errors, soundSetting)
 			end

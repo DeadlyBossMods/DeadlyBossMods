@@ -202,8 +202,8 @@ local warningFontResetNotified = false
 local function getSafeWarningFontSettings(self)
 	local font = self.Options.WarningFont == "standardFont" and private.standardFont or self.Options.WarningFont
 	local size = self.Options.WarningFontSize
-	local style = (self.Options.WarningFontStyle and self.Options.WarningFontStyle ~= "None" and self.Options.WarningFontStyle ~= "none") and self.Options.WarningFontStyle or ""
-	if not DBM:IsFontValid(font, private.standardFont) then
+	local style = (self.Options.WarningFontStyle and not DBM:IsNoneValue(self.Options.WarningFontStyle)) and self.Options.WarningFontStyle or ""
+	if not DBM:IsFontValid(font, private.standardFont, size, style) then
 		self.Options.WarningFont = self.DefaultOptions.WarningFont
 		self.Options.WarningFontSize = self.DefaultOptions.WarningFontSize
 		self.Options.WarningFontStyle = self.DefaultOptions.WarningFontStyle
@@ -213,7 +213,7 @@ local function getSafeWarningFontSettings(self)
 		end
 		font = self.Options.WarningFont == "standardFont" and private.standardFont or self.Options.WarningFont
 		size = self.Options.WarningFontSize
-		style = (self.Options.WarningFontStyle and self.Options.WarningFontStyle ~= "None" and self.Options.WarningFontStyle ~= "none") and self.Options.WarningFontStyle or ""
+		style = (self.Options.WarningFontStyle and not DBM:IsNoneValue(self.Options.WarningFontStyle)) and self.Options.WarningFontStyle or ""
 	end
 	return font, size, style
 end
@@ -581,8 +581,8 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 			end
 		end
 		if self.sound > 0 then--0 means muted, 1 means no voice pack support, 2 means voice pack version/support
-			if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not private.voiceSessionDisabled and self.sound <= private.swFilterDisabled then return end
-			if not self.option or self.mod.Options[self.option .. "SWSound"] ~= "None" then
+			if self.sound > 1 and not DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) and DBM.Options.VPReplacesAnnounce and not private.voiceSessionDisabled and self.sound <= private.swFilterDisabled then return end
+			if not self.option or not DBM:IsNoneValue(self.mod.Options[self.option .. "SWSound"]) then
 				DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)--Validate true
 			end
 		end
@@ -679,7 +679,7 @@ end
 function announcePrototype:Play(name, customPath)
 	local voice = DBM.Options.ChosenVoicePack2
 	if DBM.Options.HideDBMWarnings then return end
-	if private.voiceSessionDisabled or voice == "None" or not DBM.Options.VPReplacesAnnounce then return end
+	if private.voiceSessionDisabled or DBM:IsNoneValue(voice) or not DBM.Options.VPReplacesAnnounce then return end
 	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
 	if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option])) and self.sound <= private.swFilterDisabled then
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
@@ -693,7 +693,7 @@ end
 ---@param name VPSound?
 ---@param customPath? string|number
 function announcePrototype:ScheduleVoice(t, name, customPath)
-	if private.voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not DBM.Options.VPReplacesAnnounce then return end
+	if private.voiceSessionDisabled or DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) or not DBM.Options.VPReplacesAnnounce then return end
 	DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
 	local id = DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
 	test:Trace(self.mod, "SetScheduleMethodName", id, self, "ScheduleVoice", name, customPath)
@@ -705,14 +705,14 @@ end
 ---@param name VPSound?
 ---@param customPath? string|number
 function announcePrototype:ScheduleVoiceOverLap(t, name, customPath)
-	if private.voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not DBM.Options.VPReplacesAnnounce then return end
+	if private.voiceSessionDisabled or DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) or not DBM.Options.VPReplacesAnnounce then return end
 	local id = DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
 	test:Trace(self.mod, "SetScheduleMethodName", id, self, "ScheduleVoiceOverLap", name, customPath)
 	return id
 end
 
 function announcePrototype:CancelVoice(...)
-	if private.voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not DBM.Options.VPReplacesAnnounce then return end
+	if private.voiceSessionDisabled or DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) or not DBM.Options.VPReplacesAnnounce then return end
 	return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 end
 

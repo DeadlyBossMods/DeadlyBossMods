@@ -198,7 +198,7 @@ do
 			sound = arg1.sound
 		end
 		DBM.Options[option] = sound
-		if sound ~= "none" then
+		if not DBM:IsNoneValue(sound) then
 			DBM:PlaySoundFile(sound)
 		end
 	end
@@ -394,11 +394,11 @@ do
 		end
 		soundUpdate = GetTime()
 		if num == 1 then
-			if DBM.Options.RangeFrameSound1 ~= "none" then
+			if not DBM:IsNoneValue(DBM.Options.RangeFrameSound1) then
 				DBM:PlaySoundFile(DBM.Options.RangeFrameSound1)
 			end
 		elseif num > 1 then
-			if DBM.Options.RangeFrameSound2 ~= "none" then
+			if not DBM:IsNoneValue(DBM.Options.RangeFrameSound2) then
 				DBM:PlaySoundFile(DBM.Options.RangeFrameSound2)
 			end
 		end
