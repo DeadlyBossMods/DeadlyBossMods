@@ -2779,8 +2779,13 @@ do
 		end
 	end
 
-	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
+	local function groupSizeRefresh()
 		difficulties:RefreshCache(true)
+	end
+
+	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
+		self:Unschedule(groupSizeRefresh)
+		self:Schedule(3.5, groupSizeRefresh)
 	end
 
 	function DBM:GetNumRealPlayersInZone()
