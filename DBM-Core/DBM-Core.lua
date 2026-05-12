@@ -193,6 +193,7 @@ DBM.DefaultOptions = {
 					(locale == "ruRU" and "Alexander") or
 					(locale == "zhCN" and "Ruichen") or
 					(locale == "zhTW" and "Hao"),
+	CountdownVoiceNamesMigrated = false,
 	ChosenVoicePack2 = (locale == "enUS" or locale == "enGB") and "VEM" or "None",
 	VPReplacesAnnounce = true,
 	VPReplacesSADefault = true,
@@ -3885,10 +3886,13 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
-		MigrateCountVoiceOption(self.Options, "CountdownVoice")
-		MigrateCountVoiceOption(self.Options, "CountdownVoice2")
-		MigrateCountVoiceOption(self.Options, "CountdownVoice3")
-		MigrateCountVoiceOption(self.Options, "PullVoice")
+		if not self.Options.CountdownVoiceNamesMigrated then
+			MigrateCountVoiceOption(self.Options, "CountdownVoice")
+			MigrateCountVoiceOption(self.Options, "CountdownVoice2")
+			MigrateCountVoiceOption(self.Options, "CountdownVoice3")
+			MigrateCountVoiceOption(self.Options, "PullVoice")
+			self.Options.CountdownVoiceNamesMigrated = true
+		end
 		DBM_AllSavedOptions[usedProfile] = self.Options
 
 		-- force enable dual profile (change default)
