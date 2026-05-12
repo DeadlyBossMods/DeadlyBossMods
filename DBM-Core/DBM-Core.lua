@@ -131,6 +131,13 @@ local countdownVoiceRenames = {
 	["玲"] = "Ling"
 }
 
+local function MigrateCountVoiceOption(options, optionName)
+	local currentValue = options[optionName]
+	if type(currentValue) == "string" and countdownVoiceRenames[currentValue] then
+		options[optionName] = countdownVoiceRenames[currentValue]
+	end
+end
+
 DBM.DefaultOptions = {
 	WarningColors = {
 		{r = 0.41, g = 0.80, b = 0.94}, -- Color 1 - #69CCF0 - Turqoise
@@ -3864,13 +3871,6 @@ do
 		end
 	end
 
-	local function MigrateCountVoiceOption(optionName)
-		local currentValue = DBM.Options[optionName]
-		if type(currentValue) == "string" and countdownVoiceRenames[currentValue] then
-			DBM.Options[optionName] = countdownVoiceRenames[currentValue]
-		end
-	end
-
 	---@param self DBM
 	function loadOptions(self)
 		--init
@@ -3885,10 +3885,10 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
-		MigrateCountVoiceOption("CountdownVoice")
-		MigrateCountVoiceOption("CountdownVoice2")
-		MigrateCountVoiceOption("CountdownVoice3")
-		MigrateCountVoiceOption("PullVoice")
+		MigrateCountVoiceOption(self.Options, "CountdownVoice")
+		MigrateCountVoiceOption(self.Options, "CountdownVoice2")
+		MigrateCountVoiceOption(self.Options, "CountdownVoice3")
+		MigrateCountVoiceOption(self.Options, "PullVoice")
 		DBM_AllSavedOptions[usedProfile] = self.Options
 
 		-- force enable dual profile (change default)
