@@ -118,6 +118,32 @@ if playerClass == "MAGE" or playerClass == "WARLOCK" or playerClass == "ROGUE" o
 end
 DBM_CharSavedRevision = 2
 local locale = GetLocale()
+local countdownVoiceRenames = {
+	["Jérémy"] = "Jeremy",
+	["Élise"] = "Elise",
+	["도현원"] = "Dohyunwon",
+	["하민지"] = "Haminji",
+	["Александр"] = "Alexander",
+	["Надежда"] = "Nadezhda",
+	["瑞辰"] = "Ruichen",
+	["纯如"] = "Chunru",
+	["浩"] = "Hao",
+	["玲"] = "Ling"
+}
+
+local function MigrateCountVoiceOption(options, optionName)
+	local currentValue = options[optionName]
+	if type(currentValue) == "string" and countdownVoiceRenames[currentValue] then
+		options[optionName] = countdownVoiceRenames[currentValue]
+	end
+end
+
+local function HasLegacyCountVoiceOption(options)
+	return (type(options.CountdownVoice) == "string" and countdownVoiceRenames[options.CountdownVoice]) or
+		(type(options.CountdownVoice2) == "string" and countdownVoiceRenames[options.CountdownVoice2]) or
+		(type(options.CountdownVoice3) == "string" and countdownVoiceRenames[options.CountdownVoice3]) or
+		(type(options.PullVoice) == "string" and countdownVoiceRenames[options.PullVoice])
+end
 
 DBM.DefaultOptions = {
 	WarningColors = {
@@ -137,43 +163,44 @@ DBM.DefaultOptions = {
 					(locale == "deDE" and "Karl") or
 					(locale == "esES" and "Mateo") or
 					(locale == "esMX" and "Juan") or
-					(locale == "frFR" and "Jérémy") or
-					(locale == "koKR" and "도현원") or
+					(locale == "frFR" and "Jeremy") or
+					(locale == "koKR" and "Dohyunwon") or
 					(locale == "ptBR" and "Anshlun") or
-					(locale == "ruRU" and "Александр") or
-					(locale == "zhCN" and "瑞辰") or
-					(locale == "zhTW" and "浩"),
+					(locale == "ruRU" and "Alexander") or
+					(locale == "zhCN" and "Ruichen") or
+					(locale == "zhTW" and "Hao"),
 	CountdownVoice2 = ((locale == "enUS" or locale == "enGB") and "Kolt") or
 					(locale == "deDE" and "Franziska") or
 					(locale == "esES" and "Fernanda") or
 					(locale == "esMX" and "Isabel") or
-					(locale == "frFR" and "Élise") or
-					(locale == "koKR" and "하민지") or
+					(locale == "frFR" and "Elise") or
+					(locale == "koKR" and "Haminji") or
 					(locale == "ptBR" and "Neryssa") or
-					(locale == "ruRU" and "Надежда") or
-					(locale == "zhCN" and "纯如") or
-					(locale == "zhTW" and "玲"),
+					(locale == "ruRU" and "Nadezhda") or
+					(locale == "zhCN" and "Chunru") or
+					(locale == "zhTW" and "Ling"),
 	CountdownVoice3 = ((locale == "enUS" or locale == "enGB") and "Smooth") or
 					(locale == "deDE" and "Franziska") or
 					(locale == "esES" and "Fernanda") or
 					(locale == "esMX" and "Isabel") or
-					(locale == "frFR" and "Élise") or
-					(locale == "koKR" and "하민지") or
+					(locale == "frFR" and "Elise") or
+					(locale == "koKR" and "Haminji") or
 					(locale == "ptBR" and "Neryssa") or
-					(locale == "ruRU" and "Надежда") or
-					(locale == "zhCN" and "纯如") or
-					(locale == "zhTW" and "玲"),
+					(locale == "ruRU" and "Nadezhda") or
+					(locale == "zhCN" and "Chunru") or
+					(locale == "zhTW" and "Ling"),
 	CountSize = 5,
 	PullVoice = ((locale == "enUS" or locale == "enGB") and "Corsica") or
 					(locale == "deDE" and "Karl") or
 					(locale == "esES" and "Mateo") or
 					(locale == "esMX" and "Juan") or
-					(locale == "frFR" and "Jérémy") or
-					(locale == "koKR" and "도현원") or
+					(locale == "frFR" and "Jeremy") or
+					(locale == "koKR" and "Dohyunwon") or
 					(locale == "ptBR" and "Anshlun") or
-					(locale == "ruRU" and "Александр") or
-					(locale == "zhCN" and "瑞辰") or
-					(locale == "zhTW" and "浩"),
+					(locale == "ruRU" and "Alexander") or
+					(locale == "zhCN" and "Ruichen") or
+					(locale == "zhTW" and "Hao"),
+	CountdownVoiceNamesMigrated = false,
 	ChosenVoicePack2 = (locale == "enUS" or locale == "enGB") and "VEM" or "None",
 	VPReplacesAnnounce = true,
 	VPReplacesSADefault = true,
@@ -3866,6 +3893,13 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
+		if not self.Options.CountdownVoiceNamesMigrated and HasLegacyCountVoiceOption(self.Options) then
+			MigrateCountVoiceOption(self.Options, "CountdownVoice")
+			MigrateCountVoiceOption(self.Options, "CountdownVoice2")
+			MigrateCountVoiceOption(self.Options, "CountdownVoice3")
+			MigrateCountVoiceOption(self.Options, "PullVoice")
+			self.Options.CountdownVoiceNamesMigrated = true
+		end
 		DBM_AllSavedOptions[usedProfile] = self.Options
 
 		-- force enable dual profile (change default)
