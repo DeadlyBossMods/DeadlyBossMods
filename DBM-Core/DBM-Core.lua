@@ -138,6 +138,13 @@ local function MigrateCountVoiceOption(options, optionName)
 	end
 end
 
+local function HasLegacyCountVoiceOption(options)
+	return (type(options.CountdownVoice) == "string" and countdownVoiceRenames[options.CountdownVoice]) or
+		(type(options.CountdownVoice2) == "string" and countdownVoiceRenames[options.CountdownVoice2]) or
+		(type(options.CountdownVoice3) == "string" and countdownVoiceRenames[options.CountdownVoice3]) or
+		(type(options.PullVoice) == "string" and countdownVoiceRenames[options.PullVoice])
+end
+
 DBM.DefaultOptions = {
 	WarningColors = {
 		{r = 0.41, g = 0.80, b = 0.94}, -- Color 1 - #69CCF0 - Turqoise
@@ -3886,7 +3893,7 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
-		if not self.Options.CountdownVoiceNamesMigrated then
+		if not self.Options.CountdownVoiceNamesMigrated and HasLegacyCountVoiceOption(self.Options) then
 			MigrateCountVoiceOption(self.Options, "CountdownVoice")
 			MigrateCountVoiceOption(self.Options, "CountdownVoice2")
 			MigrateCountVoiceOption(self.Options, "CountdownVoice3")
