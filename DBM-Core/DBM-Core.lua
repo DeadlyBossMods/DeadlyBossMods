@@ -1706,7 +1706,7 @@ do
 	local function runDelayedFunctions(self)
 		--Check if voice pack missing
 		local activeVP = self.Options.ChosenVoicePack2
-		if activeVP ~= "None" then
+		if not self:IsNoneValue(activeVP) then
 			if not self.VoiceVersions[activeVP] or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
 				private.voiceSessionDisabled = true
 				--Since VEM is now bundled, users may elect to disable it by simiply disabling the module
@@ -3882,7 +3882,7 @@ do
 			self.Options.SpecialWarningFont = "standardFont"
 		end
 		--If users previous voice pack was not set to none, don't force change it to VEM, honor whatever it was set to before
-		if self.Options.ChosenVoicePack and self.Options.ChosenVoicePack ~= "None" then
+		if self.Options.ChosenVoicePack and not self:IsNoneValue(self.Options.ChosenVoicePack) then
 			self.Options.ChosenVoicePack2 = self.Options.ChosenVoicePack
 			self.Options.ChosenVoicePack = nil
 		end
@@ -3895,7 +3895,7 @@ do
 			"InfoFrameFont", "WarningFont", "SpecialWarningFont"
 		}) do
 			-- Migrate ElvUI changes
-			if type(self.Options[setting]) == "string" and self.Options[setting]:lower() ~= "none" then
+			if type(self.Options[setting]) == "string" and not self:IsNoneValue(self.Options[setting]) then
 				FixElv(setting)
 			end
 			-- Migrate soundkit to FileData ID changes
@@ -4218,7 +4218,7 @@ do
 		if private.LastInstanceType ~= "raid" and private.LastInstanceType ~= "party" and not force then return end
 		if self.Options.RestoreSettingMusic then return end--Music was disabled by the music disable override, abort here
 		fireEvent("DBM_MusicStart", "RaidOrDungeon")
-		if self.Options.EventSoundDungeonBGM and self.Options.EventSoundDungeonBGM ~= "None" and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) then
+		if self.Options.EventSoundDungeonBGM and not self:IsNoneValue(self.Options.EventSoundDungeonBGM) and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) then
 			if not self.Options.RestoreSettingCustomMusic then
 				self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
 				if self.Options.RestoreSettingCustomMusic == 0 then
@@ -4700,7 +4700,7 @@ do
 			self:FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack2
 			local path = 566558--Nightelf Bell
-			if not private.voiceSessionDisabled and voice ~= "None" then
+			if not private.voiceSessionDisabled and not self:IsNoneValue(voice) then
 				path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
 			end
 			self:PlaySoundFile(path)
@@ -4711,7 +4711,7 @@ do
 		elseif self.Options.EnteringCombatAlert and not private.IsEncounterInProgress() and self:AntiSpam(10, "COMBAT") then
 			self:FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack2
-			if not private.voiceSessionDisabled and voice ~= "None" and private.swFilterDisabled >= 17 then
+			if not private.voiceSessionDisabled and not self:IsNoneValue(voice) and private.swFilterDisabled >= 17 then
 				self:PlaySoundFile("Interface\\AddOns\\DBM-VP" .. voice .. "\\enteringcombat.ogg")
 				self:AddMsg(L.ENTERING_COMBAT)--Shown with no sound cause voice played
 			else
@@ -4745,7 +4745,7 @@ do
 		end
 		if self.Options.LeavingCombatAlert and not private.IsEncounterInProgress() and self:AntiSpam(10, "LEAVINGCOMBAT") then
 			local voice = DBM.Options.ChosenVoicePack2
-			if not private.voiceSessionDisabled and voice ~= "None" and private.swFilterDisabled >= 17 then
+			if not private.voiceSessionDisabled and not self:IsNoneValue(voice) and private.swFilterDisabled >= 17 then
 				self:PlaySoundFile("Interface\\AddOns\\DBM-VP" .. voice .. "\\leavingcombat.ogg")
 				self:AddMsg(L.LEAVING_COMBAT)--Shown with no sound cause voice played
 			else
@@ -5437,10 +5437,10 @@ do
 				end
 				--stop pull count
 				private.pullTimerStop()
-				if self.Options.EventSoundEngage2 and self.Options.EventSoundEngage2 ~= "" and self.Options.EventSoundEngage2 ~= "None" then
+				if self.Options.EventSoundEngage2 and self.Options.EventSoundEngage2 ~= "" and not self:IsNoneValue(self.Options.EventSoundEngage2) then
 					self:PlaySoundFile(self.Options.EventSoundEngage2, nil, true)
 				end
-				if not mod.inScenario and self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) and not mod.noStatistics and not self.Options.RestoreSettingMusic then
+				if not mod.inScenario and self.Options.EventSoundMusic and not self:IsNoneValue(self.Options.EventSoundMusic) and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) and not mod.noStatistics and not self.Options.RestoreSettingMusic then
 					fireEvent("DBM_MusicStart", "BossEncounter")
 					if not self.Options.RestoreSettingCustomMusic then
 						self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
@@ -5513,7 +5513,7 @@ do
 				if self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
 					local voice = DBM.Options.ChosenVoicePack2
 					local path = 566558--Nightelf Bell
-					if not private.voiceSessionDisabled and voice ~= "None" then
+					if not private.voiceSessionDisabled and not self:IsNoneValue(voice) then
 						path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
 					end
 					self:PlaySoundFile(path)
@@ -5522,7 +5522,7 @@ do
 				elseif self.Options.HealthWarningLow and health < 35 and self:AntiSpam(5, "LOWHEALTH") then
 					local voice = DBM.Options.ChosenVoicePack2
 					local path = 566558--Nightelf Bell
-					if not private.voiceSessionDisabled and voice ~= "None" then
+					if not private.voiceSessionDisabled and not self:IsNoneValue(voice) then
 						path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
 					end
 					self:PlaySoundFile(path)
@@ -5654,7 +5654,7 @@ do
 							end
 						end
 					end
-					if self.Options.EventSoundWipe and self.Options.EventSoundWipe ~= "None" and self.Options.EventSoundWipe ~= "" then
+					if self.Options.EventSoundWipe and not self:IsNoneValue(self.Options.EventSoundWipe) and self.Options.EventSoundWipe ~= "" then
 						if self.Options.EventSoundWipe == "Random" then
 							local defeatSounds = DBM:GetDefeatSounds()
 							if #defeatSounds >= 3 then
@@ -5783,7 +5783,7 @@ do
 					private.lastBossDefeat[modId .. normalizedPlayerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 					private.SendWorldSync(self, 8, "WBD", modId .. "\t" .. normalizedPlayerRealm .. "\t" .. name)
 				end
-				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "None" and self.Options.EventSoundVictory2 ~= "" and difficulties.difficultyIndex ~= 232 then--No victory in duos
+				if self.Options.EventSoundVictory2 and not self:IsNoneValue(self.Options.EventSoundVictory2) and self.Options.EventSoundVictory2 ~= "" and difficulties.difficultyIndex ~= 232 then--No victory in duos
 					if self.Options.EventSoundVictory2 == "Random" then
 						local victorySounds = DBM:GetVictorySounds()
 						if #victorySounds >= 3 then
@@ -6070,6 +6070,16 @@ do
 end
 
 do
+	-------------------------
+	--  Validation Checks  --
+	-------------------------
+
+	---@param value any
+	---@return boolean
+	function DBM:IsNoneValue(value)
+		return type(value) == "string" and value:lower() == "none"
+	end
+
 	local LSMMediaCacheBuilt, sharedMediaFileCache, validateCache = false, {}, {}
 
 	local function buildLSMFileCache()
@@ -6139,7 +6149,7 @@ do
 	end
 
 	function DBM:PlaySoundFile(path, ignoreSFX, validate)
-		if self.Options.SilentMode or path == "" or path == "None" then
+		if self.Options.SilentMode or path == "" or self:IsNoneValue(path) then
 			return
 		end
 		local soundSetting = self.Options.UseSoundChannel
@@ -6172,7 +6182,7 @@ do
 
 	local fontProbe = UIParent:CreateFontString()
 	fontProbe:Hide()
-	function DBM:IsFontValid(fontPath, standardFont)
+	function DBM:IsFontValid(fontPath, standardFont, fontSize, fontFlags)
 		-- "standardFont" is always valid (maps to locale-specific standard)
 		if fontPath == "standardFont" then
 			return true
@@ -6181,7 +6191,21 @@ do
 		if standardFont and fontPath == standardFont then
 			return true
 		end
-		return pcall(fontProbe.SetFont, fontProbe, fontPath, 12, "")
+		if type(fontPath) ~= "string" or fontPath == "" then
+			return false
+		end
+		local resolvedSize = tonumber(fontSize)
+		if not resolvedSize then
+			resolvedSize = 12
+		end
+		if resolvedSize ~= resolvedSize or resolvedSize <= 0 or resolvedSize > 200 then
+			return false
+		end
+		local resolvedFlags = type(fontFlags) == "string" and fontFlags or ""
+		if self:IsNoneValue(resolvedFlags) then
+			resolvedFlags = ""
+		end
+		return pcall(fontProbe.SetFont, fontProbe, fontPath, resolvedSize, resolvedFlags)
 	end
 end
 
@@ -6441,7 +6465,7 @@ function DBM:UNIT_DIED(args)
 		self:FlashClientIcon()
 		local voice = DBM.Options.ChosenVoicePack2
 		local path = 566558--Nightelf Bell
-		if not private.voiceSessionDisabled and voice ~= "None" then
+		if not private.voiceSessionDisabled and not self:IsNoneValue(voice) then
 			path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
 		end
 		self:PlaySoundFile(path)

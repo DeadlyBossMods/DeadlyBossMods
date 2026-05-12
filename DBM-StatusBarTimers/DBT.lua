@@ -208,7 +208,9 @@ function DBT:ValidateFontSettings()
 	local opts = self.Options
 	if not opts then return end
 	local font = opts.Font == "standardFont" and standardFont or opts.Font
-	if not DBM:IsFontValid(font, standardFont) then
+	local size = opts.FontSize
+	local style = (opts.FontFlag and not DBM:IsNoneValue(opts.FontFlag)) and opts.FontFlag or ""
+	if not DBM:IsFontValid(font, standardFont, size, style) then
 		opts.Font = self.DefaultOptions.Font
 		opts.FontSize = self.DefaultOptions.FontSize
 		opts.FontFlag = self.DefaultOptions.FontFlag
@@ -890,7 +892,7 @@ end
 
 function DBT:UpdateBars(sortBars)
 	local barOptions = self.Options
-	if sortBars and barOptions.Sort ~= "None" then
+	if sortBars and not DBM:IsNoneValue(barOptions.Sort) then
 		tsort(largeBars, function(x, y)
 			if barOptions.HugeSort == "Invert" then
 				return x.timer < y.timer
@@ -1590,7 +1592,7 @@ function barPrototype:ApplyStyle()
 --	bar:SetStatusBarColor(r, g, b, 1)--GetStatusBarTexture():SetVertexColor
 	bar:SetStatusBarTexture(barOptions.Texture)
 	local barFont = barOptions.Font == "standardFont" and standardFont or barOptions.Font
-	local barFontSize, barFontFlag = barOptions.FontSize, (barOptions.FontFlag and barOptions.FontFlag ~= "None") and barOptions.FontFlag or ""
+	local barFontSize, barFontFlag = barOptions.FontSize, (barOptions.FontFlag and not DBM:IsNoneValue(barOptions.FontFlag)) and barOptions.FontFlag or ""
 	name:SetFont(barFont, barFontSize, barFontFlag)
 	timer:SetFont(barFont, barFontSize, barFontFlag)
 	local textXOffset = enlarged and (barOptions.HugeTextXOffset or 0) or (barOptions.TextXOffset or 0)
