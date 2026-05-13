@@ -205,7 +205,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 				else
 					private.hardCodedTimers[eventID] = nil
 				end
-				self:Debug("|cffffff00Hardcoded timer terminated for eventID: |r"..tostring(eventID).." (timerID: "..tostring(hardcodedTimerId)..")", 3, nil, nil, true, true)
+				self:Debug("|cffffff00Hardcoded timer terminated for eventID: |r"..tostring(eventID).." (timerID: "..tostring(hardcodedTimerId)..")", 4, nil, nil, true, true)
 			end
 		end
 	end
