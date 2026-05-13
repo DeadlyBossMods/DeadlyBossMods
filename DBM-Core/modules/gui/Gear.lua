@@ -453,8 +453,13 @@ function SendGuildGearSyncRequest()
 	local requestToken = guildSyncToken
 	private.sendGuildSync(private.DBMSyncProtocol or 1, "GGQ", nil)
 	C_Timer.After(commReplyTimeoutSeconds + 2, function()
+		-- Guard staleness first: a rapid re-request increments guildSyncToken, making this timer stale.
+		-- Resetting guildGearQuerySent here would close the active query window and silently drop replies.
+		if requestToken ~= guildSyncToken then
+			return
+		end
 		guildGearQuerySent = false
-		if not frame:IsShown() or requestToken ~= guildSyncToken or selectedTab ~= 2 then
+		if not frame:IsShown() or selectedTab ~= 2 then
 			return
 		end
 		Update()
@@ -861,7 +866,9 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 			end
 		end
 	elseif event == "GGQ" then
-		if not private.sendWhisperSync or sender == DBM:GetUnitFullName("player") or not IsInGuild() then
+		-- Use UnitName (no realm) to match the ambiguated sender format from GetCorrectSender.
+		-- GetUnitFullName returns "Name-Realm" which never equals an ambiguated same-realm sender.
+		if not private.sendWhisperSync or sender == UnitName("player") or not IsInGuild() then
 			return
 		end
 		if C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown() then
