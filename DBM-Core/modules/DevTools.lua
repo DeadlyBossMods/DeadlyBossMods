@@ -16,17 +16,20 @@ function module:OnModuleLoad()
 end
 
 local mfloor, mmax, mceil = math.floor, math.max, math.ceil
+local sformat = string.format
 
 do
-	local debugLogFrame, debugLogViewport, debugLogContent, clearButton
+	local debugLogFrame, debugLogViewport, clearButton
 	local debugLogLineFrames = {}
-	local maxDebugLogEntries = 1500--Performance begins to degrade past 1500 entries
+	local debugLogEntries = {}
+	local maxDebugLogEntries = 1500
 	local debugLogSoftClosed = true
 	local lineHeight = 14
 	local debugLogLineCount = 0
 	local debugLogStartIndex = 1
 	local debugLogTopVisibleLine = 1
 	local debugLogNormalPoint, debugLogNormalRelativeTo, debugLogNormalX, debugLogNormalY
+	local ensureLineFrame, getPhysicalIndex
 
 	local function getVisibleLineCount()
 		if not debugLogViewport then return 1 end
@@ -47,15 +50,40 @@ do
 		end
 	end
 
+	local function getEntry(logicalIndex)
+		if logicalIndex < 1 or logicalIndex > debugLogLineCount then return nil end
+		return debugLogEntries[getPhysicalIndex(logicalIndex)]
+	end
+
+	local function updateVisibleLines()
+		if not debugLogViewport then return end
+		local visibleLineCount = getVisibleLineCount()
+		for i = 1, visibleLineCount do
+			local line = ensureLineFrame(i)
+			local text = getEntry(debugLogTopVisibleLine + i - 1)
+			if text then
+				line:SetText(text)
+				line:Show()
+			else
+				line:SetText("")
+				line:Hide()
+			end
+		end
+		if #debugLogLineFrames > visibleLineCount then
+			for i = visibleLineCount + 1, #debugLogLineFrames do
+				debugLogLineFrames[i]:SetText("")
+				debugLogLineFrames[i]:Hide()
+			end
+		end
+	end
+
 	local function refreshDebugLog(scrollToBottom)
-		if not debugLogViewport or not debugLogContent then return end
+		if not debugLogViewport then return end
 		if scrollToBottom then
 			debugLogTopVisibleLine = getMaxTopVisibleLine()
 		end
 		clampTopVisibleLine()
-		debugLogContent:SetHeight(mmax(debugLogViewport:GetHeight(), debugLogLineCount * lineHeight + 8))
-		debugLogContent:ClearAllPoints()
-		debugLogContent:SetPoint("TOPLEFT", debugLogViewport, "TOPLEFT", 0, ((debugLogTopVisibleLine - 1) * lineHeight))
+		updateVisibleLines()
 	end
 
 	local function scrollDebugLogByLines(lineDelta)
@@ -81,41 +109,29 @@ do
 		end
 	end
 
-	local function ensureLineFrame(index)
+	ensureLineFrame = function(index)
 		if debugLogLineFrames[index] then return debugLogLineFrames[index] end
-		local line = debugLogContent:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+		local line = debugLogViewport:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 		line:SetJustifyH("LEFT")
 		line:SetJustifyV("TOP")
 		line:SetWordWrap(false)
 		line:SetMaxLines(1)
+		line:SetPoint("TOPLEFT", debugLogViewport, "TOPLEFT", 0, -((index - 1) * lineHeight))
+		line:SetPoint("RIGHT", debugLogViewport, "RIGHT", 0, 0)
 		debugLogLineFrames[index] = line
 		return line
 	end
 
-	local function getPhysicalIndex(logicalIndex)
+	getPhysicalIndex = function(logicalIndex)
 		return ((debugLogStartIndex + logicalIndex - 2) % maxDebugLogEntries) + 1
-	end
-
-	local function updateLineLayout()
-		for logicalIndex = 1, debugLogLineCount do
-			local physicalIndex = getPhysicalIndex(logicalIndex)
-			local line = ensureLineFrame(physicalIndex)
-			line:ClearAllPoints()
-			line:SetPoint("TOPLEFT", debugLogContent, "TOPLEFT", 0, -((logicalIndex - 1) * lineHeight))
-			line:SetPoint("RIGHT", debugLogContent, "RIGHT", 0, 0)
-			line:Show()
-		end
-		if debugLogLineCount < maxDebugLogEntries then
-			for i = debugLogLineCount + 1, #debugLogLineFrames do
-				debugLogLineFrames[i]:SetText("")
-				debugLogLineFrames[i]:Hide()
-			end
-		end
 	end
 
 	local function clearAllLines()
 		debugLogLineCount = 0
 		debugLogStartIndex = 1
+		for i = 1, #debugLogEntries do
+			debugLogEntries[i] = nil
+		end
 		for i = 1, #debugLogLineFrames do
 			debugLogLineFrames[i]:SetText("")
 			debugLogLineFrames[i]:Hide()
@@ -189,9 +205,6 @@ do
 			refreshDebugLog(false)
 		end)
 
-		debugLogContent = CreateFrame("Frame", nil, debugLogViewport)
-		debugLogContent:SetSize(1140, 1)
-
 		local scrollUpButton = CreateFrame("Button", nil, debugLogFrame, "UIPanelButtonTemplate")
 		scrollUpButton:SetPoint("TOPRIGHT", debugLogFrame, "TOPRIGHT", -12, -40)
 		scrollUpButton:SetSize(28, 20)
@@ -224,7 +237,6 @@ do
 			scrollDebugLogByPage(1)
 		end)
 
-		updateLineLayout()
 		refreshDebugLog(true)
 		setDebugLogSoftClosed(true)
 	end
@@ -246,25 +258,23 @@ do
 
 	function appendToDebugLog(text)
 		local wasAtBottom = debugLogTopVisibleLine >= getMaxTopVisibleLine()
-		local line
+		local formattedText
+		local time = getFightTime()
+		if time then
+			formattedText = sformat("%.2f: %s", time, text)
+		else
+			formattedText = text
+		end
 		if debugLogLineCount < maxDebugLogEntries then
 			debugLogLineCount = debugLogLineCount + 1
-			line = ensureLineFrame(getPhysicalIndex(debugLogLineCount))
+			debugLogEntries[getPhysicalIndex(debugLogLineCount)] = formattedText
 		else
-			line = ensureLineFrame(debugLogStartIndex)
+			debugLogEntries[debugLogStartIndex] = formattedText
 			debugLogStartIndex = (debugLogStartIndex % maxDebugLogEntries) + 1
 			if debugLogTopVisibleLine > 1 then
 				debugLogTopVisibleLine = debugLogTopVisibleLine - 1
 			end
 		end
-		local time = getFightTime()
-		if time then
-			line:SetText(time..": "..text)
-		else
-			line:SetText(text)
-		end
-		line:Show()
-		updateLineLayout()
 		if debugLogFrame and debugLogFrame:IsShown() and not debugLogSoftClosed then
 			refreshDebugLog(wasAtBottom)
 		end
@@ -316,21 +326,21 @@ end
 
 do
 	local eventsRegistered = false
-	local UnitName, UnitExists, UnitIsVisible, UnitCanAttack = UnitName, UnitExists, UnitIsVisible, UnitCanAttack
+	local UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsUnit = UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsUnit
 	local bossUnits = {
 		"boss1", "boss2", "boss3", "boss4", "boss5",
 		"boss6", "boss7", "boss8", "boss9", "boss10",
 		"arena1", "arena2", "arena3", "arena4", "arena5",
 	}
 	function module:UNIT_TARGETABLE_CHANGED(uId)
-		if DBM.Options.DebugLevel < 3 then return end
+		if DBM.Options.DebugLevel < 2 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
-		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 4, nil, nil, true)
+		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 3, nil, nil, true, true)
 	end
 
 	function module:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		if DBM.Options.DebugLevel < 3 then return end
+		if DBM.Options.DebugLevel < 2 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
 		local hasBossUnits = false
@@ -338,88 +348,96 @@ do
 			local unit = bossUnits[i]
 			if UnitExists(unit) then
 				hasBossUnits = true
-				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 4, nil, nil, true)
+				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 3, nil, nil, true, true)
 			end
 		end
 		if not hasBossUnits then
-			DBM:Debug("|c00D8B4FEIEEU|r: no boss units found", 4, nil, nil, true)
+			DBM:Debug("|c00D8B4FEIEEU|r: no boss units found", 3, nil, nil, true, true)
 		end
 	end
 
 	function module:UNIT_SPELLCAST_START(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
-		if DBM.Options.DebugLevel < 2 then return end
---		local inCombat = private.getInCombat()
---		if #inCombat > 0 then--At least one boss is engaged
-			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
---		end
+		if DBM.Options.DebugLevel < 3 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		local spellName = DBM:GetSpellName(spellId)
+		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 	function module:UNIT_SPELLCAST_STOP(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
-		if DBM.Options.DebugLevel < 2 then return end
---		local inCombat = private.getInCombat()
---		if #inCombat > 0 then--At least one boss is engaged
-			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
---		end
+		if DBM.Options.DebugLevel < 3 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		local spellName = DBM:GetSpellName(spellId)
+		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
-		if DBM.Options.DebugLevel < 2 then return end
---		local inCombat = private.getInCombat()
---		if #inCombat > 0 then--At least one boss is engaged
-			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
---		end
+		if DBM.Options.DebugLevel < 3 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		local spellName = DBM:GetSpellName(spellId)
+		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
-		if DBM.Options.DebugLevel < 2 then return end
---		local inCombat = private.getInCombat()
---		if #inCombat > 0 then--At least one boss is engaged
-			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
---		end
+		if DBM.Options.DebugLevel < 3 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		local spellName = DBM:GetSpellName(spellId)
+		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
-		if UnitIsUnit(uId, "target") and UnitExists("boss1") then return end
-		if DBM.Options.DebugLevel < 2 then return end
---		local inCombat = private.getInCombat()
---		if #inCombat > 0 then--At least one boss is engaged
-			local spellName = DBM:GetSpellName(spellId)
-			DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true)
---		end
+		if DBM.Options.DebugLevel < 3 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		local spellName = DBM:GetSpellName(spellId)
+		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	--Spammy events that core doesn't otherwise need are now dynamically registered/unregistered based on whether or not user is actually debugging
 	function module:OnDebugToggle()
-		if DBM.Options.DebugMode and not eventsRegistered then
-			eventsRegistered = true
-			if isRetail then
-				self:RegisterShortTermEvents(
-					"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-					"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_SPELLCAST_CHANNEL_START boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5 target",
-					"UNIT_TARGETABLE_CHANGED")
-			else--No Boss unit Ids in classic, register backups
-				self:RegisterShortTermEvents(
-	--				"UNIT_SPELLCAST_START target focus",
-					"UNIT_SPELLCAST_SUCCEEDED target focus",
-	--				"UNIT_SPELLCAST_STOP target focus",
-					"UNIT_TARGETABLE_CHANGED")
+		if DBM.Options.DebugMode then
+			if eventsRegistered then
+				self:UnregisterShortTermEvents()
+				eventsRegistered = false
 			end
-		elseif not DBM.Options.DebugMode and eventsRegistered then
+			if isRetail then
+				if DBM.Options.DebugLevel >= 3 then
+					self:RegisterShortTermEvents(
+						"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5 target",
+						"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5 target",
+						"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5 target",
+						"UNIT_SPELLCAST_CHANNEL_START boss1 boss2 boss3 boss4 boss5 target",
+						"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5 target"
+					)
+					eventsRegistered = true
+				elseif DBM.Options.DebugLevel >= 2 then
+					self:RegisterShortTermEvents(
+						"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+						"UNIT_TARGETABLE_CHANGED"
+					)
+					eventsRegistered = true
+				end
+			else--No Boss unit Ids in classic, register backups
+				if DBM.Options.DebugLevel >= 3 then
+					self:RegisterShortTermEvents(
+	--					"UNIT_SPELLCAST_START target focus",
+						"UNIT_SPELLCAST_SUCCEEDED target focus",
+	--					"UNIT_SPELLCAST_STOP target focus",
+						"UNIT_TARGETABLE_CHANGED"
+					)
+					eventsRegistered = true
+				elseif DBM.Options.DebugLevel >= 2 then
+					self:RegisterShortTermEvents("UNIT_TARGETABLE_CHANGED")
+					eventsRegistered = true
+				end
+			end
+		elseif eventsRegistered then
 			eventsRegistered = false
 			self:UnregisterShortTermEvents()
 		end
 		self:UpdateDebugLogStateFromDebugMode()
+	end
+
+	function module:OnDebugLevelChanged()
+		if not DBM.Options or not DBM.Options.DebugMode then return end
+		self:OnDebugToggle()
 	end
 
 	---Utility function for debugging DBM and blizzard events
@@ -428,7 +446,8 @@ do
 	---@param useSound boolean? Play 'ding' sound when displaying message
 	---@param alwaysFireEvent boolean? Used specifically for transcriptor logging
 	---@param isLogged boolean? Used specifically for events we want logged in the DBM Debug Log frame
-	function DBM:Debug(text, level, useSound, alwaysFireEvent, isLogged)
+	---@param combatFiltered boolean? Used specifically for events we want filtered by combat state
+	function DBM:Debug(text, level, useSound, alwaysFireEvent, isLogged, combatFiltered)
 		if isLogged and DBM.Options and DBM.Options.DebugMode then
 			appendToDebugLog(text)
 		end
@@ -438,6 +457,7 @@ do
 			DBM:FireEvent("DBM_Debug", text, level)
 		end
 		if not DBM.Options or not DBM.Options.DebugMode then return end
+		if combatFiltered and InCombatLockdown() then return end
 		if (level or 1) <= DBM.Options.DebugLevel then
 			local frame = _G[tostring(DBM.Options.ChatFrame)]
 			frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME

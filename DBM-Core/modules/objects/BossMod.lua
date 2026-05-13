@@ -1141,7 +1141,7 @@ do
 		local soundId = customOption and self.Options[customOption .. "SWSound"] or self.Options[optionType .. optionId .. "SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
 		local chosenVoice = DBM.Options.ChosenVoicePack2
-		if chosenVoice ~= "None" and not private.voiceSessionDisabled and voiceVersion <= private.swFilterDisabled then
+		if not DBM:IsNoneValue(chosenVoice) and not private.voiceSessionDisabled and voiceVersion <= private.swFilterDisabled then
 			local isVoicePackUsed
 			--Vet if user has voice pack enabled by sound ID
 			if notSpecial or type(soundId) == "number" and soundId < 5 then--Value 1-4 are SW1 defaults, otherwise it's file data ID and handled by Custom
@@ -1187,7 +1187,7 @@ do
 		if DBM.Options.DontPlayPrivateAuraSound then return end
 		if optionId and mod.Options["PrivateAuraSound" .. optionId] then
 			local mediaPath = checkValidVPSound(mod, "PrivateAuraSound", optionId, voice, voiceVersion)
-			if mediaPath == "None" then return end--Don't register if media path is none, even if option is enabled
+			if DBM:IsNoneValue(mediaPath) then return end--Don't register if media path is none, even if option is enabled
 			if type(auraspellId) == "table" then
 				for _, spellId in ipairs(auraspellId) do
 					registerPrivateAuraSound(mod, optionId, spellId, mediaPath)
@@ -1362,7 +1362,7 @@ do
 			--if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
 			local enabled = customOption and self.Options[customOption] or self.Options["CustomAlertOption" .. optionId]
 			local mediaPath = checkValidVPSound(self, "CustomAlertOption", optionId, voice, voiceVersion, customOption, notSpecial)
-			if enabled and mediaPath ~= "None" then
+			if enabled and not DBM:IsNoneValue(mediaPath) then
 				if not self.tlSoundEvents then
 					self.tlSoundEvents = {}
 					self:DisableSpecialWarningSounds()

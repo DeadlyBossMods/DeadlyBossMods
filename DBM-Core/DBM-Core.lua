@@ -82,13 +82,13 @@ end
 DBM.Revision = parseCurseDate("@project-date-integer@")
 DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
 
-private.fakeBWVersion, private.fakeBWHash = 412, "5f04367"--412.7
+private.fakeBWVersion, private.fakeBWHash = 415, "414c990"--415.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.46 alpha"--Core version
+DBM.DisplayVersion = "12.0.48 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 5, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 5, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -118,6 +118,32 @@ if playerClass == "MAGE" or playerClass == "WARLOCK" or playerClass == "ROGUE" o
 end
 DBM_CharSavedRevision = 2
 local locale = GetLocale()
+local countdownVoiceRenames = {
+	["Jérémy"] = "Jeremy",
+	["Élise"] = "Elise",
+	["도현원"] = "Dohyunwon",
+	["하민지"] = "Haminji",
+	["Александр"] = "Alexander",
+	["Надежда"] = "Nadezhda",
+	["瑞辰"] = "Ruichen",
+	["纯如"] = "Chunru",
+	["浩"] = "Hao",
+	["玲"] = "Ling"
+}
+
+local function MigrateCountVoiceOption(options, optionName)
+	local currentValue = options[optionName]
+	if type(currentValue) == "string" and countdownVoiceRenames[currentValue] then
+		options[optionName] = countdownVoiceRenames[currentValue]
+	end
+end
+
+local function HasLegacyCountVoiceOption(options)
+	return (type(options.CountdownVoice) == "string" and countdownVoiceRenames[options.CountdownVoice]) or
+		(type(options.CountdownVoice2) == "string" and countdownVoiceRenames[options.CountdownVoice2]) or
+		(type(options.CountdownVoice3) == "string" and countdownVoiceRenames[options.CountdownVoice3]) or
+		(type(options.PullVoice) == "string" and countdownVoiceRenames[options.PullVoice])
+end
 
 DBM.DefaultOptions = {
 	WarningColors = {
@@ -137,43 +163,44 @@ DBM.DefaultOptions = {
 					(locale == "deDE" and "Karl") or
 					(locale == "esES" and "Mateo") or
 					(locale == "esMX" and "Juan") or
-					(locale == "frFR" and "Jérémy") or
-					(locale == "koKR" and "도현원") or
+					(locale == "frFR" and "Jeremy") or
+					(locale == "koKR" and "Dohyunwon") or
 					(locale == "ptBR" and "Anshlun") or
-					(locale == "ruRU" and "Александр") or
-					(locale == "zhCN" and "瑞辰") or
-					(locale == "zhTW" and "浩"),
+					(locale == "ruRU" and "Alexander") or
+					(locale == "zhCN" and "Ruichen") or
+					(locale == "zhTW" and "Hao"),
 	CountdownVoice2 = ((locale == "enUS" or locale == "enGB") and "Kolt") or
 					(locale == "deDE" and "Franziska") or
 					(locale == "esES" and "Fernanda") or
 					(locale == "esMX" and "Isabel") or
-					(locale == "frFR" and "Élise") or
-					(locale == "koKR" and "하민지") or
+					(locale == "frFR" and "Elise") or
+					(locale == "koKR" and "Haminji") or
 					(locale == "ptBR" and "Neryssa") or
-					(locale == "ruRU" and "Надежда") or
-					(locale == "zhCN" and "纯如") or
-					(locale == "zhTW" and "玲"),
+					(locale == "ruRU" and "Nadezhda") or
+					(locale == "zhCN" and "Chunru") or
+					(locale == "zhTW" and "Ling"),
 	CountdownVoice3 = ((locale == "enUS" or locale == "enGB") and "Smooth") or
 					(locale == "deDE" and "Franziska") or
 					(locale == "esES" and "Fernanda") or
 					(locale == "esMX" and "Isabel") or
-					(locale == "frFR" and "Élise") or
-					(locale == "koKR" and "하민지") or
+					(locale == "frFR" and "Elise") or
+					(locale == "koKR" and "Haminji") or
 					(locale == "ptBR" and "Neryssa") or
-					(locale == "ruRU" and "Надежда") or
-					(locale == "zhCN" and "纯如") or
-					(locale == "zhTW" and "玲"),
+					(locale == "ruRU" and "Nadezhda") or
+					(locale == "zhCN" and "Chunru") or
+					(locale == "zhTW" and "Ling"),
 	CountSize = 5,
 	PullVoice = ((locale == "enUS" or locale == "enGB") and "Corsica") or
 					(locale == "deDE" and "Karl") or
 					(locale == "esES" and "Mateo") or
 					(locale == "esMX" and "Juan") or
-					(locale == "frFR" and "Jérémy") or
-					(locale == "koKR" and "도현원") or
+					(locale == "frFR" and "Jeremy") or
+					(locale == "koKR" and "Dohyunwon") or
 					(locale == "ptBR" and "Anshlun") or
-					(locale == "ruRU" and "Александр") or
-					(locale == "zhCN" and "瑞辰") or
-					(locale == "zhTW" and "浩"),
+					(locale == "ruRU" and "Alexander") or
+					(locale == "zhCN" and "Ruichen") or
+					(locale == "zhTW" and "Hao"),
+	CountdownVoiceNamesMigrated = false,
 	ChosenVoicePack2 = (locale == "enUS" or locale == "enGB") and "VEM" or "None",
 	VPReplacesAnnounce = true,
 	VPReplacesSADefault = true,
@@ -919,6 +946,16 @@ do
 	bossModPrototype.issecrethealth = DBM.issecrethealth
 end
 
+---@param self DBMModOrDBM
+function DBM:CheckDBM(name)
+	if raid[name] and raid[name].version then
+		return raid[name].version
+	else
+		return false
+	end
+end
+bossModPrototype.CheckDBM = DBM.CheckDBM
+
 function bossModPrototype:CheckBigWigs(name)
 	if raid[name] and raid[name].bwversion then
 		return raid[name].bwversion
@@ -1511,7 +1548,7 @@ do
 	---@param self DBMModOrDBM
 	---@param ... DBMEvent|string
 	function DBM:RegisterShortTermEvents(...)
-		DBM:Debug("RegisterShortTermEvents fired", 2)
+		DBM:Debug("RegisterShortTermEvents fired", 3)
 		test:Trace(self, "RegisterEvents", "ShortTerm", ...)
 		local _shortTermRegisterEvents = {...}
 		for k, v in pairs(_shortTermRegisterEvents) do
@@ -1534,7 +1571,7 @@ do
 
 	---@param self DBMModOrDBM
 	function DBM:UnregisterShortTermEvents()
-		DBM:Debug("UnregisterShortTermEvents fired", 3)
+		DBM:Debug("UnregisterShortTermEvents fired", 3, nil, nil, nil, true)
 		if self.shortTermRegisterEvents then
 			DBM:Debug("UnregisterShortTermEvents found registered shortTermRegisterEvents", 2)
 			for event, mods in pairs(registeredEvents) do
@@ -1696,7 +1733,7 @@ do
 	local function runDelayedFunctions(self)
 		--Check if voice pack missing
 		local activeVP = self.Options.ChosenVoicePack2
-		if activeVP ~= "None" then
+		if not self:IsNoneValue(activeVP) then
 			if not self.VoiceVersions[activeVP] or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
 				private.voiceSessionDisabled = true
 				--Since VEM is now bundled, users may elect to disable it by simiply disabling the module
@@ -2619,28 +2656,31 @@ do
 					end
 				end
 			end
-			if #iconSeter > 0 then
-				tsort(iconSeter, function(a, b) return a > b end)
-				local elected = iconSeter[1]
-				if playerName == elected:sub(elected:find(" ") + 1) then--Highest revision in raid, auto allow, period, even if out of date, you're revision in raid that has assist
-					private.enableIcons = true
-					DBM:Debug("You have been elected as primary icon setter for raid for having newest revision in raid that has assist/lead", 2)
-				end
-				--Initiate backups that at least have latest version, in case the main elect doesn't have icons enabled
-				for i = 2, 3 do--Allow top 3 revisions in raid to set icons, instead of just top one
-					local electedBackup = iconSeter[i]
-					if private.updateNotificationDisplayed == 0 and electedBackup and playerName == electedBackup:sub(elected:find(" ") + 1) then
+			if not self:IsPostMidnight() then
+				--There is no icon setting in midnight so no reason to even elect an icon setter
+				if #iconSeter > 0 then
+					tsort(iconSeter, function(a, b) return a > b end)
+					local elected = iconSeter[1]
+					if playerName == elected:sub(elected:find(" ") + 1) then--Highest revision in raid, auto allow, period, even if out of date, you're revision in raid that has assist
 						private.enableIcons = true
-						DBM:Debug("You have been elected as one of 2 backup icon setters in raid that have assist/lead", 2)
+						DBM:Debug("You have been elected as primary icon setter for raid for having newest revision in raid that has assist/lead", 2)
+					end
+					--Initiate backups that at least have latest version, in case the main elect doesn't have icons enabled
+					for i = 2, 3 do--Allow top 3 revisions in raid to set icons, instead of just top one
+						local electedBackup = iconSeter[i]
+						if private.updateNotificationDisplayed == 0 and electedBackup and playerName == electedBackup:sub(elected:find(" ") + 1) then
+							private.enableIcons = true
+							DBM:Debug("You have been elected as one of 2 backup icon setters in raid that have assist/lead", 2)
+						end
 					end
 				end
-			end
-			--Recheck elected icon if group changed mid combat, so we don't end up in situation no icons are set because setter bounced
-			if #inCombat > 0 then--At least one boss is engaged
-				for i = #inCombat, 1, -1 do
-					local mod = inCombat[i]
-					if mod then
-						self:ElectIconSetter(mod)
+				--Recheck elected icon if group changed mid combat, so we don't end up in situation no icons are set because setter bounced
+				if #inCombat > 0 then--At least one boss is engaged
+					for i = #inCombat, 1, -1 do
+						local mod = inCombat[i]
+						if mod then
+							self:ElectIconSetter(mod)
+						end
 					end
 				end
 			end
@@ -2766,8 +2806,13 @@ do
 		end
 	end
 
-	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
+	local function groupSizeRefresh()
 		difficulties:RefreshCache(true)
+	end
+
+	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
+		self:Unschedule(groupSizeRefresh)
+		self:Schedule(3.5, groupSizeRefresh)
 	end
 
 	function DBM:GetNumRealPlayersInZone()
@@ -3848,6 +3893,13 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
+		if not self.Options.CountdownVoiceNamesMigrated and HasLegacyCountVoiceOption(self.Options) then
+			MigrateCountVoiceOption(self.Options, "CountdownVoice")
+			MigrateCountVoiceOption(self.Options, "CountdownVoice2")
+			MigrateCountVoiceOption(self.Options, "CountdownVoice3")
+			MigrateCountVoiceOption(self.Options, "PullVoice")
+			self.Options.CountdownVoiceNamesMigrated = true
+		end
 		DBM_AllSavedOptions[usedProfile] = self.Options
 
 		-- force enable dual profile (change default)
@@ -3869,7 +3921,7 @@ do
 			self.Options.SpecialWarningFont = "standardFont"
 		end
 		--If users previous voice pack was not set to none, don't force change it to VEM, honor whatever it was set to before
-		if self.Options.ChosenVoicePack and self.Options.ChosenVoicePack ~= "None" then
+		if self.Options.ChosenVoicePack and not self:IsNoneValue(self.Options.ChosenVoicePack) then
 			self.Options.ChosenVoicePack2 = self.Options.ChosenVoicePack
 			self.Options.ChosenVoicePack = nil
 		end
@@ -3882,7 +3934,7 @@ do
 			"InfoFrameFont", "WarningFont", "SpecialWarningFont"
 		}) do
 			-- Migrate ElvUI changes
-			if type(self.Options[setting]) == "string" and self.Options[setting]:lower() ~= "none" then
+			if type(self.Options[setting]) == "string" and not self:IsNoneValue(self.Options[setting]) then
 				FixElv(setting)
 			end
 			-- Migrate soundkit to FileData ID changes
@@ -4205,7 +4257,7 @@ do
 		if private.LastInstanceType ~= "raid" and private.LastInstanceType ~= "party" and not force then return end
 		if self.Options.RestoreSettingMusic then return end--Music was disabled by the music disable override, abort here
 		fireEvent("DBM_MusicStart", "RaidOrDungeon")
-		if self.Options.EventSoundDungeonBGM and self.Options.EventSoundDungeonBGM ~= "None" and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) then
+		if self.Options.EventSoundDungeonBGM and not self:IsNoneValue(self.Options.EventSoundDungeonBGM) and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) then
 			if not self.Options.RestoreSettingCustomMusic then
 				self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
 				if self.Options.RestoreSettingCustomMusic == 0 then
@@ -4687,7 +4739,7 @@ do
 			self:FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack2
 			local path = 566558--Nightelf Bell
-			if not private.voiceSessionDisabled and voice ~= "None" then
+			if not private.voiceSessionDisabled and not self:IsNoneValue(voice) then
 				path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
 			end
 			self:PlaySoundFile(path)
@@ -4698,7 +4750,7 @@ do
 		elseif self.Options.EnteringCombatAlert and not private.IsEncounterInProgress() and self:AntiSpam(10, "COMBAT") then
 			self:FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack2
-			if not private.voiceSessionDisabled and voice ~= "None" and private.swFilterDisabled >= 17 then
+			if not private.voiceSessionDisabled and not self:IsNoneValue(voice) and private.swFilterDisabled >= 17 then
 				self:PlaySoundFile("Interface\\AddOns\\DBM-VP" .. voice .. "\\enteringcombat.ogg")
 				self:AddMsg(L.ENTERING_COMBAT)--Shown with no sound cause voice played
 			else
@@ -4732,7 +4784,7 @@ do
 		end
 		if self.Options.LeavingCombatAlert and not private.IsEncounterInProgress() and self:AntiSpam(10, "LEAVINGCOMBAT") then
 			local voice = DBM.Options.ChosenVoicePack2
-			if not private.voiceSessionDisabled and voice ~= "None" and private.swFilterDisabled >= 17 then
+			if not private.voiceSessionDisabled and not self:IsNoneValue(voice) and private.swFilterDisabled >= 17 then
 				self:PlaySoundFile("Interface\\AddOns\\DBM-VP" .. voice .. "\\leavingcombat.ogg")
 				self:AddMsg(L.LEAVING_COMBAT)--Shown with no sound cause voice played
 			else
@@ -4852,7 +4904,7 @@ do
 	end
 
 	function DBM:BOSS_KILL(encounterID, name)
-		self:Debug("|cffffff00BOSS_KILL: |r event fired: " .. encounterID .. " " .. name, 1, nil, nil, true)
+		self:Debug("|cffffff00BOSS_KILL: |r event fired: " .. encounterID .. " " .. name, 1, nil, nil, true, true)
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
@@ -4923,9 +4975,9 @@ do
 	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		if self:issecretvalue(msg) then
 			if target then
-				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc .. " while looking at " .. target, 4, nil, nil, true)
+				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc .. " while looking at " .. target, 3, nil, nil, true, true)
 			else
-				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc, 4, nil, nil, true)
+				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc, 3, nil, nil, true, true)
 			end
 			return
 		end
@@ -4940,7 +4992,7 @@ do
 					end
 				end
 			end
-			self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 4, nil, nil, true)
+			self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 3, nil, nil, true, true)
 		end
 		if private.isClassic and not IsInInstance() then
 			if msg:find(L.WORLD_BUFFS.hordeOny) then
@@ -4969,7 +5021,7 @@ do
 
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
 		if self:issecretvalue(msg) then
-			self:Debug("|cffffa500CHAT_MSG_MONSTER_EMOTE: |r fired: " .. msg, 4, nil, nil, true)
+			self:Debug("|cffffa500CHAT_MSG_MONSTER_EMOTE: |r fired: " .. msg, 3, nil, nil, true, true)
 			return
 		end
 		return onMonsterMessage(self, "emote", msg)
@@ -4978,7 +5030,7 @@ do
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender, ...)
 		if self:issecretvalue(msg) then
 			--Still send the debug to debuglog
-			self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. msg .. " with sender of " .. sender, 4, nil, nil, true)
+			self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. msg .. " with sender of " .. sender, 3, nil, nil, true, true)
 			return
 		end
 		onMonsterMessage(self, "emote", msg)
@@ -4987,7 +5039,7 @@ do
 			local spellId = tonumber(id)
 			if spellId then
 				local spellName = DBM:GetSpellName(spellId) or CL.UNKNOWN
-				self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 4, nil, nil, true)
+				self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 3, nil, nil, true, true)
 			end
 		end
 		return self:FilterRaidBossEmote(msg, sender, ...)
@@ -5003,7 +5055,7 @@ do
 
 	function DBM:RAID_BOSS_WHISPER(msg)
 		if self:issecretvalue(msg) then
-			self:Debug("RAID_BOSS_WHISPER fired: " .. msg, 4, nil, nil, true)
+			self:Debug("RAID_BOSS_WHISPER fired: " .. msg, 2, nil, nil, true, true)
 			return
 		end
 		--Make it easier for devs to detect whispers they are unable to see
@@ -5029,7 +5081,7 @@ do
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
 		if self:issecretvalue(msg) then
-			self:Debug("CHAT_MSG_MONSTER_SAY fired: " .. msg, 4, nil, nil, true)
+			self:Debug("CHAT_MSG_MONSTER_SAY fired: " .. msg, 3, nil, nil, true, true)
 			return
 		end
 		if private.isClassic and not IsInInstance() then
@@ -5189,7 +5241,7 @@ do
 			if mod.lastKillTime and GetTime() - mod.lastKillTime < (mod.reCombatTime or 120) and event ~= "LOADING_SCREEN_DISABLED" then return end
 			if mod.lastWipeTime and GetTime() - mod.lastWipeTime < (event == "ENCOUNTER_START" and 3 or mod.reCombatTime2 or 20) and event ~= "LOADING_SCREEN_DISABLED" then return end
 			if event then
-				self:Debug("StartCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID, 1, nil, nil, true)
+				self:Debug("StartCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID, 1, nil, nil, true, true)
 				if event ~= "ENCOUNTER_START" then
 					self:Debug("This event is started by " .. event .. ". Review ENCOUNTER_START event to ensure if this is still needed", 2)
 				end
@@ -5424,10 +5476,10 @@ do
 				end
 				--stop pull count
 				private.pullTimerStop()
-				if self.Options.EventSoundEngage2 and self.Options.EventSoundEngage2 ~= "" and self.Options.EventSoundEngage2 ~= "None" then
+				if self.Options.EventSoundEngage2 and self.Options.EventSoundEngage2 ~= "" and not self:IsNoneValue(self.Options.EventSoundEngage2) then
 					self:PlaySoundFile(self.Options.EventSoundEngage2, nil, true)
 				end
-				if not mod.inScenario and self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) and not mod.noStatistics and not self.Options.RestoreSettingMusic then
+				if not mod.inScenario and self.Options.EventSoundMusic and not self:IsNoneValue(self.Options.EventSoundMusic) and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) and not mod.noStatistics and not self.Options.RestoreSettingMusic then
 					fireEvent("DBM_MusicStart", "BossEncounter")
 					if not self.Options.RestoreSettingCustomMusic then
 						self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
@@ -5451,7 +5503,7 @@ do
 					if path ~= "MISSING" then
 						PlayMusic(path)
 						self.Options.musicPlaying = true
-						self:Debug("Starting combat music with file: " .. path)
+						--self:Debug("Starting combat music with file: " .. path)
 					end
 				end
 			else
@@ -5500,7 +5552,7 @@ do
 				if self.Options.AFKHealthWarning2 and (health < (private.isHardcoreServer and 95 or 85)) and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then
 					local voice = DBM.Options.ChosenVoicePack2
 					local path = 566558--Nightelf Bell
-					if not private.voiceSessionDisabled and voice ~= "None" then
+					if not private.voiceSessionDisabled and not self:IsNoneValue(voice) then
 						path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
 					end
 					self:PlaySoundFile(path)
@@ -5509,7 +5561,7 @@ do
 				elseif self.Options.HealthWarningLow and health < 35 and self:AntiSpam(5, "LOWHEALTH") then
 					local voice = DBM.Options.ChosenVoicePack2
 					local path = 566558--Nightelf Bell
-					if not private.voiceSessionDisabled and voice ~= "None" then
+					if not private.voiceSessionDisabled and not self:IsNoneValue(voice) then
 						path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
 					end
 					self:PlaySoundFile(path)
@@ -5561,7 +5613,7 @@ do
 			self.Options.DisableSWSound = false
 			self.Options.fixBlizzApi = false
 			if event then
-				self:Debug("EndCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID, 1, nil, nil, true)
+				self:Debug("EndCombat called by : " .. event .. ". LastInstanceMapID is " .. LastInstanceMapID, 2, nil, nil, true)
 			end
 			if private.enableIcons and not self.Options.DontSetIcons and not self.Options.DontRestoreIcons then
 				-- restore saved previous icon
@@ -5641,7 +5693,7 @@ do
 							end
 						end
 					end
-					if self.Options.EventSoundWipe and self.Options.EventSoundWipe ~= "None" and self.Options.EventSoundWipe ~= "" then
+					if self.Options.EventSoundWipe and not self:IsNoneValue(self.Options.EventSoundWipe) and self.Options.EventSoundWipe ~= "" then
 						if self.Options.EventSoundWipe == "Random" then
 							local defeatSounds = DBM:GetDefeatSounds()
 							if #defeatSounds >= 3 then
@@ -5770,7 +5822,7 @@ do
 					private.lastBossDefeat[modId .. normalizedPlayerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 					private.SendWorldSync(self, 8, "WBD", modId .. "\t" .. normalizedPlayerRealm .. "\t" .. name)
 				end
-				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "None" and self.Options.EventSoundVictory2 ~= "" and difficulties.difficultyIndex ~= 232 then--No victory in duos
+				if self.Options.EventSoundVictory2 and not self:IsNoneValue(self.Options.EventSoundVictory2) and self.Options.EventSoundVictory2 ~= "" and difficulties.difficultyIndex ~= 232 then--No victory in duos
 					if self.Options.EventSoundVictory2 == "Random" then
 						local victorySounds = DBM:GetVictorySounds()
 						if #victorySounds >= 3 then
@@ -6057,6 +6109,16 @@ do
 end
 
 do
+	-------------------------
+	--  Validation Checks  --
+	-------------------------
+
+	---@param value any
+	---@return boolean
+	function DBM:IsNoneValue(value)
+		return type(value) == "string" and value:lower() == "none"
+	end
+
 	local LSMMediaCacheBuilt, sharedMediaFileCache, validateCache = false, {}, {}
 
 	local function buildLSMFileCache()
@@ -6126,7 +6188,7 @@ do
 	end
 
 	function DBM:PlaySoundFile(path, ignoreSFX, validate)
-		if self.Options.SilentMode or path == "" or path == "None" then
+		if self.Options.SilentMode or path == "" or self:IsNoneValue(path) then
 			return
 		end
 		local soundSetting = self.Options.UseSoundChannel
@@ -6159,7 +6221,7 @@ do
 
 	local fontProbe = UIParent:CreateFontString()
 	fontProbe:Hide()
-	function DBM:IsFontValid(fontPath, standardFont)
+	function DBM:IsFontValid(fontPath, standardFont, fontSize, fontFlags)
 		-- "standardFont" is always valid (maps to locale-specific standard)
 		if fontPath == "standardFont" then
 			return true
@@ -6168,7 +6230,21 @@ do
 		if standardFont and fontPath == standardFont then
 			return true
 		end
-		return pcall(fontProbe.SetFont, fontProbe, fontPath, 12, "")
+		if type(fontPath) ~= "string" or fontPath == "" then
+			return false
+		end
+		local resolvedSize = tonumber(fontSize)
+		if not resolvedSize then
+			resolvedSize = 12
+		end
+		if resolvedSize ~= resolvedSize or resolvedSize <= 0 or resolvedSize > 200 then
+			return false
+		end
+		local resolvedFlags = type(fontFlags) == "string" and fontFlags or ""
+		if self:IsNoneValue(resolvedFlags) then
+			resolvedFlags = ""
+		end
+		return pcall(fontProbe.SetFont, fontProbe, fontPath, resolvedSize, resolvedFlags)
 	end
 end
 
@@ -6428,7 +6504,7 @@ function DBM:UNIT_DIED(args)
 		self:FlashClientIcon()
 		local voice = DBM.Options.ChosenVoicePack2
 		local path = 566558--Nightelf Bell
-		if not private.voiceSessionDisabled and voice ~= "None" then
+		if not private.voiceSessionDisabled and not self:IsNoneValue(voice) then
 			path = "Interface\\AddOns\\DBM-VP" .. voice .. "\\checkhp.ogg"
 		end
 		self:PlaySoundFile(path)
@@ -6530,7 +6606,7 @@ end
 do
 	local spamProtection = {}
 	function DBM:SendTimers(target)
-		if not dbmIsEnabled or IsTrialAccount() then return end
+		if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
 		self:Debug("SendTimers requested by " .. target, 2)
 		local spamForTarget = spamProtection[target] or 0
 		-- just try to clean up the table, that should keep the hash table at max. 4 entries or something :)
@@ -6562,7 +6638,7 @@ do
 		self:SendTimerInfo(mod, target)
 	end
 	function DBM:SendPVPTimers(target)
-		if not dbmIsEnabled then return end
+		if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
 		self:Debug("SendPVPTimers requested by " .. target, 2)
 		local spamForTarget = spamProtection[target] or 0
 		local time = GetTime()
@@ -6585,13 +6661,13 @@ end
 
 ---@param mod DBMMod
 function DBM:SendCombatInfo(mod, target)
-	if not dbmIsEnabled or IsTrialAccount() then return end
+	if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
 	return private.sendWhisperSync(DBMSyncProtocol, "CI", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), target, "NORMAL")
 end
 
 ---@param mod DBMMod
 function DBM:SendTimerInfo(mod, target)
-	if not dbmIsEnabled or IsTrialAccount() then return end
+	if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
 	for _, v in ipairs(mod.timers) do
 		--Pass on any timer that has no type, or has one that isn't an ai timer
 		if not v.type or v.type and v.type ~= "ai" then
@@ -6613,7 +6689,7 @@ end
 
 ---@param mod DBMMod
 function DBM:SendVariableInfo(mod, target)
-	if not dbmIsEnabled or IsTrialAccount() then return end
+	if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
 	for vname, v in pairs(mod.vb) do
 		local v2 = tostring(v)
 		if v2 then
@@ -7134,7 +7210,7 @@ do
 		--Stop custom BG music during cut scenes regardless of block features
 		self:TransitionToDungeonBGM(false, true)
 		if id and not neverFilter[id] then
-			self:Debug("PLAY_MOVIE fired for ID: " .. id, 2, nil, nil, true)
+			self:Debug("PLAY_MOVIE fired for ID: " .. id, 2, nil, nil, true, true)
 			local currentMapID = C_Map.GetBestMapForUnit("player")
 			if checkOptions(self, id, currentMapID) then
 				MovieFrame:Hide()--can only just hide movie frame safely now, which means can't stop audio anymore :\
@@ -7144,7 +7220,7 @@ do
 	end
 
 	function DBM:CINEMATIC_START()
-		self:Debug("CINEMATIC_START fired", 2, nil, nil, true)
+		self:Debug("CINEMATIC_START fired", 2, nil, nil, true, true)
 		--Stop custom BG music during cut scenes regardless of block features
 		self:TransitionToDungeonBGM(false, true)
 		self.HudMap:SupressCanvas()
@@ -7158,7 +7234,7 @@ do
 		end
 	end
 	function DBM:CINEMATIC_STOP()
-		self:Debug("CINEMATIC_STOP fired", 2)
+		self:Debug("CINEMATIC_STOP fired", 2, nil, nil, nil, true)
 		self.HudMap:UnSupressCanvas()
 	end
 end
@@ -7449,7 +7525,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 		playerUnitID = DBM:GetRaidUnitId(isName)
 	end
 	if not playerUnitID then
-		DBM:Debug("IsTanking passed with invalid unit", 2)
+		DBM:Debug("IsTanking passed with invalid unit", 2, nil, nil, true)
 		return false
 	end
 	--If we don't know enemy unit token, but know it's GUID

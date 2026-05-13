@@ -221,8 +221,8 @@ local specialWarningFontResetNotified = false
 local function getSafeSpecialWarningFontSettings(self)
 	local font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
 	local size = self.Options.SpecialWarningFontSize2
-	local style = (self.Options.SpecialWarningFontStyle and self.Options.SpecialWarningFontStyle ~= "None" and self.Options.SpecialWarningFontStyle ~= "none") and self.Options.SpecialWarningFontStyle or ""
-	if not DBM:IsFontValid(font, private.standardFont) then
+	local style = (self.Options.SpecialWarningFontStyle and not DBM:IsNoneValue(self.Options.SpecialWarningFontStyle)) and self.Options.SpecialWarningFontStyle or ""
+	if not DBM:IsFontValid(font, private.standardFont, size, style) then
 		self.Options.SpecialWarningFont = self.DefaultOptions.SpecialWarningFont
 		self.Options.SpecialWarningFontSize2 = self.DefaultOptions.SpecialWarningFontSize2
 		self.Options.SpecialWarningFontStyle = self.DefaultOptions.SpecialWarningFontStyle
@@ -232,7 +232,7 @@ local function getSafeSpecialWarningFontSettings(self)
 		end
 		font = self.Options.SpecialWarningFont == "standardFont" and private.standardFont or self.Options.SpecialWarningFont
 		size = self.Options.SpecialWarningFontSize2
-		style = (self.Options.SpecialWarningFontStyle and self.Options.SpecialWarningFontStyle ~= "None" and self.Options.SpecialWarningFontStyle ~= "none") and self.Options.SpecialWarningFontStyle or ""
+		style = (self.Options.SpecialWarningFontStyle and not DBM:IsNoneValue(self.Options.SpecialWarningFontStyle)) and self.Options.SpecialWarningFontStyle or ""
 	end
 	return font, size, style
 end
@@ -524,7 +524,7 @@ local function canVoiceReplace(self, soundId, isNote)
 	if isNote then--Sound ID 5 is Notes feature, this is always allowed to play
 		return false
 	end
-	if private.voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" then
+	if private.voiceSessionDisabled or DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) then
 		return false
 	end
 	soundId = soundId or self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
@@ -746,12 +746,12 @@ function specialWarningPrototype:Show(...)
 		DBM:FireEvent("DBM_Announce", text, self.icon, self.type, self.spellId, self.mod.id, true, announceCount)
 		if DBM.Options.IgnoreBlizzAPI and self.spellId and self.spellName then
 			if announceCount then
-				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. " (" .. announceCount .. ")|r", 4, nil, nil, true)
+				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. " (" .. announceCount .. ")|r", 3, nil, nil, true, true)
 			else
-				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. "|r", 4, nil, nil, true)
+				DBM:Debug("|cff00ff00Showing hardcoded warning for |r spellID |cff69ccf0" .. self.spellId .. "|r spellName |cff69ccf0" .. self.spellName .. "|r", 3, nil, nil, true, true)
 			end
 		end
-		if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or self.mod.Options[self.option .. "SWSound"] ~= "None") then
+		if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or not DBM:IsNoneValue(self.mod.Options[self.option .. "SWSound"])) then
 			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 			if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
 			if self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
@@ -928,7 +928,7 @@ function specialWarningPrototype:Play(name, customPath)
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
 		if (name == "changemt" or name == "tauntboss") and not self.mod:IsTank() then return end
 		--Mute VP if SW sound is set to None in the boss mod.
-		if soundId == "None" then return end
+		if DBM:IsNoneValue(soundId) then return end
 		local path = customPath or ("Interface\\AddOns\\DBM-VP" .. voice .. "\\" .. name .. ".ogg")
 		DBM:PlaySoundFile(path)
 	end

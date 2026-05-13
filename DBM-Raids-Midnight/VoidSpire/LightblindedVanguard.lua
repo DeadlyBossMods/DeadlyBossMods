@@ -54,7 +54,6 @@ mod:AddPrivateAuraSoundOption(1246158, true, 1246158, 1, 2, "watchfeet", 8)--Con
 mod:AddPrivateAuraSoundOption(1248721, true, 1248721, 1, 1, "absorbyou", 19)--Tyrs Wrath
 mod:AddPrivateAuraSoundOption(1251857, true, 1251857, 1, 3, "debuffyou", 17)--Judgement for Shield of the Righteous
 mod:AddPrivateAuraSoundOption(1246487, true, 1246485, 1, 1, "scatter", 2)--Avenger's Shield
-mod:AddPrivateAuraSoundOption(1246502, false, 1246485, 1, 3, "debuffyou", 17)--Avenger's Shield DOT
 mod:AddPrivateAuraSoundOption(1248652, true, 1248652, 1, 1, "debuffyou", 17)--Divine Toll
 mod:AddPrivateAuraSoundOption(1246736, true, 1246736, 1, 3, "debuffyou", 17)--Judgement for Final Verdict
 mod:AddPrivateAuraSoundOption({1248985,1248994}, true, 1276368, 1, 1, "gathershare", 2)--Execution Sentence targets

@@ -40,7 +40,7 @@ VictorySoundDropdown2:SetPoint("LEFT", VictorySoundDropdown, "RIGHT", isNewDropd
 local useCombined = DBM.Options.EventSoundMusicCombined
 local DungeonMusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventDungeonMusic, useCombined and DBM:GetMusic() or DBM:GetDungeonMusic(), "DBM", "EventSoundDungeonBGM", function(value)
 	DBM.Options.EventSoundDungeonBGM = value
-	if value == "Random" or value == "None" then
+	if value == "Random" or DBM:IsNoneValue(value) then
 		if DBM.Options.tempMusicSetting then
 			SetCVar("Sound_EnableMusic", DBM.Options.tempMusicSetting)
 			DBM.Options.tempMusicSetting = nil
@@ -66,7 +66,7 @@ DungeonMusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown, "TOPLEFT", 0, -45
 
 local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, useCombined and DBM:GetMusic() or DBM:GetBattleMusic(), "DBM", "EventSoundMusic", function(value)
 	DBM.Options.EventSoundMusic = value
-	if value == "Random" or value == "None" then
+	if value == "Random" or DBM:IsNoneValue(value) then
 		if DBM.Options.tempMusicSetting then
 			SetCVar("Sound_EnableMusic", DBM.Options.tempMusicSetting)
 			DBM.Options.tempMusicSetting = nil
