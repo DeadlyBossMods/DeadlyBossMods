@@ -916,9 +916,7 @@ do
 			handler = whisperSyncHandlers[prefix]
 		--Whisper syncs sent from non friends are automatically rejected if not from a friend or someone in your group
 		elseif channel == "WHISPER" and sender ~= playerName then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
-			if (checkForSafeSender(sender, true) or DBM:GetRaidUnitId(sender)) then--Sender passes safety check, or is in group
-				handler = whisperSyncHandlers[prefix]
-			elseif prefix == "GGR" and checkForSafeSender(sender, false, true) then--GGR is guild-only and may come from non-friends
+			if (checkForSafeSender(sender, true, true) or DBM:GetRaidUnitId(sender)) then--Sender passes safety check, or is in group
 				handler = whisperSyncHandlers[prefix]
 			end
 		elseif channel == "GUILD" then
