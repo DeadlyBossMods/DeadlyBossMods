@@ -85,6 +85,7 @@ end
 --TODO, use EncounterTimelineIconMasks to get icon mask from
 --NOTE, passthroughEvent is not a real event, just one we can inject when called externally, we underscores to reserve in case blizz actually adds new args
 --/run C_EncounterTimeline.AddEditModeEvents()
+
 function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local eventID = eventInfo.id
 	local eventState = C_EncounterTimeline.GetEventState(eventID)
@@ -219,7 +220,11 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_COLOR_CHANGED(eventID)
 	if bar then
 		local color = C_EncounterTimeline.GetEventColor(eventID)
 		if color then
-			bar:SetColor(color)
+			--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
+			if not DBT.Options.ColorByType or not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
+				return
+			end
+			bar:SetColor(color, true)
 		end
 	end
 end

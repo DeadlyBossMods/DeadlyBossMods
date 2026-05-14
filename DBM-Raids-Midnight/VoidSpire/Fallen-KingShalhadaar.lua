@@ -10,6 +10,7 @@ mod:SetZone(2912)
 
 mod:RegisterCombat("combat")
 
+--Encounter Event 802 was added in patch 12.0.7 for Fallen Oath
 --local warnDespoticCommand					= mod:NewCountAnnounce(1248697, 2)--Hardcode only
 
 local specWarnVoidConvergence				= mod:NewSpecialWarningCount(1243453, nil, nil, DBM_COMMON_L.ORBS, 2, 2)

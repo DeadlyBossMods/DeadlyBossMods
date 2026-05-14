@@ -31,14 +31,15 @@ NoTLButton:SetScript("OnClick", function()
 	DBM.Options.DontSetTimelineColors = not DBM.Options.DontSetTimelineColors
 	if DBM.Options.DontSetTimelineColors then
 		--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
-		local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
+		local timerStartRed, timerStartGreen, timerStartBlue = DBT:GetColorForType(0)
+		local timerEndRed, timerEndGreen, timerEndBlue = DBT:GetColorForType(0, true)
 		--https://wago.tools/db2/EncounterEvent?page=25
-		for i = 1, 733 do
-			C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
+		for i = 1, 850 do
+			DBM:EE_SetEventColor(i, timerStartRed, timerStartGreen, timerStartBlue, timerEndRed, timerEndGreen, timerEndBlue)
 		end
 	else
-		for i = 1, 688 do
-			C_EncounterEvents.SetEventColor(i, nil)
+		for i = 1, 850 do
+			DBM:EE_UnsetEventColor(i)
 		end
 	end
 end)
