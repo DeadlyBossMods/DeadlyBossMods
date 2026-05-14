@@ -5317,6 +5317,10 @@ do
 				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
 				end
+				-- Cache timeline countdown duration once per pull.
+				-- nil/unset treated as default 5000. Any value besides 5000/10000 disables custom countdown registration.
+				local highlightDuration = tonumber(GetCVar("encounterTimelineHighlightDuration")) or 5000
+				mod.tlCountValue = (highlightDuration == 5000 or highlightDuration == 10000) and highlightDuration or nil
 			end
 			mod.engagedDiff = difficulties.savedDifficulty
 			mod.engagedDiffText = difficulties.difficultyText
