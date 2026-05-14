@@ -85,6 +85,7 @@ end
 --TODO, use EncounterTimelineIconMasks to get icon mask from
 --NOTE, passthroughEvent is not a real event, just one we can inject when called externally, we underscores to reserve in case blizz actually adds new args
 --/run C_EncounterTimeline.AddEditModeEvents()
+
 function DBM:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo, remaining)
 	local eventID = eventInfo.id
 	local eventState = C_EncounterTimeline.GetEventState(eventID)
@@ -217,7 +218,8 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_COLOR_CHANGED(eventID)
 	--This is only used for non hardcoded bars so no hardcode checks needed
 	local bar = DBT:GetBar(eventID)
 	if bar then
-		local color = C_EncounterTimeline.GetEventColor(eventID)
+		---@diagnostic disable-next-line: redundant-parameter
+		local color = C_EncounterEvents.GetEventColor(eventID, 2)
 		if color then
 			bar:SetColor(color)
 		end

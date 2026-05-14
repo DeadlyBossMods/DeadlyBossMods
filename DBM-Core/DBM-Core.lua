@@ -6278,10 +6278,10 @@ do
 		if newAPI then
 			--Set standard color
 			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
-			C_EncounterEvents.SetEventColor(eventID, 1, {r = startRed, g = startGreen, b = startBlue})
+			C_EncounterEvents.SetEventColor(eventID, 1, {r = startRed, g = startGreen, b = startBlue, a = 1})
 			--Set highlight color
 			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
-			C_EncounterEvents.SetEventColor(eventID, 2, {r = endRed, g = endGreen, b = endBlue})
+			C_EncounterEvents.SetEventColor(eventID, 2, {r = endRed, g = endGreen, b = endBlue, a = 1})
 		else
 			--Pre 12.0.7 api that only accepts single RGB value that applies to all warnings and timers
 			C_EncounterEvents.SetEventColor(eventID, {r = startRed, g = startGreen, b = startBlue})
