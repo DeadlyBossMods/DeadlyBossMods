@@ -220,6 +220,10 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_COLOR_CHANGED(eventID)
 	if bar then
 		local color = C_EncounterTimeline.GetEventColor(eventID)
 		if color then
+			--Hacky workaround to de-white blizzard timers out of combat that do not have eventIds (such as test mode)
+			if not DBT.Options.ColorByType or not self:hasanysecretvalues(color.r, color.g, color.b) then--Any color that's not secret should be safe to nil out since it's not an EncounterEvent timer
+				return
+			end
 			bar:SetColor(color, true)
 		end
 	end

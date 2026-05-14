@@ -1283,6 +1283,8 @@ do
 		end
 		if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
 			--Set Countdown
+			--Known Caveats. If a bar starts with a duration shorter than highlight duration (ie a 3 second bar starts already highlighted, countdown will start at 3 and count from 5
+			--This is far less likely to happen when using a highlight value of 5000 ms but with a value of 10000ms it might happen quite a bit for initial timers that are < 10
 			local timerCountdown = not DBM.Options.DontPlayCountdowns and (customOption and self.Options[customOption .. "CVoice"] or self.Options["CustomTimerOption" .. optionId .. "CVoice"]) or 0
 			if timerCountdown ~= 0 and self.tlCountValue then
 				if not self.tlTimerEvents then self.tlTimerEvents = {} end
