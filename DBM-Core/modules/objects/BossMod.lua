@@ -1271,13 +1271,14 @@ do
 		--And we want to set colors on any bar even if it's "disabled" for now
 		if not DBM.Options.DontSetTimelineColors then
 			local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
-			local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType, true)
+			local timerStartRed, timerStartGreen, timerStartBlue = DBT:GetColorForType(colorType)
+			local timerEndRed, timerEndGreen, timerEndBlue = DBT:GetColorForType(colorType, true)
 			if type(encounterEventId) == "table" then
 				for _, id in ipairs(encounterEventId) do
-					C_EncounterEvents.SetEventColor(id, {r = timerRed, g = timerGreen, b = timerBlue})
+					DBM:EE_SetEventColor(id, timerStartRed, timerStartGreen, timerStartBlue, timerEndRed, timerEndGreen, timerEndBlue)
 				end
 			else
-				C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
+				DBM:EE_SetEventColor(encounterEventId, timerStartRed, timerStartGreen, timerStartBlue, timerEndRed, timerEndGreen, timerEndBlue)
 			end
 		end
 		if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then

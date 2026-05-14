@@ -1909,10 +1909,11 @@ do
 				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
 				if not self.Options.DontSetTimelineColors then
 					--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
-					local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
+					local timerStartRed, timerStartGreen, timerStartBlue = DBT:GetColorForType(0)
+					local timerEndRed, timerEndGreen, timerEndBlue = DBT:GetColorForType(0, true)
 					--https://wago.tools/db2/EncounterEvent?page=25
-					for i = 1, 733 do
-						C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
+					for i = 1, 850 do
+						DBM:EE_SetEventColor(i, timerStartRed, timerStartGreen, timerStartBlue, timerEndRed, timerEndGreen, timerEndBlue)
 					end
 				end
 				if self.Options.HideBossEmoteFrame2 then
@@ -6267,6 +6268,38 @@ function DBM:EJ_GetSectionInfo(sectionID)--Should be number, but accepts string 
 		flag1, flag2, flag3, flag4 = unpack(flags)
 	end
 	return info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
+end
+
+do
+	local _, _, _, wowTOC = GetBuildInfo()
+	local newAPI = wowTOC >= 120007
+	---Wrapper for C_EncounterEvents.SetEventColor to future proof against API changes and make it easier to update if needed.
+	function DBM:EE_SetEventColor(eventID, startRed, startGreen, startBlue, endRed, endGreen, endBlue)
+		if newAPI then
+			--Set standard color
+			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+			C_EncounterEvents.SetEventColor(eventID, 1, {r = startRed, g = startGreen, b = startBlue})
+			--Set highlight color
+			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+			C_EncounterEvents.SetEventColor(eventID, 2, {r = endRed, g = endGreen, b = endBlue})
+		else
+			--Pre 12.0.7 api that only accepts single RGB value that applies to all warnings and timers
+			C_EncounterEvents.SetEventColor(eventID, {r = startRed, g = startGreen, b = startBlue})
+		end
+	end
+
+	function DBM:EE_UnsetEventColor(eventID)
+		if newAPI then
+			--Unset standard color
+			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+			C_EncounterEvents.SetEventColor(eventID, 1, nil)
+			--Unset highlight color
+			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+			C_EncounterEvents.SetEventColor(eventID, 2, nil)
+		else
+			C_EncounterEvents.SetEventColor(eventID, nil)
+		end
+	end
 end
 
 function DBM:GetDungeonInfo(id)
