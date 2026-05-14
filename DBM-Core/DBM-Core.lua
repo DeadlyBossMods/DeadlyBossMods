@@ -85,10 +85,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 415, "414c990"--415.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.48 alpha"--Core version
+DBM.DisplayVersion = "12.0.49 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 5, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 5, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -1909,10 +1909,11 @@ do
 				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
 				if not self.Options.DontSetTimelineColors then
 					--Apply user bar color to all bars by default, since blizzard applies white (or red) to all of them by default now
-					local timerRed, timerGreen, timerBlue = DBT:GetColorForType(0)
+					local timerStartRed, timerStartGreen, timerStartBlue = DBT:GetColorForType(0)
+					local timerEndRed, timerEndGreen, timerEndBlue = DBT:GetColorForType(0, true)
 					--https://wago.tools/db2/EncounterEvent?page=25
-					for i = 1, 733 do
-						C_EncounterEvents.SetEventColor(i, {r = timerRed, g = timerGreen, b = timerBlue})
+					for i = 1, 850 do
+						DBM:EE_SetEventColor(i, timerStartRed, timerStartGreen, timerStartBlue, timerEndRed, timerEndGreen, timerEndBlue)
 					end
 				end
 				if self.Options.HideBossEmoteFrame2 then
@@ -4862,6 +4863,45 @@ do
 		end
 	end
 
+	---@param mod DBMMod
+	---@param encounterUnitStatus table?
+	---@return number?
+	local function getEncounterWipeHealth(mod, encounterUnitStatus)
+		local function roundToHundredth(value)
+			return math.floor(value * 10000 + 0.5) / 100
+		end
+		if type(encounterUnitStatus) ~= "table" then
+			return nil
+		end
+		if mod.mainBoss then
+			for i = 1, #encounterUnitStatus do
+				local unitInfo = encounterUnitStatus[i]
+				if type(unitInfo) == "table" and unitInfo.creatureID == mod.mainBoss and type(unitInfo.remainingHealthPercent) == "number" then
+					return roundToHundredth(unitInfo.remainingHealthPercent)
+				end
+			end
+		end
+		if mod.onlyHighest then
+			local highest
+			for i = 1, #encounterUnitStatus do
+				local unitInfo = encounterUnitStatus[i]
+				if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" then
+					highest = highest and mmax(highest, unitInfo.remainingHealthPercent) or unitInfo.remainingHealthPercent
+				end
+			end
+			if highest then
+				return roundToHundredth(highest)
+			end
+		end
+		for i = 1, #encounterUnitStatus do
+			local unitInfo = encounterUnitStatus[i]
+			if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" then
+				return roundToHundredth(unitInfo.remainingHealthPercent)
+			end
+		end
+		return nil
+	end
+
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success, encounterUnitStatus)
 		self:Debug("|cffff8800ENCOUNTER_END: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size .. " " .. success, 1, nil, nil, true)
 		if success == 0 then
@@ -4886,7 +4926,7 @@ do
 			if v.multiEncounterPullDetection then
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
 					if encounterID == eId then
-						self:EndCombat(v, success == 0, nil, "ENCOUNTER_END", encounterUnitStatus and encounterUnitStatus.remainingHealthPercent)
+						self:EndCombat(v, success == 0, nil, "ENCOUNTER_END", getEncounterWipeHealth(v, encounterUnitStatus))
 						if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
 							private.sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 						end
@@ -4894,7 +4934,7 @@ do
 					end
 				end
 			elseif encounterID == v.combatInfo.eId then
-				self:EndCombat(v, success == 0, nil, "ENCOUNTER_END", encounterUnitStatus and encounterUnitStatus.remainingHealthPercent)
+				self:EndCombat(v, success == 0, nil, "ENCOUNTER_END", getEncounterWipeHealth(v, encounterUnitStatus))
 				if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
 					private.sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 				end
@@ -5277,6 +5317,10 @@ do
 				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
 				end
+				-- Cache timeline countdown duration once per pull.
+				-- nil/unset treated as default 5000. Any value besides 5000/10000 disables custom countdown registration.
+				local highlightDuration = tonumber(GetCVar("encounterTimelineHighlightDuration")) or 5000
+				mod.tlCountValue = (highlightDuration == 5000 or highlightDuration == 10000) and highlightDuration or nil
 			end
 			mod.engagedDiff = difficulties.savedDifficulty
 			mod.engagedDiffText = difficulties.difficultyText
@@ -6267,6 +6311,38 @@ function DBM:EJ_GetSectionInfo(sectionID)--Should be number, but accepts string 
 		flag1, flag2, flag3, flag4 = unpack(flags)
 	end
 	return info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
+end
+
+do
+	local _, _, _, wowTOC = GetBuildInfo()
+	local newAPI = wowTOC >= 120007
+	---Wrapper for C_EncounterEvents.SetEventColor to future proof against API changes and make it easier to update if needed.
+	function DBM:EE_SetEventColor(eventID, startRed, startGreen, startBlue, endRed, endGreen, endBlue)
+		if newAPI then
+			--Set standard color
+			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+			C_EncounterEvents.SetEventColor(eventID, 1, {r = startRed, g = startGreen, b = startBlue, a = 1})
+			--Set highlight color
+			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+			C_EncounterEvents.SetEventColor(eventID, 2, {r = endRed, g = endGreen, b = endBlue, a = 1})
+		else
+			--Pre 12.0.7 api that only accepts single RGB value that applies to all warnings and timers
+			C_EncounterEvents.SetEventColor(eventID, {r = startRed, g = startGreen, b = startBlue})
+		end
+	end
+
+	function DBM:EE_UnsetEventColor(eventID)
+		if newAPI then
+			--Unset standard color
+			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+			C_EncounterEvents.SetEventColor(eventID, 1, nil)
+			--Unset highlight color
+			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+			C_EncounterEvents.SetEventColor(eventID, 2, nil)
+		else
+			C_EncounterEvents.SetEventColor(eventID, nil)
+		end
+	end
 end
 
 function DBM:GetDungeonInfo(id)

@@ -228,7 +228,7 @@ private.sendWhisper = sendWhisper
 do
 	local DBMZoneCombatScanner = private:GetModule("TrashCombatScanningModule")
 
-	local syncHandlers, whisperSyncHandlers, guildSyncHandlers, guildWhisperSyncHandlers = {}, {}, {}, {}
+	local syncHandlers, whisperSyncHandlers, guildSyncHandlers = {}, {}, {}
 
 	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anyway, so this is the perfect opportunity to throw away the old and long names
 	-- M = Mod
@@ -313,7 +313,7 @@ do
 		end
 	end
 
-	guildWhisperSyncHandlers["GGR"] = function(sender, _, itemLevel, missingGems, missingEnchants, classToken)
+	whisperSyncHandlers["GGR"] = function(sender, _, itemLevel, missingGems, missingEnchants, classToken)
 		if sender == playerName then
 			return
 		end
@@ -916,10 +916,8 @@ do
 			handler = whisperSyncHandlers[prefix]
 		--Whisper syncs sent from non friends are automatically rejected if not from a friend or someone in your group
 		elseif channel == "WHISPER" and sender ~= playerName then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
-			if (checkForSafeSender(sender, true) or DBM:GetRaidUnitId(sender)) then--Sender passes safety check, or is in group
+			if (checkForSafeSender(sender, true, true) or DBM:GetRaidUnitId(sender)) then--Sender passes safety check, or is in group
 				handler = whisperSyncHandlers[prefix]
-			elseif guildWhisperSyncHandlers[prefix] and checkForSafeSender(sender, false, true) then--Guild-only whisper handlers accept messages from guild members
-				handler = guildWhisperSyncHandlers[prefix]
 			end
 		elseif channel == "GUILD" then
 			handler = guildSyncHandlers[prefix]

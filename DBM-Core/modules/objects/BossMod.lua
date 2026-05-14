@@ -1271,22 +1271,31 @@ do
 		--And we want to set colors on any bar even if it's "disabled" for now
 		if not DBM.Options.DontSetTimelineColors then
 			local colorType = customOption and self.Options[customOption .. "TColor"] or self.Options["CustomTimerOption" .. optionId .. "TColor"] or 0
-			local timerRed, timerGreen, timerBlue = DBT:GetColorForType(colorType, true)
+			local timerStartRed, timerStartGreen, timerStartBlue = DBT:GetColorForType(colorType)
+			local timerEndRed, timerEndGreen, timerEndBlue = DBT:GetColorForType(colorType, true)
 			if type(encounterEventId) == "table" then
 				for _, id in ipairs(encounterEventId) do
-					C_EncounterEvents.SetEventColor(id, {r = timerRed, g = timerGreen, b = timerBlue})
+					DBM:EE_SetEventColor(id, timerStartRed, timerStartGreen, timerStartBlue, timerEndRed, timerEndGreen, timerEndBlue)
 				end
 			else
-				C_EncounterEvents.SetEventColor(encounterEventId, {r = timerRed, g = timerGreen, b = timerBlue})
+				DBM:EE_SetEventColor(encounterEventId, timerStartRed, timerStartGreen, timerStartBlue, timerEndRed, timerEndGreen, timerEndBlue)
 			end
 		end
 		if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
 			--Set Countdown
+			--Known Caveats. If a bar starts with a duration shorter than highlight duration (ie a 3 second bar starts already highlighted, countdown will start at 3 and count from 5
+			--This is far less likely to happen when using a highlight value of 5000 ms but with a value of 10000ms it might happen quite a bit for initial timers that are < 10
 			local timerCountdown = not DBM.Options.DontPlayCountdowns and (customOption and self.Options[customOption .. "CVoice"] or self.Options["CustomTimerOption" .. optionId .. "CVoice"]) or 0
-			if timerCountdown ~= 0 then
+			if timerCountdown ~= 0 and self.tlCountValue then
 				if not self.tlTimerEvents then self.tlTimerEvents = {} end
 				local maxCount = DBM:GetCountMaxCountForVoice(timerCountdown)
-				local countSizePath = (maxCount == 3 or DBM.Options.CountSize == 3) and "threecount.ogg" or "fivecount.ogg"
+				local countSizePath
+				if maxCount == 3 or DBM.Options.CountSize == 3 then
+					countSizePath = self.tlCountValue == 10000 and "threecount_5s.ogg" or "threecount.ogg"
+				else
+					countSizePath = self.tlCountValue == 10000 and "fivecount_5s.ogg" or "fivecount.ogg"
+				end
+				local path
 				if type(timerCountdown) == "string" then
 					path = timerCountdown..countSizePath
 				elseif timerCountdown == 2 then

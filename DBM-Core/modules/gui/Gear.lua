@@ -828,7 +828,7 @@ end
 
 function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants, classToken)
 	if event == "GIQ" then
-		if not private.sendSync or sender == DBM:GetUnitFullName("player") or not DBM:GetRaidRoster(sender) then
+		if not private.sendSync or sender == UnitName("player") or not DBM:GetRaidRoster(sender) then
 			return
 		end
 		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
@@ -883,7 +883,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d\t%s"):format(selfItemLevel, selfMissingGems or 0, selfMissingEnchants or 0, selfClass), sender, "NORMAL")
 		end
 	elseif event == "GGR" then
-		if sender == DBM:GetUnitFullName("player") then
+		if sender == UnitName("player") then
 			return
 		end
 		if not guildGearQuerySent or not IsInGuild() then
