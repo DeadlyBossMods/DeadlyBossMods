@@ -231,7 +231,7 @@ function DBM:CreateBreakTimer(timer)
 	if private.IsEncounterInProgress() then
 		return self:AddMsg(L.ERROR_NO_PERMISSION_COMBAT)
 	end
-	if self:MidRestrictionsActive() then
+	if self:MidRestrictionsActive(false, false, true) then
 		return self:AddMsg(L.NO_COMMS)
 	end
 	--Apparently BW wants to accept all pull timers regardless of length, and not support break timers that can be used by all users
@@ -332,7 +332,7 @@ do
 			end
 			self:FireEvent("DBM_TimerStop", "DBMPizzaTimer")
 			-- Fire cancelation of pizza timer
-			if broadcast and not IsTrialAccount() and not self:MidRestrictionsActive() then
+			if broadcast and not IsTrialAccount() and not self:MidRestrictionsActive(false, false, true) then
 				text = normalizeTimerText(text)
 				if whisperTarget then
 					private.sendWhisperSync(private.DBMSyncProtocol, "UW", ("0\t%s"):format(text), whisperTarget, "ALERT", true)

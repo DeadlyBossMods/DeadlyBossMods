@@ -839,23 +839,26 @@ bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 
 ---@param self DBMModOrDBM
 ---@param includeAuras boolean?
-function DBM:MidRestrictionsActive(includeAuras)
+---@param includeEncounters boolean?
+---@param includeChat boolean?
+function DBM:MidRestrictionsActive(includeAuras, includeEncounters, includeChat)
 	--Not Midnight (or later), rest of checks don't apply
 	if not private.isRetail then
 		return false
+	end
+	--includeAura's defaults to off, other two default to true if omited
+	if not includeEncounters and not includeChat then
+		includeEncounters, includeChat = true, true
 	end
 	if includeAuras and (C_Secrets.ShouldAurasBeSecret() or C_Secrets.ShouldCooldownsBeSecret()) then--Checks cooldown and auras restrictions
 		return true
 	end
 	--In active encounter or active M+
-	if private.IsEncounterInProgress() or C_ChallengeMode.IsChallengeModeActive() then
+	if includeEncounters and (private.IsEncounterInProgress() or C_ChallengeMode.IsChallengeModeActive()) then
 		return true
 	end
-	--if GetActiveMatchState() == 3 then--In active PVP match
-	--	return true
-	--end
 	--Comms and chat messages blocked. might be redundant to above but for good measure
-	if C_ChatInfo.InChatMessagingLockdown() then
+	if includeChat and C_ChatInfo.InChatMessagingLockdown() then
 		return true
 	end
 end
@@ -4583,7 +4586,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 				end
 				-- Request timer to 3 person to prevent failure.
 				self:Unschedule(self.RequestTimers)
-				if not self:MidRestrictionsActive() then
+				if not self:MidRestrictionsActive(false, false, true) then
 					self:Schedule(7, self.RequestTimers, self, 1)
 					self:Schedule(10, self.RequestTimers, self, 2)
 					self:Schedule(13, self.RequestTimers, self, 3)
@@ -6411,7 +6414,7 @@ do
 	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellCooldown(spellId)
 		local start, duration, enable = 0, 0, true--return off CD values if API fails (ie midnight)
-		if not self:MidRestrictionsActive(true) then
+		if not self:MidRestrictionsActive(true, false, false) then
 			if not halfAssedClassicPath then
 				local spellTable = GetSpellCooldown(spellId)
 				if spellTable then
@@ -6536,7 +6539,7 @@ do
 	---@param spellInput4 number|string|nil|unknown? --optional 4th spell, accepts spellname or spellid
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:RaidUnitBuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
-		if self:MidRestrictionsActive(true) then return false end--Block access to UnitAura in combat in midnight
+		if self:MidRestrictionsActive(true, false, false) then return false end--Block access to UnitAura in combat in midnight
 		for uId in DBM:GetGroupMembers() do
 			local buff = DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 			if buff then
@@ -6554,7 +6557,7 @@ do
 	---@param spellInput5 number|string|nil|unknown? --optional 5th spell, accepts spellname or spellid
 	function DBM:RaidUnitDebuff(spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 		--Still gonna globally block this function because in no situation should we itereate entire raid in a post midnight world
-		if self:MidRestrictionsActive(true) then return false end--Block access to UnitAura in combat in midnight
+		if self:MidRestrictionsActive(true, false, false) then return false end--Block access to UnitAura in combat in midnight
 		for uId in DBM:GetGroupMembers() do
 			local debuff = DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
 			if debuff then
@@ -6682,7 +6685,7 @@ end
 do
 	local spamProtection = {}
 	function DBM:SendTimers(target)
-		if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
+		if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive(false, false, true) then return end
 		self:Debug("SendTimers requested by " .. target, 2)
 		local spamForTarget = spamProtection[target] or 0
 		-- just try to clean up the table, that should keep the hash table at max. 4 entries or something :)
@@ -6714,7 +6717,7 @@ do
 		self:SendTimerInfo(mod, target)
 	end
 	function DBM:SendPVPTimers(target)
-		if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
+		if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive(false, false, true) then return end
 		self:Debug("SendPVPTimers requested by " .. target, 2)
 		local spamForTarget = spamProtection[target] or 0
 		local time = GetTime()
@@ -6737,13 +6740,13 @@ end
 
 ---@param mod DBMMod
 function DBM:SendCombatInfo(mod, target)
-	if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
+	if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive(false, false, true) then return end
 	return private.sendWhisperSync(DBMSyncProtocol, "CI", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), target, "NORMAL")
 end
 
 ---@param mod DBMMod
 function DBM:SendTimerInfo(mod, target)
-	if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
+	if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive(false, false, true) then return end
 	for _, v in ipairs(mod.timers) do
 		--Pass on any timer that has no type, or has one that isn't an ai timer
 		if not v.type or v.type and v.type ~= "ai" then
@@ -6765,7 +6768,7 @@ end
 
 ---@param mod DBMMod
 function DBM:SendVariableInfo(mod, target)
-	if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive() then return end
+	if not dbmIsEnabled or IsTrialAccount() or self:MidRestrictionsActive(false, false, true) then return end
 	for vname, v in pairs(mod.vb) do
 		local v2 = tostring(v)
 		if v2 then
