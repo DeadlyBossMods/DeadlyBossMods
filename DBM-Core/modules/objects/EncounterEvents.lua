@@ -218,10 +218,9 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_COLOR_CHANGED(eventID)
 	--This is only used for non hardcoded bars so no hardcode checks needed
 	local bar = DBT:GetBar(eventID)
 	if bar then
-		---@diagnostic disable-next-line: redundant-parameter
-		local color = C_EncounterEvents.GetEventColor(eventID, 2)
+		local color = C_EncounterTimeline.GetEventColor(eventID)
 		if color then
-			bar:SetColor(color)
+			bar:SetColor(color, true)
 		end
 	end
 end
