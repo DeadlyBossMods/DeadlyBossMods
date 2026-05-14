@@ -4863,6 +4863,45 @@ do
 		end
 	end
 
+	---@param mod DBMMod
+	---@param encounterUnitStatus table?
+	---@return number?
+	local function getEncounterWipeHealth(mod, encounterUnitStatus)
+		local function roundToHundredth(value)
+			return math.floor(value * 10000 + 0.5) / 100
+		end
+		if type(encounterUnitStatus) ~= "table" then
+			return nil
+		end
+		if mod.mainBoss then
+			for i = 1, #encounterUnitStatus do
+				local unitInfo = encounterUnitStatus[i]
+				if type(unitInfo) == "table" and unitInfo.creatureID == mod.mainBoss and type(unitInfo.remainingHealthPercent) == "number" then
+					return roundToHundredth(unitInfo.remainingHealthPercent)
+				end
+			end
+		end
+		if mod.onlyHighest then
+			local highest
+			for i = 1, #encounterUnitStatus do
+				local unitInfo = encounterUnitStatus[i]
+				if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" then
+					highest = highest and mmax(highest, unitInfo.remainingHealthPercent) or unitInfo.remainingHealthPercent
+				end
+			end
+			if highest then
+				return roundToHundredth(highest)
+			end
+		end
+		for i = 1, #encounterUnitStatus do
+			local unitInfo = encounterUnitStatus[i]
+			if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" then
+				return roundToHundredth(unitInfo.remainingHealthPercent)
+			end
+		end
+		return nil
+	end
+
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success, encounterUnitStatus)
 		self:Debug("|cffff8800ENCOUNTER_END: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size .. " " .. success, 1, nil, nil, true)
 		if success == 0 then
@@ -4887,7 +4926,7 @@ do
 			if v.multiEncounterPullDetection then
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
 					if encounterID == eId then
-						self:EndCombat(v, success == 0, nil, "ENCOUNTER_END", encounterUnitStatus and encounterUnitStatus.remainingHealthPercent)
+						self:EndCombat(v, success == 0, nil, "ENCOUNTER_END", getEncounterWipeHealth(v, encounterUnitStatus))
 						if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
 							private.sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 						end
@@ -4895,7 +4934,7 @@ do
 					end
 				end
 			elseif encounterID == v.combatInfo.eId then
-				self:EndCombat(v, success == 0, nil, "ENCOUNTER_END", encounterUnitStatus and encounterUnitStatus.remainingHealthPercent)
+				self:EndCombat(v, success == 0, nil, "ENCOUNTER_END", getEncounterWipeHealth(v, encounterUnitStatus))
 				if self:AntiSpam(3, "EE") then--Most bosses have both BOSS_KILL and ENCOUNTER_END, we don't want to send two EE syncs if we don't have to
 					private.sendSync(DBMSyncProtocol, "EE", encounterID .. "\t" .. success .. "\t" .. v.id .. "\t" .. (v.revision or 0), "NORMAL")
 				end
