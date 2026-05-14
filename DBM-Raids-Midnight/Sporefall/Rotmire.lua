@@ -23,6 +23,8 @@ local specWarnFungalBloom					= mod:NewSpecialWarningCount(1221637, nil, nil, ni
 local specWarnAwakenFungi					= mod:NewSpecialWarningCount(1221622, nil, nil, nil, 2, 2)
 local specWarnBurstingPustules				= mod:NewSpecialWarningCount(1221787, nil, nil, nil, 2, 2)
 local specWarnPutridFist					= mod:NewSpecialWarningDefensive(1221781, nil, nil, nil, 1, 2)
+--local specWarnFunglingFixate				= mod:NewSpecialWarningYou(1299508, nil, nil, nil, 1, 2)
+--local specWarnShroomingFixate				= mod:NewSpecialWarningYou(1221639, nil, nil, nil, 1, 2)
 
 local timerFungalBloomCD					= mod:NewCDCountTimer(20.5, 1221637, nil, nil, nil, 2)
 local timerAwakenFungiCD					= mod:NewCDCountTimer(20.5, 1221622, nil, nil, nil, 1)
@@ -31,7 +33,8 @@ local timerPutridFistCD						= mod:NewCDCountTimer(20.5, 1221781, nil, "Tank|Hea
 local timerFesteringVinesCD					= mod:NewCDCountTimer(20.5, 1222088, nil, nil, nil, 3)
 --local timerBerserkCD						= mod:NewBerserkTimer(600)
 
-mod:AddPrivateAuraSoundOption(1221639, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi
+mod:AddPrivateAuraSoundOption(1221639, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough
+mod:AddPrivateAuraSoundOption(1299508, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough)
 mod:AddPrivateAuraSoundOption(1222088, true, 1222088, 1, 1, "runout", 2)--Festering Vines
 mod:AddPrivateAuraSoundOption(1222129, true, 1222088, 1, 2, "watchfeet", 8)--Writhing Vines (GTFO left by Festering Vines)
 
@@ -52,6 +55,8 @@ local function setFallback(self, dontSetAlerts)
 		if self:IsTank() then
 			specWarnPutridFist:SetAlert(427, "defensive", 1, 3)
 		end
+		--specWarnFunglingFixate:SetAlert(808, "fixateyou", 1, 3)
+		--specWarnShroomingFixate:SetAlert(809, "fixateyou", 1, 3)
 	end
 	timerFungalBloomCD:SetTimeline(424)
 	timerAwakenFungiCD:SetTimeline(425)
