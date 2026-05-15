@@ -170,8 +170,7 @@ end
 ---@param headerText string
 ---@param initialText string?
 ---@param onAccept fun(text: string)?
----@param hideShare boolean?
-function DBM:ShowTextEditor(headerText, initialText, onAccept, hideShare)
+function DBM:ShowTextEditor(headerText, initialText, onAccept)
 	if not frame then
 		CreateOurFrame()
 	end

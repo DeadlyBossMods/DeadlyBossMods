@@ -728,7 +728,7 @@ local function triggerAbilityTestObject(object, listName)
 		return false
 	end
 	if listName == "timers" and object.Start then
-		object:Start(nil, 1)
+		object:Start(10, 1)--short 10 second timer with a 1 count
 		return true
 	end
 	if object.Show then
