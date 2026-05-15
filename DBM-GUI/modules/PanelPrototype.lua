@@ -82,8 +82,9 @@ function PanelPrototype:SetAbilityTestContext(mod, spellKey)
 			mod = mod,
 			spellKey = spellKey
 		}
-		if self.frame.updateAbilityActionButtons then
-			self.frame:updateAbilityActionButtons()
+		local updateAbilityActionButtons = self.frame["updateAbilityActionButtons"]
+		if type(updateAbilityActionButtons) == "function" then
+			updateAbilityActionButtons(self.frame)
 		end
 	end
 end
