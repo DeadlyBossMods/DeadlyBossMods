@@ -1104,7 +1104,7 @@ do
 		end
 		if not defaultSpellRenamesByspellId[spellId] then
 			defaultSpellRenamesByspellId[spellId] = renameString
-			refreshSpellRenameCache(false)
+			refreshSpellRenameCache(true)
 		end
 	end
 	bossModPrototype.AddRename = DBM.AddRename
@@ -2558,6 +2558,10 @@ function DBM:CreateProfile(name)
 	DBM_AllSavedOptions[usedProfile] = DBM_AllSavedOptions[usedProfile] or {}
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
+	if type(self.Options.SpellRenames) ~= "table" then
+		self.Options.SpellRenames = {}
+	end
+	self:RefreshSpellRenames()
 	-- rearrange position
 	DBT:CreateProfile("DBM")
 	self:RepositionFrames()
@@ -2573,6 +2577,10 @@ function DBM:ApplyProfile(name)
 	DBM_UsedProfile = usedProfile
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
+	if type(self.Options.SpellRenames) ~= "table" then
+		self.Options.SpellRenames = {}
+	end
+	self:RefreshSpellRenames()
 	-- rearrange position
 	DBT:ApplyProfile("DBM")
 	self:RepositionFrames()
@@ -2590,6 +2598,10 @@ function DBM:CopyProfile(name)
 	DBM_AllSavedOptions[usedProfile] = CopyTable(DBM_AllSavedOptions[name])
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
+	if type(self.Options.SpellRenames) ~= "table" then
+		self.Options.SpellRenames = {}
+	end
+	self:RefreshSpellRenames()
 	-- rearrange position
 	DBT:CopyProfile(name, "DBM", true)
 	self:RepositionFrames()
@@ -2612,6 +2624,11 @@ function DBM:DeleteProfile(name)
 	if not self.Options then
 		-- the default profile got lost somehow (maybe WoW crashed and the saved variables file got corrupted)
 		self:CreateProfile("Default")
+	else
+		if type(self.Options.SpellRenames) ~= "table" then
+			self.Options.SpellRenames = {}
+		end
+		self:RefreshSpellRenames()
 	end
 	-- rearrange position
 	DBT:DeleteProfile(name, "DBM")

@@ -182,9 +182,7 @@ function DBM:ShowTextEditor(headerText, initialText, onAccept, hideShare)
 	frame.customApply = onAccept
 	fontstring:SetText(headerText or "")
 	editBox:SetText(initialText or "")
-	if hideShare then
-		button3:Hide()
-	else
-		button3:Show()
-	end
+	-- Generic text editors intentionally clear note-sharing context (mod/modvar),
+	-- so keep Share hidden to avoid invalid share handler access.
+	button3:Hide()
 end
