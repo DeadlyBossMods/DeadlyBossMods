@@ -32,6 +32,7 @@ L.Tools_PizzaTimer					= "Start Generic Timer"
 
 L.Tools_BrezArea					= "Battle Res Timer"
 L.Tools_ShowBrezFrame				= "Show Battle Res charges frame during boss encounters and Mythic+ dungeons"
+L.Tools_ShowKeystoneOnComplete		= "Auto show Keystone frame when a Mythic+ run is completed"
 
 L.Tools_Duration					= "Duration"
 L.Tools_Message						= "Timer Message"
