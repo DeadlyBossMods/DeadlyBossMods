@@ -1253,8 +1253,10 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 					--if timerText exists in self.localization.timers table, it's not custom shorttext spell name
 					--It's also not short text if it's hacky paul stuff, but that should be filtered by the spellID check in RegisterAltSpellName which ignores when he uses spellid of 0
 					local trimmedText = DBM:SanitizeSpellRename(timerText)
-					DBM:RegisterAltSpellName(spellId, trimmedText)
-					DBM:AddRename(spellId, trimmedText)
+					if trimmedText then
+						DBM:RegisterAltSpellName(spellId, trimmedText)
+						DBM:AddRename(spellId, trimmedText)
+					end
 				end
 			end
 		else--Short text is off, we want to be more aggressive in NOT setting short text if we can help it
