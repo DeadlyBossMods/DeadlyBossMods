@@ -43,7 +43,7 @@ if DBM:IsRetail() then
 	local area1b = DBM_GUI.CAT_TOOLS:CreateArea(L.Panel_ExtraFeatures)
 
 	local showBrezFrame = area1b:CreateCheckButton(L.Tools_ShowBrezFrame, true, nil, "ShowBrezFrame")
-	area1b:CreateCheckButton(L.Tools_ShowKeystoneOnComplete, true, nil, "ShowKeystoneOnComplete")
+	local showKeystoneOnComplete = area1b:CreateCheckButton(L.Tools_ShowKeystoneOnComplete, true, nil, "ShowKeystoneOnComplete")
 
 	if showBrezFrame then
 		showBrezFrame:HookScript("OnClick", function()
@@ -79,7 +79,7 @@ if DBM:IsRetail() then
 		end
 	end)
 	local isNewDropdown = BrezFontDropDown.mytype == "dropdown2"
-	BrezFontDropDown:SetPoint("TOPLEFT", showBrezFrame, "TOPLEFT", isNewDropdown and 20 or 0, -40)
+	BrezFontDropDown:SetPoint("TOPLEFT", showKeystoneOnComplete, "TOPLEFT", isNewDropdown and 20 or 0, -40)
 	BrezFontDropDown.myheight = isNewDropdown and 25 or 20
 
 	local fontSizeSlider = area1b:CreateSlider(L.FontSize, 8, 40, 1, 180)

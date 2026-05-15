@@ -618,7 +618,7 @@ do
 		[116705] = true,--Monk Spear Hand Strike
 		[147362] = true,--Hunter Countershot
 		[183752] = true,--Demon Hunter Disrupt
-		[202137] = true,--Demon Hunter Sigil of Silence (Not uncommented because CheckInterruptFilter doesn't properly handle dual interrupts for single class yet)
+		[202137] = true,--Demon Hunter Sigil of Silence
 		[351338] = true,--Evoker Quell
 	}
 	if private.isClassic then
