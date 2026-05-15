@@ -82,6 +82,9 @@ function PanelPrototype:SetAbilityTestContext(mod, spellKey)
 			mod = mod,
 			spellKey = spellKey
 		}
+		if self.frame.updateAbilityActionButtons then
+			self.frame:updateAbilityActionButtons()
+		end
 	end
 end
 
@@ -744,6 +747,23 @@ local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey)
 	return timerObject, announceObject
 end
 
+local function hasWarningOrTimerForSpellKey(mod, spellKey)
+	if not mod or spellKey == nil then
+		return false
+	end
+	for _, listName in ipairs({ "timers", "announces", "specwarns" }) do
+		local list = mod[listName]
+		if type(list) == "table" then
+			for _, object in ipairs(list) do
+				if spellKeyMatchesObject(spellKey, object and object.spellId) then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
 local function triggerAbilityTestTimer(object)
 	if object and object.Start then
 		object:Start(10, 1)--short 10 second timer with a 1 count
@@ -814,6 +834,22 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 		testButton:SetSize(42, 18)
 		testButton:SetText(L.Test or "Test")
 		testButton:SetPoint("LEFT", resetButton, "RIGHT", 4, 0)
+
+		area.updateAbilityActionButtons = function()
+			local context = abilityTestContextByFrame[area]
+			local hasActionableObjects = hasWarningOrTimerForSpellKey(context and context.mod, context and context.spellKey)
+			if hasActionableObjects then
+				renameButton:Enable()
+				testButton:Enable()
+			else
+				renameButton:Disable()
+				testButton:Disable()
+			end
+		end
+		renameButton:SetScript("OnShow", area.updateAbilityActionButtons)
+		testButton:SetScript("OnShow", area.updateAbilityActionButtons)
+		area:updateAbilityActionButtons()
+
 		testButton:SetScript("OnClick", function()
 			local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 			if optionsFrame and optionsFrame:IsShown() and optionsFrame.SetCollapsed then
