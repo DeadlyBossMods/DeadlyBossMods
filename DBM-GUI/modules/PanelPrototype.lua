@@ -706,32 +706,54 @@ local function spellKeyMatchesObject(spellKey, objectSpellId)
 	return false
 end
 
-local function findFirstObjectForSpellKey(mod, spellKey)
+local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey)
 	if not mod or spellKey == nil then
 		return nil, nil
 	end
-	for _, listName in ipairs({ "timers", "specwarns", "announces" }) do
-		local list = mod[listName]
-		if type(list) == "table" then
-			for _, object in ipairs(list) do
+	local timerObject
+	local timerList = mod.timers
+	if type(timerList) == "table" then
+		for _, object in ipairs(timerList) do
+			if spellKeyMatchesObject(spellKey, object and object.spellId) then
+				timerObject = object
+				break
+			end
+		end
+	end
+	local announceObject
+	local specAnnounceList = mod.specwarns
+	if type(specAnnounceList) == "table" then
+		for _, object in ipairs(specAnnounceList) do
+			if spellKeyMatchesObject(spellKey, object and object.spellId) then
+				announceObject = object
+				break
+			end
+		end
+	end
+	if not announceObject then--Didn't find special announce, try to find regular one
+		local announceList = mod.announces
+		if type(announceList) == "table" then
+			for _, object in ipairs(announceList) do
 				if spellKeyMatchesObject(spellKey, object and object.spellId) then
-					return object, listName
+					announceObject = object
+					break
 				end
 			end
 		end
 	end
-	return nil, nil
+	return timerObject, announceObject
 end
 
-local function triggerAbilityTestObject(object, listName)
-	if not object then
-		return false
-	end
-	if listName == "timers" and object.Start then
+local function triggerAbilityTestTimer(object)
+	if object and object.Start then
 		object:Start(10, 1)--short 10 second timer with a 1 count
 		return true
 	end
-	if object.Show then
+	return false
+end
+
+local function triggerAbilityTestAnnounce(object)
+	if object and object.Show then
 		object:Show(1)
 		return true
 	end
@@ -793,10 +815,19 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 		testButton:SetText(L.Test or "Test")
 		testButton:SetPoint("LEFT", resetButton, "RIGHT", 4, 0)
 		testButton:SetScript("OnClick", function()
+			local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+			if optionsFrame and optionsFrame:IsShown() and optionsFrame.SetCollapsed then
+				optionsFrame:SetCollapsed(true)
+				if optionsFrame.ScheduleAutoUncollapse then
+					optionsFrame:ScheduleAutoUncollapse(10)
+				end
+			end
 			local context = abilityTestContextByFrame[area]
-			local testObject, listName = findFirstObjectForSpellKey(context and context.mod, context and context.spellKey)
-			if not triggerAbilityTestObject(testObject, listName) then
-				DBM:AddMsg((L.Test or "Test") .. ": no warning/timer object found for spell key " .. tostring(context and context.spellKey))
+			local timerObject, announceObject = findFirstTimerAndAnnounceForSpellKey(context and context.mod, context and context.spellKey)
+			local timerTriggered = triggerAbilityTestTimer(timerObject)
+			local announceTriggered = triggerAbilityTestAnnounce(announceObject)
+			if not timerTriggered and not announceTriggered then
+				DBM:AddMsg((L.Test or "Test") .. ": no timer/announce object found for spell key " .. tostring(context and context.spellKey))
 			end
 		end)
 

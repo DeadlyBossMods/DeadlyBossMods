@@ -55,7 +55,7 @@ local timerStage2CD						= mod:NewCDTimer(20.5, 1272966, nil, nil, nil, 6)
 local timerStage3CD						= mod:NewCDTimer(20.5, 1273378, nil, nil, nil, 6)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
-mod:AddPrivateAuraSoundOption(1233887, true, 1233865, 1, 1, "absorbyou", 19)--Null Corona
+--mod:AddPrivateAuraSoundOption(1233887, true, 1233865, 1, 1, "absorbyou", 19)--Null Corona (hotfixed out)
 mod:AddPrivateAuraSoundOption(1283236, true, 1283236, 1, 1, "orbrun", 2)--Void Expulsion
 mod:AddPrivateAuraSoundOption(1242553, true, 1283236, 1, 2, "watchfeet", 8)--Void Remnants (GTFO left by Void Expulsion)
 mod:AddPrivateAuraSoundOption(1233602, true, 1233602, 1, 1, "arrowyou", 19)--Silverstrike Arrow
