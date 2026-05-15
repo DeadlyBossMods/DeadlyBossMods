@@ -633,7 +633,7 @@ do
 		interruptSpells[8042] = true -- Shaman Earth Shock
 		interruptSpells[16979] = true -- Druid Feral Charge
 	elseif private.isWrath then
-		interruptSpells[16979] = true -- Druid Feral Charge									
+		interruptSpells[16979] = true -- Druid Feral Charge
 	end
 	---@param sourceGUID string source GUID of the caster
 	---@param checkOnlyTandF boolean? is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
