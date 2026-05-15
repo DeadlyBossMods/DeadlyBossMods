@@ -622,7 +622,13 @@ do
 		[351338] = true,--Evoker Quell
 	}
 	if private.isClassic then
-		interruptSpells[8042] = true -- Shaman Earth Shock
+		interruptSpells[8042] = true -- Shaman Earth Shock (Rank 1)
+		interruptSpells[8044] = true -- Shaman Earth Shock (Rank 2)
+		interruptSpells[8045] = true -- Shaman Earth Shock (Rank 3)
+		interruptSpells[8046] = true -- Shaman Earth Shock (Rank 4)
+		interruptSpells[10412] = true -- Shaman Earth Shock (Rank 5)
+		interruptSpells[10413] = true -- Shaman Earth Shock (Rank 6)
+		interruptSpells[10414] = true -- Shaman Earth Shock (Rank 7)
 	end
 	---@param sourceGUID string source GUID of the caster
 	---@param checkOnlyTandF boolean? is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
