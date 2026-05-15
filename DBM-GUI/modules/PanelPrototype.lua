@@ -710,7 +710,7 @@ local function findFirstObjectForSpellKey(mod, spellKey)
 	if not mod or spellKey == nil then
 		return nil, nil
 	end
-	for _, listName in ipairs({ "specwarns", "announces", "timers" }) do
+	for _, listName in ipairs({ "timers", "specwarns", "announces" }) do
 		local list = mod[listName]
 		if type(list) == "table" then
 			for _, object in ipairs(list) do
@@ -834,7 +834,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 				DBM:SetRename(renameSpellId, text)
 				updateRenameUI()
 				refreshCurrentViewingPanel()
-			end, true)
+			end)
 		end)
 
 		resetButton:SetScript("OnClick", function()
