@@ -604,7 +604,7 @@ end
 
 do
 	local interruptSpells = {
-		[1672] = true,--Warrior Shield Bash
+		[72] = true,--Warrior Shield Bash
 		[1766] = true,--Rogue Kick
 		[2139] = true,--Mage Counterspell
 		[6552] = true,--Warrior Pummel
