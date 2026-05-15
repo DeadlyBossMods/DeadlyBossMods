@@ -76,16 +76,13 @@ function PanelPrototype:SetLastObj(obj)
 	self.lastobject = obj
 end
 
-function PanelPrototype:SetAbilityTestContext(mod, spellKey)
+function PanelPrototype:SetAbilityTestContext(mod, spellKey, renameSpellId)
 	if self and self.frame then
 		abilityTestContextByFrame[self.frame] = {
 			mod = mod,
-			spellKey = spellKey
+			spellKey = spellKey,
+			renameSpellId = renameSpellId
 		}
-		local updateAbilityActionButtons = self.frame["updateAbilityActionButtons"]
-		if type(updateAbilityActionButtons) == "function" then
-			updateAbilityActionButtons(self.frame)
-		end
 	end
 end
 
@@ -710,15 +707,31 @@ local function spellKeyMatchesObject(spellKey, objectSpellId)
 	return false
 end
 
-local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey)
-	if not mod or spellKey == nil then
+local function getObjectSpellId(object)
+	if type(object) == "table" then
+		return object.spellId
+	end
+	return nil
+end
+
+local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey, fallbackSpellKey)
+	if not mod or (spellKey == nil and fallbackSpellKey == nil) then
 		return nil, nil
+	end
+	local function matches(objectSpellId)
+		if spellKeyMatchesObject(spellKey, objectSpellId) then
+			return true
+		end
+		if fallbackSpellKey ~= nil and fallbackSpellKey ~= spellKey and spellKeyMatchesObject(fallbackSpellKey, objectSpellId) then
+			return true
+		end
+		return false
 	end
 	local timerObject
 	local timerList = mod.timers
 	if type(timerList) == "table" then
 		for _, object in ipairs(timerList) do
-			if spellKeyMatchesObject(spellKey, object and object.spellId) then
+			if matches(getObjectSpellId(object)) then
 				timerObject = object
 				break
 			end
@@ -728,7 +741,7 @@ local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey)
 	local specAnnounceList = mod.specwarns
 	if type(specAnnounceList) == "table" then
 		for _, object in ipairs(specAnnounceList) do
-			if spellKeyMatchesObject(spellKey, object and object.spellId) then
+			if matches(getObjectSpellId(object)) then
 				announceObject = object
 				break
 			end
@@ -738,7 +751,7 @@ local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey)
 		local announceList = mod.announces
 		if type(announceList) == "table" then
 			for _, object in ipairs(announceList) do
-				if spellKeyMatchesObject(spellKey, object and object.spellId) then
+				if matches(getObjectSpellId(object)) then
 					announceObject = object
 					break
 				end
@@ -746,23 +759,6 @@ local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey)
 		end
 	end
 	return timerObject, announceObject
-end
-
-local function hasWarningOrTimerForSpellKey(mod, spellKey)
-	if not mod or spellKey == nil then
-		return false
-	end
-	for _, listName in ipairs({ "timers", "announces", "specwarns" }) do
-		local list = mod[listName]
-		if type(list) == "table" then
-			for _, object in ipairs(list) do
-				if spellKeyMatchesObject(spellKey, object and object.spellId) then
-					return true
-				end
-			end
-		end
-	end
-	return false
 end
 
 local function triggerAbilityTestTimer(object)
@@ -781,7 +777,7 @@ local function triggerAbilityTestAnnounce(object)
 	return false
 end
 
-function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renameSpellId)
+function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renameSpellId, mod, runtimeSpellKey)
 	---@class DBMPanelAbility: Frame, BackdropTemplate
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "TooltipBorderBackdropTemplate")
 	area.mytype = "ability"
@@ -820,7 +816,14 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 	title:ClearAllPoints()
 	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 20, 0)
 	title:SetFontObject(GameFontNormal)
-	if renameSpellId and renameSpellId > 5 then
+	local hasRenamableObjects = false
+	if mod and (runtimeSpellKey ~= nil or renameSpellId ~= nil) then
+		local timerObject, announceObject = findFirstTimerAndAnnounceForSpellKey(mod, runtimeSpellKey, renameSpellId)
+		if timerObject or announceObject then
+			hasRenamableObjects = true
+		end
+	end
+	if renameSpellId and renameSpellId > 5 and hasRenamableObjects then
 		local renameButton = CreateFrame("Button", area:GetName() .. "Rename", area, "UIPanelButtonTemplate")
 		renameButton:SetSize(58, 18)
 		renameButton:SetText(L.RenameSpellButton or "Rename")
@@ -836,21 +839,6 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 		testButton:SetText(L.Test or "Test")
 		testButton:SetPoint("LEFT", resetButton, "RIGHT", 4, 0)
 
-		area.updateAbilityActionButtons = function()
-			local context = abilityTestContextByFrame[area]
-			local hasActionableObjects = hasWarningOrTimerForSpellKey(context and context.mod, context and context.spellKey)
-			if hasActionableObjects then
-				renameButton:Enable()
-				testButton:Enable()
-			else
-				renameButton:Disable()
-				testButton:Disable()
-			end
-		end
-		renameButton:SetScript("OnShow", area.updateAbilityActionButtons)
-		testButton:SetScript("OnShow", area.updateAbilityActionButtons)
-		area:updateAbilityActionButtons()
-
 		testButton:SetScript("OnClick", function()
 			local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 			if optionsFrame and optionsFrame:IsShown() and optionsFrame.SetCollapsed then
@@ -860,7 +848,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 				end
 			end
 			local context = abilityTestContextByFrame[area]
-			local timerObject, announceObject = findFirstTimerAndAnnounceForSpellKey(context and context.mod, context and context.spellKey)
+			local timerObject, announceObject = findFirstTimerAndAnnounceForSpellKey(context and context.mod, context and context.spellKey, context and context.renameSpellId)
 			local timerTriggered = triggerAbilityTestTimer(timerObject)
 			local announceTriggered = triggerAbilityTestAnnounce(announceObject)
 			if not timerTriggered and not announceTriggered then

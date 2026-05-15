@@ -574,8 +574,8 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 				if not usedSpellID then
 					usedSpellID = "|Haddon:DBM:wacopy:"..spellID.."|h|cff69ccf0"..spellID.."|r|h"
 				end
-				local catpanel = panel:CreateAbility(title, icon, usedSpellID, hasPrivate, renameSpellId)
-				catpanel:SetAbilityTestContext(mod, spellID)
+				local catpanel = panel:CreateAbility(title, icon, usedSpellID, hasPrivate, renameSpellId, mod, spellID)
+				catpanel:SetAbilityTestContext(mod, spellID, renameSpellId)
 				if desc then
 					catpanel:CreateSpellDesc(desc)
 				end
@@ -956,7 +956,7 @@ do
 			local id = challengeMode
 			--For handling zones like Warfront: Arathi - Alliance
 			local mapName = strtrim(GetRealZoneText(id) or tostring(id))
-			local splitName = strsplit(" - ", mapName)
+			local splitName = mapName:match("^(.-)%s%-%s")
 			if splitName and splitName ~= "" then
 				mapName = splitName
 			end
