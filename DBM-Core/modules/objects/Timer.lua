@@ -484,7 +484,8 @@ function timerPrototype:Start(timer, ...)
 		msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId, self.name), ...)
 	else
 		if type(self.text) == "number" then--spellId passed in timer text, it's a timer with short text
-			msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.text, self.name), ...)
+			local renameSourceSpellId = self.spellId or self.text
+			msg = pformat(self.mod:GetLocalizedTimerText(self.type, renameSourceSpellId, self.name), ...)
 		else
 			msg = pformat(self.text, ...)
 		end
@@ -1247,7 +1248,7 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 				end
 			--Interpret it literal with no restrictions, first checking mod local table, then just taking timerText directly
 			else
-				timerTextValue = self.localization.timers[timerText]--Check timers table first, otherwise accept it as literal timer text
+				timerTextValue = rawget(self.localization.timers, timerText)--Only keep fully localized timer text here; custom short-text should route through GetLocalizedTimerText
 				--Automatically register alternate spellnames when detecting their use here
 				if spellId and not rawget(self.localization.timers, timerText) and type(timerText) == "string" then
 					--if timerText exists in self.localization.timers table, it's not custom shorttext spell name
