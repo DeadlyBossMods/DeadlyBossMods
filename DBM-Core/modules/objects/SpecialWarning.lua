@@ -610,7 +610,8 @@ function specialWarningPrototype:Show(...)
 	end
 	--Check if option for this warning is even enabled
 	if (not self.option or self.mod.Options[self.option]) and not moving and frame then
-		if self.announceType and self.spellId and self.spellId > 5 and self.renameRevision ~= DBM:GetSpellRenameRevision() then
+		local renameSpellKey = DBM:NormalizeSpellRenameKey(self.spellId)
+		if self.announceType and renameSpellKey and self.renameRevision ~= DBM:GetSpellRenameRevision() then
 			local text, spellName = setText(self.announceType, self.spellId, self.stacks, self.customName, self.alternateSpellId)
 			self.text = text
 			self.spellName = spellName

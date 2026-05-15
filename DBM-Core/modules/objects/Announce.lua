@@ -488,7 +488,8 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 	if not self.option or self.mod.Options[self.option] then
 		if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
-		if self.announceType and self.spellId and self.spellId > 5 and self.renameRevision ~= DBM:GetSpellRenameRevision() then
+		local renameSpellKey = DBM:NormalizeSpellRenameKey(self.spellId)
+		if self.announceType and renameSpellKey and self.renameRevision ~= DBM:GetSpellRenameRevision() then
 			local text, spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime, self.customName, self.alternateSpellId)
 			self.text = text
 			self.spellName = spellName

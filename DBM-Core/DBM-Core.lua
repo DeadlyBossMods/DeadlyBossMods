@@ -1043,6 +1043,32 @@ do
 		return text
 	end
 
+	---@param spellId number|string?
+	---@return number?
+	local function normalizeSpellRenameKey(spellId)
+		if type(spellId) == "number" then
+			return spellId
+		end
+		if type(spellId) ~= "string" then
+			return nil
+		end
+		local numericKey = tonumber(spellId)
+		if numericKey then
+			return numericKey
+		end
+		local ejId = tonumber(spellId:match("^[Ee][Jj](%d+)$"))
+		if ejId then
+			return -ejId
+		end
+		return nil
+	end
+
+	---@param spellId number?
+	---@return boolean
+	local function isValidSpellRenameKey(spellId)
+		return type(spellId) == "number" and (spellId > 5 or spellId < 0)
+	end
+
 	local function getSpellRenameOverrides()
 		if type(DBM.Options) ~= "table" then
 			return nil
@@ -1064,8 +1090,11 @@ do
 		local overrides = getSpellRenameOverrides()
 		if overrides then
 			for spellId, rename in pairs(overrides) do
-				if type(spellId) == "number" and spellId > 5 and type(rename) == "string" and rename ~= "" then
-					effectiveSpellRenamesByspellId[spellId] = rename
+				local normalizedSpellId = normalizeSpellRenameKey(spellId)
+				if isValidSpellRenameKey(normalizedSpellId) and type(rename) == "string" and rename ~= "" then
+					if type(normalizedSpellId) == "number" then
+						effectiveSpellRenamesByspellId[normalizedSpellId] = rename
+					end
 				end
 			end
 		end
@@ -1092,10 +1121,14 @@ do
 	end
 	bossModPrototype.SanitizeSpellRename = DBM.SanitizeSpellRename
 
-	---@param spellId number
+	---@param spellId number|string
 	---@param renameString string?
 	function DBM:AddRename(spellId, renameString)
-		if type(spellId) ~= "number" or spellId <= 5 then
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return
+		end
+		if type(spellId) ~= "number" then
 			return
 		end
 		renameString = sanitizeSpellRenameText(renameString)
@@ -1109,10 +1142,14 @@ do
 	end
 	bossModPrototype.AddRename = DBM.AddRename
 
-	---@param spellId number
+	---@param spellId number|string
 	---@param renameString string?
 	function DBM:SetRename(spellId, renameString)
-		if type(spellId) ~= "number" or spellId <= 5 then
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return
+		end
+		if type(spellId) ~= "number" then
 			return
 		end
 		local overrides = getSpellRenameOverrides()
@@ -1129,11 +1166,15 @@ do
 	end
 	bossModPrototype.SetRename = DBM.SetRename
 
-	---@param spellId number
+	---@param spellId number|string
 	---@param fallbackName string?
 	---@return string?
 	function DBM:GetRename(spellId, fallbackName)
-		if type(spellId) ~= "number" or spellId <= 5 then
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return fallbackName
+		end
+		if type(spellId) ~= "number" then
 			return fallbackName
 		end
 		if spellRenameCacheDirty then
@@ -1143,10 +1184,14 @@ do
 	end
 	bossModPrototype.GetRename = DBM.GetRename
 
-	---@param spellId number
+	---@param spellId number|string
 	---@return string?
 	function DBM:GetRenameDefault(spellId)
-		if type(spellId) ~= "number" or spellId <= 5 then
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return nil
+		end
+		if type(spellId) ~= "number" then
 			return nil
 		end
 		return defaultSpellRenamesByspellId[spellId]
@@ -1158,13 +1203,28 @@ do
 	end
 	bossModPrototype.RefreshSpellRenames = DBM.RefreshSpellRenames
 
+	---@param spellId number|string
+	---@return number?
+	function DBM:NormalizeSpellRenameKey(spellId)
+		local normalizedSpellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(normalizedSpellId) then
+			return nil
+		end
+		return normalizedSpellId
+	end
+	bossModPrototype.NormalizeSpellRenameKey = DBM.NormalizeSpellRenameKey
+
 	---Function for Registering Spell Renames/ShortText to original spellIDs
-	---@param spellId number Original spellID of spell and not alternate ID
+	---@param spellId number|string Original spellID of spell and not alternate ID
 	---@param AltName string Custom name used for the spell and not alternateID
 	function DBM:RegisterAltSpellName(spellId, AltName)
 		--Protection against internal and external misuse
 		--Also filters spellIds 0-5 which are typically not real spellids such as phase announces or spell-less timer objects
-		if spellId and type(spellId) == "number" and spellId > 5 and AltName and type(AltName) == "string" then
+		spellId = normalizeSpellRenameKey(spellId)
+		if isValidSpellRenameKey(spellId) and AltName and type(AltName) == "string" then
+			if type(spellId) ~= "number" then
+				return
+			end
 			if not legacyAltSpellNamesByspellId[spellId] then
 				legacyAltSpellNamesByspellId[spellId] = AltName
 				refreshSpellRenameCache(false)
@@ -1172,9 +1232,13 @@ do
 		end
 	end
 	---Function for providing Plater and other addons access to Spell Renames/ShortText
-	---@param spellId number
+	---@param spellId number|string
 	function DBM:GetAltSpellName(spellId)
-		if type(spellId) ~= "number" or spellId <= 5 then
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return nil
+		end
+		if type(spellId) ~= "number" then
 			return nil
 		end
 		if spellRenameCacheDirty then
