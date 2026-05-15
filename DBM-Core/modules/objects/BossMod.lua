@@ -604,6 +604,7 @@ end
 
 do
 	local interruptSpells = {
+		[1672] = true,--Warrior Shield Bash
 		[1766] = true,--Rogue Kick
 		[2139] = true,--Mage Counterspell
 		[6552] = true,--Warrior Pummel
@@ -621,7 +622,7 @@ do
 		[202137] = true,--Demon Hunter Sigil of Silence (Not uncommented because CheckInterruptFilter doesn't properly handle dual interrupts for single class yet)
 		[351338] = true,--Evoker Quell
 	}
-	if private.isClassic then
+	if private.isClassic or private.isBCC then
 		interruptSpells[8042] = true -- Shaman Earth Shock
 	end
 	---@param sourceGUID string source GUID of the caster
