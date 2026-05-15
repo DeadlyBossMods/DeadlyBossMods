@@ -68,7 +68,7 @@ end
 ---@param priority string ChatThrottleLib sync priority
 ---@param isLogged boolean?
 local function sendSync(protocol, prefix, msg, priority, isLogged)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	if DBM:IsEnabled() or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
@@ -105,7 +105,7 @@ private.sendSync = sendSync
 ---@param priority string ChatThrottleLib sync priority
 ---@param isLogged boolean?
 local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
 	if isLogged then
 		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
@@ -120,7 +120,7 @@ private.sendWhisperSync = sendWhisperSync
 ---@param prefix string
 ---@param msg any
 local function sendGuildSync(protocol, prefix, msg)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	if IsInGuild() and (DBM:IsEnabled() or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		local fullname = playerName .. "-" .. normalizedPlayerRealm
@@ -137,7 +137,7 @@ private.sendGuildSync = sendGuildSync
 ---@param noBNet boolean?
 local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not DBM:IsEnabled() then return end--Block all world syncs if force disabled
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	DBM:Debug("SendWorldSync running for " .. prefix)
 	local fullname = playerName .. "-" .. normalizedPlayerRealm
 	local sendChannel = "SOLO"
@@ -198,7 +198,7 @@ private.SendWorldSync = SendWorldSync
 ---@param channel string
 ---@param priority string ChatThrottleLib sync priority
 local function sendBWSync(prefix, msg, channel, priority)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance syncs in Midnight Alpha
+	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	if DBM:IsEnabled() and not IsTrialAccount() then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
 		ChatThrottleLib:SendAddonMessage(priority, "BigWigs", prefix .. "^" .. msg, channel)
@@ -209,7 +209,7 @@ private.sendBWSync = sendBWSync
 -- sends a whisper to a player by their character name or BNet presence id
 -- returns true if the message was sent, nil otherwise
 local function sendWhisper(target, msg)
-	if DBM:MidRestrictionsActive() then return end--Block all in instance chat messages in Midnight Alpha
+	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance chat messages in Midnight Alpha
 	if IsTrialAccount() then return end
 	if type(target) == "number" then
 		if not BNIsSelf(target) then -- Never send BNet whispers to ourselves
