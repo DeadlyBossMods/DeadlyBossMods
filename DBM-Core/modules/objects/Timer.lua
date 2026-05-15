@@ -1243,6 +1243,7 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 				--Automatically register alternate spellnames when detecting their use here
 				if spellId and altSpellName and type(altSpellName) == "string" then
 					DBM:RegisterAltSpellName(spellId, altSpellName)
+					DBM:AddRename(spellId, altSpellName)
 				end
 			--Interpret it literal with no restrictions, first checking mod local table, then just taking timerText directly
 			else
@@ -1251,8 +1252,9 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 				if spellId and not rawget(self.localization.timers, timerText) and type(timerText) == "string" then
 					--if timerText exists in self.localization.timers table, it's not custom shorttext spell name
 					--It's also not short text if it's hacky paul stuff, but that should be filtered by the spellID check in RegisterAltSpellName which ignores when he uses spellid of 0
-					local trimmedText = timerText:gsub("%s*%(%%s%)", "")
+					local trimmedText = DBM:SanitizeSpellRename(timerText)
 					DBM:RegisterAltSpellName(spellId, trimmedText)
+					DBM:AddRename(spellId, trimmedText)
 				end
 			end
 		else--Short text is off, we want to be more aggressive in NOT setting short text if we can help it
@@ -1603,6 +1605,9 @@ function bossModPrototype:GetLocalizedTimerText(timerType, spellId, Name)
 		if spellName then
 			self.name = spellName
 		end
+	end
+	if spellId then
+		spellName = DBM:GetRename(spellId, spellName)
 	end
 	return pformat(L.AUTO_TIMER_TEXTS[timerType], spellName)
 end

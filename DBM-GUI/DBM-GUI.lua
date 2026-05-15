@@ -379,11 +379,18 @@ end
 local UpdateCurrentSeason
 local firstLoad = true
 function DBM_GUI:ShowHide(forceshow)
-	if firstLoad then
+	local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+	local wantsToShow = forceshow == true or (forceshow ~= false and not optionsFrame:IsShown())
+	if InCombatLockdown() then
+		if wantsToShow then
+			DBM:AddMsg(DBM_CORE_L.LOAD_GUI_COMBAT, nil, true)
+			return
+		end
+	end
+	if firstLoad and wantsToShow then
 		UpdateCurrentSeason()
 		firstLoad = false
 	end
-	local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 	if forceshow == true then
 		self:UpdateModList()
 		optionsFrame:Show()
@@ -531,6 +538,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 			else
 				local title, desc, _, icon
 				local usedSpellID, hasPrivate
+				local renameSpellId
 				if mod.groupOptions[spellID] and mod.groupOptions[spellID].customKeys then
 					usedSpellID = mod.groupOptions[spellID].customKeys--Color coding would be done in customKeys, not here
 				end
@@ -547,7 +555,8 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 						else
 							local _title = DBM:GetSpellName(spellID)
 							if _title then
-								title, desc, icon = _title, tonumber(spellID), DBM:GetSpellTexture(spellID or 0)
+								title, desc, icon = DBM:GetRename(spellID, _title), tonumber(spellID), DBM:GetSpellTexture(spellID or 0)
+								renameSpellId = spellID
 							end
 						end
 					end
@@ -565,7 +574,8 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 				if not usedSpellID then
 					usedSpellID = "|Haddon:DBM:wacopy:"..spellID.."|h|cff69ccf0"..spellID.."|r|h"
 				end
-				local catpanel = panel:CreateAbility(title, icon, usedSpellID, hasPrivate)
+				local catpanel = panel:CreateAbility(title, icon, usedSpellID, hasPrivate, renameSpellId)
+				catpanel:SetAbilityTestContext(mod, spellID)
 				if desc then
 					catpanel:CreateSpellDesc(desc)
 				end

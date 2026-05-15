@@ -454,10 +454,16 @@ local specInstructionalRemapTable = {
 
 local function setText(announceType, spellId, stacks, customName, alternateSpellId)
 	local text, spellName
+	local baseSpellName
 	if customName then
-		spellName = customName
+		baseSpellName = customName
 	else
-		spellName = DBM:ParseSpellName(alternateSpellId or spellId, announceType) or CL.UNKNOWN
+		baseSpellName = DBM:ParseSpellName(alternateSpellId or spellId, announceType) or CL.UNKNOWN
+	end
+	if spellId then
+		spellName = DBM:GetRename(spellId, baseSpellName)
+	else
+		spellName = baseSpellName
 	end
 	if announceType == "prewarn" then
 		if type(stacks) == "string" then
@@ -482,7 +488,8 @@ local function setText(announceType, spellId, stacks, customName, alternateSpell
 	end
 	--Automatically register alternate spellnames when detecting their use here
 	if spellId and (customName or alternateSpellId) then
-		DBM:RegisterAltSpellName(spellId, customName or spellName)
+		DBM:RegisterAltSpellName(spellId, baseSpellName)
+		DBM:AddRename(spellId, baseSpellName)
 	end
 	return text, spellName
 end
@@ -491,6 +498,8 @@ function specialWarningPrototype:SetText(customName)
 	local text, spellName = setText(self.announceType, self.spellId, self.stacks, customName)
 	self.text = text
 	self.spellName = spellName
+	self.customName = customName
+	self.renameRevision = DBM:GetSpellRenameRevision()
 end
 
 ---Update icon on object and nothing else.
@@ -511,6 +520,9 @@ function specialWarningPrototype:UpdateKey(altSpellId)
 		local text, spellName = setText(self.announceType, self.spellId, self.stacks)
 		self.text = text
 		self.spellName = spellName
+		self.customName = nil
+		self.alternateSpellId = nil
+		self.renameRevision = DBM:GetSpellRenameRevision()
 	else--Just regenerating spellName not message text because it's likely a custom text object such as NewSpecialWarning
 		self.spellName = DBM:ParseSpellName(altSpellId)
 	end
@@ -598,6 +610,12 @@ function specialWarningPrototype:Show(...)
 	end
 	--Check if option for this warning is even enabled
 	if (not self.option or self.mod.Options[self.option]) and not moving and frame then
+		if self.announceType and self.spellId and self.spellId > 5 and self.renameRevision ~= DBM:GetSpellRenameRevision() then
+			local text, spellName = setText(self.announceType, self.spellId, self.stacks, self.customName, self.alternateSpellId)
+			self.text = text
+			self.spellName = spellName
+			self.renameRevision = DBM:GetSpellRenameRevision()
+		end
 		local isSecretBlizzType = self.announceType == "blizztarget" or self.announceType == "blizzyou"
 		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
 		if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
@@ -1059,6 +1077,9 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 			type = announceType,
 			spellId = spellId,
 			spellName = spellName,
+			customName = alternateName,
+			alternateSpellId = alternateSpellId,
+			renameRevision = DBM:GetSpellRenameRevision(),
 			stacks = stacks,
 			icon = icon,
 		},
