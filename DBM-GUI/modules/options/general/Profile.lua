@@ -193,7 +193,7 @@ local function importSpellRenameData(importTable)
 	DBM.Options.SpellRenames = importedRenames
 	DBM:RefreshSpellRenames()
 	DBM.spellRenameRevision = (DBM.spellRenameRevision or 0) + 1
-	DBM:AddMsg("Spell renames imported.")
+	DBM:AddMsg(L.SpellRenamesImported)
 	C_Timer.After(0.05, function()
 		if DBM_GUI and DBM_GUI.UpdateModList then
 			DBM_GUI:UpdateModList()
