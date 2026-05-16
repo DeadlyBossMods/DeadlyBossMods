@@ -40,10 +40,9 @@ if DBM:IsRetail() then
 		DBM.Keystones:Show()
 	end)
 
-	local area1b = DBM_GUI.CAT_TOOLS:CreateArea(L.Panel_ExtraFeatures)
+	local area1b = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_BrezArea)
 
 	local showBrezFrame = area1b:CreateCheckButton(L.Tools_ShowBrezFrame, true, nil, "ShowBrezFrame")
-	area1b:CreateCheckButton(L.Tools_ShowKeystoneOnComplete, true, nil, "ShowKeystoneOnComplete")
 
 	if showBrezFrame then
 		showBrezFrame:HookScript("OnClick", function()
@@ -104,6 +103,9 @@ if DBM:IsRetail() then
 			DBM.BattleRezTimer:Show()
 		end
 	end)
+
+	local area1c = DBM_GUI.CAT_TOOLS:CreateArea(L.Panel_ExtraFeatures)
+	area1c:CreateCheckButton(L.Tools_ShowKeystoneOnComplete, true, nil, "ShowKeystoneOnComplete")
 end
 
 local area2 = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_BreakTimer)
