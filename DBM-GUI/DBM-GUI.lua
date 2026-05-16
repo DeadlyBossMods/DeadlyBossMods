@@ -388,11 +388,13 @@ do
 		popupFrame:Show()
 	end
 
-	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage)
+	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage, payloadTypeFailureMessage, payloadVersionFailureMessage)
 		if not popupFrame then
 			createPopupFrame()
 		end
 		local failureMessage = importFailureMessage or "Failed to import profile string. The data may be invalid/corrupted or from an unsupported format."
+		local typeMismatchMessage = payloadTypeFailureMessage or failureMessage
+		local versionMismatchMessage = payloadVersionFailureMessage or failureMessage
 		function popupFrame:VerifyImport(import)
 			local function reportImportFailure()
 				DBM:AddMsg(failureMessage)
@@ -404,11 +406,11 @@ do
 			end
 			if expectedPayloadType and not isLegacy then
 				if deserialized.payloadType ~= expectedPayloadType then
-					reportImportFailure()
+					DBM:AddMsg(typeMismatchMessage)
 					return false
 				end
 				if expectedPayloadVersion and deserialized.payloadVersion ~= expectedPayloadVersion then
-					reportImportFailure()
+					DBM:AddMsg(versionMismatchMessage)
 					return false
 				end
 			end
@@ -452,14 +454,6 @@ do
 				DBM:AddMsg(L.ImportSpellRenamesFailed)
 				return false
 			end
-			if importTable.payloadType ~= "SpellRenames" then
-				DBM:AddMsg(L.ImportSpellRenamesWrongType)
-				return false
-			end
-			if importTable.payloadVersion ~= 1 then
-				DBM:AddMsg(L.ImportSpellRenamesUnsupportedVersion)
-				return false
-			end
 			if type(importTable.SpellRenames) ~= "table" then
 				DBM:AddMsg(L.ImportSpellRenamesFailed)
 				return false
@@ -471,7 +465,7 @@ do
 				end
 			end
 			return true
-		end, "SpellRenames", 1, L.ImportSpellRenamesFailed)
+		end, "SpellRenames", 1, L.ImportSpellRenamesFailed, L.ImportSpellRenamesWrongType, L.ImportSpellRenamesUnsupportedVersion)
 	end
 end
 
