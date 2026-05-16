@@ -209,7 +209,7 @@ L.ButtonExportProfile				= "Export profile"
 
 L.ImportErrorOn						= "Custom sounds missing for setting: %s"
 L.ImportVoiceMissing				= "Missing voice pack: %s"
-L.LegacyProfileImportNotice		= "Legacy profile imported. This format is deprecated; please re-export using the new format."
+L.LegacyProfileImportNotice			= "Legacy profile imported. This format is deprecated; please re-export using the new format."
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 			= "Alerts"

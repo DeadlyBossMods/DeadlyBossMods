@@ -400,7 +400,7 @@ do
 			end
 			importFunc(deserialized)
 			if isLegacy then
-				DBM:AddMsg(L.LegacyProfileImportNotice)
+				DBM:AddMsg(L.LegacyProfileImportNotice, nil, true)
 			end
 			return true
 		end
