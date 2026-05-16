@@ -103,6 +103,9 @@ if DBM:IsRetail() then
 			DBM.BattleRezTimer:Show()
 		end
 	end)
+
+	local area1c = DBM_GUI.CAT_TOOLS:CreateArea(L.Panel_ExtraFeatures)
+	area1c:CreateCheckButton(L.Tools_ShowKeystoneOnComplete, true, nil, "ShowKeystoneOnComplete")
 end
 
 local area2 = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_BreakTimer)

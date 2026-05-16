@@ -296,8 +296,9 @@ DBM.DefaultOptions = {
 	DisableAmbiance = false,
 	DisableMusic = false,
 	EnableModels = true,
-	GUIWidth = 800,
-	GUIHeight = 600,
+	GUIWidth = 1000,
+	GUIHeight = 800,
+	GUIResizeMigrated_1000x800 = false,
 	GroupOptionsExcludeIcon = false,
 --	GroupOptionsExcludePA = false,
 	AutoExpandSpellGroups2 = true,
@@ -452,6 +453,7 @@ DBM.DefaultOptions = {
 	NewsMessageShown2 = 2,--Apparently variable without 2 can still exist in some configs (config cleanup of no longer existing variables not working?)
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowBrezFrame = false,
+	ShowKeystoneOnComplete = true,
 	BrezFont = "standardFont",
 	BrezFontSize = 18,
 	BattleRezPosition = {"TOPLEFT", 214, -29},
@@ -479,6 +481,7 @@ DBM.DefaultOptions = {
 	ShortTimerText = true,
 	HardcodedTimer = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
+	SpellRenames = false,-- Reserved key for user spell rename overrides (actual table initialized per-profile in loadOptions)
 	CoreSavedRevision = 1,
 	SilentMode = false,
 	NoCombatScanningFeatures = false,
@@ -1013,23 +1016,235 @@ function DBM:ParseSpellName(spellId, objectType)
 end
 
 do
-	local customSpellNamesByspellId = {}
+	local legacyAltSpellNamesByspellId = {}
+	local defaultSpellRenamesByspellId = {}
+	local effectiveSpellRenamesByspellId = {}
+	local spellRenameCacheDirty = true
+	DBM.spellRenameRevision = DBM.spellRenameRevision or 0
+
+	local function trimSpellRenameText(text)
+		text = text:gsub("^%s+", "")
+		text = text:gsub("%s+$", "")
+		return text
+	end
+
+	local function sanitizeSpellRenameText(text)
+		if type(text) ~= "string" then
+			return nil
+		end
+		text = trimSpellRenameText(text)
+		-- Legacy timer short-text migration helper:
+		-- strip trailing " (%s)" suffixes that were injected by old timer formatting hacks.
+		text = text:gsub("%s*%(%s*%%s%s*%)%s*$", "")
+		text = trimSpellRenameText(text)
+		if text == "" then
+			return nil
+		end
+		return text
+	end
+
+	---@param spellId number|string?
+	---@return number?
+	local function normalizeSpellRenameKey(spellId)
+		if type(spellId) == "number" then
+			return spellId
+		end
+		if type(spellId) ~= "string" then
+			return nil
+		end
+		local numericKey = tonumber(spellId)
+		if numericKey then
+			return numericKey
+		end
+		local ejId = tonumber(spellId:match("^[Ee][Jj](%d+)$"))
+		if ejId then
+			return -ejId
+		end
+		return nil
+	end
+
+	---@param spellId number?
+	---@return boolean
+	local function isValidSpellRenameKey(spellId)
+		return type(spellId) == "number" and (spellId > 5 or spellId < 0)
+	end
+
+	local function getSpellRenameOverrides()
+		if type(DBM.Options) ~= "table" then
+			return nil
+		end
+		if type(DBM.Options.SpellRenames) ~= "table" then
+			DBM.Options.SpellRenames = {}
+		end
+		return DBM.Options.SpellRenames
+	end
+
+	local function rebuildSpellRenameCache()
+		table.wipe(effectiveSpellRenamesByspellId)
+		for spellId, rename in pairs(legacyAltSpellNamesByspellId) do
+			effectiveSpellRenamesByspellId[spellId] = rename
+		end
+		for spellId, rename in pairs(defaultSpellRenamesByspellId) do
+			effectiveSpellRenamesByspellId[spellId] = rename
+		end
+		local overrides = getSpellRenameOverrides()
+		if overrides then
+			for spellId, rename in pairs(overrides) do
+				local normalizedSpellId = normalizeSpellRenameKey(spellId)
+				if isValidSpellRenameKey(normalizedSpellId) and type(rename) == "string" and rename ~= "" then
+					if type(normalizedSpellId) == "number" then
+						effectiveSpellRenamesByspellId[normalizedSpellId] = rename
+					end
+				end
+			end
+		end
+		spellRenameCacheDirty = false
+	end
+
+	local function refreshSpellRenameCache(incrementRevision)
+		spellRenameCacheDirty = true
+		rebuildSpellRenameCache()
+		if incrementRevision then
+			DBM.spellRenameRevision = (DBM.spellRenameRevision or 0) + 1
+		end
+	end
+
+	function DBM:GetSpellRenameRevision()
+		return DBM.spellRenameRevision or 0
+	end
+	bossModPrototype.GetSpellRenameRevision = DBM.GetSpellRenameRevision
+
+	---@param text string?
+	---@return string?
+	function DBM:SanitizeSpellRename(text)
+		return sanitizeSpellRenameText(text)
+	end
+	bossModPrototype.SanitizeSpellRename = DBM.SanitizeSpellRename
+
+	---@param spellId number|string
+	---@param renameString string?
+	function DBM:AddRename(spellId, renameString)
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return
+		end
+		if type(spellId) ~= "number" then
+			return
+		end
+		renameString = sanitizeSpellRenameText(renameString)
+		if not renameString then
+			return
+		end
+		if not defaultSpellRenamesByspellId[spellId] then
+			defaultSpellRenamesByspellId[spellId] = renameString
+			refreshSpellRenameCache(true)
+		end
+	end
+	bossModPrototype.AddRename = DBM.AddRename
+
+	---@param spellId number|string
+	---@param renameString string?
+	function DBM:SetRename(spellId, renameString)
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return
+		end
+		if type(spellId) ~= "number" then
+			return
+		end
+		local overrides = getSpellRenameOverrides()
+		if not overrides then
+			return
+		end
+		renameString = sanitizeSpellRenameText(renameString)
+		if renameString then
+			overrides[spellId] = renameString
+		else
+			overrides[spellId] = nil
+		end
+		refreshSpellRenameCache(true)
+	end
+	bossModPrototype.SetRename = DBM.SetRename
+
+	---@param spellId number|string
+	---@param fallbackName string?
+	---@return string?
+	function DBM:GetRename(spellId, fallbackName)
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return fallbackName
+		end
+		if type(spellId) ~= "number" then
+			return fallbackName
+		end
+		if spellRenameCacheDirty then
+			rebuildSpellRenameCache()
+		end
+		return effectiveSpellRenamesByspellId[spellId] or fallbackName
+	end
+	bossModPrototype.GetRename = DBM.GetRename
+
+	---@param spellId number|string
+	---@return string?
+	function DBM:GetRenameDefault(spellId)
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return nil
+		end
+		if type(spellId) ~= "number" then
+			return nil
+		end
+		return defaultSpellRenamesByspellId[spellId]
+	end
+	bossModPrototype.GetRenameDefault = DBM.GetRenameDefault
+
+	function DBM:RefreshSpellRenames()
+		refreshSpellRenameCache(false)
+	end
+	bossModPrototype.RefreshSpellRenames = DBM.RefreshSpellRenames
+
+	---@param spellId number|string
+	---@return number?
+	function DBM:NormalizeSpellRenameKey(spellId)
+		local normalizedSpellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(normalizedSpellId) then
+			return nil
+		end
+		return normalizedSpellId
+	end
+	bossModPrototype.NormalizeSpellRenameKey = DBM.NormalizeSpellRenameKey
+
 	---Function for Registering Spell Renames/ShortText to original spellIDs
-	---@param spellId number Original spellID of spell and not alternate ID
+	---@param spellId number|string Original spellID of spell and not alternate ID
 	---@param AltName string Custom name used for the spell and not alternateID
 	function DBM:RegisterAltSpellName(spellId, AltName)
 		--Protection against internal and external misuse
 		--Also filters spellIds 0-5 which are typically not real spellids such as phase announces or spell-less timer objects
-		if spellId and type(spellId) == "number" and spellId > 5 and AltName and type(AltName) == "string" then
-			if not customSpellNamesByspellId[spellId] then
-				customSpellNamesByspellId[spellId] = AltName
+		spellId = normalizeSpellRenameKey(spellId)
+		if isValidSpellRenameKey(spellId) and AltName and type(AltName) == "string" then
+			if type(spellId) ~= "number" then
+				return
+			end
+			if not legacyAltSpellNamesByspellId[spellId] then
+				legacyAltSpellNamesByspellId[spellId] = AltName
+				refreshSpellRenameCache(false)
 			end
 		end
 	end
 	---Function for providing Plater and other addons access to Spell Renames/ShortText
-	---@param spellId number
+	---@param spellId number|string
 	function DBM:GetAltSpellName(spellId)
-		return customSpellNamesByspellId[spellId]
+		spellId = normalizeSpellRenameKey(spellId)
+		if not isValidSpellRenameKey(spellId) then
+			return nil
+		end
+		if type(spellId) ~= "number" then
+			return nil
+		end
+		if spellRenameCacheDirty then
+			rebuildSpellRenameCache()
+		end
+		return effectiveSpellRenamesByspellId[spellId]
 	end
 end
 
@@ -2407,6 +2622,10 @@ function DBM:CreateProfile(name)
 	DBM_AllSavedOptions[usedProfile] = DBM_AllSavedOptions[usedProfile] or {}
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
+	if type(self.Options.SpellRenames) ~= "table" then
+		self.Options.SpellRenames = {}
+	end
+	self:RefreshSpellRenames()
 	-- rearrange position
 	DBT:CreateProfile("DBM")
 	self:RepositionFrames()
@@ -2422,6 +2641,10 @@ function DBM:ApplyProfile(name)
 	DBM_UsedProfile = usedProfile
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
+	if type(self.Options.SpellRenames) ~= "table" then
+		self.Options.SpellRenames = {}
+	end
+	self:RefreshSpellRenames()
 	-- rearrange position
 	DBT:ApplyProfile("DBM")
 	self:RepositionFrames()
@@ -2439,6 +2662,10 @@ function DBM:CopyProfile(name)
 	DBM_AllSavedOptions[usedProfile] = CopyTable(DBM_AllSavedOptions[name])
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
+	if type(self.Options.SpellRenames) ~= "table" then
+		self.Options.SpellRenames = {}
+	end
+	self:RefreshSpellRenames()
 	-- rearrange position
 	DBT:CopyProfile(name, "DBM", true)
 	self:RepositionFrames()
@@ -2461,6 +2688,11 @@ function DBM:DeleteProfile(name)
 	if not self.Options then
 		-- the default profile got lost somehow (maybe WoW crashed and the saved variables file got corrupted)
 		self:CreateProfile("Default")
+	else
+		if type(self.Options.SpellRenames) ~= "table" then
+			self.Options.SpellRenames = {}
+		end
+		self:RefreshSpellRenames()
 	end
 	-- rearrange position
 	DBT:DeleteProfile(name, "DBM")
@@ -2523,6 +2755,13 @@ do
 		end
 		if not dbmIsEnabled then
 			self:ForceDisableSpam()
+			return
+		end
+		local guiLoaded = C_AddOns.IsAddOnLoaded("DBM-GUI")
+		local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+		local guiShown = guiLoaded and optionsFrame and optionsFrame:IsShown()
+		if InCombatLockdown() and (not guiLoaded or not guiShown) then
+			self:AddMsg(L.LOAD_GUI_COMBAT, nil, true)
 			return
 		end
 		if self.NewerVersion and private.showConstantReminder >= 1 then
@@ -3897,6 +4136,17 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
+		if not self.Options.GUIResizeMigrated_1000x800 then
+			if self.Options.GUIWidth == 800 and self.Options.GUIHeight == 600 then
+				self.Options.GUIWidth = 1000
+				self.Options.GUIHeight = 800
+			end
+			self.Options.GUIResizeMigrated_1000x800 = true
+		end
+		if type(self.Options.SpellRenames) ~= "table" then
+			self.Options.SpellRenames = {}
+		end
+		self:RefreshSpellRenames()
 		if not self.Options.CountdownVoiceNamesMigrated and HasLegacyCountVoiceOption(self.Options) then
 			MigrateCountVoiceOption(self.Options, "CountdownVoice")
 			MigrateCountVoiceOption(self.Options, "CountdownVoice2")
@@ -4719,6 +4969,10 @@ do
 
 	function DBM:PLAYER_REGEN_DISABLED()
 		lastCombatStarted = GetTime()
+		local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+		if optionsFrame and optionsFrame:IsShown() then
+			optionsFrame:Hide()
+		end
 		if not combatInitialized then return end
 		-- detects a boss pull based on combat state, this is required for legacy or outdoor bosses that do not fire ENCOUNTER_START event on engage
 		if dbmIsEnabled and combatInfo[LastInstanceMapID] then

@@ -75,10 +75,16 @@ local function CreateOurFrame()
 	button:SetHighlightTexture(button:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
 	button:SetText(OKAY)
 	button:SetScript("OnClick", function(self)
-		frame.mod.Options[frame.modvar .. "SWNote"] = editBox:GetText() or ""
+		local text = editBox:GetText() or ""
+		if frame.customApply then
+			frame.customApply(text)
+		elseif frame.mod and frame.modvar then
+			frame.mod.Options[frame.modvar .. "SWNote"] = text
+		end
 		frame.mod = nil
 		frame.modvar = nil
 		frame.abilityName = nil
+		frame.customApply = nil
 		frame:Hide()
 	end)
 	local button2 = CreateFrame("Button", nil, frame)
@@ -95,6 +101,7 @@ local function CreateOurFrame()
 		frame.mod = nil
 		frame.modvar = nil
 		frame.abilityName = nil
+		frame.customApply = nil
 		frame:Hide()
 	end)
 	button3 = CreateFrame("Button", nil, frame)
@@ -141,6 +148,7 @@ function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender)
 		end
 	end
 	frame:Show()
+	frame.customApply = nil
 	frame.mod = mod
 	frame.modvar = modvar
 	frame.abilityName = abilityName
@@ -157,4 +165,23 @@ function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender)
 			editBox:SetText("")
 		end
 	end
+end
+
+---@param headerText string
+---@param initialText string?
+---@param onAccept fun(text: string)?
+function DBM:ShowTextEditor(headerText, initialText, onAccept)
+	if not frame then
+		CreateOurFrame()
+	end
+	frame:Show()
+	frame.mod = nil
+	frame.modvar = nil
+	frame.abilityName = nil
+	frame.customApply = onAccept
+	fontstring:SetText(headerText or "")
+	editBox:SetText(initialText or "")
+	-- Generic text editors intentionally clear note-sharing context (mod/modvar),
+	-- so keep Share hidden to avoid invalid share handler access.
+	button3:Hide()
 end

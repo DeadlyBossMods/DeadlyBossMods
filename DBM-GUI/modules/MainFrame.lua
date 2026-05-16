@@ -10,7 +10,10 @@ local DBM_GUI = DBM_GUI
 local DBM = DBM
 local CreateFrame = CreateFrame
 local frame = _G["DBM_GUI_OptionsFrame"]
+local frameWrapper
 local SEARCH = SEARCH or "Search"
+local COLLAPSE_TEXT = "-"
+local EXPAND_TEXT = "+"
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
 frame:ClearAllPoints()
@@ -58,6 +61,9 @@ frame:SetScript("OnDragStop", function(self)
 	DBM.Options.GUIY = y
 end)
 frame:SetScript("OnSizeChanged", function(self)
+	if self.collapsed then
+		return
+	end
 	self:UpdateMenuFrame()
 	if DBM_GUI.currentViewing then
 		self:DisplayFrame(DBM_GUI.currentViewing, false)
@@ -65,7 +71,7 @@ frame:SetScript("OnSizeChanged", function(self)
 end)
 frame.tabs = {}
 
-CreateFrame("Button", "$parentClosePanelButton", frame, "UIPanelCloseButtonDefaultAnchors")
+local frameCloseButton = CreateFrame("Button", "$parentClosePanelButton", frame, "UIPanelCloseButtonDefaultAnchors")
 
 if not isRetail then
 	local titleBg = frame:CreateTexture("$parentTitleBga", "BACKGROUND", "_UI-Frame-TitleTileBg")
@@ -125,6 +131,11 @@ if DBM.NewerVersion then
 else
 	frameHeaderText:SetText(CL.DEADLY_BOSS_MODS.. " - " .. DBM.DisplayVersion.. " (" .. DBM:ShowRealDate(DBM.Revision) .. ")")
 end
+
+local frameCollapseButton = CreateFrame("Button", "$parentCollapseButton", frame, "UIPanelButtonTemplate")
+frameCollapseButton:SetSize(20, 20)
+frameCollapseButton:SetPoint("RIGHT", frameCloseButton, "LEFT", -2, 0)
+frameCollapseButton:SetText(COLLAPSE_TEXT)
 
 ---@class DBMMainFrameOkButton: Button
 local frameOkay = CreateFrame("Button", "$parentOkay", frame, "UIPanelButtonTemplate")
@@ -265,16 +276,96 @@ frame.searchBox = frameSearchBox
 frame.searchClearButton = frameSearchClear
 frame.searchCountText = frameSearchCount
 
+function frame:CancelAutoUncollapse()
+	if self.autoUncollapseTimer then
+		self.autoUncollapseTimer:Cancel()
+		self.autoUncollapseTimer = nil
+	end
+end
+
+function frame:ScheduleAutoUncollapse(seconds)
+	seconds = tonumber(seconds) or 10
+	if seconds < 0 then
+		seconds = 0
+	end
+	self:CancelAutoUncollapse()
+	self.autoUncollapseTimer = C_Timer.NewTimer(seconds, function()
+		self.autoUncollapseTimer = nil
+		if self:IsShown() and self.collapsed then
+			self:SetCollapsed(false)
+		end
+	end)
+end
+
+function frame:SetCollapsed(collapsed)
+	collapsed = collapsed and true or false
+	if self.collapsed == collapsed then
+		return
+	end
+	if not collapsed then
+		self:CancelAutoUncollapse()
+	end
+	self.collapsed = collapsed
+	if collapsed then
+		self._preCollapseHeight = self:GetHeight()
+		self:SetHeight(62)
+		frameWrapper:Hide()
+		frameOkay:Hide()
+		frameWebsiteButton:Hide()
+		frameWebsite:Hide()
+		frameWebsiteButtonA:Hide()
+		frameSearchBox:Hide()
+		frameSearchLabel:Hide()
+		frameSearchClear:Hide()
+		frameSearchCount:Hide()
+		frameResize:Hide()
+		for i = 1, #self.tabs do
+			local tabButton = _G[self:GetName() .. "Tab" .. i]
+			if tabButton then
+				tabButton:Hide()
+			end
+		end
+		frameCollapseButton:SetText(EXPAND_TEXT)
+	else
+		self:SetHeight(self._preCollapseHeight or DBM.Options.GUIHeight or 600)
+		frameWrapper:Show()
+		frameOkay:Show()
+		frameWebsiteButton:Show()
+		frameWebsite:Show()
+		frameWebsiteButtonA:Show()
+		frameSearchBox:Show()
+		frameSearchLabel:Show()
+		frameResize:Show()
+		for i = 1, #self.tabs do
+			local tabButton = _G[self:GetName() .. "Tab" .. i]
+			if tabButton then
+				tabButton:Show()
+			end
+		end
+		self:SetSearchStatus(self.searchQuery and self.searchQuery ~= "", 0)
+		self:UpdateMenuFrame()
+		if DBM_GUI.currentViewing then
+			self:DisplayFrame(DBM_GUI.currentViewing)
+		end
+		frameCollapseButton:SetText(COLLAPSE_TEXT)
+	end
+end
+
+frameCollapseButton:SetScript("OnClick", function()
+	frame:SetCollapsed(not frame.collapsed)
+end)
+
 -- Cancel any pending debounce timer when the frame hides
 frame:HookScript("OnHide", function()
 	if searchUpdateTimer then
 		searchUpdateTimer:Cancel()
 		searchUpdateTimer = nil
 	end
+	frame:CancelAutoUncollapse()
 end)
 
 ---@class DBMGUIFrameWrapper: Frame, BackdropTemplate
-local frameWrapper = CreateFrame("Frame", nil, frame, "BackdropTemplate")
+frameWrapper = CreateFrame("Frame", nil, frame, "BackdropTemplate")
 frameWrapper:SetPoint("TOPLEFT", 15, -59)
 frameWrapper:SetPoint("BOTTOMRIGHT", -15, 40)
 frameWrapper.backdropInfo = {

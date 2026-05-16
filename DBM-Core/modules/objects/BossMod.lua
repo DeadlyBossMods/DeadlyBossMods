@@ -604,11 +604,19 @@ end
 
 do
 	local interruptSpells = {
-		[1766] = true,--Rogue Kick
+		[72] = true,--Warrior Shield Bash (Rank 1)
+		[1671] = true,--Warrior Shield Bash (Rank 2)
+		[1672] = true,--Warrior Shield Bash (Rank 3)
+		[1766] = true,--Rogue Kick (Rank 1)
+		[1767] = true,--Rogue Kick (Rank 2)
+		[1768] = true,--Rogue Kick (Rank 3)
+		[1769] = true,--Rogue Kick (Rank 4)
 		[2139] = true,--Mage Counterspell
-		[6552] = true,--Warrior Pummel
+		[6552] = true,--Warrior Pummel (Rank 1)
+		[6554] = true,--Warrior Pummel (Rank 2)
 		[15487] = true,--Priest Silence
-		[19647] = true,--Warlock pet Spell Lock
+		[19244] = true,--Warlock pet Spell Lock (Rank 1)
+		[19647] = true,--Warlock pet Spell Lock (Rank 2)
 		[47528] = true,--Death Knight Mind Freeze
 		[57994] = true,--Shaman Wind Shear
 		[78675] = true,--Druid Solar Beam
@@ -618,11 +626,14 @@ do
 		[116705] = true,--Monk Spear Hand Strike
 		[147362] = true,--Hunter Countershot
 		[183752] = true,--Demon Hunter Disrupt
-		[202137] = true,--Demon Hunter Sigil of Silence (Not uncommented because CheckInterruptFilter doesn't properly handle dual interrupts for single class yet)
+		[202137] = true,--Demon Hunter Sigil of Silence
 		[351338] = true,--Evoker Quell
 	}
-	if private.isClassic then
+	if private.isClassic or private.isBCC then
 		interruptSpells[8042] = true -- Shaman Earth Shock
+		interruptSpells[16979] = true -- Druid Feral Charge
+	elseif private.isWrath then
+		interruptSpells[16979] = true -- Druid Feral Charge
 	end
 	---@param sourceGUID string source GUID of the caster
 	---@param checkOnlyTandF boolean? is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.

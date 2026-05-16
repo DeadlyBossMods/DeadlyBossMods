@@ -32,6 +32,7 @@ L.Tools_PizzaTimer					= "Start Generic Timer"
 
 L.Tools_BrezArea					= "Battle Res Timer"
 L.Tools_ShowBrezFrame				= "Show Battle Res charges frame during boss encounters and Mythic+ dungeons"
+L.Tools_ShowKeystoneOnComplete		= "Auto show Keystone frame when a Mythic+ run is completed"
 
 L.Tools_Duration					= "Duration"
 L.Tools_Message						= "Timer Message"
@@ -113,6 +114,8 @@ L.GroupOptionsExcludeIcon			= "Exclude 'Set Icon' options from getting grouped b
 L.GroupOptionsExcludePrivateAura	= "Exclude 'Private Aura' sound options from getting grouped by spell (they will be grouped together in their own 'Private Auras' category instead)"
 L.AutoExpandSpellGroups2			= "Auto expand options that are grouped by spell"
 L.ShowWAKeys						= "Show WeakAuras keys next to spell names to assist in writing WeakAuras using Boss Mod triggers."
+L.RenameSpellButton				= "Rename"
+L.RenameSpellHeader				= "Set custom name for %s"
 --L.ShowSpellDescWhenExpanded		= "Continue showing spell description when groups are expanded"--Might not be used
 L.NoDescription						= "This ability has no description"
 L.CustomOptions						= "This category contains custom options for an ability or event that has no spell or journal ID of it's own. These options have been grouped together using a custom manual ID for the ease of creating WeakAuras"

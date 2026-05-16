@@ -550,8 +550,14 @@ frame:SetScript('OnEvent', function(_, event, arg1, arg2)
 		if arg1 == 3 or arg1 == 49 then
 			UpdateKeystones()
 		end
+	elseif event == 'CHALLENGE_MODE_COMPLETED' then
+		if DBM.Options.ShowKeystoneOnComplete then
+			selectedTab = 1
+			Keystones:Show()
+		end
 	end
 end)
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 frame:RegisterEvent('PLAYER_INTERACTION_MANAGER_FRAME_HIDE')
 frame:RegisterEvent('UNIT_CONNECTION')
+frame:RegisterEvent('CHALLENGE_MODE_COMPLETED')
