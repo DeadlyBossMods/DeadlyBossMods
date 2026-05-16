@@ -398,7 +398,10 @@ do
 				DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
 				return false
 			end
-			importFunc(deserialized)
+			local accepted = importFunc(deserialized)
+			if accepted == false then
+				return false
+			end
 			if isLegacy then
 				DBM:AddMsg(L.LegacyProfileImportNotice, nil, true)
 			end
@@ -424,19 +427,23 @@ do
 		self:CreateImportProfile(function(importTable)
 			if type(importTable) ~= "table" then
 				DBM:AddMsg("Failed to import spell rename string. The data may be invalid/corrupted or from an unsupported format.")
-				return
+				return false
 			end
 			if importTable.payloadType and importTable.payloadType ~= "SpellRenames" then
 				DBM:AddMsg("Failed to import spell rename string. This export type is not spell renames.")
-				return
+				return false
 			end
 			if type(importTable.SpellRenames) ~= "table" then
 				DBM:AddMsg("Failed to import spell rename string. The data may be invalid/corrupted or from an unsupported format.")
-				return
+				return false
 			end
 			if importFunc then
-				importFunc(importTable.SpellRenames, importTable)
+				local accepted = importFunc(importTable.SpellRenames, importTable)
+				if accepted == false then
+					return false
+				end
 			end
+			return true
 		end)
 	end
 end

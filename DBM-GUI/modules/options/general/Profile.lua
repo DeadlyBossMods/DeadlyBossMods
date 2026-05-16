@@ -177,7 +177,7 @@ end
 
 local function importSpellRenameData(importTable)
 	if type(importTable) ~= "table" then
-		return
+		return false
 	end
 	local importedRenames = {}
 	for spellId, rename in pairs(importTable) do
@@ -186,6 +186,9 @@ local function importSpellRenameData(importTable)
 		if normalizedSpellId and sanitizedRename then
 			importedRenames[normalizedSpellId] = sanitizedRename
 		end
+	end
+	if type(DBM.Options) ~= "table" then
+		return false
 	end
 	DBM.Options.SpellRenames = importedRenames
 	DBM:RefreshSpellRenames()
@@ -196,15 +199,16 @@ local function importSpellRenameData(importTable)
 			DBM_GUI:UpdateModList()
 		end
 	end)
+	return true
 end
 
-local importExportSpellRenamesArea = profilePanel:CreateArea(L.Area_ImportExportSpellRenames or "Import/Export spell renames")
-local importExportSpellRenamesText = importExportSpellRenamesArea:CreateText(L.ImportExportSpellRenamesInfo or "Importing will overwrite your current spell renames, do at your own risk.", nil, true)
-local exportSpellRenames = importExportSpellRenamesArea:CreateButton(L.ButtonExportSpellRenames or "Export spell renames", 160, 20, function()
+local importExportSpellRenamesArea = profilePanel:CreateArea(L.Area_ImportExportSpellRenames)
+local importExportSpellRenamesText = importExportSpellRenamesArea:CreateText(L.ImportExportSpellRenamesInfo, nil, true)
+local exportSpellRenames = importExportSpellRenamesArea:CreateButton(L.ButtonExportSpellRenames, 160, 20, function()
 	DBM_GUI:CreateExportSpellRenames(exportSpellRenameData())
 end)
 exportSpellRenames:SetPoint("TOPLEFT", importExportSpellRenamesText, "BOTTOMLEFT", 0, -12)
-local importSpellRenames = importExportSpellRenamesArea:CreateButton(L.ButtonImportSpellRenames or "Import spell renames", 160, 20, function()
+local importSpellRenames = importExportSpellRenamesArea:CreateButton(L.ButtonImportSpellRenames, 160, 20, function()
 	DBM_GUI:CreateImportSpellRenames(importSpellRenameData)
 end)
 importSpellRenames.myheight = 12
