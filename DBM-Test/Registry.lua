@@ -25,18 +25,12 @@ end
 function test:DecompressLog(testData)
 	if testData.log then return end
 	DBM:Debug("DecompressLog(" .. testData.name .. ")", 1)
-	local libSerialize = LibStub("LibSerialize")
-	local libDeflate = LibStub("LibDeflate")
-	local decodedLog = libDeflate:DecodeForPrint(testData.compressedLog)
+	local decodedLog = C_EncodingUtil.DecodeBase64(testData.compressedLog, 0)
 	yield()
-	local serializedLog = libDeflate:DecompressDeflate(decodedLog)
-	local handler = libSerialize:DeserializeAsync(serializedLog)
-	local completed, success, deserialized
-	repeat
-		yield()
-		completed, success, deserialized = handler()
-	until completed
-	if not success then
+	local serializedLog = C_EncodingUtil.DecompressString(decodedLog, 0)
+	yield()
+	local deserialized = C_EncodingUtil.DeserializeCBOR(serializedLog)
+	if type(deserialized) ~= "table" then
 		error("failed to decompress log " .. testData.name)
 	end
 	testData.log = deserialized
