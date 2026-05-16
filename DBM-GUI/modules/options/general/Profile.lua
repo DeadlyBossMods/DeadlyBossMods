@@ -180,14 +180,24 @@ local function importSpellRenameData(importTable)
 		return false
 	end
 	local importedRenames = {}
+	local sourceEntries, validEntries, invalidEntries = 0, 0, 0
 	for spellId, rename in pairs(importTable) do
+		sourceEntries = sourceEntries + 1
 		local normalizedSpellId = DBM:NormalizeSpellRenameKey(spellId)
 		local sanitizedRename = DBM:SanitizeSpellRename(rename)
 		if normalizedSpellId and sanitizedRename then
 			importedRenames[normalizedSpellId] = sanitizedRename
+			validEntries = validEntries + 1
+		else
+			invalidEntries = invalidEntries + 1
 		end
 	end
+	if invalidEntries > 0 or (sourceEntries > 0 and validEntries == 0) then
+		DBM:AddMsg(L.ImportSpellRenamesFailed)
+		return false
+	end
 	if type(DBM.Options) ~= "table" then
+		DBM:AddMsg(L.ImportSpellRenamesFailed)
 		return false
 	end
 	DBM.Options.SpellRenames = importedRenames
