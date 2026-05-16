@@ -221,8 +221,55 @@ do
 	local LibSerialize = LibStub("LibSerialize")
 	local LibDeflate = LibStub("LibDeflate")
 
-	local canWeWork = LibStub and LibStub("LibDeflate", true) and LibStub("LibSerialize", true)
+	-- Reference: Blizzard APIDocumentation (EncodingUtil enums)
+	-- Base64Variant.Standard = 0
+	-- CompressionMethod.Deflate = 0
+	-- CompressionLevel.OptimizeForSize = 2
+	local base64Variant = 0
+	local compressionMethod = 0
+	local compressionLevel = 2
 	local popupFrame
+
+	local function encodeProfile(profileData)
+		local serialized = C_EncodingUtil.SerializeCBOR(profileData)
+		if not serialized then
+			return nil
+		end
+		local compressed = C_EncodingUtil.CompressString(serialized, compressionMethod, compressionLevel)
+		if not compressed then
+			return nil
+		end
+		return C_EncodingUtil.EncodeBase64(compressed, base64Variant)
+	end
+
+	local function decodeProfile(importText)
+		local decoded = C_EncodingUtil.DecodeBase64(importText, base64Variant)
+		if decoded then
+			local decompressed = C_EncodingUtil.DecompressString(decoded, compressionMethod)
+			if decompressed then
+				local deserialized = C_EncodingUtil.DeserializeCBOR(decompressed)
+				if type(deserialized) == "table" then
+					return deserialized, false
+				end
+			end
+		end
+
+		-- Legacy fallback for pre-C_EncodingUtil profile exports
+		if LibSerialize and LibDeflate then
+			local legacyDecoded = LibDeflate:DecodeForPrint(importText)
+			if legacyDecoded then
+				local legacyDecompressed = LibDeflate:DecompressDeflate(legacyDecoded)
+				if legacyDecompressed then
+					local success, legacyDeserialized = LibSerialize:Deserialize(legacyDecompressed)
+					if success and type(legacyDeserialized) == "table" then
+						return legacyDeserialized, true
+					end
+				end
+			end
+		end
+
+		return nil, false
+	end
 
 	local function createPopupFrame()
 		---@class DBMPopupFrame: Frame, BackdropTemplate
@@ -328,33 +375,33 @@ do
 	end
 
 	function DBM_GUI:CreateExportProfile(export)
-		if not canWeWork then
-			DBM:AddMsg("Missing required libraries to export.")
-			return
-		end
 		if not popupFrame then
 			createPopupFrame()
 		end
 		popupFrame.import:Hide()
-		popupFrame:SetText(LibDeflate:EncodeForPrint(LibDeflate:CompressDeflate(LibSerialize:Serialize(export), {level = 9})))
+		local encoded = encodeProfile(export)
+		if not encoded then
+			DBM:AddMsg("Failed to export profile")
+			return
+		end
+		popupFrame:SetText(encoded)
 		popupFrame:Show()
 	end
 
 	function DBM_GUI:CreateImportProfile(importFunc)
-		if not canWeWork then
-			DBM:AddMsg("Missing required libraries to export.")
-			return
-		end
 		if not popupFrame then
 			createPopupFrame()
 		end
 		function popupFrame:VerifyImport(import)
-			local success, deserialized = LibSerialize:Deserialize(LibDeflate:DecompressDeflate(LibDeflate:DecodeForPrint(import)))
-			if not success then
-				DBM:AddMsg("Failed to deserialize")
+			local deserialized, isLegacy = decodeProfile(import)
+			if type(deserialized) ~= "table" then
+				DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
 				return false
 			end
 			importFunc(deserialized)
+			if isLegacy then
+				DBM:AddMsg(L.LegacyProfileImportNotice)
+			end
 			return true
 		end
 		popupFrame.import:Show()
