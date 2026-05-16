@@ -370,21 +370,23 @@ local function showImportTranscriptorFrame(testSelect, playerSelect, mod)
 	importTranscriptorFrame:Show()
 end
 
--- Reference: Blizzard APIDocumentation (EncodingUtil enums)
--- Base64Variant.Standard = 0
--- CompressionMethod.Deflate = 0
--- CompressionLevel.OptimizeForSize = 2
-local base64Variant = 0
-local compressionMethod = 0
-local compressionLevel = 2
+local compressAsync = CreateFrame("Frame")
 
 ---@param testData TestDefinition
 local function serializeLog(testData)
 	if testData.compressedLog then return end
-	local serialized = C_EncodingUtil.SerializeCBOR(testData.log)
-	local compressed = C_EncodingUtil.CompressString(serialized, compressionMethod, compressionLevel)
-	testData.compressedLog = C_EncodingUtil.EncodeBase64(compressed, base64Variant)
+	local libSerialize = LibStub("LibSerialize")
+	local libDeflate = LibStub("LibDeflate")
+	local handler = libSerialize:SerializeAsync(testData.log)
+	compressAsync:SetScript("OnUpdate", function()
+		local completed, serialized = handler()
+		if completed then
+			compressAsync:Hide()
+			testData.compressedLog = libDeflate:EncodeForPrint(libDeflate:CompressDeflate(serialized))
+		end
+	end)
 	testData.duration = testData.log[#testData.log][1]
+	compressAsync:Show()
 end
 
 ---@param panel DBMPanel

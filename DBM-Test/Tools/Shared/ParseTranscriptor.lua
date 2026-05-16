@@ -748,24 +748,16 @@ function testGenerator:GetLogString()
 end
 
 local compressedLogTemplate = [[
-	-- C_EncodingUtil (SerializeCBOR + Deflate + Base64) encoded and compressed list of TestLogEntry. If an uncompressed log is specified it is used instead of the compressed version.
+	-- LibSerialize/LibDeflate encoded and compressed list of TestLogEntry. If an uncompressed log is specified it is used instead of the compressed version.
 	compressedLog = "%s",
 	duration = %.2f,
 ]]
 
--- Reference: Blizzard APIDocumentation (EncodingUtil enums)
--- Base64Variant.Standard = 0
--- CompressionMethod.Deflate = 0
--- CompressionLevel.OptimizeForSize = 2
-local base64Variant = 0
-local compressionMethod = 0
-local compressionLevel = 2
-
 function testGenerator:GetCompressedLogString()
+	local libSerialize = LibStub("LibSerialize")
+	local libDeflate = LibStub("LibDeflate")
 	local log = select(3, self:GetLogAndPlayers())
-	local serialized = C_EncodingUtil.SerializeCBOR(log)
-	local compressed = C_EncodingUtil.CompressString(serialized, compressionMethod, compressionLevel)
-	compressed = C_EncodingUtil.EncodeBase64(compressed, base64Variant)
+	local compressed = libDeflate:EncodeForPrint(libDeflate:CompressDeflate((libSerialize:Serialize(log))))
 	return compressedLogTemplate:format(compressed, log[#log][1])
 end
 
