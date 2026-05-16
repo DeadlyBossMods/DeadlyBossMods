@@ -408,7 +408,16 @@ do
 					return false
 				end
 			end
-			local accepted = importFunc(deserialized)
+			local ok, accepted = xpcall(function()
+				return importFunc(deserialized)
+			end, function(err)
+				return tostring(err)
+			end)
+			if not ok then
+				DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+				DBM:Debug("Import callback failed: " .. (accepted or "unknown error"), 2)
+				return false
+			end
 			if accepted == false then
 				return false
 			end
