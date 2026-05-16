@@ -82,7 +82,7 @@ local function getEncounters(lines)
 		if id then
 			---@class DBMTranscriptorParserEncounterInfo
 			local entry = {
-				startOffset = i, id = id, name = name, difficulty = difficulty, groupSize = groupSize, success = success,
+				startOffset = i, id = id, name = name or "", difficulty = difficulty, groupSize = groupSize, success = success or false,
 				endOffset = nil, ---@type number
 				startTime = nil, ---@type number
 				endTime = nil ---@type number
@@ -99,7 +99,7 @@ local function getEncounters(lines)
 				end
 				if startEntry then
 					startEntry.endOffset = i
-					startEntry.success = success
+					startEntry.success = success or false
 				end
 				lastEncounterEndEvent = i
 			end
