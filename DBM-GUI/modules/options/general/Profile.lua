@@ -207,17 +207,9 @@ local function importSpellRenameData(importTable)
 		DBM:AddMsg(L.ImportSpellRenamesFailed)
 		return false
 	end
-	local clearSpellIds = {}
-	if type(DBM.Options.SpellRenames) == "table" then
-		for spellId in pairs(DBM.Options.SpellRenames) do
-			tinsert(clearSpellIds, spellId)
-		end
-	end
-	for _, spellId in ipairs(clearSpellIds) do
-		DBM:SetRename(spellId, nil)
-	end
-	for spellId, rename in pairs(importedRenames) do
-		DBM:SetRename(spellId, rename)
+	if DBM:ReplaceSpellRenames(importedRenames) == false then
+		DBM:AddMsg(L.ImportSpellRenamesFailed)
+		return false
 	end
 	DBM:AddMsg(L.SpellRenamesImported)
 	C_Timer.After(0.05, function()

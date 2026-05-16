@@ -374,37 +374,41 @@ do
 		end
 	end
 
-	function DBM_GUI:CreateExportProfile(export)
+	function DBM_GUI:CreateExportProfile(export, exportFailureMessage)
 		if not popupFrame then
 			createPopupFrame()
 		end
 		popupFrame.import:Hide()
 		local encoded = encodeProfile(export)
 		if not encoded then
-			DBM:AddMsg("Failed to export profile")
+			DBM:AddMsg(exportFailureMessage or "Failed to export profile")
 			return
 		end
 		popupFrame:SetText(encoded)
 		popupFrame:Show()
 	end
 
-	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion)
+	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage)
 		if not popupFrame then
 			createPopupFrame()
 		end
+		local failureMessage = importFailureMessage or "Failed to import profile string. The data may be invalid/corrupted or from an unsupported format."
 		function popupFrame:VerifyImport(import)
+			local function reportImportFailure()
+				DBM:AddMsg(failureMessage)
+			end
 			local deserialized, isLegacy = decodeProfile(import)
 			if type(deserialized) ~= "table" then
-				DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+				reportImportFailure()
 				return false
 			end
 			if expectedPayloadType and not isLegacy then
 				if deserialized.payloadType ~= expectedPayloadType then
-					DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+					reportImportFailure()
 					return false
 				end
 				if expectedPayloadVersion and deserialized.payloadVersion ~= expectedPayloadVersion then
-					DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+					reportImportFailure()
 					return false
 				end
 			end
@@ -414,7 +418,7 @@ do
 				return tostring(err)
 			end)
 			if not ok then
-				DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+				reportImportFailure()
 				DBM:Debug("Import callback failed: " .. (accepted or "unknown error"), 2)
 				return false
 			end
@@ -439,7 +443,7 @@ do
 			payloadType = "SpellRenames",
 			payloadVersion = 1,
 			SpellRenames = spellRenames
-		})
+		}, L.ExportSpellRenamesFailed)
 	end
 
 	function DBM_GUI:CreateImportSpellRenames(importFunc)
@@ -467,7 +471,7 @@ do
 				end
 			end
 			return true
-		end)
+		end, "SpellRenames", 1, L.ImportSpellRenamesFailed)
 	end
 end
 

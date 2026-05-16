@@ -1166,6 +1166,29 @@ do
 	end
 	bossModPrototype.SetRename = DBM.SetRename
 
+	---@param spellRenames table<number|string, string>?
+	function DBM:ReplaceSpellRenames(spellRenames)
+		local overrides = getSpellRenameOverrides()
+		if not overrides then
+			return false
+		end
+		table.wipe(overrides)
+		if type(spellRenames) == "table" then
+			for spellId, renameString in pairs(spellRenames) do
+				local normalizedSpellId = normalizeSpellRenameKey(spellId)
+				local sanitizedRename = sanitizeSpellRenameText(renameString)
+				if type(normalizedSpellId) == "number" and isValidSpellRenameKey(normalizedSpellId) and sanitizedRename then
+					---@cast normalizedSpellId number
+					---@cast sanitizedRename string
+					overrides[normalizedSpellId] = sanitizedRename
+				end
+			end
+		end
+		refreshSpellRenameCache(true)
+		return true
+	end
+	bossModPrototype.ReplaceSpellRenames = DBM.ReplaceSpellRenames
+
 	---@param spellId number|string
 	---@param fallbackName string?
 	---@return string?
