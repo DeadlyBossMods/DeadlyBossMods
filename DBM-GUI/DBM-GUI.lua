@@ -388,7 +388,7 @@ do
 		popupFrame:Show()
 	end
 
-	function DBM_GUI:CreateImportProfile(importFunc)
+	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion)
 		if not popupFrame then
 			createPopupFrame()
 		end
@@ -397,6 +397,16 @@ do
 			if type(deserialized) ~= "table" then
 				DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
 				return false
+			end
+			if expectedPayloadType and not isLegacy then
+				if deserialized.payloadType ~= expectedPayloadType then
+					DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+					return false
+				end
+				if expectedPayloadVersion and deserialized.payloadVersion ~= expectedPayloadVersion then
+					DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+					return false
+				end
 			end
 			local accepted = importFunc(deserialized)
 			if accepted == false then

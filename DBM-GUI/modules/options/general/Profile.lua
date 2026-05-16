@@ -98,6 +98,8 @@ local importExportProfilesArea = profilePanel:CreateArea(L.Area_ImportExportProf
 local importExportText = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
 	DBM_GUI:CreateExportProfile({
+		payloadType = "Profile",
+		payloadVersion = 1,
 		DBM		= DBM.Options,
 		DBT		= DBT_AllPersistentOptions[_G["DBM_UsedProfile"]],
 		minimap	= DBM_MinimapIcon
@@ -120,6 +122,10 @@ local localeTable = {
 ---@class DBMImportProfileButton: DBMPanelButton
 local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 	DBM_GUI:CreateImportProfile(function(importTable)
+		if type(importTable.DBM) ~= "table" or type(importTable.DBT) ~= "table" or type(importTable.minimap) ~= "table" then
+			DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+			return false
+		end
 		local errors = {}
 		-- Check if voice pack missing
 		local activeVP = importTable.DBM.ChosenVoicePack2
@@ -156,7 +162,8 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 		else
 			actuallyImport(importTable)
 		end
-	end)
+		return true
+	end, "Profile", 1)
 end)
 importProfile.myheight = 12
 importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
@@ -200,9 +207,18 @@ local function importSpellRenameData(importTable)
 		DBM:AddMsg(L.ImportSpellRenamesFailed)
 		return false
 	end
-	DBM.Options.SpellRenames = importedRenames
-	DBM:RefreshSpellRenames()
-	DBM.spellRenameRevision = (DBM.spellRenameRevision or 0) + 1
+	local clearSpellIds = {}
+	if type(DBM.Options.SpellRenames) == "table" then
+		for spellId in pairs(DBM.Options.SpellRenames) do
+			tinsert(clearSpellIds, spellId)
+		end
+	end
+	for _, spellId in ipairs(clearSpellIds) do
+		DBM:SetRename(spellId, nil)
+	end
+	for spellId, rename in pairs(importedRenames) do
+		DBM:SetRename(spellId, rename)
+	end
 	DBM:AddMsg(L.SpellRenamesImported)
 	C_Timer.After(0.05, function()
 		if DBM_GUI and DBM_GUI.UpdateModList then
