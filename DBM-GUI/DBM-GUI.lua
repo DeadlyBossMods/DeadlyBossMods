@@ -218,8 +218,8 @@ do
 end
 
 do
-	local LibSerialize = LibStub("LibSerialize", true)
-	local LibDeflate = LibStub("LibDeflate", true)
+	local LibSerialize = LibStub("LibSerialize")
+	local LibDeflate = LibStub("LibDeflate")
 
 	-- Reference: Blizzard APIDocumentation (EncodingUtil enums)
 	-- Base64Variant.Standard = 0
