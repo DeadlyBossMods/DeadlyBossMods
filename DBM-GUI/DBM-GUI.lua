@@ -408,6 +408,37 @@ do
 		popupFrame:SetText("")
 		popupFrame:Show()
 	end
+
+	function DBM_GUI:CreateExportSpellRenames(spellRenames)
+		if type(spellRenames) ~= "table" then
+			spellRenames = {}
+		end
+		self:CreateExportProfile({
+			payloadType = "SpellRenames",
+			payloadVersion = 1,
+			SpellRenames = spellRenames
+		})
+	end
+
+	function DBM_GUI:CreateImportSpellRenames(importFunc)
+		self:CreateImportProfile(function(importTable)
+			if type(importTable) ~= "table" then
+				DBM:AddMsg("Failed to import spell rename string. The data may be invalid/corrupted or from an unsupported format.")
+				return
+			end
+			if importTable.payloadType and importTable.payloadType ~= "SpellRenames" then
+				DBM:AddMsg("Failed to import spell rename string. This export type is not spell renames.")
+				return
+			end
+			if type(importTable.SpellRenames) ~= "table" then
+				DBM:AddMsg("Failed to import spell rename string. The data may be invalid/corrupted or from an unsupported format.")
+				return
+			end
+			if importFunc then
+				importFunc(importTable.SpellRenames, importTable)
+			end
+		end)
+	end
 end
 
 do

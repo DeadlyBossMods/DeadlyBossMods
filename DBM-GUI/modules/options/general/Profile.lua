@@ -161,6 +161,55 @@ end)
 importProfile.myheight = 12
 importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
 
+local function exportSpellRenameData()
+	local exportRenames = {}
+	if type(DBM.Options) == "table" and type(DBM.Options.SpellRenames) == "table" then
+		for spellId, rename in pairs(DBM.Options.SpellRenames) do
+			local normalizedSpellId = DBM:NormalizeSpellRenameKey(spellId)
+			local sanitizedRename = DBM:SanitizeSpellRename(rename)
+			if normalizedSpellId and sanitizedRename then
+				exportRenames[normalizedSpellId] = sanitizedRename
+			end
+		end
+	end
+	return exportRenames
+end
+
+local function importSpellRenameData(importTable)
+	if type(importTable) ~= "table" then
+		return
+	end
+	local importedRenames = {}
+	for spellId, rename in pairs(importTable) do
+		local normalizedSpellId = DBM:NormalizeSpellRenameKey(spellId)
+		local sanitizedRename = DBM:SanitizeSpellRename(rename)
+		if normalizedSpellId and sanitizedRename then
+			importedRenames[normalizedSpellId] = sanitizedRename
+		end
+	end
+	DBM.Options.SpellRenames = importedRenames
+	DBM:RefreshSpellRenames()
+	DBM.spellRenameRevision = (DBM.spellRenameRevision or 0) + 1
+	DBM:AddMsg("Spell renames imported.")
+	C_Timer.After(0.05, function()
+		if DBM_GUI and DBM_GUI.UpdateModList then
+			DBM_GUI:UpdateModList()
+		end
+	end)
+end
+
+local importExportSpellRenamesArea = profilePanel:CreateArea(L.Area_ImportExportSpellRenames or "Import/Export spell renames")
+local importExportSpellRenamesText = importExportSpellRenamesArea:CreateText(L.ImportExportSpellRenamesInfo or "Importing will overwrite your current spell renames, do at your own risk.", nil, true)
+local exportSpellRenames = importExportSpellRenamesArea:CreateButton(L.ButtonExportSpellRenames or "Export spell renames", 160, 20, function()
+	DBM_GUI:CreateExportSpellRenames(exportSpellRenameData())
+end)
+exportSpellRenames:SetPoint("TOPLEFT", importExportSpellRenamesText, "BOTTOMLEFT", 0, -12)
+local importSpellRenames = importExportSpellRenamesArea:CreateButton(L.ButtonImportSpellRenames or "Import spell renames", 160, 20, function()
+	DBM_GUI:CreateImportSpellRenames(importSpellRenameData)
+end)
+importSpellRenames.myheight = 12
+importSpellRenames:SetPoint("LEFT", exportSpellRenames, "RIGHT", 2, 0)
+
 function Create()
 	if createTextbox:GetText() then
 		local text = createTextbox:GetText()
