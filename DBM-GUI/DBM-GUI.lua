@@ -429,11 +429,11 @@ do
 				DBM:AddMsg(L.ImportSpellRenamesFailed)
 				return false
 			end
-			if importTable.payloadType and importTable.payloadType ~= "SpellRenames" then
+			if importTable.payloadType ~= "SpellRenames" then
 				DBM:AddMsg(L.ImportSpellRenamesWrongType)
 				return false
 			end
-			if importTable.payloadVersion and importTable.payloadVersion ~= 1 then
+			if importTable.payloadVersion ~= 1 then
 				DBM:AddMsg(L.ImportSpellRenamesUnsupportedVersion)
 				return false
 			end
