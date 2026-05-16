@@ -7,26 +7,6 @@ local test = DBM.Test
 
 local tconcat = table.concat
 
--- LuaLS forward declarations (canonical definitions live in DBM-Test/Tools/Shared/ParseTranscriptor.lua)
----@class DBMTranscriptorParserEncounterInfo
----@field startOffset number
----@field endOffset number
----@field id number
----@field name string
----@field success boolean
----@field startTime number
----@field endTime number
-
----@class DBMTranscriptorParserLogInfo
----@field name string
----@field timestamp number
----@field encounters DBMTranscriptorParserEncounterInfo[]
----@field lines string[]
----@field startTime number
----@field endTime number
-
----@class DBMTranscriptorParserTestGenerator
-
 local function runTest(test, perspective)
 	local settings = { ---@type DBMTestOptions
 		playground = true, -- Use real mod and DBM options
@@ -371,7 +351,6 @@ local function showImportTranscriptorFrame(testSelect, playerSelect, mod)
 end
 
 local compressAsync = CreateFrame("Frame")
-
 ---@param testData TestDefinition
 local function serializeLog(testData)
 	if testData.compressedLog then return end
