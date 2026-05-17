@@ -98,6 +98,8 @@ local importExportProfilesArea = profilePanel:CreateArea(L.Area_ImportExportProf
 local importExportText = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
 	DBM_GUI:CreateExportProfile({
+		payloadType = "Profile",
+		payloadVersion = 1,
 		DBM		= DBM.Options,
 		DBT		= DBT_AllPersistentOptions[_G["DBM_UsedProfile"]],
 		minimap	= DBM_MinimapIcon
@@ -120,6 +122,10 @@ local localeTable = {
 ---@class DBMImportProfileButton: DBMPanelButton
 local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 	DBM_GUI:CreateImportProfile(function(importTable)
+		if type(importTable.DBM) ~= "table" or type(importTable.DBT) ~= "table" or type(importTable.minimap) ~= "table" then
+			DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+			return false
+		end
 		local errors = {}
 		-- Check if voice pack missing
 		local activeVP = importTable.DBM.ChosenVoicePack2
@@ -156,10 +162,75 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 		else
 			actuallyImport(importTable)
 		end
-	end)
+		return true
+	end, "Profile", 1)
 end)
 importProfile.myheight = 12
 importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
+
+local function exportSpellRenameData()
+	local exportRenames = {}
+	if type(DBM.Options) == "table" and type(DBM.Options.SpellRenames) == "table" then
+		for spellId, rename in pairs(DBM.Options.SpellRenames) do
+			local normalizedSpellId = DBM:NormalizeSpellRenameKey(spellId)
+			local sanitizedRename = DBM:SanitizeSpellRename(rename)
+			if normalizedSpellId and sanitizedRename then
+				exportRenames[normalizedSpellId] = sanitizedRename
+			end
+		end
+	end
+	return exportRenames
+end
+
+local function importSpellRenameData(importTable)
+	if type(importTable) ~= "table" then
+		return false
+	end
+	local importedRenames = {}
+	local sourceEntries, validEntries, invalidEntries = 0, 0, 0
+	for spellId, rename in pairs(importTable) do
+		sourceEntries = sourceEntries + 1
+		local normalizedSpellId = DBM:NormalizeSpellRenameKey(spellId)
+		local sanitizedRename = DBM:SanitizeSpellRename(rename)
+		if normalizedSpellId and sanitizedRename then
+			importedRenames[normalizedSpellId] = sanitizedRename
+			validEntries = validEntries + 1
+		else
+			invalidEntries = invalidEntries + 1
+		end
+	end
+	if invalidEntries > 0 or (sourceEntries > 0 and validEntries == 0) then
+		DBM:AddMsg(L.ImportSpellRenamesFailed)
+		return false
+	end
+	if type(DBM.Options) ~= "table" then
+		DBM:AddMsg(L.ImportSpellRenamesFailed)
+		return false
+	end
+	if DBM:ReplaceSpellRenames(importedRenames) == false then
+		DBM:AddMsg(L.ImportSpellRenamesFailed)
+		return false
+	end
+	DBM:AddMsg(L.SpellRenamesImported)
+	C_Timer.After(0.05, function()
+		if DBM_GUI and DBM_GUI.UpdateModList then
+			DBM_GUI:UpdateModList()
+		end
+	end)
+	return true
+end
+
+local importExportSpellRenamesArea = profilePanel:CreateArea(L.Area_ImportExportSpellRenames)
+local importExportSpellRenamesText = importExportSpellRenamesArea:CreateText(L.ImportExportSpellRenamesInfo, nil, true)
+local exportSpellRenames = importExportSpellRenamesArea:CreateButton(L.ButtonExportSpellRenames, 160, 20, function()
+	DBM_GUI:CreateExportSpellRenames(exportSpellRenameData())
+end)
+exportSpellRenames:SetPoint("TOPLEFT", importExportSpellRenamesText, "BOTTOMLEFT", 0, -12)
+local importSpellRenames = importExportSpellRenamesArea:CreateButton(L.ButtonImportSpellRenames, 160, 20, function()
+	DBM_GUI:CreateImportSpellRenames(importSpellRenameData)
+end)
+importSpellRenames.myheight = 12
+importSpellRenames:SetPoint("LEFT", exportSpellRenames, "RIGHT", 2, 0)
 
 function Create()
 	if createTextbox:GetText() then

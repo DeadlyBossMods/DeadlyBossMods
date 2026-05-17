@@ -374,31 +374,59 @@ do
 		end
 	end
 
-	function DBM_GUI:CreateExportProfile(export)
+	function DBM_GUI:CreateExportProfile(export, exportFailureMessage)
 		if not popupFrame then
 			createPopupFrame()
 		end
 		popupFrame.import:Hide()
 		local encoded = encodeProfile(export)
 		if not encoded then
-			DBM:AddMsg("Failed to export profile")
+			DBM:AddMsg(exportFailureMessage or "Failed to export profile")
 			return
 		end
 		popupFrame:SetText(encoded)
 		popupFrame:Show()
 	end
 
-	function DBM_GUI:CreateImportProfile(importFunc)
+	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage, payloadTypeFailureMessage, payloadVersionFailureMessage)
 		if not popupFrame then
 			createPopupFrame()
 		end
+		local failureMessage = importFailureMessage or "Failed to import profile string. The data may be invalid/corrupted or from an unsupported format."
+		local typeMismatchMessage = payloadTypeFailureMessage or failureMessage
+		local versionMismatchMessage = payloadVersionFailureMessage or failureMessage
 		function popupFrame:VerifyImport(import)
+			local function reportImportFailure()
+				DBM:AddMsg(failureMessage)
+			end
 			local deserialized, isLegacy = decodeProfile(import)
 			if type(deserialized) ~= "table" then
-				DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+				reportImportFailure()
 				return false
 			end
-			importFunc(deserialized)
+			if expectedPayloadType and not isLegacy then
+				if deserialized.payloadType ~= expectedPayloadType then
+					DBM:AddMsg(typeMismatchMessage)
+					return false
+				end
+				if expectedPayloadVersion and deserialized.payloadVersion ~= expectedPayloadVersion then
+					DBM:AddMsg(versionMismatchMessage)
+					return false
+				end
+			end
+			local ok, accepted = xpcall(function()
+				return importFunc(deserialized)
+			end, function(err)
+				return tostring(err)
+			end)
+			if not ok then
+				reportImportFailure()
+				DBM:Debug("Import callback failed: " .. (accepted or "unknown error"), 2)
+				return false
+			end
+			if accepted == false then
+				return false
+			end
 			if isLegacy then
 				DBM:AddMsg(L.LegacyProfileImportNotice, nil, true)
 			end
@@ -407,6 +435,37 @@ do
 		popupFrame.import:Show()
 		popupFrame:SetText("")
 		popupFrame:Show()
+	end
+
+	function DBM_GUI:CreateExportSpellRenames(spellRenames)
+		if type(spellRenames) ~= "table" then
+			spellRenames = {}
+		end
+		self:CreateExportProfile({
+			payloadType = "SpellRenames",
+			payloadVersion = 1,
+			SpellRenames = spellRenames
+		}, L.ExportSpellRenamesFailed)
+	end
+
+	function DBM_GUI:CreateImportSpellRenames(importFunc)
+		self:CreateImportProfile(function(importTable)
+			if type(importTable) ~= "table" then
+				DBM:AddMsg(L.ImportSpellRenamesFailed)
+				return false
+			end
+			if type(importTable.SpellRenames) ~= "table" then
+				DBM:AddMsg(L.ImportSpellRenamesFailed)
+				return false
+			end
+			if importFunc then
+				local accepted = importFunc(importTable.SpellRenames, importTable)
+				if accepted == false then
+					return false
+				end
+			end
+			return true
+		end, "SpellRenames", 1, L.ImportSpellRenamesFailed, L.ImportSpellRenamesWrongType, L.ImportSpellRenamesUnsupportedVersion)
 	end
 end
 
