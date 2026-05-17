@@ -11,7 +11,7 @@ end
 
 L.HOW_TO_USE_MOD			= "Willkommen bei "..L.DBM..". Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. "..L.DBM.." setzt Standardeinstellungen für deine Spezialisierung, die du aber noch genauer anpassen kannst."
 L.SILENT_REMINDER			= "Erinnerung: "..L.DBM.." befindet sich noch im Lautlos-Modus."
-L.NEWS_UPDATE				= "|h|c11ff1111News|r|h: This update changes mod structure around so classic and mainline now use unified (same) modules. This means that Vanilla, TBC, Wrath, and Cata modules are now installed separately using same packages as retail. Read more about it |Haddon:DBM:news|h|cff3588ff[here]|r|h"--UPDATE ME
+L.NEWS_UPDATE				= "|h|c11ff1111Neuigkeiten|r|h: DBM wurde um eine Funktion zum Umbenennen von Fähigkeiten erweitert. Gib einfach /dbm ein, gehe zur Mod-Kategorie (Schlachtzüge, Dungeons usw.) und öffne das Mod, bei dem du Fähigkeiten umbenennen möchtest."
 L.COPY_URL_DIALOG_NEWS		= "Die aktuellsten Meldungen findest du immer unter dem unten stehenden Link"
 
 L.LOAD_MOD_ERROR			= "Fehler beim Laden der Boss Mods für %s: %s"
