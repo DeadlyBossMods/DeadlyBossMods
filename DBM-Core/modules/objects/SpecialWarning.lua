@@ -697,6 +697,9 @@ function specialWarningPrototype:Show(...)
 						if DBM.Options.SWarnNameInNote and hasPlayerName then
 							noteHasName = 5
 						end
+						if not isSecretBlizzType and self.announceType and not self.announceType:find("switch") then
+							noteText = noteText:gsub(">.-<", classColoringFunction)--Class color note text before combining with warning text.
+						end
 						--Terminate special warning, it's an interrupt count warning without player name and filter enabled
 						if (self.announceType == "interruptcount") and DBM.Options.FilterInterruptNoteName and not hasPlayerName then return end
 						noteText = " (" .. noteText .. ")"
