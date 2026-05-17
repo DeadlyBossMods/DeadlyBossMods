@@ -182,3 +182,9 @@
 ---|4: Interrupt
 ---|5: Role
 ---|6: Phase
+
+---@meta
+
+---@alias yellTypes
+---|"SAY": Typically used for debuffs players should stay away from
+---|"YELL": Typically used for debuffs players should group up for

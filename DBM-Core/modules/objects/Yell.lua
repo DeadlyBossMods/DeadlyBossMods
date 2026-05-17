@@ -23,6 +23,8 @@ local voidForm = DBM:GetSpellName(194249)
 local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
 
 ---@param self DBMMod
+---@param spellId number?
+---@param yellText string|number?
 local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
 	if not spellId and not yellText then
 		error("NewYell: you must provide either spellId or yellText", 2)
@@ -34,10 +36,8 @@ local function newYell(self, yellType, spellId, yellText, optionDefault, optionN
 	end
 	local displayText, spellName
 	if not yellText then
-		if type(spellId) == "string" and spellId:match("ej%d+") then--Old Format Journal
-			spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or CL.UNKNOWN
-			displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(spellName)
-		elseif type(spellId) == "number" then
+		--Mostly to satisfy LuaLS, it's already technically guarded by nil check at 29
+		if type(spellId) == "number" then
 			if spellId < 0 then--New format Journal
 				spellId = -spellId
 				spellName = DBM:EJ_GetSectionInfo(spellId) or CL.UNKNOWN
@@ -46,8 +46,6 @@ local function newYell(self, yellType, spellId, yellText, optionDefault, optionN
 				spellName = DBM:GetSpellName(spellId) or CL.UNKNOWN
 				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(spellName)
 			end
-		else
-			displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(CL.UNKNOWN)
 		end
 	end
 	--Passed spellid as yellText.
@@ -176,62 +174,62 @@ function yellPrototype:Cancel(...)
 	return DBMScheduler:Unschedule(self.Yell, self.mod, self, ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewYell(...)
 	return newYell(self, "yell", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewShortYell(...)
 	return newYell(self, "shortyell", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewCountYell(...)
 	return newYell(self, "count", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewFadesYell(...)
 	return newYell(self, "fade", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewShortFadesYell(...)
 	return newYell(self, "shortfade", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewIconFadesYell(...)
 	return newYell(self, "iconfade", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewPosYell(...)
 	return newYell(self, "position", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewShortPosYell(...)
 	return newYell(self, "shortposition", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewComboYell(...)
 	return newYell(self, "combo", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewPlayerRepeatYell(...)
 	return newYell(self, "repeatplayer", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewIconRepeatYell(...)
 	return newYell(self, "repeaticon", ...)
 end
 
----@overload fun(self: DBMMod, spellId, yellText, optionDefault: SpecFlags|boolean?, optionName, chatType): Yell
+---@overload fun(self: DBMMod, spellId:number?, yellText:string|number?, optionDefault: SpecFlags|boolean?, optionName, chatType:yellTypes?): Yell
 function bossModPrototype:NewIconTargetYell(...)
 	return newYell(self, "icontarget", ...)
 end

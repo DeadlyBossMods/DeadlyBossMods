@@ -85,10 +85,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 415, "414c990"--415.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.50 alpha"--Core version
+DBM.DisplayVersion = "12.0.50"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 5, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 5, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -979,12 +979,8 @@ function DBM:ParseSpellIcon(spellId, objectType, fallbackIcon)
 	local icon
 	if objectType and objectType == "achievement" then
 		icon = select(10, GetAchievementInfo(spellId))
-	elseif type(spellId) == "string" then--Journal ID in old format
-		if spellId:match("ej%d+") then
-			icon = select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3)))
-		else--Icon texture ID (passed as string by module so core knows it's a FDID and not spellID
-			icon = spellId
-		end
+	elseif type(spellId) == "string" then--Icon texture ID (passed as string by module so core knows it's a FDID and not spellID)
+		icon = spellId
 	elseif type(spellId) == "number" then--SpellId or journal Id
 		if spellId < 0 then--Journal ID in new format
 			icon = select(4, DBM:EJ_GetSectionInfo(-spellId))
@@ -1003,8 +999,6 @@ function DBM:ParseSpellName(spellId, objectType)
 	local spellName
 	if objectType and objectType == "achievement" then
 		spellName = select(2, GetAchievementInfo(spellId))
-	elseif type(spellId) == "string" and spellId:match("ej%d+") then--Old Journal Format
-		spellName = self:EJ_GetSectionInfo(string.sub(spellId, 3))
 	elseif type(spellId) == "number" then
 		if spellId < 0 then--New Journal Format
 			spellName = self:EJ_GetSectionInfo(-spellId)
@@ -1053,14 +1047,7 @@ do
 			return nil
 		end
 		local numericKey = tonumber(spellId)
-		if numericKey then
-			return numericKey
-		end
-		local ejId = tonumber(spellId:match("^[Ee][Jj](%d+)$"))
-		if ejId then
-			return -ejId
-		end
-		return nil
+		return numericKey
 	end
 
 	---@param spellId number?
