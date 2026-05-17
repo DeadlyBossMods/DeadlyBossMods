@@ -11,7 +11,7 @@ end
 
 L.HOW_TO_USE_MOD			= "Bienvenido a " .. L.DBM .. ". Escribe '/dbm help' para ver la lista de comandos. Para acceder a la configuración no tienes más que escribir '/dbm'."
 L.SILENT_REMINDER			= "Recordatorio: " .. L.DBM .. " sigue en modo silencioso."
-L.NEWS_UPDATE				= "|h|c11ff1111Noticias|r|h: Esta actualización cambia la estructura del módulo para que ahora el clásico y el juego principal utilizan módulos unificados (iguales). Esto significa que los módulos de Vanilla, TBC, Wrath y Cata ahora se instalan por separado utilizando los mismos paquetes que el juego original. Lee más al respecto |Haddon:DBM:news|h|cff3588ff[aquí]|r|h"
+L.NEWS_UPDATE				= "|h|c11ff1111Noticias|r|h: DBM se ha actualizado con la función para renombrar habilidades. Escribe /dbm, ve a la categoría de módulos (bandas, mazmorras, etc.) y entra en el módulo en el que quieras renombrar habilidades."
 L.NEWS_UPDATE_REPEAT 		= "|h|c11ff1111Noticias|r|h: Esta actualización cambia la estructura del módulo para que ahora el clásico y el juego principal utilizan módulos unificados (iguales). Esto significa que los módulos de Vanilla, TBC, Wrath y Cata ahora se instalan por separado utilizando los mismos paquetes que el juego original. Actualmente estás en una banda que tiene un módulo faltante. Este mensaje seguirá apareciendo (y no tendrás anuncios funcionales para esta zona) hasta que hayas instalado el módulo de banda faltante."
 
 L.COPY_URL_DIALOG_NEWS		= "Para leer las últimas noticias, visita el enlace a continuación"

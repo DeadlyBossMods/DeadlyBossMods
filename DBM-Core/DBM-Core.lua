@@ -2474,10 +2474,8 @@ do
 			if self.Options.ShowReminders then
 				C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(L.SILENT_REMINDER) end end)
 				C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(L.HOW_TO_USE_MOD) end end)
-				if not private.isRetail then
-					--Shown only once per character on login. Repeat showings now handled by the raid module check on raid zone in, and boss pull and wipes within vanilla and wrath raids
-					C_TimerAfter(60, function() if self.Options.NewsMessageShown2 < 3 then self.Options.NewsMessageShown2 = 3 self:AddMsg(L.NEWS_UPDATE) end end)
-				end
+				--Shown only once per character on login. Repeat showings now handled by the raid module check on raid zone in, and boss pull and wipes within vanilla and wrath raids
+				C_TimerAfter(60, function() if self.Options.NewsMessageShown2 < 4 then self.Options.NewsMessageShown2 = 4 self:AddMsg(L.NEWS_UPDATE, nil, true) end end)
 			end
 			if not C_ChatInfo.IsAddonMessagePrefixRegistered(DBMPrefix) then
 				C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) -- main prefix for DBM4
