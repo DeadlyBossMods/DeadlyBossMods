@@ -732,7 +732,7 @@ do
 end
 
 do
-	local oldInfoFrameLocked, oldRangeFrameLocked
+	local oldInfoFrameLocked, unlockTriggeredPrivateAurasPreview--oldRangeFrameLocked
 
 	local function updateClickThrough(self, newValue)
 		if not self.movable then
@@ -750,8 +750,14 @@ do
 		self.movable = false
 		DBM.Options.InfoFrameLocked = oldInfoFrameLocked
 		DBM.InfoFrame:Hide()
-		DBM.Options.RangeFrameLocked = oldRangeFrameLocked
-		DBM.RangeCheck:Hide(true)
+--		DBM.Options.RangeFrameLocked = oldRangeFrameLocked
+--		DBM.RangeCheck:Hide(true)
+		if unlockTriggeredPrivateAurasPreview then
+			if DBM.PrivateAuras and DBM.PrivateAuras.IsInPreview then
+				DBM.PrivateAuras:PreviewToggle()
+			end
+			unlockTriggeredPrivateAurasPreview = false
+		end
 	end
 
 	function DBT:ShowMovableBar(small, large)
@@ -768,9 +774,15 @@ do
 		oldInfoFrameLocked = DBM.Options.InfoFrameLocked
 		DBM.Options.InfoFrameLocked = false
 		DBM.InfoFrame:Show(5, "test")
-		oldRangeFrameLocked = DBM.Options.RangeFrameLocked
-		DBM.Options.RangeFrameLocked = false
-		DBM.RangeCheck:Show(nil, nil, true)
+--		oldRangeFrameLocked = DBM.Options.RangeFrameLocked
+--		DBM.Options.RangeFrameLocked = false
+--		DBM.RangeCheck:Show(nil, nil, true)
+		if DBM.PrivateAuras and not DBM.PrivateAuras.IsInPreview then
+			DBM.PrivateAuras:PreviewToggle()
+			unlockTriggeredPrivateAurasPreview = true
+		else
+			unlockTriggeredPrivateAurasPreview = false
+		end
 	end
 
 	function DBT:SetOption(option, value, noUpdate)
