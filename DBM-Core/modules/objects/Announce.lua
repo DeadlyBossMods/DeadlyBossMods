@@ -489,10 +489,14 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
 		local renameSpellKey = DBM:NormalizeSpellRenameKey(self.spellId)
-		if self.announceType and renameSpellKey and self.renameRevision ~= DBM:GetSpellRenameRevision() then
-			local text, spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime, self.customName, self.alternateSpellId)
-			self.text = text
-			self.spellName = spellName
+		if renameSpellKey and self.renameRevision ~= DBM:GetSpellRenameRevision() then
+			if self.announceType then
+				local text, spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime, self.customName, self.alternateSpellId)
+				self.text = text
+				self.spellName = spellName
+			else
+				self.spellName = DBM:GetRename(self.spellId, self.spellName or DBM:ParseSpellName(self.spellId) or CL.UNKNOWN)
+			end
 			self.renameRevision = DBM:GetSpellRenameRevision()
 		end
 		local argTable
@@ -759,6 +763,17 @@ function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionNa
 		soundOption = 0--No Sound
 	end
 	icon = DBM:ParseSpellIcon(icon)
+	local spellName
+	local renameRevision
+	if spellID then
+		local baseSpellName = waCustomName or DBM:ParseSpellName(spellID) or CL.UNKNOWN
+		spellName = DBM:GetRename(spellID, baseSpellName)
+		renameRevision = DBM:GetSpellRenameRevision()
+		if waCustomName then
+			DBM:RegisterAltSpellName(spellID, baseSpellName)
+			DBM:AddRename(spellID, baseSpellName)
+		end
+	end
 	---@class Announce
 	local obj = setmetatable(
 		{
@@ -771,6 +786,8 @@ function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionNa
 			mod = self,
 			icon = icon,
 			spellId = spellID,--For WeakAuras / other callbacks
+			spellName = spellName,
+			renameRevision = renameRevision,
 		},
 		mt
 	)
