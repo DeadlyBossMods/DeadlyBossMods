@@ -824,19 +824,30 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 		end
 	end
 	if renameSpellId and renameSpellId > 5 and hasRenamableObjects then
+		local function autoSizeInlineButton(button, minWidth)
+			local buttonText = _G[button:GetName() .. "Text"] or button:GetFontString()
+			if not buttonText then
+				return
+			end
+			button:SetWidth(mmax(minWidth or 0, buttonText:GetStringWidth() + 20))
+		end
+
 		local renameButton = CreateFrame("Button", area:GetName() .. "Rename", area, "UIPanelButtonTemplate")
 		renameButton:SetSize(58, 18)
 		renameButton:SetText(L.RenameSpellButton or "Rename")
+		autoSizeInlineButton(renameButton, 58)
 		renameButton:SetPoint("LEFT", title, "RIGHT", 8, 0)
 
 		local resetButton = CreateFrame("Button", area:GetName() .. "RenameReset", area, "UIPanelButtonTemplate")
 		resetButton:SetSize(46, 18)
 		resetButton:SetText(L.Reset)
+		autoSizeInlineButton(resetButton, 46)
 		resetButton:SetPoint("LEFT", renameButton, "RIGHT", 4, 0)
 
 		local testButton = CreateFrame("Button", area:GetName() .. "SpellTest", area, "UIPanelButtonTemplate")
 		testButton:SetSize(42, 18)
 		testButton:SetText(L.Test or "Test")
+		autoSizeInlineButton(testButton, 42)
 		testButton:SetPoint("LEFT", resetButton, "RIGHT", 4, 0)
 
 		testButton:SetScript("OnClick", function()
