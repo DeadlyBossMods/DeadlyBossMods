@@ -41,6 +41,15 @@ local function resetSearchResultsCache()
 	cachedSearchResults = nil
 end
 
+local function cacheNormalizedSearchValue(rawText, value)
+	if normalizedSearchCacheEntries >= 256 then
+		normalizedSearchCache = {}
+		normalizedSearchCacheEntries = 0
+	end
+	normalizedSearchCache[rawText] = value
+	normalizedSearchCacheEntries = normalizedSearchCacheEntries + 1
+end
+
 local function GetListFrame()
 	if not cachedListFrame then
 		local listFrame = _G[frame:GetName() .. "List"]
@@ -165,20 +174,10 @@ local function normalizeSearchText(text)
 		return strlower(value:match("^%s*(.-)%s*$") or "")
 	end)
 	if ok and normalized then
-		normalizedSearchCache[rawText] = normalized
-		normalizedSearchCacheEntries = normalizedSearchCacheEntries + 1
-		if normalizedSearchCacheEntries > 256 then
-			normalizedSearchCache = {}
-			normalizedSearchCacheEntries = 0
-		end
+		cacheNormalizedSearchValue(rawText, normalized)
 		return normalized
 	end
-	normalizedSearchCache[rawText] = ""
-	normalizedSearchCacheEntries = normalizedSearchCacheEntries + 1
-	if normalizedSearchCacheEntries > 256 then
-		normalizedSearchCache = {}
-		normalizedSearchCacheEntries = 0
-	end
+	cacheNormalizedSearchValue(rawText, "")
 	return ""
 end
 
