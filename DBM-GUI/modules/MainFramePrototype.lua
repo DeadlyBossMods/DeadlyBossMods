@@ -47,8 +47,10 @@ local function cacheNormalizedSearchValue(rawText, value)
 		normalizedSearchCache = {}
 		normalizedSearchCacheEntries = 0
 	end
+	if normalizedSearchCache[rawText] == nil then
+		normalizedSearchCacheEntries = normalizedSearchCacheEntries + 1
+	end
 	normalizedSearchCache[rawText] = value
-	normalizedSearchCacheEntries = normalizedSearchCacheEntries + 1
 end
 
 local function GetListFrame()
