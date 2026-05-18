@@ -56,12 +56,13 @@ local function setFallback(self, dontSetAlerts)
 		specWarnMarchofEndless:SetAlert(200, "stilldanger", 2, 4)
 		specWarnPitchBulwark:SetAlert(201, "kickcast", 2, 2, 0)
 	end
-	timerShadowsAdvanceCD:SetTimeline({194, 195})
-	timerDarkUpheavalCD:SetTimeline(196)
-	timerUmbralCollapseCD:SetTimeline(197)
-	timerOblivionWrathCD:SetTimeline(198)
-	timerVoidFallCD:SetTimeline({199, 209})
-	timerVoidMarkCD:SetTimeline(419)
+	local onlyColor = not DBM.Options.HideDBMBars
+	timerShadowsAdvanceCD:SetTimeline({194, 195}, onlyColor)
+	timerDarkUpheavalCD:SetTimeline(196, onlyColor)
+	timerUmbralCollapseCD:SetTimeline(197, onlyColor)
+	timerOblivionWrathCD:SetTimeline(198, onlyColor)
+	timerVoidFallCD:SetTimeline({199, 209}, onlyColor)
+	timerVoidMarkCD:SetTimeline(419, onlyColor)
 end
 
 function mod:OnLimitedCombatStart()
@@ -81,9 +82,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		if DBM.Options.HideDBMBars then
-			setFallback(self, true)
-		end
+		setFallback(self, true)
 	else
 		setFallback(self)
 	end

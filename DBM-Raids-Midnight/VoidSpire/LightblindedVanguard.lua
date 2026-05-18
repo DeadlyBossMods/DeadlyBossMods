@@ -129,23 +129,24 @@ local function setFallback(self, dontSetAlerts)
 		specWarnExecutionSentence:SetAlert(85, "soakincoming", 19, 2)
 		warnZealousSpirit:SetAlert({358,359,360}, "phasechange", 2, 2)
 	end
-	timerAuraofPeaceCD:SetTimeline(71)
+	local onlyColor = not DBM.Options.HideDBMBars
+	timerAuraofPeaceCD:SetTimeline(71, onlyColor)
 --	specWarnElekkCharge:SetAlert(73, "chargemove", 2, 2, 0)
 --	timerElekkChargeCD:SetTimeline(73)
-	timerSacredShieldCD:SetTimeline(74)
-	timerTyrsWrathCD:SetTimeline(75)
-	timerAuraofDevotionCD:SetTimeline(76)
-	timerSearingRadianceCD:SetTimeline(77)--Normal, mythic empowered
-	timerEmpoweredSearingRadianceCD:SetTimeline(373)--mythic empowered
-	timerJudgementShieldCD:SetTimeline(78)
-	timerAvengerShieldCD:SetTimeline({79, 365})--Normal, mythic empowered
-	timerDivineTollCD:SetTimeline(80)
-	timerAuraofWrathCD:SetTimeline(81)
-	timerjudgementFinalCD:SetTimeline(82)
-	timerDivineStormCD:SetTimeline({83,374})--Normal, mythic empowered
-	timerSacredTollCD:SetTimeline(84)
-	timerExecutionSentenceCD:SetTimeline(85)
-	timerZealousSpiritCD:SetTimeline({358,359,360})--one for each boss
+	timerSacredShieldCD:SetTimeline(74, onlyColor)
+	timerTyrsWrathCD:SetTimeline(75, onlyColor)
+	timerAuraofDevotionCD:SetTimeline(76, onlyColor)
+	timerSearingRadianceCD:SetTimeline(77, onlyColor)--Normal, mythic empowered
+	timerEmpoweredSearingRadianceCD:SetTimeline(373, onlyColor)--mythic empowered
+	timerJudgementShieldCD:SetTimeline(78, onlyColor)
+	timerAvengerShieldCD:SetTimeline({79, 365}, onlyColor)--Normal, mythic empowered
+	timerDivineTollCD:SetTimeline(80, onlyColor)
+	timerAuraofWrathCD:SetTimeline(81, onlyColor)
+	timerjudgementFinalCD:SetTimeline(82, onlyColor)
+	timerDivineStormCD:SetTimeline({83,374}, onlyColor)--Normal, mythic empowered
+	timerSacredTollCD:SetTimeline(84, onlyColor)
+	timerExecutionSentenceCD:SetTimeline(85, onlyColor)
+	timerZealousSpiritCD:SetTimeline({358,359,360}, onlyColor)--one for each boss
 end
 
 function mod:OnLimitedCombatStart()
@@ -203,9 +204,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		if DBM.Options.HideDBMBars then
-			setFallback(self, true)
-		end
+		setFallback(self, true)
 	else
 		setFallback(self)
 	end
