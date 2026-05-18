@@ -146,7 +146,10 @@ local function normalizeSearchText(text)
 	if DBM:issecretvalue(text) then
 		return ""
 	end
-	local rawText = tostring(text)
+	local okText, rawText = pcall(tostring, text)
+	if not okText or not rawText then
+		return ""
+	end
 	local cached = normalizedSearchCache[rawText]
 	if cached ~= nil then
 		return cached
