@@ -557,19 +557,23 @@ local function resize(targetFrame, hasScroll)
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
 				for _, child2 in ipairs({ child:GetChildren() }) do
+					local child2Name
 					if child.mytype == "ability" and child2.mytype then
 						child2:SetShown(not child.hidden)
 						if child2.mytype == "spelldesc" then
 							child2:SetShown(child2.hasDesc and true or child.hidden)
-							child2:SetHeight(_G[child2:GetName() .. "Text"]:GetStringHeight())
+							child2Name = child2Name or child2:GetName()
+							local child2Text = _G[child2Name .. "Text"]
+							child2:SetHeight(child2Text:GetStringHeight())
 						end
 					end
 					if child2.mytype and child2:IsVisible() then
 						if child2.mytype == "textblock" then
 							if child2.autowidth then
-								local text = _G[child2:GetName() .. "Text"]
-								text:SetWidth(width - 30)
-								child2:SetSize(width, text:GetStringHeight())
+								child2Name = child2Name or child2:GetName()
+								local child2Text = _G[child2Name .. "Text"]
+								child2Text:SetWidth(width - 30)
+								child2:SetSize(width, child2Text:GetStringHeight())
 							end
 							lastObject = child2
 						elseif child2.mytype == "spelldesc" then
@@ -590,7 +594,10 @@ local function resize(targetFrame, hasScroll)
 							lastObject = child2
 						elseif child2.mytype == "line" then
 							child2:SetWidth(width - 20)
-							_G[child2:GetName() .. "BG"]:SetWidth(width - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
+							child2Name = child2Name or child2:GetName()
+							local child2BG = _G[child2Name .. "BG"]
+							local child2Text = _G[child2Name .. "Text"]
+							child2BG:SetWidth(width - child2Text:GetWidth() - 25)
 							if lastObject and lastObject.myheight then
 								child2:ClearAllPoints()
 								child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
@@ -599,7 +606,9 @@ local function resize(targetFrame, hasScroll)
 						elseif child2.mytype == "dropdown" then
 							if not child2.width then
 								local ddWidth = 120
-								local dropdownText, titleText = _G[child2:GetName() .. "Text"], _G[child2:GetName() .. "TitleText"]:GetText()
+								child2Name = child2Name or child2:GetName()
+								local dropdownText = _G[child2Name .. "Text"]
+								local titleText = _G[child2Name .. "TitleText"]:GetText()
 								if titleText ~= L.FontType and titleText ~= L.FontStyle and titleText ~= L.FontShadow then
 									for _, v in ipairs(child2.values) do
 										dropdownText:SetText(v.text)
@@ -621,7 +630,10 @@ local function resize(targetFrame, hasScroll)
 		elseif child.mytype == "line" then
 			local width = targetFrame:GetWidth() - 30 + (child.extraWidth or 0)
 			child:SetWidth(width - 20)
-			_G[child:GetName() .. "BG"]:SetWidth(width - _G[child:GetName() .. "Text"]:GetWidth() - 25)
+			local childName = child:GetName()
+			local childBG = _G[childName .. "BG"]
+			local childText = _G[childName .. "Text"]
+			childBG:SetWidth(width - childText:GetWidth() - 25)
 			frameHeight = frameHeight + 32
 		elseif child.myheight then
 			frameHeight = frameHeight + child.myheight
