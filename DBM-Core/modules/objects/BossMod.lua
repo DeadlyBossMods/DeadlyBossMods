@@ -1278,7 +1278,6 @@ do
 	---@param customOption string? Used when event supports hardcoded timers and needs different option table lookup
 	---@param onlyColor boolean? Set to true to only set color and not countdown sounds, used for non timer events that still want color options
 	function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId, customOption, onlyColor)
-		if DBM.Options.HideDBMBars then return end
 		--Set Color (done outside option check since right now option check isnt supported until a future patch
 		--And we want to set colors on any bar even if it's "disabled" for now
 		if not DBM.Options.DontSetTimelineColors then
