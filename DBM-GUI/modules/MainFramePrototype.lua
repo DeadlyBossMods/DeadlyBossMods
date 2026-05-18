@@ -34,7 +34,8 @@ local cachedListScrollBar
 local cachedContainerFOV
 local cachedContainerScrollBar
 local cachedPanelContainer
-local cachedDropDown
+local cachedDropDowns = {}
+local cachedDropDownScanMaxId = 0
 
 local function resetSearchResultsCache()
 	cachedSearchQuery = nil
@@ -100,14 +101,32 @@ local function GetPanelContainer()
 	return cachedPanelContainer
 end
 
-local function GetDropDown()
-	if not cachedDropDown then
-		local dropdown = _G["DBM_GUI_DropDown"]
-		if dropdown then
-			cachedDropDown = dropdown
+local function RefreshDropDownCache()
+	local maxId = DBM_GUI.GetCurrentID and DBM_GUI:GetCurrentID() or cachedDropDownScanMaxId
+	if maxId <= cachedDropDownScanMaxId then
+		return
+	end
+	for i = cachedDropDownScanMaxId + 1, maxId do
+		local dropdown = _G["DBM_GUI_DropDown" .. i]
+		if dropdown and dropdown.Hide then
+			cachedDropDowns[#cachedDropDowns + 1] = dropdown
 		end
 	end
-	return cachedDropDown
+	cachedDropDownScanMaxId = maxId
+end
+
+local function HideOpenDropdowns()
+	RefreshDropDownCache()
+	for i = 1, #cachedDropDowns do
+		local dropdown = cachedDropDowns[i]
+		if dropdown and dropdown.IsShown and dropdown:IsShown() then
+			dropdown:Hide()
+		end
+	end
+	local legacyDropdown = _G["DBM_GUI_DropDown"]
+	if legacyDropdown and legacyDropdown.IsShown and legacyDropdown:IsShown() then
+		legacyDropdown:Hide()
+	end
 end
 
 local function truncateTextWithEllipsis(fontString, text, maxWidth)
@@ -655,10 +674,7 @@ function frame:DisplayFrame(targetFrame, secondResize)
 		DBM_GUI.currentViewing:Hide()
 	end
 	DBM_GUI.currentViewing = targetFrame
-	local dropDown = GetDropDown()
-	if dropDown then
-		dropDown:Hide()
-	end
+	HideOpenDropdowns()
 	local FOV = GetContainerFOV()
 	FOV:SetScrollChild(targetFrame)
 	FOV:Show()
