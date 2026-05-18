@@ -611,10 +611,14 @@ function specialWarningPrototype:Show(...)
 	--Check if option for this warning is even enabled
 	if (not self.option or self.mod.Options[self.option]) and not moving and frame then
 		local renameSpellKey = DBM:NormalizeSpellRenameKey(self.spellId)
-		if self.announceType and renameSpellKey and self.renameRevision ~= DBM:GetSpellRenameRevision() then
-			local text, spellName = setText(self.announceType, self.spellId, self.stacks, self.customName, self.alternateSpellId)
-			self.text = text
-			self.spellName = spellName
+		if renameSpellKey and self.renameRevision ~= DBM:GetSpellRenameRevision() then
+			if self.announceType then
+				local text, spellName = setText(self.announceType, self.spellId, self.stacks, self.customName, self.alternateSpellId)
+				self.text = text
+				self.spellName = spellName
+			else
+				self.spellName = DBM:GetRename(self.spellId, self.spellName or DBM:ParseSpellName(self.spellId) or CL.UNKNOWN)
+			end
 			self.renameRevision = DBM:GetSpellRenameRevision()
 		end
 		local isSecretBlizzType = self.announceType == "blizztarget" or self.announceType == "blizzyou"
@@ -1006,11 +1010,23 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 		hasVoice = 2
 	end
 	icon = DBM:ParseSpellIcon(icon)
+	local warningText = self.localization.warnings[text]
+	local spellName
+	local renameRevision
+	if spellID then
+		local baseSpellName = waCustomName or DBM:ParseSpellName(spellID) or CL.UNKNOWN
+		spellName = DBM:GetRename(spellID, baseSpellName)
+		renameRevision = DBM:GetSpellRenameRevision()
+		if waCustomName then
+			DBM:RegisterAltSpellName(spellID, baseSpellName)
+			DBM:AddRename(spellID, baseSpellName)
+		end
+	end
 	---@class SpecialWarning
 	local obj = setmetatable(
 		{
 			objClass = "SpecialWarning",
-			text = self.localization.warnings[text],
+			text = warningText,
 			combinedtext = {},
 			combinedcount = 0,
 			mod = self,
@@ -1019,6 +1035,8 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 			hasVoice = hasVoice,
 			difficulty = difficulty,
 			spellId = spellID,--For WeakAuras / other callbacks
+			spellName = spellName,
+			renameRevision = renameRevision,
 			icon = icon,
 		},
 		mt

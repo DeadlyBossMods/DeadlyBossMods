@@ -111,19 +111,20 @@ local function setFallback(self, dontSetAlerts)
 		specWarnCosmosisVoidHowl:SetAlert(380, "range5", 2, 2)
 		specWarnRadiantBarrier:SetAlert(381, "findshield", 2, 3, 0)
 	end
-	timerNullBeamCD:SetTimeline(101)
-	timerVoidHowlCD:SetTimeline(102)
-	timerGloomCD:SetTimeline(103)
-	timerDreadBreathCD:SetTimeline(104)
-	timerMidnightFlamesCD:SetTimeline(105)
-	timerGrabblingMawCD:SetTimeline(219)
-	timerRakfangCD:SetTimeline(220)
-	timerVaelwingCD:SetTimeline(221)
-	timerCosmosisGloomCD:SetTimeline(377)
-	timerCosmosisNullbeamCD:SetTimeline(378)
-	timerCosmosisDreadBreathCD:SetTimeline(379)
-	timerCosmosisVoidHowlCD:SetTimeline(380)
-	timerRadiantBarrierCD:SetTimeline(381)
+	local onlyColor = not DBM.Options.HideDBMBars
+	timerNullBeamCD:SetTimeline(101, onlyColor)
+	timerVoidHowlCD:SetTimeline(102, onlyColor)
+	timerGloomCD:SetTimeline(103, onlyColor)
+	timerDreadBreathCD:SetTimeline(104, onlyColor)
+	timerMidnightFlamesCD:SetTimeline(105, onlyColor)
+	timerGrabblingMawCD:SetTimeline(219, onlyColor)
+	timerRakfangCD:SetTimeline(220, onlyColor)
+	timerVaelwingCD:SetTimeline(221, onlyColor)
+	timerCosmosisGloomCD:SetTimeline(377, onlyColor)
+	timerCosmosisNullbeamCD:SetTimeline(378, onlyColor)
+	timerCosmosisDreadBreathCD:SetTimeline(379, onlyColor)
+	timerCosmosisVoidHowlCD:SetTimeline(380, onlyColor)
+	timerRadiantBarrierCD:SetTimeline(381, onlyColor)
 end
 
 function mod:OnLimitedCombatStart()
@@ -168,9 +169,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		if DBM.Options.HideDBMBars then
-			setFallback(self, true)
-		end
+		setFallback(self, true)
 	else
 		setFallback(self)
 	end

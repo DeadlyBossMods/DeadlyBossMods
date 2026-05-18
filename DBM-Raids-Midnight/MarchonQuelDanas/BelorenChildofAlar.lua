@@ -66,7 +66,7 @@ local lastEmbersEventID = 0
 local heroicSequenceSlot = 0
 
 ---@param self DBMMod
----@param dontSetAlerts boolean? Called when user has disabled DBM bars and is ONLY using timeline, therefor we must enable SetTimeline calls even in hardcodes
+---@param dontSetAlerts boolean? Called on engage when we only want to set timeline parameters and not touch encounter alerts
 local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	if not dontSetAlerts then
@@ -85,16 +85,19 @@ local function setFallback(self, dontSetAlerts)
 		specWarnRebirth:SetAlert(497, "dpshard", 16, 3, 0)
 	end
 
-	timerEmbersofBelorenCD:SetTimeline(128)
-	timerRadiantEchoesCD:SetTimeline(130)
-	timerGuardiansEdictCD:SetTimeline(134)
-	timerEternalBurnsCD:SetTimeline(138)
-	timerInfusedQuillsCD:SetTimeline(161)
-	timerVoidlightConvergenceCD:SetTimeline(218)
-	timerDeathDropCD:SetTimeline(272)
-	timerIncubationofFlamesCD:SetTimeline(273)
-	timerRebirthCD:SetTimeline(497)
-	timerBerserkCD:SetTimeline(500)
+	--If user has dbm bars enabled, countdowns will be sent by dbm bars
+	--if user has dbm bars off, SetTimeline will set color and countdowns
+	local onlyColor = not DBM.Options.HideDBMBars
+	timerEmbersofBelorenCD:SetTimeline(128, onlyColor)
+	timerRadiantEchoesCD:SetTimeline(130, onlyColor)
+	timerGuardiansEdictCD:SetTimeline(134, onlyColor)
+	timerEternalBurnsCD:SetTimeline(138, onlyColor)
+	timerInfusedQuillsCD:SetTimeline(161, onlyColor)
+	timerVoidlightConvergenceCD:SetTimeline(218, onlyColor)
+	timerDeathDropCD:SetTimeline(272, onlyColor)
+	timerIncubationofFlamesCD:SetTimeline(273, onlyColor)
+	timerRebirthCD:SetTimeline(497, onlyColor)
+	timerBerserkCD:SetTimeline(500, onlyColor)
 end
 
 function mod:OnLimitedCombatStart(delay)
@@ -117,10 +120,9 @@ function mod:OnLimitedCombatStart(delay)
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		--SetTimeline events since user has disabled DBM Bars (so they can still get countdowns in blizzard timeline API instead)
-		if DBM.Options.HideDBMBars then
-			setFallback(self, true)
-		end
+		--Even when using hardcodes, we still want to customize the timeline in certain ways
+		--Many use timeline in conjunction with DBM warnings
+		setFallback(self, true)
 	else
 		setFallback(self)
 	end

@@ -58,11 +58,12 @@ local function setFallback(self, dontSetAlerts)
 		--specWarnFunglingFixate:SetAlert(808, "fixateyou", 1, 3)
 		--specWarnShroomingFixate:SetAlert(809, "fixateyou", 1, 3)
 	end
-	timerFungalBloomCD:SetTimeline(424)
-	timerAwakenFungiCD:SetTimeline(425)
-	timerBurstingPustulesCD:SetTimeline(426)
-	timerPutridFistCD:SetTimeline(427)
-	timerFesteringVinesCD:SetTimeline(428)
+	local onlyColor = not DBM.Options.HideDBMBars
+	timerFungalBloomCD:SetTimeline(424, onlyColor)
+	timerAwakenFungiCD:SetTimeline(425, onlyColor)
+	timerBurstingPustulesCD:SetTimeline(426, onlyColor)
+	timerPutridFistCD:SetTimeline(427, onlyColor)
+	timerFesteringVinesCD:SetTimeline(428, onlyColor)
 end
 
 function mod:OnLimitedCombatStart()
