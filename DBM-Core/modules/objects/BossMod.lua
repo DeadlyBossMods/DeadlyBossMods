@@ -1276,8 +1276,8 @@ do
 	---@param optionId number spellId or JournalId that must match option ID
 	---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
 	---@param customOption string? Used when event supports hardcoded timers and needs different option table lookup
-	function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId, customOption)
-		if DBM.Options.HideDBMBars then return end
+	---@param onlyColor boolean? Set to true to only set color and not countdown sounds, used for non timer events that still want color options
+	function bossModPrototype:EnableTimelineOptions(optionId, encounterEventId, customOption, onlyColor)
 		--Set Color (done outside option check since right now option check isnt supported until a future patch
 		--And we want to set colors on any bar even if it's "disabled" for now
 		if not DBM.Options.DontSetTimelineColors then
@@ -1292,7 +1292,7 @@ do
 				DBM:EE_SetEventColor(encounterEventId, timerStartRed, timerStartGreen, timerStartBlue, timerEndRed, timerEndGreen, timerEndBlue)
 			end
 		end
-		if optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
+		if not onlyColor and optionId and (customOption and self.Options[customOption] or self.Options["CustomTimerOption" .. optionId]) then
 			--Set Countdown
 			--Known Caveats. If a bar starts with a duration shorter than highlight duration (ie a 3 second bar starts already highlighted, countdown will start at 3 and count from 5
 			--This is far less likely to happen when using a highlight value of 5000 ms but with a value of 10000ms it might happen quite a bit for initial timers that are < 10

@@ -45,10 +45,11 @@ local function setFallback(self, dontSetAlerts)
 		specWarnParasiteExpulsion:SetAlert(62, "watchstep", 2, 2)
 		specWarnPrimordialRoar:SetAlert(133, "pullin", 12, 3)
 	end
-	timerShadowclawSlamCD:SetTimeline({59, 60})
+	local onlyColor = not DBM.Options.HideDBMBars
+	timerShadowclawSlamCD:SetTimeline({59, 60}, onlyColor)
 --	timerVoidBreathCD:SetTimeline(61)
-	timerParasiteExpulsionCD:SetTimeline(62)
-	timerPrimordialRoarCD:SetTimeline(133)
+	timerParasiteExpulsionCD:SetTimeline(62, onlyColor)
+	timerPrimordialRoarCD:SetTimeline(133, onlyColor)
 --	specWarnFixateParasite:SetAlert(557, "fixateyou", 19, 3, 0)
 end
 
@@ -65,9 +66,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		if DBM.Options.HideDBMBars then
-			setFallback(self, true)
-		end
+		setFallback(self, true)
 	else
 		setFallback(self)
 	end
