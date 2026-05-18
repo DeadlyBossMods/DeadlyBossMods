@@ -151,8 +151,8 @@ local function normalizeSearchText(text)
 	if cached ~= nil then
 		return cached
 	end
-	local ok, normalized = pcall(function(value)
-		value = rawText
+	local ok, normalized = pcall(function()
+		local value = rawText
 		value = strgsub(value, "|c%x%x%x%x%x%x%x%x", "")
 		value = strgsub(value, "|r", "")
 		value = strgsub(value, "|T.-|t", " ")
@@ -160,7 +160,7 @@ local function normalizeSearchText(text)
 		value = strgsub(value, "<.->", " ")
 		value = strgsub(value, "%s+", " ")
 		return strlower(value:match("^%s*(.-)%s*$") or "")
-	end, rawText)
+	end)
 	if ok and normalized then
 		normalizedSearchCache[rawText] = normalized
 		normalizedSearchCacheEntries = normalizedSearchCacheEntries + 1
@@ -557,20 +557,18 @@ local function resize(targetFrame, hasScroll)
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
 				for _, child2 in ipairs({ child:GetChildren() }) do
-					local child2Name
+					local child2Name = child2:GetName()
 					if child.mytype == "ability" and child2.mytype then
 						child2:SetShown(not child.hidden)
-						if child2.mytype == "spelldesc" then
+						if child2.mytype == "spelldesc" and child2Name then
 							child2:SetShown(child2.hasDesc and true or child.hidden)
-							child2Name = child2Name or child2:GetName()
 							local child2Text = _G[child2Name .. "Text"]
 							child2:SetHeight(child2Text:GetStringHeight())
 						end
 					end
 					if child2.mytype and child2:IsVisible() then
 						if child2.mytype == "textblock" then
-							if child2.autowidth then
-								child2Name = child2Name or child2:GetName()
+							if child2.autowidth and child2Name then
 								local child2Text = _G[child2Name .. "Text"]
 								child2Text:SetWidth(width - 30)
 								child2:SetSize(width, child2Text:GetStringHeight())
@@ -594,19 +592,19 @@ local function resize(targetFrame, hasScroll)
 							lastObject = child2
 						elseif child2.mytype == "line" then
 							child2:SetWidth(width - 20)
-							child2Name = child2Name or child2:GetName()
-							local child2BG = _G[child2Name .. "BG"]
-							local child2Text = _G[child2Name .. "Text"]
-							child2BG:SetWidth(width - child2Text:GetWidth() - 25)
+							if child2Name then
+								local child2BG = _G[child2Name .. "BG"]
+								local child2Text = _G[child2Name .. "Text"]
+								child2BG:SetWidth(width - child2Text:GetWidth() - 25)
+							end
 							if lastObject and lastObject.myheight then
 								child2:ClearAllPoints()
 								child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
 							end
 							lastObject = child2
 						elseif child2.mytype == "dropdown" then
-							if not child2.width then
+							if not child2.width and child2Name then
 								local ddWidth = 120
-								child2Name = child2Name or child2:GetName()
 								local dropdownText = _G[child2Name .. "Text"]
 								local titleText = _G[child2Name .. "TitleText"]:GetText()
 								if titleText ~= L.FontType and titleText ~= L.FontStyle and titleText ~= L.FontShadow then
