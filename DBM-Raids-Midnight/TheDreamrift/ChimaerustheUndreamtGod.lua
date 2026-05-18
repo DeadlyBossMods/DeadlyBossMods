@@ -82,17 +82,18 @@ local function setFallback(self, dontSetAlerts)
 		specWarnConsume:SetAlert(307, "aesoon", 2, 3)
 		specWarnCannibalized:SetAlert(555, "stilldanger", 1, 2, 0)
 	end
-	timerRavenousDiveCD:SetTimeline(48)
-	timerRiftEmergenceCD:SetTimeline(49)
-	timerCausticPhlegmCD:SetTimeline(50)
-	timerRendingTearCD:SetTimeline(51)
-	timerCorruptedDevastationCD:SetTimeline({53,458})
-	timerConsumingMiasmaCD:SetTimeline(119)
-	timerAlndustUpheavalCD:SetTimeline({149,431})
-	timerBerserkCD:SetTimeline(170)
-	timerRiftMadnessCD:SetTimeline(217)
-	timerConsumeCD:SetTimeline(307)
-	timerStage2CD:SetTimeline(353)
+	local onlyColor = not DBM.Options.HideDBMBars
+	timerRavenousDiveCD:SetTimeline(48, onlyColor)
+	timerRiftEmergenceCD:SetTimeline(49, onlyColor)
+	timerCausticPhlegmCD:SetTimeline(50, onlyColor)
+	timerRendingTearCD:SetTimeline(51, onlyColor)
+	timerCorruptedDevastationCD:SetTimeline({53,458}, onlyColor)
+	timerConsumingMiasmaCD:SetTimeline(119, onlyColor)
+	timerAlndustUpheavalCD:SetTimeline({149,431}, onlyColor)
+	timerBerserkCD:SetTimeline(170, onlyColor)
+	timerRiftMadnessCD:SetTimeline(217, onlyColor)
+	timerConsumeCD:SetTimeline(307, onlyColor)
+	timerStage2CD:SetTimeline(353, onlyColor)
 end
 
 function mod:OnLimitedCombatStart()
@@ -122,9 +123,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		if DBM.Options.HideDBMBars then
-			setFallback(self, true)
-		end
+		setFallback(self, true)
 	else
 		setFallback(self)
 	end

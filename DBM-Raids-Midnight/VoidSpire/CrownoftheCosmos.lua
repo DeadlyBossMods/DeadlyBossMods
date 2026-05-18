@@ -147,7 +147,8 @@ end
 	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
 local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
-	timerNullCoronaCD:SetTimeline(4)
+	local onlyColor = not DBM.Options.HideDBMBars
+	timerNullCoronaCD:SetTimeline(4, onlyColor)
 	if not dontSetAlerts then
 		specWarnVoidExpulsion:SetAlert(5, "aesoon", 2, 2, 0)
 		specWarnCalloftheVoid:SetAlert(10, "mobsoon", 2, 2)
@@ -168,25 +169,25 @@ local function setFallback(self, dontSetAlerts)
 			specWarnRiftSlash:SetAlert(137, "defensive", 2, 2)
 		end
 	end
-	timerVoidExpulsionCD:SetTimeline(5)
-	timerSilverstrikeArrowCD:SetTimeline(6)
-	timerSilverstrikeBarrageCD:SetTimeline(7)
+	timerVoidExpulsionCD:SetTimeline(5, onlyColor)
+	timerSilverstrikeArrowCD:SetTimeline(6, onlyColor)
+	timerSilverstrikeBarrageCD:SetTimeline(7, onlyColor)
 --	specWarnSingularityEruption:SetAlert(8, "watchstep", 2, 2)
 --	timerSingularityEruptionCD:SetTimeline(8)
-	timerVoidstalkerStingCD:SetTimeline(9)
-	timerCalloftheVoidCD:SetTimeline(10)
-	timerRangerCaptainsMarkCD:SetTimeline({11, 131})--Regular, Mythic?
-	timerCosmicBarrierCD:SetTimeline(12)
-	timerAspectoftheEndCD:SetTimeline(13)
-	timerGraspofEmptynessCD:SetTimeline({14, 132})--Regular, Mythic?
-	timerDevouringCosmosCD:SetTimeline(15)
-	timerDarkHandCD:SetTimeline(64)
-	timerRavenousAbyssCD:SetTimeline(65)
-	timerInterruptingTremorCD:SetTimeline(66)
-	timerCosmicPortalCD:SetTimeline(136)
-	timerRiftSlashCD:SetTimeline(137)
-	timerStage2CD:SetTimeline(351)
-	timerRiftSimulacrumCD:SetTimeline(135)
+	timerVoidstalkerStingCD:SetTimeline(9, onlyColor)
+	timerCalloftheVoidCD:SetTimeline(10, onlyColor)
+	timerRangerCaptainsMarkCD:SetTimeline({11, 131}, onlyColor)--Regular, Mythic?
+	timerCosmicBarrierCD:SetTimeline(12, onlyColor)
+	timerAspectoftheEndCD:SetTimeline(13, onlyColor)
+	timerGraspofEmptynessCD:SetTimeline({14, 132}, onlyColor)--Regular, Mythic?
+	timerDevouringCosmosCD:SetTimeline(15, onlyColor)
+	timerDarkHandCD:SetTimeline(64, onlyColor)
+	timerRavenousAbyssCD:SetTimeline(65, onlyColor)
+	timerInterruptingTremorCD:SetTimeline(66, onlyColor)
+	timerCosmicPortalCD:SetTimeline(136, onlyColor)
+	timerRiftSlashCD:SetTimeline(137, onlyColor)
+	timerStage2CD:SetTimeline(351, onlyColor)
+	timerRiftSimulacrumCD:SetTimeline(135, onlyColor)
 end
 
 ---@param self DBMMod
@@ -244,9 +245,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		if DBM.Options.HideDBMBars then
-			setFallback(self, true)
-		end
+		setFallback(self, true)
 		--pre Schedule first 3 abilities that have ambigous timers
 		self:Schedule(4, moriumIsTanked, self)
 		timerDarkHandCD:Start(4, 1)

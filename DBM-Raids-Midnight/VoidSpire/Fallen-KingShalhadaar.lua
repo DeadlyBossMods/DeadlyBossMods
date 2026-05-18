@@ -63,13 +63,14 @@ local function setFallback(self, dontSetAlerts)
 		specWarnTwilightObscurity:SetAlert(143, "aesoon", 2, 2)
 		specWarnEntropicUnraveling:SetAlert(148, "dpshard", 2, 2, 0)
 	end
-	timerVoidConvergenceCD:SetTimeline(139)
-	timerDespoticCommandCD:SetTimeline(140)
-	timerFracturedProjectionCD:SetTimeline(141)
-	timerShatteringTwilightCD:SetTimeline(142)
-	timerTwilightObscurityCD:SetTimeline(143)
-	timerEntropicUnravelingCD:SetTimeline(148)
-	timerBerserkCD:SetTimeline(633)
+	local onlyColor = not DBM.Options.HideDBMBars
+	timerVoidConvergenceCD:SetTimeline(139, onlyColor)
+	timerDespoticCommandCD:SetTimeline(140, onlyColor)
+	timerFracturedProjectionCD:SetTimeline(141, onlyColor)
+	timerShatteringTwilightCD:SetTimeline(142, onlyColor)
+	timerTwilightObscurityCD:SetTimeline(143, onlyColor)
+	timerEntropicUnravelingCD:SetTimeline(148, onlyColor)
+	timerBerserkCD:SetTimeline(633, onlyColor)
 end
 
 function mod:OnLimitedCombatStart()
@@ -84,9 +85,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		if DBM.Options.HideDBMBars then
-			setFallback(self, true)
-		end
+		setFallback(self, true)
 	else
 		setFallback(self)
 	end
