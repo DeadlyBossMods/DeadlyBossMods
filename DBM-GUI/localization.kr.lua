@@ -114,6 +114,8 @@ L.AutoExpandSpellGroups2			= "주문 단위로 그룹이 형성된 설정들을 
 L.ShowWAKeys						= "보스 모드 활성 조건을 이용한 WeakAuras 제작을 지원하기 위해 주문 이름 옆에 WeakAuras 키를 표시합니다."
 L.RenameSpellButton					= "이름 변경"
 L.RenameSpellHeader					= "%s 주문 이름 직접 설정"
+L.GTFOAbilityTitle					= "바닥 스킬"
+L.GTFOAbilityDescription				= "서 있으면 피해를 입히기 때문에 움직여야 하는 스킬입니다"
 L.NoDescription						= "이 능력에 대한 설명이 없습니다"
 L.CustomOptions						= "이 카테고리엔 주문이나 도감(journal) ID가 없는 능력이나 이벤트에 대한 사용자 정의 설정이 모여있습니다. 이 설정들은 WeakAuras 제작에 사용자 정의 ID를 사용하기 좋도록 모아놓은 것입니다."
 
