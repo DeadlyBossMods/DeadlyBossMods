@@ -797,22 +797,53 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 	if DBM.Options.ShowWAKeys and spellID then
 		key = DBM_CORE_L.WEAKAURA_KEY:format(spellID)
 	end
-	if icon then
-		local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
-		if isPrivate then--Second icon for private aura
-			local markuptwo = CreateTextureMarkup(132320, 0, 0, 18, 18, 0, 0, 0, 0, 0, 0)
-			title:SetText(markup .. ' ' .. titleText .. key .. " " .. markuptwo)
+	-- Search/index contract (important for GUI cache correctness):
+	-- 1) Keep search payload STATIC: original title + static numeric key only.
+	-- 2) NEVER include rename text here (renames are user-defined, volatile, and reused).
+	-- 3) Rendered title may include rename suffix for display, but search/cache must not.
+	local searchText = titleText
+	if renameSpellId and renameSpellId > 5 then
+		searchText = searchText .. " " .. tostring(renameSpellId)
+	elseif spellID then
+		searchText = searchText .. " " .. tostring(spellID)
+	end
+	area.searchText = searchText
+	local function setAbilityTitle(text)
+		if icon then
+			local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
+			if isPrivate then--Second icon for private aura
+				local markuptwo = CreateTextureMarkup(132320, 0, 0, 18, 18, 0, 0, 0, 0, 0, 0)
+				title:SetText(markup .. ' ' .. text .. key .. " " .. markuptwo)
+			else
+				title:SetText(markup .. ' ' .. text .. key)
+			end
 		else
-			title:SetText(markup .. ' ' .. titleText .. key)
-		end
-	else
-		if isPrivate then--Still add icon for private aura even if no spell icon
-			local markuptwo = CreateTextureMarkup(132320, 0, 0, 18, 18, 0, 0, 0, 0, 0, 0)
-			title:SetText(titleText .. key .. " " .. markuptwo)
-		else
-			title:SetText(titleText .. key)
+			if isPrivate then--Still add icon for private aura even if no spell icon
+				local markuptwo = CreateTextureMarkup(132320, 0, 0, 18, 18, 0, 0, 0, 0, 0, 0)
+				title:SetText(text .. key .. " " .. markuptwo)
+			else
+				title:SetText(text .. key)
+			end
 		end
 	end
+	local function getRenameDefaultText()
+		if renameSpellId == 123456 then
+			return L.GTFOAbilityTitle
+		end
+		return DBM:GetSpellName(renameSpellId) or tostring(renameSpellId)
+	end
+	local function getRenameDisplaySuffix()
+		if not renameSpellId or renameSpellId <= 5 then
+			return ""
+		end
+		local defaultText = getRenameDefaultText()
+		local effectiveText = DBM:GetRename(renameSpellId, defaultText) or defaultText
+		if effectiveText == defaultText then
+			return ""
+		end
+		return (DBM_CORE_L.RENAME):format(effectiveText)
+	end
+	setAbilityTitle(titleText .. getRenameDisplaySuffix())
 	title:ClearAllPoints()
 	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 20, 0)
 	title:SetFontObject(GameFontNormal)
@@ -868,24 +899,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 		end)
 
 		local function updateRenameUI()
-			local defaultText = (renameSpellId == 123456 and L.GTFOAbilityTitle) or DBM:GetSpellName(renameSpellId) or tostring(renameSpellId)
-			local effectiveText = DBM:GetRename(renameSpellId, defaultText) or defaultText
-			if icon then
-				local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
-				if isPrivate then
-					local markuptwo = CreateTextureMarkup(132320, 0, 0, 18, 18, 0, 0, 0, 0, 0, 0)
-					title:SetText(markup .. ' ' .. effectiveText .. key .. " " .. markuptwo)
-				else
-					title:SetText(markup .. ' ' .. effectiveText .. key)
-				end
-			else
-				if isPrivate then
-					local markuptwo = CreateTextureMarkup(132320, 0, 0, 18, 18, 0, 0, 0, 0, 0, 0)
-					title:SetText(effectiveText .. key .. " " .. markuptwo)
-				else
-					title:SetText(effectiveText .. key)
-				end
-			end
+			setAbilityTitle(titleText .. getRenameDisplaySuffix())
 			local hasOverride = DBM.Options and type(DBM.Options.SpellRenames) == "table" and DBM.Options.SpellRenames[renameSpellId]
 			if hasOverride then
 				resetButton:Enable()
@@ -895,7 +909,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 		end
 
 		renameButton:SetScript("OnClick", function()
-			local defaultText = (renameSpellId == 123456 and L.GTFOAbilityTitle) or DBM:GetSpellName(renameSpellId) or tostring(renameSpellId)
+			local defaultText = getRenameDefaultText()
 			local currentText = DBM:GetRename(renameSpellId, defaultText) or ""
 			DBM:ShowTextEditor((L.RenameSpellHeader or "Set custom name for %s"):format(defaultText), currentText, function(text)
 				DBM:SetRename(renameSpellId, text)

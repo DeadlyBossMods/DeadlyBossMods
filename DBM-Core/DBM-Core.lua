@@ -297,8 +297,8 @@ DBM.DefaultOptions = {
 	DisableMusic = false,
 	EnableModels = true,
 	GUIWidth = 1000,
-	GUIHeight = 800,
-	GUIResizeMigrated_1000x800 = false,
+	GUIHeight = 700,
+	GUIResizeMigrated_1000x700 = false,
 	GroupOptionsExcludeIcon = false,
 --	GroupOptionsExcludePA = false,
 	AutoExpandSpellGroups2 = true,
@@ -2259,6 +2259,7 @@ do
 						C_TimerAfter(0.01, function()
 							local voiceValue = C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
 							local voiceVersion = tonumber(C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
+							local voiceMaxCount = tonumber(C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-MaxCount") or 10)
 							if voiceVersion > 0 then--Do not insert voice version 0 into THIS table. 0 should be used by voice packs that insert only countdown
 								tinsert(self.Voices, {text = C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue})
 							end
@@ -2268,9 +2269,9 @@ do
 							self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
 							if C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-HasCount") then--Supports adding countdown options, insert new countdown into table
 								if C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-MidnightCompat") then--Add to TOC only if your count pack supports "fivecount.ogg"
-									DBM:AddCountSound(C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-Name"), "VP: " .. voiceValue, "Interface\\AddOns\\DBM-VP" .. voiceValue .. "\\count\\", nil, true)
+									DBM:AddCountSound(C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-Name"), "VP: " .. voiceValue, "Interface\\AddOns\\DBM-VP" .. voiceValue .. "\\count\\", voiceMaxCount, true)
 								else
-									DBM:AddCountSound(C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-Name"), "VP: " .. voiceValue, "Interface\\AddOns\\DBM-VP" .. voiceValue .. "\\count\\")
+									DBM:AddCountSound(C_AddOns.GetAddOnMetadata(i, "X-DBM-Voice-Name"), "VP: " .. voiceValue, "Interface\\AddOns\\DBM-VP" .. voiceValue .. "\\count\\", voiceMaxCount)
 								end
 							end
 						end)
@@ -4144,12 +4145,12 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
-		if not self.Options.GUIResizeMigrated_1000x800 then
+		if not self.Options.GUIResizeMigrated_1000x700 then
 			if self.Options.GUIWidth == 800 and self.Options.GUIHeight == 600 then
 				self.Options.GUIWidth = 1000
-				self.Options.GUIHeight = 800
+				self.Options.GUIHeight = 700
 			end
-			self.Options.GUIResizeMigrated_1000x800 = true
+			self.Options.GUIResizeMigrated_1000x700 = true
 		end
 		if type(self.Options.SpellRenames) ~= "table" then
 			self.Options.SpellRenames = {}

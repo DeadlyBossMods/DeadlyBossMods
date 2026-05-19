@@ -675,7 +675,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 						else
 							local _title = DBM:GetSpellName(spellID)
 							if _title then
-								title, desc, icon = DBM:GetRename(spellID, _title), tonumber(spellID), DBM:GetSpellTexture(spellID or 0)
+								title, desc, icon = _title, tonumber(spellID), DBM:GetSpellTexture(spellID or 0)
 								renameSpellId = spellID
 							end
 						end

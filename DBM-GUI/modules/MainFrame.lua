@@ -25,7 +25,7 @@ end
 if DBM.Options.GUIWidth then
 	frame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
 else
-	frame:SetSize(850, 600)
+	frame:SetSize(1000, 700)
 end
 frame:EnableMouse(true)
 frame:SetMovable(true)
@@ -34,7 +34,7 @@ frame:SetClampedToScreen(true)
 frame:SetUserPlaced(true)
 frame:RegisterForDrag("LeftButton")
 frame:SetFrameLevel(frame:GetFrameLevel() + 4)
-frame:SetResizeBounds(800, 400, UIParent:GetWidth(), UIParent:GetHeight())
+frame:SetResizeBounds(1000, 400, UIParent:GetWidth(), UIParent:GetHeight())
 frame:Hide()
 NineSliceUtil.ApplyLayoutByName(frame, "ButtonFrameTemplateNoPortrait");
 frame.firstshow = true
@@ -434,6 +434,7 @@ function frame:LoadAndShowFrame(subFrame)
 	end
 	if subFrame.selectButton then
 		subFrame.selectButton:LockHighlight()
+		subFrame.selectButton._dbmWasLocked = true
 	end
 	frame:DisplayFrame(subFrame)
 end
