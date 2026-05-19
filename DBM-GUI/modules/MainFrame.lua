@@ -434,6 +434,7 @@ function frame:LoadAndShowFrame(subFrame)
 	end
 	if subFrame.selectButton then
 		subFrame.selectButton:LockHighlight()
+		subFrame.selectButton._dbmWasLocked = true
 	end
 	frame:DisplayFrame(subFrame)
 end
