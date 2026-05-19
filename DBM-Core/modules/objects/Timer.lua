@@ -87,7 +87,11 @@ local function playCountdown(timerId, timer, voice, count, requiresCombat)
 	end
 	local maxCount, path
 	if type(voice) == "string" then
-		maxCount = 5--Safe to assume if it's not one of the built ins, it's likely heroes/OW, which has a max of 5
+		if voice:find("VP: ") then--If it's a VP voice, it's safe to assume it's a 10 count
+			maxCount = 10--Safe to assume if it's not one of the built ins, it's likely heroes/OW, which has a max of 5
+		else
+			maxCount = 5
+		end
 		path = voice
 	elseif voice == 2 then
 		maxCount = countvoice2max or 10
