@@ -245,7 +245,7 @@ local function collectFrameSearchText(targetFrame, parts, visited, entries)
 	appendControlSearchText(parts, targetFrame)
 
 	local childParts = {}
-	local childCount = select("#", targetFrame:GetChildren())
+	local childCount = targetFrame.GetNumChildren and targetFrame:GetNumChildren() or select("#", targetFrame:GetChildren())
 	if childCount == 0 then
 		return
 	end
@@ -356,9 +356,11 @@ function frame:IsFrameSearchable(targetFrame, tabId)
 	end
 	if targetFrame.addonId and C_AddOns and C_AddOns.IsAddOnLoaded then
 		-- Addon is loaded but only index the frame once it has child controls
-		return C_AddOns.IsAddOnLoaded(targetFrame.addonId) and select("#", targetFrame:GetChildren()) > 0
+		local childCount = targetFrame.GetNumChildren and targetFrame:GetNumChildren() or select("#", targetFrame:GetChildren())
+		return C_AddOns.IsAddOnLoaded(targetFrame.addonId) and childCount > 0
 	end
-	return select("#", targetFrame:GetChildren()) > 0
+	local childCount = targetFrame.GetNumChildren and targetFrame:GetNumChildren() or select("#", targetFrame:GetChildren())
+	return childCount > 0
 end
 
 function frame:GetSearchResults()
@@ -654,7 +656,8 @@ end
 
 local bossPreview
 function frame:DisplayFrame(targetFrame, secondResize)
-	if select("#", targetFrame:GetChildren()) == 0 then
+	local childCount = targetFrame.GetNumChildren and targetFrame:GetNumChildren() or select("#", targetFrame:GetChildren())
+	if childCount == 0 then
 		return
 	end
 	selectedPagePerTab[self.tab] = targetFrame
