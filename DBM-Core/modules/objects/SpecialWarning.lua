@@ -455,13 +455,16 @@ local specInstructionalRemapTable = {
 local function setText(announceType, spellId, stacks, customName, alternateSpellId)
 	local text, spellName
 	local baseSpellName
+	local effectiveSpellId = announceType == "gtfo" and 123456 or spellId
 	if customName then
 		baseSpellName = customName
+	elseif announceType == "gtfo" then
+		baseSpellName = "GTFO"
 	else
 		baseSpellName = DBM:ParseSpellName(alternateSpellId or spellId, announceType) or CL.UNKNOWN
 	end
-	if spellId then
-		spellName = DBM:GetRename(spellId, baseSpellName)
+	if effectiveSpellId then
+		spellName = DBM:GetRename(effectiveSpellId, baseSpellName)
 	else
 		spellName = baseSpellName
 	end
@@ -487,9 +490,9 @@ local function setText(announceType, spellId, stacks, customName, alternateSpell
 		end
 	end
 	--Automatically register alternate spellnames when detecting their use here
-	if spellId and (customName or alternateSpellId) then
-		DBM:RegisterAltSpellName(spellId, baseSpellName)
-		DBM:AddRename(spellId, baseSpellName)
+	if effectiveSpellId and (customName or alternateSpellId or announceType == "gtfo") then
+		DBM:RegisterAltSpellName(effectiveSpellId, baseSpellName)
+		DBM:AddRename(effectiveSpellId, baseSpellName)
 	end
 	return text, spellName
 end
@@ -1081,7 +1084,9 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 		end
 		optionVersion = nil
 	end
-	local text, spellName = setText(announceType, spellId, stacks, alternateName, alternateSpellId)
+	local objectSpellId = announceType == "gtfo" and 123456 or spellId
+	local objectCustomName = announceType == "gtfo" and (alternateName or "GTFO") or alternateName
+	local text, spellName = setText(announceType, objectSpellId, stacks, objectCustomName, alternateSpellId)
 	local icon = iconOverride or DBM:ParseSpellIcon(spellId)
 	---@class SpecialWarning
 	local obj = setmetatable( -- todo: fix duplicate code
@@ -1097,9 +1102,9 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 			hasVoice = hasVoice,
 			difficulty = difficulty,
 			type = announceType,
-			spellId = spellId,
+			spellId = objectSpellId,
 			spellName = spellName,
-			customName = alternateName,
+			customName = objectCustomName,
 			alternateSpellId = alternateSpellId,
 			renameRevision = DBM:GetSpellRenameRevision(),
 			stacks = stacks,
@@ -1132,7 +1137,8 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 		end
 	end
 	if obj.option then
-		self:AddSpecialWarningOption(obj.option, optionDefault, runSound, "announce", spellId, announceType)
+		local optionSpellId = announceType == "gtfo" and 123456 or spellId
+		self:AddSpecialWarningOption(obj.option, optionDefault, runSound, "announce", optionSpellId, announceType)
 	end
 	obj.voiceOptionId = hasVoice and "Voice" .. spellId or nil
 	tinsert(self.specwarns, obj)

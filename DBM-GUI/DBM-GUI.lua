@@ -568,6 +568,19 @@ local function addOptions(mod, catpanel, v)
 end
 
 local isFirstModPanel = true
+
+local function isGTFOAbilityGroup(options)
+	if type(options) ~= "table" then
+		return false
+	end
+	for _, optionName in ipairs(options) do
+		if type(optionName) == "string" and optionName:lower():find("gtfo", 1, true) then
+			return true
+		end
+	end
+	return false
+end
+
 ---@param mod DBMMod
 function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	local panel = isTestView and mod.testPanel or mod.panel
@@ -642,6 +655,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 			if spellID:find("^line") then
 				panel:CreateLine(options)
 			else
+				local isGTFOGroup = isGTFOAbilityGroup(options)
 				local title, desc, _, icon
 				local usedSpellID, hasPrivate
 				local renameSpellId
@@ -676,6 +690,13 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 				end
 				if not title then--Spell/EJ section/achievement not found - typo/removed/ptr or beta mod on live
 					title, desc, icon = spellID, L.NoDescription, 136116
+				end
+				if isGTFOGroup then
+					title = L.GTFOAbilityTitle
+					desc = L.GTFOAbilityDescription
+					renameSpellId = 123456
+					usedSpellID = "|Haddon:DBM:wacopy:123456|h|cff69ccf0123456|r|h"
+					icon = icon or 136116
 				end
 				if not usedSpellID then
 					usedSpellID = "|Haddon:DBM:wacopy:"..spellID.."|h|cff69ccf0"..spellID.."|r|h"
