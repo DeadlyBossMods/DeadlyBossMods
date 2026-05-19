@@ -868,7 +868,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 		end)
 
 		local function updateRenameUI()
-			local defaultText = DBM:GetSpellName(renameSpellId) or tostring(renameSpellId)
+			local defaultText = (renameSpellId == 123456 and L.GTFOAbilityTitle) or DBM:GetSpellName(renameSpellId) or tostring(renameSpellId)
 			local effectiveText = DBM:GetRename(renameSpellId, defaultText) or defaultText
 			if icon then
 				local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
@@ -895,7 +895,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 		end
 
 		renameButton:SetScript("OnClick", function()
-			local defaultText = DBM:GetSpellName(renameSpellId) or tostring(renameSpellId)
+			local defaultText = (renameSpellId == 123456 and L.GTFOAbilityTitle) or DBM:GetSpellName(renameSpellId) or tostring(renameSpellId)
 			local currentText = DBM:GetRename(renameSpellId, defaultText) or ""
 			DBM:ShowTextEditor((L.RenameSpellHeader or "Set custom name for %s"):format(defaultText), currentText, function(text)
 				DBM:SetRename(renameSpellId, text)
