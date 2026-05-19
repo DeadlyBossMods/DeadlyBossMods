@@ -107,6 +107,14 @@ local function appendSearchText(parts, text)
 end
 
 local function appendControlSearchText(parts, control)
+	if control.mytype == "ability" then
+		-- Search/index contract for ability groups:
+		-- Use only precomputed control.searchText (static original title + static ID).
+		-- Do NOT index visible title regions here, because they can include dynamic rename text.
+		-- This keeps search cache stable and prevents rename strings from becoming search keys.
+		appendSearchText(parts, control.searchText)
+		return
+	end
 	appendSearchText(parts, control.text)
 	appendSearchText(parts, safeGetText(control.textObj))
 	appendSearchText(parts, safeGetText(control))
