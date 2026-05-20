@@ -43,16 +43,11 @@ else
 end
 
 local infoFrameFontResetNotified = false
-local validInfoFrameStrata = {
-	BACKGROUND = true,
-	LOW = true,
-	MEDIUM = true,
-	HIGH = true,
-	DIALOG = true,
-	FULLSCREEN = true,
-	FULLSCREEN_DIALOG = true,
-	TOOLTIP = true
-}
+local infoFrameStrataOptions = { "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG", "TOOLTIP" }
+local validInfoFrameStrata = {}
+for _, v in ipairs(infoFrameStrataOptions) do
+	validInfoFrameStrata[v] = true
+end
 
 local function getSafeInfoFrameStrata()
 	local strata = DBM.Options.InfoFrameStrata
@@ -144,13 +139,7 @@ do
 
 	local function setStrata(arg1, strata)
 		if not isWrath then strata = arg1 end -- New dropdown code
-		if type(strata) ~= "string" or not validInfoFrameStrata[strata] then
-			strata = DBM.DefaultOptions.InfoFrameStrata
-		end
-		DBM.Options.InfoFrameStrata = strata
-		if frame then
-			frame:SetFrameStrata(strata)
-		end
+		infoFrame:SetStrata(strata)
 	end
 
 	local function isStrataSelected(strata)
@@ -172,7 +161,7 @@ do
 		end
 
 		local strata = rootDescription:CreateButton(L.INFOFRAME_SETSTRATA)
-		for _, v in ipairs({ "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG", "TOOLTIP" }) do
+		for _, v in ipairs(infoFrameStrataOptions) do
 			strata:CreateRadio(v, isStrataSelected, setStrata, v)
 		end
 
@@ -240,7 +229,7 @@ do
 					}, 2)
 				end
 			elseif menu == "strata" then
-				for _, v in ipairs({ "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG", "TOOLTIP" }) do
+				for _, v in ipairs(infoFrameStrataOptions) do
 					UIDropDownMenu_AddButton({
 						text = v,
 						func = setStrata,
@@ -1415,6 +1404,16 @@ function infoFrame:SetColumns(columns)
 	modCols = columns
 	if DBM.Options.InfoFrameCols == 0 then
 		maxCols = columns
+	end
+end
+
+function infoFrame:SetStrata(strata)
+	if strata ~= nil then
+		DBM.Options.InfoFrameStrata = strata
+	end
+	local safeStrata = getSafeInfoFrameStrata()
+	if frame then
+		frame:SetFrameStrata(safeStrata)
 	end
 end
 
