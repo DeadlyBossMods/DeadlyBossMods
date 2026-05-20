@@ -43,6 +43,22 @@ else
 end
 
 local infoFrameFontResetNotified = false
+local infoFrameStrataOptions = { "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG", "TOOLTIP" }
+infoFrame.StrataOptions = infoFrameStrataOptions
+local validInfoFrameStrata = {}
+for _, v in ipairs(infoFrameStrataOptions) do
+	validInfoFrameStrata[v] = true
+end
+
+local function getSafeInfoFrameStrata()
+	local strata = DBM.Options.InfoFrameStrata
+	if type(strata) ~= "string" or not validInfoFrameStrata[strata] then
+		strata = DBM.DefaultOptions.InfoFrameStrata
+		DBM.Options.InfoFrameStrata = strata
+	end
+	return strata
+end
+
 local function getSafeInfoFrameFontSettings(testFontString)
 	local font = DBM.Options.InfoFrameFont == "standardFont" and standardFont or DBM.Options.InfoFrameFont
 	local size = DBM.Options.InfoFrameFontSize
@@ -122,6 +138,15 @@ do
 		return DBM.Options.InfoFrameCols == col
 	end
 
+	local function setStrata(arg1, strata)
+		if not isWrath then strata = arg1 end -- New dropdown code
+		infoFrame:SetStrata(strata)
+	end
+
+	local function isStrataSelected(strata)
+		return DBM.Options.InfoFrameStrata == strata
+	end
+
 	function initializeDropdown(owner, rootDescription)
 		rootDescription:CreateCheckbox(LOCK_FRAME, isLocked, toggleLocked)
 		rootDescription:CreateCheckbox(L.INFOFRAME_SHOW_SELF, isShowSelf, toggleShowSelf)
@@ -134,6 +159,11 @@ do
 		local cols = rootDescription:CreateButton(L.INFOFRAME_SETCOLS)
 		for _, v in ipairs({ 0, 1, 2, 3, 4, 5, 6 }) do
 			cols:CreateRadio(v == 0 and L.INFOFRAME_LINESDEFAULT or L.INFOFRAME_COLS_TO:format(v), isColsSelected, setCols, v)
+		end
+
+		local strata = rootDescription:CreateButton(L.INFOFRAME_SETSTRATA)
+		for _, v in ipairs(infoFrameStrataOptions) do
+			strata:CreateRadio(v, isStrataSelected, setStrata, v)
 		end
 
 		rootDescription:CreateButton(HIDE, infoFrame.Hide)
@@ -168,6 +198,13 @@ do
 				menuList = "cols",
 			}, 1)
 			UIDropDownMenu_AddButton({
+				text = L.INFOFRAME_SETSTRATA,
+				notCheckable = true,
+				hasArrow = true,
+				keepShownOnClick = true,
+				menuList = "strata",
+			}, 1)
+			UIDropDownMenu_AddButton({
 				text = HIDE,
 				notCheckable = true,
 				func = infoFrame.Hide,
@@ -192,6 +229,15 @@ do
 						checked = isColsSelected(v)
 					}, 2)
 				end
+			elseif menu == "strata" then
+				for _, v in ipairs(infoFrameStrataOptions) do
+					UIDropDownMenu_AddButton({
+						text = v,
+						func = setStrata,
+						arg1 = v,
+						checked = isStrataSelected(v)
+					}, 2)
+				end
 			end
 		end
 	end
@@ -204,7 +250,7 @@ function createFrame()
 	---@class DBMInfoFrameFrame: Frame, BackdropTemplate
 	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent, "BackdropTemplate")
 	frame:Hide()
-	frame:SetFrameStrata("DIALOG")
+	frame:SetFrameStrata(getSafeInfoFrameStrata())
 	frame.backdropInfo = {
 		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
 		tile		= true,
@@ -1359,6 +1405,16 @@ function infoFrame:SetColumns(columns)
 	modCols = columns
 	if DBM.Options.InfoFrameCols == 0 then
 		maxCols = columns
+	end
+end
+
+function infoFrame:SetStrata(strata)
+	if strata ~= nil then
+		DBM.Options.InfoFrameStrata = strata
+	end
+	local safeStrata = getSafeInfoFrameStrata()
+	if frame then
+		frame:SetFrameStrata(safeStrata)
 	end
 end
 

@@ -321,6 +321,7 @@ DBM.DefaultOptions = {
 	InfoFrameShowSelf = false,
 	InfoFrameLines = 0,
 	InfoFrameCols = 0,
+	InfoFrameStrata = "DIALOG",
 	InfoFrameFont = "standardFont",
 	InfoFrameFontSize = 12,
 	InfoFrameFontStyle = "None",

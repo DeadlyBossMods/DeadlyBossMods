@@ -259,6 +259,7 @@ L.INFOFRAME_TITLE				= "信息窗"
 L.INFOFRAME_SHOW_SELF			= "总是显示你的能量"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "设置最大行数"
 L.INFOFRAME_SETCOLS				= "设置最大列数"
+L.INFOFRAME_SETSTRATA			= "设置框体层级"
 L.INFOFRAME_LINESDEFAULT		= "由模组设置"
 L.INFOFRAME_LINES_TO			= "%d行"
 L.INFOFRAME_COLS_TO				= "%d列"

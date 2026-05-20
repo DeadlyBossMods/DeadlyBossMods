@@ -90,6 +90,19 @@ local columnsDropdown = general:CreateDropdown(CL.INFOFRAME_SETCOLS, columns, "D
 end)
 columnsDropdown:SetPoint("TOPLEFT", linesDropdown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 
+local strata = {}
+for _, v in ipairs(DBM.InfoFrame.StrataOptions or {}) do
+	strata[#strata + 1] = {
+		text	= v,
+		value	= v
+	}
+end
+
+local strataDropdown = general:CreateDropdown(CL.INFOFRAME_SETSTRATA, strata, "DBM", "InfoFrameStrata", function(value)
+	DBM.InfoFrame:SetStrata(value)
+end)
+strataDropdown:SetPoint("TOPLEFT", columnsDropdown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
+
 --local position = panel:CreateArea(L.Area_Position)
 
 local style = panel:CreateArea(L.Area_Style)
@@ -187,12 +200,14 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.InfoFrameFont = DBM.DefaultOptions.InfoFrameFont
 	DBM.Options.InfoFrameFontStyle = DBM.DefaultOptions.InfoFrameFontStyle
 	DBM.Options.InfoFrameFontSize = DBM.DefaultOptions.InfoFrameFontSize
+	DBM.InfoFrame:SetStrata(DBM.DefaultOptions.InfoFrameStrata)
 	-- Set UI visuals
 	dontShow:SetChecked(DBM.Options.DontShowInfoFrame)
 	locked:SetChecked(DBM.Options.InfoFrameLocked)
 	showSelf:SetChecked(DBM.Options.InfoFrameShowSelf)
 	FontDropDown:SetSelectedValue(DBM.Options.InfoFrameFont)
 	FontStyleDropDown:SetSelectedValue(DBM.Options.InfoFrameFontStyle)
+	strataDropdown:SetSelectedValue(DBM.Options.InfoFrameStrata)
 	fontSizeSlider:SetValue(DBM.DefaultOptions.InfoFrameFontSize)
 	DBM.InfoFrame:UpdateStyle()
 end)
