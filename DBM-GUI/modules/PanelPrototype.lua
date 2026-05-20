@@ -910,7 +910,8 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 
 		renameButton:SetScript("OnClick", function()
 			local defaultText = getRenameDefaultText()
-			local currentText = DBM:GetRename(renameSpellId, defaultText) or ""
+			local explicitClear = DBM.Options and type(DBM.Options.SpellRenames) == "table" and DBM.Options.SpellRenames[renameSpellId] == ""
+			local currentText = explicitClear and "" or (DBM:GetRename(renameSpellId, defaultText) or "")
 			DBM:ShowTextEditor((L.RenameSpellHeader or "Set custom name for %s"):format(defaultText), currentText, function(text)
 				DBM:SetRename(renameSpellId, text)
 				updateRenameUI()

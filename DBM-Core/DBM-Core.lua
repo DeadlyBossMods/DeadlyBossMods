@@ -1143,6 +1143,15 @@ do
 		if not overrides then
 			return
 		end
+		if type(renameString) == "string" then
+			local trimmedRename = trimSpellRenameText(renameString)
+			if trimmedRename == "" then
+				-- Explicit clear sentinel: preserve an override entry that suppresses built-in/default renames.
+				overrides[spellId] = ""
+				refreshSpellRenameCache(true)
+				return
+			end
+		end
 		renameString = sanitizeSpellRenameText(renameString)
 		if renameString then
 			overrides[spellId] = renameString
@@ -1164,10 +1173,15 @@ do
 			for spellId, renameString in pairs(spellRenames) do
 				local normalizedSpellId = normalizeSpellRenameKey(spellId)
 				local sanitizedRename = sanitizeSpellRenameText(renameString)
-				if type(normalizedSpellId) == "number" and isValidSpellRenameKey(normalizedSpellId) and sanitizedRename then
+				local explicitClear = type(renameString) == "string" and trimSpellRenameText(renameString) == ""
+				if type(normalizedSpellId) == "number" and isValidSpellRenameKey(normalizedSpellId) and (sanitizedRename or explicitClear) then
 					---@cast normalizedSpellId number
-					---@cast sanitizedRename string
-					overrides[normalizedSpellId] = sanitizedRename
+					if sanitizedRename then
+						---@cast sanitizedRename string
+						overrides[normalizedSpellId] = sanitizedRename
+					else
+						overrides[normalizedSpellId] = ""
+					end
 				end
 			end
 		end
@@ -1186,6 +1200,16 @@ do
 		end
 		if type(spellId) ~= "number" then
 			return fallbackName
+		end
+		local overrides = getSpellRenameOverrides()
+		if overrides and overrides[spellId] ~= nil then
+			if overrides[spellId] == "" then
+				-- Explicit clear sentinel means "do not use any built-in/default rename for this spell".
+				return fallbackName
+			end
+			if type(overrides[spellId]) == "string" then
+				return overrides[spellId]
+			end
 		end
 		if spellRenameCacheDirty then
 			rebuildSpellRenameCache()
