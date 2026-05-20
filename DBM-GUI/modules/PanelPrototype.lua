@@ -900,7 +900,15 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 
 		local function updateRenameUI()
 			setAbilityTitle(titleText .. getRenameDisplaySuffix())
-			local hasOverride = DBM.Options and type(DBM.Options.SpellRenames) == "table" and DBM.Options.SpellRenames[renameSpellId]
+			local spellRenames = DBM.Options and type(DBM.Options.SpellRenames) == "table" and DBM.Options.SpellRenames
+			local overrideValue
+			if spellRenames then
+				overrideValue = spellRenames[renameSpellId]
+				if overrideValue == nil then
+					overrideValue = spellRenames[tostring(renameSpellId)]
+				end
+			end
+			local hasOverride = overrideValue ~= nil
 			if hasOverride then
 				resetButton:Enable()
 			else
@@ -910,7 +918,15 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 
 		renameButton:SetScript("OnClick", function()
 			local defaultText = getRenameDefaultText()
-			local explicitClear = DBM.Options and type(DBM.Options.SpellRenames) == "table" and DBM.Options.SpellRenames[renameSpellId] == ""
+			local spellRenames = DBM.Options and type(DBM.Options.SpellRenames) == "table" and DBM.Options.SpellRenames
+			local overrideValue
+			if spellRenames then
+				overrideValue = spellRenames[renameSpellId]
+				if overrideValue == nil then
+					overrideValue = spellRenames[tostring(renameSpellId)]
+				end
+			end
+			local explicitClear = overrideValue == ""
 			local currentText = explicitClear and "" or (DBM:GetRename(renameSpellId, defaultText) or "")
 			DBM:ShowTextEditor((L.RenameSpellHeader or "Set custom name for %s"):format(defaultText), currentText, function(text)
 				DBM:SetRename(renameSpellId, text)

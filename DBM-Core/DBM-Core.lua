@@ -1066,6 +1066,32 @@ do
 		return DBM.Options.SpellRenames
 	end
 
+	---@param overrides table<any, any>?
+	---@param spellId number
+	---@return any
+	local function getSpellRenameOverrideValue(overrides, spellId)
+		if type(overrides) ~= "table" then
+			return nil
+		end
+		local numericValue = overrides[spellId]
+		if numericValue ~= nil then
+			return numericValue
+		end
+		return overrides[tostring(spellId)]
+	end
+
+	---@param overrides table<any, any>
+	---@param spellId number
+	---@param renameString string?
+	local function setSpellRenameOverrideValue(overrides, spellId, renameString)
+		-- Always clear both equivalent key forms to avoid stale mixed-key state.
+		overrides[spellId] = nil
+		overrides[tostring(spellId)] = nil
+		if renameString ~= nil then
+			overrides[spellId] = renameString
+		end
+	end
+
 	local function rebuildSpellRenameCache()
 		table.wipe(effectiveSpellRenamesByspellId)
 		for spellId, rename in pairs(legacyAltSpellNamesByspellId) do
@@ -1147,16 +1173,16 @@ do
 			local trimmedRename = trimSpellRenameText(renameString)
 			if trimmedRename == "" then
 				-- Explicit clear sentinel: preserve an override entry that suppresses built-in/default renames.
-				overrides[spellId] = ""
+				setSpellRenameOverrideValue(overrides, spellId, "")
 				refreshSpellRenameCache(true)
 				return
 			end
 		end
 		renameString = sanitizeSpellRenameText(renameString)
 		if renameString then
-			overrides[spellId] = renameString
+			setSpellRenameOverrideValue(overrides, spellId, renameString)
 		else
-			overrides[spellId] = nil
+			setSpellRenameOverrideValue(overrides, spellId, nil)
 		end
 		refreshSpellRenameCache(true)
 	end
@@ -1202,13 +1228,14 @@ do
 			return fallbackName
 		end
 		local overrides = getSpellRenameOverrides()
-		if overrides and overrides[spellId] ~= nil then
-			if overrides[spellId] == "" then
+		local overrideValue = getSpellRenameOverrideValue(overrides, spellId)
+		if overrideValue ~= nil then
+			if overrideValue == "" then
 				-- Explicit clear sentinel means "do not use any built-in/default rename for this spell".
 				return fallbackName
 			end
-			if type(overrides[spellId]) == "string" then
-				return overrides[spellId]
+			if type(overrideValue) == "string" then
+				return overrideValue
 			end
 		end
 		if spellRenameCacheDirty then
