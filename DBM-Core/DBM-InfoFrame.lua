@@ -44,6 +44,7 @@ end
 
 local infoFrameFontResetNotified = false
 local infoFrameStrataOptions = { "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG", "TOOLTIP" }
+infoFrame.StrataOptions = infoFrameStrataOptions
 local validInfoFrameStrata = {}
 for _, v in ipairs(infoFrameStrataOptions) do
 	validInfoFrameStrata[v] = true

@@ -90,40 +90,13 @@ local columnsDropdown = general:CreateDropdown(CL.INFOFRAME_SETCOLS, columns, "D
 end)
 columnsDropdown:SetPoint("TOPLEFT", linesDropdown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 
-local strata = {
-	{
-		text	= "BACKGROUND",
-		value	= "BACKGROUND"
-	},
-	{
-		text	= "LOW",
-		value	= "LOW"
-	},
-	{
-		text	= "MEDIUM",
-		value	= "MEDIUM"
-	},
-	{
-		text	= "HIGH",
-		value	= "HIGH"
-	},
-	{
-		text	= "DIALOG",
-		value	= "DIALOG"
-	},
-	{
-		text	= "FULLSCREEN",
-		value	= "FULLSCREEN"
-	},
-	{
-		text	= "FULLSCREEN_DIALOG",
-		value	= "FULLSCREEN_DIALOG"
-	},
-	{
-		text	= "TOOLTIP",
-		value	= "TOOLTIP"
+local strata = {}
+for _, v in ipairs(DBM.InfoFrame.StrataOptions or {}) do
+	strata[#strata + 1] = {
+		text	= v,
+		value	= v
 	}
-}
+end
 
 local strataDropdown = general:CreateDropdown(CL.INFOFRAME_SETSTRATA, strata, "DBM", "InfoFrameStrata", function(value)
 	DBM.InfoFrame:SetStrata(value)
