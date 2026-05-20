@@ -1302,6 +1302,16 @@ do
 		if type(spellId) ~= "number" then
 			return nil
 		end
+		local overrides = getSpellRenameOverrides()
+		local overrideValue = getSpellRenameOverrideValue(overrides, spellId)
+		if overrideValue ~= nil then
+			if overrideValue == "" then
+				return nil
+			end
+			if type(overrideValue) == "string" then
+				return overrideValue
+			end
+		end
 		if spellRenameCacheDirty then
 			rebuildSpellRenameCache()
 		end
