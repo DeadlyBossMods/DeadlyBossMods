@@ -111,11 +111,23 @@ do
 			timerBerserkCD:Start(490)
 		elseif timer == 100 then--Entropic Unraveling, phase change marker
 			if not self:AntiSpam(2, 1) then
+				DBM:Debug("Skipping first bugged Entropic Unraveling bar", nil, nil, nil, true)
 				return--Bugged duplicate add at the same moment, ignore second event
 			end
 	--		resetCounts(self)--Phase reset point
 			next45Type = "twisted"--Shared 45s open as Twisted/Fractured after phase transition
 			timerEntropicUnravelingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "entropic", "entropicUnravelingCount"))
+			if not timerEntropicUnravelingCD:IsBuggedEventID(eventID) then--We haven't seen the bugged 80 yet
+				--Currently, blizzard has a bug where they always cancel both Entropic Unraveling bars after they start 2 of them on 2nd and later cast.
+				--We ignore the first bugged 100 sec one at line 175-177. then we allow 2nd one to start and prevent it from being canceled by blizzard.
+				--We also hardcode the alert to show since there won't be a valid state changed event later to trigger off of
+				timerEntropicUnravelingCD:SetBuggedEventID(eventID)
+				specWarnEntropicUnraveling:Schedule(100, self.vb.entropicUnravelingCount+1)
+				specWarnEntropicUnraveling:ScheduleVoice(100, "dpshard")
+--				timerEntropicUnravelingCD:Stop()
+--				timerEntropicUnravelingCD:Start(100, self.vb.entropicUnravelingCount+1)
+				DBM:Debug("Protecting second bugged Entropic Unraveling bar", nil, nil, nil, true)
+			end
 		elseif timer == 27 or timer == 46 then--Despotic Command
 			timerDespoticCommandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "despotic", "despoticCommandCount"))
 			if timer == 46 then
@@ -173,10 +185,22 @@ do
 			timerBerserkCD:Start(370)
 		elseif timer == 100 then--Entropic Unraveling, phase change marker
 			if not self:AntiSpam(2, 1) then
+				DBM:Debug("Skipping first bugged Entropic Unraveling bar", nil, nil, nil, true)
 				return--Bugged duplicate add at the same moment, ignore second event
 			end
 			next45Type = "twisted"--Shared 45s open as Twisted/Fractured after phase transition
 			timerEntropicUnravelingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "entropic", "entropicUnravelingCount"))
+			if not timerEntropicUnravelingCD:IsBuggedEventID(eventID) then--We haven't seen the bugged 80 yet
+				--Currently, blizzard has a bug where they always cancel both Entropic Unraveling bars after they start 2 of them on 2nd and later cast.
+				--We ignore the first bugged 100 sec one at line 175-177. then we allow 2nd one to start and prevent it from being canceled by blizzard.
+				--We also hardcode the alert to show since there won't be a valid state changed event later to trigger off of
+				timerEntropicUnravelingCD:SetBuggedEventID(eventID)
+				specWarnEntropicUnraveling:Schedule(100, self.vb.entropicUnravelingCount+1)
+				specWarnEntropicUnraveling:ScheduleVoice(100, "dpshard")
+--				timerEntropicUnravelingCD:Stop()
+--				timerEntropicUnravelingCD:Start(100, self.vb.entropicUnravelingCount+1)
+				DBM:Debug("Protecting second bugged Entropic Unraveling bar", nil, nil, nil, true)
+			end
 		elseif timer == 22 or timer == 46 then--Despotic Command
 			timerDespoticCommandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "despotic", "despoticCommandCount"))
 			if timer == 46 then
@@ -267,7 +291,12 @@ do
 				end
 			end
 		elseif eventState == 3 then--Canceled/removed
-			self:TLCountCancel(eventID)
+			if timerEntropicUnravelingCD:IsBuggedEventID(eventID) then
+				--Prevent mod from subtracking count because it thinks it was canceled
+				timerEntropicUnravelingCD:UnsetBuggedEventID(eventID)
+			else
+				self:TLCountCancel(eventID)
+			end
 		end
 	end
 end
