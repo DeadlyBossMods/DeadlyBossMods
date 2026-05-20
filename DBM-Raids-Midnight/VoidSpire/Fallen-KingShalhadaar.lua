@@ -102,7 +102,10 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	local function timersNonMythic(self, timer, timerExact, eventID)
+	---@param eventState number
+	local function timersNonMythic(self, timer, timerExact, eventID, eventState)
+		if eventState ~= 0 then return end--Ignore bugged timer that start paused or canceled (yes blizzards code is that bad)
+		if timer > 101 and timer ~= 490 then return end--Ignore blizzard resending berserk timer for no reason
 		--Logic confirmed against normal and LFR and heroic
 		if timer == 490 then--Berserk
 			timerBerserkCD:Start(490)
@@ -164,6 +167,8 @@ do
 	---@param eventState number
 	local function timersMythic(self, timer, timerExact, eventID, eventState)
 		--Logic confirmed against Mythic Week3 logs
+		if eventState ~= 0 then return end--Ignore bugged timer that start paused or canceled (yes blizzards code is that bad)
+		if timer > 101 and timer ~= 370 then return end--Ignore blizzard resending berserk timer for no reason
 		if timer == 370 then--Berserk
 			timerBerserkCD:Start(370)
 		elseif timer == 100 then--Entropic Unraveling, phase change marker
@@ -228,7 +233,7 @@ do
 			if self:IsMythic() then
 				timersMythic(self, timer, timerExact, eventID, eventState)
 			else
-				timersNonMythic(self, timer, timerExact, eventID)
+				timersNonMythic(self, timer, timerExact, eventID, eventState)
 			end
 		end
 	end
