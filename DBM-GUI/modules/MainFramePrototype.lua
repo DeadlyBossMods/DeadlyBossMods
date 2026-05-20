@@ -25,6 +25,92 @@ local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "NineSliceP
 
 local selectedPagePerTab = {}
 local searchTextCache = {}
+local cachedSearchQuery
+local cachedSearchResults
+local normalizedSearchCache = {}
+local normalizedSearchCacheEntries = 0
+local cachedListFrame
+local cachedListScrollBar
+local cachedContainerFOV
+local cachedContainerScrollBar
+local cachedPanelContainer
+local cachedDropDown
+
+local function resetSearchResultsCache()
+	cachedSearchQuery = nil
+	cachedSearchResults = nil
+end
+
+local function cacheNormalizedSearchValue(rawText, value)
+	if normalizedSearchCacheEntries >= 256 then
+		normalizedSearchCache = {}
+		normalizedSearchCacheEntries = 0
+	end
+	if normalizedSearchCache[rawText] == nil then
+		normalizedSearchCacheEntries = normalizedSearchCacheEntries + 1
+	end
+	normalizedSearchCache[rawText] = value
+end
+
+local function GetListFrame()
+	if not cachedListFrame then
+		local listFrame = _G[frame:GetName() .. "List"]
+		if listFrame then
+			cachedListFrame = listFrame
+		end
+	end
+	return cachedListFrame
+end
+
+local function GetListScrollBar()
+	if not cachedListScrollBar then
+		local listFrame = GetListFrame()
+		if listFrame then
+			cachedListScrollBar = _G[listFrame:GetName() .. "ScrollBar"]
+		end
+	end
+	return cachedListScrollBar
+end
+
+local function GetContainerFOV()
+	if not cachedContainerFOV then
+		local fov = _G["DBM_GUI_OptionsFramePanelContainerFOV"]
+		if fov then
+			cachedContainerFOV = fov
+		end
+	end
+	return cachedContainerFOV
+end
+
+local function GetContainerScrollBar()
+	if not cachedContainerScrollBar then
+		local fov = GetContainerFOV()
+		if fov then
+			cachedContainerScrollBar = _G[fov:GetName() .. "ScrollBar"]
+		end
+	end
+	return cachedContainerScrollBar
+end
+
+local function GetPanelContainer()
+	if not cachedPanelContainer then
+		local panel = _G["DBM_GUI_OptionsFramePanelContainer"]
+		if panel then
+			cachedPanelContainer = panel
+		end
+	end
+	return cachedPanelContainer
+end
+
+local function GetDropDown()
+	if not cachedDropDown then
+		local dropdown = _G["DBM_GUI_DropDown"]
+		if dropdown then
+			cachedDropDown = dropdown
+		end
+	end
+	return cachedDropDown
+end
 
 local function truncateTextWithEllipsis(fontString, text, maxWidth)
 	text = text or ""
@@ -71,8 +157,16 @@ local function normalizeSearchText(text)
 	if DBM:issecretvalue(text) then
 		return ""
 	end
-	local ok, normalized = pcall(function(value)
-		value = tostring(value)
+	local okText, rawText = pcall(tostring, text)
+	if not okText or not rawText then
+		return ""
+	end
+	local cached = normalizedSearchCache[rawText]
+	if cached ~= nil then
+		return cached
+	end
+	local ok, normalized = pcall(function()
+		local value = rawText
 		value = strgsub(value, "|c%x%x%x%x%x%x%x%x", "")
 		value = strgsub(value, "|r", "")
 		value = strgsub(value, "|T.-|t", " ")
@@ -80,10 +174,12 @@ local function normalizeSearchText(text)
 		value = strgsub(value, "<.->", " ")
 		value = strgsub(value, "%s+", " ")
 		return strlower(value:match("^%s*(.-)%s*$") or "")
-	end, text)
+	end)
 	if ok and normalized then
+		cacheNormalizedSearchValue(rawText, normalized)
 		return normalized
 	end
+	cacheNormalizedSearchValue(rawText, "")
 	return ""
 end
 
@@ -107,6 +203,14 @@ local function appendSearchText(parts, text)
 end
 
 local function appendControlSearchText(parts, control)
+	if control.mytype == "ability" then
+		-- Search/index contract for ability groups:
+		-- Use only precomputed control.searchText (static original title + static ID).
+		-- Do NOT index visible title regions here, because they can include dynamic rename text.
+		-- This keeps search cache stable and prevents rename strings from becoming search keys.
+		appendSearchText(parts, control.searchText)
+		return
+	end
 	appendSearchText(parts, control.text)
 	appendSearchText(parts, safeGetText(control.textObj))
 	appendSearchText(parts, safeGetText(control))
@@ -121,9 +225,11 @@ local function appendControlSearchText(parts, control)
 			appendSearchText(parts, safeGetText(titleTextRegion))
 		end
 	end
-	for _, region in ipairs({ control:GetRegions() }) do
-		if region.GetObjectType and region:GetObjectType() == "FontString" then
-			appendSearchText(parts, safeGetText(region))
+	if control.GetNumRegions and control:GetNumRegions() > 0 then
+		for _, region in ipairs({ control:GetRegions() }) do
+			if region.GetObjectType and region:GetObjectType() == "FontString" then
+				appendSearchText(parts, safeGetText(region))
+			end
 		end
 	end
 end
@@ -138,8 +244,15 @@ local function collectFrameSearchText(targetFrame, parts, visited, entries)
 
 	appendControlSearchText(parts, targetFrame)
 
+	local childParts = {}
+	local childCount = targetFrame.GetNumChildren and targetFrame:GetNumChildren() or select("#", targetFrame:GetChildren())
+	if childCount == 0 then
+		return
+	end
 	for _, child in ipairs({ targetFrame:GetChildren() }) do
-		local childParts = {}
+		for i = #childParts, 1, -1 do
+			childParts[i] = nil
+		end
 		appendControlSearchText(childParts, child)
 		if #childParts > 0 then
 			local childText = tconcat(childParts, "\n")
@@ -167,7 +280,12 @@ local function getFrameSearchData(targetFrame)
 end
 
 function frame:InvalidateSearchCache(targetFrame)
-	searchTextCache[targetFrame] = nil
+	if targetFrame then
+		searchTextCache[targetFrame] = nil
+	else
+		searchTextCache = {}
+	end
+	resetSearchResultsCache()
 end
 
 local function updateAbilityToggleTexture(abilityFrame)
@@ -198,10 +316,11 @@ function frame:SetSearchQuery(query)
 		return
 	end
 	self.searchQuery = query
-	local listFrame = _G[self:GetName() .. "List"]
+	resetSearchResultsCache()
+	local listFrame = GetListFrame()
 	if listFrame then
 		listFrame.offset = 0
-		local scrollBar = _G[listFrame:GetName() .. "ScrollBar"]
+		local scrollBar = GetListScrollBar()
 		if scrollBar and scrollBar.SetValue then
 			scrollBar:SetValue(0)
 		end
@@ -237,15 +356,21 @@ function frame:IsFrameSearchable(targetFrame, tabId)
 	end
 	if targetFrame.addonId and C_AddOns and C_AddOns.IsAddOnLoaded then
 		-- Addon is loaded but only index the frame once it has child controls
-		return C_AddOns.IsAddOnLoaded(targetFrame.addonId) and select("#", targetFrame:GetChildren()) > 0
+		local childCount = targetFrame.GetNumChildren and targetFrame:GetNumChildren() or select("#", targetFrame:GetChildren())
+		return C_AddOns.IsAddOnLoaded(targetFrame.addonId) and childCount > 0
 	end
-	return select("#", targetFrame:GetChildren()) > 0
+	local childCount = targetFrame.GetNumChildren and targetFrame:GetNumChildren() or select("#", targetFrame:GetChildren())
+	return childCount > 0
 end
 
 function frame:GetSearchResults()
 	local query = self.searchQuery
 	if not query or query == "" then
+		resetSearchResultsCache()
 		return nil
+	end
+	if cachedSearchQuery == query and cachedSearchResults then
+		return cachedSearchResults
 	end
 	local results, seen = {}, {}
 	for tabId, tabData in ipairs(DBM_GUI.tabs) do
@@ -279,11 +404,13 @@ function frame:GetSearchResults()
 		end
 		return a.tab < b.tab
 	end)
+	cachedSearchQuery = query
+	cachedSearchResults = results
 	return results
 end
 
 function frame:UpdateMenuFrame()
-	local listFrame = _G[frame:GetName() .. "List"]
+	local listFrame = GetListFrame()
 	if not listFrame or not listFrame.buttons then
 		return
 	end
@@ -291,7 +418,7 @@ function frame:UpdateMenuFrame()
 	local displayedElements = searching and self:GetSearchResults() or (self.tab and DBM_GUI.tabs[self.tab]:GetVisibleTabs() or {})
 	self:SetSearchStatus(searching, #displayedElements)
 	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
-	local scrollBar = _G[listFrame:GetName() .. "ScrollBar"]
+	local scrollBar = GetListScrollBar()
 	if #displayedElements > bigList then
 		scrollBar:Show()
 		scrollBar:SetMinMaxValues(0, (#displayedElements - bigList) * 18)
@@ -301,7 +428,10 @@ function frame:UpdateMenuFrame()
 	end
 	for i = 1, #listFrame.buttons do
 		local button = listFrame.buttons[i]
-		button:UnlockHighlight()
+		if button._dbmWasLocked then
+			button:UnlockHighlight()
+			button._dbmWasLocked = nil
+		end
 		local element = displayedElements[i + (listFrame.offset or 0)]
 		if not element or i > bigList then
 			button:Hide()
@@ -314,6 +444,7 @@ function frame:UpdateMenuFrame()
 			end
 			if (searching and DBM_GUI.currentViewing or (self.tab and self.tabs[self.tab].selection)) == element.frame then
 				button:LockHighlight()
+				button._dbmWasLocked = true
 			end
 		end
 	end
@@ -399,7 +530,7 @@ function frame:RevealSearchMatch(targetFrame, control)
 		self:DisplayFrame(targetFrame, true)
 	end
 	C_Timer.After(0, function()
-		local scrollBar = _G["DBM_GUI_OptionsFramePanelContainerFOVScrollBar"]
+		local scrollBar = GetContainerScrollBar()
 		if scrollBar and scrollBar:IsShown() then
 			local panelTop = targetFrame:GetTop()
 			local controlTop = control:GetTop()
@@ -417,8 +548,13 @@ function frame:RevealSearchMatch(targetFrame, control)
 end
 
 function frame:ClearSelection()
-	for _, button in ipairs(_G["DBM_GUI_OptionsFrameList"].buttons) do
+	local listFrame = GetListFrame()
+	if not listFrame or not listFrame.buttons then
+		return
+	end
+	for _, button in ipairs(listFrame.buttons) do
 		button:UnlockHighlight()
+		button._dbmWasLocked = nil
 	end
 end
 
@@ -435,19 +571,21 @@ local function resize(targetFrame, hasScroll)
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
 				for _, child2 in ipairs({ child:GetChildren() }) do
+					local child2Name = child2:GetName()
 					if child.mytype == "ability" and child2.mytype then
 						child2:SetShown(not child.hidden)
-						if child2.mytype == "spelldesc" then
+						if child2.mytype == "spelldesc" and child2Name then
 							child2:SetShown(child2.hasDesc and true or child.hidden)
-							child2:SetHeight(_G[child2:GetName() .. "Text"]:GetStringHeight())
+							local child2Text = _G[child2Name .. "Text"]
+							child2:SetHeight(child2Text:GetStringHeight())
 						end
 					end
 					if child2.mytype and child2:IsVisible() then
 						if child2.mytype == "textblock" then
-							if child2.autowidth then
-								local text = _G[child2:GetName() .. "Text"]
-								text:SetWidth(width - 30)
-								child2:SetSize(width, text:GetStringHeight())
+							if child2.autowidth and child2Name then
+								local child2Text = _G[child2Name .. "Text"]
+								child2Text:SetWidth(width - 30)
+								child2:SetSize(width, child2Text:GetStringHeight())
 							end
 							lastObject = child2
 						elseif child2.mytype == "spelldesc" then
@@ -468,16 +606,21 @@ local function resize(targetFrame, hasScroll)
 							lastObject = child2
 						elseif child2.mytype == "line" then
 							child2:SetWidth(width - 20)
-							_G[child2:GetName() .. "BG"]:SetWidth(width - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
+							if child2Name then
+								local child2BG = _G[child2Name .. "BG"]
+								local child2Text = _G[child2Name .. "Text"]
+								child2BG:SetWidth(width - child2Text:GetWidth() - 25)
+							end
 							if lastObject and lastObject.myheight then
 								child2:ClearAllPoints()
 								child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
 							end
 							lastObject = child2
 						elseif child2.mytype == "dropdown" then
-							if not child2.width then
+							if not child2.width and child2Name then
 								local ddWidth = 120
-								local dropdownText, titleText = _G[child2:GetName() .. "Text"], _G[child2:GetName() .. "TitleText"]:GetText()
+								local dropdownText = _G[child2Name .. "Text"]
+								local titleText = _G[child2Name .. "TitleText"]:GetText()
 								if titleText ~= L.FontType and titleText ~= L.FontStyle and titleText ~= L.FontShadow then
 									for _, v in ipairs(child2.values) do
 										dropdownText:SetText(v.text)
@@ -499,7 +642,10 @@ local function resize(targetFrame, hasScroll)
 		elseif child.mytype == "line" then
 			local width = targetFrame:GetWidth() - 30 + (child.extraWidth or 0)
 			child:SetWidth(width - 20)
-			_G[child:GetName() .. "BG"]:SetWidth(width - _G[child:GetName() .. "Text"]:GetWidth() - 25)
+			local childName = child:GetName()
+			local childBG = _G[childName .. "BG"]
+			local childText = _G[childName .. "Text"]
+			childBG:SetWidth(width - childText:GetWidth() - 25)
 			frameHeight = frameHeight + 32
 		elseif child.myheight then
 			frameHeight = frameHeight + child.myheight
@@ -510,28 +656,31 @@ end
 
 local bossPreview
 function frame:DisplayFrame(targetFrame, secondResize)
-	if select("#", targetFrame:GetChildren()) == 0 then
+	local childCount = targetFrame.GetNumChildren and targetFrame:GetNumChildren() or select("#", targetFrame:GetChildren())
+	if childCount == 0 then
 		return
 	end
 	selectedPagePerTab[self.tab] = targetFrame
-	local scrollBar = _G["DBM_GUI_OptionsFramePanelContainerFOVScrollBar"]
+	local scrollBar = GetContainerScrollBar()
 	scrollBar:Show()
 	local changed = DBM_GUI.currentViewing ~= targetFrame
 	if DBM_GUI.currentViewing and changed then
 		DBM_GUI.currentViewing:Hide()
 	end
 	DBM_GUI.currentViewing = targetFrame
-	if _G["DBM_GUI_DropDown"] then
-		_G["DBM_GUI_DropDown"]:Hide()
+	local dropDown = GetDropDown()
+	if dropDown and dropDown.IsShown and dropDown:IsShown() then
+		dropDown:Hide()
 	end
-	local FOV = _G["DBM_GUI_OptionsFramePanelContainerFOV"]
+	local FOV = GetContainerFOV()
 	FOV:SetScrollChild(targetFrame)
 	FOV:Show()
 	if changed then
 		targetFrame:Show()
 	end
 	targetFrame:SetSize(FOV:GetSize())
-	local mymax = resize(targetFrame, true) - _G["DBM_GUI_OptionsFramePanelContainer"]:GetHeight()
+	local panelContainer = GetPanelContainer()
+	local mymax = resize(targetFrame, true) - panelContainer:GetHeight()
 	if mymax <= 0 then
 		mymax = 0
 	end
@@ -555,7 +704,7 @@ function frame:DisplayFrame(targetFrame, secondResize)
 	end
 	if DBM.Options.EnableModels then
 		if not bossPreview then
-			bossPreview = CreateFrame("PlayerModel", "DBM_BossPreview", _G["DBM_GUI_OptionsFramePanelContainer"])
+			bossPreview = CreateFrame("PlayerModel", "DBM_BossPreview", panelContainer)
 			bossPreview:SetPoint("BOTTOMRIGHT", "DBM_GUI_OptionsFramePanelContainer", "BOTTOMRIGHT", -5, 5)
 			bossPreview:SetSize(300, 300)
 			bossPreview:SetPortraitZoom(0.4)

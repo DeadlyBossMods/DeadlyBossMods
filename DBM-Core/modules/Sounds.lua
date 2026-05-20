@@ -66,7 +66,7 @@ do
 				text	= text,
 				value	= value or text,
 				path	= path,
-				max		= max or 3
+				max		= max or 10
 			})
 		else
 			tinsert(counts, {
