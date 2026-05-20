@@ -742,12 +742,14 @@ local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey, fallbackSpell
 	if type(specAnnounceList) == "table" then
 		for _, object in ipairs(specAnnounceList) do
 			if matches(getObjectSpellId(object)) then
-				announceObject = object
-				break
+				if object.announceType ~= "blizztarget" and object.announceType ~= "blizzyou" then
+					announceObject = object
+					break
+				end
 			end
 		end
 	end
-	if not announceObject then--Didn't find special announce, try to find regular one
+	if not announceObject then--Didn't find preferred special announce, try to find regular one
 		local announceList = mod.announces
 		if type(announceList) == "table" then
 			for _, object in ipairs(announceList) do
@@ -763,7 +765,7 @@ end
 
 local function triggerAbilityTestTimer(object)
 	if object and object.Start then
-		object:Start(10, 1)--short 10 second timer with a 1 count
+		object:Start(5, 1)--short 5 second timer with a 1 count
 		return true
 	end
 	return false
@@ -886,7 +888,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 			if optionsFrame and optionsFrame:IsShown() and optionsFrame.SetCollapsed then
 				optionsFrame:SetCollapsed(true)
 				if optionsFrame.ScheduleAutoUncollapse then
-					optionsFrame:ScheduleAutoUncollapse(10)
+					optionsFrame:ScheduleAutoUncollapse(5)
 				end
 			end
 			local context = abilityTestContextByFrame[area]

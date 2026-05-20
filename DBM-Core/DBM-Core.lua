@@ -1219,8 +1219,9 @@ do
 
 	---@param spellId number|string
 	---@param fallbackName string?
+	---@param clearFallbackName string?
 	---@return string?
-	function DBM:GetRename(spellId, fallbackName)
+	function DBM:GetRename(spellId, fallbackName, clearFallbackName)
 		spellId = normalizeSpellRenameKey(spellId)
 		if not isValidSpellRenameKey(spellId) then
 			return fallbackName
@@ -1233,7 +1234,7 @@ do
 		if overrideValue ~= nil then
 			if overrideValue == "" then
 				-- Explicit clear sentinel means "do not use any built-in/default rename for this spell".
-				return fallbackName
+				return clearFallbackName or fallbackName
 			end
 			if type(overrideValue) == "string" then
 				return overrideValue

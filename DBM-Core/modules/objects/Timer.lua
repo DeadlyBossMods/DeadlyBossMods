@@ -1608,6 +1608,7 @@ end
 
 function bossModPrototype:GetLocalizedTimerText(timerType, spellId, Name)
 	local spellName
+	local originalSpellName
 	if Name then
 		spellName = Name--Pull from name stored in object
 	elseif spellId then
@@ -1620,7 +1621,10 @@ function bossModPrototype:GetLocalizedTimerText(timerType, spellId, Name)
 		end
 	end
 	if spellId then
-		spellName = DBM:GetRename(spellId, spellName)
+		originalSpellName = DBM:ParseSpellName(spellId, timerType) or spellName
+	end
+	if spellId then
+		spellName = DBM:GetRename(spellId, spellName, originalSpellName)
 	end
 	return pformat(L.AUTO_TIMER_TEXTS[timerType], spellName)
 end
