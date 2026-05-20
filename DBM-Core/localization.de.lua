@@ -244,6 +244,7 @@ L.INFOFRAME_TITLE 			= "DBM-Infofenster"
 L.INFOFRAME_SHOW_SELF		= "Eigene Stärke immer anzeigen" -- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES		= "Setze maximale Zeilenanzahl"
 L.INFOFRAME_SETCOLS			= "Setze maximale Spaltenanzahl"
+L.INFOFRAME_SETSTRATA		= "Setze Fenster-Ebene"
 L.INFOFRAME_LINESDEFAULT	= "gesetzt vom Mod"
 L.INFOFRAME_LINES_TO		= "%d Zeilen"
 L.INFOFRAME_COLS_TO			= "%d Spalten"
