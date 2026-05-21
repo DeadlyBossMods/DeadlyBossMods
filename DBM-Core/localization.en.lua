@@ -261,6 +261,7 @@ L.INFOFRAME_TITLE						= "DBM Info Frame"
 L.INFOFRAME_SHOW_SELF					= "Always show your power"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES					= "Set max lines"
 L.INFOFRAME_SETCOLS						= "Set max columns"
+L.INFOFRAME_SETSTRATA					= "Set frame strata"
 L.INFOFRAME_LINESDEFAULT				= "Auto Set by boss modules"
 L.INFOFRAME_LINES_TO					= "%d lines"
 L.INFOFRAME_COLS_TO						= "%d columns"

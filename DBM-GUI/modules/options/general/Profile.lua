@@ -174,8 +174,9 @@ local function exportSpellRenameData()
 		for spellId, rename in pairs(DBM.Options.SpellRenames) do
 			local normalizedSpellId = DBM:NormalizeSpellRenameKey(spellId)
 			local sanitizedRename = DBM:SanitizeSpellRename(rename)
-			if normalizedSpellId and sanitizedRename then
-				exportRenames[normalizedSpellId] = sanitizedRename
+			local explicitClear = type(rename) == "string" and rename:match("^%s*$") ~= nil
+			if normalizedSpellId and (sanitizedRename or explicitClear) then
+				exportRenames[normalizedSpellId] = sanitizedRename or ""
 			end
 		end
 	end
@@ -192,8 +193,9 @@ local function importSpellRenameData(importTable)
 		sourceEntries = sourceEntries + 1
 		local normalizedSpellId = DBM:NormalizeSpellRenameKey(spellId)
 		local sanitizedRename = DBM:SanitizeSpellRename(rename)
-		if normalizedSpellId and sanitizedRename then
-			importedRenames[normalizedSpellId] = sanitizedRename
+		local explicitClear = type(rename) == "string" and rename:match("^%s*$") ~= nil
+		if normalizedSpellId and (sanitizedRename or explicitClear) then
+			importedRenames[normalizedSpellId] = sanitizedRename or ""
 			validEntries = validEntries + 1
 		else
 			invalidEntries = invalidEntries + 1

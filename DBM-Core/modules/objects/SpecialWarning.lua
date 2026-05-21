@@ -454,19 +454,27 @@ local specInstructionalRemapTable = {
 
 local function setText(announceType, spellId, stacks, customName, alternateSpellId)
 	local text, spellName
-	local baseSpellName
+	local defaultRenameName
+	local fallbackSpellName
+	local originalSpellName
 	local effectiveSpellId = announceType == "gtfo" and 123456 or spellId
 	if customName then
-		baseSpellName = customName
+		defaultRenameName = customName
 	elseif announceType == "gtfo" then
-		baseSpellName = "GTFO"
+		defaultRenameName = "GTFO"
 	else
-		baseSpellName = DBM:ParseSpellName(alternateSpellId or spellId, announceType) or CL.UNKNOWN
+		defaultRenameName = DBM:ParseSpellName(alternateSpellId or spellId, announceType) or CL.UNKNOWN
+	end
+	originalSpellName = DBM:ParseSpellName(spellId, announceType) or defaultRenameName
+	if announceType == "gtfo" then
+		fallbackSpellName = defaultRenameName
+	else
+		fallbackSpellName = customName or originalSpellName
 	end
 	if effectiveSpellId then
-		spellName = DBM:GetRename(effectiveSpellId, baseSpellName)
+		spellName = DBM:GetRename(effectiveSpellId, fallbackSpellName, originalSpellName)
 	else
-		spellName = baseSpellName
+		spellName = fallbackSpellName
 	end
 	if announceType == "prewarn" then
 		if type(stacks) == "string" then
@@ -491,8 +499,7 @@ local function setText(announceType, spellId, stacks, customName, alternateSpell
 	end
 	--Automatically register alternate spellnames when detecting their use here
 	if effectiveSpellId and (customName or alternateSpellId or announceType == "gtfo") then
-		DBM:RegisterAltSpellName(effectiveSpellId, baseSpellName)
-		DBM:AddRename(effectiveSpellId, baseSpellName)
+		DBM:RegisterAltSpellName(effectiveSpellId, defaultRenameName)
 	end
 	return text, spellName
 end
@@ -644,8 +651,8 @@ function specialWarningPrototype:Show(...)
 		-- add a default parameter for move away warnings
 		if self.announceType == "gtfo" then
 			if DBM:UnitBuff("player", 27827) then return end--Don't tell a priest in spirit of redemption form to GTFO, they can't, and they don't take damage from it anyhow
-			if #argTable == 0 then
-				argTable[1] = L.BAD
+			if #argTable == 0 or type(argTable[1]) ~= "string" then
+				argTable[1] = self.spellName or L.BAD
 			end
 		end
 		if #self.combinedtext > 0 then
@@ -1022,7 +1029,6 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 		renameRevision = DBM:GetSpellRenameRevision()
 		if waCustomName then
 			DBM:RegisterAltSpellName(spellID, baseSpellName)
-			DBM:AddRename(spellID, baseSpellName)
 		end
 	end
 	---@class SpecialWarning
@@ -1137,8 +1143,7 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 		end
 	end
 	if obj.option then
-		local optionSpellId = announceType == "gtfo" and 123456 or spellId
-		self:AddSpecialWarningOption(obj.option, optionDefault, runSound, "announce", optionSpellId, announceType)
+		self:AddSpecialWarningOption(obj.option, optionDefault, runSound, "announce", objectSpellId, announceType)
 	end
 	obj.voiceOptionId = hasVoice and "Voice" .. spellId or nil
 	tinsert(self.specwarns, obj)

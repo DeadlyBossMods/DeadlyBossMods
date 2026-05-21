@@ -183,7 +183,8 @@ L.VOICE_MISSING					= "Du hast einen "..L.DBM.." Sprachpack ausgewählt, der nic
 L.VOICE_DISABLED				= "Du hast derzeit mindestens einen "..L.DBM.." Sprachpack installiert, aber keinen aktiviert. Falls du einen Sprachpack nutzen möchtest, dann wähle ihn unter \"Gesprochene Warnungen\" aus. Ansonsten kannst du die ungenutzten Sprachpacks deinstallieren, um diese Meldung zu unterdrücken."
 L.VOICE_COUNT_MISSING			= "Für die Countdown-Stimme %d ist ein Sprach-/Zählpack ausgewählt, der nicht gefunden werden konnte. Die Stimme wurde auf die Standardeinstellung zurückgesetzt: %s."
 L.BIG_WIGS						= "BigWigs" -- OPTIONAL
-L.WEAKAURA_KEY					= " (|cff308530Zauberschlüssel:|r %s)"
+L.WEAKAURA_KEY					= " (|cff308530ID:|r %s)"
+L.RENAME						= " (|cff359030Umbenennung:|r |cff71d5ff%s|r)"
 
 L.UPDATEREMINDER_HEADER 		= "Deine Version von " .. L.DEADLY_BOSS_MODS .. " ist veraltet.\nVersion %s (%s) kann über Curse, Wago, WoWI oder von der GitHub-Releases-Seite heruntergeladen werden."
 L.UPDATEREMINDER_HEADER_SUBMODULE = "Dein %s-Modul ist veraltet.\nVersion %s ist über Curse, Wago, WoWI oder die GitHub-Releases-Seite verfügbar."
@@ -243,6 +244,7 @@ L.INFOFRAME_TITLE 			= "DBM-Infofenster"
 L.INFOFRAME_SHOW_SELF		= "Eigene Stärke immer anzeigen" -- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES		= "Setze maximale Zeilenanzahl"
 L.INFOFRAME_SETCOLS			= "Setze maximale Spaltenanzahl"
+L.INFOFRAME_SETSTRATA		= "Setze Fenster-Ebene"
 L.INFOFRAME_LINESDEFAULT	= "gesetzt vom Mod"
 L.INFOFRAME_LINES_TO		= "%d Zeilen"
 L.INFOFRAME_COLS_TO			= "%d Spalten"

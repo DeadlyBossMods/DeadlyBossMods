@@ -251,6 +251,7 @@ L.INFOFRAME_TITLE			= "DBM 정보 창"
 L.INFOFRAME_SHOW_SELF		= "내 자원 항상 보기"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "최대 줄 갯수 지정"
 L.INFOFRAME_SETCOLS		= "최대 열 갯수 지정"
+L.INFOFRAME_SETSTRATA		= "프레임 레이어 지정"
 L.INFOFRAME_LINESDEFAULT		= "보스 모듈이 자동 설정"
 L.INFOFRAME_LINES_TO			= "줄 %d개"
 L.INFOFRAME_COLS_TO			= "열 %d개"

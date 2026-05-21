@@ -742,12 +742,14 @@ local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey, fallbackSpell
 	if type(specAnnounceList) == "table" then
 		for _, object in ipairs(specAnnounceList) do
 			if matches(getObjectSpellId(object)) then
-				announceObject = object
-				break
+				if object.announceType ~= "blizztarget" and object.announceType ~= "blizzyou" then
+					announceObject = object
+					break
+				end
 			end
 		end
 	end
-	if not announceObject then--Didn't find special announce, try to find regular one
+	if not announceObject then--Didn't find preferred special announce, try to find regular one
 		local announceList = mod.announces
 		if type(announceList) == "table" then
 			for _, object in ipairs(announceList) do
@@ -763,7 +765,7 @@ end
 
 local function triggerAbilityTestTimer(object)
 	if object and object.Start then
-		object:Start(10, 1)--short 10 second timer with a 1 count
+		object:Start(5, 1)--short 5 second timer with a 1 count
 		return true
 	end
 	return false
@@ -771,7 +773,11 @@ end
 
 local function triggerAbilityTestAnnounce(object)
 	if object and object.Show then
-		object:Show(1)
+		if object.announceType == "gtfo" then
+			object:Show()
+		else
+			object:Show(1)
+		end
 		return true
 	end
 	return false
@@ -886,7 +892,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 			if optionsFrame and optionsFrame:IsShown() and optionsFrame.SetCollapsed then
 				optionsFrame:SetCollapsed(true)
 				if optionsFrame.ScheduleAutoUncollapse then
-					optionsFrame:ScheduleAutoUncollapse(10)
+					optionsFrame:ScheduleAutoUncollapse(5)
 				end
 			end
 			local context = abilityTestContextByFrame[area]
@@ -898,9 +904,22 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 			end
 		end)
 
+		local function getRenameOverrideValue()
+			local spellRenames = DBM.Options and type(DBM.Options.SpellRenames) == "table" and DBM.Options.SpellRenames
+			if not spellRenames then
+				return nil
+			end
+			local overrideValue = spellRenames[renameSpellId]
+			if overrideValue == nil then
+				overrideValue = spellRenames[tostring(renameSpellId)]
+			end
+			return overrideValue
+		end
+
 		local function updateRenameUI()
 			setAbilityTitle(titleText .. getRenameDisplaySuffix())
-			local hasOverride = DBM.Options and type(DBM.Options.SpellRenames) == "table" and DBM.Options.SpellRenames[renameSpellId]
+			local overrideValue = getRenameOverrideValue()
+			local hasOverride = overrideValue ~= nil
 			if hasOverride then
 				resetButton:Enable()
 			else
@@ -910,7 +929,9 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 
 		renameButton:SetScript("OnClick", function()
 			local defaultText = getRenameDefaultText()
-			local currentText = DBM:GetRename(renameSpellId, defaultText) or ""
+			local overrideValue = getRenameOverrideValue()
+			local explicitClear = overrideValue == ""
+			local currentText = explicitClear and "" or (DBM:GetRename(renameSpellId, defaultText) or "")
 			DBM:ShowTextEditor((L.RenameSpellHeader or "Set custom name for %s"):format(defaultText), currentText, function(text)
 				DBM:SetRename(renameSpellId, text)
 				updateRenameUI()
