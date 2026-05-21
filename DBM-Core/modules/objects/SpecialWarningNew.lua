@@ -655,8 +655,8 @@ function specialWarningPrototype:Show(...)
 		-- add a default parameter for move away warnings
 		if self.announceType == "gtfo" then
 			if DBM:UnitBuff("player", 27827) then return end--Don't tell a priest in spirit of redemption form to GTFO, they can't, and they don't take damage from it anyhow
-			if #argTable == 0 then
-				argTable[1] = L.BAD
+			if #argTable == 0 or type(argTable[1]) ~= "string" then
+				argTable[1] = self.spellName or L.BAD
 			end
 		end
 		if #self.combinedtext > 0 then
