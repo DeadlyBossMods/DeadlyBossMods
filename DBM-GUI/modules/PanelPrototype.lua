@@ -773,7 +773,11 @@ end
 
 local function triggerAbilityTestAnnounce(object)
 	if object and object.Show then
-		object:Show(1)
+		if object.announceType == "gtfo" then
+			object:Show()
+		else
+			object:Show(1)
+		end
 		return true
 	end
 	return false
