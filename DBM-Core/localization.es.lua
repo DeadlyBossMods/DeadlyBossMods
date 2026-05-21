@@ -194,7 +194,7 @@ L.VOICE_DISABLED					= "Tienes al menos un paquete de voces de " .. L.DBM .. " i
 L.VOICE_COUNT_MISSING				= "La voz de cuenta atrás %d está asignada a un paquete de voces que no se ha podido encontrar o que no es compatible actualmente. Se ha restablecido a la configuración predeterminada: %s."
 L.BIG_WIGS							= "BigWigs"
 L.WEAKAURA_KEY						= " (|cff308530ID:|r %s)"
-L.RENAME							= " (|cff359030Renombrado:|r |cff71d5ff%s|r)"
+L.RENAME							= " (|cff359030Renombres:|r |cff71d5ff%s|r)"
 
 L.UPDATEREMINDER_HEADER				= "Tu versión de " .. L.DEADLY_BOSS_MODS .. " está desactualizada.\nPuedes descargar la versión %s (%s) a través de Curse, Wago, Github o WoWInterface."
 L.UPDATEREMINDER_HEADER_SUBMODULE	= "Tu módulo de %s está desactualizada.\nPuedes descargar la versión %s a través de Curse, Wago, Github o WoWInterface."
