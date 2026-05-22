@@ -918,7 +918,6 @@ end
 ---@field spellId number|string?
 ---@field stacks number|string?
 ---@field default SpecFlags|boolean?
----@field option string|boolean?
 ---@field version number|string?
 ---@field sound acceptedSASounds?
 ---@field voiceVer number?
@@ -1088,7 +1087,7 @@ function bossModPrototype:SpecWarning(args)
 		optionType = nil
 		traceType = "text"
 		voiceOptionKey = optionName or args.text
-		autoOptionName = args.text or ""
+		autoOptionName = args.text
 	else
 		if args.spellId == nil then
 			error("SpecWarning: mandatory args.spellId missing for type '" .. announceType .. "'", 2)
