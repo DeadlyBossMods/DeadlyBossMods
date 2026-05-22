@@ -17,7 +17,7 @@ local warnThrowNet					= mod:NewSpellAnnounce(133308, 3)--Fran and Riddoh
 local warnGoblinDevice				= mod:NewSpellAnnounce(133227, 4)--Fran and Riddoh
 local warnHighNoon					= mod:NewCastAnnounce(229154, 4)
 
-local specWarnGoblinDevice			= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
+local specWarnGoblinDevice			= mod:SpecWarning({type = "spell", spellId = 133227})--Fran and Riddoh
 
 local timerThrowNetCD				= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
 local timerGoblinDeviceCD			= mod:NewCDTimer(21.8, 133227, nil, nil, nil, 3)--Fran and Riddoh

@@ -13,13 +13,13 @@ mod:RegisterCombat("combat")
 --NOTE, https://www.wowhead.com/spell=1270949/desolation has event ID of 361 on this fight but doesn't exist?
 --TODO, add remaining private auras? most of em are just basic stacks and stuff anchor kinda handles better since we can't warn for stacks
 --TODO, do adds have timeline timers? i very much doubt it, possibly see if timers are fixed after spawn and start on spawn
-local specWarnShadowsAdvance			= mod:NewSpecialWarningCount(1262776, nil, nil, DBM_COMMON_L.ADDS, 2, 2)
-local specWarnDarkUpheaval				= mod:NewSpecialWarningCount(1249251, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
-local specWarnUmbralCollapse			= mod:NewSpecialWarningCount(1249265, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
-local specWarnOblivionWrath				= mod:NewSpecialWarningDodgeCount(1260712, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
-local specWarnVoidFall					= mod:NewSpecialWarningCount(1258880, nil, 28405, nil, 2, 2)
-local specWarnMarchofEndless			= mod:NewSpecialWarningSpell(1260203, nil, nil, nil, 3, 2)
-local specWarnPitchBulwark				= mod:NewSpecialWarningInterrupt(1255702, false, nil, nil, 1, 2)--Probably spammy
+local specWarnShadowsAdvance			= mod:SpecWarning({type = "count", spellId = 1262776, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.ADDS, voiceFile = "mobsoon"})
+local specWarnDarkUpheaval				= mod:SpecWarning({type = "count", spellId = 1249251, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.AOEDAMAGE, voiceFile = "aesoon"})
+local specWarnUmbralCollapse			= mod:SpecWarning({type = "count", spellId = 1249265, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.GROUPSOAK, voiceFile = "gathershare"})
+local specWarnOblivionWrath				= mod:SpecWarning({type = "dodgecount", spellId = 1260712, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.ORBS, voiceFile = "watchorb"})
+local specWarnVoidFall					= mod:SpecWarning({type = "count", spellId = 1258880, sound = 2, voiceVer = 2, shortSpellId = 28405, voiceFile = "carefly"})
+local specWarnMarchofEndless			= mod:SpecWarning({type = "spell", spellId = 1260203, sound = 3, voiceVer = 2})
+local specWarnPitchBulwark				= mod:SpecWarning({type = "interrupt", spellId = 1255702, default = false, sound = 1, voiceVer = 2})--Probably spammy
 
 local timerShadowsAdvanceCD				= mod:NewCDCountTimer("d20.5", 1262776, DBM_COMMON_L.ADDS.." (%s)", nil, 2, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerDarkUpheavalCD				= mod:NewCDCountTimer(20.5, 1249251, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)

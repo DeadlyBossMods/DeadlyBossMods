@@ -10,7 +10,7 @@ mod:RegisterEvents(
 
 local warnPolymorph			= mod:NewSpellAnnounce(133362, 4)--Millie Watt
 
-local specWarnPolymorph		= mod:NewSpecialWarningSpell(133362, nil, nil, nil, 1, 2)--Millie Watt
+local specWarnPolymorph		= mod:SpecWarning({type = "spell", spellId = 133362, sound = 1, voiceVer = 2, voiceFile = "targetyou"})--Millie Watt
 
 local timerPolymorphCD		= mod:NewCDTimer(35, 133362, nil, nil, nil, 3)--Millie Watt
 

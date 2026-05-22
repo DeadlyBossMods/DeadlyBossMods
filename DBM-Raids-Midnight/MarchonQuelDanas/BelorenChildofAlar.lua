@@ -16,17 +16,17 @@ mod:RegisterCombat("combat")
 --Stage 1
 local warnVoidlightConvergenceSoon		= mod:NewSoonAnnounce(1242515, 3)
 
-local specWarnEmbersofBeloren			= mod:NewSpecialWarningCount(1241282, nil, nil, DBM_COMMON_L.ADDS, 1, 2)
-local specWarnRadiantEchoes				= mod:NewSpecialWarningCount(1242981, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
-local specWarnGuardiansEdict			= mod:NewSpecialWarningCount(1260763, nil, nil, DBM_COMMON_L.TANKCOMBO, 1, 2)
-local specWarnVoidlightConvergence		= mod:NewSpecialWarningBlizzYou(1242515, nil, nil, nil, 2, 2)--No PA to detect color, can only just warn to check color
-local specWarnLightFeather				= mod:NewSpecialWarningYou(1241162, nil, nil, nil, 1, 2)--Untested
-local specWarnVoidFeather				= mod:NewSpecialWarningYou(1241163, nil, nil, nil, 1, 2)--Untested
+local specWarnEmbersofBeloren			= mod:SpecWarning({type = "count", spellId = 1241282, sound = 1, voiceVer = 2, shortText = DBM_COMMON_L.ADDS, voiceFile = "mobsoon"})
+local specWarnRadiantEchoes				= mod:SpecWarning({type = "count", spellId = 1242981, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.ORBS, voiceFile = "orbsincoming"})
+local specWarnGuardiansEdict			= mod:SpecWarning({type = "count", spellId = 1260763, sound = 1, voiceVer = 2, shortText = DBM_COMMON_L.TANKCOMBO, voiceFile = "tankcombo"})
+local specWarnVoidlightConvergence		= mod:SpecWarning({type = "blizzyou", spellId = 1242515, sound = 2, voiceVer = 2})--No PA to detect color, can only just warn to check color
+local specWarnLightFeather				= mod:SpecWarning({type = "you", spellId = 1241162, sound = 1, voiceVer = 2})--Untested
+local specWarnVoidFeather				= mod:SpecWarning({type = "you", spellId = 1241163, sound = 1, voiceVer = 2})--Untested
 --mod:GroupSpells(1242515, 1241162, 1241163)--Uncomment group when hardcode enables parent warning
-local specWarnDeathDrop					= mod:NewSpecialWarningCount(1246709, nil, nil, nil, 2, 2)
+local specWarnDeathDrop					= mod:SpecWarning({type = "count", spellId = 1246709, sound = 2, voiceVer = 2, voiceFile = "justrun"})
 --Adds
-local specWarnLightDiver				= mod:NewSpecialWarningYou(1241292, nil, nil, DBM_COMMON_L.GROUPSOAK, 1, 2)
-local specWarnVoidDiver					= mod:NewSpecialWarningYou(1241339, nil, nil, DBM_COMMON_L.GROUPSOAK, 1, 2)
+local specWarnLightDiver				= mod:SpecWarning({type = "you", spellId = 1241292, sound = 1, voiceVer = 2, shortText = DBM_COMMON_L.GROUPSOAK})
+local specWarnVoidDiver					= mod:SpecWarning({type = "you", spellId = 1241339, sound = 1, voiceVer = 2, shortText = DBM_COMMON_L.GROUPSOAK})
 
 local timerEmbersofBelorenCD			= mod:NewCDCountTimer(20.5, 1241282, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
 local timerRadiantEchoesCD				= mod:NewCDCountTimer(20.5, 1242981, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5)
@@ -44,8 +44,8 @@ mod:AddPrivateAuraSoundOption(1242091, true, 1242260, 1, 1, "lineyou", 17)--Void
 mod:AddPrivateAuraSoundOption(1241840, true, 1241292, 1, 2, "watchfeet", 8)--Light Patch (dropped by Light Dive)
 mod:AddPrivateAuraSoundOption(1241841, true, 1241339, 1, 2, "watchfeet", 8)--Void Patch (dropped by Void Dive)
 --Stage 2
-local specWarnIncubationofFlames		= mod:NewSpecialWarningCount(1242792, nil, nil, nil, 2, 2)
-local specWarnRebirth					= mod:NewSpecialWarningCount(1241313, nil, nil, nil, 1, 2)
+local specWarnIncubationofFlames		= mod:SpecWarning({type = "count", spellId = 1242792, sound = 2, voiceVer = 2})
+local specWarnRebirth					= mod:SpecWarning({type = "count", spellId = 1241313, sound = 1, voiceVer = 2, voiceFile = "dpshard"})
 
 local timerIncubationofFlamesCD			= mod:NewCDCountTimer(20.5, 1242792, nil, nil, nil, 3)--Might not even have a timer, if not kill object
 local timerRebirthCD					= mod:NewCastTimer(20.5, 1241313, nil, nil, nil, 6)--Iffy

@@ -13,11 +13,11 @@ mod:RegisterCombat("combat")
 --Encounter Event 802 was added in patch 12.0.7 for Fallen Oath
 --local warnDespoticCommand					= mod:NewCountAnnounce(1248697, 2)--Hardcode only
 
-local specWarnVoidConvergence				= mod:NewSpecialWarningCount(1243453, nil, nil, DBM_COMMON_L.ORBS, 2, 2)
-local specWarnFracturedProjection			= mod:NewSpecialWarningCount(1254081, "HasInterrupt", nil, nil, 2, 2)
-local specWarnShatteringTwilight			= mod:NewSpecialWarningCount(1253024, nil, nil, nil, 2, 2)
-local specWarnTwilightObscurity				= mod:NewSpecialWarningCount(1250686, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
-local specWarnEntropicUnraveling			= mod:NewSpecialWarningCount(1246175, nil, nil, nil, 2, 2)
+local specWarnVoidConvergence				= mod:SpecWarning({type = "count", spellId = 1243453, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.ORBS, voiceFile = "targetchange"})
+local specWarnFracturedProjection			= mod:SpecWarning({type = "count", spellId = 1254081, default = "HasInterrupt", sound = 2, voiceVer = 2, voiceFile = "crowdcontrol"})
+local specWarnShatteringTwilight			= mod:SpecWarning({type = "count", spellId = 1253024, sound = 2, voiceVer = 2})
+local specWarnTwilightObscurity				= mod:SpecWarning({type = "count", spellId = 1250686, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.AOEDAMAGE, voiceFile = "aesoon"})
+local specWarnEntropicUnraveling			= mod:SpecWarning({type = "count", spellId = 1246175, sound = 2, voiceVer = 2, voiceFile = "dpshard"})
 
 local timerVoidConvergenceCD				= mod:NewCDCountTimer(20.5, 1243453, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerDespoticCommandCD				= mod:NewCDCountTimer(20.5, 1248697, DBM_COMMON_L.POOLS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)

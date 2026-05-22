@@ -51,29 +51,29 @@ local warnWaterShield				= mod:NewTargetNoFilterAnnounce(228981, 1)--Burnstachio
 local warnRockets					= mod:NewCastAnnounce(133212, 4)--Max Megablast (GG Engineering)
 local warnDinoDash					= mod:NewSpellAnnounce(232252, 4)--Topps
 
-local specWarnShadowStrikes			= mod:NewSpecialWarningDispel(126209, "MagicDispeller")--Akama
-local specWarnChainLightning		= mod:NewSpecialWarningInterrupt(39945)--Akama
-local specWarnFireLine				= mod:NewSpecialWarningDodge(133607)--Vian the Volatile
-local specWarnDevastatingThrust		= mod:NewSpecialWarningDodge(134777)--Ixx
---local specWarnDisorientingShriek	= mod:NewSpecialWarningInterrupt(134795)--Yikkan Izu
-local specWarnHammerFist			= mod:NewSpecialWarningRun(141104, nil, nil, nil, 3)--Doctor FIST
-local specWarnRainDance				= mod:NewSpecialWarningSpell(124860, nil, nil, nil, 2)--Proboskus
-local specWarnTorrent				= mod:NewSpecialWarningInterrupt(124935)--Proboskus
-local specWarnShadowbolt			= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for(Dark Summoner)
-local specWarnGhost					= mod:NewSpecialWarningSpell(133465, false)--Dark Summoner
-local specWarnMinesSpawning			= mod:NewSpecialWarningSpell(133015)--Battletron
-local specWarnBlindCleave			= mod:NewSpecialWarningRun(246127, nil, nil, 2, 4)--Blind Hero
-local specWarnBoomingBoogaloo		= mod:NewSpecialWarningSpell(140894, nil, nil, nil, 2)--Master Boom Boom
-local specWarnDeployBoom			= mod:NewSpecialWarningSpell(140912, nil, nil, nil, 3)--Master Boom Boom
-local specWarnEvilGlare				= mod:NewSpecialWarningMove(133208)--Zen'shar
-local specWarnStaticCharge			= mod:NewSpecialWarningInterrupt(135621)--Disruptron Mk. 3R-Alpha
-local specWarnDarkZone				= mod:NewSpecialWarningSpell(133346)--Fjoll
-local specWarnHeatedPokers			= mod:NewSpecialWarningSpell(133286)--Dungeon Master Vishas
-local specWarnIntensifyingAssault	= mod:NewSpecialWarningStack(141396, true, 10)--T440 Dual-Mode Robot
-local specWarnPrecisionArtillery	= mod:NewSpecialWarningStack(141401, true, 10)--T440 Dual-Mode Robot
-local specWarnBoomBroom				= mod:NewSpecialWarningRun(236458, nil, nil, nil, 4, 2)--Bill the Janitor
-local specWarnShadowTorch			= mod:NewSpecialWarningDodge(232504, nil, nil, nil, 3, 2)--Shadowmaster Aameen
-local specWarnDinoDash				= mod:NewSpecialWarningDodge(232252, nil, nil, nil, 1, 2)--Topps
+local specWarnShadowStrikes			= mod:SpecWarning({type = "dispel", spellId = 126209, default = "MagicDispeller"})--Akama
+local specWarnChainLightning		= mod:SpecWarning({type = "interrupt", spellId = 39945})--Akama
+local specWarnFireLine				= mod:SpecWarning({type = "dodge", spellId = 133607})--Vian the Volatile
+local specWarnDevastatingThrust		= mod:SpecWarning({type = "dodge", spellId = 134777})--Ixx
+--local specWarnDisorientingShriek	= mod:SpecWarning({type = "interrupt", spellId = 134795})--Yikkan Izu
+local specWarnHammerFist			= mod:SpecWarning({type = "run", spellId = 141104, sound = 3})--Doctor FIST
+local specWarnRainDance				= mod:SpecWarning({type = "spell", spellId = 124860, sound = 2})--Proboskus
+local specWarnTorrent				= mod:SpecWarning({type = "interrupt", spellId = 124935})--Proboskus
+local specWarnShadowbolt			= mod:SpecWarning({type = "spell", spellId = 125212, default = false})--Let you choose which one is important to warn for(Dark Summoner)
+local specWarnGhost					= mod:SpecWarning({type = "spell", spellId = 133465, default = false})--Dark Summoner
+local specWarnMinesSpawning			= mod:SpecWarning({type = "spell", spellId = 133015})--Battletron
+local specWarnBlindCleave			= mod:SpecWarning({type = "run", spellId = 246127, version = 2, sound = 4})--Blind Hero
+local specWarnBoomingBoogaloo		= mod:SpecWarning({type = "spell", spellId = 140894, sound = 2})--Master Boom Boom
+local specWarnDeployBoom			= mod:SpecWarning({type = "spell", spellId = 140912, sound = 3})--Master Boom Boom
+local specWarnEvilGlare				= mod:SpecWarning({type = "move", spellId = 133208})--Zen'shar
+local specWarnStaticCharge			= mod:SpecWarning({type = "interrupt", spellId = 135621})--Disruptron Mk. 3R-Alpha
+local specWarnDarkZone				= mod:SpecWarning({type = "spell", spellId = 133346})--Fjoll
+local specWarnHeatedPokers			= mod:SpecWarning({type = "spell", spellId = 133286})--Dungeon Master Vishas
+local specWarnIntensifyingAssault	= mod:SpecWarning({type = "stack", spellId = 141396, default = true, stacks = 10})--T440 Dual-Mode Robot
+local specWarnPrecisionArtillery	= mod:SpecWarning({type = "stack", spellId = 141401, default = true, stacks = 10})--T440 Dual-Mode Robot
+local specWarnBoomBroom				= mod:SpecWarning({type = "run", spellId = 236458, sound = 4, voiceVer = 2, voiceFile = "justrun"})--Bill the Janitor
+local specWarnShadowTorch			= mod:SpecWarning({type = "dodge", spellId = 232504, sound = 3, voiceVer = 2, voiceFile = "farfromline"})--Shadowmaster Aameen
+local specWarnDinoDash				= mod:SpecWarning({type = "dodge", spellId = 232252, sound = 1, voiceVer = 2, voiceFile = "chargemove"})--Topps
 
 local timerShadowStrikes			= mod:NewBuffActiveTimer(15, 126209)--Akama
 local timerChainLightningCD			= mod:NewCDTimer(17, 39945, nil, nil, nil, 4)--Akama

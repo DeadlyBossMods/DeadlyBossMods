@@ -13,11 +13,11 @@ mod:RegisterCombat("combat")
 --TODO< https://www.wowhead.com/spell=1244346/colossal-throw has an event ID but doesn't exist on encounter?
 --TODO, probably drop either 59 or 60 for eventIDs, one is for parent activation and one is for the additional slams we probably want to ignore/filter
 --Hardcoded Objects that use Blizz api as fallback
-local specWarnShadowclawSlam			= mod:NewSpecialWarningCount(1241836, nil, 182557, nil, 2, 2)
-local specWarnVoidBreath				= mod:NewSpecialWarningDodgeCount(1243853, nil, 17088, nil, 2, 2)
-local specWarnParasiteExpulsion			= mod:NewSpecialWarningDodgeCount(1254199, nil, nil, DBM_COMMON_L.ADDS, 2, 2)
-local specWarnPrimordialRoar			= mod:NewSpecialWarningCount(1260046, nil, 140459, nil, 2, 2)
---local specWarnFixateParasite			= mod:NewSpecialWarningYou(1254112, nil, nil, nil, 1, 2)
+local specWarnShadowclawSlam			= mod:SpecWarning({type = "count", spellId = 1241836, sound = 2, voiceVer = 2, shortSpellId = 182557, voiceFile = "slamincoming"})
+local specWarnVoidBreath				= mod:SpecWarning({type = "dodgecount", spellId = 1243853, sound = 2, voiceVer = 2, shortSpellId = 17088})
+local specWarnParasiteExpulsion			= mod:SpecWarning({type = "dodgecount", spellId = 1254199, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.ADDS, voiceFile = "watchstep"})
+local specWarnPrimordialRoar			= mod:SpecWarning({type = "count", spellId = 1260046, sound = 2, voiceVer = 2, shortSpellId = 140459, voiceFile = "pullin"})
+--local specWarnFixateParasite			= mod:SpecWarning({type = "you", spellId = 1254112, sound = 1, voiceVer = 2})
 
 local timerShadowclawSlamCD				= mod:NewCDCountTimer("d20.5", 1241836, 182557, nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname "Slam"
 --local timerVoidBreathCD				= mod:NewCDCountTimer(20.5, 1243853, 17088, nil, nil, 3)--Shortname "Breath"

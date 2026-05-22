@@ -20,10 +20,10 @@ local warnCharge					= mod:NewCastAnnounce(138845, 1)--Ahoo'ru
 local warnCompleteHeal				= mod:NewCastAnnounce(142621, 4)--Ahoo'ru
 local warnDivineCircle				= mod:NewSpellAnnounce(142585, 3)--Ahoo'ru
 
-local specWarnShotgunRoar			= mod:NewSpecialWarningDodge(234489)--Oso
-local specWarnCharge				= mod:NewSpecialWarningSpell(138845)--Ahoo'ru
-local specWarnCompleteHeal			= mod:NewSpecialWarningInterrupt(142621, nil, nil, nil, 3)--Ahoo'ru
-local specWarnDivineCircle			= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
+local specWarnShotgunRoar			= mod:SpecWarning({type = "dodge", spellId = 234489})--Oso
+local specWarnCharge				= mod:SpecWarning({type = "spell", spellId = 138845})--Ahoo'ru
+local specWarnCompleteHeal			= mod:SpecWarning({type = "interrupt", spellId = 142621, sound = 3})--Ahoo'ru
+local specWarnDivineCircle			= mod:SpecWarning({type = "dodge", spellId = 142585})--Ahoo'ru
 
 local timerShotgunRoarCD			= mod:NewCDTimer(9.9, 234489, nil, nil, nil, 3)--Oso
 local timerDivineCircleCD			= mod:NewCDTimer(26.7, 142585)--Insufficent data to say if accurate with certainty --Ahoo'ru

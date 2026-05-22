@@ -16,11 +16,11 @@ local warnQueuePosition		= mod:NewAnnounce("warnQueuePosition2", 2, 132639, true
 local warnOrgPortal			= mod:NewCastAnnounce(135385, 1)--These are rare casts and linked to achievement.
 local warnStormPortal		= mod:NewCastAnnounce(135386, 1)--So warn for them being cast
 
-local specWarnOrgPortal		= mod:NewSpecialWarningSpell(135385, nil, nil, nil, 1, 7)
-local specWarnStormPortal	= mod:NewSpecialWarningSpell(135386, nil, nil, nil, 1, 7)
-local specWarnYourNext		= mod:NewSpecialWarning("specWarnYourNext")
-local specWarnYourTurn		= mod:NewSpecialWarning("specWarnYourTurn")
-local specWarnRumble		= mod:NewSpecialWarning("specWarnRumble")
+local specWarnOrgPortal		= mod:SpecWarning({type = "spell", spellId = 135385, sound = 1, voiceVer = 7, voiceFile = "newportal"})
+local specWarnStormPortal	= mod:SpecWarning({type = "spell", spellId = 135386, sound = 1, voiceVer = 7, voiceFile = "newportal"})
+local specWarnYourNext		= mod:SpecWarning({type = "text", text = "specWarnYourNext"})
+local specWarnYourTurn		= mod:SpecWarning({type = "text", text = "specWarnYourTurn"})
+local specWarnRumble		= mod:SpecWarning({type = "text", text = "specWarnRumble"})
 
 local berserkTimer			= mod:NewBerserkTimer(123)--all fights have a 2 min enrage to 134545. some fights have an earlier berserk though.
 

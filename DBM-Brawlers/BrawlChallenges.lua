@@ -30,15 +30,15 @@ local warnBlueCrush					= mod:NewSpellAnnounce(133262, 4)--Epicus Maximus
 local warnDestructolaser			= mod:NewSpellAnnounce(133250, 4)--Epicus Maximus
 local warnVoidBurst					= mod:NewSpellAnnounce(294638, 3)--Xan-Sallish
 
-local specWarnLumberingCharge		= mod:NewSpecialWarningDodge(134527)--Goredome
-local specWarnStormCloud			= mod:NewSpecialWarningInterrupt(135234)--Kirrawk
-local specWarnSmolderingHeat		= mod:NewSpecialWarningYou(142400)--Anthracite
-local specWarnRPS					= mod:NewSpecialWarning("specWarnRPS")--Ro-Shambo
-local specWarnDoom					= mod:NewSpecialWarningSpell(133650, nil, nil, nil, true)--Millhouse Manastorm
-local specWarnBlueCrush				= mod:NewSpecialWarningInterrupt(133262, nil, nil, nil, 1, 2)--Epicus Maximus
-local specWarnDestructolaser		= mod:NewSpecialWarningMove(133250, nil, nil, nil, 2, 1)--Epicus Maximus
-local specWarnConsumeEssence		= mod:NewSpecialWarningInterrupt(294665, nil, nil, nil, 1, 2)--Xan-Sallish
-local specWarnVoidBurst				= mod:NewSpecialWarningDodge(294638, nil, nil, nil, 2, 1)--Xan-Sallish
+local specWarnLumberingCharge		= mod:SpecWarning({type = "dodge", spellId = 134527})--Goredome
+local specWarnStormCloud			= mod:SpecWarning({type = "interrupt", spellId = 135234})--Kirrawk
+local specWarnSmolderingHeat		= mod:SpecWarning({type = "you", spellId = 142400})--Anthracite
+local specWarnRPS					= mod:SpecWarning({type = "text", text = "specWarnRPS"})--Ro-Shambo
+local specWarnDoom					= mod:SpecWarning({type = "spell", spellId = 133650, sound = 2})--Millhouse Manastorm
+local specWarnBlueCrush				= mod:SpecWarning({type = "interrupt", spellId = 133262, sound = 1, voiceVer = 2, voiceFile = "kickcast"})--Epicus Maximus
+local specWarnDestructolaser		= mod:SpecWarning({type = "move", spellId = 133250, sound = 2, voiceVer = 1, voiceFile = "watchstep"})--Epicus Maximus
+local specWarnConsumeEssence		= mod:SpecWarning({type = "interrupt", spellId = 294665, sound = 1, voiceVer = 2, voiceFile = "kickcast"})--Xan-Sallish
+local specWarnVoidBurst				= mod:SpecWarning({type = "dodge", spellId = 294638, sound = 2, voiceVer = 1, voiceFile = "watchorb"})--Xan-Sallish
 
 local timerLumberingChargeCD		= mod:NewCDTimer(7, 134527, nil, nil, nil, 3)--Goredome
 local timerShieldWaller				= mod:NewBuffActiveTimer(10, 134650)--Smash Hoofstomp

@@ -18,10 +18,10 @@ local warnEightChomps				= mod:NewSpellAnnounce(142788, 4, nil, false, 2)--Mecha
 local warnBetterStrongerFaster		= mod:NewSpellAnnounce(142795, 2)--Mecha-Bruce
 local warnStasisBeam				= mod:NewSpellAnnounce(142769, 3)--Mecha-Bruce
 
-local specWarnSpitAcid				= mod:NewSpecialWarningSpell(141013, nil, nil, nil, 1, 2)--Nibbleh
-local specWarnAuraofRot				= mod:NewSpecialWarningStack(236155, nil, 7, nil, nil, 1, 6)--Stiches
-local specWarnEightChomps			= mod:NewSpecialWarningDodge(142788, nil, nil, nil, 1, 2)--Mecha-Bruce
-local specWarnDisrobingStrike		= mod:NewSpecialWarningInterrupt(282081, nil, nil, nil, 1, 2)--Robe-Robber Robert
+local specWarnSpitAcid				= mod:SpecWarning({type = "spell", spellId = 141013, sound = 1, voiceVer = 2, voiceFile = "watchstep"})--Nibbleh
+local specWarnAuraofRot				= mod:SpecWarning({type = "stack", spellId = 236155, stacks = 7, sound = 1, voiceVer = 6, voiceFile = "stackhigh"})--Stiches
+local specWarnEightChomps			= mod:SpecWarning({type = "dodge", spellId = 142788, sound = 1, voiceVer = 2, voiceFile = "shockwave"})--Mecha-Bruce
+local specWarnDisrobingStrike		= mod:SpecWarning({type = "interrupt", spellId = 282081, sound = 1, voiceVer = 2, voiceFile = "kickcast"})--Robe-Robber Robert
 
 local timerSpitAcidCD				= mod:NewNextTimer(20, 141013)--Nibbleh
 local timerEightChompsCD			= mod:NewCDTimer(8.5, 142788, nil, nil, nil, 3)--Mecha-Bruce

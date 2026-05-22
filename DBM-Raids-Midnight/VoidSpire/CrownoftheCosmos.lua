@@ -21,17 +21,17 @@ local warnNullCorona					= mod:NewCountAnnounce(1233865, 2, nil, "Healer")--P1+
 local warnRiftSimulacrum				= mod:NewCountAnnounce(1261016, 2)--P2 Starting
 local warnVoidStalkerSting				= mod:NewCountAnnounce(1237035, 2)--Stage 2 non mythic
 
-local specWarnVoidExpulsion				= mod:NewSpecialWarningCount(1283236, nil, nil, nil, 2, 2)--P1+
---local specWarnSingularityEruption		= mod:NewSpecialWarningDodgeCount(1235622, nil, nil, nil, 2, 2)--Intermission 1
---local specWarnVoidstalkerSting		= mod:NewSpecialWarningCount(1237035, false, nil, nil, 2, 2)--Stage 2 non mythic
-local specWarnCalloftheVoid				= mod:NewSpecialWarningSwitchCount(1237837, nil, nil, nil, 2, 2)--P2
-local specWarnCosmicBarrier				= mod:NewSpecialWarningSwitchCount(1246918, "Dps", nil, nil, 2, 2)--P2
-local specWarnDevouringCosmos			= mod:NewSpecialWarningCount(1238843, nil, nil, nil, 3, 2)--P3
-local specWarnDarkHand					= mod:NewSpecialWarningDefensive(1233787, nil, nil, nil, 1, 2)--P1 Tank Add
-local specWarnRavenousAbyss				= mod:NewSpecialWarningDodgeCount(1243753, nil, nil, nil, 4, 2)--P1 Add
-local specWarnInterruptingTremor		= mod:NewSpecialWarningCount(1243743, nil, nil, 2, 2, 2)--P1 Add
-local specWarnCosmicPortal				= mod:NewSpecialWarningCount(1261339, nil, nil, nil, 2, 2)--Mythic only mechanic of unknown nature
-local specWarnRiftSlash					= mod:NewSpecialWarningDefensive(1246461, nil, nil, nil, 1, 2)--P2 Rift Simulacrum slash attack
+local specWarnVoidExpulsion				= mod:SpecWarning({type = "count", spellId = 1283236, sound = 2, voiceVer = 2, voiceFile = "aesoon"})--P1+
+--local specWarnSingularityEruption		= mod:SpecWarning({type = "dodgecount", spellId = 1235622, sound = 2, voiceVer = 2})--Intermission 1
+--local specWarnVoidstalkerSting		= mod:SpecWarning({type = "count", spellId = 1237035, default = false, sound = 2, voiceVer = 2})--Stage 2 non mythic
+local specWarnCalloftheVoid				= mod:SpecWarning({type = "switchcount", spellId = 1237837, sound = 2, voiceVer = 2, voiceFile = "mobsoon"})--P2
+local specWarnCosmicBarrier				= mod:SpecWarning({type = "switchcount", spellId = 1246918, default = "Dps", sound = 2, voiceVer = 2, voiceFile = "attackshield"})--P2
+local specWarnDevouringCosmos			= mod:SpecWarning({type = "count", spellId = 1238843, sound = 3, voiceVer = 2, voiceFile = "changeplatform"})--P3
+local specWarnDarkHand					= mod:SpecWarning({type = "defensive", spellId = 1233787, sound = 1, voiceVer = 2, voiceFile = "carefly"})--P1 Tank Add
+local specWarnRavenousAbyss				= mod:SpecWarning({type = "dodgecount", spellId = 1243753, sound = 4, voiceVer = 2, voiceFile = "watchstep"})--P1 Add
+local specWarnInterruptingTremor		= mod:SpecWarning({type = "count", spellId = 1243743, version = 2, sound = 2, voiceVer = 2, voiceFile = "stopcast"})--P1 Add
+local specWarnCosmicPortal				= mod:SpecWarning({type = "count", spellId = 1261339, sound = 2, voiceVer = 2})--Mythic only mechanic of unknown nature
+local specWarnRiftSlash					= mod:SpecWarning({type = "defensive", spellId = 1246461, sound = 1, voiceVer = 2, voiceFile = "defensive"})--P2 Rift Simulacrum slash attack
 
 local timerNullCoronaCD					= mod:NewCDCountTimer(20.5, 1233865, DBM_COMMON_L.HEALABSORB.." (%s)", "-Tank", nil, 3, nil, DBM_COMMON_L.MAGIC_ICON..DBM_COMMON_L.HEALER_ICON)--P1+
 local timerVoidExpulsionCD				= mod:NewCDCountTimer(20.5, 1283236, nil, nil, nil, 3)--P1+

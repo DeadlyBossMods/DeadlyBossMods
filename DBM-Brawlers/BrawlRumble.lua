@@ -14,8 +14,8 @@ mod:RegisterEvents(
 local warnMooseRun			= mod:NewTargetNoFilterAnnounce(228855, 4)--Grief Warden
 local warnHippoFixate		= mod:NewTargetNoFilterAnnounce(229593, 4)--Senya
 
-local specWarnMooseRun		= mod:NewSpecialWarningRun(228855)--Grief Warden
-local specWarnHippoFixate	= mod:NewSpecialWarningRun(229593)--Senya
+local specWarnMooseRun		= mod:SpecWarning({type = "run", spellId = 228855})--Grief Warden
+local specWarnHippoFixate	= mod:SpecWarning({type = "run", spellId = 229593})--Senya
 
 --local timerMooseRunCD		= mod:NewAITimer(17, 228855, nil, nil, nil, 3)--Grief Warden
 --local timerHippoFixateCD	= mod:NewAITimer(17, 229593, nil, nil, nil, 3)--Senya

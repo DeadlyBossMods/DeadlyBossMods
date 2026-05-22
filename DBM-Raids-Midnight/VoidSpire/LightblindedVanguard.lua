@@ -15,20 +15,20 @@ mod:RegisterCombat("combat")
 local warnAuraofDevotion					= mod:NewCountAnnounce(1246162, 2)
 local warnZealousSpirit						= mod:NewCountAnnounce(1276243, 2)
 
-local specWarnAuraofPeace					= mod:NewSpecialWarningDodgeCount(1248451, nil, nil, nil, 2, 2)
-local specWarnSacredShield					= mod:NewSpecialWarningCount(1248674, nil, nil, nil, 2, 2)
---local specWarnElekkCharge					= mod:NewSpecialWarningDodge(1249130, nil, nil, nil, 2, 2)--Part of sacred shield
+local specWarnAuraofPeace					= mod:SpecWarning({type = "dodgecount", spellId = 1248451, sound = 2, voiceVer = 2, voiceFile = "peaceaura"})
+local specWarnSacredShield					= mod:SpecWarning({type = "count", spellId = 1248674, sound = 2, voiceVer = 2, voiceFile = "attackshield"})
+--local specWarnElekkCharge					= mod:SpecWarning({type = "dodge", spellId = 1249130, sound = 2, voiceVer = 2, voiceFile = "chargemove"})--Part of sacred shield
 --mod:GroupSpells(1248674, 1249130)--Sacred Shield + Elekk Charge
-local specWarnSearingRadiance				= mod:NewSpecialWarningCount(1255738, nil, nil, nil, 2, 2)
-local specWarnEmpoweredSearingRadiance		= mod:NewSpecialWarningCount(1276639, nil, nil, nil, 2, 2, 4)--Mythic empowered version
-local specWarnJudgementShield				= mod:NewSpecialWarningCount(1251857, nil, nil, L.JudgementShield, 2, 2)
-local specWarnDivineToll					= mod:NewSpecialWarningDodgeCount(1248652, nil, nil, DBM_COMMON_L.DODGES, 2, 2)
-local specWarnAuraofWrath					= mod:NewSpecialWarningCount(1248449, nil, nil, nil, 2, 2)
-local specWarnjudgementFinal				= mod:NewSpecialWarningCount(1246736, nil, nil, L.JudgementFV, 2, 2)
-local specWarnDivineStorm					= mod:NewSpecialWarningCount(1246765, "MeleeDps", nil, nil, 2, 2)--review default later
-local specWarnEmpoweredDivineStorm			= mod:NewSpecialWarningCount(1272310, "MeleeDps", nil, nil, 2, 2, 4)--Mythic empowered version
-local specWarnSacredToll					= mod:NewSpecialWarningCount(1246749, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
-local specWarnExecutionSentence				= mod:NewSpecialWarningSoakCount(1276368, nil, nil, DBM_COMMON_L.GROUPSOAKS, 2, 2)
+local specWarnSearingRadiance				= mod:SpecWarning({type = "count", spellId = 1255738, sound = 2, voiceVer = 2, voiceFile = "aesoon"})
+local specWarnEmpoweredSearingRadiance		= mod:SpecWarning({type = "count", spellId = 1276639, sound = 2, voiceVer = 2, difficulty = 4, voiceFile = "aesoon"})--Mythic empowered version
+local specWarnJudgementShield				= mod:SpecWarning({type = "count", spellId = 1251857, sound = 2, voiceVer = 2, shortText = L.JudgementShield, voiceFile = "changemt"})
+local specWarnDivineToll					= mod:SpecWarning({type = "dodgecount", spellId = 1248652, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.DODGES, voiceFile = "watchstep"})
+local specWarnAuraofWrath					= mod:SpecWarning({type = "count", spellId = 1248449, sound = 2, voiceVer = 2, voiceFile = "wrathaura"})
+local specWarnjudgementFinal				= mod:SpecWarning({type = "count", spellId = 1246736, sound = 2, voiceVer = 2, shortText = L.JudgementFV, voiceFile = "changemt"})
+local specWarnDivineStorm					= mod:SpecWarning({type = "count", spellId = 1246765, default = "MeleeDps", sound = 2, voiceVer = 2, voiceFile = "justrun"})--review default later
+local specWarnEmpoweredDivineStorm			= mod:SpecWarning({type = "count", spellId = 1272310, default = "MeleeDps", sound = 2, voiceVer = 2, difficulty = 4, voiceFile = "justrun"})--Mythic empowered version
+local specWarnSacredToll					= mod:SpecWarning({type = "count", spellId = 1246749, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.AOEDAMAGE, voiceFile = "aesoon"})
+local specWarnExecutionSentence				= mod:SpecWarning({type = "soakcount", spellId = 1276368, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.GROUPSOAKS, voiceFile = "soakincoming"})
 
 local timerAuraofPeaceCD					= mod:NewCDCountTimer(20.5, 1248451, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerSacredShieldCD					= mod:NewCDCountTimer(20.5, 1248674, nil, nil, nil, 5)

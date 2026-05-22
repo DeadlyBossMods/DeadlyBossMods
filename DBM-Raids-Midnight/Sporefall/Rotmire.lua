@@ -19,12 +19,12 @@ mod:RegisterCombat("combat")
 --TODO, swap mod order so this is on top when 12.0.7 goes live
 --local warnAlndustUpheaval					= mod:NewBlizzTargetAnnounce(1262289, 2)
 
-local specWarnFungalBloom					= mod:NewSpecialWarningCount(1221637, nil, nil, nil, 2, 2)
-local specWarnAwakenFungi					= mod:NewSpecialWarningCount(1221622, nil, nil, nil, 2, 2)
-local specWarnBurstingPustules				= mod:NewSpecialWarningCount(1221787, nil, nil, nil, 2, 2)
-local specWarnPutridFist					= mod:NewSpecialWarningDefensive(1221781, nil, nil, nil, 1, 2)
---local specWarnFunglingFixate				= mod:NewSpecialWarningYou(1299508, nil, nil, nil, 1, 2)
---local specWarnShroomingFixate				= mod:NewSpecialWarningYou(1221639, nil, nil, nil, 1, 2)
+local specWarnFungalBloom					= mod:SpecWarning({type = "count", spellId = 1221637, sound = 2, voiceVer = 2, voiceFile = "carefly"})
+local specWarnAwakenFungi					= mod:SpecWarning({type = "count", spellId = 1221622, sound = 2, voiceVer = 2, voiceFile = "mobsoon"})
+local specWarnBurstingPustules				= mod:SpecWarning({type = "count", spellId = 1221787, sound = 2, voiceVer = 2, voiceFile = "aesoon"})
+local specWarnPutridFist					= mod:SpecWarning({type = "defensive", spellId = 1221781, sound = 1, voiceVer = 2, voiceFile = "defensive"})
+--local specWarnFunglingFixate				= mod:SpecWarning({type = "you", spellId = 1299508, sound = 1, voiceVer = 2, voiceFile = "fixateyou"})
+--local specWarnShroomingFixate				= mod:SpecWarning({type = "you", spellId = 1221639, sound = 1, voiceVer = 2, voiceFile = "fixateyou"})
 
 local timerFungalBloomCD					= mod:NewCDCountTimer(20.5, 1221637, nil, nil, nil, 2)
 local timerAwakenFungiCD					= mod:NewCDCountTimer(20.5, 1221622, nil, nil, nil, 1)

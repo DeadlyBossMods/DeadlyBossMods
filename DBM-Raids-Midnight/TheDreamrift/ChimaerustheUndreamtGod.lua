@@ -15,16 +15,16 @@ mod:RegisterCombat("combat")
 --NOTE, https://www.wowhead.com/spell=1280127/stage-two also exists, but based on most recent testing blizzard uses consume for p2 and not this bar anymore
 --local warnAlndustUpheaval				= mod:NewBlizzTargetAnnounce(1262289, 2)
 
-local specWarnRavenousDive				= mod:NewSpecialWarningCount(1245404, nil, 218027, nil, 2, 2)
-local specWarnRiftEmergence				= mod:NewSpecialWarningCount(1251021, nil, nil, DBM_COMMON_L.ADDS, 2, 2)
-local specWarnCausticPhlegm				= mod:NewSpecialWarningCount(1246621, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
-local specWarnRendingTear				= mod:NewSpecialWarningDodgeCount(1272726, nil, nil, DBM_COMMON_L.FRONTAL, 2, 2)
-local specWarnCorruptedDevastation		= mod:NewSpecialWarningDodgeCount(1245452, nil, 17088, nil, 2, 2)
-local specWarnFearsomecry				= mod:NewSpecialWarningInterrupt(1249017, "HasInterrupt", nil, nil, 1, 2)--Add alert
-local specWarnDiscordantRoar			= mod:NewSpecialWarningCount(1245451, false, nil, nil, 2, 2)--Add alert (evalulate default by cast frequency)
-local specWarnAlndustUpheaval			= mod:NewSpecialWarningBlizzTarget(1262289, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
-local specWarnConsume					= mod:NewSpecialWarningCount(1245396, nil, nil, nil, 2, 2)
-local specWarnCannibalized				= mod:NewSpecialWarningSpell(1245844, nil, nil, nil, 1, 2)--Basically screwing up the add killing
+local specWarnRavenousDive				= mod:SpecWarning({type = "count", spellId = 1245404, sound = 2, voiceVer = 2, shortSpellId = 218027, voiceFile = "phasechange"})
+local specWarnRiftEmergence				= mod:SpecWarning({type = "count", spellId = 1251021, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.ADDS, voiceFile = "mobsoon"})
+local specWarnCausticPhlegm				= mod:SpecWarning({type = "count", spellId = 1246621, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.AOEDAMAGE, voiceFile = "aesoon"})
+local specWarnRendingTear				= mod:SpecWarning({type = "dodgecount", spellId = 1272726, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.FRONTAL, voiceFile = "frontal"})
+local specWarnCorruptedDevastation		= mod:SpecWarning({type = "dodgecount", spellId = 1245452, sound = 2, voiceVer = 2, shortSpellId = 17088, voiceFile = "breathsoon"})
+local specWarnFearsomecry				= mod:SpecWarning({type = "interrupt", spellId = 1249017, default = "HasInterrupt", sound = 1, voiceVer = 2})--Add alert
+local specWarnDiscordantRoar			= mod:SpecWarning({type = "count", spellId = 1245451, default = false, sound = 2, voiceVer = 2})--Add alert (evalulate default by cast frequency)
+local specWarnAlndustUpheaval			= mod:SpecWarning({type = "blizztarget", spellId = 1262289, sound = 2, voiceVer = 2, shortText = DBM_COMMON_L.GROUPSOAK})
+local specWarnConsume					= mod:SpecWarning({type = "count", spellId = 1245396, sound = 2, voiceVer = 2, voiceFile = "aesoon"})
+local specWarnCannibalized				= mod:SpecWarning({type = "spell", spellId = 1245844, sound = 1, voiceVer = 2})--Basically screwing up the add killing
 mod:GroupSpells(1245396, 1245844)--Group Cannibalized with Consume
 
 local timerRavenousDiveCD				= mod:NewCDCountTimer(20.5, 1245404, 218027, nil, nil, 6)--Stage 1 bar, shortname "Dive"
