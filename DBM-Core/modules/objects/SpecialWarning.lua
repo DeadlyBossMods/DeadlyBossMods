@@ -918,7 +918,7 @@ end
 ---@field spellId number|string?
 ---@field stacks number|string?
 ---@field default SpecFlags|boolean?
----@field option number|string|boolean?
+---@field option string|boolean?
 ---@field version number|string?
 ---@field sound acceptedSASounds?
 ---@field voiceVer number?
@@ -1088,7 +1088,7 @@ function bossModPrototype:SpecWarning(args)
 		optionType = nil
 		traceType = "text"
 		voiceOptionKey = optionName or args.text
-		autoOptionName = args.text
+		autoOptionName = args.text or ""
 	else
 		if args.spellId == nil then
 			error("SpecWarning: mandatory args.spellId missing for type '" .. announceType .. "'", 2)
@@ -1122,9 +1122,17 @@ function bossModPrototype:SpecWarning(args)
 	test:Trace(self, "NewSpecialWarning", obj, traceType)
 
 	if optionName then
-		obj.option = optionName
+		if announceType == "text" then
+			obj.option = optionName .. (optionVersion or "")
+		else
+			obj.option = optionName
+		end
 	elseif optionName ~= false then
-		obj.option = autoOptionName
+		if announceType == "text" then
+			obj.option = autoOptionName .. (optionVersion or "")
+		else
+			obj.option = autoOptionName
+		end
 		if announceType ~= "text" then
 			local difficultyIcon = getDifficultyIcon(difficulty)
 			if announceType == "stack" then
