@@ -527,7 +527,13 @@ local function canVoiceReplace(self, soundId, isNote)
 	if private.voiceSessionDisabled or DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) then
 		return false
 	end
-	soundId = soundId or self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+	local optionSoundId = self.option and self.mod.Options[self.option .. "SWSound"] or nil
+	if soundId == nil and type(optionSoundId) == "number" then
+		soundId = optionSoundId
+	end
+	if soundId == nil then
+		soundId = self.flash
+	end
 	local isVoicePackUsed
 	if type(soundId) == "number" and soundId < 5 then--Value 1-4 are SW1 defaults, otherwise it's file data ID and handled by Custom
 		isVoicePackUsed = DBM.Options.VPReplacesSADefault
@@ -577,8 +583,9 @@ local specTypeFilterTable = {
 ---@param color warningColorType? ColorId 1-4
 ---@param overrideType number? Optional override type for the alert
 function specialWarningPrototype:SetAlert(encounterEventId, voice, voiceVersion, color, overrideType)
-	if self.option and self.mod.Options[self.option] then
-		self.mod:EnableAlertOptions(self.spellId, encounterEventId, voice, voiceVersion, color, overrideType, self.option)
+	local spellId = type(self.spellId) == "number" and self.spellId or nil
+	if spellId and self.option and self.mod.Options[self.option] then
+		self.mod:EnableAlertOptions(spellId, encounterEventId, voice, voiceVersion, color, overrideType, self.option)
 	end
 end
 
@@ -763,7 +770,8 @@ function specialWarningPrototype:Show(...)
 			end
 		end
 		if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or not DBM:IsNoneValue(self.mod.Options[self.option .. "SWSound"])) then
-			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+			local optionSoundId = self.option and self.mod.Options[self.option .. "SWSound"] or nil
+			local soundId = type(optionSoundId) == "number" and optionSoundId or self.flash
 			if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
 			if self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
 			DBM:PlaySpecialWarningSound(soundId or 1)
@@ -1089,6 +1097,7 @@ function bossModPrototype:SpecWarning(args)
 		if type(args.text) ~= "string" or args.text == "" then
 			error("SpecWarning: mandatory args.text missing for type 'text'", 2)
 		end
+		---@cast args SpecWarningArgsText
 		local warningText = self.localization.warnings[args.text] or args.text
 		local spellName
 		local renameRevision
@@ -1110,7 +1119,7 @@ function bossModPrototype:SpecWarning(args)
 		optionSpellId = args.spellId
 		optionType = nil
 		traceType = "text"
-		voiceOptionKey = optionName or args.text
+		voiceOptionKey = type(optionName) == "string" and optionName or args.text
 		autoOptionName = args.text
 	else
 		if args.spellId == nil then
@@ -1144,7 +1153,7 @@ function bossModPrototype:SpecWarning(args)
 	local obj = setmetatable(objData, mt)
 	test:Trace(self, "NewSpecialWarning", obj, traceType)
 
-	if optionName then
+	if type(optionName) == "string" then
 		if announceType == "text" then
 			obj.option = optionName .. (optionVersion or "")
 		else
