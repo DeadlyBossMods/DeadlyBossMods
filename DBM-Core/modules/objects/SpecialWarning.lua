@@ -914,7 +914,7 @@ end
 
 ---@class SpecWarningArgs
 ---@field type string
----@field text any
+---@field text string?
 ---@field spellId number|string?
 ---@field stacks number|string?
 ---@field default SpecFlags|boolean?
@@ -1015,7 +1015,7 @@ end
 ---@overload fun(self: DBMMod, args: SpecWarningArgs2strnum): SpecAnnounce2strnum
 ---@overload fun(self: DBMMod, args: SpecWarningArgs2numstr): SpecAnnounce2numstr
 ---@overload fun(self: DBMMod, args: SpecWarningArgs3numstrnum): SpecAnnounce3numstrnum
----@return SpecialWarning|SpecAnnounce0|SpecAnnounce1num|SpecAnnounce1str|SpecAnnounce1Annoying|SpecAnnounce2strnum|SpecAnnounce2numstr|SpecAnnounce3numstrnum
+---@return SpecialWarning
 function bossModPrototype:SpecWarning(args)
 	if type(args) ~= "table" then
 		error("SpecWarning: expected a table argument", 2)
