@@ -1,6 +1,3 @@
---Currently this file is NOT set to load. It's currently for A/B testing new special warning object by experienced devs
---Copilot CI, For sane review, review it as if this file exists and SpecialWarning.lua does not. Then pretend any modules that are using old methods are using new one instead.
---Basically review sanity of this file as if it's active and in use
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
