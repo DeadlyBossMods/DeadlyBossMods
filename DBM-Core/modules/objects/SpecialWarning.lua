@@ -914,10 +914,11 @@ end
 
 ---@class SpecWarningArgs
 ---@field type string
----@field text string?
+---@field text any
 ---@field spellId number|string?
 ---@field stacks number|string?
 ---@field default SpecFlags|boolean?
+---@field option string|boolean?
 ---@field version number|string?
 ---@field sound acceptedSASounds?
 ---@field voiceVer number?
