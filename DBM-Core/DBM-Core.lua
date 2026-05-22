@@ -7400,9 +7400,9 @@ do
 				testTimer6 = testMod:NewTimer(20, "%s     ", "136116", nil, nil, 5, CL.TANK_ICON..CL.BLEED_ICON, nil, 2, 4, nil, nil, nil, nil, nil, nil, "next")
 				testTimer7 = testMod:NewTimer(20, "%s      ", "136116", nil, nil, 6)
 				testTimer8 = testMod:NewTimer(20, "%s       ", "136116", nil, nil, 7)
-				testSpecialWarning1 = testMod:NewSpecialWarning("%s", nil, nil, nil, 1, 2)
-				testSpecialWarning2 = testMod:NewSpecialWarning(" %s ", nil, nil, nil, 2, 2)
-				testSpecialWarning3 = testMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3, 2) -- hack: non auto-generated special warnings need distinct names (we could go ahead and give them proper names with proper localization entries, but this is much easier)
+				testSpecialWarning1	= testMod:SpecWarning({type = "text", text = "%s", sound = 1, voiceVer = 2})
+				testSpecialWarning2 = testMod:SpecWarning({type = "text", text = " %s ", sound = 2, voiceVer = 2})
+				testSpecialWarning3 = testMod:SpecWarning({type = "text", text = "  %s  ", sound = 3, voiceVer = 2}) -- hack: non auto-generated special warnings need distinct names (we could go ahead and give them proper names with proper localization entries, but this is much easier)
 			end
 			testTimer1:Stop("Test Bar showing 5s Variance")
 			testTimer2:Stop("Adds")

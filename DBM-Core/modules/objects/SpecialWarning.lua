@@ -554,8 +554,9 @@ local specTypeFilterTable = {
 ---@param color warningColorType? ColorId 1-4
 ---@param overrideType number? Optional override type for the alert
 function specialWarningPrototype:SetAlert(encounterEventId, voice, voiceVersion, color, overrideType)
-	if self.option and self.mod.Options[self.option] then
-		self.mod:EnableAlertOptions(self.spellId, encounterEventId, voice, voiceVersion, color, overrideType, self.option)
+	local optionSpellId = type(self.spellId) == "number" and self.spellId or tonumber(self.spellId)
+	if optionSpellId and self.option and self.mod.Options[self.option] then
+		self.mod:EnableAlertOptions(optionSpellId, encounterEventId, voice, voiceVersion, color, overrideType, self.option)
 	end
 end
 
@@ -740,9 +741,8 @@ function specialWarningPrototype:Show(...)
 			end
 		end
 		if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or not DBM:IsNoneValue(self.mod.Options[self.option .. "SWSound"])) then
-			local soundIdValue = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
-			local soundId = type(soundIdValue) == "number" and soundIdValue or nil
-			if noteHasName and soundId then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
+			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+			if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
 			if self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
 			DBM:PlaySpecialWarningSound(soundId or 1)
 		end
@@ -921,8 +921,8 @@ end
 ---@field default SpecFlags|boolean?
 ---@field option number|string|boolean?
 ---@field version number|string?
----@field sound acceptedSASounds|boolean?
----@field voiceVer number|boolean?
+---@field sound acceptedSASounds?
+---@field voiceVer number?
 ---@field voiceFile VPSound?
 ---@field difficulty number?
 ---@field icon number|string?
@@ -1032,8 +1032,14 @@ function bossModPrototype:SpecWarning(args)
 	end
 	local optionName = args.option
 	local optionVersion = args.version
-	local runSound = args.sound or (announceType == "run" or announceType == "runcount") and 4 or 1
-	local hasVoice = args.voiceVer or 2
+	local runSound = args.sound
+	if type(runSound) ~= "number" then
+		runSound = (announceType == "run" or announceType == "runcount") and 4 or 1
+	end
+	local hasVoice = args.voiceVer
+	if type(hasVoice) ~= "number" then
+		hasVoice = 2
+	end
 
 	local difficulty = args.difficulty
 	local icon = DBM:ParseSpellIcon(args.icon)
