@@ -923,7 +923,8 @@ end
 ---@field option number|string|boolean?
 ---@field version number|string?
 ---@field sound acceptedSASounds|boolean?
----@field voice number|boolean?
+---@field voiceVer number|boolean?
+---@field voiceFile VPSound?
 ---@field difficulty number?
 ---@field icon number|string?
 ---@field waCustomName any?
@@ -1033,7 +1034,7 @@ function bossModPrototype:SpecWarning(args)
 	local optionName = args.option
 	local optionVersion = args.version
 	local runSound = args.sound or (announceType == "run" or announceType == "runcount") and 4 or 1
-	local hasVoice = args.voice or 2
+	local hasVoice = args.voiceVer or 2
 
 	local difficulty = args.difficulty
 	local icon = DBM:ParseSpellIcon(args.icon)
@@ -1053,6 +1054,7 @@ function bossModPrototype:SpecWarning(args)
 		sound = runSound > 0,
 		flash = runSound,
 		hasVoice = hasVoice,
+		voiceFile = args.voiceFile,--Used by test object to demo voice used
 		difficulty = difficulty,
 	}
 
