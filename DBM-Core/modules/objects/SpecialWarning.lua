@@ -1049,7 +1049,7 @@ function bossModPrototype:SpecWarning(args)
 	end
 
 	local difficulty = args.difficulty
-	local icon = DBM:ParseSpellIcon(args.icon)
+	local icon = DBM:ParseSpellIcon(args.icon or args.spellId)
 	local optionSpellId
 	local optionType
 	local waCustomName
@@ -1119,7 +1119,7 @@ function bossModPrototype:SpecWarning(args)
 		objData.alternateSpellId = alternateSpellId
 		objData.renameRevision = DBM:GetSpellRenameRevision()
 		objData.stacks = args.stacks
-		objData.icon = icon or DBM:ParseSpellIcon(args.spellId)
+		objData.icon = icon
 		optionSpellId = announceType == "gtfo" and 123456 or args.spellId
 		optionType = announceType
 		traceType = announceType
