@@ -590,8 +590,8 @@ local function getGTFOAbilityIcon(options, groupedSpellId)
 	end
 	for _, optionName in ipairs(options) do
 		if type(optionName) == "string" then
-			local originalSpellId = tonumber(optionName:match("^SpecWarn(%-?%d+)gtfo"))
-			if originalSpellId and originalSpellId > 5 and originalSpellId ~= 123456 then
+			local originalSpellId = tonumber(optionName:match("^SpecWarn(%d+)gtfo"))
+			if originalSpellId and originalSpellId > 5 then
 				return DBM:GetSpellTexture(originalSpellId)
 			end
 		end
@@ -710,12 +710,11 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 					title, desc, icon = spellID, L.NoDescription, 136116
 				end
 				if isGTFOGroup then
-					local gtfoIcon = getGTFOAbilityIcon(options, spellID)
 					title = L.GTFOAbilityTitle
 					desc = L.GTFOAbilityDescription
 					renameSpellId = 123456
 					usedSpellID = "|Haddon:DBM:wacopy:123456|h|cff69ccf0123456|r|h"
-					icon = gtfoIcon or icon or 136116
+					icon = getGTFOAbilityIcon(options, tonumber(spellID)) or icon or 136116
 				end
 				if not usedSpellID then
 					usedSpellID = "|Haddon:DBM:wacopy:"..spellID.."|h|cff69ccf0"..spellID.."|r|h"
