@@ -714,6 +714,9 @@ local function getObjectSpellId(object)
 	return nil
 end
 
+---@param mod DBMMod
+---@return Timer|nil
+---@return SpecialWarning|Announce|nil
 local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey, fallbackSpellKey)
 	if not mod or (spellKey == nil and fallbackSpellKey == nil) then
 		return nil, nil
@@ -763,7 +766,7 @@ local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey, fallbackSpell
 	return timerObject, announceObject
 end
 
----@param object Timer
+---@param object Timer|nil
 local function triggerAbilityTestTimer(object)
 	if object and object.Start then
 		object:Start(5, 1)--short 5 second timer with a 1 count
@@ -772,7 +775,7 @@ local function triggerAbilityTestTimer(object)
 	return false
 end
 
----@param object SpecialWarning|Announce
+---@param object SpecialWarning|Announce|nil
 local function triggerAbilityTestAnnounce(object)
 	if object and object.Show then
 		if object.announceType == "gtfo" then

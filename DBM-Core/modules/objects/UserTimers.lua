@@ -68,7 +68,7 @@ do
 				dummyMod.isDummyMod = true
 				self:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{name = L.MINIMAP_TOOLTIP_HEADER}
 				dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
-				dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
+				dummyMod.geartext = dummyMod:SpecWarning({type = "text", text = "  %s  ", sound = 3})
 				dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, self.Options.DontPlayPTCountdown and 0 or 4, threshold, nil, nil, nil, nil, nil, nil, "pull")
 			end
 			refreshPTThreshold(self, dummyMod.timer)

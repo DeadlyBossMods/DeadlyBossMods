@@ -554,9 +554,8 @@ local specTypeFilterTable = {
 ---@param color warningColorType? ColorId 1-4
 ---@param overrideType number? Optional override type for the alert
 function specialWarningPrototype:SetAlert(encounterEventId, voice, voiceVersion, color, overrideType)
-	local optionSpellId = type(self.spellId) == "number" and self.spellId or tonumber(self.spellId)
-	if optionSpellId and self.option and self.mod.Options[self.option] then
-		self.mod:EnableAlertOptions(optionSpellId, encounterEventId, voice, voiceVersion, color, overrideType, self.option)
+	if self.option and self.mod.Options[self.option] then
+		self.mod:EnableAlertOptions(self.spellId, encounterEventId, voice, voiceVersion, color, overrideType, self.option)
 	end
 end
 
