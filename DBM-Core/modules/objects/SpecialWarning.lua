@@ -541,26 +541,6 @@ local function canVoiceReplace(self, soundId, isNote)
 	return isVoicePackUsed
 end
 
-local specTypeFilterTable = {
-	["dispel"] = "dispel",
-	["interrupt"] = "interrupt",
-	["interruptcount"] = "interrupt",
-	["defensive"] = "defensive",
-	["taunt"] = "taunt",
-	["soak"] = "soak",
-	["soakcount"] = "soak",
-	["soakpos"] = "soak",
-	["stack"] = "stack",
-	["switch"] = "switch",
-	["switchcount"] = "switch",
-	["switchcustom"] = "switch",
-	["adds"] = "switch",
-	["addscount"] = "switch",
-	["addscustom"] = "switch",
-	["targetchange"] = "switch",
-	["gtfo"] = "gtfo",
-}
-
 ---@class SpecAnnounce0: SpecialWarning
 ---@field Show fun(self: SpecAnnounce0)
 ---@class SpecAnnounce1num: SpecialWarning
