@@ -418,44 +418,6 @@ local function classColoringFunction(cap)
 	return cap
 end
 
-local specInstructionalRemapTable = {
-	["dispel"] = "target",
-	["interrupt"] = "spell",
-	["interruptcount"] = "count",
-	["defensive"] = "spell",
-	["taunt"] = "target",
-	["soak"] = "spell",
-	["soakcount"] = "count",
-	["soakpos"] = "spell",
-	["switch"] = "spell",
-	["switchcustom"] = "spell",
-	["switchcount"] = "count",
---		["adds"] = "spell",
---		["addscount"] = "spell",
---		["addscustom"] = "spell",
-	["targetchange"] = "target",
-	["gtfo"] = "spell",
-	["bait"] = "soon",
-	["youpos"] = "you",
-	["youposcount"] = "youcount",
-	["move"] = "spell",
-	["keepmove"] = "spell",
-	["stopmove"] = "spell",
-	["dodge"] = "spell",
-	["dodgecount"] = "count",
-	["dodgeloc"] = "spell",
-	["moveaway"] = "spell",
-	["moveawaycount"] = "count",
-	["moveawaytarget"] = "spell",
-	["moveto"] = "spell",
-	["jump"] = "spell",
-	["run"] = "spell",
-	["runcount"] = "spell",
-	["cast"] = "spell",
-	["lookaway"] = "spell",
-	["reflect"] = "target",
-}
-
 local function setText(announceType, spellId, stacks, customName, alternateSpellId)
 	local text, spellName
 	local defaultRenameName
@@ -489,17 +451,7 @@ local function setText(announceType, spellId, stacks, customName, alternateSpell
 	elseif announceType == "blizztarget" then
 		text = L.AUTO_ANNOUNCE_TEXTS.blizztarget:format(spellName)
 	else
-		if DBM.Options.SpamSpecInformationalOnly then
-			local remapType = specInstructionalRemapTable[announceType]
-			if remapType then
-				local newType = remapType
-				text = L.AUTO_SPEC_WARN_TEXTS[newType]:format(spellName)
-			else
-				text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
-			end
-		else
-			text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
-		end
+		text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
 	end
 	--Automatically register alternate spellnames when detecting their use here
 	if effectiveSpellId and (customName or alternateSpellId or announceType == "gtfo") then
@@ -640,11 +592,6 @@ function specialWarningPrototype:Show(...)
 		if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
 		--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 		if self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 and (self.mod:IsEasyDungeon() or DBM:IsTrivial()) then return end
-		--We also check if person has the role filter turned on (typical for highest end raiders who don't want as much handholding from DBM)
-		local filterType = specTypeFilterTable[self.announceType]
-		if filterType then
-			if DBM.Options["SpamSpecRole" .. filterType] then return end
-		end
 		--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
 		if self.announceType == "taunt" and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 		local argTable
@@ -911,44 +858,6 @@ function specialWarningPrototype:Cancel(_, ...) -- t, ...
 	return DBMScheduler:Unschedule(self.Show, self.mod, self, ...)
 end
 
---Several voice lines still need generic alternatives that don't feel "instructional"
-local specInstructionalRemapVoiceTable = {
---		["dispel"] = "target",
---		["interrupt"] = "spell",
---		["interruptcount"] = "count",
---		["defensive"] = "spell",
-	["taunt"] = "changemt",--Remaps sound to say a swap is happening, rather than telling you to taunt boss
---		["soak"] = "spell",
---		["soakcount"] = "count",
---		["soakpos"] = "spell",
---		["switch"] = "spell",
---		["switchcount"] = "count",
-	["adds"] = "mobsoon",--Remaps sound to say mobs incoming only, not to kill them or cc them or anything else.
-	["addscount"] = "mobsoon",
-	["addscustom"] = "mobsoon",--Remaps sound to say mobs incoming only, not to kill them or cc them or anything else.
---		["targetchange"] = "target",
---		["gtfo"] = "spell",
---		["bait"] = "soon",
-	["you"] = "targetyou",--Remaps personal alert to just say "target you", without instruction
-	["youpos"] = "targetyou",--Remaps personal alert to just say "target you", without instruction
-	["youposcount"] = "targetyou",--Remaps personal alert to just say "target you", without instruction
---		["move"] = "spell",
---		["keepmove"] = "spell",
---		["stopmove"] = "spell",
---		["dodge"] = "spell",
---		["dodgecount"] = "count",
---		["dodgeloc"] = "spell",
-	["moveaway"] = "targetyou",--Remaps personal alert to just say "target you", without instruction
-	["moveawaycount"] = "targetyou",--Remaps personal alert to just say "target you", without instruction
---		["moveto"] = "spell",
---		["jump"] = "spell",
---		["run"] = "spell",
---		["runcount"] = "spell",
---		["cast"] = "spell",
---		["lookaway"] = "spell",
---		["reflect"] = "target",
-}
-
 ---@param name VPSound?
 ---@param customPath? string|number
 function specialWarningPrototype:Play(name, customPath)
@@ -957,17 +866,6 @@ function specialWarningPrototype:Play(name, customPath)
 	local soundId = type(soundIdValue) == "number" and soundIdValue or nil
 	if not canVoiceReplace(self, soundId) then return end
 	if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
-	local filterType = specTypeFilterTable[self.announceType]
-	if filterType then
-		--Filtered warning, filtered voice
-		if DBM.Options["SpamSpecRole" .. filterType] then return end
-	elseif DBM.Options.SpamSpecInformationalOnly then
-		local remapType = specInstructionalRemapVoiceTable[self.announceType]
-		if remapType then
-			--Instructional disabled, remap to a less instructional voice line
-			name = remapType
-		end
-	end
 	if ((not self.option or self.mod.Options[self.option])) and self.hasVoice <= private.swFilterDisabled then
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
 		if (name == "changemt" or name == "tauntboss") and not self.mod:IsTank() then return end
