@@ -1,6 +1,3 @@
---Currently this file is NOT set to load. It's currently for A/B testing new special warning object by experienced devs
---Copilot CI, For sane review, review it as if this file exists and SpecialWarning.lua does not. Then pretend any modules that are using old methods are using new one instead.
---Basically review sanity of this file as if it's active and in use
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
@@ -532,6 +529,23 @@ local specTypeFilterTable = {
 	["gtfo"] = "gtfo",
 }
 
+---@param value acceptedSASounds|number|boolean?
+---@param default number
+---@param fieldName string
+---@return number
+local function normalizeSpecialWarningValue(value, default, fieldName)
+	if value == nil or value == false then
+		return default
+	end
+	if value == true then
+		return 2
+	end
+	if type(value) ~= "number" then
+		error("SpecWarning: invalid " .. fieldName .. " value", 2)
+	end
+	return value
+end
+
 ---@class SpecAnnounce0: SpecialWarning
 ---@field Show fun(self: SpecAnnounce0)
 ---@class SpecAnnounce1num: SpecialWarning
@@ -654,10 +668,12 @@ function specialWarningPrototype:Show(...)
 		if self.option then
 			local noteText = self.mod.Options[self.option .. "SWNote"]
 			if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
-				local noteTextValue = noteText
 				if announceCount then--Counts support different note for EACH count
-					local notesTable = {string.split("/", noteTextValue)}
-					noteTextValue = notesTable[announceCount]
+					local notesTable = {string.split("/", noteText)}
+					local noteTextValue
+					if announceCount <= #notesTable then
+						noteTextValue = notesTable[announceCount]
+					end
 					if noteTextValue and type(noteTextValue) == "string" and noteTextValue ~= "" then--Refilter after string split to make sure a note for this count exists
 						local hasPlayerName = noteTextValue:find(playerName)
 						if DBM.Options.SWarnNameInNote and hasPlayerName then
@@ -672,6 +688,7 @@ function specialWarningPrototype:Show(...)
 						text = text .. noteTextValue
 					end
 				else--Non count warnings will have one note, period
+					local noteTextValue = noteText
 					if DBM.Options.SWarnNameInNote and noteTextValue:find(playerName) then
 						noteHasName = 5
 					end
@@ -740,11 +757,11 @@ function specialWarningPrototype:Show(...)
 			end
 		end
 		if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or not DBM:IsNoneValue(self.mod.Options[self.option .. "SWSound"])) then
-			local soundIdValue = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
-			local soundId = type(soundIdValue) == "number" and soundIdValue or nil
-			if noteHasName and soundId then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
-			if self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
-			DBM:PlaySpecialWarningSound(soundId or 1)
+			local soundSetting = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+			local numericSoundId = type(soundSetting) == "number" and soundSetting or nil
+			local playSound = noteHasName and numericSoundId or soundSetting
+			if self.hasVoice and canVoiceReplace(self, numericSoundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
+			DBM:PlaySpecialWarningSound(playSound or 1)
 		end
 	else
 		self.combinedcount = 0
@@ -862,8 +879,8 @@ end
 function specialWarningPrototype:Play(name, customPath)
 	local voice = DBM.Options.ChosenVoicePack2
 	local soundIdValue = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
-	local soundId = type(soundIdValue) == "number" and soundIdValue or nil
-	if not canVoiceReplace(self, soundId) then return end
+	local numericSoundId = type(soundIdValue) == "number" and soundIdValue or nil
+	if not canVoiceReplace(self, numericSoundId) then return end
 	if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 	if ((not self.option or self.mod.Options[self.option])) and self.hasVoice <= private.swFilterDisabled then
 		--Filter tank specific voice alerts for non tanks if tank filter enabled
@@ -1032,8 +1049,8 @@ function bossModPrototype:SpecWarning(args)
 	end
 	local optionName = args.option
 	local optionVersion = args.version
-	local runSound = args.sound or (announceType == "run" or announceType == "runcount") and 4 or 1
-	local hasVoice = args.voiceVer or 2
+	local runSound = normalizeSpecialWarningValue(args.sound, (announceType == "run" or announceType == "runcount") and 4 or 1, "args.sound")
+	local hasVoice = normalizeSpecialWarningValue(args.voiceVer, 2, "args.voiceVer")
 
 	local difficulty = args.difficulty
 	local icon = DBM:ParseSpellIcon(args.icon)
@@ -1110,7 +1127,7 @@ function bossModPrototype:SpecWarning(args)
 		optionType = announceType
 		traceType = announceType
 		voiceOptionKey = args.spellId
-		autoOptionName = "SpecWarn" .. args.spellId .. announceType .. (optionVersion or "")
+		autoOptionName = "SpecWarn" .. tostring(args.spellId) .. announceType .. (optionVersion or "")
 	end
 
 	local obj = setmetatable(objData, mt)
