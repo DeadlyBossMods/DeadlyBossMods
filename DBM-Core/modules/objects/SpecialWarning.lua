@@ -1007,15 +1007,7 @@ end
 ---@field spellId number|string
 
 ---@param args SpecWarningArgs
----@overload fun(self: DBMMod, args: SpecWarningArgsText): SpecialWarning
----@overload fun(self: DBMMod, args: SpecWarningArgs0): SpecAnnounce0
----@overload fun(self: DBMMod, args: SpecWarningArgs1num): SpecAnnounce1num
----@overload fun(self: DBMMod, args: SpecWarningArgs1str): SpecAnnounce1str
----@overload fun(self: DBMMod, args: SpecWarningArgs1Annoying): SpecAnnounce1Annoying
----@overload fun(self: DBMMod, args: SpecWarningArgs2strnum): SpecAnnounce2strnum
----@overload fun(self: DBMMod, args: SpecWarningArgs2numstr): SpecAnnounce2numstr
----@overload fun(self: DBMMod, args: SpecWarningArgs3numstrnum): SpecAnnounce3numstrnum
----@return SpecialWarning
+---@return SpecialWarning|SpecAnnounce0|SpecAnnounce1num|SpecAnnounce1str|SpecAnnounce1Annoying|SpecAnnounce2strnum|SpecAnnounce2numstr|SpecAnnounce3numstrnum
 function bossModPrototype:SpecWarning(args)
 	if type(args) ~= "table" then
 		error("SpecWarning: expected a table argument", 2)
