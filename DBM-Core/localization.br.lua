@@ -195,7 +195,7 @@ L.VOICE_DISABLED					= "Você atualmente tem pelo menos um pacote de voz do " ..
 L.VOICE_COUNT_MISSING				= "A voz de contagem regressiva %d está selecionada para um pacote de voz que não pôde ser encontrado ou que não é compatível no momento. Foi restaurada para a configuração padrão: %s."
 L.BIG_WIGS							= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY 						= " (|cff308530ID:|r %s)"
-L.RENAME							= " (|cff359030Renomeação:|r |cff71d5ff%s|r)"
+L.RENAME							= " (|cff359030Renomes:|r |cff71d5ff%s|r)"
 
 L.UPDATEREMINDER_HEADER				= "Sua versão de " .. L.DEADLY_BOSS_MODS .. " está desatualizada.\nA versão %s (%s) está disponível para download nos sites Curse, Wago, WoWI ou Github."
 L.UPDATEREMINDER_HEADER_SUBMODULE	= "Seu módulo %s está desatualizado.\nA versão %s está disponível para download nos sites Curse, Wago, WoWI ou Github."
