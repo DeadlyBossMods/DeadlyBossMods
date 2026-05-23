@@ -17,8 +17,8 @@ local warnPowershot				= mod:NewCastAnnounce(229124, 4)--Johnny Awesome
 local warnSMaSHtun				= mod:NewSpellAnnounce(283188, 3)--Mama Stormstout
 local warnColdCrash				= mod:NewSpellAnnounce(283199, 4)--Mama Stormstout
 
-local specWarnPowerShot			= mod:NewSpecialWarningMoveTo(229124, nil, nil, nil, 1, 2)--Johnny Awesome
-local specWarnColdCrash			= mod:NewSpecialWarningMoveTo(283199, nil, nil, nil, 3, 2)--Mama Stormstout
+local specWarnPowerShot			= mod:NewSpecialWarningMoveTo(229124, nil, nil, nil, 1, 2, nil, nil, "findshelter")--Johnny Awesome
+local specWarnColdCrash			= mod:NewSpecialWarningMoveTo(283199, nil, nil, nil, 3, 2, nil, nil, "findshelter")--Mama Stormstout
 
 local timerPowerShotCD			= mod:NewCDTimer(15.5, 229124, nil, nil, nil, 3)--Johnny Awesome
 local timerColdCrashCD			= mod:NewCDTimer(13.4, 283199, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)----Mama Stormstout

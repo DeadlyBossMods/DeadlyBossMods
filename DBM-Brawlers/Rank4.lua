@@ -18,9 +18,9 @@ local warnPyroblast				= mod:NewCastAnnounce(33975, 3)--Sanoriak
 local warnFireWall				= mod:NewSpellAnnounce(132666, 4)--Sanoriak
 local warnDarkOutpour			= mod:NewSpellAnnounce(291394, 4)--Ouroboros
 
-local specWarnFireWall			= mod:NewSpecialWarningDodge(132666, nil, nil, nil, 2, 2)--Sanoriak
-local specWarnPyroblast			= mod:NewSpecialWarningInterrupt(33975, nil, nil, nil, 1, 2)--Sanoriak
-local specWarnDarkOutpour		= mod:NewSpecialWarningDodge(291394, nil, nil, nil, 2, 2)--Ouroboros
+local specWarnFireWall			= mod:NewSpecialWarningDodge(132666, nil, nil, nil, 2, 2, nil, nil, "watchstep")--Sanoriak
+local specWarnPyroblast			= mod:NewSpecialWarningInterrupt(33975, nil, nil, nil, 1, 2, nil, nil, "kickcast")--Sanoriak
+local specWarnDarkOutpour		= mod:NewSpecialWarningDodge(291394, nil, nil, nil, 2, 2, nil, nil, "watchstep")--Ouroboros
 
 --local timerFirewallCD			= mod:NewCDTimer(17, 132666, nil, nil, nil, 3)--Sanoriak
 local timerDarkOutpourCD		= mod:NewCDTimer(43.5, 291394, nil, nil, nil, 3)--Ouroboros

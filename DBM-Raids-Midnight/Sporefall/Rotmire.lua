@@ -19,10 +19,10 @@ mod:RegisterCombat("combat")
 --TODO, swap mod order so this is on top when 12.0.7 goes live
 --local warnAlndustUpheaval					= mod:NewBlizzTargetAnnounce(1262289, 2)
 
-local specWarnFungalBloom					= mod:NewSpecialWarningCount(1221637, nil, nil, nil, 2, 2)
-local specWarnAwakenFungi					= mod:NewSpecialWarningCount(1221622, nil, nil, nil, 2, 2)
-local specWarnBurstingPustules				= mod:NewSpecialWarningCount(1221787, nil, nil, nil, 2, 2)
-local specWarnPutridFist					= mod:NewSpecialWarningDefensive(1221781, nil, nil, nil, 1, 2)
+local specWarnFungalBloom					= mod:NewSpecialWarningCount(1221637, nil, nil, nil, 2, 2, nil, nil, "carefly")
+local specWarnAwakenFungi					= mod:NewSpecialWarningCount(1221622, nil, nil, nil, 2, 2, nil, nil, "mobsoon")
+local specWarnBurstingPustules				= mod:NewSpecialWarningCount(1221787, nil, nil, nil, 2, 2, nil, nil, "aesoon")
+local specWarnPutridFist					= mod:NewSpecialWarningDefensive(1221781, nil, nil, nil, 1, 2, nil, nil, "defensive")
 --local specWarnFunglingFixate				= mod:NewSpecialWarningYou(1299508, nil, nil, nil, 1, 2)
 --local specWarnShroomingFixate				= mod:NewSpecialWarningYou(1221639, nil, nil, nil, 1, 2)
 

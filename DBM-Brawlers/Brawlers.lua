@@ -16,8 +16,8 @@ local warnQueuePosition		= mod:NewAnnounce("warnQueuePosition2", 2, 132639, true
 local warnOrgPortal			= mod:NewCastAnnounce(135385, 1)--These are rare casts and linked to achievement.
 local warnStormPortal		= mod:NewCastAnnounce(135386, 1)--So warn for them being cast
 
-local specWarnOrgPortal		= mod:NewSpecialWarningSpell(135385, nil, nil, nil, 1, 7)
-local specWarnStormPortal	= mod:NewSpecialWarningSpell(135386, nil, nil, nil, 1, 7)
+local specWarnOrgPortal		= mod:NewSpecialWarningSpell(135385, nil, nil, nil, 1, 7, nil, nil, "newportal")
+local specWarnStormPortal	= mod:NewSpecialWarningSpell(135386, nil, nil, nil, 1, 7, nil, nil, "newportal")
 local specWarnYourNext		= mod:NewSpecialWarning("specWarnYourNext")
 local specWarnYourTurn		= mod:NewSpecialWarning("specWarnYourTurn")
 local specWarnRumble		= mod:NewSpecialWarning("specWarnRumble")

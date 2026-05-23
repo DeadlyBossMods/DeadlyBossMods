@@ -76,7 +76,6 @@ modules\options\timers\PBC.lua
 modules\options\filters\Filters.lua
 modules\options\filters\GlobalDisables.lua
 modules\options\filters\Reduction.lua
-modules\options\filters\Handholding.lua
 modules\options\filters\HideBlizzard.lua
 modules\options\filters\RaidLeaderDisable.lua
 modules\options\filters\Privacy.lua
