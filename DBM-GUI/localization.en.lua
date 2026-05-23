@@ -595,19 +595,6 @@ L.FilterInterruptNoteName			= "Do not show if alert has a count but your name is
 L.Area_BInterruptFilterFooter		= "If no filters are selected, all interrupts are shown (May be spammy)\nSome mods may ignore these filters entirely if spell is critically important"
 L.Area_TInterruptFilter				= "Trash Interrupt Filter Options"--Reuses above 3 strings
 
--- Panel: DBM Handholding
-L.Panel_HandFilter					= "Reduce DBM Handholding"
-L.Area_SpamFilter_SpecRoleFilters	= "Special Announce Type Filters (control how much handholding DBM does)"
-L.SpamSpecInformationalOnly			= "Change all instructional text/voice pack alerts from special announcements (Requires UI Reload). Alerts still show and play audio but will be generic and less directive"
-L.SpamSpecRoleDispel				= "Do not show 'dispel' alerts (No text or sound at all)"
-L.SpamSpecRoleInterrupt				= "Do not show 'interrupt' alerts (No text or sound at all)"
-L.SpamSpecRoleDefensive				= "Do not show 'defensive' alerts (No text or sound at all)"
-L.SpamSpecRoleTaunt					= "Do not show 'taunt' alerts (No text or sound at all)"
-L.SpamSpecRoleSoak					= "Do not show 'soak' alerts (No text or sound at all)"
-L.SpamSpecRoleStack					= "Do not show 'high stack' alerts (No text or sound at all)"
-L.SpamSpecRoleSwitch				= "Do not show 'target swap' &amp; 'adds' alerts (No text or sound at all)"
-L.SpamSpecRoleGTFO					= "Do not show 'gtfo' alerts (No text or sound at all)"
-
 -- Panel: Blizzard Features
 L.Panel_HideBlizzard				= "Block Blizzard Features"
 --Toast
