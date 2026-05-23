@@ -1269,7 +1269,7 @@ do
 	bossModPrototype.NormalizeSpellRenameKey = DBM.NormalizeSpellRenameKey
 
 	---Function for Registering Spell Renames/ShortText to original spellIDs
-	---@param spellId number|string Original spellID of spell and not alternate ID
+	---@param spellId number Original spellID of spell and not alternate ID
 	---@param AltName string|number Custom name used for the spell or alternate spellID
 	function DBM:RegisterAltSpellName(spellId, AltName)
 		--Protection against internal and external misuse
@@ -1281,12 +1281,6 @@ do
 		local resolvedAltName
 		if type(AltName) == "string" then
 			resolvedAltName = sanitizeSpellRenameText(AltName)
-			if not resolvedAltName then
-				local alternateSpellId = normalizeSpellRenameKey(AltName)
-				if type(alternateSpellId) == "number" then
-					resolvedAltName = sanitizeSpellRenameText(DBM:ParseSpellName(alternateSpellId))
-				end
-			end
 		elseif type(AltName) == "number" then
 			local alternateSpellId = normalizeSpellRenameKey(AltName)
 			if type(alternateSpellId) == "number" then
