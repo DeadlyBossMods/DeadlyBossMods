@@ -32,10 +32,10 @@ local specWarnCosmosisVoidHowl		= mod:NewSpecialWarningCount(1277473, nil, nil, 
 local specWarnRadiantBarrier		= mod:NewSpecialWarningCount(1248847, nil, nil, nil, 2, 2, nil, nil, "findshield")
 
 local timerNullBeamCD				= mod:NewCDCountTimer(20.5, 1262623, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
-local timerVoidHowlCD				= mod:NewCDCountTimer("d20.5", 1244917, DBM_COMMON_L.ORBS.." (%s)", nil, nil, 2)
+local timerVoidHowlCD				= mod:NewCDCountTimer("d20.5", 1244917, nil, nil, nil, 2)
 local timerGloomCD					= mod:NewCDCountTimer(20.5, 1245391, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerDreadBreathCD			= mod:NewCDCountTimer(20.5, 1244221, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-local timerMidnightFlamesCD			= mod:NewCDCountTimer(20.5, 1249748, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerMidnightFlamesCD			= mod:NewCDCountTimer(20.5, 1249748, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerGrabblingMawCD			= mod:NewCDCountTimer(20.5, 1280458, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerRakfangCD				= mod:NewCDCountTimer(20.5, 1245645, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerVaelwingCD				= mod:NewCDCountTimer("d20.5", 1265131, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)

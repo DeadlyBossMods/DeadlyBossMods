@@ -24,8 +24,8 @@ local specWarnPrimordialRoar			= mod:NewSpecialWarningCount(1260046, nil, nil, n
 --local specWarnFixateParasite			= mod:NewSpecialWarningYou(1254112, nil, nil, nil, 1, 2)
 
 local timerShadowclawSlamCD				= mod:NewCDCountTimer("d20.5", 1241836, nil, nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname "Slam"
---local timerVoidBreathCD				= mod:NewCDCountTimer(20.5, 1243853, 17088, nil, nil, 3)--Shortname "Breath"
-local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
+--local timerVoidBreathCD				= mod:NewCDCountTimer(20.5, 1243853, nil, nil, nil, 3)--Shortname "Breath"
+local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, nil, nil, nil, 1)
 local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Roar"
 
 mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2, "watchfeet", 8)--Dark Goo

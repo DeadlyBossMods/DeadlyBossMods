@@ -1350,6 +1350,8 @@ end
 ---@param timerText string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
+---@param colorType timerColorType?
+---@param texture number|string?
 ---@param inlineIcon string?
 ---@param keep boolean?
 ---@param countdown number?
@@ -1537,6 +1539,8 @@ end
 ---@param timerText string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
+---@param colorType timerColorType?
+---@param texture number|string?
 ---@param inlineIcon string?
 ---@param keep boolean?
 ---@param countdown number?
@@ -1560,6 +1564,8 @@ end
 ---@param timerText string?
 ---@param optionDefault SpecFlags|boolean?
 ---@param optionName string|number|boolean?
+---@param colorType timerColorType?
+---@param texture number|string?
 ---@param inlineIcon string?
 ---@param keep boolean?
 ---@param countdown number?
