@@ -35,10 +35,10 @@ local specWarnStormCloud			= mod:NewSpecialWarningInterrupt(135234)--Kirrawk
 local specWarnSmolderingHeat		= mod:NewSpecialWarningYou(142400)--Anthracite
 local specWarnRPS					= mod:NewSpecialWarning("specWarnRPS")--Ro-Shambo
 local specWarnDoom					= mod:NewSpecialWarningSpell(133650, nil, nil, nil, 2)--Millhouse Manastorm
-local specWarnBlueCrush				= mod:NewSpecialWarningInterrupt(133262, nil, nil, nil, 1, 2)--Epicus Maximus
-local specWarnDestructolaser		= mod:NewSpecialWarningMove(133250, nil, nil, nil, 2, 1)--Epicus Maximus
-local specWarnConsumeEssence		= mod:NewSpecialWarningInterrupt(294665, nil, nil, nil, 1, 2)--Xan-Sallish
-local specWarnVoidBurst				= mod:NewSpecialWarningDodge(294638, nil, nil, nil, 2, 1)--Xan-Sallish
+local specWarnBlueCrush				= mod:NewSpecialWarningInterrupt(133262, nil, nil, nil, 1, 2, nil, nil, "kickcast")--Epicus Maximus
+local specWarnDestructolaser		= mod:NewSpecialWarningMove(133250, nil, nil, nil, 2, 1, nil, nil, "watchstep")--Epicus Maximus
+local specWarnConsumeEssence		= mod:NewSpecialWarningInterrupt(294665, nil, nil, nil, 1, 2, nil, nil, "kickcast")--Xan-Sallish
+local specWarnVoidBurst				= mod:NewSpecialWarningDodge(294638, nil, nil, nil, 2, 1, nil, nil, "watchorb")--Xan-Sallish
 
 local timerLumberingChargeCD		= mod:NewCDTimer(7, 134527, nil, nil, nil, 3)--Goredome
 local timerShieldWaller				= mod:NewBuffActiveTimer(10, 134650)--Smash Hoofstomp

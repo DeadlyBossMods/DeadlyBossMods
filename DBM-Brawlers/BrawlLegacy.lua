@@ -71,9 +71,9 @@ local specWarnDarkZone				= mod:NewSpecialWarningSpell(133346)--Fjoll
 local specWarnHeatedPokers			= mod:NewSpecialWarningSpell(133286)--Dungeon Master Vishas
 local specWarnIntensifyingAssault	= mod:NewSpecialWarningStack(141396, true, 10)--T440 Dual-Mode Robot
 local specWarnPrecisionArtillery	= mod:NewSpecialWarningStack(141401, true, 10)--T440 Dual-Mode Robot
-local specWarnBoomBroom				= mod:NewSpecialWarningRun(236458, nil, nil, nil, 4, 2)--Bill the Janitor
-local specWarnShadowTorch			= mod:NewSpecialWarningDodge(232504, nil, nil, nil, 3, 2)--Shadowmaster Aameen
-local specWarnDinoDash				= mod:NewSpecialWarningDodge(232252, nil, nil, nil, 1, 2)--Topps
+local specWarnBoomBroom				= mod:NewSpecialWarningRun(236458, nil, nil, nil, 4, 2, nil, nil, "justrun")--Bill the Janitor
+local specWarnShadowTorch			= mod:NewSpecialWarningDodge(232504, nil, nil, nil, 3, 2, nil, nil, "farfromline")--Shadowmaster Aameen
+local specWarnDinoDash				= mod:NewSpecialWarningDodge(232252, nil, nil, nil, 1, 2, nil, nil, "chargemove")--Topps
 
 local timerShadowStrikes			= mod:NewBuffActiveTimer(15, 126209)--Akama
 local timerChainLightningCD			= mod:NewCDTimer(17, 39945, nil, nil, nil, 4)--Akama

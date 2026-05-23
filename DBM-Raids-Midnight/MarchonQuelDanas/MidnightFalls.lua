@@ -18,23 +18,23 @@ mod:RegisterCombat("combat")
 --TODO, figure out which torchbearer is which. One is for player holding it and one is for standing near them i'm pretty sure
 local warnTotalEclipse				= mod:NewSpellAnnounce(1261871, 2)--Intermission 1.5 Start
 
-local specWarnHeavensLance			= mod:NewSpecialWarningCount(1267049, nil, nil, nil, 1, 2)--Stage 1 tank ability
-local specWarnDeathsDirge			= mod:NewSpecialWarningCount(1249620, nil, nil, L.MemoryGame, 2, 2)
-local specWarnHeavensGlaives		= mod:NewSpecialWarningCount(1253915, nil, 289465, nil, 2, 2)
-local specWarnSafeguaredPrism		= mod:NewSpecialWarningSwitchCount(1251386, nil, nil, DBM_COMMON_L.INTERRUPTS, 1, 2)
-local specWarnShatteredSky			= mod:NewSpecialWarningCount(1249796, nil, nil, nil, 2, 2)
-local specWarnLightSiphon			= mod:NewSpecialWarningCount(1266897, nil, nil, nil, 2, 2)--Stage 3 ability
-local specWarnDarkConstellation		= mod:NewSpecialWarningCount(1266388, nil, nil, nil, 2, 2)--Stage 3 ability
-local specWarnDarkArchangel			= mod:NewSpecialWarningCount(1250898, nil, nil, nil, 3, 2)--Stage 3 ability
-local specWarnDeathsRequiem			= mod:NewSpecialWarningCount(1273158, nil, nil, L.MemoryGame, 2, 2)--Stage 3 ability
-local specWarnSeverance				= mod:NewSpecialWarningSpell(1276202, nil, nil, nil, 2, 2, 4)--Stage 3 mythic ability
-local specWarnIntoDarkwell			= mod:NewSpecialWarningSpell(1282047, nil, nil, nil, 2, 2)--Stage 2 Start
-local specWarnCosmicFission			= mod:NewSpecialWarningCount(1282249, nil, nil, nil, 2, 2)--Stage 2 triggered ability (not timer one)
-local specWarnCoreHarvest			= mod:NewSpecialWarningCount(1282412, nil, nil, nil, 2, 2)--Stage 2 ability
-local specWarnDarkMeltdown			= mod:NewSpecialWarningSpell(1281194, nil, nil, nil, 2, 2)--Stage 2 End
-local specWarnTerminationPrism		= mod:NewSpecialWarningSwitchCount(1284931, nil, nil, DBM_COMMON_L.INTERRUPTS, 2, 2, 4)--Stage 1 Mythic version of Safeguarded Prism
-local specWarnGrimSymphony			= mod:NewSpecialWarningCount(1284980, nil, nil, L.MemoryGame, 2, 2, 4)--Stage 1 Mythic version of DeathsDirge
-local specWarnDarkQuasar			= mod:NewSpecialWarningCount(1279420, nil, 207544, nil, 2, 2)--Stage 1 ability
+local specWarnHeavensLance			= mod:NewSpecialWarningCount(1267049, nil, nil, nil, 1, 2, nil, nil, "defensive")--Stage 1 tank ability
+local specWarnDeathsDirge			= mod:NewSpecialWarningCount(1249620, nil, nil, L.MemoryGame, 2, 2, nil, nil, "runesincoming")
+local specWarnHeavensGlaives		= mod:NewSpecialWarningCount(1253915, nil, 289465, nil, 2, 2, nil, nil, "watchstep")
+local specWarnSafeguaredPrism		= mod:NewSpecialWarningSwitchCount(1251386, nil, nil, DBM_COMMON_L.INTERRUPTS, 1, 2, nil, nil, "targetchange")
+local specWarnShatteredSky			= mod:NewSpecialWarningCount(1249796, nil, nil, nil, 2, 2, nil, nil, "aesoon")
+local specWarnLightSiphon			= mod:NewSpecialWarningCount(1266897, nil, nil, nil, 2, 2, nil, nil, "lightrifts")--Stage 3 ability
+local specWarnDarkConstellation		= mod:NewSpecialWarningCount(1266388, nil, nil, nil, 2, 2, nil, nil, "watchstep")--Stage 3 ability
+local specWarnDarkArchangel			= mod:NewSpecialWarningCount(1250898, nil, nil, nil, 3, 2, nil, nil, "findshield")--Stage 3 ability
+local specWarnDeathsRequiem			= mod:NewSpecialWarningCount(1273158, nil, nil, L.MemoryGame, 2, 2, nil, nil, "runesincoming")--Stage 3 ability
+local specWarnSeverance				= mod:NewSpecialWarningSpell(1276202, nil, nil, nil, 2, 2, 4, nil, "raidsplit")--Stage 3 mythic ability
+local specWarnIntoDarkwell			= mod:NewSpecialWarningSpell(1282047, nil, nil, nil, 2, 2, nil, nil, "pullin")--Stage 2 Start
+local specWarnCosmicFission			= mod:NewSpecialWarningCount(1282249, nil, nil, nil, 2, 2, nil, nil, "pullin")--Stage 2 triggered ability (not timer one)
+local specWarnCoreHarvest			= mod:NewSpecialWarningCount(1282412, nil, nil, nil, 2, 2, nil, nil, "farfromline")--Stage 2 ability
+local specWarnDarkMeltdown			= mod:NewSpecialWarningSpell(1281194, nil, nil, nil, 2, 2, nil, nil, "carefly")--Stage 2 End
+local specWarnTerminationPrism		= mod:NewSpecialWarningSwitchCount(1284931, nil, nil, DBM_COMMON_L.INTERRUPTS, 2, 2, 4, nil, "targetchange")--Stage 1 Mythic version of Safeguarded Prism
+local specWarnGrimSymphony			= mod:NewSpecialWarningCount(1284980, nil, nil, L.MemoryGame, 2, 2, 4, nil, "runesincoming")--Stage 1 Mythic version of DeathsDirge
+local specWarnDarkQuasar			= mod:NewSpecialWarningCount(1279420, nil, 207544, nil, 2, 2, nil, nil, "watchstep")--Stage 1 ability
 
 local timerDeathsDirgeCD			= mod:NewCDCountTimer(20.5, 1249620, L.MemoryGame.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerHeavensGlaivesCD			= mod:NewCDCountTimer(20.5, 1253915, 289465, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortnmae "Glaives"
