@@ -1270,19 +1270,32 @@ do
 
 	---Function for Registering Spell Renames/ShortText to original spellIDs
 	---@param spellId number|string Original spellID of spell and not alternate ID
-	---@param AltName string Custom name used for the spell and not alternateID
+	---@param AltName string|number Custom name used for the spell or alternate spellID
 	function DBM:RegisterAltSpellName(spellId, AltName)
 		--Protection against internal and external misuse
 		--Also filters spellIds 0-5 which are typically not real spellids such as phase announces or spell-less timer objects
 		spellId = normalizeSpellRenameKey(spellId)
-		if isValidSpellRenameKey(spellId) and AltName and type(AltName) == "string" then
-			if type(spellId) ~= "number" then
-				return
+		if not isValidSpellRenameKey(spellId) or AltName == nil or type(spellId) ~= "number" then
+			return
+		end
+		local resolvedAltName
+		if type(AltName) == "string" then
+			resolvedAltName = sanitizeSpellRenameText(AltName)
+			if not resolvedAltName then
+				local alternateSpellId = normalizeSpellRenameKey(AltName)
+				if type(alternateSpellId) == "number" then
+					resolvedAltName = sanitizeSpellRenameText(DBM:ParseSpellName(alternateSpellId))
+				end
 			end
-			if not legacyAltSpellNamesByspellId[spellId] then
-				legacyAltSpellNamesByspellId[spellId] = AltName
-				refreshSpellRenameCache(false)
+		elseif type(AltName) == "number" then
+			local alternateSpellId = normalizeSpellRenameKey(AltName)
+			if type(alternateSpellId) == "number" then
+				resolvedAltName = sanitizeSpellRenameText(DBM:ParseSpellName(alternateSpellId))
 			end
+		end
+		if resolvedAltName and not legacyAltSpellNamesByspellId[spellId] then
+			legacyAltSpellNamesByspellId[spellId] = resolvedAltName
+			refreshSpellRenameCache(false)
 		end
 	end
 	---Function for providing Plater and other addons access to Spell Renames/ShortText

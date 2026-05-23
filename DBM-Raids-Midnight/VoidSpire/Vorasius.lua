@@ -13,16 +13,20 @@ mod:RegisterCombat("combat")
 --TODO< https://www.wowhead.com/spell=1244346/colossal-throw has an event ID but doesn't exist on encounter?
 --TODO, probably drop either 59 or 60 for eventIDs, one is for parent activation and one is for the additional slams we probably want to ignore/filter
 --Hardcoded Objects that use Blizz api as fallback
-local specWarnShadowclawSlam			= mod:NewSpecialWarningCount(1241836, nil, 182557, nil, 2, 2, nil, nil, "slamincoming")
-local specWarnVoidBreath				= mod:NewSpecialWarningDodgeCount(1243853, nil, 17088, nil, 2, 2, nil, nil, "breathsoon")
-local specWarnParasiteExpulsion			= mod:NewSpecialWarningDodgeCount(1254199, nil, nil, DBM_COMMON_L.ADDS, 2, 2, nil, nil, "watchstep")
-local specWarnPrimordialRoar			= mod:NewSpecialWarningCount(1260046, nil, 140459, nil, 2, 2, nil, nil, "pullin")
+DBM:RegisterAltSpellName(1241836, 182557)--Shadowclaw Slam -> Slam
+DBM:RegisterAltSpellName(1243853, 17088)--Void Breath -> Breath
+DBM:RegisterAltSpellName(1260046, 140459)--Primordial Roar -> Roar
+DBM:RegisterAltSpellName(1254199, DBM_COMMON_L.ADDS)--Parasite Expulsion -> Adds
+local specWarnShadowclawSlam			= mod:NewSpecialWarningCount(1241836, nil, nil, nil, 2, 2, nil, nil, "slamincoming")
+local specWarnVoidBreath				= mod:NewSpecialWarningDodgeCount(1243853, nil, nil, nil, 2, 2, nil, nil, "breathsoon")
+local specWarnParasiteExpulsion			= mod:NewSpecialWarningDodgeCount(1254199, nil, nil, nil, 2, 2, nil, nil, "watchstep")
+local specWarnPrimordialRoar			= mod:NewSpecialWarningCount(1260046, nil, nil, nil, 2, 2, nil, nil, "pullin")
 --local specWarnFixateParasite			= mod:NewSpecialWarningYou(1254112, nil, nil, nil, 1, 2)
 
-local timerShadowclawSlamCD				= mod:NewCDCountTimer("d20.5", 1241836, 182557, nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname "Slam"
+local timerShadowclawSlamCD				= mod:NewCDCountTimer("d20.5", 1241836, nil, nil, 2, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname "Slam"
 --local timerVoidBreathCD				= mod:NewCDCountTimer(20.5, 1243853, 17088, nil, nil, 3)--Shortname "Breath"
 local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
-local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, 140459, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Roar"
+local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Roar"
 
 mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2, "watchfeet", 8)--Dark Goo
 mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3, "debuffyou", 17)--Smashed (debuff from shadowclaw slam)

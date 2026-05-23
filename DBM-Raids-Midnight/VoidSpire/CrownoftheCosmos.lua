@@ -16,6 +16,12 @@ mod:RegisterCombat("combat")
 --TODO, figure out https://www.wowhead.com/spell=1239582/cosmic-overload for mythic only (169)
 --TODO, fine other mythic only spells, likely tucked away in undocumented encounterID space
 --TODO, add https://www.wowhead.com/beta/spell=1227557/devouring-cosmos private aura if it's NOT berserk
+DBM:RegisterAltSpellName(1233602, 208407)--Silverstrike Arrow -> Arrow
+DBM:RegisterAltSpellName(1234564, 208071)--Silverstrike Barrage -> Arrow Barrage
+DBM:RegisterAltSpellName(1237614, 208407)--Ranger Captain's Mark -> Arrow
+DBM:RegisterAltSpellName(1246918, 151702)--Cosmic Barrier -> Shield
+DBM:RegisterAltSpellName(1239111, 1234576)--Aspect of the End -> Tethers
+DBM:RegisterAltSpellName(1232470, 367465)--Grasp of Emptiness -> Grasp
 local warnSilverStrikeArrow				= mod:NewCountAnnounce(1233602, 2)--P1/P3
 local warnNullCorona					= mod:NewCountAnnounce(1233865, 2, nil, "Healer")--P1+
 local warnRiftSimulacrum				= mod:NewCountAnnounce(1261016, 2)--P2 Starting
@@ -35,15 +41,15 @@ local specWarnRiftSlash					= mod:NewSpecialWarningDefensive(1246461, nil, nil, 
 
 local timerNullCoronaCD					= mod:NewCDCountTimer(20.5, 1233865, DBM_COMMON_L.HEALABSORB.." (%s)", "-Tank", nil, 3, nil, DBM_COMMON_L.MAGIC_ICON..DBM_COMMON_L.HEALER_ICON)--P1+
 local timerVoidExpulsionCD				= mod:NewCDCountTimer(20.5, 1283236, nil, nil, nil, 3)--P1+
-local timerSilverstrikeArrowCD			= mod:NewCDCountTimer(20.5, 1233602, 208407, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)--P1/P3, shortname "Arrow"
-local timerSilverstrikeBarrageCD		= mod:NewCDCountTimer(20.5, 1234564, 208071, nil, nil, 3)--Intermission 1, shortname "Arrow Barrage"
+local timerSilverstrikeArrowCD			= mod:NewCDCountTimer(20.5, 1233602, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)--P1/P3, shortname "Arrow"
+local timerSilverstrikeBarrageCD		= mod:NewCDCountTimer(20.5, 1234564, nil, nil, nil, 3)--Intermission 1, shortname "Arrow Barrage"
 --local timerSingularityEruptionCD		= mod:NewCDCountTimer(20.5, 1235622, nil, nil, nil, 3)--Intermission 1 (Passive, doesn't have a timer)
 local timerVoidstalkerStingCD			= mod:NewCDCountTimer(20.5, 1237035, nil, nil, nil, 2)--Stage 2 non mythic
 local timerCalloftheVoidCD				= mod:NewCDCountTimer(20.5, 1237837, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)--P2
-local timerRangerCaptainsMarkCD			= mod:NewCDCountTimer(20.5, 1237614, 208407, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)--P3, also shortname "Arrow"
-local timerCosmicBarrierCD				= mod:NewCDCountTimer(20.5, 1246918, 151702, nil, nil, 5)--P2, shortname "Shield"
-local timerAspectoftheEndCD				= mod:NewCDCountTimer(20.5, 1239111, 1234576, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)--Intermission 2, shortname "Tethers"
-local timerGraspofEmptynessCD			= mod:NewCDCountTimer(20.5, 1232470, 367465, nil, nil, 3)--P1, shortname "Grasp"
+local timerRangerCaptainsMarkCD			= mod:NewCDCountTimer(20.5, 1237614, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)--P3, also shortname "Arrow"
+local timerCosmicBarrierCD				= mod:NewCDCountTimer(20.5, 1246918, nil, nil, nil, 5)--P2, shortname "Shield"
+local timerAspectoftheEndCD				= mod:NewCDCountTimer(20.5, 1239111, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)--Intermission 2, shortname "Tethers"
+local timerGraspofEmptynessCD			= mod:NewCDCountTimer(20.5, 1232470, nil, nil, nil, 3)--P1, shortname "Grasp"
 local timerDevouringCosmosCD			= mod:NewCDCountTimer(20.5, 1238843, nil, nil, nil, 5, nil, DBM_COMMON_L.DEADLY_ICON)--P3
 local timerDarkHandCD					= mod:NewCDCountTimer(20.5, 1233787, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--P1 Tank Add
 local timerRavenousAbyssCD				= mod:NewCDCountTimer(20.5, 1243753, DBM_COMMON_L.AVOID.." (%s)", nil, nil, 3)--P1 Add
