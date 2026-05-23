@@ -1,4 +1,4 @@
-## Interface: 120005
+## Interface: 120005, 120007
 ## Version: @project-version@
 ## Category: DBM
 
