@@ -1228,7 +1228,7 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			error("bad string timer, expected number or string starting with d, v, or dv", 2)
 		end
 	end
-	local spellName, altSpellName, icon
+	local spellName, icon
 	spellName = DBM:ParseSpellName(spellId, timerType)
 	local unparsedId = spellId
 	if timerType == "achievement" then
@@ -1269,7 +1269,7 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 			simpType = simpType,
 			waSpecialKey = waSpecialKey,--Not same as simpType, this overrides option key
 			spellId = spellId,
-			name = altSpellName or spellName,--If name gets stored as nil, it'll be corrected later in Timer start, if spell name returns in a later attempt
+			name = spellName,--If name gets stored as nil, it'll be corrected later in Timer start, if spell name returns in a later attempt
 			originalName = spellName,
 			timer = timer,
 			id = id,
