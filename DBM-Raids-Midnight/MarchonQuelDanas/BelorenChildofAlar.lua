@@ -16,9 +16,10 @@ mod:RegisterCombat("combat")
 DBM:RegisterAltSpellName(1241282, DBM_COMMON_L.ADDS)--Embers of Belo'ren -> Adds
 DBM:RegisterAltSpellName(1242981, DBM_COMMON_L.ORBS)--Radiant Echoes -> Orbs
 DBM:RegisterAltSpellName(1260763, DBM_COMMON_L.TANKCOMBO)--Guardian's Edict -> Tank Combo
+DBM:RegisterAltSpellName(1242260, DBM_COMMON_L.LINES)--Infused Quills -> Lines
 DBM:RegisterAltSpellName(1242515, L.ColorSwap)--Voidlight Convergence -> Color Swap
-DBM:RegisterAltSpellName(1241292, DBM_COMMON_L.GROUPSOAK)--Light Diver -> Group Soak
-DBM:RegisterAltSpellName(1241339, DBM_COMMON_L.GROUPSOAK)--Void Diver -> Group Soak
+--DBM:RegisterAltSpellName(1241292, DBM_COMMON_L.GROUPSOAK)--Light Diver -> Group Soak
+--DBM:RegisterAltSpellName(1241339, DBM_COMMON_L.GROUPSOAK)--Void Diver -> Group Soak
 --Stage 1
 local warnVoidlightConvergenceSoon		= mod:NewSoonAnnounce(1242515, 3)
 

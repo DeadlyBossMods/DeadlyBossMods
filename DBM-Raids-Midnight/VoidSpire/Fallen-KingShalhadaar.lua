@@ -17,7 +17,7 @@ DBM:RegisterAltSpellName(1243453, DBM_COMMON_L.ORBS)--Void Convergence -> Orbs
 DBM:RegisterAltSpellName(1250686, DBM_COMMON_L.AOEDAMAGE)--Twilight Obscurity -> AoE
 DBM:RegisterAltSpellName(1248697, DBM_COMMON_L.POOLS)--Despotic Command -> Pools
 DBM:RegisterAltSpellName(1254081, DBM_COMMON_L.INTERRUPTS)--Fractured Projection -> Interrupts
-DBM:RegisterAltSpellName(1246175, DBM_COMMON_L.LINES)--Entropic Unraveling -> Lines
+DBM:RegisterAltSpellName(1246175, 207544)--Entropic Unraveling -> Beams
 
 local specWarnVoidConvergence				= mod:NewSpecialWarningCount(1243453, nil, nil, nil, 2, 2, nil, nil, "targetchange")
 local specWarnFracturedProjection			= mod:NewSpecialWarningCount(1254081, "HasInterrupt", nil, nil, 2, 2, nil, nil, "crowdcontrol")

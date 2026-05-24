@@ -19,10 +19,10 @@ DBM:RegisterAltSpellName(1246621, DBM_COMMON_L.AOEDAMAGE)--Caustic Phlegm -> AoE
 DBM:RegisterAltSpellName(1272726, DBM_COMMON_L.FRONTAL)--Rending Tear -> Frontal
 DBM:RegisterAltSpellName(1262289, DBM_COMMON_L.GROUPSOAK)--Alndust Upheaval -> Group Soak
 DBM:RegisterAltSpellName(1257087, DBM_COMMON_L.DISPELS)--Consuming Miasma -> Dispels
---local warnAlndustUpheaval				= mod:NewBlizzTargetAnnounce(1262289, 2)
+DBM:RegisterAltSpellName(1264780, DBM_COMMON_L.PLAYERSWAPS)--Rift Madness -> Player Swaps
+local warnRiftEmergence					= mod:NewCountAnnounce(1251021, 2)
 
 local specWarnRavenousDive				= mod:NewSpecialWarningCount(1245404, nil, nil, nil, 2, 2, nil, nil, "phasechange")
-local specWarnRiftEmergence				= mod:NewSpecialWarningCount(1251021, nil, nil, nil, 2, 2, nil, nil, "mobsoon")
 local specWarnCausticPhlegm				= mod:NewSpecialWarningCount(1246621, nil, nil, nil, 2, 2, nil, nil, "aesoon")
 local specWarnRendingTear				= mod:NewSpecialWarningDodgeCount(1272726, nil, nil, nil, 2, 2, nil, nil, "frontal")
 local specWarnCorruptedDevastation		= mod:NewSpecialWarningDodgeCount(1245452, nil, nil, nil, 2, 2, nil, nil, "breathsoon")
@@ -78,7 +78,7 @@ local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	if not dontSetAlerts then
 		specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3, 0)
-		specWarnRiftEmergence:SetAlert(49, "mobsoon", 2, 2)
+		warnRiftEmergence:SetAlert(49, "mobsoon", 2, 2)
 		specWarnCausticPhlegm:SetAlert(50, "aesoon", 2, 2)
 		specWarnRendingTear:SetAlert(51, "frontal", 15, 2)
 		specWarnCorruptedDevastation:SetAlert({53,458}, "breathsoon", 2, 2, 0)
@@ -442,8 +442,7 @@ do
 					specWarnRendingTear:Show(eventCount)
 					specWarnRendingTear:Play("frontal")
 				elseif eventType == "rift" then
-					specWarnRiftEmergence:Show(eventCount)
-					specWarnRiftEmergence:Play("mobsoon")
+					warnRiftEmergence:Show(eventCount)
 				elseif eventType == "phlegm" then
 					specWarnCausticPhlegm:Show(eventCount)
 					specWarnCausticPhlegm:Play("aesoon")

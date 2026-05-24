@@ -18,6 +18,7 @@ DBM:RegisterAltSpellName(1262776, DBM_COMMON_L.ADDS)--Shadow's Advance -> Adds
 DBM:RegisterAltSpellName(1249251, DBM_COMMON_L.AOEDAMAGE)--Dark Upheaval -> AoE
 DBM:RegisterAltSpellName(1249265, DBM_COMMON_L.GROUPSOAK)--Umbral Collapse -> Group Soak
 DBM:RegisterAltSpellName(1260712, DBM_COMMON_L.ORBS)--Oblivion's Wrath -> Orbs
+DBM:RegisterAltSpellName(1280023, DBM_COMMON_L.DEBUFFS)--Void Mark -> Debuffs
 local specWarnShadowsAdvance			= mod:NewSpecialWarningCount(1262776, nil, nil, nil, 2, 2, nil, nil, "mobsoon")
 local specWarnDarkUpheaval				= mod:NewSpecialWarningCount(1249251, nil, nil, nil, 2, 2, nil, nil, "aesoon")
 local specWarnUmbralCollapse			= mod:NewSpecialWarningCount(1249265, nil, nil, nil, 2, 2, nil, nil, "gathershare")
@@ -30,7 +31,7 @@ local timerShadowsAdvanceCD				= mod:NewCDCountTimer("d20.5", 1262776, nil, nil,
 local timerDarkUpheavalCD				= mod:NewCDCountTimer(20.5, 1249251, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerUmbralCollapseCD				= mod:NewCDCountTimer("d20.5", 1249265, nil, nil, nil, 3)
 local timerOblivionWrathCD				= mod:NewCDCountTimer(20.5, 1260712, nil, nil, nil, 3)
-local timerVoidFallCD					= mod:NewCDCountTimer(20.5, 1258880, nil, nil, nil, 2)--Shortname "Knockback"
+local timerVoidFallCD					= mod:NewCDCountTimer(20.5, 1258880, nil, nil, nil, 2)
 local timerVoidMarkCD					= mod:NewCDCountTimer(20.5, 1280023, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.MAGIC_ICON)
 
 mod:AddPrivateAuraSoundOption({1249265,1260203}, true, 1249265, 1, 2, "helpsoak", 2)--Umbral Collapse

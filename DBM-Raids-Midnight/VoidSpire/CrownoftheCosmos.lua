@@ -25,6 +25,8 @@ DBM:RegisterAltSpellName(1232470, 367465)--Grasp of Emptiness -> Grasp
 DBM:RegisterAltSpellName(1233865, DBM_COMMON_L.HEALABSORB)--Null Corona -> Heal Absorb
 DBM:RegisterAltSpellName(1237837, DBM_COMMON_L.ADDS)--Call of the Void -> Adds
 DBM:RegisterAltSpellName(1243753, DBM_COMMON_L.AVOID)--Ravenous Abyss -> Avoid
+DBM:RegisterAltSpellName(1246461, DBM_COMMON_L.TANKBUSTER)--Rift Slash -> Tank Buster
+DBM:RegisterAltSpellName(1233787, 28405)--Dark Hand -> Knockback
 local warnSilverStrikeArrow				= mod:NewCountAnnounce(1233602, 2)--P1/P3
 local warnNullCorona					= mod:NewCountAnnounce(1233865, 2, nil, "Healer")--P1+
 local warnRiftSimulacrum				= mod:NewCountAnnounce(1261016, 2)--P2 Starting
