@@ -106,6 +106,7 @@ if DBM:IsRetail() then
 
 	local area1c = DBM_GUI.CAT_TOOLS:CreateArea(L.Panel_ExtraFeatures)
 	area1c:CreateCheckButton(L.Tools_ShowKeystoneOnComplete, true, nil, "ShowKeystoneOnComplete")
+	area1c:CreateCheckButton(L.Tools_OverrideKeystoneSlash, true, nil, "OverrideKeystoneSlash")
 end
 
 local area2 = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_BreakTimer)

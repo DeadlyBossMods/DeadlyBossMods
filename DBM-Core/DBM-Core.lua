@@ -446,6 +446,7 @@ DBM.DefaultOptions = {
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowBrezFrame = false,
 	ShowKeystoneOnComplete = true,
+	OverrideKeystoneSlash = false,
 	BrezFont = "standardFont",
 	BrezFontSize = 18,
 	BattleRezPosition = {"TOPLEFT", 214, -29},

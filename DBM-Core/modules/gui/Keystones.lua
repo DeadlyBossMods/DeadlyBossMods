@@ -523,6 +523,33 @@ function Keystones:Hide()
 	frame:Hide()
 end
 
+local function delayedKeySlashCheck()
+	-- To note, no other addon gives a crap about intentionally deleting slash commands of other addons
+	-- We're the only ones that actually check first, even for addons that added feature long after us like EllesmereUI
+	local hasFreeSlash = false
+	local overrideSlash = DBM.Options.OverrideKeystoneSlash
+	--Don't override Details
+	if not SLASH_KEYSTONE1 or overrideSlash then
+		hasFreeSlash = true
+		SLASH_KEYSTONE1 = '/keystone'
+	end
+	--Don't override Details or EllesmereUI
+	if (not SLASH_KEYSTONE2 and not SLASH_EUIKEYS1) or overrideSlash then
+		hasFreeSlash = true
+		SLASH_KEYSTONE2 = '/keys'
+	end
+	--Don't override Details or EllesmereUI
+	if (not SLASH_KEYSTONE3 and not SLASH_EUIKEYS3) or overrideSlash then
+		hasFreeSlash = true
+		SLASH_KEYSTONE3 = '/key'
+	end
+	if hasFreeSlash then
+		SlashCmdList["KEYSTONE"] = function()
+			Keystones:Show()
+		end
+	end
+end
+
 frame:SetScript('OnEvent', function(_, event, arg1, arg2)
 	if event == 'UNIT_CONNECTION' then
 		if selectedTab == 1 and arg2 then -- isConnected
@@ -535,16 +562,11 @@ frame:SetScript('OnEvent', function(_, event, arg1, arg2)
 				keys = {}
 			}
 		end
-		-- Once we're fully logged in, check if nobody has a keystone command, and then inject ours
-		-- We can't check SLASH_KEYSTONE3 because BigWigs murders it
-		if not SLASH_KEYSTONE1 and not SLASH_KEYSTONE2 then
-			SLASH_KEYSTONE1 = '/keystone'
-			SLASH_KEYSTONE2 = '/keys'
-			SLASH_KEYSTONE3 = '/key'
-			SlashCmdList["KEYSTONE"] = function()
-				Keystones:Show()
-			end
-		end
+		C_Timer.After(1, function()
+			--Intentionally delay so addons after we load register their slash first
+			--Larger delay because I don't know evert addon registering slash commands on PLAYER_ENTERING_WORLD
+			delayedKeySlashCheck()
+		end)
 		UpdateKeystones()
 	elseif event == 'PLAYER_INTERACTION_MANAGER_FRAME_HIDE' then
 		if arg1 == 3 or arg1 == 49 then
