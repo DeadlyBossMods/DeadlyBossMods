@@ -25,8 +25,8 @@ CL.TANK				= "Tanque"--Such as "Move to Tank"
 CL.UNKNOWN			= "Desconhecido"--UNKNOWN which is "Unknown" (does u vs U matter?)
 
 --Movements/Places
-CL.BACK				= "Atrás"--Back as in back of the room, not back as in body part
-CL.BEHIND			= "Detrás"
+CL.BACK				= "De trás"--Back as in back of the room, not back as in body part
+CL.BEHIND			= "Atrás"
 CL.BOTH				= "Ambos"
 CL.BOTTOM			= "Fundo"
 CL.CENTER			= "Meio"
