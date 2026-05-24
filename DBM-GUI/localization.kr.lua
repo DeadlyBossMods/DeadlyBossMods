@@ -31,6 +31,7 @@ L.Tools_PizzaTimer					= "일반 타이머 시작"
 L.Tools_BrezArea					= "전투 부활 타이머"
 L.Tools_ShowBrezFrame				= "보스전 및 신화+ 던전에서 남은 전투 부활 창을 표시합니다."
 L.Tools_ShowKeystoneOnComplete		= "신화+가 완료되면 쐐기돌 창 자동 표시"
+L.Tools_OverrideKeystoneSlash		= "쐐기돌 프레임 슬래시 명령어(/keystone, /keys, /key) 독점 사용\n(알림: 이 옵션을 체크하지 않으면 DBM은 다른 애드온보다 우선해서 명령어에 할당을 시도하지 않습니다. 그러나 다른 애드온 중에 해당 명령어를 사용하는 것이 없다면 DBM이 일단 등록은 해놓을 것입니다)"
 
 L.Tools_Duration					= "지속시간"
 L.Tools_Message						= "타이머 메시지"
