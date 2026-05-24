@@ -33,6 +33,7 @@ L.Tools_PizzaTimer					= "Start Generic Timer"
 L.Tools_BrezArea					= "Battle Res Timer"
 L.Tools_ShowBrezFrame				= "Show Battle Res charges frame during boss encounters and Mythic+ dungeons"
 L.Tools_ShowKeystoneOnComplete		= "Auto show Keystone frame when a Mythic+ run is completed"
+L.Tools_OverrideKeystoneSlash		= "Override slash commands for Keystone frame (/keystone, /keys, and /key)\n(Note: DBM will attempt to never override any of these for other addons if this isn't checked. However DBM will register these if any of them are unused)"
 
 L.Tools_Duration					= "Duration"
 L.Tools_Message						= "Timer Message"

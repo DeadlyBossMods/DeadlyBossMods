@@ -446,6 +446,7 @@ DBM.DefaultOptions = {
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowBrezFrame = false,
 	ShowKeystoneOnComplete = true,
+	OverrideKeystoneSlash = false,
 	BrezFont = "standardFont",
 	BrezFontSize = 18,
 	BattleRezPosition = {"TOPLEFT", 214, -29},
@@ -8016,6 +8017,18 @@ end
 ----------------------------
 do
 	local bossNames, bossIcons = {}, {}
+	local function updateBossHealthCache(cIdOrGUID, hp, onlyHighest)
+		local cachedHp = bossHealth[cIdOrGUID]
+		if onlyHighest then
+			if not cachedHp or hp > cachedHp then
+				bossHealth[cIdOrGUID] = hp
+			end
+		else
+			if not cachedHp or hp < cachedHp then
+				bossHealth[cIdOrGUID] = hp
+			end
+		end
+	end
 
 	---This accepts both CID and GUID which makes switching to UnitPercentHealthFromGUID and UnitTokenFromGUID not as cut and dry
 	---@param self DBMModOrDBM
@@ -8029,9 +8042,7 @@ do
 			if (self:GetCIDFromGUID(guid) == cIdOrGUID or guid == cIdOrGUID) and UnitHealthMax(uId) ~= 0 then
 				if bossHealth[cIdOrGUID] and (UnitHealth(uId) == 0 and not UnitIsDead(uId)) then return bossHealth[cIdOrGUID], uId, UnitName(uId) end--Return last non 0 value if value is 0, since it's last valid value we had.
 				local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
-				if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-					bossHealth[cIdOrGUID] = hp
-				end
+				updateBossHealthCache(cIdOrGUID, hp, onlyHighest)
 				bossNames[cIdOrGUID] = UnitName(uId)
 				bossIcons[cIdOrGUID] = GetRaidTargetIndex(uId)
 				return hp, uId, UnitName(uId)
@@ -8039,9 +8050,7 @@ do
 			elseif not private.isClassic and ((self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0) then
 				if bossHealth[cIdOrGUID] and (UnitHealth("focus") == 0 and not UnitIsDead("focus")) then return bossHealth[cIdOrGUID], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
 				local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
-				if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-					bossHealth[cIdOrGUID] = hp
-				end
+				updateBossHealthCache(cIdOrGUID, hp, onlyHighest)
 				bossNames[cIdOrGUID] = UnitName("focus")
 				bossIcons[cIdOrGUID] = GetRaidTargetIndex("focus")
 				return hp, "focus", UnitName("focus")
@@ -8054,9 +8063,7 @@ do
 						if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitID) ~= 0 then
 							if bossHealth[cIdOrGUID] and (UnitHealth(unitID) == 0 and not UnitIsDead(unitID)) then return bossHealth[cIdOrGUID], unitID, UnitName(unitID) end--Return last non 0 value if value is 0, since it's last valid value we had.
 							local hp = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
-							if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-								bossHealth[cIdOrGUID] = hp
-							end
+							updateBossHealthCache(cIdOrGUID, hp, onlyHighest)
 							bossHealthuIdCache[cIdOrGUID] = unitID
 							bossNames[cIdOrGUID] = UnitName(unitID)
 							bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitID)
@@ -8072,9 +8079,7 @@ do
 					if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
 						if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
 						local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
-						if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-							bossHealth[cIdOrGUID] = hp
-						end
+						updateBossHealthCache(cIdOrGUID, hp, onlyHighest)
 						bossHealthuIdCache[cIdOrGUID] = unitId
 						bossNames[cIdOrGUID] = UnitName(unitId)
 						bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitId)
@@ -8089,9 +8094,7 @@ do
 						if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
 							if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
 							local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
-							if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
-								bossHealth[cIdOrGUID] = hp
-							end
+							updateBossHealthCache(cIdOrGUID, hp, onlyHighest)
 							bossHealthuIdCache[cIdOrGUID] = unitId
 							bossNames[cIdOrGUID] = UnitName(unitId)
 							bossIcons[cIdOrGUID] = GetRaidTargetIndex(unitId)
