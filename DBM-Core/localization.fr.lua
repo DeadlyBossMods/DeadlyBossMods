@@ -471,8 +471,8 @@ L.AUTO_SPEC_WARN_OPTIONS.stack			= "Afficher une annonce spéciale lorsque vous 
 L.AUTO_SPEC_WARN_OPTIONS.switch 		= "Afficher une annonce spéciale de changer de cible pour $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.switchcount	= "Afficher une annonce spéciale (avec compte) de changer de cible pour $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.gtfo 			= "Afficher une annonce spéciale pour sortir de la zone des dégâts au sol"
-L.AUTO_SPEC_WARN_OPTIONS.adds 			= "Afficher une annonce spéciale pour changer de cibles pour les adds imminents"
-L.AUTO_SPEC_WARN_OPTIONS.addscount 		= "Afficher une annonce spéciale (avec compte) pour changer de cibles pour les adds imminents"
+L.AUTO_SPEC_WARN_OPTIONS.adds 			= "Afficher une annonce spéciale pour changer de cible pour les adds imminents"
+L.AUTO_SPEC_WARN_OPTIONS.addscount 		= "Afficher une annonce spéciale (avec compte) pour changer de cible pour les adds imminents"
 L.AUTO_SPEC_WARN_OPTIONS.addscustom 	= "Afficher une annonce spéciale pour les adds imminents"
 L.AUTO_SPEC_WARN_OPTIONS.targetchange 	= "Afficher une annonce spéciale pour les changements de cible prioritaires"
 
