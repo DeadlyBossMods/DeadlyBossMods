@@ -1,4 +1,4 @@
-## Interface: 120005
+## Interface: 120005, 120007
 ## Category: DBM
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffBrawlers|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cff4565ffБойцовская гильдия|r
@@ -30,7 +30,7 @@
 ## X-DBM-Mod-Name-itIT: Circolo dei Combattenti
 ## X-DBM-Mod-Sort: 217
 ## X-DBM-Mod-MapID: 369,1043
-## X-DBM-Mod-MinCoreRevision: 12473
+## X-DBM-Mod-MinCoreRevision: 20260522000000
 localization.en.lua
 localization.kr.lua
 localization.de.lua

@@ -15,38 +15,45 @@ mod:RegisterCombat("combat")
 local warnAuraofDevotion					= mod:NewCountAnnounce(1246162, 2)
 local warnZealousSpirit						= mod:NewCountAnnounce(1276243, 2)
 
-local specWarnAuraofPeace					= mod:NewSpecialWarningDodgeCount(1248451, nil, nil, nil, 2, 2)
-local specWarnSacredShield					= mod:NewSpecialWarningCount(1248674, nil, nil, nil, 2, 2)
+DBM:RegisterAltSpellName(1248721, DBM_COMMON_L.HEALABSORBS)--Tyr's Wrath -> Heal Absorbs
+DBM:RegisterAltSpellName(1248652, DBM_COMMON_L.DODGES)--Divine Toll -> Dodges
+DBM:RegisterAltSpellName(1246749, DBM_COMMON_L.AOEDAMAGE)--Sacred Toll -> AoE Damage
+DBM:RegisterAltSpellName(1276368, DBM_COMMON_L.GROUPSOAKS)--Execution Sentence -> Group Soaks
+DBM:RegisterAltSpellName(1251857, L.JudgementShield)--Judgement (Shield of the Righteous) -> localized shortname
+DBM:RegisterAltSpellName(1246736, L.JudgementFV)--Judgement (Final Verdict) -> localized shortname
+
+local specWarnAuraofPeace					= mod:NewSpecialWarningDodgeCount(1248451, nil, nil, nil, 2, 2, nil, nil, "peaceaura")
+local specWarnSacredShield					= mod:NewSpecialWarningCount(1248674, nil, nil, nil, 2, 2, nil, nil, "attackshield")
 --local specWarnElekkCharge					= mod:NewSpecialWarningDodge(1249130, nil, nil, nil, 2, 2)--Part of sacred shield
 --mod:GroupSpells(1248674, 1249130)--Sacred Shield + Elekk Charge
-local specWarnSearingRadiance				= mod:NewSpecialWarningCount(1255738, nil, nil, nil, 2, 2)
-local specWarnEmpoweredSearingRadiance		= mod:NewSpecialWarningCount(1276639, nil, nil, nil, 2, 2, 4)--Mythic empowered version
-local specWarnJudgementShield				= mod:NewSpecialWarningCount(1251857, nil, nil, L.JudgementShield, 2, 2)
-local specWarnDivineToll					= mod:NewSpecialWarningDodgeCount(1248652, nil, nil, DBM_COMMON_L.DODGES, 2, 2)
-local specWarnAuraofWrath					= mod:NewSpecialWarningCount(1248449, nil, nil, nil, 2, 2)
-local specWarnjudgementFinal				= mod:NewSpecialWarningCount(1246736, nil, nil, L.JudgementFV, 2, 2)
-local specWarnDivineStorm					= mod:NewSpecialWarningCount(1246765, "MeleeDps", nil, nil, 2, 2)--review default later
-local specWarnEmpoweredDivineStorm			= mod:NewSpecialWarningCount(1272310, "MeleeDps", nil, nil, 2, 2, 4)--Mythic empowered version
-local specWarnSacredToll					= mod:NewSpecialWarningCount(1246749, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
-local specWarnExecutionSentence				= mod:NewSpecialWarningSoakCount(1276368, nil, nil, DBM_COMMON_L.GROUPSOAKS, 2, 2)
+local specWarnSearingRadiance				= mod:NewSpecialWarningCount(1255738, nil, nil, nil, 2, 2, nil, nil, "aesoon")
+local specWarnEmpoweredSearingRadiance		= mod:NewSpecialWarningCount(1276639, nil, nil, nil, 2, 2, 4, nil, "aesoon")--Mythic empowered version
+local specWarnJudgementShield				= mod:NewSpecialWarningCount(1251857, nil, nil, nil, 2, 2, nil, nil, "changemt")
+local specWarnDivineToll					= mod:NewSpecialWarningDodgeCount(1248652, nil, nil, nil, 2, 2, nil, nil, "watchstep")
+local specWarnAuraofWrath					= mod:NewSpecialWarningCount(1248449, nil, nil, nil, 2, 2, nil, nil, "wrathaura")
+local specWarnjudgementFinal				= mod:NewSpecialWarningCount(1246736, nil, nil, nil, 2, 2, nil, nil, "changemt")
+local specWarnDivineStorm					= mod:NewSpecialWarningCount(1246765, "MeleeDps", nil, nil, 2, 2, nil, nil, "justrun")--review default later
+local specWarnEmpoweredDivineStorm			= mod:NewSpecialWarningCount(1272310, "MeleeDps", nil, nil, 2, 2, 4, nil, "justrun")--Mythic empowered version
+local specWarnSacredToll					= mod:NewSpecialWarningCount(1246749, nil, nil, nil, 2, 2, nil, nil, "aesoon")
+local specWarnExecutionSentence				= mod:NewSpecialWarningSoakCount(1276368, nil, nil, nil, 2, 2, nil, nil, "soakincoming")
 
 local timerAuraofPeaceCD					= mod:NewCDCountTimer(20.5, 1248451, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerSacredShieldCD					= mod:NewCDCountTimer(20.5, 1248674, nil, nil, nil, 5)
 --local timerElekkChargeCD					= mod:NewCDCountTimer(20.5, 1249130, nil, nil, nil, 3)--redundant
-local timerTyrsWrathCD						= mod:NewCDCountTimer(20.5, 1248721, DBM_COMMON_L.HEALABSORBS.." (%s)", "Healer", nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
+local timerTyrsWrathCD						= mod:NewCDCountTimer(20.5, 1248721, nil, "Healer", nil, 5, nil, DBM_COMMON_L.HEALER_ICON)
 local timerAuraofDevotionCD					= mod:NewCDCountTimer(20.5, 1246162, nil, nil, nil, 3, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerSearingRadianceCD				= mod:NewCDCountTimer(20.5, 1255738, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerEmpoweredSearingRadianceCD		= mod:NewCDCountTimer(20.5, 1276639, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.HEALER_ICON)
-local timerJudgementShieldCD				= mod:NewCDCountTimer(20.5, 1251857, L.JudgementShield.." (%s)", "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerJudgementShieldCD				= mod:NewCDCountTimer(20.5, 1251857, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerAvengerShieldCD					= mod:NewCDCountTimer(20.5, 1246485, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerEmpoweredAvengerShieldCD			= mod:NewCDCountTimer(20.5, 1276635, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.MAGIC_ICON)
-local timerDivineTollCD						= mod:NewCDCountTimer(20.5, 1248652, DBM_COMMON_L.DODGES.." (%s)", nil, nil, 3)
+local timerDivineTollCD						= mod:NewCDCountTimer(20.5, 1248652, nil, nil, nil, 3)
 local timerAuraofWrathCD					= mod:NewCDCountTimer(20.5, 1248449, nil, nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
-local timerjudgementFinalCD					= mod:NewCDCountTimer(20.5, 1246736, L.JudgementFV.." (%s)", "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerjudgementFinalCD					= mod:NewCDCountTimer(20.5, 1246736, nil, "Tank", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerDivineStormCD					= mod:NewCDCountTimer(20.5, 1246765, nil, nil, nil, 3)
 local timerEmpoweredDivineStormCD			= mod:NewCDCountTimer(20.5, 1272310, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerSacredTollCD						= mod:NewCDCountTimer(20.5, 1246749, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerExecutionSentenceCD				= mod:NewCDCountTimer(20.5, 1276368, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 3)
+local timerSacredTollCD						= mod:NewCDCountTimer(20.5, 1246749, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerExecutionSentenceCD				= mod:NewCDCountTimer(20.5, 1276368, nil, nil, nil, 3)
 local timerZealousSpiritCD					= mod:NewCDCountTimer("d20.5", 1276243, nil, nil, nil, 6, nil, DBM_COMMON_L.MYTHIC_ICON)
 
 mod:AddPrivateAuraSoundOption(1276982, true, 1276982, 1, 2, "watchfeet", 8)--Divine Consecration (mythic version) (drops under various auras)

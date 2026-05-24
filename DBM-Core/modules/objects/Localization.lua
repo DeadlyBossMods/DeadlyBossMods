@@ -104,11 +104,17 @@ local modLocalizations = {}
 function DBM:CreateModLocalization(name)
 	name = tostring(name)
 	local obj = {
+		---@type table<string, string>
 		general = setmetatable({}, returnKey),
+		---@type table<string, string>
 		warnings = setmetatable({}, defaultAnnounceLocalization),
+		---@type table<string, string>
 		options = setmetatable({}, defaultOptionLocalization),
+		---@type table<string, string>
 		timers = setmetatable({}, defaultTimerLocalization),
+		---@type table<string, string?>
 		miscStrings = setmetatable({}, defaultMiscLocalization),
+		---@type table<string, string>
 		cats = setmetatable({}, defaultCatLocalization),
 	}
 	setmetatable(obj, mt)

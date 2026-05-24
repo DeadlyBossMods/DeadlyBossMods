@@ -85,10 +85,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 415, "414c990"--415.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.51 alpha"--Core version
+DBM.DisplayVersion = "12.0.52 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 5, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 5, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -392,15 +392,6 @@ DBM.DefaultOptions = {
 	DontPlayPrivateAuraSound = false,
 	DontShowPrivateAuraFrame = false,
 	DontPlayTrivialSpecialWarningSound = true,
-	SpamSpecInformationalOnly = false,
-	SpamSpecRoledispel = false,
-	SpamSpecRoleinterrupt = false,
-	SpamSpecRoledefensive = false,
-	SpamSpecRoletaunt = false,
-	SpamSpecRolesoak = false,
-	SpamSpecRolestack = false,
-	SpamSpecRoleswitch = false,
-	SpamSpecRolegtfo = false,
 	DontShowBossTimers = false,
 	DontShowTrashTimers = false,
 	DontShowEventTimers = false,
@@ -1278,20 +1269,27 @@ do
 	bossModPrototype.NormalizeSpellRenameKey = DBM.NormalizeSpellRenameKey
 
 	---Function for Registering Spell Renames/ShortText to original spellIDs
-	---@param spellId number|string Original spellID of spell and not alternate ID
-	---@param AltName string Custom name used for the spell and not alternateID
+	---@param spellId number Original spellID of spell and not alternate ID
+	---@param AltName string|number Custom name used for the spell or alternate spellID
 	function DBM:RegisterAltSpellName(spellId, AltName)
 		--Protection against internal and external misuse
 		--Also filters spellIds 0-5 which are typically not real spellids such as phase announces or spell-less timer objects
 		spellId = normalizeSpellRenameKey(spellId)
-		if isValidSpellRenameKey(spellId) and AltName and type(AltName) == "string" then
-			if type(spellId) ~= "number" then
-				return
+		if not isValidSpellRenameKey(spellId) or AltName == nil or type(spellId) ~= "number" then
+			return
+		end
+		local resolvedAltName
+		if type(AltName) == "string" then
+			resolvedAltName = sanitizeSpellRenameText(AltName)
+		elseif type(AltName) == "number" then
+			local alternateSpellId = normalizeSpellRenameKey(AltName)
+			if type(alternateSpellId) == "number" then
+				resolvedAltName = sanitizeSpellRenameText(DBM:ParseSpellName(alternateSpellId))
 			end
-			if not legacyAltSpellNamesByspellId[spellId] then
-				legacyAltSpellNamesByspellId[spellId] = AltName
-				refreshSpellRenameCache(false)
-			end
+		end
+		if resolvedAltName and not legacyAltSpellNamesByspellId[spellId] then
+			legacyAltSpellNamesByspellId[spellId] = resolvedAltName
+			refreshSpellRenameCache(false)
 		end
 	end
 	---Function for providing Plater and other addons access to Spell Renames/ShortText

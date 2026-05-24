@@ -778,6 +778,9 @@ local function triggerAbilityTestAnnounce(object)
 		else
 			object:Show(1)
 		end
+		if object.voiceFile and object.Play then
+			object:Play(object.voiceFile)
+		end
 		return true
 	end
 	return false

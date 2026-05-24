@@ -12,29 +12,35 @@ mod:RegisterCombat("combat")
 
 --NOTE, https://www.wowhead.com/spell=1245771/corrupted-feathers has event ID ono boss but isn't in journal, possibly pre boss trash mechanic
 --NOTE, https://www.wowhead.com/spell=1262616/retched-acid not in journal (208)
---NOTE, https://www.wowhead.com/spell=1280127/stage-two also exists, but based on most recent testing blizzard uses consume for p2 and not this bar anymore
---local warnAlndustUpheaval				= mod:NewBlizzTargetAnnounce(1262289, 2)
+DBM:RegisterAltSpellName(1245404, 218027)--Ravenous Dive -> Dive
+DBM:RegisterAltSpellName(1245452, 17088)--Corrupted Devastation -> Breath
+DBM:RegisterAltSpellName(1251021, DBM_COMMON_L.ADDS)--Rift Emergence -> Adds
+DBM:RegisterAltSpellName(1246621, DBM_COMMON_L.AOEDAMAGE)--Caustic Phlegm -> AoE
+DBM:RegisterAltSpellName(1272726, DBM_COMMON_L.FRONTAL)--Rending Tear -> Frontal
+DBM:RegisterAltSpellName(1262289, DBM_COMMON_L.GROUPSOAK)--Alndust Upheaval -> Group Soak
+DBM:RegisterAltSpellName(1257087, DBM_COMMON_L.DISPELS)--Consuming Miasma -> Dispels
+DBM:RegisterAltSpellName(1264780, DBM_COMMON_L.PLAYERSWAPS)--Rift Madness -> Player Swaps
+local warnRiftEmergence					= mod:NewCountAnnounce(1251021, 2)
 
-local specWarnRavenousDive				= mod:NewSpecialWarningCount(1245404, nil, 218027, nil, 2, 2)
-local specWarnRiftEmergence				= mod:NewSpecialWarningCount(1251021, nil, nil, DBM_COMMON_L.ADDS, 2, 2)
-local specWarnCausticPhlegm				= mod:NewSpecialWarningCount(1246621, nil, nil, DBM_COMMON_L.AOEDAMAGE, 2, 2)
-local specWarnRendingTear				= mod:NewSpecialWarningDodgeCount(1272726, nil, nil, DBM_COMMON_L.FRONTAL, 2, 2)
-local specWarnCorruptedDevastation		= mod:NewSpecialWarningDodgeCount(1245452, nil, 17088, nil, 2, 2)
-local specWarnFearsomecry				= mod:NewSpecialWarningInterrupt(1249017, "HasInterrupt", nil, nil, 1, 2)--Add alert
-local specWarnDiscordantRoar			= mod:NewSpecialWarningCount(1245451, false, nil, nil, 2, 2)--Add alert (evalulate default by cast frequency)
-local specWarnAlndustUpheaval			= mod:NewSpecialWarningBlizzTarget(1262289, nil, nil, DBM_COMMON_L.GROUPSOAK, 2, 2)
-local specWarnConsume					= mod:NewSpecialWarningCount(1245396, nil, nil, nil, 2, 2)
-local specWarnCannibalized				= mod:NewSpecialWarningSpell(1245844, nil, nil, nil, 1, 2)--Basically screwing up the add killing
+local specWarnRavenousDive				= mod:NewSpecialWarningCount(1245404, nil, nil, nil, 2, 2, nil, nil, "phasechange")
+local specWarnCausticPhlegm				= mod:NewSpecialWarningCount(1246621, nil, nil, nil, 2, 2, nil, nil, "aesoon")
+local specWarnRendingTear				= mod:NewSpecialWarningDodgeCount(1272726, nil, nil, nil, 2, 2, nil, nil, "frontal")
+local specWarnCorruptedDevastation		= mod:NewSpecialWarningDodgeCount(1245452, nil, nil, nil, 2, 2, nil, nil, "breathsoon")
+local specWarnFearsomecry				= mod:NewSpecialWarningInterrupt(1249017, "HasInterrupt", nil, nil, 1, 2, nil, nil, "kickcast")--Add alert
+local specWarnDiscordantRoar			= mod:NewSpecialWarningCount(1245451, false, nil, nil, 2, 2, nil, nil, "aesoon")--Add alert (evalulate default by cast frequency)
+local specWarnAlndustUpheaval			= mod:NewSpecialWarningBlizzTarget(1262289, nil, nil, nil, 2, 2, nil, nil, "soakincoming")
+local specWarnConsume					= mod:NewSpecialWarningCount(1245396, nil, nil, nil, 2, 2, nil, nil, "aesoon")
+local specWarnCannibalized				= mod:NewSpecialWarningSpell(1245844, nil, nil, nil, 1, 2, nil, nil, "stilldanger")--Basically screwing up the add killing
 mod:GroupSpells(1245396, 1245844)--Group Cannibalized with Consume
 
-local timerRavenousDiveCD				= mod:NewCDCountTimer(20.5, 1245404, 218027, nil, nil, 6)--Stage 1 bar, shortname "Dive"
-local timerRiftEmergenceCD				= mod:NewCDCountTimer(20.5, 1251021, DBM_COMMON_L.ADDS.." (%s)", nil, nil, 1)
-local timerCausticPhlegmCD				= mod:NewCDCountTimer(20.5, 1246621, DBM_COMMON_L.AOEDAMAGE.." (%s)", nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerRendingTearCD				= mod:NewCDCountTimer(20.5, 1272726, DBM_COMMON_L.FRONTAL.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)
-local timerCorruptedDevastationCD		= mod:NewCDCountTimer(20.5, 1245452, 17088, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname Breath
+local timerRavenousDiveCD				= mod:NewCDCountTimer(20.5, 1245404, nil, nil, nil, 6)--Stage 1 bar, shortname "Dive"
+local timerRiftEmergenceCD				= mod:NewCDCountTimer(20.5, 1251021, nil, nil, nil, 1)
+local timerCausticPhlegmCD				= mod:NewCDCountTimer(20.5, 1246621, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
+local timerRendingTearCD				= mod:NewCDCountTimer(20.5, 1272726, nil, nil, nil, 3, nil, DBM_COMMON_L.BLEED_ICON)
+local timerCorruptedDevastationCD		= mod:NewCDCountTimer(20.5, 1245452, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname Breath
 --local timerFearsomecryCD				= mod:NewCDCountTimer(20.5, 1249017, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
-local timerConsumingMiasmaCD			= mod:NewCDCountTimer(20.5, 1257087, DBM_COMMON_L.DISPELS.." (%s)", nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--Heroic+Mythic only
-local timerAlndustUpheavalCD			= mod:NewCDCountTimer(20.5, 1262289, DBM_COMMON_L.GROUPSOAK.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
+local timerConsumingMiasmaCD			= mod:NewCDCountTimer(20.5, 1257087, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)--Heroic+Mythic only
+local timerAlndustUpheavalCD			= mod:NewCDCountTimer(20.5, 1262289, nil, nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerRiftMadnessCD				= mod:NewNextTimer(20.5, 1264780, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
 local timerConsumeCD					= mod:NewCDCountTimer(20.5, 1245396, nil, nil, 2, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerStage2CD						= mod:NewCDTimer(20.5, 1280127, nil, nil, nil, 6)--Hardcoded stage 2 timer for when blizz doesn't provide consume timers in stage 2, or provides them with wrong timers. Will be removed if blizz provides accurate consume timers in stage 2
@@ -72,7 +78,7 @@ local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	if not dontSetAlerts then
 		specWarnRavenousDive:SetAlert(48, "phasechange", 2, 3, 0)
-		specWarnRiftEmergence:SetAlert(49, "mobsoon", 2, 2)
+		warnRiftEmergence:SetAlert(49, "mobsoon", 2, 2)
 		specWarnCausticPhlegm:SetAlert(50, "aesoon", 2, 2)
 		specWarnRendingTear:SetAlert(51, "frontal", 15, 2)
 		specWarnCorruptedDevastation:SetAlert({53,458}, "breathsoon", 2, 2, 0)
@@ -436,8 +442,7 @@ do
 					specWarnRendingTear:Show(eventCount)
 					specWarnRendingTear:Play("frontal")
 				elseif eventType == "rift" then
-					specWarnRiftEmergence:Show(eventCount)
-					specWarnRiftEmergence:Play("mobsoon")
+					warnRiftEmergence:Show(eventCount)
 				elseif eventType == "phlegm" then
 					specWarnCausticPhlegm:Show(eventCount)
 					specWarnCausticPhlegm:Play("aesoon")

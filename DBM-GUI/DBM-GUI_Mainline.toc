@@ -1,4 +1,4 @@
-## Interface: 120005
+## Interface: 120005, 120007
 ## Category: DBM
 ## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Options GUI|r
@@ -77,7 +77,6 @@ modules\options\timers\PBC.lua
 modules\options\filters\Filters.lua
 modules\options\filters\GlobalDisables.lua
 modules\options\filters\Reduction.lua
-modules\options\filters\Handholding.lua
 modules\options\filters\HideBlizzard.lua
 modules\options\filters\RaidLeaderDisable.lua
 modules\options\filters\Privacy.lua
