@@ -16,45 +16,56 @@ mod:RegisterCombat("combat")
 --TODO, switch to https://www.wowhead.com/spell=1249609/dark-rune event if PAs get disabled (and they probably will be once players figure out which is which) ID 650
 --TODO, add PAs for https://www.wowhead.com/beta/spell=1286294/grim-symphony and https://www.wowhead.com/beta/spell=1284984/grim-symphony ? they seem to overlap with dark runes though
 --TODO, figure out which torchbearer is which. One is for player holding it and one is for standing near them i'm pretty sure
+DBM:RegisterAltSpellName(1253915, 289465)--Heaven's Glaives -> Glaives
+DBM:RegisterAltSpellName(1249620, L.MemoryGame)--Death's Dirge -> Memory Game
+DBM:RegisterAltSpellName(1251386, DBM_COMMON_L.INTERRUPTS)--Safeguarded Prism -> Interrupts
+DBM:RegisterAltSpellName(1267049, 361324)--Heaven's Lance -> Lance
+DBM:RegisterAltSpellName(1261871, DBM_COMMON_L.INTERMISSION)--Total Eclipse -> Intermission
+DBM:RegisterAltSpellName(1273158, L.MemoryGame)--Death's Requiem -> Memory Game
+DBM:RegisterAltSpellName(1279420, 207544)--Dark Quasar -> Beams
+DBM:RegisterAltSpellName(1284931, DBM_COMMON_L.INTERRUPTS)--Termination Prism -> Interrupts
+DBM:RegisterAltSpellName(1284980, L.MemoryGame)--Grim Symphony -> Memory Game
+DBM:RegisterAltSpellName(1281194, 1273378)--Dark Meltdown -> Stage Three
+DBM:RegisterAltSpellName(1266897, DBM_COMMON_L.GROUPSOAKS)--Light Siphon -> Group Soaks
 local warnTotalEclipse				= mod:NewSpellAnnounce(1261871, 2)--Intermission 1.5 Start
 
 local specWarnHeavensLance			= mod:NewSpecialWarningCount(1267049, nil, nil, nil, 1, 2, nil, nil, "defensive")--Stage 1 tank ability
-local specWarnDeathsDirge			= mod:NewSpecialWarningCount(1249620, nil, nil, L.MemoryGame, 2, 2, nil, nil, "runesincoming")
-local specWarnHeavensGlaives		= mod:NewSpecialWarningCount(1253915, nil, 289465, nil, 2, 2, nil, nil, "watchstep")
-local specWarnSafeguaredPrism		= mod:NewSpecialWarningSwitchCount(1251386, nil, nil, DBM_COMMON_L.INTERRUPTS, 1, 2, nil, nil, "targetchange")
+local specWarnDeathsDirge			= mod:NewSpecialWarningCount(1249620, nil, nil, nil, 2, 2, nil, nil, "runesincoming")
+local specWarnHeavensGlaives		= mod:NewSpecialWarningCount(1253915, nil, nil, nil, 2, 2, nil, nil, "watchstep")
+local specWarnSafeguaredPrism		= mod:NewSpecialWarningSwitchCount(1251386, nil, nil, nil, 1, 2, nil, nil, "targetchange")
 local specWarnShatteredSky			= mod:NewSpecialWarningCount(1249796, nil, nil, nil, 2, 2, nil, nil, "aesoon")
 local specWarnLightSiphon			= mod:NewSpecialWarningCount(1266897, nil, nil, nil, 2, 2, nil, nil, "lightrifts")--Stage 3 ability
 local specWarnDarkConstellation		= mod:NewSpecialWarningCount(1266388, nil, nil, nil, 2, 2, nil, nil, "watchstep")--Stage 3 ability
 local specWarnDarkArchangel			= mod:NewSpecialWarningCount(1250898, nil, nil, nil, 3, 2, nil, nil, "findshield")--Stage 3 ability
-local specWarnDeathsRequiem			= mod:NewSpecialWarningCount(1273158, nil, nil, L.MemoryGame, 2, 2, nil, nil, "runesincoming")--Stage 3 ability
+local specWarnDeathsRequiem			= mod:NewSpecialWarningCount(1273158, nil, nil, nil, 2, 2, nil, nil, "runesincoming")--Stage 3 ability
 local specWarnSeverance				= mod:NewSpecialWarningSpell(1276202, nil, nil, nil, 2, 2, 4, nil, "raidsplit")--Stage 3 mythic ability
 local specWarnIntoDarkwell			= mod:NewSpecialWarningSpell(1282047, nil, nil, nil, 2, 2, nil, nil, "pullin")--Stage 2 Start
 local specWarnCosmicFission			= mod:NewSpecialWarningCount(1282249, nil, nil, nil, 2, 2, nil, nil, "pullin")--Stage 2 triggered ability (not timer one)
 local specWarnCoreHarvest			= mod:NewSpecialWarningCount(1282412, nil, nil, nil, 2, 2, nil, nil, "farfromline")--Stage 2 ability
 local specWarnDarkMeltdown			= mod:NewSpecialWarningSpell(1281194, nil, nil, nil, 2, 2, nil, nil, "carefly")--Stage 2 End
-local specWarnTerminationPrism		= mod:NewSpecialWarningSwitchCount(1284931, nil, nil, DBM_COMMON_L.INTERRUPTS, 2, 2, 4, nil, "targetchange")--Stage 1 Mythic version of Safeguarded Prism
-local specWarnGrimSymphony			= mod:NewSpecialWarningCount(1284980, nil, nil, L.MemoryGame, 2, 2, 4, nil, "runesincoming")--Stage 1 Mythic version of DeathsDirge
-local specWarnDarkQuasar			= mod:NewSpecialWarningCount(1279420, nil, 207544, nil, 2, 2, nil, nil, "watchstep")--Stage 1 ability
+local specWarnTerminationPrism		= mod:NewSpecialWarningSwitchCount(1284931, nil, nil, nil, 2, 2, 4, nil, "targetchange")--Stage 1 Mythic version of Safeguarded Prism
+local specWarnGrimSymphony			= mod:NewSpecialWarningCount(1284980, nil, nil, nil, 2, 2, 4, nil, "runesincoming")--Stage 1 Mythic version of DeathsDirge
+local specWarnDarkQuasar			= mod:NewSpecialWarningCount(1279420, nil, nil, nil, 2, 2, nil, nil, "watchstep")--Stage 1 ability
 
-local timerDeathsDirgeCD			= mod:NewCDCountTimer(20.5, 1249620, L.MemoryGame.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
-local timerHeavensGlaivesCD			= mod:NewCDCountTimer(20.5, 1253915, 289465, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortnmae "Glaives"
-local timerSafeguaredPrismCD		= mod:NewCDCountTimer(20.5, 1251386, DBM_COMMON_L.INTERRUPTS.." (%s)", nil, 2, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
+local timerDeathsDirgeCD			= mod:NewCDCountTimer(20.5, 1249620, nil, nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
+local timerHeavensGlaivesCD			= mod:NewCDCountTimer(20.5, 1253915, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Shortname "Glaives"
+local timerSafeguaredPrismCD		= mod:NewCDCountTimer(20.5, 1251386, nil, nil, 2, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerShatteredSkyCD			= mod:NewCDCountTimer(20.5, 1249796, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
-local timerTotalEclipseCD			= mod:NewCDTimer(60, 1261871, DBM_COMMON_L.INTERMISSION, nil, nil, 6, nil, DBM_COMMON_L.IMPORTANT_ICON)--Stage 1.5 intermisison start
-local timerLightSiphonCD			= mod:NewCDCountTimer(20.5, 1266897, DBM_COMMON_L.GROUPSOAKS.." (%s)", nil, nil, 5)--Stage 3
+local timerTotalEclipseCD			= mod:NewCDTimer(60, 1261871, nil, nil, nil, 6, nil, DBM_COMMON_L.IMPORTANT_ICON)--Stage 1.5 intermission start
+local timerLightSiphonCD			= mod:NewCDCountTimer(20.5, 1266897, nil, nil, nil, 5)--Stage 3
 local timerDarkConstellationCD		= mod:NewCDCountTimer(20.5, 1266388, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 3
 local timerDarkArchangelCD			= mod:NewCDCountTimer(20.5, 1250898, nil, nil, 2, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 3
-local timerDeathsRequiemCD			= mod:NewCDCountTimer(20.5, 1273158, L.MemoryGame.." (%s)", nil, nil, 3)--Stage 3
+local timerDeathsRequiemCD			= mod:NewCDCountTimer(20.5, 1273158, nil, nil, nil, 3)--Stage 3
 local timerSeveranceCD				= mod:NewCDTimer(20.5, 1276202, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Stage 3 mythic
-local timerHeavensLanceCD			= mod:NewCDCountTimer(20.5, 1267049, 361324, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname Lance
+local timerHeavensLanceCD			= mod:NewCDCountTimer(20.5, 1267049, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Shortname Lance
 local timerIntoDarkwellCD			= mod:NewCDTimer(60, 1282047, nil, nil, nil, 6, nil, DBM_COMMON_L.IMPORTANT_ICON)--Stage 2 Start
 local timerCoreHarvestCD			= mod:NewCDCountTimer(20.5, 1282412, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Stage 2
-local timerDarkMeltdownCD			= mod:NewCDTimer(20.5, 1281194, 1273378, nil, nil, 2)--Stage 2 (timer for stage 3 begin). Shorttest "Stage Three"
+local timerDarkMeltdownCD			= mod:NewCDTimer(20.5, 1281194, nil, nil, nil, 2)--Stage 2 (timer for stage 3 begin). Shorttext "Stage Three"
 local timerStarSplinterCD			= mod:NewCDCountTimer(20.5, 1282441, nil, nil, nil, 3)--Stage 1.5 intermission
 local timerGalvanizeCD				= mod:NewCDCountTimer(20.5, 1284525, nil, nil, nil, 2)--Stage 2 Core ability (so maybe no timer?)
-local timerTerminationPrismCD		= mod:NewCDCountTimer(20.5, 1284931, DBM_COMMON_L.INTERRUPTS.." (%s)", nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.INTERRUPT_ICON)--Stage 1 mythic
-local timerGrimSymphonyCD			= mod:NewCDCountTimer(20.5, 1284980, L.MemoryGame.." (%s)", nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)--Stage 1 mythic version of DeathsDirge
-local timerDarkQuasarCD				= mod:NewCDCountTimer(20.5, 1279420, 207544, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 1 (shortname "Beams")
+local timerTerminationPrismCD		= mod:NewCDCountTimer(20.5, 1284931, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.INTERRUPT_ICON)--Stage 1 mythic
+local timerGrimSymphonyCD			= mod:NewCDCountTimer(20.5, 1284980, nil, nil, nil, 5, nil, DBM_COMMON_L.MYTHIC_ICON)--Stage 1 mythic version of DeathsDirge
+local timerDarkQuasarCD				= mod:NewCDCountTimer(20.5, 1279420, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 1 (shortname "Beams")
 local timerBerserkCD				= mod:NewBerserkTimer(600)
 
 mod:AddPrivateAuraSoundOption({1249609,1249565,1249566,1273133,1249550,1249558,1249562}, true, 1249620, 1, 2, "runeyou", 19)--Dark Rune (sub spell of Death's Dirge & Death's Requiem)
