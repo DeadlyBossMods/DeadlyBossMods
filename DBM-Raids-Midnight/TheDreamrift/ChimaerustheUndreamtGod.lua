@@ -12,7 +12,6 @@ mod:RegisterCombat("combat")
 
 --NOTE, https://www.wowhead.com/spell=1245771/corrupted-feathers has event ID ono boss but isn't in journal, possibly pre boss trash mechanic
 --NOTE, https://www.wowhead.com/spell=1262616/retched-acid not in journal (208)
---NOTE, https://www.wowhead.com/spell=1280127/stage-two also exists, but based on most recent testing blizzard uses consume for p2 and not this bar anymore
 DBM:RegisterAltSpellName(1245404, 218027)--Ravenous Dive -> Dive
 DBM:RegisterAltSpellName(1245452, 17088)--Corrupted Devastation -> Breath
 DBM:RegisterAltSpellName(1251021, DBM_COMMON_L.ADDS)--Rift Emergence -> Adds

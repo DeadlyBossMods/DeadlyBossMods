@@ -31,8 +31,8 @@ local specWarnVoidFeather				= mod:NewSpecialWarningYou(1241163, nil, nil, nil, 
 --mod:GroupSpells(1242515, 1241162, 1241163)--Uncomment group when hardcode enables parent warning
 local specWarnDeathDrop					= mod:NewSpecialWarningCount(1246709, nil, nil, nil, 2, 2, nil, nil, "justrun")
 --Adds
-local specWarnLightDiver				= mod:NewSpecialWarningYou(1241292, nil, nil, nil, 1, 2, nil, nil, "lightsoak")
-local specWarnVoidDiver					= mod:NewSpecialWarningYou(1241339, nil, nil, nil, 1, 2, nil, nil, "voidsoak")
+--local specWarnLightDiver				= mod:NewSpecialWarningYou(1241292, nil, nil, nil, 1, 2, nil, nil, "lightsoak")
+--local specWarnVoidDiver				= mod:NewSpecialWarningYou(1241339, nil, nil, nil, 1, 2, nil, nil, "voidsoak")
 
 local timerEmbersofBelorenCD			= mod:NewCDCountTimer(20.5, 1241282, nil, nil, nil, 1)
 local timerRadiantEchoesCD				= mod:NewCDCountTimer(20.5, 1242981, nil, nil, nil, 5)
@@ -47,6 +47,8 @@ mod:AddPrivateAuraSoundOption(1244348, true, 1244344, 1, 3, "absorbyou", 19)--Li
 mod:AddPrivateAuraSoundOption(1266404, true, 1244344, 1, 3, "absorbyou", 19)--Void Burn (sub spell of Eternal Burns)
 mod:AddPrivateAuraSoundOption(1241992, true, 1242260, 1, 1, "lineyou", 17)--Light Quill (sub spell of Infused Quills)
 mod:AddPrivateAuraSoundOption(1242091, true, 1242260, 1, 1, "lineyou", 17)--Void Quill (sub spell of Infused Quills)
+mod:AddPrivateAuraSoundOption(1241292, true, 1241292, 1, 2, "lightsoak", 19)--Light Dive
+mod:AddPrivateAuraSoundOption(1241339, true, 1241339, 1, 2, "voidsoak", 19)--Void Dive
 mod:AddPrivateAuraSoundOption(1241840, true, 1241292, 1, 2, "watchfeet", 8)--Light Patch (dropped by Light Dive)
 mod:AddPrivateAuraSoundOption(1241841, true, 1241339, 1, 2, "watchfeet", 8)--Void Patch (dropped by Void Dive)
 --Stage 2
@@ -86,8 +88,8 @@ local function setFallback(self, dontSetAlerts)
 		specWarnIncubationofFlames:SetAlert(273, "watchstep", 2, 3)
 		specWarnLightFeather:SetAlert(482, "lightyou", 19, 3, 0)
 		specWarnVoidFeather:SetAlert(483, "voidyou", 19, 3, 0)
-		specWarnLightDiver:SetAlert(494, "lightsoak", 19, 3, 0)
-		specWarnVoidDiver:SetAlert(495, "voidsoak", 19, 3, 0)
+		--specWarnLightDiver:SetAlert(494, "lightsoak", 19, 3, 0)
+		--specWarnVoidDiver:SetAlert(495, "voidsoak", 19, 3, 0)
 		specWarnRebirth:SetAlert(497, "dpshard", 16, 3, 0)
 	end
 
