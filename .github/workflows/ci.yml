@@ -19,6 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           path: ./workspace
       - name: Install and run Luacheck
         uses: BigWigsMods/luacheck@main
@@ -51,6 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
       - name: Create Package
         uses: BigWigsMods/packager@master
