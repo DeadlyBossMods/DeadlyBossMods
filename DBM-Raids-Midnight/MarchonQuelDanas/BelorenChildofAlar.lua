@@ -27,13 +27,13 @@ local specWarnEmbersofBeloren			= mod:NewSpecialWarningCount(1241282, nil, nil, 
 local specWarnRadiantEchoes				= mod:NewSpecialWarningCount(1242981, nil, nil, nil, 2, 2, nil, nil, "orbsincoming")
 local specWarnGuardiansEdict			= mod:NewSpecialWarningCount(1260763, nil, nil, nil, 1, 2, nil, nil, "tankcombo")
 local specWarnVoidlightConvergence		= mod:NewSpecialWarningBlizzYou(1242515, nil, nil, nil, 2, 2, nil, nil, "colorchange")--No PA to detect color, can only just warn to check color
-local specWarnLightFeather				= mod:NewSpecialWarningYou(1241162, nil, nil, nil, 1, 2, nil, nil, "lightyou")--Untested
-local specWarnVoidFeather				= mod:NewSpecialWarningYou(1241163, nil, nil, nil, 1, 2, nil, nil, "voidyou")--Untested
+--local specWarnLightFeather			= mod:NewSpecialWarningBlizzYou(1241162, nil, nil, nil, 1, 2, nil, nil, "lightyou")--Untested
+--local specWarnVoidFeather				= mod:NewSpecialWarningBlizzYou(1241163, nil, nil, nil, 1, 2, nil, nil, "voidyou")--Untested
 --mod:GroupSpells(1242515, 1241162, 1241163)--Uncomment group when hardcode enables parent warning
 local specWarnDeathDrop					= mod:NewSpecialWarningCount(1246709, nil, nil, nil, 2, 2, nil, nil, "justrun")
 --Adds
---local specWarnLightDiver				= mod:NewSpecialWarningYou(1241292, nil, nil, nil, 1, 2, nil, nil, "lightsoak")
---local specWarnVoidDiver				= mod:NewSpecialWarningYou(1241339, nil, nil, nil, 1, 2, nil, nil, "voidsoak")
+--local specWarnLightDiver				= mod:NewSpecialWarningBlizzYou(1241292, nil, nil, nil, 1, 2, nil, nil, "lightsoak")
+--local specWarnVoidDiver				= mod:NewSpecialWarningBlizzYou(1241339, nil, nil, nil, 1, 2, nil, nil, "voidsoak")
 
 local timerEmbersofBelorenCD			= mod:NewCDCountTimer(20.5, 1241282, nil, nil, nil, 1)
 local timerRadiantEchoesCD				= mod:NewCDCountTimer(20.5, 1242981, nil, nil, nil, 5)
@@ -52,6 +52,9 @@ mod:AddPrivateAuraSoundOption(1241292, true, 1241292, 1, 2, "lightsoak", 19)--Li
 mod:AddPrivateAuraSoundOption(1241339, true, 1241339, 1, 2, "voidsoak", 19)--Void Dive
 mod:AddPrivateAuraSoundOption(1241840, true, 1241292, 1, 2, "watchfeet", 8)--Light Patch (dropped by Light Dive)
 mod:AddPrivateAuraSoundOption(1241841, true, 1241339, 1, 2, "watchfeet", 8)--Void Patch (dropped by Void Dive)
+
+mod:AddCustomAlertSoundOption(1241162, true, 1)--Light Feather
+mod:AddCustomAlertSoundOption(1241163, true, 1)--Void Feather
 --Stage 2
 local specWarnIncubationofFlames		= mod:NewSpecialWarningCount(1242792, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnRebirth					= mod:NewSpecialWarningCount(1241313, nil, nil, nil, 1, 2, nil, nil, "dpshard")
@@ -87,8 +90,8 @@ local function setFallback(self, dontSetAlerts)
 		specWarnVoidlightConvergence:SetAlert(218, "colorchange", 19, 3)
 		specWarnDeathDrop:SetAlert(272, "justrun", 2, 3)
 		specWarnIncubationofFlames:SetAlert(273, "watchstep", 2, 3)
-		specWarnLightFeather:SetAlert(482, "lightyou", 19, 3, 0)
-		specWarnVoidFeather:SetAlert(483, "voidyou", 19, 3, 0)
+--		specWarnLightFeather:SetAlert(482, "lightyou", 19, 3, 0)
+--		specWarnVoidFeather:SetAlert(483, "voidyou", 19, 3, 0)
 		--specWarnLightDiver:SetAlert(494, "lightsoak", 19, 3, 0)
 		--specWarnVoidDiver:SetAlert(495, "voidsoak", 19, 3, 0)
 		specWarnRebirth:SetAlert(497, "dpshard", 16, 3, 0)
@@ -135,6 +138,11 @@ function mod:OnLimitedCombatStart(delay)
 	else
 		setFallback(self)
 	end
+	--These fire ENCOUNTER_WARNING we can hook a sound into but we can't disambiguate since we can't parse WHICH one you get
+	--So we can't actually use NewSpecialWarningBlizzYou here AND these don't have private auras
+	--So we simply register custom sounds to blizzards warning sound handler
+	self:EnableAlertOptions(1241162, 482, "lightyou", 19, 4, 0)
+	self:EnableAlertOptions(1241163, 483, "voidyou", 19, 4, 0)
 end
 
 function mod:OnCombatEnd()
