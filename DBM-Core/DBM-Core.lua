@@ -7849,7 +7849,7 @@ do
 		if not private.isRetail and not private.isMop then
 			if private.specRoleTable[currentSpecID]["Tank"] then
 				-- 18 defensive stance, 5487 bear form, 9634 dire bear, 25780 righteous fury
-				if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff("player", 5487, 9634) then
+				if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff("player", 5487, 9634, 25780) then
 					playerIsTank = true
 					return true
 				end
