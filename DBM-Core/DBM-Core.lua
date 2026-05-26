@@ -7944,7 +7944,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 			tanking, status = UnitDetailedThreatSituation(playerUnitID, enemyUnitID)
 		end
 		--Retail needs a less strict check since it lacks access to the detailed threat api and we want it at least report with some accuracy that you're bosses current target even if not highest threat
-		if (not onlyS3 and tanking) or (status >= (private.isRetail and 2 or 3)) then
+		if (not onlyS3 and tanking) or (status and status >= (private.isRetail and 2 or 3)) then
 			return true
 		end
 		--Non threat fallback
@@ -7978,7 +7978,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 						else
 							tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
 						end
-						if (not onlyS3 and tanking) or (status >= (private.isRetail and 2 or 3)) then
+						if (not onlyS3 and tanking) or (status and status >= (private.isRetail and 2 or 3)) then
 							return true
 						end
 						--Non threat fallback
