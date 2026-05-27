@@ -108,9 +108,7 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	---@param eventState number
-	local function timersNonMythic(self, timer, timerExact, eventID, eventState)
-		if eventState ~= 0 then return end--Ignore bugged timer that start paused or canceled (yes blizzards code is that bad)
+	local function timersNonMythic(self, timer, timerExact, eventID)
 		if timer > 101 and timer ~= 490 then return end--Ignore blizzard resending berserk timer for no reason
 		--Logic confirmed against normal and LFR and heroic
 		if timer == 490 then--Berserk
@@ -182,10 +180,8 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	---@param eventState number
-	local function timersMythic(self, timer, timerExact, eventID, eventState)
+	local function timersMythic(self, timer, timerExact, eventID)
 		--Logic confirmed against Mythic Week3 logs
-		if eventState ~= 0 then return end--Ignore bugged timer that start paused or canceled (yes blizzards code is that bad)
 		if timer > 101 and timer ~= 370 then return end--Ignore blizzard resending berserk timer for no reason
 		if timer == 370 then--Berserk
 			timerBerserkCD:Start(370)
@@ -216,8 +212,6 @@ do
 			timerFracturedProjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "fractured", "fracturedProjectionCount"))
 		elseif timer == 44 then--Shattering Twilight
 			timerShatteringTwilightCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shattering", "shatteringTwilightCount"))
-		elseif eventState == 1 and self:IsRoundedTimer(timerExact, 34.7, 1) then--Carryover bar during Entropic overwrite window (covers 33.7-35.7 instant-cancel artifacts)
-			return
 		elseif timer == 11 or timer == 47 then--Void Convergence
 			timerVoidConvergenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "convergence", "convergenceCount"))
 			next45Type = "twisted"
@@ -256,14 +250,15 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
-		local eventState = eventInfo.state
+		local eventState = C_EncounterTimeline.GetEventState(eventID)
+		if eventState ~= 0 then return end--Ignore bugged timer that start paused or canceled (yes blizzards code is that bad)
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
 			if self:IsMythic() then
-				timersMythic(self, timer, timerExact, eventID, eventState)
+				timersMythic(self, timer, timerExact, eventID)
 			else
-				timersNonMythic(self, timer, timerExact, eventID, eventState)
+				timersNonMythic(self, timer, timerExact, eventID)
 			end
 		end
 	end
