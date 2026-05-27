@@ -446,17 +446,17 @@ do
 						self:SetStage(1.5)
 					end
 				end
-			elseif self:IsRoundedTimer(timer, 8) then--Midnight Flames marker (mythic stage transition is driven by Radiant Barrier count)
-				timerMidnightFlamesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "flames", "flamesCount"))
 			elseif self:IsRoundedTimer(timer, 6, 0.3) or self:IsRoundedTimer(timer, 17) or self:IsRoundedTimer(timer, 19) then--Vaelwing cadence confirmed in mythic stage 1
 				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
 			elseif self:IsRoundedTimer(timer, 7, 0.3) or self:IsRoundedTimer(timer, 65) then--Dread Breath opener and repeats
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Initial stage 1 breath has bugged bar stage changed (doesn't fire one at all)
 				self:Schedule(6, BuggedBreathDelay, self, eventID)
-			elseif self:IsRoundedTimer(timer, 10) then--Gloom opener
+			elseif self:IsRoundedTimer(timer, 8, 0.1) then--Midnight Flames marker (mythic stage transition is driven by Radiant Barrier count)
+				timerMidnightFlamesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "flames", "flamesCount"))
+			elseif self:IsRoundedTimer(timer, 10, 0.3) then--Gloom opener
 				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
-			elseif self:IsRoundedTimer(timer, 12) then--Rakfang opener
+			elseif self:IsRoundedTimer(timer, 12, 0.3) then--Rakfang opener
 				timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
 			elseif self:IsRoundedTimer(timer, 21) then--Rakfang recurring cadence
 				timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
