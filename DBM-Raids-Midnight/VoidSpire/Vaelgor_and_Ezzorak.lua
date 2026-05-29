@@ -529,7 +529,6 @@ do
 				next25M2Type = "dread"
 				mythicStage2LastType = nil
 				mythicStage25FlamesSeen = false
-				stage = 2
 			end
 			if self:IsRoundedTimer(timer, 128) then--Radiant Barrier #3 starts stage 2 fallback (Week3 rounds to 128)
 				mythicRadiantBarrierSeen = mythicRadiantBarrierSeen + 1
