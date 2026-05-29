@@ -48,6 +48,7 @@ mod.vb.twilightObscurityCount = 0
 mod.vb.entropicUnravelingCount = 0
 local badStateDetected = false
 local next45Type = nil
+local firstBeam = false
 
 ---@param self DBMMod
 local function resetCounts(self)
@@ -80,6 +81,7 @@ local function setFallback(self, dontSetAlerts)
 end
 
 function mod:OnLimitedCombatStart()
+	firstBeam = false
 	self:TLCountReset()
 	resetCounts(self)
 	self.vb.entropicUnravelingCount = 1
@@ -115,7 +117,7 @@ do
 			timerBerserkCD:Start(490)
 		elseif timer == 100 then--Entropic Unraveling, phase change marker
 			if not self:AntiSpam(2, 1) then
-				DBM:Debug("Skipping first bugged Entropic Unraveling bar", nil, nil, nil, true)
+				DBM:Debug("Skipping second bugged Entropic Unraveling bar", nil, nil, nil, true)
 				return--Bugged duplicate add at the same moment, ignore second event
 			end
 	--		resetCounts(self)--Phase reset point
@@ -125,12 +127,15 @@ do
 				--Currently, blizzard has a bug where they always cancel both Entropic Unraveling bars after they start 2 of them on 2nd and later cast.
 				--We ignore the first bugged 100 sec one at line 175-177. then we allow 2nd one to start and prevent it from being canceled by blizzard.
 				--We also hardcode the alert to show since there won't be a valid state changed event later to trigger off of
-				timerEntropicUnravelingCD:SetBuggedEventID(eventID)
-				specWarnEntropicUnraveling:Schedule(100, self.vb.entropicUnravelingCount+1)
-				specWarnEntropicUnraveling:ScheduleVoice(100, "dpshard")
---				timerEntropicUnravelingCD:Stop()
---				timerEntropicUnravelingCD:Start(100, self.vb.entropicUnravelingCount+1)
-				DBM:Debug("Protecting second bugged Entropic Unraveling bar", nil, nil, nil, true)
+				if not firstBeam then
+					firstBeam = true
+					DBM:Debug("First beam detected, not scheduling extra alert for "..eventID, nil, nil, nil, true)
+				else
+					timerEntropicUnravelingCD:SetBuggedEventID(eventID)
+					specWarnEntropicUnraveling:Schedule(100, self.vb.entropicUnravelingCount+1)
+					specWarnEntropicUnraveling:ScheduleVoice(100, "dpshard")
+					DBM:Debug("Protecting first bugged Entropic Unraveling bar and scheduling alert for "..eventID, nil, nil, nil, true)
+				end
 			end
 		elseif timer == 27 or timer == 46 then--Despotic Command
 			timerDespoticCommandCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "despotic", "despoticCommandCount"))
