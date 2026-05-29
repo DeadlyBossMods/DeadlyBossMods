@@ -92,12 +92,30 @@ local next19H3Type = "nullbeam"
 local next50M1IsGloom = true
 local next25M1Type = "vaelwing"
 local mythicRadiantBarrierSeen = 0
+local mythicStage15FlamesSeen = false
+local next25M2Type = "dread"
+local mythicStage2LastType = nil
+local mythicStage25FlamesSeen = false
+
+--Some breath timers fail to fire correct state changes when timer finishes or expires, or they fire at incorrect time
+--So we have to manually schedule the exact moment for us to catch the next ENCOUNTER_WARNING event
+local function BuggedBreathDelay(self, eventID)
+	local _, eventCount = self:TLCountFinish(eventID)
+	if self:GetStage(1.5) or self:GetStage(2.5) then--Bugged intermission breath
+		specWarnCosmosisDreadBreath:Show(eventCount, "breathsoon", 2.5)
+		DBM:Debug("Scheduled breath warning executed for intermission stage", nil, nil, nil, true)
+	else--Bugged regular stage breath
+		specWarnDreadBreath:Show(eventCount, "breathsoon", 2.5)
+		DBM:Debug("Scheduled breath warning executed for regular stage", nil, nil, nil, true)
+	end
+end
 
 ---@param self DBMMod
-	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
+---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
 local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	if not dontSetAlerts then
+		self:Unschedule(BuggedBreathDelay)
 		specWarnNullBeam:SetAlert(101, "beamincoming", 19, 3)
 		specWarnVoidHowl:SetAlert(102, "range5", 2, 2)
 		specWarnGloom:SetAlert(103, "gloomincoming", 19, 3)
@@ -164,6 +182,10 @@ function mod:OnLimitedCombatStart()
 	next50M1IsGloom = true
 	next25M1Type = "vaelwing"
 	mythicRadiantBarrierSeen = 0
+	mythicStage15FlamesSeen = false
+	next25M2Type = "dread"
+	mythicStage2LastType = nil
+	mythicStage25FlamesSeen = false
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:SetStage(1)
@@ -186,14 +208,14 @@ end
 
 do
 	---@param self DBMMod
-	local function fallbackMythicStage2(self)
+	local function fallbackMythicStage3(self)
 		if DBM.Options.IgnoreBlizzAPI then
 			DBM.Options.IgnoreBlizzAPI = false
 			DBM:FireEvent("DBM_ResumeBlizzAPI")
 		end
 		self:UnregisterShortTermEvents()
 		setFallback(self)
-		DBM:Debug("|cffffff00Mythic stage 2 hardcode is not implemented yet, falling back to Blizzard API|r", nil, nil, nil, true)
+		DBM:Debug("|cffffff00Mythic stage 3+ hardcode is not implemented yet, falling back to Blizzard API|r", nil, nil, nil, true)
 	end
 
 	---@param self DBMMod
@@ -213,10 +235,16 @@ do
 				timerGrabblingMawCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
 			elseif self:IsRoundedTimer(timer, 21) then--Dread Breath (recurring CD)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 28) then--Dread Breath (initial CD)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 17) then--Dread Breath (new short interval seen in stage 1)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 32) then--Void Howl (initial CD)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif self:IsRoundedTimer(timer, 47) then--Void Howl (recurring CD)
@@ -247,6 +275,7 @@ do
 				next26S2Type = "rakfang"
 				next53S2IsGloom = true
 				self:SetStage(0)--Calling 0 tells it to incremeate stage count by + 1
+				self:Unschedule(BuggedBreathDelay)
 				return
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
 				badStateDetected = true
@@ -268,6 +297,8 @@ do
 				timerGrabblingMawCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
 			elseif self:IsRoundedTimer(timer, 28) then--Dread Breath (initial CD)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 47) then--Nullbeam (initial CD)
 				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 			elseif self:IsRoundedTimer(timer, 90) or self:IsRoundedTimer(timer, 95) then--Nullbeam (recurring CD, seen around 90 in this log)
@@ -290,6 +321,8 @@ do
 				end
 			elseif self:IsRoundedTimer(timer, 51) then--Dread Breath recurring (raw ~51.3-51.6, rounds to 51 or 52); checked before ~53 to win the overlap at 52
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 				next53S2IsGloom = true
 			elseif self:IsRoundedTimer(timer, 53) then--Gloom or Dread Breath (alternating: gloom first)
 				if next53S2IsGloom then
@@ -297,6 +330,8 @@ do
 					next53S2IsGloom = false
 				else
 					timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+					--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+					self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 					next53S2IsGloom = true
 				end
 			elseif self:IsRoundedTimer(timer, 8) then--Midnight Flames (phase marker, stage 2 → 3)
@@ -305,6 +340,7 @@ do
 				next25S3Type = "voidhowl"
 				lastS3Type = nil
 				self:SetStage(0)
+				self:Unschedule(BuggedBreathDelay)
 				return
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
 				badStateDetected = true
@@ -319,6 +355,8 @@ do
 				lastS3Type = "radiantbarrier"
 			elseif self:IsRoundedTimer(timer, 81) or self:IsRoundedTimer(timer, 65) then--Dread Breath
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 				lastS3Type = "dread"
 			elseif self:IsRoundedTimer(timer, 50, 0) then--Gloom opener (exact match to avoid overlap with ~51 Void Howl)
 				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
@@ -394,6 +432,8 @@ do
 				end
 			elseif self:IsRoundedTimer(timer, 21) then--Dread Breath at end of fight
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 				lastS3Type = "dread"
 			elseif self:IsRoundedTimer(timer, 8) then--Vaelwing opener in stage 3
 				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
@@ -416,25 +456,14 @@ do
 		end
 	end
 
-	--Some breath timers fail to fire correct state changes when timer finishes or expires, or they fire at incorrect time
-	--So we have to manually schedule the exact moment for us to catch the next ENCOUNTER_WARNING event
-	local function BuggedBreathDelay(self, eventID)
-		local _, eventCount = self:TLCountFinish(eventID)
-		if self:GetStage(1.5) or self:GetStage(2.5) then--Bugged intermission breath
-			specWarnCosmosisDreadBreath:Show(eventCount, "breathsoon", 2)
-		else--Bugged regular stage breath
-			specWarnDreadBreath:Show(eventCount, "breathsoon", 2)
-		end
-	end
-
 	---@param self DBMMod
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
 	local function timersMythic(self, timer, timerExact, eventID)
 		local stage = self:GetStage()
-		if stage ~= 1 and stage ~= 1.5 then
-			fallbackMythicStage2(self)
+		if stage >= 3 then
+			fallbackMythicStage3(self)
 			return
 		end
 		if stage == 1 then--Stage 1 routing bucket
@@ -444,14 +473,15 @@ do
 				if mythicRadiantBarrierSeen == 2 then--Barrier 2 starts intermission stage 1.5
 					if not self:GetStage(1.5) then
 						self:SetStage(1.5)
+						self:Unschedule(BuggedBreathDelay)
 					end
 				end
 			elseif self:IsRoundedTimer(timer, 6, 0.3) or self:IsRoundedTimer(timer, 17) or self:IsRoundedTimer(timer, 19) then--Vaelwing cadence confirmed in mythic stage 1
 				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
 			elseif self:IsRoundedTimer(timer, 7, 0.3) or self:IsRoundedTimer(timer, 65) then--Dread Breath opener and repeats
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
-				--Initial stage 1 breath has bugged bar stage changed (doesn't fire one at all)
-				self:Schedule(6, BuggedBreathDelay, self, eventID)
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 8, 0.1) then--Midnight Flames marker (mythic stage transition is driven by Radiant Barrier count)
 				timerMidnightFlamesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "flames", "flamesCount"))
 			elseif self:IsRoundedTimer(timer, 10, 0.3) then--Gloom opener
@@ -491,18 +521,21 @@ do
 				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected mythic stage 1 timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			end
 		elseif stage == 1.5 then--Stage 1.5 (intermission) routing bucket
+			if mythicStage15FlamesSeen then--Midnight Flames is treated as the final stage 1.5 timer; next added timer marks stage 2 boundary
+				if not self:GetStage(2) then
+					self:SetStage(2)
+					self:Unschedule(BuggedBreathDelay)
+				end
+				next25M2Type = "dread"
+				mythicStage2LastType = nil
+				mythicStage25FlamesSeen = false
+			end
 			if self:IsRoundedTimer(timer, 128) then--Radiant Barrier #3 starts stage 2 fallback (Week3 rounds to 128)
 				mythicRadiantBarrierSeen = mythicRadiantBarrierSeen + 1
 				timerRadiantBarrierCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
-				if mythicRadiantBarrierSeen >= 3 then
-					if not self:GetStage(2) then
-						self:SetStage(2)
-					end
-					fallbackMythicStage2(self)
-					return
-				end
 			elseif self:IsRoundedTimer(timer, 8) then--Midnight Flames during intermission bundle
 				timerMidnightFlamesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "flames", "flamesCount"))
+				mythicStage15FlamesSeen = true
 			elseif self:IsRoundedTimer(timer, 13) then--Intermission Cosmosis: Dread Breath (short)
 				--Blizzards timer is actually wrong and we have to adjust it
 				timerCosmosisDreadBreathCD:TLStart(16, eventID, self:TLCountStart(eventID, "cosmosisdreadbreath", "cosmosisDreadBreathCount"))
@@ -522,6 +555,106 @@ do
 				self:UnregisterShortTermEvents()
 				setFallback(self)
 				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected mythic stage 1.5 timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif stage == 2 then--Stage 2 (post intermission 1.5)
+			if self:IsRoundedTimer(timer, 117) then--Radiant Barrier #4 starts intermission 2.5 bundle
+				mythicRadiantBarrierSeen = mythicRadiantBarrierSeen + 1
+				timerRadiantBarrierCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
+				if not self:GetStage(2.5) then
+					self:SetStage(2.5)
+					self:Unschedule(BuggedBreathDelay)
+				end
+				mythicStage25FlamesSeen = false
+			elseif self:IsRoundedTimer(timer, 128) then--Radiant Barrier #3 can also be first stage-2 event depending on bundle order
+				mythicRadiantBarrierSeen = mythicRadiantBarrierSeen + 1
+				timerRadiantBarrierCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
+				mythicStage2LastType = "radiantbarrier"
+			elseif self:IsRoundedTimer(timer, 18, 0.3) then--Nullbeam opener
+				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+				mythicStage2LastType = "nullbeam"
+			elseif self:IsRoundedTimer(timer, 19, 0.3) or self:IsRoundedTimer(timer, 17, 0.3) then--Vaelwing opener and repeats
+				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
+				mythicStage2LastType = "vaelwing"
+			elseif self:IsRoundedTimer(timer, 43) or self:IsRoundedTimer(timer, 40) or self:IsRoundedTimer(timer, 8) then--Void Howl opener, repeats, and short bundle cast
+				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
+				mythicStage2LastType = "voidhowl"
+			elseif self:IsRoundedTimer(timer, 57) or self:IsRoundedTimer(timer, 65) then--Dread Breath repeats
+				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				mythicStage2LastType = "dread"
+			elseif self:IsRoundedTimer(timer, 48, 0.3) or self:IsRoundedTimer(timer, 49, 0.3) then--Gloom opener and drift variants
+				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
+				mythicStage2LastType = "gloom"
+			elseif self:IsRoundedTimer(timer, 50, 0.3) then--Collision bucket: Nullbeam/Gloom, disambiguate by previous routed type
+				if mythicStage2LastType == "nullbeam" then
+					timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
+					mythicStage2LastType = "gloom"
+				else--Default to Nullbeam when prior context is gloom/other
+					timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
+					mythicStage2LastType = "nullbeam"
+				end
+			elseif self:IsRoundedTimer(timer, 20, 0.3) or self:IsRoundedTimer(timer, 21, 0.3) then--Rakfang short cadence
+				timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+				mythicStage2LastType = "rakfang"
+			elseif self:IsRoundedTimer(timer, 25) then--Collision bucket: Dread opener, then Rakfang/Vaelwing cadence
+				if next25M2Type == "dread" then
+					timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+					--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+					self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+					next25M2Type = "rakfang"
+					mythicStage2LastType = "dread"
+				elseif next25M2Type == "rakfang" then
+					timerRakfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rakfang", "rakfangCount"))
+					next25M2Type = "vaelwing"
+					mythicStage2LastType = "rakfang"
+				else--vaelwing
+					timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
+					next25M2Type = "rakfang"
+					mythicStage2LastType = "vaelwing"
+				end
+			else--Reached end of mythic stage-2 evidence without a valid timer, hardcode has failed, fall back to Blizz API
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected mythic stage 2 timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			end
+		elseif stage == 2.5 then--Stage 2.5 (intermission) routing bucket
+			if mythicStage25FlamesSeen then--Midnight Flames is treated as the final stage 2.5 timer; next added timer marks stage 3 boundary
+				if not self:GetStage(3) then
+					self:SetStage(3)
+					self:Unschedule(BuggedBreathDelay)
+				end
+				fallbackMythicStage3(self)
+				return
+			end
+			if self:IsRoundedTimer(timer, 8) then--Midnight Flames during intermission bundle
+				timerMidnightFlamesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "flames", "flamesCount"))
+				mythicStage25FlamesSeen = true
+			elseif self:IsRoundedTimer(timer, 13) then--Intermission Cosmosis: Void Howl
+				timerCosmosisVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "cosmosisvoidhowl", "cosmosisVoidHowlCount"))
+				--We schedule warning here because blizzard fails to send a state 2 when bar finishes and instead fires state 3 in next bar cancel batch (too late)
+				specWarnCosmosisVoidHowl:Schedule(13)
+				specWarnCosmosisVoidHowl:ScheduleVoice(13, "range5")
+			elseif self:IsRoundedTimer(timer, 18) then--Intermission Cosmosis: Gloom
+				timerCosmosisGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "cosmosisgloom", "cosmosisGloomCount"))
+			elseif self:IsRoundedTimer(timer, 23) then--Intermission Cosmosis: Dread Breath
+				--Blizzards timer is actually wrong and we have to adjust it
+				timerCosmosisDreadBreathCD:TLStart(27.7, eventID, self:TLCountStart(eventID, "cosmosisdreadbreath", "cosmosisDreadBreathCount"))
+				self:Schedule(25.7, BuggedBreathDelay, self, eventID)
+			else--Reached end of mythic stage-2.5 evidence without a valid timer, hardcode has failed, fall back to Blizz API
+				badStateDetected = true
+				if DBM.Options.IgnoreBlizzAPI then
+					DBM.Options.IgnoreBlizzAPI = false
+					DBM:FireEvent("DBM_ResumeBlizzAPI")
+				end
+				self:UnregisterShortTermEvents()
+				setFallback(self)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected mythic stage 2.5 timers, falling back to Blizzard API|r", nil, nil, nil, true)
 			end
 		end
 	end
@@ -544,6 +677,8 @@ do
 				timerGrabblingMawCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maw", "mawCount"))
 			elseif self:IsRoundedTimer(timer, 27) then--Dread Breath (initial)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 30) then--Void Howl (initial)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif self:IsRoundedTimer(timer, 105) then--Radiant Barrier
@@ -557,8 +692,12 @@ do
 				end
 			elseif self:IsRoundedTimer(timer, 20) then--Dread Breath (recurring)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 16) then--Dread Breath (short variant)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 45) then--Void Howl (recurring)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif self:IsRoundedTimer(timer, 90) then--Gloom (recurring)
@@ -577,6 +716,7 @@ do
 			elseif self:IsRoundedTimer(timer, 8) then--Midnight Flames (stage 1 → 2)
 				next25H2Type = "rakfang"
 				self:SetStage(0)
+				self:Unschedule(BuggedBreathDelay)
 				return
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
 				badStateDetected = true
@@ -610,6 +750,8 @@ do
 					timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 				else--Dread Breath recurring (rounds to 49)
 					timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+					--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+					self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 				end
 			elseif self:IsRoundedTimer(timer, 25, 2) then--4-way cycle: Rakfang → Vaelwing → VoidHowl → Maw (raw 23.5-25.0)
 				if next25H2Type == "rakfang" then
@@ -632,6 +774,7 @@ do
 				nullbeamH3InitialDone = false
 				next19H3Type = "nullbeam"
 				self:SetStage(0)
+				self:Unschedule(BuggedBreathDelay)
 				return
 			else--Reached end of chain without finding a valid timer, hardcode has failed, fall back to Blizz API
 				badStateDetected = true
@@ -645,10 +788,16 @@ do
 				timerRadiantBarrierCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
 			elseif self:IsRoundedTimer(timer, 65) then--Dread Breath (initial); must be before ~62 variance 2
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 81) then--Dread Breath (recurring)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 76) then--Dread Breath (recurring variant)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 50) then--Gloom (initial); must be before ~51 to prevent overlap
 				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 			elseif self:IsRoundedTimer(timer, 51) then--Void Howl (recurring)
@@ -693,6 +842,8 @@ do
 				end
 			elseif self:IsRoundedTimer(timer, 29) then--Week4 late-stage Dread Breath variant after the final cadence shift
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
+				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
+				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 19) then--Week4 finale bundle: Nullbeam first, then Radiant Barrier
 				if next19H3Type == "nullbeam" then
 					timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
@@ -754,8 +905,10 @@ do
 					specWarnVoidHowl:Play("range5")
 				elseif eventType == "gloom" then
 					specWarnGloom:Show(eventCount, "gloomincoming")
-				elseif eventType == "dread" then
-					specWarnDreadBreath:Show(eventCount, "breathsoon")
+--				elseif eventType == "dread" then
+					--We even ignore non bugged ones just because it's easier to code around than trying to de-duplicate it when it just happens to work once in a while
+					--We basically always assume it's bugged and always schedule
+--					specWarnDreadBreath:Show(eventCount, "breathsoon")
 				elseif eventType == "flames" then
 					specWarnMidnightFlames:Show(eventCount)
 					specWarnMidnightFlames:Play("aesoon")
@@ -796,7 +949,7 @@ do
 				end
 			end
 		elseif eventState == 3 then--Canceled/removed
-			if self:IsMythic() and self:GetStage(1.5) or self:GetStage(2.5) then
+			if self:IsMythic() and (self:GetStage(1.5) or self:GetStage(2.5)) then
 				--During mythic intermissions, none of abilities correctly fire state 2. We need to treat stage 3 has a finished bar
 				--Breaths however are even more broken and not handled here. They are handled with scheduling BuggedBreathDelay
 				local eventType, eventCount = self:TLCountFinish(eventID)
@@ -807,6 +960,11 @@ do
 					elseif eventType == "cosmosisnullbeam" then
 						specWarnCosmosisNullbeam:Show(eventCount)
 						specWarnCosmosisNullbeam:Play("beamincoming")
+--					elseif eventType == "cosmosisvoidhowl" then
+						--We don't trigger here, because it'd be 3-4 seconds too late.
+						--However, we still trigger eventCount finish
+--						specWarnCosmosisVoidHowl:Show(eventCount)
+--						specWarnCosmosisVoidHowl:Play("range5")
 					end
 				end
 			else
