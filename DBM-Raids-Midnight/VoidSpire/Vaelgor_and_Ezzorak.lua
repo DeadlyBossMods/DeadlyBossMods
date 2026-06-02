@@ -236,15 +236,15 @@ do
 			elseif self:IsRoundedTimer(timer, 21) then--Dread Breath (recurring CD)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 28) then--Dread Breath (initial CD)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 17) then--Dread Breath (new short interval seen in stage 1)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 32) then--Void Howl (initial CD)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif self:IsRoundedTimer(timer, 47) then--Void Howl (recurring CD)
@@ -298,7 +298,7 @@ do
 			elseif self:IsRoundedTimer(timer, 28) then--Dread Breath (initial CD)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 47) then--Nullbeam (initial CD)
 				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 			elseif self:IsRoundedTimer(timer, 90) or self:IsRoundedTimer(timer, 95) then--Nullbeam (recurring CD, seen around 90 in this log)
@@ -322,7 +322,7 @@ do
 			elseif self:IsRoundedTimer(timer, 51) then--Dread Breath recurring (raw ~51.3-51.6, rounds to 51 or 52); checked before ~53 to win the overlap at 52
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 				next53S2IsGloom = true
 			elseif self:IsRoundedTimer(timer, 53) then--Gloom or Dread Breath (alternating: gloom first)
 				if next53S2IsGloom then
@@ -331,7 +331,7 @@ do
 				else
 					timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 					--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-					self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+					--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 					next53S2IsGloom = true
 				end
 			elseif self:IsRoundedTimer(timer, 8) then--Midnight Flames (phase marker, stage 2 → 3)
@@ -356,7 +356,7 @@ do
 			elseif self:IsRoundedTimer(timer, 81) or self:IsRoundedTimer(timer, 65) then--Dread Breath
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 				lastS3Type = "dread"
 			elseif self:IsRoundedTimer(timer, 50, 0) then--Gloom opener (exact match to avoid overlap with ~51 Void Howl)
 				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
@@ -433,7 +433,7 @@ do
 			elseif self:IsRoundedTimer(timer, 21) then--Dread Breath at end of fight
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 				lastS3Type = "dread"
 			elseif self:IsRoundedTimer(timer, 8) then--Vaelwing opener in stage 3
 				timerVaelwingCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vaelwing", "vaelwingCount"))
@@ -481,7 +481,7 @@ do
 			elseif self:IsRoundedTimer(timer, 7, 0.3) or self:IsRoundedTimer(timer, 65) then--Dread Breath opener and repeats
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 8, 0.1) then--Midnight Flames marker (mythic stage transition is driven by Radiant Barrier count)
 				timerMidnightFlamesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "flames", "flamesCount"))
 			elseif self:IsRoundedTimer(timer, 10, 0.3) then--Gloom opener
@@ -581,7 +581,7 @@ do
 			elseif self:IsRoundedTimer(timer, 57) or self:IsRoundedTimer(timer, 65) then--Dread Breath repeats
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 				mythicStage2LastType = "dread"
 			elseif self:IsRoundedTimer(timer, 48, 0.3) or self:IsRoundedTimer(timer, 49, 0.3) then--Gloom opener and drift variants
 				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
@@ -601,7 +601,7 @@ do
 				if next25M2Type == "dread" then
 					timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 					--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-					self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+					--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 					next25M2Type = "rakfang"
 					mythicStage2LastType = "dread"
 				elseif next25M2Type == "rakfang" then
@@ -678,7 +678,7 @@ do
 			elseif self:IsRoundedTimer(timer, 27) then--Dread Breath (initial)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 30) then--Void Howl (initial)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif self:IsRoundedTimer(timer, 105) then--Radiant Barrier
@@ -693,11 +693,11 @@ do
 			elseif self:IsRoundedTimer(timer, 20) then--Dread Breath (recurring)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 16) then--Dread Breath (short variant)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 45) then--Void Howl (recurring)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
 			elseif self:IsRoundedTimer(timer, 90) then--Gloom (recurring)
@@ -751,7 +751,7 @@ do
 				else--Dread Breath recurring (rounds to 49)
 					timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 					--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-					self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+					--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 				end
 			elseif self:IsRoundedTimer(timer, 25, 2) then--4-way cycle: Rakfang → Vaelwing → VoidHowl → Maw (raw 23.5-25.0)
 				if next25H2Type == "rakfang" then
@@ -789,15 +789,15 @@ do
 			elseif self:IsRoundedTimer(timer, 65) then--Dread Breath (initial); must be before ~62 variance 2
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 81) then--Dread Breath (recurring)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 76) then--Dread Breath (recurring variant)
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 50) then--Gloom (initial); must be before ~51 to prevent overlap
 				timerGloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloom", "gloomCount"))
 			elseif self:IsRoundedTimer(timer, 51) then--Void Howl (recurring)
@@ -843,7 +843,7 @@ do
 			elseif self:IsRoundedTimer(timer, 29) then--Week4 late-stage Dread Breath variant after the final cadence shift
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
 				--Dread breath can have very buggy state finished that will fire 2, 3 or even not at all so we don't trust any of them
-				self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
+				--self:Schedule(timerExact-1, BuggedBreathDelay, self, eventID)
 			elseif self:IsRoundedTimer(timer, 19) then--Week4 finale bundle: Nullbeam first, then Radiant Barrier
 				if next19H3Type == "nullbeam" then
 					timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
@@ -905,10 +905,8 @@ do
 					specWarnVoidHowl:Play("range5")
 				elseif eventType == "gloom" then
 					specWarnGloom:Show(eventCount, "gloomincoming")
---				elseif eventType == "dread" then
-					--We even ignore non bugged ones just because it's easier to code around than trying to de-duplicate it when it just happens to work once in a while
-					--We basically always assume it's bugged and always schedule
---					specWarnDreadBreath:Show(eventCount, "breathsoon")
+				elseif eventType == "dread" then
+					specWarnDreadBreath:Show(eventCount, "breathsoon")
 				elseif eventType == "flames" then
 					specWarnMidnightFlames:Show(eventCount)
 					specWarnMidnightFlames:Play("aesoon")
@@ -960,6 +958,9 @@ do
 					elseif eventType == "cosmosisnullbeam" then
 						specWarnCosmosisNullbeam:Show(eventCount)
 						specWarnCosmosisNullbeam:Play("beamincoming")
+--					elseif eventType == "cosmosisdreadbreath" then
+--						specWarnCosmosisDreadBreath:Show(eventCount)
+--						specWarnCosmosisDreadBreath:Play("breathsoon")
 --					elseif eventType == "cosmosisvoidhowl" then
 						--We don't trigger here, because it'd be 3-4 seconds too late.
 						--However, we still trigger eventCount finish
@@ -968,7 +969,14 @@ do
 					end
 				end
 			else
-				self:TLCountCancel(eventID)
+				local eventType, eventCount = self:TLCountFinish(eventID, "dread")
+				if eventType and eventCount then
+					--Bugged events are still success if it's not intermission, but needs a 3.5 second scan time
+					--This should automatically exclude the intermission ones as well as legit state 3 cancels on phase change as well
+					specWarnDreadBreath:Show(eventCount, "breathsoon", 3.5)
+				else
+					self:TLCountCancel(eventID)
+				end
 			end
 		end
 	end
