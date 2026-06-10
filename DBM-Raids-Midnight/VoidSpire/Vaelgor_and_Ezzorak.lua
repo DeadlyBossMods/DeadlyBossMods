@@ -703,7 +703,7 @@ do
 				timerRadiantBarrierCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiantbarrier", "radiantBarrierCount"))
 			elseif self:IsRoundedTimer(timer, 32) or self:IsRoundedTimer(timer, 56) or self:IsRoundedTimer(timer, 65) then--Dread Breath opener and recurring variants
 				timerDreadBreathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dread", "dreadCount"))
-			elseif self:IsRoundedTimer(timer, 45) then--Nullbeam opener
+			elseif self:IsRoundedTimer(timer, 44, 2) then--Nullbeam opener and late compressed drift (~43-45)
 				timerNullBeamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullbeam", "beamCount"))
 			elseif self:IsRoundedTimer(timer, 35) or self:IsRoundedTimer(timer, 40) then--Void Howl recurring cadence (includes short 35 variant)
 				timerVoidHowlCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidhowl", "howlCount"))
