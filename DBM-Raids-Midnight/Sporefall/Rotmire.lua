@@ -3,7 +3,7 @@ local mod	= DBM:NewMod(2711, "DBM-Raids-Midnight", 4, 1305)
 --local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(254176)
+mod:SetCreatureID(238693)
 mod:SetEncounterID(3159)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
