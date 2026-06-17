@@ -23,6 +23,7 @@ local specWarnFungalBloom					= mod:NewSpecialWarningCount(1221637, nil, nil, ni
 local specWarnAwakenFungi					= mod:NewSpecialWarningCount(1221622, nil, nil, nil, 2, 2, nil, nil, "mobsoon")
 local specWarnBurstingPustules				= mod:NewSpecialWarningCount(1221787, nil, nil, nil, 2, 2, nil, nil, "aesoon")
 local specWarnPutridFist					= mod:NewSpecialWarningDefensive(1221781, nil, nil, nil, 1, 2, nil, nil, "defensive")
+local specWarnFesteringVines				= mod:NewSpecialWarningBlizzYou(1222088, nil, nil, nil, 2, 2, nil, nil, "poolyou")
 --local specWarnFunglingFixate				= mod:NewSpecialWarningYou(1299508, nil, nil, nil, 1, 2)
 --local specWarnShroomingFixate				= mod:NewSpecialWarningYou(1221639, nil, nil, nil, 1, 2)
 
@@ -35,7 +36,7 @@ local timerFesteringVinesCD					= mod:NewCDCountTimer(20.5, 1222088, nil, nil, n
 
 mod:AddPrivateAuraSoundOption(1221639, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough
 mod:AddPrivateAuraSoundOption(1299508, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough)
-mod:AddPrivateAuraSoundOption(1222088, true, 1222088, 1, 1, "runout", 2)--Festering Vines
+--mod:AddPrivateAuraSoundOption(1222088, true, 1222088, 1, 1, "runout", 2)--Festering Vines
 mod:AddPrivateAuraSoundOption(1222129, true, 1222088, 1, 2, "watchfeet", 8)--Writhing Vines (GTFO left by Festering Vines)
 
 mod.vb.fungalBloomCount = 0
@@ -55,6 +56,7 @@ local function setFallback(self, dontSetAlerts)
 		specWarnFungalBloom:SetAlert(424, "carefly", 2, 3)
 		specWarnAwakenFungi:SetAlert(425, "mobsoon", 2, 3)
 		specWarnBurstingPustules:SetAlert(426, "aesoon", 2, 3)
+		specWarnFesteringVines:SetAlert(428, "poolyou", 18, 3)
 		if self:IsTank() then
 			specWarnPutridFist:SetAlert(427, "defensive", 1, 3)
 		end
@@ -79,7 +81,7 @@ function mod:OnLimitedCombatStart()
 	mythic49Slot = 0
 	self:TLCountReset()
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and (self:IsMythic()) and not badStateDetected then
+	if DBM.Options.HardcodedTimer and not badStateDetected then
 		--self:SetStage(1)
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
@@ -107,7 +109,7 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	local function timersMythic(self, timer, timerExact, eventID)
+	local function timersAll(self, timer, timerExact, eventID)
 		local handled
 		if timer == 114 then
 			handled = true
@@ -157,9 +159,7 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			if self:IsMythic() then
-				timersMythic(self, timer, timerExact, eventID)
-			end
+			timersAll(self, timer, timerExact, eventID)
 		end
 	end
 
@@ -184,6 +184,8 @@ do
 					specWarnPutridFist:Show()
 					specWarnPutridFist:Play("defensive")
 				end
+			elseif eventType == "vines" then
+				specWarnFesteringVines:Show(eventCount, "poolyou")
 			end
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)
