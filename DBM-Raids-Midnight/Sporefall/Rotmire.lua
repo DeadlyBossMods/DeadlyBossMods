@@ -43,6 +43,9 @@ mod.vb.awakenFungiCount = 0
 mod.vb.burstingPustulesCount = 0
 mod.vb.putridFistCount = 0
 mod.vb.festeringVinesCount = 0
+local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local mythic13Slot = 0
+local mythic49Slot = 0
 
 ---@param self DBMMod
 ---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -72,27 +75,31 @@ function mod:OnLimitedCombatStart()
 	self.vb.burstingPustulesCount = 1
 	self.vb.putridFistCount = 1
 	self.vb.festeringVinesCount = 1
---	self:TLCountReset()
+	mythic13Slot = 0
+	mythic49Slot = 0
+	self:TLCountReset()
 	--Hardcode features first
-	--if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic() or self:IsMythic()) and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsMythic()) and not badStateDetected then
 		--self:SetStage(1)
-		--self:IgnoreBlizzardAPI()
-		--self:RegisterShortTermEvents(
-		--	"ENCOUNTER_TIMELINE_EVENT_ADDED",
-		--	"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
-		--)
-		--if DBM.Options.HideDBMBars then
-		--	setFallback(self, true)
-		--end
-	--else
+		self:IgnoreBlizzardAPI()
+		self:RegisterShortTermEvents(
+			"ENCOUNTER_TIMELINE_EVENT_ADDED",
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+		)
+		if DBM.Options.HideDBMBars then
+			setFallback(self, true)
+		end
+	else
 		setFallback(self)
-	--end
+	end
 end
 
---[[
+
 function mod:OnCombatEnd()
---	self:TLCountReset()
---	self:UnregisterShortTermEvents()
+	mythic13Slot = 0
+	mythic49Slot = 0
+	self:TLCountReset()
+	self:UnregisterShortTermEvents()
 end
 
 do
@@ -100,10 +107,41 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	local function timersEasy(self, timer, timerExact, eventID)
-		if timer == 7 then
-			--timerFungalBloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bloom", "fungalBloomCount"))
-		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+	local function timersMythic(self, timer, timerExact, eventID)
+		local handled
+		if timer == 114 then
+			handled = true
+			timerFungalBloomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bloom", "fungalBloomCount"))
+		elseif timer == 41 then
+			handled = true
+			timerFesteringVinesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vines", "festeringVinesCount"))
+		elseif timer == 24 or timer == 12 then
+			handled = true
+			timerPutridFistCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "fist", "putridFistCount"))
+		elseif timer == 8 or timer == 21 then
+			handled = true
+			timerBurstingPustulesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "burst", "burstingPustulesCount"))
+		elseif timer == 13 then
+			handled = true
+			mythic13Slot = mythic13Slot + 1
+			if mythic13Slot % 2 == 1 then
+				timerAwakenFungiCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "awaken", "awakenFungiCount"))
+			else
+				timerPutridFistCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "fist", "putridFistCount"))
+			end
+		elseif timer == 49 then
+			handled = true
+			mythic49Slot = (mythic49Slot % 3) + 1
+			if mythic49Slot == 1 then
+				timerAwakenFungiCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "awaken", "awakenFungiCount"))
+			elseif mythic49Slot == 2 then
+				timerBurstingPustulesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "burst", "burstingPustulesCount"))
+			else
+				timerFesteringVinesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vines", "festeringVinesCount"))
+			end
+		end
+
+		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			badStateDetected = true
 			self:ResumeBlizzardAPI()
 			self:UnregisterShortTermEvents()
@@ -119,8 +157,8 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			if self:IsEasy() then
-				timersEasy(self, timer, timerExact, eventID)
+			if self:IsMythic() then
+				timersMythic(self, timer, timerExact, eventID)
 			end
 		end
 	end
@@ -130,9 +168,21 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType and eventCount then
-				if eventType == "bloom" then
-
+			if not eventType then return end
+			if not eventCount then return end
+			if eventType == "bloom" then
+				specWarnFungalBloom:Show(eventCount)
+				specWarnFungalBloom:Play("carefly")
+			elseif eventType == "awaken" then
+				specWarnAwakenFungi:Show(eventCount)
+				specWarnAwakenFungi:Play("mobsoon")
+			elseif eventType == "burst" then
+				specWarnBurstingPustules:Show(eventCount)
+				specWarnBurstingPustules:Play("aesoon")
+			elseif eventType == "fist" then
+				if self:IsTanking("player", "boss1", nil, true) then
+					specWarnPutridFist:Show()
+					specWarnPutridFist:Play("defensive")
 				end
 			end
 		elseif eventState == 3 then
@@ -140,4 +190,3 @@ do
 		end
 	end
 end
---]]
