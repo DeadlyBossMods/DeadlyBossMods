@@ -99,6 +99,7 @@ function mod:OnCombatEnd()
 	mythic13Slot = 0
 	mythic49Slot = 0
 	self:TLCountReset()
+	self:UnregisterShortTermEvents()
 end
 
 do
