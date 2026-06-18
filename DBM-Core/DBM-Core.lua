@@ -5972,6 +5972,9 @@ do
 				mod:UnregisterOnUpdateHandler()
 			end
 			mod:Stop()
+			if DBM.InfoFrame and DBM.InfoFrame:IsShown() then
+				DBM.InfoFrame:Hide()
+			end
 			if mod.tlTimerEvents then
 				mod:DisableTimelineOptions()
 			end
