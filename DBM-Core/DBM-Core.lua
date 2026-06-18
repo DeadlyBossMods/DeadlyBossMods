@@ -5971,7 +5971,7 @@ do
 			if mod.updateInterval then
 				mod:UnregisterOnUpdateHandler()
 			end
-		mod:Stop()
+			mod:Stop()
 			if DBM.InfoFrame and DBM.InfoFrame:IsShown() then
 				DBM.InfoFrame:Hide()
 			end
