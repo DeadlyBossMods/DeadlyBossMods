@@ -175,15 +175,37 @@ frameWebsiteButtonA:SetScript("OnMouseUp", function()
 end)
 
 DBM_GUI.Enums = {}
-DBM_GUI.Enums.Tabs = {
-	CORE = 1,
-	RAIDS = 2,
-	DUNGEONS = 3,
-	SCENARIOS = 4,
-	WORLD_BOSSES = (isRetail or isMop) and 5 or 4,
-	OTHER = (isRetail or isMop) and 6 or 5,
-	TOOLS = (isRetail or isMop) and 7 or 6,
-}
+if isRetail then
+	DBM_GUI.Enums.Tabs = {
+		CORE = 1,
+		RAIDS = 2,
+		LAIRS = 3,
+		DUNGEONS = 4,
+		SCENARIOS = 5,
+		WORLD_BOSSES = 6,
+		OTHER = 7,
+		TOOLS = 8,
+	}
+elseif isMop then
+	DBM_GUI.Enums.Tabs = {
+		CORE = 1,
+		RAIDS = 2,
+		DUNGEONS = 3,
+		SCENARIOS = 4,
+		WORLD_BOSSES = 5,
+		OTHER = 6,
+		TOOLS = 7,
+	}
+else
+	DBM_GUI.Enums.Tabs = {
+		CORE = 1,
+		RAIDS = 2,
+		DUNGEONS = 3,
+		WORLD_BOSSES = 4,
+		OTHER = 5,
+		TOOLS = 6,
+	}
+end
 
 ---@class DBM_GUI_OptionsFrameDBMOptions: Frame
 local DBMOptions = CreateFrame("Frame", "$parentDBMOptions", frame)
@@ -194,6 +216,13 @@ frame:CreateTab(DBMOptions)
 local raidOptions = CreateFrame("Frame", "$parentRaidOptions", frame)
 raidOptions.name = L.OTabRaids
 frame:CreateTab(raidOptions)
+
+if isRetail then
+	---@class DBM_GUI_OptionsFrameLairOptions: Frame
+	local lairOptions = CreateFrame("Frame", "$parentLairOptions", frame)
+	lairOptions.name = L.OTabLairs
+	frame:CreateTab(lairOptions)
+end
 
 ---@class DBM_GUI_OptionsFrameDungeonOptions: Frame
 local dungeonOptions = CreateFrame("Frame", "$parentDungeonOptions", frame)

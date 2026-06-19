@@ -8,6 +8,7 @@ L.TranslationBy 					= "Psyco/Sasmira/Pettigrow/Edoz@EU-Ysondre/Leybola@EU-Sarge
 L.Website							= "Suivre MysticalOS pour les actualités et les mises à jour |cFF73C2FBhttps://allmylinks.com/mysticalos|r"
 L.WebsiteButton						= "Site web"
 L.OTabRaids							= "Raids"--Just pve raids
+L.OTabLairs							= "Antres"--Retail Only
 L.OTabDungeons						= "Donjons"--Just dungeons
 L.OTabWorld							= "Boss mondiaux"--Since there are so many world mods, enough to get their own tab
 L.OTabScenarios						= "Scénarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)

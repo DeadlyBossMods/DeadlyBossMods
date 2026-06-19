@@ -8,6 +8,7 @@ L.TranslationBy 					= "Kaliad, Mattmagic @ Pozzo dell'Eternità"
 L.Website							= "Visitaci su Discord a |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Sequici su Twitter @deadlybossmods o @MysticalOS"
 L.WebsiteButton						= "Sito Web"
 L.OTabRaids							= "Raids"
+L.OTabLairs							= "Tane"--Retail Only
 L.OTabDungeons						= "Dungeons"
 L.OTabWorld							= "World Bosses"--Since there are so many world mods, enough to get their own tab
 L.OTabScenarios						= "Scenarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)

@@ -9,6 +9,7 @@ L.TranslationBy 					= "Hollicsh"
 L.Website							= "Следите за новостями и обновлениями MysticalOS - |cFF73C2FBhttps://allmylinks.com/mysticalos|r. Спасибо за поддержку!"
 L.WebsiteButton						= "Форумы"
 L.OTabRaids							= "Рейды"
+L.OTabLairs							= "Логова"--Retail Only
 L.OTabDungeons						= "Подземелья"
 L.OTabWorld							= "Мировые боссы"
 L.OTabScenarios						= "Сценарии"

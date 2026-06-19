@@ -8,6 +8,7 @@ L.TranslationBy 					= "三皈依@暗影之月 & Imbav@聖光之願"
 L.Website							= "拜訪討論/支援論壇:|cFF73C2Fhttps://discord.gg/deadlybossmods|r. 請在推特上關注@deadlybossmods或@MysticalOS"
 L.WebsiteButton						= "論壇"
 L.OTabRaids							= "團隊"
+L.OTabLairs							= "巢穴"--Retail Only
 L.OTabDungeons						= "隊伍/單獨"
 L.OTabWorld							= "世界首領"
 L.OTabScenarios						= "事件"
