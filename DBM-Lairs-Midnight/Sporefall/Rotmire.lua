@@ -1,5 +1,4 @@
-if DBM:GetTOC() < 120007 then return end
-local mod	= DBM:NewMod(2711, "DBM-Raids-Midnight", 1, 1305)
+local mod	= DBM:NewMod(2711, "DBM-Raids-Midnight", 2, 1305)
 --local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
 
 mod:SetRevision("@file-date-integer@")

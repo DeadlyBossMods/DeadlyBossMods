@@ -1136,8 +1136,8 @@ do
 		for _, addon in ipairs(DBM.AddOns) do
 			if not addon.panel then
 				local customName
-				--Auto truncate Raid, Dungeon, and World boss mods to only display expansion name in list
-				if addon.type == "RAID" or addon.type == "PARTY" or addon.type == "WORLDBOSS" then
+				--Auto truncate Raid, Dungeon, Lair, and World boss mods to only display expansion name in list
+				if addon.type == "RAID" or addon.type == "PARTY" or addon.type == "WORLDBOSS" or addon.type == "LAIR" then
 					customName = _G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1]
 				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...

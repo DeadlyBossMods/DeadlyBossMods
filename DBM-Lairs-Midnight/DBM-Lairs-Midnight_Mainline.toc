@@ -1,0 +1,37 @@
+## Interface: 120007, 120100
+## X-Min-Interface: 120007
+## Version: @project-version@
+## Category: DBM
+
+## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010Lairs (Midnight)|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010소굴 (한밤)|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Мод|r|cffffe00a>|r |cffff6010Логова (Полночь)|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010巢穴 (至暗之夜)|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff6010巢穴（至暗之夜）|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMLairsMidnight_AllSavedVars
+## SavedVariablesPerCharacter: DBMLairsMidnight_SavedStats
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: LAIR
+## X-DBM-Mod-Category: MIDNIGHT
+## X-DBM-StatTypes: lfr,normal,heroic,mythic
+## X-DBM-Mod-SubCategoriesID: 2987, 1592
+## X-DBM-Mod-MapIDNameOverrides: 2987 = "The Tidebound Grotto"
+## X-DBM-Mod-Name: Lairs (Midnight)
+## X-DBM-Mod-Name-koKR: 소굴 (한밤)
+## X-DBM-Mod-Name-ruRU: Логова (Полночь)
+## X-DBM-Mod-Name-zhTW: 巢穴 (至暗之夜)
+## X-DBM-Mod-Name-zhCN: 巢穴（至暗之夜）
+## X-DBM-Mod-Sort: 91
+## X-DBM-Mod-MapID: 2987, 1592
+## X-DBM-Mod-MinCoreRevision: 20260522000000
+## X-DBM-Mod-MinExpansion: 11
+## X-Curse-Project-ID: 3358
+## X-Wago-ID: qv633o6b
+
+localization.en.lua
+
+Sporefall\Rotmire.lua

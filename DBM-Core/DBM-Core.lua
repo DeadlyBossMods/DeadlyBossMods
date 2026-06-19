@@ -2013,6 +2013,51 @@ do
 	local isLoaded = false
 	local onLoadCallbacks, disabledMods = {}, {}
 
+	---@param metadataValue string?
+	---@return table<integer, string>
+	local function parseMapIDNameOverrides(metadataValue)
+		local overrides = {}
+		if type(metadataValue) ~= "string" or metadataValue == "" then
+			return overrides
+		end
+		for pair in metadataValue:gmatch("[^,]+") do
+			local rawId, rawName = strsplit("=", pair, 2)
+			if rawId and rawName then
+				local id = tonumber(rawId:trim())
+				local name = rawName:trim()
+				if name:sub(1, 1) == '"' and name:sub(-1) == '"' then
+					name = name:sub(2, -2)
+				elseif name:sub(1, 1) == "'" and name:sub(-1) == "'" then
+					name = name:sub(2, -2)
+				end
+				if id and name ~= "" then
+					overrides[id] = name
+				end
+			end
+		end
+		return overrides
+	end
+
+	---@param addonIndex integer
+	---@return table<integer, string>
+	local function getMapIDNameOverrides(addonIndex)
+		local defaultOverrides = parseMapIDNameOverrides(C_AddOns.GetAddOnMetadata(addonIndex, "X-DBM-Mod-MapIDNameOverrides"))
+		if not next(defaultOverrides) then
+			-- Backward compatibility for older key name.
+			defaultOverrides = parseMapIDNameOverrides(C_AddOns.GetAddOnMetadata(addonIndex, "X-DBM-Mod-SubCategoryNameOverrides"))
+		end
+		local locale = GetLocale()
+		local localizedOverrides = parseMapIDNameOverrides(C_AddOns.GetAddOnMetadata(addonIndex, "X-DBM-Mod-MapIDNameOverrides-" .. locale))
+		if not next(localizedOverrides) then
+			-- Backward compatibility for older localized key name.
+			localizedOverrides = parseMapIDNameOverrides(C_AddOns.GetAddOnMetadata(addonIndex, "X-DBM-Mod-SubCategoryNameOverrides-" .. locale))
+		end
+		for id, name in pairs(localizedOverrides) do
+			defaultOverrides[id] = name
+		end
+		return defaultOverrides
+	end
+
 	---@param self DBM
 	local function infiniteLoopNotice(self, message)
 		AddMsg(self, message)
@@ -2228,13 +2273,18 @@ do
 							AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 						else
 							local mapIdTable = {strsplit(",", C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
+							local mapIDNameOverrides = getMapIDNameOverrides(i)
 
 							local minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface") or 0)
 
 							local firstMapId = mapIdTable[1]
 							local firstMapName
-							if tonumber(firstMapId) then
-								firstMapName = GetRealZoneText(tonumber(firstMapId))
+							local firstMapIdNum = tonumber(firstMapId)
+							if firstMapIdNum and mapIDNameOverrides[firstMapIdNum] then
+								-- Explicit TOC override must always win, even if GetRealZoneText currently returns placeholder text.
+								firstMapName = mapIDNameOverrides[firstMapIdNum]
+							elseif firstMapIdNum then
+								firstMapName = GetRealZoneText(firstMapIdNum)
 							elseif firstMapId:sub(1, 1) == "m" then
 								firstMapName = C_Map.GetMapInfo(tonumber(firstMapId:sub(2)) or 0)
 								firstMapName = firstMapName and firstMapName.name
@@ -2278,7 +2328,11 @@ do
 										local id, nameModifier = strsplit("|", subTabs[k])
 										if id and nameModifier then
 											id = tonumber(id)
-											self.AddOns[#self.AddOns].subTabs[k] = (GetRealZoneText(id):trim() or id) .. " (" .. nameModifier .. ")"
+											local subTabName = id and mapIDNameOverrides[id] or nil
+											if not subTabName then
+												subTabName = (GetRealZoneText(id):trim() or id)
+											end
+											self.AddOns[#self.AddOns].subTabs[k] = subTabName .. " (" .. nameModifier .. ")"
 										else
 											self.AddOns[#self.AddOns].subTabs[k] = (subTabs[k]):trim()
 										end
@@ -2286,15 +2340,18 @@ do
 										local id = tonumber(subTabs[k])
 										if id then
 											--For handling zones like Warfront: Arathi - Alliance
-											local subTabName = GetRealZoneText(id):trim()
-											for w in string.gmatch(subTabName, " - ") do
-												if w:trim() ~= "" then
-													subTabName = w
-													break
+											local subTabName = mapIDNameOverrides[id]
+											if not subTabName then
+												subTabName = GetRealZoneText(id):trim()
+												for w in string.gmatch(subTabName, " - ") do
+													if w:trim() ~= "" then
+														subTabName = w
+														break
+													end
 												end
-											end
-											if subTabName == "" then -- GetRealZoneText() returns empty string on unknown zones, this happens for dungeons that don't yet exist
-												subTabName = UNKNOWN .. " (" .. id .. ")"
+												if subTabName == "" then -- GetRealZoneText() returns empty string on unknown zones, this happens for dungeons that don't yet exist
+													subTabName = UNKNOWN .. " (" .. id .. ")"
+												end
 											end
 											self.AddOns[#self.AddOns].subTabs[k] = subTabName
 										else

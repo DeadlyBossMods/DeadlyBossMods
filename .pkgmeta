@@ -43,6 +43,7 @@ move-folders:
   DBM-Core/DBM-DMF: DBM-DMF
   DBM-Core/DBM-Midnight: DBM-Midnight
   DBM-Core/DBM-Raids-Midnight: DBM-Raids-Midnight
+  DBM-Core/DBM-Lairs-Midnight: DBM-Lairs-Midnight
   DBM-Core/DBM-Core: DBM-Core
   DBM-Core/DBM-GUI: DBM-GUI
   DBM-Core/DBM-StatusBarTimers: DBM-StatusBarTimers

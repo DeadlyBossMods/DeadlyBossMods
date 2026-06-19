@@ -84,7 +84,7 @@ if private.isRetail then
 		[2222] = {60, 1}, [2374] = {60, 1},--Shadowlands World Bosses
 		[2444] = {70, 1}, [2512] = {70, 1}, [2574] = {70, 1}, [2454] = {70, 1}, [2548] = {70, 1},--Dragonflight World Bosses
 		[2774] = {80, 1}, [2552] = {80, 1}, [2601] = {80, 1},--War Within World Bosses
-		[2694] = {90, 1}, [2771] = {90, 1}, [2930] = {90, 1}, [2987] = {90, 1},--Midnight World Bosses
+		[2694] = {90, 1}, [2771] = {90, 1}, [2930] = {90, 1},--Midnight World Bosses
 		--Raids
 		[509] = {30, 3}, [531] = {30, 3}, [469] = {30, 3}, [409] = {30, 3},--Classic Raids
 		[564] = {30, 3}, [534] = {30, 3}, [532] = {30, 3}, [565] = {30, 3}, [544] = {30, 3}, [548] = {30, 3}, [580] = {30, 3}, [550] = {30, 3},--BC Raids
@@ -97,7 +97,8 @@ if private.isRetail then
 		[2296] = {60, 3}, [2450] = {60, 3}, [2481] = {60, 3},--Shadowlands Raids (yes, only 3 kekw, seconded)
 		[2522] = {70, 3}, [2569] = {70, 3}, [2549] = {70, 3},--Dragonflight Raids
 		[2657] = {80, 3}, [2792] = {80, 3}, [2769] = {80, 3}, [2810] = {80, 3},--War Within Raids
-		[2912] = {90, 3}, [2939] = {90, 3}, [2913] = {90, 3}, [1592] = {90, 3}, [3004] = {90, 3},--Midnight Raids
+		[2912] = {90, 3}, [2939] = {90, 3}, [2913] = {90, 3}, [3004] = {90, 3},--Midnight Raids
+		[1592] = {90, 3}, [2987] = {90, 3},--Midnight Lairs (scalable multi difficulty "world bosses")
 		--Dungeons
 		[48] = {30, 2}, [230] = {30, 2}, [429] = {30, 2}, [389] = {30, 2}, [34] = {30, 2},--Classic Dungeons
 		[540] = {30, 2}, [558] = {30, 2}, [556] = {30, 2}, [555] = {30, 2}, [542] = {30, 2}, [546] = {30, 2}, [545] = {30, 2}, [547] = {30, 2}, [553] = {30, 2}, [554] = {30, 2}, [552] = {30, 2}, [557] = {30, 2}, [269] = {30, 2}, [560] = {30, 2}, [543] = {30, 2}, [585] = {30, 2},--BC Dungeons
@@ -398,9 +399,10 @@ difficulties.SOD_BWL_TRIAL_BRONZE = 8
 difficulties.SOD_BWL_TRIAL_RED    = 16
 
 --TODO C_IslandsQueue.GetIslandDifficultyInfo(), if 38-40 don't work
+--TODO, not sure how to classify lairs yet. New category, world bosses, or main raid category since they are progression multi difficulty bosses
 function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, difficultyName, _, _, _, instanceID, instanceGroupSize = private.GetInstanceInfo()
-	if difficulty == 0 or difficulty == 172 or (difficulty == 1 and instanceType == "none") or (C_Garrison and C_Garrison:IsOnGarrisonMap()) or difficulty == 250 then--draenor field returns 1, causing world boss mod bug. 250 is an instanced world boss
+	if difficulty == 0 or difficulty == 172 or (difficulty == 1 and instanceType == "none") or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then--draenor field returns 1, causing world boss mod bug. 250 is an instanced world boss
 		return "worldboss", RAID_INFO_WORLD_BOSS .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 1 or difficulty == 173 or difficulty == 184 or difficulty == 150 or difficulty == 201 then--5 man Normal Dungeon / 201 is SoD 5 man ID for a dungeon that's also a 10/20 man SoD Raid.
 		return "normal5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
@@ -513,7 +515,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroicscenario", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 12 or difficulty == 152 then--Normal Scenario (mostly Mists of pandaria and Visions of Nzoth scenarios)
 		return "normalscenario", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 14 then--Flexible Normal Raid
+	elseif difficulty == 14 or difficulty == 250 then--Flexible Normal Raid / Flexible Normal Lair (5-40 vs 10-30)
 		return "normal", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 15 then--Flexible Heroic Raid
 		return "heroic", difficultyName .. " - ", difficulty, instanceGroupSize, 0

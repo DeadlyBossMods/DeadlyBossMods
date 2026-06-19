@@ -1002,6 +1002,8 @@ function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forc
 		frameType = DBM_GUI.Enums.Tabs.CORE
 	elseif frameType == "RAID" then
 		frameType = DBM_GUI.Enums.Tabs.RAIDS
+	elseif frameType == "LAIR" then
+		frameType = DBM_GUI.Enums.Tabs.LAIRS
 	elseif frameType == "PARTY" then
 		frameType = DBM_GUI.Enums.Tabs.DUNGEONS
 	elseif frameType == "SCENARIO" then
