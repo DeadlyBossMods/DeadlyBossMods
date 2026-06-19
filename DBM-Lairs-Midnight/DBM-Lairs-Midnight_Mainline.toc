@@ -34,4 +34,5 @@
 
 localization.en.lua
 
+TideboundGrotto\NymrissaWavecaller.lua
 Sporefall\Rotmire.lua
