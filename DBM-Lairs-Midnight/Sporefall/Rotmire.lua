@@ -13,11 +13,11 @@ mod:RegisterCombat("combat")
 --Note: Poison Burst doesn't need PA sound, it just means you missed interrupt, non actionable.
 --Note: blizzard flagged Bursting Pustules as a private aura but probably meant to flag Rotting Pustules
 --Note: Bursting Doom Shroom PA needs no addition. it does 1 million damage initial and another 1 million per second.
---TODO, threat based tank defensive warning for Putrid Fist in the hardcode
---TODO, visit Festering Vines general count warning warning in hardcode
---TODO, swap mod order so this is on top when 12.0.7 goes live
---local warnAlndustUpheaval					= mod:NewBlizzTargetAnnounce(1262289, 2)
-
+DBM:RegisterAltSpellName(1221637, 28405)--Fungal Bloom --> Knockback
+DBM:RegisterAltSpellName(1221622, DBM_COMMON_L.ADDS)--Awaken Fungi --> Adds
+DBM:RegisterAltSpellName(1221787, DBM_COMMON_L.AOEDAMAGE)--Bursting Pustules --> AOE Damage
+DBM:RegisterAltSpellName(1222088, DBM_COMMON_L.POOLS)--Festering Vines --> Pools
+DBM:RegisterAltSpellName(1221781, DBM_COMMON_L.TANKBUSTER)--Putrid Fist --> Tank Buster
 local specWarnFungalBloom					= mod:NewSpecialWarningCount(1221637, nil, nil, nil, 2, 2, nil, nil, "carefly")
 local specWarnAwakenFungi					= mod:NewSpecialWarningCount(1221622, nil, nil, nil, 2, 2, nil, nil, "mobsoon")
 local specWarnBurstingPustules				= mod:NewSpecialWarningCount(1221787, nil, nil, nil, 2, 2, nil, nil, "aesoon")
