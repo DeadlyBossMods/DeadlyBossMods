@@ -10,6 +10,7 @@ L.TranslationBy 					= "GlitterStorm @ Azralon"
 L.Website							= "Siga a MysticalOS para notícias e atualizações |cFF73C2FBhttps://allmylinks.com/mysticalos|r"
 L.WebsiteButton						= "Site"
 L.OTabRaids							= "Raides"--Just pve raids
+L.OTabLairs							= "Covis"--Retail Only
 L.OTabDungeons						= "Masmorras"--Just dungeons
 L.OTabWorld							= "Chefes mundiais"--Since there are so many world mods, enough to get their own tab
 L.OTabScenarios						= "Cenários"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)

@@ -9,6 +9,7 @@ L.TranslationBy 					= "Saispai, Woopy"
 L.Website							= "Sigue a MysticalOS para noticias y actualizaciones |cFF73C2FBhttps://allmylinks.com/mysticalos|r"
 L.WebsiteButton						= "Página web"
 L.OTabRaids							= "Bandas"
+L.OTabLairs							= "Guaridas"--Retail Only
 L.OTabDungeons						= "Mazmorras"
 L.OTabWorld							= "Jefes del mundo"--Since there are so many world mods, enough to get their own tab
 L.OTabScenarios						= "Gestas"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)

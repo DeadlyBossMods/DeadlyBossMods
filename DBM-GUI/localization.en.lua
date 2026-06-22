@@ -11,8 +11,9 @@ L.Website							= "Please follow MysticalOS for news/updates |cFF73C2FBhttps://a
 L.WebsiteButton						= "Website"
 
 L.OTabRaids							= "Raids"
+L.OTabLairs							= "Lairs"--Retail Only (tab won't be shown on non retail game versions)
 L.OTabDungeons						= "Dungeons"
-L.OTabWorld							= "World Bosses"--Since there are so many world mods, enough to get their own tab
+L.OTabWorld							= "World Bosses"--Legacy/Classic. Since there are so many world mods, enough to get their own tab
 L.OTabScenarios						= "Scenarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins						= "Other"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions						= "Core Options"
