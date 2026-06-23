@@ -6085,7 +6085,7 @@ do
 						wipeHP = wipeHP .. " (" .. BOSSES_KILLED:format(bossesKilled, mod.numBoss) .. ")"
 					end
 				else
-					wipeHP = wipeHealthPct
+					wipeHP = wipeHealthPct and tostring(wipeHealthPct) or CL.UNKNOWN
 				end
 				local totalPulls = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Pulls"]
 				local totalKills = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"]
