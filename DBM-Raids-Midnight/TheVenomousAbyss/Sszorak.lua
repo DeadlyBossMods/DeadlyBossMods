@@ -11,13 +11,26 @@ mod:SetZone(3004)
 
 mod:RegisterCombat("combat")
 
---DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
-local specWarnWaterJet					= mod:NewSpecialWarningCount(1268562, nil, nil, nil, 2, 2, nil, nil, "lineyou")
+--TODO, verify raging crosswinds actually has a personal ENCOUNTER_WARNING. Also, recored custom audio after test if it does ("winds on you" likely)
+DBM:RegisterAltSpellName(1277025, DBM_COMMON_L.TANKCOMBO)--Apex Predator --> Tank Combo
+local specWarnRagingCrosswinds			= mod:NewSpecialWarningYouCount(1285425, nil, nil, nil, 2, 17, nil, nil, "debuffyou")
+local specWarnVenomousSurge				= mod:NewSpecialWarningCount(1305959, nil, nil, nil, 2, 18, nil, nil, "poolyou")
+local specWarnApexPedator				= mod:NewSpecialWarningCount(1285430, nil, nil, nil, 2, 19, nil, nil, "tankcombo")
+local specWarnHowlingMaelstrom			= mod:NewSpecialWarningCount(1285732, nil, nil, nil, 2, 13, nil, nil, "pushbackincoming")
+local specWarnCausticClaws				= mod:NewSpecialWarningCount(1285733, nil, nil, nil, 2, 2, nil, nil, "scatter")--Sub mechanic of Venomous Surge
 
-local timerWaterJetCD					= mod:NewCDCountTimer(20.5, 1268562, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Mythic version
---local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
+local timerRagingCrosswindsCD			= mod:NewCDCountTimer(20.5, 1285425, nil, nil, nil, 3)
+local timerVenomousSurgeCD				= mod:NewCDCountTimer(20.5, 1305959, nil, nil, nil, 3)
+local timerApexPedatorCD				= mod:NewCDCountTimer(20.5, 1285430, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerHowlingMaelstromCD			= mod:NewCDCountTimer(20.5, 1285732, nil, nil, nil, 2, nil, DBM_COMMON_L.IMPORTANT_ICON)
+local timerBerserkCD					= mod:NewBerserkTimer(600)
 
 --local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+
+mod.vb.RagingCrosswindsCount = 0
+mod.vb.VenomousSurgeCount = 0
+mod.vb.ApexPedatorCount = 0
+mod.vb.HowlingMaelstromCount = 0
 
 ---@param self DBMMod
 ---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -25,16 +38,27 @@ local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	if not dontSetAlerts then
 		if self:IsTank() then
-
+			specWarnApexPedator:SetAlert(664, "tankcombo", 19, 2)
 		end
-		specWarnWaterJet:SetAlert(367, "killmob", 2, 2)
+		specWarnRagingCrosswinds:SetAlert(652, "debuffyou", 17, 2, 0)
+		specWarnVenomousSurge:SetAlert(653, "poolyou", 18, 2, 0)
+		specWarnHowlingMaelstrom:SetAlert(665, "pushbackincoming", 13, 2)
+		specWarnCausticClaws:SetAlert(851, "scatter", 2, 2)
 	end
 	local onlyColor = not DBM.Options.HideDBMBars
-	timerWaterJetCD:SetTimeline(366, onlyColor)
+	timerRagingCrosswindsCD:SetTimeline(652, onlyColor)
+	timerVenomousSurgeCD:SetTimeline(653, onlyColor)
+	timerApexPedatorCD:SetTimeline(664, onlyColor)
+	timerHowlingMaelstromCD:SetTimeline(665, onlyColor)
+	timerBerserkCD:SetTimeline(863, onlyColor)
 end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
+	self.vb.RagingCrosswindsCount = 1
+	self.vb.VenomousSurgeCount = 1
+	self.vb.ApexPedatorCount = 1
+	self.vb.HowlingMaelstromCount = 1
 	--Hardcode features first
 	--if DBM.Options.HardcodedTimer and not badStateDetected then
 	--	--self:SetStage(1)

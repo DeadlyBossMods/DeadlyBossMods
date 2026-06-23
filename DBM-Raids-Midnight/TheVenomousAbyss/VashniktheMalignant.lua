@@ -22,7 +22,7 @@ local warnToxicOutpouring				= mod:NewCountAnnounce(1280881, 2)--Hardcode only, 
 local warnImbibeToxin					= mod:NewCountAnnounce(1283164, 2)--Hardcode only
 
 local specWarnDrippingFangs				= mod:NewSpecialWarningCount(1280935, nil, nil, nil, 1, 2, nil, nil, "defensive")
-local specWarnMalignantCatalyst			= mod:NewSpecialWarningSoakCount(1282509, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
+local specWarnMalignantCatalyst			= mod:NewSpecialWarningSoakCount(1282509, nil, nil, nil, 2, 2, 3, nil, "helpsoak")
 local specWarnPlagueFroth				= mod:NewSpecialWarningCount(1281907, nil, nil, nil, 2, 15, nil, nil, "incomingdebuff")
 local specWarnStygianInfection			= mod:NewSpecialWarningCount(1294994, nil, nil, nil, 2, 2, nil, nil, "phasechange")--Sub ability to Adaptive Infection
 local specWarnSiphoningInfection		= mod:NewSpecialWarningCount(1295224, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Sub ability to Adaptive Infection
@@ -31,7 +31,7 @@ local specWarnStygianBurst				= mod:NewSpecialWarningCount(1302489, nil, nil, ni
 
 local timerDrippingFangsCD				= mod:NewCDCountTimer(20.5, 1280935, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerAdaptiveInfectionCD			= mod:NewCDCountTimer(20.5, 1282114, nil, nil, nil, 6)
-local timerMalignantCatalystCD			= mod:NewCDCountTimer(20.5, 1282509, nil, nil, nil, 5)
+local timerMalignantCatalystCD			= mod:NewCDCountTimer(20.5, 1282509, nil, nil, nil, 5, nil, DBM_COMMON_L.HEROIC_ICON)
 local timerPlagueFrothCD				= mod:NewCDCountTimer(20.5, 1281907, nil, nil, nil, 3)
 local timerToxicOutpouringCD			= mod:NewCDCountTimer(20.5, 1280881, nil, nil, nil, 5)--likely not used
 local timerImbibeToxinCD				= mod:NewCDCountTimer(20.5, 1283164, nil, nil, nil, 5)
