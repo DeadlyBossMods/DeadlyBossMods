@@ -39,7 +39,7 @@ mod.vb.alluringBubbleCount = 0
 mod.vb.frostBarrageCount = 0
 mod.vb.tidepiercersRushCount = 0
 mod.vb.abyssalRainCount = 0
-local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+--local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 
 ---@param self DBMMod
 ---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
