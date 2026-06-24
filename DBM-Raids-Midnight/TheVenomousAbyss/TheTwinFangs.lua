@@ -11,13 +11,48 @@ mod:SetZone(3004)
 
 mod:RegisterCombat("combat")
 
---DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
-local specWarnWaterJet					= mod:NewSpecialWarningCount(1268562, nil, nil, nil, 2, 2, nil, nil, "lineyou")
+--TODO, threat checks to warn appropriate tanks of tank mechanics
+--TODO, inconsistencies on what Coiling Toxin does. Figure out good audio for it once clearer
+--TODO, are progeny killed? how many swap if they are?
+--TODO, does blood torrent go on current tank or random target?
+--NOTE, https://www.wowhead.com/ptr/spell=1294921/flood has encounter event ID of 741 but doesn't exist in journal
+--NOTE, Progeny use https://www.wowhead.com/ptr/spell=1291478/corrosive-spit with event ID of 753 but this seems likely to be spammy or not needed/obvious
+DBM:RegisterAltSpellName(1294293, DBM_COMMON_L.FRONTAL)--Surge --> Frontal
+local specWarnCausticDeluge				= mod:NewSpecialWarningCount(1289192, nil, nil, nil, 1, 2, nil, nil, "defensive")
+local specWarnStoneBreaker				= mod:NewSpecialWarningSoakCount(1288484, nil, nil, nil, 1, 2, nil, nil, "helpsoak")
+local specWarnSurge						= mod:NewSpecialWarningDodgeCount(1294293, nil, nil, nil, 1, 15, nil, nil, "frontal")
+local specWarnFlood						= mod:NewSpecialWarningDodgeCount(1294921, nil, nil, nil, 1, 2, nil, nil, "watchwave")--Likely unused
+local specWarnStirtheDepths				= mod:NewSpecialWarningCount(1290956, nil, nil, nil, 1, 2, nil, nil, "watchwave")--Likely flood's replacement
+local specWarnCoilingToxin				= mod:NewSpecialWarningDodgeCount(1290809, nil, nil, nil, 2, 2, nil, nil, "watchstep")
+local specWarnBeckonProgeny				= mod:NewSpecialWarningCount(1291404, "-Healer", nil, nil, 1, 2, nil, nil, "mobsoon")
+local specWarnRavenousFeast				= mod:NewSpecialWarningSoakCount(1290516, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
+local specWarnBloodTorrent				= mod:NewSpecialWarningCount(1303230, nil, nil, nil, 1, 2, 4, nil, "bigmob")--Mythic Only
+local specWarnBarrage					= mod:NewSpecialWarningCount(1306872, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 
-local timerWaterJetCD					= mod:NewCDCountTimer(20.5, 1268562, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Mythic version
+local timerCausticDelugeCD				= mod:NewCDCountTimer(20.5, 1289192, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
+local timerStoneBreakerCD				= mod:NewCDCountTimer(20.5, 1288484, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
+local timerSurgeCD						= mod:NewCDCountTimer(20.5, 1294293, nil, nil, nil, 3)
+local timerFloodCD						= mod:NewCDCountTimer(20.5, 1294921, nil, nil, nil, 3)--Likely unused
+local timerStirtheDepthsCD				= mod:NewCDCountTimer(20.5, 1290956, nil, nil, nil, 3)--Likely flood's replacement
+local timerCoilingToxinCD				= mod:NewCDCountTimer(20.5, 1290809, nil, nil, nil, 3)
+local timerBeckonProgenyCD				= mod:NewCDCountTimer(20.5, 1291404, nil, nil, nil, 1)
+local timerRavenousFeastCD				= mod:NewCDCountTimer(20.5, 1290516, nil, nil, nil, 2)
+local timerBloodTorrentCD				= mod:NewCDCountTimer(20.5, 1303230, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
+local timerBarrageCD					= mod:NewCDCountTimer(20.5, 1306872, nil, nil, nil, 3)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
 --local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+
+mod.vb.CausticDelugeCount = 0
+mod.vb.StoneBreakerCount = 0
+mod.vb.SurgeCount = 0
+mod.vb.FloodCount = 0
+mod.vb.StirtheDepthsCount = 0
+mod.vb.CoilingToxinCount = 0
+mod.vb.BeckonProgenyCount = 0
+mod.vb.RavenousFeastCount = 0
+mod.vb.BloodTorrentCount = 0
+mod.vb.BarrageCount = 0
 
 ---@param self DBMMod
 ---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -25,16 +60,43 @@ local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	if not dontSetAlerts then
 		if self:IsTank() then
-
+			specWarnCausticDeluge:SetAlert(711, "defensive", 2, 2)
+			specWarnStoneBreaker:SetAlert(739, "helpsoak", 2, 2)
 		end
-		specWarnWaterJet:SetAlert(367, "killmob", 2, 2)
+		specWarnSurge:SetAlert(740, "frontal", 15, 2)
+		specWarnFlood:SetAlert(741, "watchwave", 2, 2)
+		specWarnStirtheDepths:SetAlert(742, "watchwave", 2, 2)
+		specWarnCoilingToxin:SetAlert(743, "watchstep", 2, 2)
+		specWarnBeckonProgeny:SetAlert(744, "mobsoon", 2, 2)
+		specWarnRavenousFeast:SetAlert(751, "helpsoak", 2, 2)
+		specWarnBloodTorrent:SetAlert(896, "bigmob", 2, 2)
+		specWarnBarrage:SetAlert(897, "watchstep", 2, 2)
 	end
 	local onlyColor = not DBM.Options.HideDBMBars
-	timerWaterJetCD:SetTimeline(366, onlyColor)
+	timerCausticDelugeCD:SetTimeline(711, onlyColor)
+	timerStoneBreakerCD:SetTimeline(739, onlyColor)
+	timerSurgeCD:SetTimeline(740, onlyColor)
+	timerFloodCD:SetTimeline(741, onlyColor)
+	timerStirtheDepthsCD:SetTimeline(742, onlyColor)
+	timerCoilingToxinCD:SetTimeline(743, onlyColor)
+	timerBeckonProgenyCD:SetTimeline(744, onlyColor)
+	timerRavenousFeastCD:SetTimeline(751, onlyColor)
+	timerBloodTorrentCD:SetTimeline(896, onlyColor)
+	timerBarrageCD:SetTimeline(897, onlyColor)
 end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
+	self.vb.CausticDelugeCount = 1
+	self.vb.StoneBreakerCount = 1
+	self.vb.SurgeCount = 1
+	self.vb.FloodCount = 1
+	self.vb.StirtheDepthsCount = 1
+	self.vb.CoilingToxinCount = 1
+	self.vb.BeckonProgenyCount = 1
+	self.vb.RavenousFeastCount = 1
+	self.vb.BloodTorrentCount = 1
+	self.vb.BarrageCount = 1
 	--Hardcode features first
 	--if DBM.Options.HardcodedTimer and not badStateDetected then
 	--	--self:SetStage(1)
@@ -67,7 +129,7 @@ do
 		local handled
 		if timer == 114 then
 			handled = true
-			timerWaterJetCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "waterjet", "tankWaterCount"))
+			timerCausticDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "waterjet", "CausticDelugeCount"))
 		end
 
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
@@ -98,7 +160,7 @@ do
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end
 			if not eventCount then return end
-			if eventType == "waterjet" then
+			if eventType == "CausticDelugeCount" then
 				--specWarnWaterJet:Show(eventCount, "lineyou")
 			end
 		elseif eventState == 3 then
