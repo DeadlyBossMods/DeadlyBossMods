@@ -1,6 +1,6 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
-----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20260521
+----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20260626
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
@@ -524,6 +524,7 @@ L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 L.AUTO_TIMER_OPTIONS.target				= "计时条：$spell:%s减益效果持续时间"
 L.AUTO_TIMER_OPTIONS.targetcount		= "计时条：$spell:%s减益效果持续时间(带计数)"
 L.AUTO_TIMER_OPTIONS.cast				= "计时条：$spell:%s施法时间"
+L.AUTO_TIMER_OPTIONS.castnp				= "优先姓名版计时条：$spell:%s施法时间"
 L.AUTO_TIMER_OPTIONS.castcount			= "计时条：$spell:%s施法时间(带计数)"
 L.AUTO_TIMER_OPTIONS.castsource			= "计时条：$spell:%s施法时间(带来源)"
 L.AUTO_TIMER_OPTIONS.active				= "计时条：$spell:%s效果持续时间"
@@ -532,15 +533,24 @@ L.AUTO_TIMER_OPTIONS.ai					= "计时条：$spell:%s人工智能冷却时间"
 L.AUTO_TIMER_OPTIONS.cd					= "计时条：$spell:%s冷却时间"
 L.AUTO_TIMER_OPTIONS.cdcount			= "计时条：$spell:%s冷却时间（带计数）"
 L.AUTO_TIMER_OPTIONS.cdnp				= "姓名版计时条：$spell:%s冷却时间"
+L.AUTO_TIMER_OPTIONS.cdpnp				= "优先姓名版计时条：$spell:%s冷却时间"
 L.AUTO_TIMER_OPTIONS.cdsource			= "计时条：$spell:%s冷却时间以及来源"
 L.AUTO_TIMER_OPTIONS.cdspecial			= "计时条：特殊技能冷却"
 L.AUTO_TIMER_OPTIONS.cdcombo			= "计时条：连击技能冷却"
 L.AUTO_TIMER_OPTIONS.next				= "计时条：下一次$spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount			= "计时条：下一次$spell:%s（带计数）"
 L.AUTO_TIMER_OPTIONS.nextnp				= "姓名版计时条：下一次$spell:%s"
+L.AUTO_TIMER_OPTIONS.nextpnp			= "优先姓名版计时条：下一次$spell:%s"
 L.AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及来源"
 L.AUTO_TIMER_OPTIONS.nextspecial		= "计时条：下一次特殊技能"
 L.AUTO_TIMER_OPTIONS.nextcombo			= "计时条：下一次技能冷却"
+L.AUTO_TIMER_OPTIONS.var				= "计时条：$spell:%s冷却时间（带可变范围）"
+L.AUTO_TIMER_OPTIONS.varcount			= "计时条：$spell:%s冷却时间（带可变范围和计数）" 				
+L.AUTO_TIMER_OPTIONS.varnp				= "姓名版计时条：$spell:%s冷却时间（带可变范围）"				
+L.AUTO_TIMER_OPTIONS.varpnp				= "优先姓名版计时条：$spell:%s冷却时间（带可变范围）"				
+L.AUTO_TIMER_OPTIONS.varsource			= "计时条：$spell:%s冷却时间及来源（带可变范围）"				
+L.AUTO_TIMER_OPTIONS.varspecial			= "计时条：$下一次特殊技能（带可变范围）"			
+L.AUTO_TIMER_OPTIONS.varcombo			= "计时条：下一次技能冷却（带可变范围）"	
 L.AUTO_TIMER_OPTIONS.achievement		= "计时条：成就-%s"
 L.AUTO_TIMER_OPTIONS.stage				= "计时条：下一阶段"
 L.AUTO_TIMER_OPTIONS.stagecount			= "计时条：下一阶段（带计数）"
@@ -740,6 +750,14 @@ L.KEYSTONE_NAMES[558] = '魔导' -- Magister's Terrace
 L.KEYSTONE_NAMES[559] = '节点' -- Nexus-Point Xenas
 L.KEYSTONE_NAMES[560] = '迈萨拉' -- Maisara Caverns
 L.KEYSTONE_NAMES[583] = '执政' -- Seat of the Triumvirate
+L.KEYSTONE_NAMES[249] = '诸王' -- King's Rest
+L.KEYSTONE_NAMES[250] = '塞塔' -- Temple of Sethraliss
+L.KEYSTONE_NAMES[399] = '红玉' -- Ruby Life Pools
+L.KEYSTONE_NAMES[584] = '眩光' -- The Blinding Vale
+L.KEYSTONE_NAMES[585] = '虚空' -- Voidscar Arena
+L.KEYSTONE_NAMES[586] = '纳洛' -- Den of Nalorakk
+L.KEYSTONE_NAMES[587] = '密谋' -- Murder Row
+L.KEYSTONE_NAMES[588] = '毒牙' -- Altar of Fangs
 
 -- Midnight jazz
 L.MN_TIMELINE_HEADER	= "你想使用游戏自带的计时条还是DBM的计时条？"
