@@ -803,6 +803,15 @@ L.KEYSTONE_NAMES = {
 	[559] = 'NPX', -- Nexus-Point Xenas
 	[560] = 'MC', -- Maisara Caverns
 	[583] = 'SEAT', -- Seat of the Triumvirate
+
+	[249] = 'REST', -- King's Rest
+	[250] = 'TEMPLE', -- Temple of Sethraliss
+	[399] = 'POOLS', -- Ruby Life Pools
+	[584] = 'VALE', -- The Blinding Vale
+	[585] = 'ARENA', -- Voidscar Arena
+	[586] = 'DEN', -- Den of Nalorakk
+	[587] = 'MURDER', -- Murder Row
+	[588] = 'ALTAR', -- Altar of Fangs
 }
 
 -- Midnight jazz

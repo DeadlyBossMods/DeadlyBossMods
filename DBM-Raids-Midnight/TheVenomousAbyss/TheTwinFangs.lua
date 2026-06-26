@@ -28,6 +28,7 @@ local specWarnBeckonProgeny				= mod:NewSpecialWarningCount(1291404, "-Healer", 
 local specWarnRavenousFeast				= mod:NewSpecialWarningSoakCount(1290516, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
 local specWarnBloodTorrent				= mod:NewSpecialWarningCount(1303230, nil, nil, nil, 1, 2, 4, nil, "bigmob")--Mythic Only
 local specWarnBarrage					= mod:NewSpecialWarningCount(1306872, nil, nil, nil, 2, 2, nil, nil, "watchstep")
+local specWarnRousetheBrood				= mod:NewSpecialWarningCount(1308356, nil, nil, nil, 1, 2, 4, nil, "mobsoon")--Mythic Only
 
 local timerCausticDelugeCD				= mod:NewCDCountTimer(20.5, 1289192, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
 local timerStoneBreakerCD				= mod:NewCDCountTimer(20.5, 1288484, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
@@ -39,6 +40,7 @@ local timerBeckonProgenyCD				= mod:NewCDCountTimer(20.5, 1291404, nil, nil, nil
 local timerRavenousFeastCD				= mod:NewCDCountTimer(20.5, 1290516, nil, nil, nil, 2)
 local timerBloodTorrentCD				= mod:NewCDCountTimer(20.5, 1303230, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
 local timerBarrageCD					= mod:NewCDCountTimer(20.5, 1306872, nil, nil, nil, 3)
+local timerRousetheBroodCD				= mod:NewCDCountTimer(20.5, 1308356, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
 --local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
@@ -53,6 +55,7 @@ mod.vb.BeckonProgenyCount = 0
 mod.vb.RavenousFeastCount = 0
 mod.vb.BloodTorrentCount = 0
 mod.vb.BarrageCount = 0
+mod.vb.RousetheBroodCount = 0
 
 ---@param self DBMMod
 ---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -71,6 +74,7 @@ local function setFallback(self, dontSetAlerts)
 		specWarnRavenousFeast:SetAlert(751, "helpsoak", 2, 2)
 		specWarnBloodTorrent:SetAlert(896, "bigmob", 2, 2)
 		specWarnBarrage:SetAlert(897, "watchstep", 2, 2)
+		specWarnRousetheBrood:SetAlert(900, "mobsoon", 2, 2)
 	end
 	local onlyColor = not DBM.Options.HideDBMBars
 	timerCausticDelugeCD:SetTimeline(711, onlyColor)
@@ -83,6 +87,7 @@ local function setFallback(self, dontSetAlerts)
 	timerRavenousFeastCD:SetTimeline(751, onlyColor)
 	timerBloodTorrentCD:SetTimeline(896, onlyColor)
 	timerBarrageCD:SetTimeline(897, onlyColor)
+	timerRousetheBroodCD:SetTimeline(900, onlyColor)
 end
 
 function mod:OnLimitedCombatStart()
@@ -97,6 +102,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.RavenousFeastCount = 1
 	self.vb.BloodTorrentCount = 1
 	self.vb.BarrageCount = 1
+	self.vb.RousetheBroodCount = 1
 	--Hardcode features first
 	--if DBM.Options.HardcodedTimer and not badStateDetected then
 	--	--self:SetStage(1)
