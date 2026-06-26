@@ -5,10 +5,53 @@ local DBM = DBM
 local private = select(2, ...)
 
 ---@class DBMPrivateAuras
+---@field PATextFrame Frame?
+---@field PATextWarning Frame?
+---@field AuraContainerState table?
+---@field UseAuraContainerSystemAvailable boolean?
+---@field AuraContainerProbe Frame?
+---@field AuraButtonProbe Frame?
 local PrivateAuras = {}
 DBM.PrivateAuras = PrivateAuras
 
 local PAAnchorsRegistered = false
+local wowToC = DBM:GetTOC()
+local AURA_CONTAINER_FILTERS = {
+    "RAID",
+    "RAID_IN_COMBAT",
+    "RAID_PLAYER_DISPELLABLE",
+}
+local PrivateAuraDurationFormatter
+
+local function GetPrivateAuraDurationFormatter()
+    if PrivateAuraDurationFormatter then
+        return PrivateAuraDurationFormatter
+    end
+    if not C_StringUtil or not C_StringUtil.CreateNumericRuleFormatter then
+        return nil
+    end
+    PrivateAuraDurationFormatter = C_StringUtil.CreateNumericRuleFormatter()
+    PrivateAuraDurationFormatter:SetBreakpoints({
+        {
+            threshold = 0,
+            step = 1,
+            rounding = Enum.NumericRuleFormatRounding.Up,
+            format = "%d",
+        },
+    })
+    return PrivateAuraDurationFormatter
+end
+
+---@param privateAnchorArgs table
+---@param showFrame boolean
+local function SetPrivateAnchorFrameVisibilityArgs(privateAnchorArgs, showFrame)
+    if wowToC >= 120100 then
+        privateAnchorArgs.showCooldownFrame = showFrame
+        privateAnchorArgs.showCooldownEdge = showFrame
+    else
+        privateAnchorArgs.showCountdownFrame = showFrame
+    end
+end
 
 ---Helper function to build a settings table from flattened option keys
 ---@param prefix string The prefix for the option keys (e.g., "PrivateAurasPlayer")
@@ -30,6 +73,31 @@ local function GetPrivateAuraSettings(prefix)
         yOffset = DBM.Options[prefix .. "YOffset"],
         UpscaleDuration = DBM.Options[prefix .. "UpscaleDuration"],
     }
+end
+
+---@param self DBMPrivateAuras
+local function SetupPrivateWarningTextAnchor(self)
+    local TextSettings = GetPrivateAuraSettings("PrivateAurasTextAnchor")
+    if not TextSettings.enabled then return end
+    if not self.PATextFrame then self.PATextFrame = CreateFrame("Frame", nil, UIParent) end
+    self.PATextFrame:ClearAllPoints()
+    self.PATextFrame:SetPoint(TextSettings.Anchor, UIParent, TextSettings.relativeTo, TextSettings.xOffset, TextSettings.yOffset)
+    self.PATextFrame:SetSize(TextSettings.Scale * 20, TextSettings.Scale * 30)
+    if not self.PATextWarning then self.PATextWarning = CreateFrame("Frame", nil, UIParent) end
+
+    -- I have absolutely no clue why this math works out but it does
+    self.PATextWarning:SetPoint("TOPLEFT", self.PATextFrame, "TOPLEFT", 0, -24)
+    self.PATextWarning:SetPoint("BOTTOMRIGHT", self.PATextFrame, "BOTTOMRIGHT", 0, -24)
+    self.PATextWarning:SetScale(TextSettings.Scale)
+    local textanchor =
+    {
+        point = "CENTER",
+        relativeTo = self.PATextWarning,
+        relativePoint = "CENTER",
+        offsetX = 0,
+        offsetY = 0,
+    }
+    C_UnitAuras.SetPrivateWarningTextAnchor(self.PATextWarning, textanchor)
 end
 
 ---@param settings table
@@ -82,10 +150,226 @@ function PrivateAuras:IsRegistered()
 	return PAAnchorsRegistered
 end
 
+function PrivateAuras:UseAuraContainerSystem()
+    if wowToC < 120100 then
+        return false
+    end
+    if self.UseAuraContainerSystemAvailable ~= nil then
+        return self.UseAuraContainerSystemAvailable
+    end
+    if C_AddOns and C_AddOns.LoadAddOn and C_AddOns.IsAddOnLoaded then
+        if not C_AddOns.IsAddOnLoaded("Blizzard_AuraContainer") then
+            local loaded = C_AddOns.LoadAddOn("Blizzard_AuraContainer")
+            if not loaded then
+                self.UseAuraContainerSystemAvailable = false
+                return false
+            end
+        end
+    else
+        local loadAddOn = _G.LoadAddOn
+        local isAddOnLoaded = _G.IsAddOnLoaded
+        if loadAddOn and isAddOnLoaded and not isAddOnLoaded("Blizzard_AuraContainer") then
+            local loaded = loadAddOn("Blizzard_AuraContainer")
+            if not loaded then
+                self.UseAuraContainerSystemAvailable = false
+                return false
+            end
+        end
+    end
+    local containerOk, container = pcall(CreateFrame, "AuraContainer", nil, UIParent, "CustomAuraContainerTemplate")
+    if not containerOk or not container then
+        self.UseAuraContainerSystemAvailable = false
+        return false
+    end
+    local buttonOk, button = pcall(CreateFrame, "AuraButton", nil, container, "CustomAuraButtonTemplate")
+    if not buttonOk or not button then
+        self.UseAuraContainerSystemAvailable = false
+        return false
+    end
+    self.AuraContainerProbe = container
+    self.AuraButtonProbe = button
+    self.UseAuraContainerSystemAvailable = true
+    return true
+end
+
+---@param container Frame
+---@param limit number
+local function AddAuraContainerFilters(container, limit)
+    container:ClearAuraFilters()
+    for _, filter in ipairs(AURA_CONTAINER_FILTERS) do
+        container:AddAuraFilter(filter, { maxFrameCount = limit })
+    end
+end
+
+---@param self DBMPrivateAuras
+---@param unit string
+---@return table
+local function AcquireAuraContainerState(self, unit)
+    if not self.AuraContainerState then self.AuraContainerState = {} end
+    if not self.AuraContainerState[unit] then self.AuraContainerState[unit] = {} end
+    local state = self.AuraContainerState[unit]
+    if not state.container then
+        state.container = CreateFrame("AuraContainer", nil, UIParent, "CustomAuraContainerTemplate")
+        state.container:SetFrameStrata("HIGH")
+        state.buttons = {}
+        state.buttonRegions = {}
+    end
+    return state
+end
+
+---@param self DBMPrivateAuras
+---@param state table
+---@param index number
+---@param settings table
+---@return Frame
+local function AcquireAuraContainerButton(self, state, index, settings)
+    if not state.buttons[index] or not state.buttonRegions[index] then
+        local button = CreateFrame("AuraButton", nil, state.container, "CustomAuraButtonTemplate")
+        local regions = {}
+        regions.icon = button:CreateTexture(nil, "ARTWORK")
+        regions.icon:SetAllPoints(button)
+        button:SetIcon(regions.icon)
+
+        regions.count = button:CreateFontString(nil, "OVERLAY", "NumberFontNormal")
+        button:SetApplicationCount(regions.count, {})
+
+        regions.duration = button:CreateFontString(nil, "OVERLAY", "NumberFontNormal")
+        local formatter = GetPrivateAuraDurationFormatter()
+        if formatter then
+            button:SetDurationText(regions.duration, { formatter = formatter })
+        else
+            button:SetDurationText(regions.duration, {})
+        end
+
+        if button.SetDurationCooldown then
+            regions.cooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+            regions.cooldown:SetAllPoints(regions.icon)
+            regions.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
+            regions.cooldown:SetReverse(true)
+            regions.cooldown:SetDrawEdge(false)
+            regions.cooldown:SetHideCountdownNumbers(settings.UpscaleDuration)
+            button:SetDurationCooldown(regions.cooldown)
+        end
+
+        state.buttons[index] = button
+        state.buttonRegions[index] = regions
+    end
+    local button = state.buttons[index]
+    local regions = state.buttonRegions[index]
+
+    button:SetSize(settings.Width, settings.Height)
+    regions.icon:SetAllPoints(button)
+
+    local fontScale = settings.Scale or 1
+    local durationFontSize = math.max(8, math.floor((settings.UpscaleDuration and 18 or 12) * fontScale))
+    local countFontSize = math.max(8, math.floor(11 * fontScale))
+
+    regions.count:ClearAllPoints()
+    regions.count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
+    regions.count:SetFont(private.standardFont, countFontSize, "OUTLINE")
+    button:SetApplicationCount(regions.count, {})
+
+    regions.duration:ClearAllPoints()
+    regions.duration:SetPoint("CENTER", button, "CENTER", 0, 0)
+    regions.duration:SetFont(private.standardFont, durationFontSize, "OUTLINE")
+    if settings.UpscaleDuration then
+        local formatter = GetPrivateAuraDurationFormatter()
+        if formatter then
+            button:SetDurationText(regions.duration, { formatter = formatter })
+        else
+            button:SetDurationText(regions.duration, {})
+        end
+    elseif button.ClearDurationText and regions.cooldown then
+        button:ClearDurationText()
+    elseif button.SetDurationText then
+        local formatter = GetPrivateAuraDurationFormatter()
+        if formatter then
+            button:SetDurationText(regions.duration, { formatter = formatter })
+        else
+            button:SetDurationText(regions.duration, {})
+        end
+    end
+
+    if button.SetMouseMotionEnabled then
+        button:SetMouseMotionEnabled(not settings.HideTooltip)
+    end
+    if button.EnableMouse then
+        button:EnableMouse(not settings.HideTooltip)
+    end
+
+    if settings.HideBorder then
+        if button.ClearAuraBorder then
+            button:ClearAuraBorder()
+        end
+    else
+        if not regions.border then
+            regions.border = button:CreateTexture(nil, "OVERLAY")
+            regions.border:SetAllPoints(button)
+        end
+        if button.SetAuraBorder then
+            button:SetAuraBorder(regions.border, {
+                showIcon = true,
+                showWhenHarmful = true,
+                showWhenHelpful = true,
+            })
+        end
+    end
+
+    if regions.cooldown then
+        regions.cooldown:SetHideCountdownNumbers(settings.UpscaleDuration)
+        regions.cooldown:SetScale(settings.Scale or 1)
+    end
+
+    return button
+end
+
+---@param unit playerUUIDs
+---@param settingsOverwrite table?
+function PrivateAuras:RegisterAuraContainerAuras(unit, settingsOverwrite)
+    local settings = settingsOverwrite or (unit == "player" and GetPrivateAuraSettings("PrivateAurasPlayer") or GetPrivateAuraSettings("PrivateAurasCoTank"))
+    local state = AcquireAuraContainerState(self, unit)
+    local container = state.container
+
+    container:SetEnabled(false)
+    container:RemoveAllAuraFrames()
+    container:ClearAuraFilters()
+
+    if DBM.Options.DontShowPrivateAuraFrame then return end
+
+    if unit == "player" then
+        SetupPrivateWarningTextAnchor(self)
+    end
+
+    if not settings.enabled then return end
+
+    local xDirection = (settings.GrowDirection == "RIGHT" and 1) or (settings.GrowDirection == "LEFT" and -1) or 0
+    local yDirection = (settings.GrowDirection == "DOWN" and -1) or (settings.GrowDirection == "UP" and 1) or 0
+
+    container:ClearAllPoints()
+    container:SetSize(settings.Width, settings.Height)
+    container:SetPoint(settings.Anchor, UIParent, settings.relativeTo, settings.xOffset, settings.yOffset)
+    container:SetUnit(unit)
+    AddAuraContainerFilters(container, settings.Limit)
+
+    for auraIndex = 1, settings.Limit do
+        local button = AcquireAuraContainerButton(self, state, auraIndex, settings)
+        local xOffset = (auraIndex - 1) * (settings.Width + settings.Spacing) * xDirection
+        local yOffset = (auraIndex - 1) * (settings.Height + settings.Spacing) * yDirection
+        button:ClearAllPoints()
+        button:SetPoint("CENTER", container, "CENTER", xOffset, yOffset)
+        container:AddAuraFrame(button)
+    end
+
+    container:SetEnabled(true)
+end
+
 ---Register Private Aura Display frame/text for a unit. Will unregister existing anchors for the unit before registering new ones
 ---@param unit playerUUIDs
 ---@param settingsOverwrite table? Optional settings table to use instead of DBM.Options.PrivateAurasPlayer/PrivateAurasCoTank (used for preview)
 function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
+    if self:UseAuraContainerSystem() then
+        return self:RegisterAuraContainerAuras(unit, settingsOverwrite)
+    end
     if not self.PAFrames then self.PAFrames = {} end
     if not self.PAStackFrames then self.PAStackFrames = {} end
     if not self.PAAnchorFrames then self.PAAnchorFrames = {} end
@@ -111,28 +395,7 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
     end
 	if DBM.Options.DontShowPrivateAuraFrame then return end -- Hard global disable
     if unit == "player" then
-        local TextSettings = GetPrivateAuraSettings("PrivateAurasTextAnchor")
-        if TextSettings.enabled then
-            if not self.PATextFrame then self.PATextFrame = CreateFrame("Frame", nil, UIParent) end
-            self.PATextFrame:ClearAllPoints()
-            self.PATextFrame:SetPoint(TextSettings.Anchor, UIParent, TextSettings.relativeTo, TextSettings.xOffset, TextSettings.yOffset)
-            self.PATextFrame:SetSize(TextSettings.Scale*20, TextSettings.Scale*30)
-            if not self.PATextWarning then self.PATextWarning = CreateFrame("Frame", nil, UIParent) end
-
-            -- I have absolutely no clue why this math works out but it does
-            self.PATextWarning:SetPoint("TOPLEFT", self.PATextFrame, "TOPLEFT", 0, -24)
-            self.PATextWarning:SetPoint("BOTTOMRIGHT", self.PATextFrame, "BOTTOMRIGHT", 0, -24)
-            self.PATextWarning:SetScale(TextSettings.Scale)
-            local textanchor =
-            {
-                point = "CENTER",
-                relativeTo = self.PATextWarning,
-                relativePoint = "CENTER",
-                offsetX = 0,
-                offsetY = 0,
-            }
-            C_UnitAuras.SetPrivateWarningTextAnchor(self.PATextWarning, textanchor)
-        end
+        SetupPrivateWarningTextAnchor(self)
     end
     if not settings.enabled then return end -- end after unregistering if not enabled
     if not self.PAFrames[unit].Anchors then self.PAFrames[unit].Anchors = {} end
@@ -176,7 +439,6 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
             unitToken = unit,
             auraIndex = auraIndex,
             parent = frame,
-            showCountdownFrame = true,
 			isContainer = false,
             showCountdownNumbers = not settings.UpscaleDuration,
             iconInfo = {
@@ -192,13 +454,13 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
                 iconHeight = settings.Height,
             },
         }
+        SetPrivateAnchorFrameVisibilityArgs(privateAnchorArgs, true)
         self.PAFrames[unit].Anchors[auraIndex] = C_UnitAuras.AddPrivateAuraAnchor(privateAnchorArgs)
         if scale ~= 1 then
             local durationArgs = {
                 unitToken = unit,
                 auraIndex = auraIndex,
                 parent = self.PAStackFrames[unit][auraIndex],
-                showCountdownFrame = false,
                 showCountdownNumbers = false,
 				isContainer = false,
                 iconInfo = {
@@ -214,6 +476,7 @@ function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
                     iconHeight = 0.001,
                 },
             }
+            SetPrivateAnchorFrameVisibilityArgs(durationArgs, false)
             if settings.UpscaleDuration then
                 durationArgs.durationAnchor = {
                     point = "CENTER",
@@ -231,6 +494,24 @@ end
 ---@param unit playerUUIDs? if nil, will unregister all units. If string, will unregister that unit
 function PrivateAuras:UnregisterPrivateAuras(unit)
 	PAAnchorsRegistered = false
+    if self.AuraContainerState then
+        if not unit then
+            for _u, state in pairs(self.AuraContainerState) do
+                if state and state.container then
+                    state.container:SetEnabled(false)
+                    state.container:RemoveAllAuraFrames()
+                    state.container:ClearAuraFilters()
+                end
+            end
+        else
+            local state = self.AuraContainerState[unit]
+            if state and state.container then
+                state.container:SetEnabled(false)
+                state.container:RemoveAllAuraFrames()
+                state.container:ClearAuraFilters()
+            end
+        end
+    end
     if not self.PAFrames then return end
     if not unit then
         for u, _ in pairs(self.PAFrames) do
@@ -453,7 +734,6 @@ function PrivateAuras:RegisterAllUnits()
 end
 
 do
-	local wowToC = DBM:GetTOC()
 	local function IsInValidInstance()
 		local inInstance, instanceType = IsInInstance()
 		return inInstance and instanceType ~= "pvp" and instanceType ~= "arena"
