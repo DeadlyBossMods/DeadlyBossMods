@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 --TODO, verify raging crosswinds actually has a personal ENCOUNTER_WARNING. Also, recored custom audio after test if it does ("winds on you" likely)
 DBM:RegisterAltSpellName(1277025, DBM_COMMON_L.TANKCOMBO)--Apex Predator --> Tank Combo
 local specWarnRagingCrosswinds			= mod:NewSpecialWarningYouCount(1285425, nil, nil, nil, 1, 17, nil, nil, "debuffyou")
-local specWarnVenomousSurge				= mod:NewSpecialWarningCount(1305959, nil, nil, nil, 1, 18, nil, nil, "poolyou")
+local specWarnVenomousSurge				= mod:NewSpecialWarningDodgeCount(1305959, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnApexPedator				= mod:NewSpecialWarningCount(1285430, nil, nil, nil, 1, 19, nil, nil, "tankcombo")
 local specWarnHowlingMaelstrom			= mod:NewSpecialWarningCount(1285732, nil, nil, nil, 2, 13, nil, nil, "pushbackincoming")
 local specWarnCausticClaws				= mod:NewSpecialWarningCount(1285733, nil, nil, nil, 2, 2, nil, nil, "scatter")--Sub mechanic of Venomous Surge
@@ -41,7 +41,7 @@ local function setFallback(self, dontSetAlerts)
 			specWarnApexPedator:SetAlert(664, "tankcombo", 19, 2)
 		end
 		specWarnRagingCrosswinds:SetAlert(652, "debuffyou", 17, 2, 0)
-		specWarnVenomousSurge:SetAlert(653, "poolyou", 18, 2, 0)
+		specWarnVenomousSurge:SetAlert(653, "watchstep", 2, 2)
 		specWarnHowlingMaelstrom:SetAlert(665, "pushbackincoming", 13, 2)
 		specWarnCausticClaws:SetAlert(851, "scatter", 2, 2)
 	end
