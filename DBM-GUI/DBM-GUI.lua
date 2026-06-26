@@ -110,6 +110,12 @@ local challengeModeIds = {
 	[558] = 2811, -- Magisters' Terrace
 	[559] = 2915, -- Nexus-Point Xenas
 	[560] = 2874, -- Maisara Caverns
+	[583] = 1753, -- Seat of the Triumvirate
+	[584] = 2859, -- The Blinding Vale
+	[585] = 2923, -- Voidscar Arena
+	[586] = 2825, -- Den of Nalorakk
+	[587] = 2813, -- Murder Row
+	[588] = 2993, -- Altar of Fangs
 }
 
 do
