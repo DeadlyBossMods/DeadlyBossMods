@@ -23,7 +23,7 @@ local warnImbibeToxin					= mod:NewCountAnnounce(1283164, 2)--Hardcode only
 
 local specWarnDrippingFangs				= mod:NewSpecialWarningCount(1280935, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnMalignantCatalyst			= mod:NewSpecialWarningSoakCount(1282509, nil, nil, nil, 2, 2, 3, nil, "helpsoak")
-local specWarnPlagueFroth				= mod:NewSpecialWarningCount(1281907, nil, nil, nil, 2, 15, nil, nil, "incomingdebuff")
+local specWarnPlagueFroth				= mod:NewSpecialWarningBlizzYou(1281907, nil, nil, nil, 2, 15, nil, nil, "incomingdebuff")
 local specWarnStygianInfection			= mod:NewSpecialWarningCount(1294994, nil, nil, nil, 2, 2, nil, nil, "phasechange")--Sub ability to Adaptive Infection
 local specWarnSiphoningInfection		= mod:NewSpecialWarningCount(1295224, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Sub ability to Adaptive Infection
 local specWarnExplodingInfection		= mod:NewSpecialWarningCount(1295173, nil, nil, nil, 2, 2, nil, nil, "phasechange")--Sub ability to Adaptive Infection
@@ -59,7 +59,7 @@ local function setFallback(self, dontSetAlerts)
 			specWarnDrippingFangs:SetAlert(754, "defensive", 2, 2)
 		end
 		specWarnMalignantCatalyst:SetAlert(756, "helpsoak", 2, 2)
-		specWarnPlagueFroth:SetAlert(757, "incomingdebuff", 15, 2)
+		specWarnPlagueFroth:SetAlert(757, "incomingdebuff", 15, 2, 0)
 		specWarnStygianInfection:SetAlert({770, 774}, "phasechange", 2, 2, 0)
 		specWarnSiphoningInfection:SetAlert(771, "gathershare", 2, 2, 0)
 		specWarnExplodingInfection:SetAlert({772, 773}, "phasechange", 2, 2, 0)
