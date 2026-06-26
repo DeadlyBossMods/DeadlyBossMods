@@ -23,10 +23,10 @@ local warnImbibeToxin					= mod:NewCountAnnounce(1283164, 2)--Hardcode only
 
 local specWarnDrippingFangs				= mod:NewSpecialWarningCount(1280935, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnMalignantCatalyst			= mod:NewSpecialWarningSoakCount(1282509, nil, nil, nil, 2, 2, 3, nil, "helpsoak")
-local specWarnPlagueFroth				= mod:NewSpecialWarningBlizzYou(1281907, nil, nil, nil, 2, 15, nil, nil, "incomingdebuff")
-local specWarnStygianInfection			= mod:NewSpecialWarningCount(1294994, nil, nil, nil, 2, 2, nil, nil, "phasechange")--Sub ability to Adaptive Infection
-local specWarnSiphoningInfection		= mod:NewSpecialWarningCount(1295224, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Sub ability to Adaptive Infection
-local specWarnExplodingInfection		= mod:NewSpecialWarningCount(1295173, nil, nil, nil, 2, 2, nil, nil, "phasechange")--Sub ability to Adaptive Infection
+local specWarnPlagueFroth				= mod:NewSpecialWarningBlizzYou(1281907, nil, nil, nil, 2, 2, nil, nil, "runout")
+local specWarnStygianInfection			= mod:NewSpecialWarningCount(1294994, nil, nil, nil, 2, 2, nil, nil, "watchstep")--Sub ability to Adaptive Infection
+local specWarnSiphoningInfection		= mod:NewSpecialWarningBlizzYou(1295224, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Sub ability to Adaptive Infection
+local specWarnExplodingInfection		= mod:NewSpecialWarningBlizzYou(1295173, nil, nil, nil, 2, 2, nil, nil, "runout")--Sub ability to Adaptive Infection
 local specWarnStygianBurst				= mod:NewSpecialWarningCount(1302489, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 
 local timerDrippingFangsCD				= mod:NewCDCountTimer(20.5, 1280935, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -58,11 +58,11 @@ local function setFallback(self, dontSetAlerts)
 		if self:IsTank() then
 			specWarnDrippingFangs:SetAlert(754, "defensive", 2, 2)
 		end
-		specWarnMalignantCatalyst:SetAlert(756, "helpsoak", 2, 2)
-		specWarnPlagueFroth:SetAlert(757, "incomingdebuff", 15, 2, 0)
-		specWarnStygianInfection:SetAlert({770, 774}, "phasechange", 2, 2, 0)
+		specWarnMalignantCatalyst:SetAlert(756, self:IsHard() and "helpsoak" or "aesoon", 2, 2)
+		specWarnPlagueFroth:SetAlert(757, "runout", 2, 2, 0)
+		specWarnStygianInfection:SetAlert({770, 774}, "watchstep", 2, 2, 0)
 		specWarnSiphoningInfection:SetAlert(771, "gathershare", 2, 2, 0)
-		specWarnExplodingInfection:SetAlert({772, 773}, "phasechange", 2, 2, 0)
+		specWarnExplodingInfection:SetAlert({772, 773}, "runout", 2, 2, 0)
 		specWarnStygianBurst:SetAlert(775, "watchstep", 2, 2)
 	end
 	local onlyColor = not DBM.Options.HideDBMBars

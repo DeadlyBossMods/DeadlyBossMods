@@ -11,7 +11,6 @@ mod:SetZone(3004)
 
 mod:RegisterCombat("combat")
 
---TODO, verify raging crosswinds actually has a personal ENCOUNTER_WARNING. Also, recored custom audio after test if it does ("winds on you" likely)
 DBM:RegisterAltSpellName(1277025, DBM_COMMON_L.TANKCOMBO)--Apex Predator --> Tank Combo
 local specWarnRagingCrosswinds			= mod:NewSpecialWarningBlizzYou(1285425, nil, nil, nil, 1, 17, nil, nil, "debuffyou")
 local specWarnVenomousSurge				= mod:NewSpecialWarningDodgeCount(1305959, nil, nil, nil, 2, 2, nil, nil, "watchstep")
