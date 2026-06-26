@@ -742,6 +742,15 @@ L.KEYSTONE_NAMES[559] = '제나스' -- Nexus-Point Xenas
 L.KEYSTONE_NAMES[560] = '동굴' -- Miasara Caverns
 L.KEYSTONE_NAMES[583] = '삼두정' -- Hell (IE Seat of the Triumvirate)
 
+L.KEYSTONE_NAMES[249] = '왕안' -- King's Rest
+L.KEYSTONE_NAMES[250] = '세스' -- Temple of Sethraliss
+L.KEYSTONE_NAMES[399] = '루비' -- Ruby Life Pools
+L.KEYSTONE_NAMES[584] = '골짜기' -- The Blinding Vale
+L.KEYSTONE_NAMES[585] = '투기장' -- Voidscar Arena
+L.KEYSTONE_NAMES[586] = '소굴' -- Den of Nalorakk
+L.KEYSTONE_NAMES[587] = '골목' -- Murder Row
+L.KEYSTONE_NAMES[588] = '제단' -- Altar of Fangs
+
 -- Midnight jazz
 L.MN_TIMELINE_HEADER	= "Blizzard 타임라인과 DBM 타이머 바 중에 어느 것을 사용할까요?"
 L.MN_BLIZZARD_TIMELINE	= "Blizzard 타임라인"
