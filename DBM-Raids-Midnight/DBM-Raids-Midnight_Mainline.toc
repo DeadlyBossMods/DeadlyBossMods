@@ -42,7 +42,7 @@ TheVenomousAbyss\TheLostExplorers.lua
 TheVenomousAbyss\VashniktheMalignant.lua
 TheVenomousAbyss\Sszorak.lua
 TheVenomousAbyss\TheTwinFangs.lua
-TheVenomousAbyss\TheBargainedCrown.lua
+TheVenomousAbyss\TheCoiledAltar.lua
 TheVenomousAbyss\Ulatek.lua
 
 VoidSpire\ImperatorAverzian.lua
