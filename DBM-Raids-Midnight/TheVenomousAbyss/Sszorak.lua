@@ -11,10 +11,9 @@ mod:SetZone(3004)
 
 mod:RegisterCombat("combat")
 
---TODO, verify raging crosswinds actually has a personal ENCOUNTER_WARNING. Also, recored custom audio after test if it does ("winds on you" likely)
 DBM:RegisterAltSpellName(1277025, DBM_COMMON_L.TANKCOMBO)--Apex Predator --> Tank Combo
-local specWarnRagingCrosswinds			= mod:NewSpecialWarningYouCount(1285425, nil, nil, nil, 1, 17, nil, nil, "debuffyou")
-local specWarnVenomousSurge				= mod:NewSpecialWarningCount(1305959, nil, nil, nil, 1, 18, nil, nil, "poolyou")
+local specWarnRagingCrosswinds			= mod:NewSpecialWarningBlizzYou(1285425, nil, nil, nil, 1, 17, nil, nil, "debuffyou")
+local specWarnVenomousSurge				= mod:NewSpecialWarningDodgeCount(1305959, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnApexPedator				= mod:NewSpecialWarningCount(1285430, nil, nil, nil, 1, 19, nil, nil, "tankcombo")
 local specWarnHowlingMaelstrom			= mod:NewSpecialWarningCount(1285732, nil, nil, nil, 2, 13, nil, nil, "pushbackincoming")
 local specWarnCausticClaws				= mod:NewSpecialWarningCount(1285733, nil, nil, nil, 2, 2, nil, nil, "scatter")--Sub mechanic of Venomous Surge
@@ -25,7 +24,8 @@ local timerApexPedatorCD				= mod:NewCDCountTimer(20.5, 1285430, nil, "Tank|Heal
 local timerHowlingMaelstromCD			= mod:NewCDCountTimer(20.5, 1285732, nil, nil, nil, 2, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
---local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local next52Event = "apex"
 
 mod.vb.RagingCrosswindsCount = 0
 mod.vb.VenomousSurgeCount = 0
@@ -41,7 +41,7 @@ local function setFallback(self, dontSetAlerts)
 			specWarnApexPedator:SetAlert(664, "tankcombo", 19, 2)
 		end
 		specWarnRagingCrosswinds:SetAlert(652, "debuffyou", 17, 2, 0)
-		specWarnVenomousSurge:SetAlert(653, "poolyou", 18, 2, 0)
+		specWarnVenomousSurge:SetAlert(653, "watchstep", 2, 2)
 		specWarnHowlingMaelstrom:SetAlert(665, "pushbackincoming", 13, 2)
 		specWarnCausticClaws:SetAlert(851, "scatter", 2, 2)
 	end
@@ -59,39 +59,58 @@ function mod:OnLimitedCombatStart()
 	self.vb.VenomousSurgeCount = 1
 	self.vb.ApexPedatorCount = 1
 	self.vb.HowlingMaelstromCount = 1
-	--Hardcode features first
-	--if DBM.Options.HardcodedTimer and not badStateDetected then
-	--	--self:SetStage(1)
-	--	self:IgnoreBlizzardAPI()
-	--	self:RegisterShortTermEvents(
-	--		"ENCOUNTER_TIMELINE_EVENT_ADDED",
-	--		"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
-	--	)
-	--	if DBM.Options.HideDBMBars then
-	--		setFallback(self, true)
-	--	end
-	--else
+	next52Event = "apex"
+	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+		self:IgnoreBlizzardAPI()
+		self:RegisterShortTermEvents(
+			"ENCOUNTER_TIMELINE_EVENT_ADDED",
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+		)
+		setFallback(self, true)
+	else
 		setFallback(self)
-	--end
+	end
 end
 
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	next52Event = "apex"
 	self:UnregisterShortTermEvents()
 end
 
---[[
 do
 	---@param self DBMMod
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	local function timersAll(self, timer, timerExact, eventID)
+	local function timersHeroic(self, timer, timerExact, eventID)
 		local handled
-		if timer == 114 then
+		--Logic confirmed against PTR Heroic SszorakKill
+		if timer == 111 then
 			handled = true
-			timerWaterJetCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "waterjet", "tankWaterCount"))
+			timerHowlingMaelstromCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maelstrom", "HowlingMaelstromCount"))
+		elseif timer == 6 then
+			handled = true
+			timerApexPedatorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "apex", "ApexPedatorCount"))
+		elseif timer == 43 then
+			handled = true
+			timerRagingCrosswindsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "crosswinds", "RagingCrosswindsCount"))
+		elseif timer == 32 then
+			handled = true
+			timerVenomousSurgeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venom", "VenomousSurgeCount"))
+		elseif timer == 52 then
+			handled = true
+			if next52Event == "apex" then
+				timerApexPedatorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "apex", "ApexPedatorCount"))
+				next52Event = "venom"
+			elseif next52Event == "venom" then
+				timerVenomousSurgeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venom", "VenomousSurgeCount"))
+				next52Event = "crosswinds"
+			else
+				timerRagingCrosswindsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "crosswinds", "RagingCrosswindsCount"))
+				next52Event = "apex"
+			end
 		end
 
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
@@ -104,14 +123,13 @@ do
 	end
 
 	--Note, bar state changing and canceling is handled by core
-
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			timersAll(self, timer, timerExact, eventID)
+			timersHeroic(self, timer, timerExact, eventID)
 		end
 	end
 
@@ -120,14 +138,22 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if not eventType then return end
-			if not eventCount then return end
-			if eventType == "waterjet" then
-				--specWarnWaterJet:Show(eventCount, "lineyou")
+			if eventType and eventCount then
+				if eventType == "maelstrom" then
+					specWarnHowlingMaelstrom:Show(eventCount)
+					specWarnHowlingMaelstrom:Play("pushbackincoming")
+				elseif eventType == "apex" then
+					specWarnApexPedator:Show(eventCount)
+					specWarnApexPedator:Play("tankcombo")
+				elseif eventType == "venom" then
+					specWarnVenomousSurge:Show(eventCount)
+					specWarnVenomousSurge:Play("watchstep")
+				elseif eventType == "crosswinds" then
+					specWarnRagingCrosswinds:Show(eventCount, "debuffyou")
+				end
 			end
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)
 		end
 	end
 end
---]]

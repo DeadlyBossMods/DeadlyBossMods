@@ -784,6 +784,15 @@ L.KEYSTONE_NAMES[559] = 'УНЗ' -- Nexus-Point Xenas
 L.KEYSTONE_NAMES[560] = 'ПМ' -- Miasara Caverns
 L.KEYSTONE_NAMES[583] = 'ПТ' -- Hell (IE Seat of the Triumvirate)
 
+L.KEYSTONE_NAMES[249] = 'ГК' -- King's Rest
+L.KEYSTONE_NAMES[250] = 'ХС' -- Temple of Sethraliss
+L.KEYSTONE_NAMES[399] = 'РОЖ' -- Ruby Life Pools
+L.KEYSTONE_NAMES[584] = 'СД' -- The Blinding Vale
+L.KEYSTONE_NAMES[585] = 'АШБ' -- Voidscar Arena
+L.KEYSTONE_NAMES[586] = 'БН' -- Den of Nalorakk
+L.KEYSTONE_NAMES[587] = 'ЗД' -- Murder Row
+L.KEYSTONE_NAMES[588] = 'АК' -- Altar of Fangs
+
 -- Midnight jazz
 L.MN_TIMELINE_HEADER	= "Вы хотите использовать временную шкалу Blizzard или полосы DBM?"
 L.MN_BLIZZARD_TIMELINE	= "Временная шкала Blizzard"
