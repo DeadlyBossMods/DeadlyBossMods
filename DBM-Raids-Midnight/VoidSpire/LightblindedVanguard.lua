@@ -85,6 +85,10 @@ mod.vb.empoweredDivineStormCount = 0
 mod.vb.empoweredAvengerShieldCount = 0
 mod.vb.empoweredSearingRadianceCount = 0
 local badStateDetected = false
+-- Tracks when badStateDetected flipped true so we can ignore near-immediate wipe artifacts.
+-- Some pulls (e.g., Wipe4) can emit erratic bulk timer updates right as the encounter ends,
+-- which can momentarily confuse hardcoded parsing and trigger a false bad state.
+local badStateDetectedAt = nil
 local timer17Count = 0
 local timer20Count = 0
 local timer23Count = 0
@@ -113,6 +117,8 @@ local timer159Count = 0
 local timer162Count = 0
 local timer159Uses156Variant = false
 local timer159Uses172Variant = false
+local timer159V172AnchorCount = 0
+local timer159DefaultSawAoP = false
 
 ---@param self DBMMod
 	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -134,7 +140,7 @@ local function setFallback(self, dontSetAlerts)
 		specWarnDivineStorm:SetAlert({83,374}, "justrun", 2, 3)--very iffy
 		specWarnSacredToll:SetAlert(84, "aesoon", 2, 2)
 		specWarnExecutionSentence:SetAlert(85, "soakincoming", 19, 2)
-		warnZealousSpirit:SetAlert({358,359,360}, "phasechange", 2, 2)
+--		warnZealousSpirit:SetAlert({358,359,360}, "phasechange", 2, 2)
 	end
 	local onlyColor = not DBM.Options.HideDBMBars
 	timerAuraofPeaceCD:SetTimeline(71, onlyColor)
@@ -203,6 +209,9 @@ function mod:OnLimitedCombatStart()
 	timer162Count = 0
 	timer159Uses156Variant = false
 	timer159Uses172Variant = false
+	timer159V172AnchorCount = 0
+	timer159DefaultSawAoP = false
+	badStateDetectedAt = nil
 	--Use FixBlizzardAPI to force fight to only show bars < 60 seconds by default since blizzard EXCESSIVELY overschedules timers on this fight
 	self:FixBlizzardAPI()
 	if DBM.Options.HardcodedTimer and (self:IsEasy() or self:IsHeroic() or self:IsMythic()) and not badStateDetected then
@@ -219,6 +228,12 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	-- If badState was only tripped in the last few seconds of a wipe, treat it as
+	-- transient timeline noise (bulk timer artifact) and recover for the next pull.
+	if badStateDetected and badStateDetectedAt and (GetTime() - badStateDetectedAt) <= 5 then
+		badStateDetected = false
+	end
+	badStateDetectedAt = nil
 	timer17Count = 0
 	timer20Count = 0
 	timer23Count = 0
@@ -247,6 +262,8 @@ function mod:OnCombatEnd()
 	timer162Count = 0
 	timer159Uses156Variant = false
 	timer159Uses172Variant = false
+	timer159V172AnchorCount = 0
+	timer159DefaultSawAoP = false
 	self:UnregisterShortTermEvents()
 end
 
@@ -725,6 +742,16 @@ do
 			--Wipe2 (rounded-156 SR present): ZS, AoD, DT, ZS, AoW, ES, ZS, AoP, TW, ZS, AoD, DT, ZS, SR, AoW, ES, ZS, TW
 			--Wipe4 (rounded-172/157 SR present): ZS, AoD, DT, ZS, AoW, ES, AoP, TW, ZS, AoD, DT, ZS, SR, AoW, ES, ZS, TW
 			timer159Count = timer159Count + 1
+			local function startAmbiguousSearing159()
+				--Count-based disambiguation:
+				--If empowered Searing is currently one cast behind regular Searing,
+				--the next ambiguous rounded-159 Searing should be empowered (Week16 T-180 case).
+				if self.vb.empoweredSearingRadianceCount < self.vb.searingRadianceCount then
+					timerEmpoweredSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "empSearingRadiance", "empoweredSearingRadianceCount"))
+				else
+					timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
+				end
+			end
 			local function attempt159ModuloFallback(routeLabel)
 				DBM:Debug("|cffffff00[LightblindedVanguard] 159 verified routing exhausted at count " .. timer159Count .. " (path=" .. routeLabel .. ", v156=" .. tostring(timer159Uses156Variant) .. ", v172=" .. tostring(timer159Uses172Variant) .. "); attempting limited modulo fallback|r", nil, nil, nil, true)
 				--Limited fallback scope: do not override validated 1-19 windows
@@ -762,22 +789,26 @@ do
 				return false
 			end
 			if timer159Uses172Variant then
-				if timer159Count == 1 or timer159Count == 4 or timer159Count == 9 or timer159Count == 12 or timer159Count == 16 then
-					timerZealousSpiritCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "zealousSpirit", "zealousSpiritCount"))
-				elseif timer159Count == 2 or timer159Count == 10 then
+				--Anchor this path to first rounded-159 event after the rounded-157/172 empowered SR pivot.
+				--This avoids absolute-count drift (Week16 Wipe1 vs Wipe4) while keeping a strict, verified sequence.
+				if timer159V172AnchorCount == 0 then
+					timer159V172AnchorCount = timer159Count
+				end
+				local postPivotStep = timer159Count - timer159V172AnchorCount + 1
+				if postPivotStep == 1 then--AoD
 					timerAuraofDevotionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraDevotion", "auraofDevotionCount"))
-				elseif timer159Count == 3 or timer159Count == 11 then
+				elseif postPivotStep == 2 then--DT
 					timerDivineTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineToll", "divineTollCount"))
-				elseif timer159Count == 5 or timer159Count == 14 then
+				elseif postPivotStep == 3 or postPivotStep == 7 then--ZS
+					timerZealousSpiritCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "zealousSpirit", "zealousSpiritCount"))
+				elseif postPivotStep == 4 then--Ambiguous rounded-159 Searing
+					startAmbiguousSearing159()
+				elseif postPivotStep == 5 then--AoW
 					timerAuraofWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraWrath", "auraofWrathCount"))
-				elseif timer159Count == 6 or timer159Count == 15 then
+				elseif postPivotStep == 6 then--ES
 					timerExecutionSentenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "executionSentence", "executionSentenceCount"))
-				elseif timer159Count == 7 then
-					timerAuraofPeaceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraPeace", "auraofPeaceCount"))
-				elseif timer159Count == 8 or timer159Count == 17 then
+				elseif postPivotStep == 8 then--TW
 					timerTyrsWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "tyrsWrath", "tyrsWrathCount"))
-				elseif timer159Count == 13 then
-					timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
 				else
 					if attempt159ModuloFallback("v172") then return end
 					badStateDetected = true
@@ -808,7 +839,7 @@ do
 				elseif timer159Count == 13 or timer159Count == 17 then
 					timerZealousSpiritCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "zealousSpirit", "zealousSpiritCount"))
 				elseif timer159Count == 14 then
-					timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
+					startAmbiguousSearing159()
 				elseif timer159Count == 15 then
 					timerAuraofWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraWrath", "auraofWrathCount"))
 				elseif timer159Count == 16 then
@@ -824,7 +855,7 @@ do
 					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 				end
 			else
-				if timer159Count == 1 or timer159Count == 4 or timer159Count == 7 or timer159Count == 10 then
+				if timer159Count == 1 or timer159Count == 4 or timer159Count == 7 then
 					timerZealousSpiritCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "zealousSpirit", "zealousSpiritCount"))
 				elseif timer159Count == 2 then
 					timerAuraofDevotionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraDevotion", "auraofDevotionCount"))
@@ -835,32 +866,66 @@ do
 				elseif timer159Count == 6 then
 					timerExecutionSentenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "executionSentence", "executionSentenceCount"))
 				elseif timer159Count == 8 then
-					timerAuraofPeaceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraPeace", "auraofPeaceCount"))
-				elseif timer159Count == 9 then
-					timerTyrsWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "tyrsWrath", "tyrsWrathCount"))
-				elseif timer159Count == 11 then
-					timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
-				elseif timer159Count == 12 then
-					timerAuraofDevotionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraDevotion", "auraofDevotionCount"))
-				elseif timer159Count == 13 then
-					timerDivineTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineToll", "divineTollCount"))
-				elseif timer159Count == 14 or timer159Count == 18 then
-					timerZealousSpiritCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "zealousSpirit", "zealousSpiritCount"))
-				elseif timer159Count == 15 then
-					timerSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "searingRadiance", "searingRadianceCount"))
-				elseif timer159Count == 16 then
-					timerAuraofWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraWrath", "auraofWrathCount"))
-				elseif timer159Count == 17 then
-					timerExecutionSentenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "executionSentence", "executionSentenceCount"))
-				elseif timer159Count == 19 then
-					timerTyrsWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "tyrsWrath", "tyrsWrathCount"))
+					--Optional AoP appears here in some pulls (exact ~158.5 rounds to 159).
+					if timerExact < 158.8 then
+						timer159DefaultSawAoP = true
+						timerAuraofPeaceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraPeace", "auraofPeaceCount"))
+					else
+						timer159DefaultSawAoP = false
+						timerTyrsWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "tyrsWrath", "tyrsWrathCount"))
+					end
+				elseif timer159DefaultSawAoP then
+					if timer159Count == 9 then
+						timerTyrsWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "tyrsWrath", "tyrsWrathCount"))
+					elseif timer159Count == 10 then
+						timerZealousSpiritCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "zealousSpirit", "zealousSpiritCount"))
+					elseif timer159Count == 11 then
+						startAmbiguousSearing159()
+					elseif timer159Count == 12 then
+						timerAuraofDevotionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraDevotion", "auraofDevotionCount"))
+					elseif timer159Count == 13 then
+						timerDivineTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineToll", "divineTollCount"))
+					elseif timer159Count == 14 or timer159Count == 18 then
+						timerZealousSpiritCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "zealousSpirit", "zealousSpiritCount"))
+					elseif timer159Count == 15 then
+						startAmbiguousSearing159()
+					elseif timer159Count == 16 then
+						timerAuraofWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraWrath", "auraofWrathCount"))
+					elseif timer159Count == 17 then
+						timerExecutionSentenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "executionSentence", "executionSentenceCount"))
+					elseif timer159Count == 19 then
+						timerTyrsWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "tyrsWrath", "tyrsWrathCount"))
+					else
+						if attempt159ModuloFallback("default-aop") then return end
+						badStateDetected = true
+						self:ResumeBlizzardAPI()
+						self:UnregisterShortTermEvents()
+						setFallback(self)
+						DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+					end
 				else
-					if attempt159ModuloFallback("default") then return end
-					badStateDetected = true
-					self:ResumeBlizzardAPI()
-					self:UnregisterShortTermEvents()
-					setFallback(self)
-					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+					if timer159Count == 9 or timer159Count == 13 or timer159Count == 17 then
+						timerZealousSpiritCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "zealousSpirit", "zealousSpiritCount"))
+					elseif timer159Count == 10 or timer159Count == 14 then
+						startAmbiguousSearing159()
+					elseif timer159Count == 11 then
+						timerAuraofDevotionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraDevotion", "auraofDevotionCount"))
+					elseif timer159Count == 12 then
+						timerDivineTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineToll", "divineTollCount"))
+					elseif timer159Count == 15 then
+						timerAuraofWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraWrath", "auraofWrathCount"))
+					elseif timer159Count == 16 then
+						timerExecutionSentenceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "executionSentence", "executionSentenceCount"))
+					elseif timer159Count == 18 then
+						timerTyrsWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "tyrsWrath", "tyrsWrathCount"))
+					else
+						if attempt159ModuloFallback("default-noaop") then return end
+						badStateDetected = true
+						self:ResumeBlizzardAPI()
+						self:UnregisterShortTermEvents()
+						setFallback(self)
+						DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+					end
 				end
 			end
 		elseif timer == 18 then
@@ -900,12 +965,16 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
+			local wasBadStateDetected = badStateDetected
 			if self:IsEasy() then
 				timersEasy(self, timer, timerExact, eventID)
 			elseif self:IsHeroic() then
 				timersHeroic(self, timer, timerExact, eventID)
 			elseif self:IsMythic() then
 				timersMythic(self, timer, timerExact, eventID)
+			end
+			if not wasBadStateDetected and badStateDetected then
+				badStateDetectedAt = GetTime()
 			end
 		end
 	end

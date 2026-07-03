@@ -16,12 +16,11 @@ mod:RegisterCombat("combat")
 --TODO, are progeny killed? how many swap if they are?
 --TODO, does blood torrent go on current tank or random target?
 --NOTE, https://www.wowhead.com/ptr/spell=1294921/flood has encounter event ID of 741 but doesn't exist in journal
---NOTE, Progeny use https://www.wowhead.com/ptr/spell=1291478/corrosive-spit with event ID of 753 but this seems likely to be spammy or not needed/obvious
 DBM:RegisterAltSpellName(1294293, DBM_COMMON_L.FRONTAL)--Surge --> Frontal
-local specWarnCausticDeluge				= mod:NewSpecialWarningCount(1289192, nil, nil, nil, 1, 2, nil, nil, "defensive")
+local specWarnCausticDeluge				= mod:NewSpecialWarningBlizzYou(1289192, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnStoneBreaker				= mod:NewSpecialWarningSoakCount(1288484, nil, nil, nil, 1, 2, nil, nil, "helpsoak")
 local specWarnSurge						= mod:NewSpecialWarningDodgeCount(1294293, nil, nil, nil, 1, 15, nil, nil, "frontal")
-local specWarnFlood						= mod:NewSpecialWarningDodgeCount(1294921, nil, nil, nil, 1, 2, nil, nil, "watchwave")--Likely unused
+local specWarnFlood						= mod:NewSpecialWarningDodgeCount(1294921, nil, nil, nil, 1, 19, nil, nil, "beamincoming")--Likely unused
 local specWarnStirtheDepths				= mod:NewSpecialWarningCount(1290956, nil, nil, nil, 1, 2, nil, nil, "watchwave")--Likely flood's replacement
 local specWarnCoilingToxin				= mod:NewSpecialWarningDodgeCount(1290809, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnBeckonProgeny				= mod:NewSpecialWarningCount(1291404, "-Healer", nil, nil, 1, 2, nil, nil, "mobsoon")
@@ -29,6 +28,7 @@ local specWarnRavenousFeast				= mod:NewSpecialWarningSoakCount(1290516, nil, ni
 local specWarnBloodTorrent				= mod:NewSpecialWarningCount(1303230, nil, nil, nil, 1, 2, 4, nil, "bigmob")--Mythic Only
 local specWarnBarrage					= mod:NewSpecialWarningCount(1306872, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnRousetheBrood				= mod:NewSpecialWarningCount(1308356, nil, nil, nil, 1, 2, 4, nil, "mobsoon")--Mythic Only
+local specWarnCorrosiveSpit				= mod:NewSpecialWarningBlizzYou(1291478, nil, nil, nil, 1, 17, nil, nil, "lineyou")
 
 local timerCausticDelugeCD				= mod:NewCDCountTimer(20.5, 1289192, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
 local timerStoneBreakerCD				= mod:NewCDCountTimer(20.5, 1288484, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
@@ -63,11 +63,11 @@ local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	if not dontSetAlerts then
 		if self:IsTank() then
-			specWarnCausticDeluge:SetAlert(711, "defensive", 2, 2)
 			specWarnStoneBreaker:SetAlert(739, "helpsoak", 2, 2)
 		end
+		specWarnCausticDeluge:SetAlert(711, "defensive", 2, 2, 0)
 		specWarnSurge:SetAlert(740, "frontal", 15, 2)
-		specWarnFlood:SetAlert(741, "watchwave", 2, 2)
+		specWarnFlood:SetAlert(741, "beamincoming", 19, 2)
 		specWarnStirtheDepths:SetAlert(742, "watchwave", 2, 2)
 		specWarnCoilingToxin:SetAlert(743, "watchstep", 2, 2)
 		specWarnBeckonProgeny:SetAlert(744, "mobsoon", 2, 2)
@@ -75,6 +75,7 @@ local function setFallback(self, dontSetAlerts)
 		specWarnBloodTorrent:SetAlert(896, "bigmob", 2, 2)
 		specWarnBarrage:SetAlert(897, "watchstep", 2, 2)
 		specWarnRousetheBrood:SetAlert(900, "mobsoon", 2, 2)
+		specWarnCorrosiveSpit:SetAlert(753, "lineyou", 17, 2, 0)
 	end
 	local onlyColor = not DBM.Options.HideDBMBars
 	timerCausticDelugeCD:SetTimeline(711, onlyColor)
