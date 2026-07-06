@@ -910,7 +910,28 @@ function bossModPrototype:GetFromTimersTable(table, difficultyName, phase, spell
 	return prev
 end
 
----Returns true when timer matches expected value within rounding variance.
+---Helper for routing timeline durations with controlled tolerance.
+---
+---Why this exists:
+---Encounter timeline durations can drift slightly across logs/builds (for example 49.96 vs 50.02),
+---and many hardcoded mods route abilities by duration buckets. This helper provides a consistent
+---"within range" check so modules remain stable without hardcoding brittle exact comparisons.
+---
+---Behavior:
+---Returns true when `timer` is inside `[expected - variance, expected + variance]`.
+---Default variance is 1 second.
+---
+---Recommended usage patterns:
+--- - Use small variance for high precision (for example 0.1-0.3) on tight overlaps.
+--- - Order checks from most specific to most general so broad ranges don't steal matches.
+--- - When there is no overlap/collision risk, prefer one broader bucket over multiple narrow
+---   adjacent buckets (for example prefer expected=22, variance=1 over separate checks around
+---   21.5/22.5). This keeps routing simpler and avoids redundant branching.
+--- - Keep routing on duration (`timer`/rounded bucket), but pass raw `timerExact` into TLStart
+---   and resolver context APIs when recording/starting events.
+---
+---This pattern is especially useful in complex mods (such as Vaelgor-style multi-stage lanes)
+---where small timer variance and overlapping buckets are common.
 ---@param timer number
 ---@param expected number
 ---@param variance number? Defaults to 1 second.
@@ -965,11 +986,21 @@ do
 		end
 	end
 
-	---Reserve a timeline count for a hardcoded event.
+	---Reserve (claim) a count slot for a timeline event when its bar is started.
+	---
+	---Use this from ENCOUNTER_TIMELINE_EVENT_ADDED at the same time you call TLStart.
+	---The reservation is keyed by eventID so parallel same-type events keep stable counts.
+	---
+	---Lifecycle:
+	--- - TLCountStart(eventID, ...): reserve count
+	--- - TLCountFinish(eventID): commit reservation + advance vb counter
+	--- - TLCountCancel(eventID): drop reservation without advancing
+	---
+	---For non-count events (stage markers, etc.), omit countKey.
 	---@param eventID number
 	---@param eventType string Name of event type checked in mod for ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED
 	---@param countKey string? Name of the vb count field to reserve against. Omit for non-count events.
-	---@return number? count
+	---@return number? count Reserved cast count for this event instance (nil when countKey is omitted).
 	function bossModPrototype:TLCountStart(eventID, eventType, countKey)
 		local state = getTLCountState(self)
 		if state.events[eventID] then
@@ -998,11 +1029,19 @@ do
 		return eventInfo.count
 	end
 
-	---Commit a reserved timeline count when an event finishes.
+	---Commit a previously reserved timeline count when an event reaches finished state.
+	---
+	---Behavior:
+	--- - Returns the reserved eventType (and count, when present).
+	--- - Advances self.vb[countKey] to the next value after the committed count.
+	--- - Reindexes pending reservations of the same eventType so parallel bars stay correct.
+	---
+	---If onlyEventType is provided, commit occurs only when the reserved eventType matches.
+	---When no reservation exists (or type does not match), returns nil,nil.
 	---@param eventID number
 	---@param onlyEventType string? Only commit/advance count when reserved eventType matches this value
-	---@return string? eventType Returns eventType cached by TLCountStart in TLStart
-	---@return number? count Returns event count before incrementing the vb countKey
+	---@return string? eventType Event type cached at TLCountStart time.
+	---@return number? count Reserved count for this event instance (before vb increment).
 	function bossModPrototype:TLCountFinish(eventID, onlyEventType)
 		local state = self.tlCountState
 		if not state then return nil, nil end
@@ -1031,9 +1070,15 @@ do
 		return eventType, eventCount
 	end
 
-	---Discard a reserved timeline count when an event is canceled.
+	---Cancel a reserved timeline event without advancing its vb count.
+	---
+	---Use this when timeline state changes to canceled (or when replacing an existing
+	---reservation for the same eventID). This removes the reservation and reindexes remaining
+	---pending entries for that eventType so later finishes keep correct cast numbers.
+	---
+	---Returns nil when no reservation exists for eventID.
 	---@param eventID number
-	---@return string? eventType
+	---@return string? eventType Event type that was canceled.
 	function bossModPrototype:TLCountCancel(eventID)
 		local state = self.tlCountState
 		if not state then return nil end
@@ -1048,17 +1093,51 @@ do
 		return eventInfo.eventType
 	end
 
-	---Reset all reserved timeline count state for this mod.
+	---Clear all TLCount reservation state for this mod.
+	---
+	---Call at encounter boundaries (combat start/end) to ensure no pending reservations
+	---from prior pulls leak into new routing/count decisions.
+	---
+	---This resets TLCount only; TLResolve context is separate (use TLResolveReset for that).
 	function bossModPrototype:TLCountReset()
 		self.tlCountState = nil
 	end
 
-	---Reset recent hardcoded timeline resolver context.
+	---Reset short-term resolver history used by hardcoded timeline disambiguation.
+	---Use this at encounter boundaries (combat start/end) so stale context from prior pulls
+	---cannot influence current routing decisions.
+	---
+	---Typical usage in mods:
+	--- - OnLimitedCombatStart: self:TLResolveReset()
+	--- - OnCombatEnd: self:TLResolveReset()
+	---
+	---This does NOT affect TLCount state; TLCount* APIs are separate and should be reset
+	---independently with TLCountReset.
 	function bossModPrototype:TLResolveReset()
 		self.tlResolveState = nil
 	end
 
-	---Push latest resolved hardcoded timeline event context.
+	---Record one resolved timeline decision for later ambiguity checks.
+	---
+	---Purpose:
+	---Some encounters emit overlapping/ambiguous timer buckets (same rounded duration can map
+	---to multiple abilities). Hardcoded mods can resolve such overlaps by looking at the most
+	---recent resolved event(s) via TLResolvePeek.
+	---
+	---Recommended flow in ENCOUNTER_TIMELINE_EVENT_ADDED handlers:
+	--- 1) Route event using local rules (duration/stage/occurrence/context).
+	--- 2) Start bar with TLStart(...).
+	--- 3) Push resolved context with TLResolvePush(eventType, timerExact).
+	---
+	---Data semantics:
+	--- - eventType: stable module-local key used by that mod's state machine (for example
+	---   "voidstalkerSting", "grasp", "nullCorona").
+	--- - timer: timer value to persist as context for future decisions. For hardcoded timeline
+	---   mods this should usually be the raw exact duration (timerExact), not rounded timer.
+	---
+	---History window:
+	---Only the most recent maxEntries values are retained (default 4). Increase only if the
+	---encounter genuinely requires deeper lookback.
 	---@param eventType string
 	---@param timer number
 	---@param maxEntries number? default 4
@@ -1077,7 +1156,20 @@ do
 		end
 	end
 
-	---Peek previously resolved hardcoded timeline context.
+	---Read previously stored resolver context without mutating it.
+	---
+	---Common use case:
+	---When current duration is ambiguous, inspect most recent context to decide which ability
+	---the event should map to, then call TLResolvePush for the newly resolved result.
+	---
+	---Offset rules:
+	--- - offset 0 (default): latest resolved event.
+	--- - offset 1: one event before latest.
+	--- - offset N: N events before latest.
+	---
+	---Return contract:
+	---Returns nil,nil when no history exists (or offset is out of range). Callers should always
+	---nil-check both return values before using them in branch logic.
 	---@param offset number? 0 = latest, 1 = one before latest, etc.
 	---@return string? eventType
 	---@return number? timer
