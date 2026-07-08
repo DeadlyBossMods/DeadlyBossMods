@@ -161,7 +161,7 @@ do
 	end
 end
 
----Basically just a DBM wrapper for GetRaidTargetIndex but also supports target name
+---Basically just a DBM wrapper for GetRaidTargetIndex but also supports target name or GUID
 ---@param uIdOrTarget string
 ---@param isGUID boolean? if true, will treat uIdOrTarget as a GUID instead of a unitID or name
 function bossModPrototype:GetIcon(uIdOrTarget, isGUID)

@@ -3294,13 +3294,43 @@ do
 		end
 	end
 
+	local fullPlayerUids = {
+		"player", "party1", "party2", "party3", "party4",
+		"raid1", "raid2", "raid3", "raid4", "raid5", "raid6", "raid7", "raid8", "raid9", "raid10",
+		"raid11", "raid12", "raid13", "raid14", "raid15", "raid16", "raid17", "raid18", "raid19", "raid20",
+		"raid21", "raid22", "raid23", "raid24", "raid25", "raid26", "raid27", "raid28", "raid29", "raid30",
+		"raid31", "raid32", "raid33", "raid34", "raid35", "raid36", "raid37", "raid38", "raid39", "raid40"
+	}
+
+	local fullEnemyUids = {
+		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10",
+		"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
+		"party1target", "party2target", "party3target", "party4target",
+		"raid1target", "raid2target", "raid3target", "raid4target", "raid5target", "raid6target", "raid7target", "raid8target", "raid9target", "raid10target",
+		"raid11target", "raid12target", "raid13target", "raid14target", "raid15target", "raid16target", "raid17target", "raid18target", "raid19target", "raid20target",
+		"raid21target", "raid22target", "raid23target", "raid24target", "raid25target", "raid26target", "raid27target", "raid28target", "raid29target", "raid30target",
+		"raid31target", "raid32target", "raid33target", "raid34target", "raid35target", "raid36target", "raid37target", "raid38target", "raid39target", "raid40target",
+		"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
+		"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
+		"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
+		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
+	}
+
+	local bossTargetuIds = {
+		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10"
+	}
+
 	---This is primarily used for cached player unitIds by name lookup
 	---<br>Rarely, it's also used for boss checks by name since it simplifies code in mod.
-	---@param skipBoss boolean?
-	function DBM:GetRaidUnitId(name, skipBoss)
-		if not skipBoss and not (self:IsPostMidnight() and IsInInstance()) then
-			for i = 1, 10 do
-				local unitId = "boss" .. i
+	---@param skipEnemy boolean?
+	function DBM:GetRaidUnitId(name, skipEnemy)
+		if not skipEnemy and not self:MidRestrictionsActive(true, true, true) then
+			local usedTable = (private.isClassic or private.isBCC) and fullEnemyUids or bossTargetuIds
+			for _, unitId in ipairs(usedTable) do
+				if self:issecretunit(unitId) then
+					--Any secret unit found even after above midnight check, abort enemy loop
+					break
+				end
 				local bossName = UnitName(unitId)
 				if bossName and bossName == name then
 					return unitId
@@ -3309,14 +3339,6 @@ do
 		end
 		return raid[name] and raid[name].id
 	end
-
-	local fullPlayerUids = {
-		"player", "party1", "party2", "party3", "party4",
-		"raid1", "raid2", "raid3", "raid4", "raid5", "raid6", "raid7", "raid8", "raid9", "raid10",
-		"raid11", "raid12", "raid13", "raid14", "raid15", "raid16", "raid17", "raid18", "raid19", "raid20",
-		"raid21", "raid22", "raid23", "raid24", "raid25", "raid26", "raid27", "raid28", "raid29", "raid30",
-		"raid31", "raid32", "raid33", "raid34", "raid35", "raid36", "raid37", "raid38", "raid39", "raid40"
-	}
 
 	---Used Strictly to look up Player UnitId by GUID
 	---@param self DBMModOrDBM
@@ -3338,24 +3360,6 @@ do
 			end
 		end
 	end
-
-	local fullEnemyUids = {
-		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10",
-		"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
-		"party1target", "party2target", "party3target", "party4target",
-		"raid1target", "raid2target", "raid3target", "raid4target", "raid5target", "raid6target", "raid7target", "raid8target", "raid9target", "raid10target",
-		"raid11target", "raid12target", "raid13target", "raid14target", "raid15target", "raid16target", "raid17target", "raid18target", "raid19target", "raid20target",
-		"raid21target", "raid22target", "raid23target", "raid24target", "raid25target", "raid26target", "raid27target", "raid28target", "raid29target", "raid30target",
-		"raid31target", "raid32target", "raid33target", "raid34target", "raid35target", "raid36target", "raid37target", "raid38target", "raid39target", "raid40target",
-		"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
-		"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
-		"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
-		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
-	}
-
-	local bossTargetuIds = {
-		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10"
-	}
 
 	---Used Strictly to look up Enemy UnitId by GUID
 	---@param self DBMModOrDBM
