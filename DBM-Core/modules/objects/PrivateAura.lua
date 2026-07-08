@@ -1,3 +1,4 @@
+if DBM:GetTOC() >= 120100 then return end -- Private auras only exist in 12.0 and earier, 12.1 needs rewrite
 ---@class DBM
 local DBM = DBM
 
@@ -453,7 +454,6 @@ function PrivateAuras:RegisterAllUnits()
 end
 
 do
-	local wowToC = DBM:GetTOC()
 	local function IsInValidInstance()
 		local inInstance, instanceType = IsInInstance()
 		return inInstance and instanceType ~= "pvp" and instanceType ~= "arena"

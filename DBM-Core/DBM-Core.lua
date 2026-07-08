@@ -3157,7 +3157,7 @@ do
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
 		end
-		if private.isRetail then
+		if private.isRetail and DBM:GetTOC() < 120100 then
 			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
 			if not succeeded then
 				pendingPAAnchorCheck = 2
@@ -4744,11 +4744,13 @@ do
 		if private.isRetail then
 			--Handle private aura sounds and anchors
 			syncZoneAuraSounds(self, mapID)
-			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
-			if not succeeded then
-				pendingPAAnchorCheck = 1
-			else
-				pendingPAAnchorCheck = 0
+			if self:GetTOC() < 120100 then
+				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+				if not succeeded then
+					pendingPAAnchorCheck = 1
+				else
+					pendingPAAnchorCheck = 0
+				end
 			end
 		end
 		self:UpdateMapRestrictions()

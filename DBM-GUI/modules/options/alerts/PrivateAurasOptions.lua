@@ -1,3 +1,4 @@
+if DBM:GetTOC() >= 120100 then return end -- Private auras only exist in 12.0 and earier, 12.1 needs rewrite
 local L = DBM_GUI_L
 
 local privateAurasPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_PrivateAuras, "option")
