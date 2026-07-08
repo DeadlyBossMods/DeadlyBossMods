@@ -32,7 +32,7 @@ local timerTidepiercersRushCD			= mod:NewCDCountTimer(20.5, 1258668, nil, nil, n
 local timerAbyssalRainCD				= mod:NewCDCountTimer(20.5, 1260837, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
 local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
---mod:AddPrivateAuraSoundOption(1221639, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough
+--mod:AddAuraSoundOption(1221639, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough
 
 mod.vb.tankWaterCount = 0--Water Jet/Flurry
 mod.vb.alluringBubbleCount = 0

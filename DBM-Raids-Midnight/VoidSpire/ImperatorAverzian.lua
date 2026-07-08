@@ -34,9 +34,9 @@ local timerOblivionWrathCD				= mod:NewCDCountTimer(20.5, 1260712, nil, nil, nil
 local timerVoidFallCD					= mod:NewCDCountTimer(20.5, 1258880, nil, nil, nil, 2)
 local timerVoidMarkCD					= mod:NewCDCountTimer(20.5, 1280023, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.MAGIC_ICON)
 
-mod:AddPrivateAuraSoundOption({1249265,1260203}, true, 1249265, 1, 2, "helpsoak", 2)--Umbral Collapse
-mod:AddPrivateAuraSoundOption(1280023, true, 1280023, 1, 1, "darknessyou", 19)--Void Marked
-mod:AddPrivateAuraSoundOption(1283069, true, 1283069, 1, 3, "fixateyou", 19)--Weakened
+mod:AddAuraSoundOption({1249265,1260203}, true, 1249265, 1, 2, "helpsoak", 2)--Umbral Collapse
+mod:AddAuraSoundOption(1280023, true, 1280023, 1, 1, "darknessyou", 19)--Void Marked
+mod:AddAuraSoundOption(1283069, true, 1283069, 1, 3, "fixateyou", 19)--Weakened
 
 mod.vb.shadowCount = 0
 mod.vb.upheavalCount = 0

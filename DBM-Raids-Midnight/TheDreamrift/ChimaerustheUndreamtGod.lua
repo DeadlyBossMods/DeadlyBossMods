@@ -46,12 +46,12 @@ local timerConsumeCD					= mod:NewCDCountTimer(20.5, 1245396, nil, nil, 2, 2, ni
 local timerStage2CD						= mod:NewCDTimer(20.5, 1280127, nil, nil, nil, 6)--Hardcoded stage 2 timer for when blizz doesn't provide consume timers in stage 2, or provides them with wrong timers. Will be removed if blizz provides accurate consume timers in stage 2
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
-mod:AddPrivateAuraSoundOption(1257087, true, 1257087, 1, 1, "movetopool", 15)--Consuming Miasma
-mod:AddPrivateAuraSoundOption(1245698, true, 1262289, 1, 2, "riftyou", 19)--Alnsight (can also use https://www.wowhead.com/spell=1253744/rift-vulnerability)
-mod:AddPrivateAuraSoundOption(1264756, true, 1264780, 1, 1, "debuffyou", 17)--Rift Madness (initial target)
---mod:AddPrivateAuraSoundOption(1264780, true, 1264780, 1, 1)--Rift Madness (standing in the soak?)
+mod:AddAuraSoundOption(1257087, true, 1257087, 1, 1, "movetopool", 15)--Consuming Miasma
+mod:AddAuraSoundOption(1245698, true, 1262289, 1, 2, "riftyou", 19)--Alnsight (can also use https://www.wowhead.com/spell=1253744/rift-vulnerability)
+mod:AddAuraSoundOption(1264756, true, 1264780, 1, 1, "debuffyou", 17)--Rift Madness (initial target)
+--mod:AddAuraSoundOption(1264780, true, 1264780, 1, 1)--Rift Madness (standing in the soak?)
 --https://www.wowhead.com/beta/spell=1264757/rift-madness another rift madness, not sure what to include yet beyond initial
-mod:AddPrivateAuraSoundOption(1258192, false, 1258192, 1, 1, "dotyou", 19)--Lingering Miasma
+mod:AddAuraSoundOption(1258192, false, 1258192, 1, 1, "dotyou", 19)--Lingering Miasma
 
 mod.vb.diveCount = 0
 mod.vb.riftCount = 0

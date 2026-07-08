@@ -44,14 +44,14 @@ local timerVoidlightConvergenceCD		= mod:NewCDCountTimer(20.5, 1242515, nil, nil
 local timerDeathDropCD					= mod:NewCDCountTimer(20.5, 1246709, nil, nil, nil, 6)--Stage bar, unless fight actually fires a diff stage bar then we'll use that
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
-mod:AddPrivateAuraSoundOption(1244348, true, 1244344, 1, 3, "absorbyou", 19)--Light Burn (sub spell of Eternal Burns)
-mod:AddPrivateAuraSoundOption(1266404, true, 1244344, 1, 3, "absorbyou", 19)--Void Burn (sub spell of Eternal Burns)
-mod:AddPrivateAuraSoundOption(1241992, true, 1242260, 1, 1, "lineyou", 17)--Light Quill (sub spell of Infused Quills)
-mod:AddPrivateAuraSoundOption(1242091, true, 1242260, 1, 1, "lineyou", 17)--Void Quill (sub spell of Infused Quills)
-mod:AddPrivateAuraSoundOption(1241292, true, 1241292, 1, 2, "lightsoak", 19)--Light Dive
-mod:AddPrivateAuraSoundOption(1241339, true, 1241339, 1, 2, "voidsoak", 19)--Void Dive
-mod:AddPrivateAuraSoundOption(1241840, true, 1241292, 1, 2, "watchfeet", 8)--Light Patch (dropped by Light Dive)
-mod:AddPrivateAuraSoundOption(1241841, true, 1241339, 1, 2, "watchfeet", 8)--Void Patch (dropped by Void Dive)
+mod:AddAuraSoundOption(1244348, true, 1244344, 1, 3, "absorbyou", 19)--Light Burn (sub spell of Eternal Burns)
+mod:AddAuraSoundOption(1266404, true, 1244344, 1, 3, "absorbyou", 19)--Void Burn (sub spell of Eternal Burns)
+mod:AddAuraSoundOption(1241992, true, 1242260, 1, 1, "lineyou", 17)--Light Quill (sub spell of Infused Quills)
+mod:AddAuraSoundOption(1242091, true, 1242260, 1, 1, "lineyou", 17)--Void Quill (sub spell of Infused Quills)
+mod:AddAuraSoundOption(1241292, true, 1241292, 1, 2, "lightsoak", 19)--Light Dive
+mod:AddAuraSoundOption(1241339, true, 1241339, 1, 2, "voidsoak", 19)--Void Dive
+mod:AddAuraSoundOption(1241840, true, 1241292, 1, 2, "watchfeet", 8)--Light Patch (dropped by Light Dive)
+mod:AddAuraSoundOption(1241841, true, 1241339, 1, 2, "watchfeet", 8)--Void Patch (dropped by Void Dive)
 
 mod:AddCustomAlertSoundOption(1241162, true, 1)--Light Feather
 mod:AddCustomAlertSoundOption(1241163, true, 1)--Void Feather
@@ -62,8 +62,8 @@ local specWarnRebirth					= mod:NewSpecialWarningCount(1241313, nil, nil, nil, 1
 local timerIncubationofFlamesCD			= mod:NewCDCountTimer(20.5, 1242792, nil, nil, nil, 3)--Might not even have a timer, if not kill object
 local timerRebirthCD					= mod:NewCastTimer(20.5, 1241313, nil, nil, nil, 6)--Iffy
 
-mod:AddPrivateAuraSoundOption(1242803, true, 1242792, 1, 2, "watchfeet", 8)--Light Flames (dropped by Incubation of Flames)
-mod:AddPrivateAuraSoundOption(1242815, true, 1242792, 1, 2, "watchfeet", 8)--Void Flames (dropped by Incubation of Flames)
+mod:AddAuraSoundOption(1242803, true, 1242792, 1, 2, "watchfeet", 8)--Light Flames (dropped by Incubation of Flames)
+mod:AddAuraSoundOption(1242815, true, 1242792, 1, 2, "watchfeet", 8)--Void Flames (dropped by Incubation of Flames)
 
 mod.vb.embersCount = 0
 mod.vb.echoesCount = 0

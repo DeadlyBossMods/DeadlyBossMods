@@ -66,19 +66,19 @@ local timerStage2CD						= mod:NewCDTimer(20.5, 1272966, nil, nil, nil, 6)
 local timerStage3CD						= mod:NewCDTimer(20.5, 1273378, nil, nil, nil, 6)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
---mod:AddPrivateAuraSoundOption(1233887, true, 1233865, 1, 1, "absorbyou", 19)--Null Corona (hotfixed out)
-mod:AddPrivateAuraSoundOption(1283236, true, 1283236, 1, 1, "orbrun", 2)--Void Expulsion
-mod:AddPrivateAuraSoundOption(1242553, true, 1283236, 1, 2, "watchfeet", 8)--Void Remnants (GTFO left by Void Expulsion)
-mod:AddPrivateAuraSoundOption(1233602, true, 1233602, 1, 1, "arrowyou", 19)--Silverstrike Arrow
-mod:AddPrivateAuraSoundOption(1243981, true, 1234564, 1, 3, "debuffyou", 17)--Silverstrike Barrage
---mod:AddPrivateAuraSoundOption(1234570, false, 1234570, 1, 1)--Stellar Emission (stacking debuff during Intermission 1)
-mod:AddPrivateAuraSoundOption(1238206, true, 1238206, 1, 2, "watchfeet", 8)--Volatile Fissure
-mod:AddPrivateAuraSoundOption({1237623,1259861}, true, 1237614, 1, 1, "markyou", 19)--Ranger Captain's Mark
-mod:AddPrivateAuraSoundOption(1239111, true, 1239111, 1, 1, "lineapart", 2)--Aspect of the End
-mod:AddPrivateAuraSoundOption(1255453, false, 1239111, 1, 3, "debuffyou", 2)--Gravity Collapse (Aspect of the End debuff)
-mod:AddPrivateAuraSoundOption({1232470,1260027}, true, 1232470, 1, 1, "graspyou", 19)--Grasp of Emptiness
-mod:AddPrivateAuraSoundOption(1243753, true, 1243753, 1, 3, "debuffyou", 17)--Failing to get out of Ravenous Abyss
-mod:AddPrivateAuraSoundOption(1238708, true, 1238708, 1, 1, "speedyou", 19)--Dark Rush
+--mod:AddAuraSoundOption(1233887, true, 1233865, 1, 1, "absorbyou", 19)--Null Corona (hotfixed out)
+mod:AddAuraSoundOption(1283236, true, 1283236, 1, 1, "orbrun", 2)--Void Expulsion
+mod:AddAuraSoundOption(1242553, true, 1283236, 1, 2, "watchfeet", 8)--Void Remnants (GTFO left by Void Expulsion)
+mod:AddAuraSoundOption(1233602, true, 1233602, 1, 1, "arrowyou", 19)--Silverstrike Arrow
+mod:AddAuraSoundOption(1243981, true, 1234564, 1, 3, "debuffyou", 17)--Silverstrike Barrage
+--mod:AddAuraSoundOption(1234570, false, 1234570, 1, 1)--Stellar Emission (stacking debuff during Intermission 1)
+mod:AddAuraSoundOption(1238206, true, 1238206, 1, 2, "watchfeet", 8)--Volatile Fissure
+mod:AddAuraSoundOption({1237623,1259861}, true, 1237614, 1, 1, "markyou", 19)--Ranger Captain's Mark
+mod:AddAuraSoundOption(1239111, true, 1239111, 1, 1, "lineapart", 2)--Aspect of the End
+mod:AddAuraSoundOption(1255453, false, 1239111, 1, 3, "debuffyou", 2)--Gravity Collapse (Aspect of the End debuff)
+mod:AddAuraSoundOption({1232470,1260027}, true, 1232470, 1, 1, "graspyou", 19)--Grasp of Emptiness
+mod:AddAuraSoundOption(1243753, true, 1243753, 1, 3, "debuffyou", 17)--Failing to get out of Ravenous Abyss
+mod:AddAuraSoundOption(1238708, true, 1238708, 1, 1, "speedyou", 19)--Dark Rush
 
 mod.vb.coronaCount = 0
 mod.vb.expulsionCount = 0

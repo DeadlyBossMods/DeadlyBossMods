@@ -1187,12 +1187,19 @@ end
 --  Private/Secret API Methods  --
 ----------------------------------
 do
-	-- Helper function to register a private aura sound for a single spell ID
+	local addAuraAppliedSound = C_UnitAuras.AddAuraAppliedSound or C_UnitAuras.AddPrivateAuraAppliedSound
+	local removeAuraAppliedSound = C_UnitAuras.RemoveAuraAppliedSound or C_UnitAuras.RemovePrivateAuraAppliedSound
+
+	-- Helper function to register an aura sound for a single spell ID
 	---@param self DBMMod
 	---@param optionId number
 	---@param spellId number
 	---@param media number|string
-	local function registerPrivateAuraSound(self, optionId, spellId, media)
+	local function registerAuraSound(self, optionId, spellId, media)
+		if not addAuraAppliedSound then
+			DBM:Debug("Attempting to register aura sound failed because no aura sound API is available for mod " .. self.id, 2)
+			return
+		end
 		local soundSetting = DBM.Options.UseSoundChannel or "Master"
 		if not self.paSounds then
 			self.paSounds = {}
@@ -1200,17 +1207,17 @@ do
 		if not self.paSounds[optionId] then
 			self.paSounds[optionId] = {}
 		end
-		local privateAuraSoundId
+		local auraSoundId
 		--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
 		if type(media) == "number" then
-			privateAuraSoundId = C_UnitAuras.AddPrivateAuraAppliedSound({
+			auraSoundId = addAuraAppliedSound({
 				spellID = spellId,
 				unitToken = "player",
 				soundFileID = media,
 				outputChannel = soundSetting,
 			})
 		else--It's a string, so it's not an ID, we need to set soundFileName instead
-			privateAuraSoundId = C_UnitAuras.AddPrivateAuraAppliedSound({
+			auraSoundId = addAuraAppliedSound({
 				spellID = spellId,
 				unitToken = "player",
 				--Another cause of LuaLS being stupid for some reason
@@ -1219,15 +1226,17 @@ do
 				outputChannel = soundSetting,
 			})
 		end
-		self.paSounds[optionId][#self.paSounds[optionId] + 1] = privateAuraSoundId
+		self.paSounds[optionId][#self.paSounds[optionId] + 1] = auraSoundId
 	end
 
 	---@param self DBMMod
 	---@param optionId number
-	local function disablePrivateAuraSoundOption(self, optionId)
+	local function disableAuraSoundOption(self, optionId)
 		if not self.paSounds or not self.paSounds[optionId] then return end
 		for _, id in ipairs(self.paSounds[optionId]) do
-			C_UnitAuras.RemovePrivateAuraAppliedSound(id)
+			if removeAuraAppliedSound then
+				removeAuraAppliedSound(id)
+			end
 		end
 		self.paSounds[optionId] = nil
 		if not next(self.paSounds) then
@@ -1237,7 +1246,7 @@ do
 
 	---Function to check valid voice pack sound
 	---@param self DBMMod
-	---@param optionType string "SpecialWarningSound" or "PrivateAuraSound"
+	---@param optionType string "SpecialWarningSound" or "AuraSound"
 	---@param optionId number
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number
@@ -1269,10 +1278,10 @@ do
 
 	--Internal function for zone-based registration of a single pending PA sound entry
 	---@param mod DBMMod
-	---@param auraspellId number|number[] ID(s) of the private aura(s) to register sound for
+	---@param auraspellId number|number[] ID(s) of the aura(s) to register sound for
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number Required voice pack version (if not met, falls back to default special warning sounds)
-	local function enablePrivateAuraSound(mod, auraspellId, voice, voiceVersion)
+	local function enableAuraSound(mod, auraspellId, voice, voiceVersion)
 		local optionId
 		if type(auraspellId) == "table" then
 			optionId = auraspellId[1]
@@ -1280,51 +1289,51 @@ do
 			optionId = auraspellId
 		end
 		if type(optionId) ~= "number" then
-			DBM:Debug("Attempting to register private aura sound failed due to invalid optionId type for mod " .. mod.id, 2)
+			DBM:Debug("Attempting to register aura sound failed due to invalid optionId type for mod " .. mod.id, 2)
 			return
 		end
 		if C_ChatInfo.InChatMessagingLockdown() then
-			DBM:Debug("Attempting to register private aura sound for spell ID " .. optionId .. " failed due to combat restriction. This sound will not be registered.", 2)
+			DBM:Debug("Attempting to register aura sound for spell ID " .. optionId .. " failed due to combat restriction. This sound will not be registered.", 2)
 			return
 		end
-		if not C_UnitAuras.AuraIsPrivate(optionId) then
-			DBM:Debug("Attempting to register private aura sound for spell ID " .. optionId .. " which is not a private aura. This sound will not be registered.", 2)
+		if not DBM:GetSpellInfo(optionId) then
+			DBM:Debug("Attempting to register aura sound for spell ID " .. optionId .. " which is not a valid spell ID. This sound will not be registered.", 2)
 			return
 		end
-		if DBM.Options.DontPlayPrivateAuraSound then return end
-		if optionId and mod.Options["PrivateAuraSound" .. optionId] then
-			local mediaPath = checkValidVPSound(mod, "PrivateAuraSound", optionId, voice, voiceVersion)
+		if DBM.Options.DontPlayAuraSound then return end
+		if optionId and mod.Options["AuraSound" .. optionId] then
+			local mediaPath = checkValidVPSound(mod, "AuraSound", optionId, voice, voiceVersion)
 			if DBM:IsNoneValue(mediaPath) then return end--Don't register if media path is none, even if option is enabled
 			if type(auraspellId) == "table" then
 				for _, spellId in ipairs(auraspellId) do
-					registerPrivateAuraSound(mod, optionId, spellId, mediaPath)
+					registerAuraSound(mod, optionId, spellId, mediaPath)
 				end
 			else
-				registerPrivateAuraSound(mod, optionId, auraspellId, mediaPath)
+				registerAuraSound(mod, optionId, auraspellId, mediaPath)
 			end
 		end
 	end
 
 	---Called by DBM-Core's SecondaryLoadCheck when entering a zone.
-	---Registers only the pending private aura sounds stored for the current zone.
+	---Registers only the pending aura sounds stored for the current zone.
 	---@param mapID number
-	function bossModPrototype:RegisterZonePASounds(mapID)
+	function bossModPrototype:RegisterZoneAuraSounds(mapID)
 		if not self.pendingPASoundsByZone then return end
 		local zoneEntries = self.pendingPASoundsByZone[mapID]
 		if not zoneEntries then return end
 		for _, entry in ipairs(zoneEntries) do
-			enablePrivateAuraSound(self, entry[1], entry[2], entry[3])
+			enableAuraSound(self, entry[1], entry[2], entry[3])
 		end
 	end
 
-	---Refresh a single currently active private aura sound option for this mod using the player's current zone.
+	---Refresh a single currently active aura sound option for this mod using the player's current zone.
 	---@param optionId number
 	---@return boolean refreshed Returns false if the refresh could not be performed safely.
-	function bossModPrototype:RefreshPrivateAuraSound(optionId)
+	function bossModPrototype:RefreshAuraSound(optionId)
 		if C_ChatInfo.InChatMessagingLockdown() then
 			return false
 		end
-		disablePrivateAuraSoundOption(self, optionId)
+		disableAuraSoundOption(self, optionId)
 		local mapID = DBM:GetCurrentArea()
 		if not mapID or mapID <= 0 or not self.pendingPASoundsByZone then
 			return true
@@ -1336,35 +1345,35 @@ do
 		for _, entry in ipairs(zoneEntries) do
 			local entryOptionId = type(entry[1]) == "table" and entry[1][1] or entry[1]
 			if entryOptionId == optionId then
-				enablePrivateAuraSound(self, entry[1], entry[2], entry[3])
+				enableAuraSound(self, entry[1], entry[2], entry[3])
 			end
 		end
 		return true
 	end
 
-	---Refresh currently active private aura sounds for this mod using the player's current zone.
+	---Refresh currently active aura sounds for this mod using the player's current zone.
 	---@return boolean refreshed Returns false if the refresh could not be performed safely.
-	function bossModPrototype:RefreshPrivateAuraSounds()
+	function bossModPrototype:RefreshAuraSounds()
 		--Restriction must remain because adding sounds still combat restricted
 		if C_ChatInfo.InChatMessagingLockdown() then
 			return false
 		end
-		self:DisablePrivateAuraSounds()
+		self:DisableAuraSounds()
 		local mapID = DBM:GetCurrentArea()
 		if mapID and mapID > 0 then
-			self:RegisterZonePASounds(mapID)
+			self:RegisterZoneAuraSounds(mapID)
 		end
 		return true
 	end
 
-	function bossModPrototype:DisablePrivateAuraSounds()
+	function bossModPrototype:DisableAuraSounds()
 		--Removal doesn't have same restrictions as adding (allowed in combat)
 		while self.paSounds do
 			local optionId = next(self.paSounds)
 			if not optionId then
 				break
 			end
-			disablePrivateAuraSoundOption(self, optionId)
+			disableAuraSoundOption(self, optionId)
 		end
 	end
 
@@ -1412,7 +1421,7 @@ do
 				elseif timerCountdown == 1 then
 					path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\" .. countSizePath
 				end
-				--Unlike private aura sounds, this api accepts both file data ID AND path
+				--Unlike aura sounds, this api accepts both file data ID AND path
 				local soundSetting = DBM.Options.UseSoundChannel or "Master"
 				if type(encounterEventId) == "table" then
 					for _, id in ipairs(encounterEventId) do
@@ -1484,7 +1493,7 @@ do
 					self:DisableSpecialWarningSounds()
 				end
 				local soundSetting = DBM.Options.UseSoundChannel or "Master"
-				--Unlike private aura sounds, this api accepts both file data ID AND path
+				--Unlike aura sounds, this api accepts both file data ID AND path
 				if type(encounterEventId) == "table" then
 					for _, id in ipairs(encounterEventId) do
 						--Once again working around bugs in Wow Api extension

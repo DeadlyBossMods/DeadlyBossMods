@@ -82,7 +82,7 @@ function PrivateAuras:IsRegistered()
 	return PAAnchorsRegistered
 end
 
----Register Private Aura Display frame/text for a unit. Will unregister existing anchors for the unit before registering new ones
+---Register Aura Display frame/text for a unit. Will unregister existing anchors for the unit before registering new ones
 ---@param unit playerUUIDs
 ---@param settingsOverwrite table? Optional settings table to use instead of DBM.Options.PrivateAurasPlayer/PrivateAurasCoTank (used for preview)
 function PrivateAuras:RegisterPrivateAuras(unit, settingsOverwrite)
@@ -431,7 +431,7 @@ do
 	end
 end
 
----Register private auras for player and up to two co-tanks found in raid
+---Register auras for player and up to two co-tanks found in raid
 function PrivateAuras:RegisterAllUnits()
 	PAAnchorsRegistered = true
 	--Options toggles are checked in actual fuctions. Don't option check here.

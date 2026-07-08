@@ -483,7 +483,7 @@ DBM.DefaultOptions = {
 	IgnoreBlizzAPI = false,
 	fixBlizzApi = false,
 	DisableSWSound = false,
-	--Private Aura Frame Options
+	--Aura Frame Options
 	--Player
 	PrivateAurasPlayerEnabled = true,
 	PrivateAurasPlayerHideBorder = false,
@@ -565,7 +565,7 @@ local inCombatTrash = {}
 -- False variables
 local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false
 -- Nil variables
-local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader, syncZonePASounds
+local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader, syncZoneAuraSounds
 local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
 -- 0 variables
 local LastInstanceMapID = -1
@@ -4673,7 +4673,7 @@ do
 
 	---@param self DBM
 	---@param mapID number
-	syncZonePASounds = function(self, mapID)
+	syncZoneAuraSounds = function(self, mapID)
 		if not private.isRetail then
 			return
 		end
@@ -4686,7 +4686,7 @@ do
 			mod:DisablePrivateAuraSounds()
 		end
 		for _, mod in ipairs(DBM.Mods) do
-			mod:RegisterZonePASounds(mapID)
+			mod:RegisterZoneAuraSounds(mapID)
 		end
 	end
 
@@ -4743,7 +4743,7 @@ do
 		end
 		if private.isRetail then
 			--Handle private aura sounds and anchors
-			syncZonePASounds(self, mapID)
+			syncZoneAuraSounds(self, mapID)
 			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
 			if not succeeded then
 				pendingPAAnchorCheck = 1
@@ -5183,7 +5183,7 @@ do
 		end
 		if private.isRetail then
 			if pendingPASoundZoneSync then
-				syncZonePASounds(self, pendingPASoundZoneSync)
+				syncZoneAuraSounds(self, pendingPASoundZoneSync)
 			end
 			if pendingPAAnchorCheck > 0 then
 				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
@@ -6329,7 +6329,7 @@ do
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
 				if private.isRetail and pendingPASoundZoneSync then
-					syncZonePASounds(self, pendingPASoundZoneSync)
+					syncZoneAuraSounds(self, pendingPASoundZoneSync)
 				end
 				--module cleanup
 				private:ClearModuleTasks()

@@ -22,7 +22,7 @@ local growDirections = {
 }
 
 -----------------------------------
---  Personal Private Aura Frame  --
+--  Personal Aura Frame  --
 -----------------------------------
 local personalPAArea 	= privateAurasPanel:CreateArea(L.Area_PersonalPrivateAuras)
 --local personalPASound = personalPAArea:CreateCheckButton(L.SpamBlockNoPrivateAuraSound, true, nil, "DontPlayPrivateAuraSound")--Inverse option
@@ -161,7 +161,7 @@ personalPAReset:SetScript("OnClick", function()
 end)
 
 ----------------------------------
---  Co-Tank Private Aura Frame  --
+--  Co-Tank Aura Frame  --
 ----------------------------------
 local coTankPAArea		= privateAurasPanel:CreateArea(L.Area_TankPrivateAuras)
 local coTankPAIcon		= coTankPAArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "PrivateAurasCoTankEnabled")
