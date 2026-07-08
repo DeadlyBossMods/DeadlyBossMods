@@ -4683,7 +4683,7 @@ do
 		end
 		pendingPASoundZoneSync = nil
 		for _, mod in ipairs(DBM.Mods) do
-			mod:DisablePrivateAuraSounds()
+			mod:DisableAuraSounds()
 		end
 		for _, mod in ipairs(DBM.Mods) do
 			mod:RegisterZoneAuraSounds(mapID)
