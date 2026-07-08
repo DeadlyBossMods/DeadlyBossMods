@@ -163,8 +163,14 @@ end
 
 ---Basically just a DBM wrapper for GetRaidTargetIndex but also supports target name
 ---@param uIdOrTarget string
-function bossModPrototype:GetIcon(uIdOrTarget)
-	local uId = DBM:GetRaidUnitId(uIdOrTarget) or uIdOrTarget
+---@param isGUID boolean? if true, will treat uIdOrTarget as a GUID instead of a unitID or name
+function bossModPrototype:GetIcon(uIdOrTarget, isGUID)
+	local uId
+	if isGUID then
+		uId = DBM:GetRaidUnitIdByGuid(uIdOrTarget)
+	else
+		uId = DBM:GetRaidUnitId(uIdOrTarget) or uIdOrTarget
+	end
 	return UnitExists(uId) and GetRaidTargetIndex(uId)
 end
 
