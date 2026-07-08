@@ -1,4 +1,4 @@
-## Interface: 120005, 120007
+## Interface: 120007, 120100
 ## X-Min-Interface: 120000
 ## Version: @project-version@
 ## Category: DBM
@@ -18,14 +18,15 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MIDNIGHT
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
-## X-DBM-Mod-SubCategoriesID: 2913, 2939, 2912, 1592
+## X-DBM-Mod-SubCategoriesID: 3004, 2913, 2939, 2912
 ## X-DBM-Mod-Name: Raids (Midnight)
 ## X-DBM-Mod-Name-koKR: 공격대 (한밤)
 ## X-DBM-Mod-Name-ruRU: Рейды (Полночь)
 ## X-DBM-Mod-Name-zhTW: 團隊副本 (至暗之夜)
 ## X-DBM-Mod-Name-zhCN: 团队副本（至暗之夜）
 ## X-DBM-Mod-Sort: 91
-## X-DBM-Mod-MapID: 2913, 2939, 2912, 1592
+## X-DBM-Mod-MapID: 3004, 2913, 2939, 2912
+## X-DBM-Mod-MapIDNameOverrides: 3004 = "The Venomous Abyss"
 ## X-DBM-Mod-MinCoreRevision: 20260522000000
 ## X-DBM-Mod-MinExpansion: 11
 ## X-Curse-Project-ID: 3358
@@ -34,6 +35,15 @@
 localization.en.lua
 localization.kr.lua
 localization.ru.lua
+
+TheVenomousAbyss\NekzalitheSoulcoiler.lua
+TheVenomousAbyss\EntombedSentinels.lua
+TheVenomousAbyss\TheLostExplorers.lua
+TheVenomousAbyss\VashniktheMalignant.lua
+TheVenomousAbyss\Sszorak.lua
+TheVenomousAbyss\TheTwinFangs.lua
+TheVenomousAbyss\TheCoiledAltar.lua
+TheVenomousAbyss\Ulatek.lua
 
 VoidSpire\ImperatorAverzian.lua
 VoidSpire\Vorasius.lua
@@ -46,5 +56,3 @@ TheDreamrift\ChimaerustheUndreamtGod.lua
 
 MarchonQuelDanas\BelorenChildofAlar.lua
 MarchonQuelDanas\MidnightFalls.lua
-
-Sporefall\Rotmire.lua

@@ -253,7 +253,7 @@ local function detectEarlyTimerRefresh(self, bar, timer)
 	else
 		if DBM.Options.BadTimerAlert and bar.timer > 1 then
 			DBM:AddMsg("Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", nil, nil, nil, true)
-			DBM:FireEvent("DBM_Debug", "Timer " .. ttext .. phaseText .. " refreshed before expired. Remaining time is : " .. remaining .. ". Please report this bug", 2)
+			DBM:Debug("Timer " .. ttext .. phaseText .. " |cffff0000refreshed before expired. Remaining time is : |r" .. remaining, 2, true, nil, true, true)
 		elseif bar.timer > 0.2 then
 			DBM:Debug("Timer " .. ttext .. phaseText .. " |cffff0000refreshed before expired. Remaining time is : |r" .. remaining, 2, true, nil, true)
 		end

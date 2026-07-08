@@ -703,7 +703,7 @@ do
 					difficultyName = RAID_DIFFICULTY3
 				elseif difficulty == 6 or difficulty == 194 then
 					difficultyName = RAID_DIFFICULTY4
-				elseif difficulty == 16 then
+				elseif difficulty == 16 or difficulty == 233 then
 					difficultyName = PLAYER_DIFFICULTY6
 				elseif difficulty == 15 then
 					difficultyName = PLAYER_DIFFICULTY2
@@ -742,7 +742,7 @@ do
 					difficultyName = RAID_DIFFICULTY3
 				elseif difficulty == 6 or difficulty == 194 then
 					difficultyName = RAID_DIFFICULTY4
-				elseif difficulty == 16 then
+				elseif difficulty == 16 or difficulty == 233 then
 					difficultyName = PLAYER_DIFFICULTY6
 				elseif difficulty == 15 then
 					difficultyName = PLAYER_DIFFICULTY2

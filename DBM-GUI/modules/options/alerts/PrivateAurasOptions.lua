@@ -1,3 +1,4 @@
+if DBM:GetTOC() >= 120100 then return end -- Private auras only exist in 12.0 and earier, 12.1 needs rewrite
 local L = DBM_GUI_L
 
 local privateAurasPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_PrivateAuras, "option")
@@ -22,7 +23,7 @@ local growDirections = {
 }
 
 -----------------------------------
---  Personal Private Aura Frame  --
+--  Personal Aura Frame  --
 -----------------------------------
 local personalPAArea 	= privateAurasPanel:CreateArea(L.Area_PersonalPrivateAuras)
 --local personalPASound = personalPAArea:CreateCheckButton(L.SpamBlockNoPrivateAuraSound, true, nil, "DontPlayPrivateAuraSound")--Inverse option
@@ -161,7 +162,7 @@ personalPAReset:SetScript("OnClick", function()
 end)
 
 ----------------------------------
---  Co-Tank Private Aura Frame  --
+--  Co-Tank Aura Frame  --
 ----------------------------------
 local coTankPAArea		= privateAurasPanel:CreateArea(L.Area_TankPrivateAuras)
 local coTankPAIcon		= coTankPAArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "PrivateAurasCoTankEnabled")

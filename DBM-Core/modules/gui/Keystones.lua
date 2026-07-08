@@ -38,7 +38,6 @@ do
 end
 
 -- [ChallengeModeID] = {MapID, TeleportID, bgImage}
-
 local teleportMap = {
 	[161] = {1209, 159898, 1041999}, -- Skyreach
 	[198] = {1466, 424163, 1411855}, -- Darkheart Thicket
@@ -49,9 +48,12 @@ local teleportMap = {
 	[227] = {1651, 373262, 1537283}, -- Return to Karazhan: Lower
 	[234] = {1651, 373262, 1537283}, -- Return to Karazhan: Upper
 	[239] = {1753, 1254551, 1718213}, -- Seat of the Triumvirate
+	[249] = {1762, 1286831, 2178269}, -- King's Rest
+	[250] = {1877, 1286828, 2178273}, -- Temple of Sethraliss
 	[378] = {2287, 354465, 3759908}, -- Halls of Atonement
 	[391] = {2441, 367416, 4182022}, -- Tazavesh: Streets of Wonder
 	[392] = {2441, 367416, 4182022}, -- Tazavesh: So'leah's Gambit
+	[399] = {2521, 393256, 4742927}, -- Ruby Life Pools
 	[402] = {2526, 393273, 4742929}, -- Algeth'ar Academy
 	[499] = {2649, 445444, 5912551}, -- Priority of the Sacred Flame
 	[503] = {2660, 445417, 5912546}, -- Ara-Kara, City of Echoes
@@ -63,6 +65,11 @@ local teleportMap = {
 	[558] = {585, 1254572, 608208}, -- Magister's Terrace
 	[559] = {2915, 1254563, 7570501}, -- Nexus-Point Xenas
 	[560] = {2874, 1254559, 7478529}, -- Maisara Caverns
+	[584] = {2859, 1286801, 7478528}, -- The Blinding Vale
+	[585] = {2923, 1286804, 7479110}, -- Voidscar Arena
+	[586] = {2825, 1286807, 7478530}, -- Den Of Nalorakk
+	[587] = {2813, 1286809, 7467175}, -- Murder Row
+	[588] = {2993, 1286812, 7956179}, -- Altar of Fangs
 }
 local teleports
 local function updateTeleports()
@@ -342,11 +349,11 @@ function PartyGuildUpdate(table)
 		textDungeon.Text:SetText(L.KEYSTONE_NAMES[v.mapID] or (v.mapID == 0 and '-') or v.mapID or '?')
 		textDungeon:SetPoint("TOP", titleDungeon, "BOTTOM", 0, offset)
 		textDungeon:SetWidth(titleDungeon:GetWidth())
-		if v.mapID and v.mapID ~= 0 and teleports[v.mapID] then
+		if v.mapID and v.mapID ~= 0 and teleportMap[v.mapID] then
 			textDungeon:SetScript('OnEnter', TeleportTooltipOnEnter)
 			textDungeon:SetScript('OnLeave', GameTooltip_Hide)
 			textDungeon:SetAttribute('type', 'spell')
-			textDungeon:SetAttribute('spell', teleports[v.mapID][2])
+			textDungeon:SetAttribute('spell', teleportMap[v.mapID][2])
 		end
 
 		textRating.Text:SetText(v.playerRating == 0 and '-' or v.playerRating or '?')

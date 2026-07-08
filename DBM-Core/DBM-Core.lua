@@ -85,10 +85,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 416, "1888a1e"--416.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.53 alpha"--Core version
+DBM.DisplayVersion = "12.0.55 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 5, 26) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 6, 26) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -483,7 +483,7 @@ DBM.DefaultOptions = {
 	IgnoreBlizzAPI = false,
 	fixBlizzApi = false,
 	DisableSWSound = false,
-	--Private Aura Frame Options
+	--Aura Frame Options
 	--Player
 	PrivateAurasPlayerEnabled = true,
 	PrivateAurasPlayerHideBorder = false,
@@ -565,7 +565,7 @@ local inCombatTrash = {}
 -- False variables
 local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false
 -- Nil variables
-local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader, syncZonePASounds
+local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, AddMsg, delayedFunction, lastGroupLeader, syncZoneAuraSounds
 local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
 -- 0 variables
 local LastInstanceMapID = -1
@@ -2013,6 +2013,51 @@ do
 	local isLoaded = false
 	local onLoadCallbacks, disabledMods = {}, {}
 
+	---@param metadataValue string?
+	---@return table<integer, string>
+	local function parseMapIDNameOverrides(metadataValue)
+		local overrides = {}
+		if type(metadataValue) ~= "string" or metadataValue == "" then
+			return overrides
+		end
+		for pair in metadataValue:gmatch("[^,]+") do
+			local rawId, rawName = strsplit("=", pair, 2)
+			if rawId and rawName then
+				local id = tonumber(rawId:trim())
+				local name = rawName:trim()
+				if name:sub(1, 1) == '"' and name:sub(-1) == '"' then
+					name = name:sub(2, -2)
+				elseif name:sub(1, 1) == "'" and name:sub(-1) == "'" then
+					name = name:sub(2, -2)
+				end
+				if id and name ~= "" then
+					overrides[id] = name
+				end
+			end
+		end
+		return overrides
+	end
+
+	---@param addonIndex integer
+	---@return table<integer, string>
+	local function getMapIDNameOverrides(addonIndex)
+		local defaultOverrides = parseMapIDNameOverrides(C_AddOns.GetAddOnMetadata(addonIndex, "X-DBM-Mod-MapIDNameOverrides"))
+		if not next(defaultOverrides) then
+			-- Backward compatibility for older key name.
+			defaultOverrides = parseMapIDNameOverrides(C_AddOns.GetAddOnMetadata(addonIndex, "X-DBM-Mod-SubCategoryNameOverrides"))
+		end
+		local locale = GetLocale()
+		local localizedOverrides = parseMapIDNameOverrides(C_AddOns.GetAddOnMetadata(addonIndex, "X-DBM-Mod-MapIDNameOverrides-" .. locale))
+		if not next(localizedOverrides) then
+			-- Backward compatibility for older localized key name.
+			localizedOverrides = parseMapIDNameOverrides(C_AddOns.GetAddOnMetadata(addonIndex, "X-DBM-Mod-SubCategoryNameOverrides-" .. locale))
+		end
+		for id, name in pairs(localizedOverrides) do
+			defaultOverrides[id] = name
+		end
+		return defaultOverrides
+	end
+
 	---@param self DBM
 	local function infiniteLoopNotice(self, message)
 		AddMsg(self, message)
@@ -2228,13 +2273,18 @@ do
 							AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 						else
 							local mapIdTable = {strsplit(",", C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
+							local mapIDNameOverrides = getMapIDNameOverrides(i)
 
 							local minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface") or 0)
 
 							local firstMapId = mapIdTable[1]
 							local firstMapName
-							if tonumber(firstMapId) then
-								firstMapName = GetRealZoneText(tonumber(firstMapId))
+							local firstMapIdNum = tonumber(firstMapId)
+							if firstMapIdNum and mapIDNameOverrides[firstMapIdNum] then
+								-- Explicit TOC override must always win, even if GetRealZoneText currently returns placeholder text.
+								firstMapName = mapIDNameOverrides[firstMapIdNum]
+							elseif firstMapIdNum then
+								firstMapName = GetRealZoneText(firstMapIdNum)
 							elseif firstMapId:sub(1, 1) == "m" then
 								firstMapName = C_Map.GetMapInfo(tonumber(firstMapId:sub(2)) or 0)
 								firstMapName = firstMapName and firstMapName.name
@@ -2278,7 +2328,11 @@ do
 										local id, nameModifier = strsplit("|", subTabs[k])
 										if id and nameModifier then
 											id = tonumber(id)
-											self.AddOns[#self.AddOns].subTabs[k] = (GetRealZoneText(id):trim() or id) .. " (" .. nameModifier .. ")"
+											local subTabName = id and mapIDNameOverrides[id] or nil
+											if not subTabName then
+												subTabName = (GetRealZoneText(id):trim() or id)
+											end
+											self.AddOns[#self.AddOns].subTabs[k] = subTabName .. " (" .. nameModifier .. ")"
 										else
 											self.AddOns[#self.AddOns].subTabs[k] = (subTabs[k]):trim()
 										end
@@ -2286,15 +2340,18 @@ do
 										local id = tonumber(subTabs[k])
 										if id then
 											--For handling zones like Warfront: Arathi - Alliance
-											local subTabName = GetRealZoneText(id):trim()
-											for w in string.gmatch(subTabName, " - ") do
-												if w:trim() ~= "" then
-													subTabName = w
-													break
+											local subTabName = mapIDNameOverrides[id]
+											if not subTabName then
+												subTabName = GetRealZoneText(id):trim()
+												for w in string.gmatch(subTabName, " - ") do
+													if w:trim() ~= "" then
+														subTabName = w
+														break
+													end
 												end
-											end
-											if subTabName == "" then -- GetRealZoneText() returns empty string on unknown zones, this happens for dungeons that don't yet exist
-												subTabName = UNKNOWN .. " (" .. id .. ")"
+												if subTabName == "" then -- GetRealZoneText() returns empty string on unknown zones, this happens for dungeons that don't yet exist
+													subTabName = UNKNOWN .. " (" .. id .. ")"
+												end
 											end
 											self.AddOns[#self.AddOns].subTabs[k] = subTabName
 										else
@@ -3100,7 +3157,7 @@ do
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
 		end
-		if private.isRetail then
+		if private.isRetail and DBM:GetTOC() < 120100 then
 			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
 			if not succeeded then
 				pendingPAAnchorCheck = 2
@@ -3237,13 +3294,43 @@ do
 		end
 	end
 
+	local fullPlayerUids = {
+		"player", "party1", "party2", "party3", "party4",
+		"raid1", "raid2", "raid3", "raid4", "raid5", "raid6", "raid7", "raid8", "raid9", "raid10",
+		"raid11", "raid12", "raid13", "raid14", "raid15", "raid16", "raid17", "raid18", "raid19", "raid20",
+		"raid21", "raid22", "raid23", "raid24", "raid25", "raid26", "raid27", "raid28", "raid29", "raid30",
+		"raid31", "raid32", "raid33", "raid34", "raid35", "raid36", "raid37", "raid38", "raid39", "raid40"
+	}
+
+	local fullEnemyUids = {
+		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10",
+		"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
+		"party1target", "party2target", "party3target", "party4target",
+		"raid1target", "raid2target", "raid3target", "raid4target", "raid5target", "raid6target", "raid7target", "raid8target", "raid9target", "raid10target",
+		"raid11target", "raid12target", "raid13target", "raid14target", "raid15target", "raid16target", "raid17target", "raid18target", "raid19target", "raid20target",
+		"raid21target", "raid22target", "raid23target", "raid24target", "raid25target", "raid26target", "raid27target", "raid28target", "raid29target", "raid30target",
+		"raid31target", "raid32target", "raid33target", "raid34target", "raid35target", "raid36target", "raid37target", "raid38target", "raid39target", "raid40target",
+		"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
+		"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
+		"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
+		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
+	}
+
+	local bossTargetuIds = {
+		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10"
+	}
+
 	---This is primarily used for cached player unitIds by name lookup
 	---<br>Rarely, it's also used for boss checks by name since it simplifies code in mod.
-	---@param skipBoss boolean?
-	function DBM:GetRaidUnitId(name, skipBoss)
-		if not skipBoss and not (self:IsPostMidnight() and IsInInstance()) then
-			for i = 1, 10 do
-				local unitId = "boss" .. i
+	---@param skipEnemy boolean?
+	function DBM:GetRaidUnitId(name, skipEnemy)
+		if not skipEnemy and not self:MidRestrictionsActive(true, true, true) then
+			local usedTable = (private.isClassic or private.isBCC) and fullEnemyUids or bossTargetuIds
+			for _, unitId in ipairs(usedTable) do
+				if self:issecretunit(unitId) then
+					--Any secret unit found even after above midnight check, abort enemy loop
+					break
+				end
 				local bossName = UnitName(unitId)
 				if bossName and bossName == name then
 					return unitId
@@ -3252,14 +3339,6 @@ do
 		end
 		return raid[name] and raid[name].id
 	end
-
-	local fullPlayerUids = {
-		"player", "party1", "party2", "party3", "party4",
-		"raid1", "raid2", "raid3", "raid4", "raid5", "raid6", "raid7", "raid8", "raid9", "raid10",
-		"raid11", "raid12", "raid13", "raid14", "raid15", "raid16", "raid17", "raid18", "raid19", "raid20",
-		"raid21", "raid22", "raid23", "raid24", "raid25", "raid26", "raid27", "raid28", "raid29", "raid30",
-		"raid31", "raid32", "raid33", "raid34", "raid35", "raid36", "raid37", "raid38", "raid39", "raid40"
-	}
 
 	---Used Strictly to look up Player UnitId by GUID
 	---@param self DBMModOrDBM
@@ -3281,24 +3360,6 @@ do
 			end
 		end
 	end
-
-	local fullEnemyUids = {
-		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10",
-		"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
-		"party1target", "party2target", "party3target", "party4target",
-		"raid1target", "raid2target", "raid3target", "raid4target", "raid5target", "raid6target", "raid7target", "raid8target", "raid9target", "raid10target",
-		"raid11target", "raid12target", "raid13target", "raid14target", "raid15target", "raid16target", "raid17target", "raid18target", "raid19target", "raid20target",
-		"raid21target", "raid22target", "raid23target", "raid24target", "raid25target", "raid26target", "raid27target", "raid28target", "raid29target", "raid30target",
-		"raid31target", "raid32target", "raid33target", "raid34target", "raid35target", "raid36target", "raid37target", "raid38target", "raid39target", "raid40target",
-		"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
-		"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
-		"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
-		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
-	}
-
-	local bossTargetuIds = {
-		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10"
-	}
 
 	---Used Strictly to look up Enemy UnitId by GUID
 	---@param self DBMModOrDBM
@@ -4612,7 +4673,7 @@ do
 
 	---@param self DBM
 	---@param mapID number
-	syncZonePASounds = function(self, mapID)
+	syncZoneAuraSounds = function(self, mapID)
 		if not private.isRetail then
 			return
 		end
@@ -4622,10 +4683,10 @@ do
 		end
 		pendingPASoundZoneSync = nil
 		for _, mod in ipairs(DBM.Mods) do
-			mod:DisablePrivateAuraSounds()
+			mod:DisableAuraSounds()
 		end
 		for _, mod in ipairs(DBM.Mods) do
-			mod:RegisterZonePASounds(mapID)
+			mod:RegisterZoneAuraSounds(mapID)
 		end
 	end
 
@@ -4682,12 +4743,14 @@ do
 		end
 		if private.isRetail then
 			--Handle private aura sounds and anchors
-			syncZonePASounds(self, mapID)
-			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
-			if not succeeded then
-				pendingPAAnchorCheck = 1
-			else
-				pendingPAAnchorCheck = 0
+			syncZoneAuraSounds(self, mapID)
+			if self:GetTOC() < 120100 then
+				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+				if not succeeded then
+					pendingPAAnchorCheck = 1
+				else
+					pendingPAAnchorCheck = 0
+				end
 			end
 		end
 		self:UpdateMapRestrictions()
@@ -5122,7 +5185,7 @@ do
 		end
 		if private.isRetail then
 			if pendingPASoundZoneSync then
-				syncZonePASounds(self, pendingPASoundZoneSync)
+				syncZoneAuraSounds(self, pendingPASoundZoneSync)
 			end
 			if pendingPAAnchorCheck > 0 then
 				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
@@ -5972,6 +6035,9 @@ do
 				mod:UnregisterOnUpdateHandler()
 			end
 			mod:Stop()
+			if DBM.InfoFrame and DBM.InfoFrame:IsShown() then
+				DBM.InfoFrame:Hide()
+			end
 			if mod.tlTimerEvents then
 				mod:DisableTimelineOptions()
 			end
@@ -6025,7 +6091,7 @@ do
 						wipeHP = wipeHP .. " (" .. BOSSES_KILLED:format(bossesKilled, mod.numBoss) .. ")"
 					end
 				else
-					wipeHP = wipeHealthPct
+					wipeHP = wipeHealthPct and tostring(wipeHealthPct) or CL.UNKNOWN
 				end
 				local totalPulls = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Pulls"]
 				local totalKills = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"]
@@ -6265,7 +6331,7 @@ do
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
 				if private.isRetail and pendingPASoundZoneSync then
-					syncZonePASounds(self, pendingPASoundZoneSync)
+					syncZoneAuraSounds(self, pendingPASoundZoneSync)
 				end
 				--module cleanup
 				private:ClearModuleTasks()

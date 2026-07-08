@@ -110,6 +110,12 @@ local challengeModeIds = {
 	[558] = 2811, -- Magisters' Terrace
 	[559] = 2915, -- Nexus-Point Xenas
 	[560] = 2874, -- Maisara Caverns
+	[583] = 1753, -- Seat of the Triumvirate
+	[584] = 2859, -- The Blinding Vale
+	[585] = 2923, -- Voidscar Arena
+	[586] = 2825, -- Den of Nalorakk
+	[587] = 2813, -- Murder Row
+	[588] = 2993, -- Altar of Fangs
 }
 
 do
@@ -1136,8 +1142,8 @@ do
 		for _, addon in ipairs(DBM.AddOns) do
 			if not addon.panel then
 				local customName
-				--Auto truncate Raid, Dungeon, and World boss mods to only display expansion name in list
-				if addon.type == "RAID" or addon.type == "PARTY" or addon.type == "WORLDBOSS" then
+				--Auto truncate Raid, Dungeon, Lair, and World boss mods to only display expansion name in list
+				if addon.type == "RAID" or addon.type == "PARTY" or addon.type == "WORLDBOSS" or addon.type == "LAIR" then
 					customName = _G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1]
 				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...

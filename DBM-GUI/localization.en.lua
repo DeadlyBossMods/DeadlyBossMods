@@ -11,8 +11,9 @@ L.Website							= "Please follow MysticalOS for news/updates |cFF73C2FBhttps://a
 L.WebsiteButton						= "Website"
 
 L.OTabRaids							= "Raids"
+L.OTabLairs							= "Lairs"--Retail Only (tab won't be shown on non retail game versions)
 L.OTabDungeons						= "Dungeons"
-L.OTabWorld							= "World Bosses"--Since there are so many world mods, enough to get their own tab
+L.OTabWorld							= "World Bosses"--Legacy/Classic. Since there are so many world mods, enough to get their own tab
 L.OTabScenarios						= "Scenarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
 L.OTabPlugins						= "Other"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions						= "Core Options"
@@ -112,7 +113,7 @@ L.Editbox_WindowHeight				= "GUI window height"
 
 L.UIGroupingOptions					= "UI Grouping Options (changing these require UI reload for any mod that's already loaded)"
 L.GroupOptionsExcludeIcon			= "Exclude 'Set Icon' options from getting grouped by spell (they will be grouped together in their own 'Icons' category instead)"
-L.GroupOptionsExcludePrivateAura	= "Exclude 'Private Aura' sound options from getting grouped by spell (they will be grouped together in their own 'Private Auras' category instead)"
+L.GroupOptionsExcludePrivateAura	= "Exclude 'Aura' sound options from getting grouped by spell (they will be grouped together in their own 'Auras' category instead)"
 L.AutoExpandSpellGroups2			= "Auto expand options that are grouped by spell"
 L.ShowWAKeys						= "Show WeakAuras keys next to spell names to assist in writing WeakAuras using Boss Mod triggers."
 L.RenameSpellButton					= "Rename"
@@ -284,12 +285,12 @@ L.SpecialWarnHeader5				= "SA 5: Set options for announcements with notes contai
 L.SpecialWarnHeaderMedium			= "SA 1: Announcements for mechanics that blizzard classifies as 'medium'"
 L.SpecialWarnHeaderCritical			= "SA 2: Announcements for mechanics that blizzard classifies as 'critical'"
 
--- Panel: Private Auras Frame
+-- Panel: Debuff Auras Frame
 --Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
-L.Panel_PrivateAuras				= "Private Auras"
-L.Area_PersonalPrivateAuras			= "Personal Private Aura Options"
-L.EnablePersonalPrivateAuraIcons	= "Show Personal Private Aura icons on screen"--checkbox
-L.EnablePersonalPrivateAuraText		= "Override Blizzard Private Aura text message scale"--checkbox
+L.Panel_PrivateAuras				= "Debuff Auras"
+L.Area_PersonalPrivateAuras			= "Personal Debuff Aura Options"
+L.EnablePersonalPrivateAuraIcons	= "Show Personal Debuff Aura icons on screen"--checkbox
+L.EnablePersonalPrivateAuraText		= "Override Blizzard Debuff Aura text message scale"--checkbox
 L.UpscaleDurationText				= "Upscale duration text on icons to be larger"
 L.SetPAGrowDirection				= "Grow direction"--Dropdown
 L.SetPAIconScale					= "Icon scale: %d"--Slider, Reused for personal and tank
@@ -299,8 +300,8 @@ L.SetPAStackScale					= "Stack text scale: %d"--Slider, Reused for personal and 
 L.SetPATextScale					= "Text message scale: %0.1f"--Slider
 L.HidePATooltip						= "Disable on hover spell tooltip"--checkbox
 L.HidePABorder						= "Disable border"--checkbox
-L.Area_TankPrivateAuras				= "Co-Tank Private Aura Options"
-L.EnableTankPrivateAuraIcons		= "Show Co-Tank Private Aura icons on screen (Requires tank spec)"--checkbox
+L.Area_TankPrivateAuras				= "Co-Tank Debuff Aura Options"
+L.EnableTankPrivateAuraIcons		= "Show Co-Tank Debuff Aura icons on screen (Requires tank spec)"--checkbox
 L.ShowSecondCoTank					= "Show a second co-tank"--checkbox
 L.RIGHT								= "Right"
 L.LEFT								= "Left"
@@ -393,8 +394,8 @@ L.BarSimple							= "Simple (small bar disappears and new large bar created)"
 L.BarStartColor						= "Start color"
 L.BarEndColor 						= "End color"
 L.Bar_Height						= "Bar height: %d"
-L.Slider_BarOffSetX 				= "Offset X: %d"--Reused in other regions like Private Auras
-L.Slider_BarOffSetY 				= "Offset Y: %d"--Reused in other regions like Private Auras
+L.Slider_BarOffSetX 				= "Offset X: %d"--Reused in other regions like Auras
+L.Slider_BarOffSetY 				= "Offset Y: %d"--Reused in other regions like Auras
 L.Slider_BarWidth 					= "Bar width: %d"
 L.Slider_BarScale 					= "Bar scale: %0.2f"
 L.BarSaturation						= "Bar saturation for small timers (When huge bars are disabled): %0.2f"
@@ -532,9 +533,9 @@ L.SpamBlockNoSpecWarnFlash			= "Do not show special announce screen flash"
 L.SpamBlockNoSpecWarnVibrate		= "Do not vibrate controller on special announce"
 L.SpamBlockNoSpecWarnSound			= "Do not play special announce sounds (voice packs sounds enabled in Countdowns &amp; Voice Packs panel will still play)"
 
-L.Area_Private_Aura_Features		= "Private Aura Features"
-L.SpamBlockNoPrivateAuraSound		= "Do not register private aura sounds"
-L.SpamBlockNoPrivateAuraFrame		= "Do not show private aura frames"
+L.Area_Private_Aura_Features		= "Aura Features"
+L.SpamBlockNoPrivateAuraSound		= "Do not register aura sounds"
+L.SpamBlockNoPrivateAuraFrame		= "Do not show aura frames"
 
 L.Area_SpamFilter_Timers			= "Specific Timer Features (only applies if not disabled entirely above)"
 L.SpamBlockNoShowBossTimers			= "Do not show timers for dungeon/raid bosses"

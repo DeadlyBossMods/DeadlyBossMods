@@ -236,6 +236,7 @@ do
 		[16] = true,	-- Mythic Raid
 		[17] = true,	-- LFR
 		[23] = true,	-- Mythic 0
+		[233] = true,	-- Mythic Raid Flex
 	}
 	-- Difficulty IDs that use the shared combat res charge pool
 	local function shouldShowFrame()

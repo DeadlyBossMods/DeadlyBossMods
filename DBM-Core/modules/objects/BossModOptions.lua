@@ -104,17 +104,17 @@ end
 ---@meta
 ---@alias paSubTypes
 ---|0: Generic subtype for generalized use
----|1: Custom subtype for when targetted by the private aura spell
----|2: Custom subtype for when standing in the private aura spell (GTFO)
+---|1: Custom subtype for when targetted by the aura spell
+---|2: Custom subtype for when standing in the aura spell (GTFO)
 ---|3: Custom subtype for lingering debuffs (such as dots, or increased damage taken)
 ---@param auraspellId number|number[] must match debuff ID(s); if a table, first element is the option key and all IDs share the same sound
 ---@param default SpecFlags|boolean?
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 ---@param defaultSound acceptedSASounds? is used to set default Special announce sound (1-4) just like regular special announce objects
 ---@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo, 3: post debuff. Also accepts a voice string as shorthand for migrated 6-arg calls.
----@param voice VPSound|number? voice pack media path for zone-based private aura sound registration. Also accepts the shorthand voiceVersion number when subType is passed as a voice string.
+---@param voice VPSound|number? voice pack media path for zone-based aura sound registration. Also accepts the shorthand voiceVersion number when subType is passed as a voice string.
 ---@param voiceVersion number? required voice pack version; if voice pack version is below this value, falls back to default sound
-function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion)
+function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion)
 	if type(subType) == "string" then
 		local shorthandVoiceVersion = type(voice) == "number" and voice or nil
 		voice = subType
@@ -128,7 +128,7 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 		optionId = auraspellId
 	end
 	if type(optionId) ~= "number" then
-		DBM:Debug("Attempting to add private aura sound failed due to invalid optionId type for mod " .. self.id, 2, nil, nil, true)
+		DBM:Debug("Attempting to add aura sound failed due to invalid optionId type for mod " .. self.id, 2, nil, nil, true)
 		return
 	end
 	self.DefaultOptions["PrivateAuraSound" .. optionId] = (default == nil) or default
@@ -137,8 +137,8 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["PrivateAuraSound" .. optionId] = (default == nil) or default
-	if not C_UnitAuras.AuraIsPrivate(optionId) then
-		DBM:Debug("Attempting to add private aura sound failed because spell ID " .. optionId .. " is not a private aura. Check spell ID and try again for mod " .. self.id, 1, nil, nil, true)
+	if not DBM:GetSpellInfo(optionId) then
+		DBM:Debug("Attempting to add aura sound failed because spell ID " .. optionId .. " does not exist. Check spell ID and try again for mod " .. self.id, 1, nil, nil, true)
 		return
 	end
 	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
@@ -168,6 +168,11 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 			end
 		end
 	end
+end
+
+---Temporary backwards-compatibility wrapper for pre-12.1 naming.
+function bossModPrototype:AddPrivateAuraSoundOption(...)
+	return self:AddAuraSoundOption(...)
 end
 
 ---Object for customizing blizzard timeline object with colors and sounds
@@ -555,7 +560,7 @@ function bossModPrototype:GroupWASpells(customName, ...)
 	end
 end
 
----Duplicate function just for private auras to do literally same thing as GroupSpells without ability to pass extra arg
+---Duplicate function just for auras to do literally same thing as GroupSpells without ability to pass extra arg
 function bossModPrototype:GroupSpellsPA(...)
 	local spells = {...}
 	local catSpell = tostring(tremove(spells, 1))
@@ -603,7 +608,7 @@ end
 ---@param cat string category type: ie "timer", "announce", "misc", "sound", etc
 ---@param optionSubType string? ie "gtfo", "adds", "achievement", "stage", etc
 ---@param waCustomName string? used to inject custom weak aura spellId key text
----@param hasPrivate boolean? used to mark option as private aura option so it displays PA icon in GUI
+---@param hasPrivate boolean? used to mark option as aura option so it displays PA icon in GUI
 function bossModPrototype:SetOptionCategory(name, cat, optionSubType, waCustomName, hasPrivate)
 	optionSubType = optionSubType or ""
 	for _, options in pairs(self.optionCategories) do

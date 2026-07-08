@@ -558,7 +558,7 @@ function specialWarningPrototype:Show(...)
 			end
 			self.renameRevision = DBM:GetSpellRenameRevision()
 		end
-		local isSecretBlizzType = self.announceType == "blizztarget" or self.announceType == "blizzyou"
+		local isSecretBlizzType = self.announceType == "blizztarget" or self.announceType == "blizzyou" or private.secretShowConsuming
 		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
 		if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
 		--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
@@ -719,6 +719,15 @@ function specialWarningPrototype:Show(...)
 		self.combinedcount = 0
 		self.combinedtext = {}
 	end
+end
+
+---Variant of Show for niche cases where the args contain secret data that must not be materialized into a Lua table.
+---Behaves identically to Show but suppresses argTable creation, class coloring, and note text expansion on the secret args.
+---@param ... any
+function specialWarningPrototype:SecretShow(...)
+	private.secretShowConsuming = true
+	self:Show(...)
+	private.secretShowConsuming = false
 end
 
 ---Object that's used when precision isn't possible (number of targets variable or unknown
