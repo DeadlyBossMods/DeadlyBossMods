@@ -17,7 +17,7 @@ local specWarnWaterJet					= mod:NewSpecialWarningCount(1268562, nil, nil, nil, 
 local timerWaterJetCD					= mod:NewCDCountTimer(20.5, 1268562, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Mythic version
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
---local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 
 ---@param self DBMMod
 ---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -29,7 +29,9 @@ local function setFallback(self, dontSetAlerts)
 		end
 		specWarnWaterJet:SetAlert(367, "killmob", 2, 2)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerWaterJetCD:SetTimeline(366, onlyColor)
 end
 

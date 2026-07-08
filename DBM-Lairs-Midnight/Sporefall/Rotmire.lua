@@ -63,7 +63,9 @@ local function setFallback(self, dontSetAlerts)
 		--specWarnFunglingFixate:SetAlert(808, "fixateyou", 1, 3)
 		--specWarnShroomingFixate:SetAlert(809, "fixateyou", 1, 3)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerFungalBloomCD:SetTimeline(424, onlyColor)
 	timerAwakenFungiCD:SetTimeline(425, onlyColor)
 	timerBurstingPustulesCD:SetTimeline(426, onlyColor)

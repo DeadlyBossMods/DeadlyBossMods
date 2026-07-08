@@ -43,7 +43,7 @@ local timerBarrageCD					= mod:NewCDCountTimer(20.5, 1306872, nil, nil, nil, 3)
 local timerRousetheBroodCD				= mod:NewCDCountTimer(20.5, 1308356, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
---local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 
 mod.vb.CausticDelugeCount = 0
 mod.vb.StoneBreakerCount = 0
@@ -77,7 +77,9 @@ local function setFallback(self, dontSetAlerts)
 		specWarnRousetheBrood:SetAlert(900, "mobsoon", 2, 2)
 		specWarnCorrosiveSpit:SetAlert(753, "lineyou", 17, 2, 0)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerCausticDelugeCD:SetTimeline(711, onlyColor)
 	timerStoneBreakerCD:SetTimeline(739, onlyColor)
 	timerSurgeCD:SetTimeline(740, onlyColor)

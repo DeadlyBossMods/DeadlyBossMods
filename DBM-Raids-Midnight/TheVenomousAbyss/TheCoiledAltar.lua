@@ -51,7 +51,7 @@ local timerToxicDelugeCD				= mod:NewCDCountTimer(20.5, 1299960, nil, nil, nil, 
 local timerBlightedSeveringCD			= mod:NewCDCountTimer(20.5, 1287227, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
---local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 
 mod.vb.CrucibleCount = 0--Used for fangs AND defilement. Reset on stage 2 start
 mod.vb.GuilotineCount = 0--Used for guillotine AND grim guillotine. Reset on stage 2 start
@@ -90,7 +90,9 @@ local function setFallback(self, dontSetAlerts)
 		specWarnToxicDeluge:SetAlert(812, "watchstep", 2, 2)
 		specWarnBlightedSevering:SetAlert(898, "frontal", 15, 2)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerFangsoftheCrucibleCD:SetTimeline(677, onlyColor)
 	timerGuilotineCD:SetTimeline(678, onlyColor)
 	timerVenomfangCD:SetTimeline(679, onlyColor)

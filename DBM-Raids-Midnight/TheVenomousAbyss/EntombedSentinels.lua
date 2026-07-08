@@ -38,7 +38,7 @@ local timerUnstableMiasmaCD				= mod:NewCDCountTimer(20.5, 1288232, nil, nil, ni
 local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Possibly unused
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
---local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 
 mod.vb.VenomCoagulationCount = 0
 mod.vb.ToxicDropletsCount = 0
@@ -68,7 +68,9 @@ local function setFallback(self, dontSetAlerts)
 		specWarnUnstableMiasma:SetAlert(673, "gathershare", 2, 2)--Possibly unused
 		specWarnShiftingProtovenom:SetAlert(788, "colorchange", 19, 3)--Possibly unused
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerVenomCoagulationCD:SetTimeline(637, onlyColor)
 	timerToxicDropletsCD:SetTimeline(638, onlyColor)
 	timerEmpoweringSlamCD:SetTimeline(639, onlyColor)

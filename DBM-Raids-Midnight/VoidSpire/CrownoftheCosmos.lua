@@ -158,7 +158,9 @@ end
 	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
 local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerNullCoronaCD:SetTimeline(4, onlyColor)
 	if not dontSetAlerts then
 		specWarnVoidExpulsion:SetAlert(5, "aesoon", 2, 2, 0)

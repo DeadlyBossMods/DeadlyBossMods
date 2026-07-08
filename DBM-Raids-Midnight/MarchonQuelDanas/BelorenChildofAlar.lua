@@ -99,7 +99,9 @@ local function setFallback(self, dontSetAlerts)
 
 	--If user has dbm bars enabled, countdowns will be sent by dbm bars
 	--if user has dbm bars off, SetTimeline will set color and countdowns
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerEmbersofBelorenCD:SetTimeline(128, onlyColor)
 	timerRadiantEchoesCD:SetTimeline(130, onlyColor)
 	timerGuardiansEdictCD:SetTimeline(134, onlyColor)

@@ -133,7 +133,9 @@ local function setFallback(self, dontSetAlerts)
 		specWarnCosmosisVoidHowl:SetAlert(380, "range5", 2, 2)
 		specWarnRadiantBarrier:SetAlert(381, "findshield", 2, 3, 0)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerNullBeamCD:SetTimeline(101, onlyColor)
 	timerVoidHowlCD:SetTimeline(102, onlyColor)
 	timerGloomCD:SetTimeline(103, onlyColor)

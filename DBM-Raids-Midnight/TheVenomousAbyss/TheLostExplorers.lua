@@ -46,7 +46,7 @@ local timerFrostfireVolleyCD			= mod:NewCDCountTimer(20.5, 1295886, nil, nil, ni
 local timerExplosiveSurpriseCD			= mod:NewCDCountTimer(20.5, 1296249, nil, nil, nil, 3)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
---local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 
 mod.vb.IceboundFlamesCount = 0
 mod.vb.BlinkNovaCount = 0
@@ -76,7 +76,9 @@ local function setFallback(self, dontSetAlerts)
 		specWarnFrostfireVolley:SetAlert({776, 777}, "watchstep", 2, 2)--1295886, 1295935
 		specWarnExplosiveSurprise:SetAlert(781, "bombnow", 2, 2)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerIceboundFlamesCD:SetTimeline(722, onlyColor)
 	timerBlinkNovaCD:SetTimeline({723, 724, 737, 738}, onlyColor)
 	timerMightyThudCD:SetTimeline(725, onlyColor)
