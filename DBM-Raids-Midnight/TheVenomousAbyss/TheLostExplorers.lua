@@ -122,7 +122,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.FrostfireVolleyCount = 1
 	self.vb.ExplosiveSurpriseCount = 1
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsMythic()) and not badStateDetected then
 		self:SetStage(1)
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
@@ -396,16 +396,159 @@ do
 		end
 	end
 
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersMythic(self, timer, timerExact, eventID)
+		local handled = false
+		local stage = self:GetStage()
+
+		--NOTE: PTR mythic logs/images are partially mangled, so this is intentionally conservative and may be incomplete.
+		--If this route drifts from reality, not-handled logic below intentionally exits hardcode and falls back to Blizzard API.
+		if stage == 1 then
+			if timer == 30 or timer == 32 then
+				handled = true
+				queueStart(self, timerShreddingShardsCD, timerExact, eventID, "shredding", "ShreddingShardsCount")
+			elseif timer == 10 then
+				handled = true
+				queueStart(self, timerBlinkNovaCD, timerExact, eventID, "blink", "BlinkNovaCount")
+			elseif timer == 18 or timer == 17 or timer == 16 or timer == 15 or timer == 14 then
+				handled = true
+				queueStart(self, timerShellSpinCD, timerExact, eventID, "shell", "ShellSpinCount")
+			elseif timer == 60 then
+				handled = true
+			elseif timer == 28 or timer == 26 then
+				handled = true
+				queueStart(self, timerFlingFishCD, timerExact, eventID, "fling", "FlingFishCount")
+			elseif timer == 20 or timer == 4 or timer == 27 then
+				handled = true
+				queueStart(self, timerThrowJunkCD, timerExact, eventID, "throwjunk", "ThrowJunkCount")
+			elseif timer == 9 or timer == 5 or timer == 31 then
+				handled = true
+				queueStart(self, timerIceboundFlamesCD, timerExact, eventID, "icebound", "IceboundFlamesCount")
+			elseif timer == 3 then
+				handled = true
+				if not self:GetStage(2) then
+					self:SetStage(2)
+				end
+				pendingSpecial32 = "mushroom"
+				queueStart(self, timerMushroomTossCD, timerExact, eventID, "mushroom", "MushroomTossCount")
+			elseif timer == 13 then
+				handled = true
+				if not self:GetStage(2) then
+					self:SetStage(2)
+				end
+				pendingSpecial32 = "explosive"
+				queueStart(self, timerExplosiveSurpriseCD, timerExact, eventID, "explosive", "ExplosiveSurpriseCount")
+			elseif timer == 2 then
+				handled = true
+				if not self:GetStage(2) then
+					self:SetStage(2)
+				end
+				pendingSpecial32 = "icebound"
+				queueStart(self, timerIceboundFlamesCD, timerExact, eventID, "icebound", "IceboundFlamesCount")
+			end
+		elseif stage == 2 then
+			if timer == 30 or timer == 32 then
+				handled = true
+				if pendingSpecial32 == "mushroom" then
+					queueStart(self, timerMushroomTossCD, timerExact, eventID, "mushroom", "MushroomTossCount")
+				elseif pendingSpecial32 == "explosive" then
+					queueStart(self, timerExplosiveSurpriseCD, timerExact, eventID, "explosive", "ExplosiveSurpriseCount")
+				elseif pendingSpecial32 == "icebound" then
+					queueStart(self, timerIceboundFlamesCD, timerExact, eventID, "icebound", "IceboundFlamesCount")
+				else
+					queueStart(self, timerShreddingShardsCD, timerExact, eventID, "shredding", "ShreddingShardsCount")
+				end
+				pendingSpecial32 = nil
+			elseif timer == 13 then
+				handled = true
+				if not stage4First13IsIce then
+					stage4First13IsIce = true
+					pendingSpecial32 = "icebound"
+					queueStart(self, timerIceboundFlamesCD, timerExact, eventID, "icebound", "IceboundFlamesCount")
+				else
+					queueStart(self, timerShellSpinCD, timerExact, eventID, "shell", "ShellSpinCount")
+				end
+			elseif timer == 5 then
+				handled = true
+				if not stage4FrostfireSeen then
+					stage4FrostfireSeen = true
+					next18IsFrostfire = true
+					queueStart(self, timerFrostfireVolleyCD, timerExact, eventID, "frostfire", "FrostfireVolleyCount")
+				else
+					queueStart(self, timerThrowJunkCD, timerExact, eventID, "throwjunk", "ThrowJunkCount")
+				end
+			elseif timer == 18 then
+				handled = true
+				if next18IsFrostfire then
+					next18IsFrostfire = false
+					next15IsFrostfire = true
+					queueStart(self, timerFrostfireVolleyCD, timerExact, eventID, "frostfire", "FrostfireVolleyCount")
+				else
+					queueStart(self, timerShellSpinCD, timerExact, eventID, "shell", "ShellSpinCount")
+				end
+			elseif timer == 15 then
+				handled = true
+				if next15IsFrostfire then
+					next15IsFrostfire = false
+					queueStart(self, timerFrostfireVolleyCD, timerExact, eventID, "frostfire", "FrostfireVolleyCount")
+				else
+					queueStart(self, timerShellSpinCD, timerExact, eventID, "shell", "ShellSpinCount")
+				end
+			elseif timer == 20 or timer == 4 or timer == 27 or timer == 26 or timer == 11 or timer == 6 then
+				handled = true
+				queueStart(self, timerThrowJunkCD, timerExact, eventID, "throwjunk", "ThrowJunkCount")
+			elseif timer == 10 then
+				handled = true
+				queueStart(self, timerBlinkNovaCD, timerExact, eventID, "blink", "BlinkNovaCount")
+			elseif timer == 31 or timer == 9 or timer == 2 then
+				handled = true
+				queueStart(self, timerIceboundFlamesCD, timerExact, eventID, "icebound", "IceboundFlamesCount")
+			elseif timer == 17 or timer == 16 or timer == 14 then
+				handled = true
+				queueStart(self, timerShellSpinCD, timerExact, eventID, "shell", "ShellSpinCount")
+			elseif timer == 28 then
+				handled = true
+				queueStart(self, timerFlingFishCD, timerExact, eventID, "fling", "FlingFishCount")
+			elseif timer == 3 then
+				handled = true
+				pendingSpecial32 = "mushroom"
+				queueStart(self, timerMushroomTossCD, timerExact, eventID, "mushroom", "MushroomTossCount")
+			elseif timer == 19 then
+				handled = true
+				queueStart(self, timerMightyThudCD, timerExact, eventID, "mighty", "MightyThudCount")
+			elseif timer == 60 then
+				handled = true
+			end
+		end
+
+		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:Unschedule()
+			delayedStarts = {}
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+		end
+	end
+
 	--Note, bar state changing and canceling is handled by core
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if not self:IsHeroic() then return end
+		if not self:IsHeroic() and not self:IsMythic() then return end
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			timersHeroic(self, timer, timerExact, eventID)
+			if self:IsHeroic() then
+				timersHeroic(self, timer, timerExact, eventID)
+			elseif self:IsMythic() then
+				timersMythic(self, timer, timerExact, eventID)
+			end
 		end
 	end
 
