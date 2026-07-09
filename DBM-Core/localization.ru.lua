@@ -645,10 +645,10 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2		= "Показывать информационн
 L.AUTO_INFO_FRAME_OPTION_TEXT3		= "Показывать информационный фрейм для $spell:%s (при достижении порогового значения %%s)"
 L.AUTO_READY_CHECK_OPTION_TEXT		= "Воспроизводить звук проверки готовности, когда пуллят босса (даже если он не является целью)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "Показывать таймер для быстрого прохождения этой зоны"
-L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Воспроизводить звуковые оповещения приватных аур DBM для $spell:%s в этом бою."--Обычный (наиболее распространенный)
-L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Воспроизводить звуковые оповещения приватных аур DBM, когда Вы являетесь целью $spell:%s."
-L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Воспроизводить звуковые оповещения приватных аур DBM, когда Вам нужно отойти от $spell:%s."
-L.AUTO_PRIVATEAURA_OPTION_POST_TEXT		= "Воспроизводить звуковые оповещения о длительных эффектах $spell:%s в приватных аурах DBM."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Воспроизводить звуковые оповещения ауры DBM для $spell:%s в этом бою."--Обычный (наиболее распространенный)
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Воспроизводить звуковые оповещения ауры DBM, когда Вы являетесь целью $spell:%s."
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Воспроизводить звуковые оповещения ауры DBM, когда Вам нужно отойти от $spell:%s."
+L.AUTO_PRIVATEAURA_OPTION_POST_TEXT		= "Воспроизводить звуковые оповещения о длительных эффектах $spell:%s в аурах DBM."
 L.AUTO_CUSTOMTIMER_OPTION_TEXT		= "Показывать таймер для $spell:%s"
 L.AUTO_CUSTOMALERT_OPTION_TEXT		= "Установить звуковой сигнал, который будет воспроизводиться при применении заклинания $spell:%s"
 
