@@ -729,7 +729,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 				local accountInfo = C_BattleNet.GetAccountInfoByID(sender)
 				if accountInfo and accountInfo.gameAccountInfo then--game account info means they are logged into a bnet game
 					local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram or ""
-					if toonName and client == BNET_CLIENT_WOW and DBM:GetRaidUnitId(toonName) then--Check if toon name exists and if client is wow and if toonName is in raid.
+					if toonName and client == BNET_CLIENT_WOW and DBM:GetRaidUnitId(toonName, true) then--Check if toon name exists and if client is wow and if toonName is in raid.
 						return false--just set sender as unsafe
 					end
 				end
@@ -745,7 +745,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 					--Check if it's a bnet friend sending a non bnet whisper
 					if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
 						if toonName == sender then--Now simply see if this is sender
-							return not (filterRaid and DBM:GetRaidUnitId(toonName)) -- Person is in raid group and filter raid enabled
+							return not (filterRaid and DBM:GetRaidUnitId(toonName, true)) -- Person is in raid group and filter raid enabled
 						end
 					end
 				end
@@ -754,7 +754,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 		--Check if it's a non bnet friend
 		local friendInfo = C_FriendList.GetFriendInfo(sender)
 		if friendInfo then
-			return not (filterRaid and DBM:GetRaidUnitId(friendInfo.name)) -- Person is in raid group and filter raid enabled
+			return not (filterRaid and DBM:GetRaidUnitId(friendInfo.name, true)) -- Person is in raid group and filter raid enabled
 		end
 	end
 	--Check Guildies (not used by whisper syncs, but used by status whispers)
@@ -768,7 +768,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 				if not name then break end
 				name = Ambiguate(name, "none")
 				if name == sender then
-					return not (filterRaid and DBM:GetRaidUnitId(name))
+					return not (filterRaid and DBM:GetRaidUnitId(name, true))
 				end
 			end
 		end
@@ -7992,7 +7992,7 @@ bossModPrototype.IsHealer = DBM.IsHealer
 function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
 	--Didn't have playerUnitID so combat log name was passed
 	if isName then
-		playerUnitID = DBM:GetRaidUnitId(isName)
+		playerUnitID = DBM:GetRaidUnitId(isName, true)
 	end
 	if not playerUnitID then
 		DBM:Debug("IsTanking passed with invalid unit", 2, nil, nil, true)
