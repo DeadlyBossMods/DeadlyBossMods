@@ -3322,6 +3322,7 @@ do
 
 	---This is primarily used for cached player unitIds by name lookup
 	---<br>Rarely, it's also used for boss checks by name since it simplifies code in mod.
+	---@param name string
 	---@param skipEnemy boolean?
 	function DBM:GetRaidUnitId(name, skipEnemy)
 		if not skipEnemy and not self:MidRestrictionsActive(true, true, true) then
@@ -7981,7 +7982,7 @@ end
 bossModPrototype.IsHealer = DBM.IsHealer
 
 ---@param self DBMModOrDBM
----@param playerUnitID playerUUIDs|targetUIDs? unitID of requested unit. this or isName must be provided
+---@param playerUnitID playerUUIDs|targetUIDs|enemyUIDs? unitID of requested unit. this or isName must be provided
 ---@param enemyUnitID enemyUIDs|targetUIDs? unitID of tanked unit we're checking. This or enemyGUID must be provided
 ---@param isName string? name of the requested unit. This or playerUnitID must be provided
 ---@param onlyRequested boolean? true if tight search, false if loose search that will return ALL tank specs
