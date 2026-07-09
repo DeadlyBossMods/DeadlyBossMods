@@ -1060,7 +1060,7 @@ local function onUpdate(frame, table)
 		local icon = icons[extraName or leftText]
 		local textWithIcon = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t%s"):format(icon, leftText)
 		if friendlyEvents[currentEvent] then
-			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
+			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText), true) or "player"--Prevent nil logical error
 			if unitId then
 				local mapId = select(-1, UnitPosition(unitId))--In instances in 10.2.5, blizzard truncates UnitPosition to scrub x and y args, meaning it only has 2 returns, not 4, so can't select 4 anymore, have to -1 so it auto chooses last arg be it a 2 or a 4
 				if mapId == currentMapId then
@@ -1105,8 +1105,8 @@ local function onUpdate(frame, table)
 			end
 		else
 			local color2 = NORMAL_FONT_COLOR -- Only custom into frames will have chance of putting player names on right side
-			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText))
-			local unitId2 = DBM:GetRaidUnitId(DBM:GetUnitFullName(rightText))
+			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText), true)
+			local unitId2 = DBM:GetRaidUnitId(DBM:GetUnitFullName(rightText), true)
 			-- Class color names in custom functions too, IF unitID exists
 			if unitId then -- Check left text
 				local _, class = UnitClass(unitId)
