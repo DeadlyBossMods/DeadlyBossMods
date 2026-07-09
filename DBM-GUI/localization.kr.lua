@@ -111,7 +111,7 @@ L.Editbox_WindowHeight				= "설정 창 높이"
 
 L.UIGroupingOptions					= "UI 그룹 설정 (이미 로딩이 된 모드는 UI 재시작을 해야 변경됩니다)"
 L.GroupOptionsExcludeIcon			= "주문 단위로 형성된 그룹에서 '공격대 징표' 설정 제외 (제외된 설정들은 '공격대 징표' 카테고리에 배치)"
-L.GroupOptionsExcludePrivateAura	= "주문 단위로 형성된 그룹에서 '프라이빗 오라' 효과음 설정 제외 (제외된 설정들은 '프라이빗 오라' 카테고리에 배치)"
+L.GroupOptionsExcludePrivateAura	= "주문 단위로 형성된 그룹에서 '오라' 효과음 설정 제외 (제외된 설정들은 '오라' 카테고리에 배치)"
 L.AutoExpandSpellGroups2			= "주문 단위로 그룹이 형성된 설정들을 자동으로 펼치기"
 L.ShowWAKeys						= "보스 모드 활성 조건을 이용한 WeakAuras 제작을 지원하기 위해 주문 이름 옆에 WeakAuras 키를 표시합니다."
 L.RenameSpellButton					= "이름 변경"
@@ -283,12 +283,12 @@ L.SpecialWarnHeader5				= "SA 5: 메모에 당신의 이름이 있을 때 알림
 L.SpecialWarnHeaderMedium			= "SA 1: 블리자드에서 '중간' 등급으로 분류한 스킬 알림"
 L.SpecialWarnHeaderCritical			= "SA 2: 블리자드에서 '치명적' 등급으로 분류한 스킬 알림"
 
--- Panel: Private Auras Frame
+-- Panel: Debuff Auras Frame
 --Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
-L.Panel_PrivateAuras				= "프라이빗 오라"
-L.Area_PersonalPrivateAuras			= "개인 프라이빗 오라 설정"
-L.EnablePersonalPrivateAuraIcons	= "화면에 개인 프라이빗 오라 아이콘 표시"--checkbox
-L.EnablePersonalPrivateAuraText		= "블리자드 프라이빗 오라 텍스트 메시지 크기 설정 무시"--checkbox
+L.Panel_PrivateAuras				= "디버프 오라"
+L.Area_PersonalPrivateAuras			= "내 디버프 오라 설정"
+L.EnablePersonalPrivateAuraIcons	= "화면에 내 디버프 오라 아이콘 표시"--checkbox
+L.EnablePersonalPrivateAuraText		= "블리자드 기본 디버프 오라 텍스트 메시지 크기 설정 무시"--checkbox
 L.UpscaleDurationText				= "아이콘에 뜨는 지속시간 텍스트를 더 크게 표시"
 L.SetPAGrowDirection				= "확장 방향"--Dropdown
 L.SetPAIconScale					= "아이콘 크기: %d"--Slider, Reused for personal and tank
@@ -298,8 +298,8 @@ L.SetPAStackScale					= "중첩 텍스트 크기: %d"--Slider, Reused for person
 L.SetPATextScale					= "텍스트 메시지 크기: %0.1f"--Slider
 L.HidePATooltip						= "주문 툴팁 끄기"--checkbox
 L.HidePABorder						= "테두리 끄기"--checkbox
-L.Area_TankPrivateAuras				= "다른 탱커 프라이빗 오라 설정"
-L.EnableTankPrivateAuraIcons		= "화면에 다른 탱커의 프라이빗 오라 아이콘 표시 (탱커 전문화 필요)"--checkbox
+L.Area_TankPrivateAuras				= "다른 탱커 디버프 오라 설정"
+L.EnableTankPrivateAuraIcons		= "화면에 다른 탱커의 디버프 오라 아이콘 표시 (탱커 전문화 필요)"--checkbox
 L.ShowSecondCoTank					= "두번째 다른 탱커 표시"--checkbox
 L.RIGHT								= "오른쪽"
 L.LEFT								= "왼쪽"
@@ -388,8 +388,8 @@ L.BarSimple							= "Simple (처음 바는 사라지고 큰 바가 새로 생성
 L.BarStartColor						= "시작 색상"
 L.BarEndColor 						= "종료 색상"
 L.Bar_Height						= "바 높이: %d"
-L.Slider_BarOffSetX 				= "X 위치 조정: %d"--Reused in other regions like Private Auras
-L.Slider_BarOffSetY 				= "Y 위치 조정: %d"--Reused in other regions like Private Auras
+L.Slider_BarOffSetX 				= "X 위치 조정: %d"--Reused in other regions like Auras
+L.Slider_BarOffSetY 				= "Y 위치 조정: %d"--Reused in other regions like Auras
 L.Slider_BarWidth 					= "바 너비: %d"
 L.Slider_BarScale 					= "바 크기: %0.2f"
 L.BarSaturation						= "작은 바 채도 (커다란 바 사용시 비활성): %0.2f"
@@ -527,9 +527,9 @@ L.SpamBlockNoSpecWarnFlash			= "특수 알림에 화면 점멸 사용 안함"
 L.SpamBlockNoSpecWarnVibrate		= "특수 알림에 컨트롤러 진동 안함"
 L.SpamBlockNoSpecWarnSound			= "특수 알림 효과음 재생 안함 (초읽기와 음성팩 메뉴에서 활성화된 음성팩은 계속 작동)"
 
-L.Area_Private_Aura_Features		= "프라이빗 오라 기능"
-L.SpamBlockNoPrivateAuraSound		= "프라이빗 오라 효과음 등록 안함"
-L.SpamBlockNoPrivateAuraFrame		= "프라이빗 오라 프레임 표시 안함"
+L.Area_Private_Aura_Features		= "오라 기능"
+L.SpamBlockNoPrivateAuraSound		= "오라 효과음 등록 안함"
+L.SpamBlockNoPrivateAuraFrame		= "오라 프레임 표시 안함"
 
 L.Area_SpamFilter_Timers			= "세부 타이머 기능 (위에서 전체 비활성화를 하지 않을 때만 적용)"
 L.SpamBlockNoShowBossTimers			= "던전/레이드 보스 타이머 표시 안함"
