@@ -98,7 +98,6 @@ mod.vb.terminationPrismCount = 0
 mod.vb.grimSymphonyCount = 0--Mythic version of Deaths Dirge, combine count if this is confirmed
 mod.vb.darkQuasarCount = 0
 local badStateDetected = false
-local ignoreInitialBuggedSet = true
 local stage1SeventySlot = 0
 local stage1MythicSixtyTwoSlot = 0
 local stage2ThirtySlot = 0
@@ -160,6 +159,7 @@ end
 
 function mod:OnLimitedCombatStart(delay)
 	self:TLCountReset()
+	self:TLBatchReset()
 	self:SetStage(1)
 	self.vb.deathCount = 1
 	self.vb.glaivesCount = 1
@@ -176,7 +176,6 @@ function mod:OnLimitedCombatStart(delay)
 	self.vb.terminationPrismCount = 1
 	self.vb.grimSymphonyCount = 1
 	self.vb.darkQuasarCount = 1
-	ignoreInitialBuggedSet = true
 	stage1SeventySlot = 0
 	stage1MythicSixtyTwoSlot = 0
 	stage2ThirtySlot = 0
@@ -207,6 +206,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	self:TLBatchReset()
 	self:UnregisterShortTermEvents()
 end
 
@@ -228,10 +228,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersMythic(self, timer, timerExact, eventID)
-		if ignoreInitialBuggedSet then
-			if timer == 180 then
-				ignoreInitialBuggedSet = false
-			end
+		if self:TLBatchIgnoreInitialUntil("opener", timer, 180) then
 			return
 		end
 
@@ -364,10 +361,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersOther(self, timer, timerExact, eventID)
-		if ignoreInitialBuggedSet then
-			if timer == 180 then
-				ignoreInitialBuggedSet = false
-			end
+		if self:TLBatchIgnoreInitialUntil("opener", timer, 180) then
 			return
 		end
 

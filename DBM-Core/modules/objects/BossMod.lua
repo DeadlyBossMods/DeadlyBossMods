@@ -1182,6 +1182,114 @@ do
 	end
 end
 
+do
+	local function getTLBatchState(self)
+		if not self.tlBatchState then
+			self.tlBatchState = {
+				latestByTimer = {},
+				timerByEvent = {},
+				initialGate = {},
+			}
+		end
+		return self.tlBatchState
+	end
+
+	local function cleanupTLBatchState(self, state)
+		if not next(state.latestByTimer) and not next(state.timerByEvent) and not next(state.initialGate) then
+			self.tlBatchState = nil
+		end
+	end
+
+	---Track a timeline event as the latest entry for its rounded timer bucket.
+	---
+	---Purpose:
+	---Some encounters emit batched duplicate timeline rows where earlier rows in the same
+	---timer bucket are immediately canceled. This helper keeps only the latest event per
+	---timer and cancels the previous reservation automatically.
+	---
+	---Behavior:
+	--- - Optional filter via trackedTimers set (for example {[4]=true, [6]=true}).
+	--- - If an older event exists for this timer, calls TLCountCancel(oldEventID).
+	--- - Marks eventID as latest for this timer and records reverse lookup for cleanup.
+	---
+	---Call this from ENCOUNTER_TIMELINE_EVENT_ADDED before TLStart/TLCountStart for buckets
+	---affected by the batch bug.
+	---@param timer number Rounded timer bucket used by module routing.
+	---@param eventID number Encounter timeline runtime eventID.
+	---@param trackedTimers table<number, boolean>? Optional timer set to limit which buckets are deduped.
+	---@return number? replacedEventID Previous eventID replaced/canceled for this timer (if any).
+	function bossModPrototype:TLBatchTrackLatest(timer, eventID, trackedTimers)
+		if trackedTimers and not trackedTimers[timer] then
+			return nil
+		end
+		local state = getTLBatchState(self)
+		local replacedEventID = state.latestByTimer[timer]
+		if replacedEventID and replacedEventID ~= eventID then
+			self:TLCountCancel(replacedEventID)
+			state.timerByEvent[replacedEventID] = nil
+		end
+		state.latestByTimer[timer] = eventID
+		state.timerByEvent[eventID] = timer
+		return replacedEventID
+	end
+
+	---Release one timeline event from batch-tracking state.
+	---
+	---Use from ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED for any state transition so the
+	---internal latest/reverse maps stay compact and never leak between events.
+	---@param eventID number Encounter timeline runtime eventID.
+	---@return number? timer Rounded timer bucket this event was tracked under.
+	function bossModPrototype:TLBatchUntrack(eventID)
+		local state = self.tlBatchState
+		if not state then return nil end
+		local timer = state.timerByEvent[eventID]
+		if not timer then return nil end
+		if state.latestByTimer[timer] == eventID then
+			state.latestByTimer[timer] = nil
+		end
+		state.timerByEvent[eventID] = nil
+		cleanupTLBatchState(self, state)
+		return timer
+	end
+
+	---Ignore initial timeline batch noise until a known unlock timer appears.
+	---
+	---Purpose:
+	---Some encounters emit one known-bad initial batch at pull. Modules previously handled
+	---this with local booleans. This helper centralizes that gate logic.
+	---
+	---Behavior:
+	--- - First call for gateKey initializes the gate as locked.
+	--- - While locked, returns true (caller should ignore current event).
+	--- - If timer matches unlockTimer while locked, unlocks gate and still returns true for
+	---   that unlock event (preserves existing module behavior that drops the whole bad set).
+	--- - After unlock, returns false.
+	---@param gateKey string Module-local key for one gate (for example "opener").
+	---@param timer number Rounded timer for current event.
+	---@param unlockTimer number Timer bucket that marks end of initial bad batch.
+	---@return boolean shouldIgnore True when caller should skip current event.
+	function bossModPrototype:TLBatchIgnoreInitialUntil(gateKey, timer, unlockTimer)
+		local state = getTLBatchState(self)
+		if state.initialGate[gateKey] == nil then
+			state.initialGate[gateKey] = true
+		end
+		if state.initialGate[gateKey] then
+			if timer == unlockTimer then
+				state.initialGate[gateKey] = false
+			end
+			return true
+		end
+		return false
+	end
+
+	---Clear all timeline batch utility state for this mod.
+	---
+	---Call at encounter boundaries (combat start/end) alongside TLCountReset.
+	function bossModPrototype:TLBatchReset()
+		self.tlBatchState = nil
+	end
+end
+
 
 ----------------------------------
 --  Private/Secret API Methods  --
