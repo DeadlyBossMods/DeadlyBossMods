@@ -38,7 +38,17 @@ local timerUnstableMiasmaCD				= mod:NewCDCountTimer(20.5, 1288232, nil, nil, ni
 local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Possibly unused
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
---local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local firstBerserkIgnored = false
+local next22Event = "empoweringslam"
+local batchTimerValues = {
+	[4] = true,
+	[6] = true,
+	[8] = true,
+	[12] = true,
+	[16] = true,
+	[40] = true,
+}
 
 mod.vb.VenomCoagulationCount = 0
 mod.vb.ToxicDropletsCount = 0
@@ -68,7 +78,9 @@ local function setFallback(self, dontSetAlerts)
 		specWarnUnstableMiasma:SetAlert(673, "gathershare", 2, 2)--Possibly unused
 		specWarnShiftingProtovenom:SetAlert(788, "colorchange", 19, 3)--Possibly unused
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerVenomCoagulationCD:SetTimeline(637, onlyColor)
 	timerToxicDropletsCD:SetTimeline(638, onlyColor)
 	timerEmpoweringSlamCD:SetTimeline(639, onlyColor)
@@ -83,6 +95,9 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
+	self:TLBatchReset()
+	firstBerserkIgnored = false
+	next22Event = "empoweringslam"
 	self.vb.VenomCoagulationCount = 1
 	self.vb.ToxicDropletsCount = 1
 	self.vb.EmpoweringSlamCount = 1
@@ -93,38 +108,93 @@ function mod:OnLimitedCombatStart()
 	self.vb.UnstableMiasmaCount = 1
 	self.vb.ShiftingProtovenomCount = 1
 	--Hardcode features first
-	--if DBM.Options.HardcodedTimer and not badStateDetected then
-	--	--self:SetStage(1)
-	--	self:IgnoreBlizzardAPI()
-	--	self:RegisterShortTermEvents(
-	--		"ENCOUNTER_TIMELINE_EVENT_ADDED",
-	--		"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
-	--	)
-	--	if DBM.Options.HideDBMBars then
-	--		setFallback(self, true)
-	--	end
-	--else
+	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+		self:IgnoreBlizzardAPI()
+		self:RegisterShortTermEvents(
+			"ENCOUNTER_TIMELINE_EVENT_ADDED",
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+		)
+		setFallback(self, true)
+	else
 		setFallback(self)
-	--end
+	end
 end
 
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	self:TLBatchReset()
+	firstBerserkIgnored = false
+	next22Event = "empoweringslam"
 	self:UnregisterShortTermEvents()
 end
 
---[[
 do
 	---@param self DBMMod
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	local function timersAll(self, timer, timerExact, eventID)
-		local handled
-		if timer == 114 then
+	local function timersHeroic(self, timer, timerExact, eventID)
+		local handled = false
+		if timer == 540 then
 			handled = true
+			if firstBerserkIgnored then
+				timerBerserkCD:Start(timerExact)
+			else
+				firstBerserkIgnored = true
+			end
+		elseif timer == 4 then
+			handled = true
+			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
+			timerEmpoweringSlamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "empoweringslam", "EmpoweringSlamCount"))
+		elseif timer == 6 then
+			handled = true
+			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
+			timerBloodvenomInjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bloodvenominjection", "BloodvenomInjectionCount"))
+		elseif timer == 8 then
+			handled = true
+			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
 			timerVenomCoagulationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venomcoagulation", "VenomCoagulationCount"))
+		elseif timer == 12 then
+			handled = true
+			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
+			timerToxicDropletsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicdroplets", "ToxicDropletsCount"))
+		elseif timer == 16 then
+			handled = true
+			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
+			timerUnstableMiasmaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "unstablemiasma", "UnstableMiasmaCount"))
+		elseif timer == 20 then
+			handled = true
+			timerVitriolicStasisCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vitriolicstasis", "VitriolicStasisCount"))
+		elseif timer == 22 then
+			handled = true
+			if next22Event == "empoweringslam" then
+				next22Event = "bloodvenominjection"
+				timerEmpoweringSlamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "empoweringslam", "EmpoweringSlamCount"))
+			else
+				next22Event = "empoweringslam"
+				timerBloodvenomInjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bloodvenominjection", "BloodvenomInjectionCount"))
+			end
+		elseif timer == 32 then
+			handled = true
+			timerToxicDropletsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicdroplets", "ToxicDropletsCount"))
+		elseif timer == 40 then
+			handled = true
+			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
+			timerBlightedBloodCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blightedblood", "BlightedBloodCount"))
+		elseif timer == 41 then
+			handled = true
+			timerUnstableMiasmaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "unstablemiasma", "UnstableMiasmaCount"))
+		elseif timer == 51 then
+			--Known issue: Unstable Miasma with rounded value 51 always cancels.
+			handled = true
+		elseif timer == 52 then
+			handled = true
+			if timerExact == 51.5 then
+				timerVenomCoagulationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venomcoagulation", "VenomCoagulationCount"))
+			else
+				--Known issue: Blighted Blood with rounded value 52 always cancels.
+			end
 		end
 
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
@@ -140,27 +210,45 @@ do
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
+		if not self:IsHeroic() then return end--Hardcoded routing currently Heroic-only
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			timersAll(self, timer, timerExact, eventID)
+			timersHeroic(self, timer, timerExact, eventID)
 		end
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
+		self:TLBatchUntrack(eventID)
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if not eventType then return end
-			if not eventCount then return end
+			if not eventType or not eventCount then return end
 			if eventType == "venomcoagulation" then
-				--specWarnVenomCoagulation:Show(eventCount, "bigmob")
+				specWarnVenomCoagulation:Show(eventCount)
+				specWarnVenomCoagulation:Play("bigmob")
+			elseif eventType == "toxicdroplets" then
+				specWarnToxicDroplets:Show(eventCount)
+				specWarnToxicDroplets:Play("helpsoak")
+			elseif eventType == "empoweringslam" then
+				specWarnEmpoweringSlam:Show(eventCount)
+				specWarnEmpoweringSlam:Play("defensive")
+			elseif eventType == "bloodvenominjection" then
+				specWarnBloodvenomInjection:Show(eventCount)
+				specWarnBloodvenomInjection:Play("defensive")
+			elseif eventType == "blightedblood" then
+				specWarnBlightedBlood:Show(eventCount)
+				specWarnBlightedBlood:Play("helpdispel")
+			elseif eventType == "unstablemiasma" then
+				specWarnUnstableMiasma:Show(eventCount)
+				specWarnUnstableMiasma:Play("gathershare")
+			elseif eventType == "vitriolicstasis" then
+				warnVitriolicStasis:Show(eventCount)
 			end
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)
 		end
 	end
 end
---]]

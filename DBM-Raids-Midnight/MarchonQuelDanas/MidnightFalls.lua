@@ -68,19 +68,19 @@ local timerGrimSymphonyCD			= mod:NewCDCountTimer(20.5, 1284980, nil, nil, nil, 
 local timerDarkQuasarCD				= mod:NewCDCountTimer(20.5, 1279420, nil, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--Stage 1 (shortname "Beams")
 local timerBerserkCD				= mod:NewBerserkTimer(600)
 
-mod:AddPrivateAuraSoundOption({1249609,1249565,1249566,1273133,1249550,1249558,1249562}, true, 1249620, 1, 2, "runeyou", 19)--Dark Rune (sub spell of Death's Dirge & Death's Requiem)
-mod:AddPrivateAuraSoundOption(1263514, false, 1253915, 1, 2, "watchfeet", 8)--Midnight (could be spammy if group is poor and not using lightbearers well)
-mod:AddPrivateAuraSoundOption(1284527, true, 1284525, 1, 1, "beamyou", 19)--Galvanize
-mod:AddPrivateAuraSoundOption(1281184, true, 1284525, 1, 1, "scatter", 2)--Criticality (mythic Galvonize tertiary affect)
-mod:AddPrivateAuraSoundOption({1279512,1285510}, true, 1282441, 1, 1, "runout", 2)--Starsplinter
-mod:AddPrivateAuraSoundOption(1282470, true, 1279420, 1, 2, "watchfeet", 8)--Dark Quasar
-mod:AddPrivateAuraSoundOption(1253031, true, 1253031, 1, 1, "dawncrystal", 19)--Glimmering (Holding Dawn Crystal)
-mod:AddPrivateAuraSoundOption(1253770, false, 1250898, 1, 3, "safenow", 2)--Dawnlight barrier (needed to survive Archangel))
-mod:AddPrivateAuraSoundOption(1262055, false, 1261871, 1, 3, "absorbyou", 19)--Eclipsed (Total Eclipse debuff)
---mod:AddPrivateAuraSoundOption(1275429, true, 1276202, 1, 1, "moveright", 2)--Severance (right) (no longer private aura)
---mod:AddPrivateAuraSoundOption(1266946, true, 1276202, 1, 1, "moveleft", 2)--Severance (left?) (no longer private aura)
---mod:AddPrivateAuraSoundOption({1266113,1266627{, true, 1266113, 1, 1, "torchyou", 2)--Torchbearer (Reundant with glimmering? or maybe buff players who get near person holding it get?)
---mod:AddPrivateAuraSoundOption(1276527, true, 1276527, 1, 1, "debuffyou", 17)--Heaven and Hell (secret Mythic phase 4 mechanic) (no longer private aura)
+mod:AddAuraSoundOption({1249609,1249565,1249566,1273133,1249550,1249558,1249562}, true, 1249620, 1, 2, "runeyou", 19)--Dark Rune (sub spell of Death's Dirge & Death's Requiem)
+mod:AddAuraSoundOption(1263514, false, 1253915, 1, 2, "watchfeet", 8)--Midnight (could be spammy if group is poor and not using lightbearers well)
+mod:AddAuraSoundOption(1284527, true, 1284525, 1, 1, "beamyou", 19)--Galvanize
+mod:AddAuraSoundOption(1281184, true, 1284525, 1, 1, "scatter", 2)--Criticality (mythic Galvonize tertiary affect)
+mod:AddAuraSoundOption({1279512,1285510}, true, 1282441, 1, 1, "runout", 2)--Starsplinter
+mod:AddAuraSoundOption(1282470, true, 1279420, 1, 2, "watchfeet", 8)--Dark Quasar
+mod:AddAuraSoundOption(1253031, true, 1253031, 1, 1, "dawncrystal", 19)--Glimmering (Holding Dawn Crystal)
+mod:AddAuraSoundOption(1253770, false, 1250898, 1, 3, "safenow", 2)--Dawnlight barrier (needed to survive Archangel))
+mod:AddAuraSoundOption(1262055, false, 1261871, 1, 3, "absorbyou", 19)--Eclipsed (Total Eclipse debuff)
+--mod:AddAuraSoundOption(1275429, true, 1276202, 1, 1, "moveright", 2)--Severance (right) (no longer private aura)
+--mod:AddAuraSoundOption(1266946, true, 1276202, 1, 1, "moveleft", 2)--Severance (left?) (no longer private aura)
+--mod:AddAuraSoundOption({1266113,1266627{, true, 1266113, 1, 1, "torchyou", 2)--Torchbearer (Reundant with glimmering? or maybe buff players who get near person holding it get?)
+--mod:AddAuraSoundOption(1276527, true, 1276527, 1, 1, "debuffyou", 17)--Heaven and Hell (secret Mythic phase 4 mechanic) (no longer private aura)
 
 mod.vb.deathCount = 0--Used for both Dirge and requiem
 mod.vb.glaivesCount = 0
@@ -98,7 +98,6 @@ mod.vb.terminationPrismCount = 0
 mod.vb.grimSymphonyCount = 0--Mythic version of Deaths Dirge, combine count if this is confirmed
 mod.vb.darkQuasarCount = 0
 local badStateDetected = false
-local ignoreInitialBuggedSet = true
 local stage1SeventySlot = 0
 local stage1MythicSixtyTwoSlot = 0
 local stage2ThirtySlot = 0
@@ -134,7 +133,9 @@ local function setFallback(self, dontSetAlerts)
 		specWarnGrimSymphony:SetAlert(644, "runesincoming", 19, 4)
 		specWarnDarkQuasar:SetAlert(649, "watchstep", 2, 3)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerDeathsDirgeCD:SetTimeline(255, onlyColor)
 	timerHeavensGlaivesCD:SetTimeline(256, onlyColor)
 	timerSafeguaredPrismCD:SetTimeline(257, onlyColor)
@@ -158,6 +159,7 @@ end
 
 function mod:OnLimitedCombatStart(delay)
 	self:TLCountReset()
+	self:TLBatchReset()
 	self:SetStage(1)
 	self.vb.deathCount = 1
 	self.vb.glaivesCount = 1
@@ -174,7 +176,6 @@ function mod:OnLimitedCombatStart(delay)
 	self.vb.terminationPrismCount = 1
 	self.vb.grimSymphonyCount = 1
 	self.vb.darkQuasarCount = 1
-	ignoreInitialBuggedSet = true
 	stage1SeventySlot = 0
 	stage1MythicSixtyTwoSlot = 0
 	stage2ThirtySlot = 0
@@ -205,6 +206,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	self:TLBatchReset()
 	self:UnregisterShortTermEvents()
 end
 
@@ -226,10 +228,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersMythic(self, timer, timerExact, eventID)
-		if ignoreInitialBuggedSet then
-			if timer == 180 then
-				ignoreInitialBuggedSet = false
-			end
+		if self:TLBatchIgnoreInitialUntil("opener", timer, 180) then
 			return
 		end
 
@@ -362,10 +361,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersOther(self, timer, timerExact, eventID)
-		if ignoreInitialBuggedSet then
-			if timer == 180 then
-				ignoreInitialBuggedSet = false
-			end
+		if self:TLBatchIgnoreInitialUntil("opener", timer, 180) then
 			return
 		end
 

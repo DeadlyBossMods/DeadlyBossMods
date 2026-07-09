@@ -28,10 +28,10 @@ local timerShadowclawSlamCD				= mod:NewCDCountTimer("d20.5", 1241836, nil, nil,
 local timerParasiteExpulsionCD			= mod:NewCDCountTimer(20.5, 1254199, nil, nil, nil, 1)
 local timerPrimordialRoarCD				= mod:NewCDCountTimer(20.5, 1260046, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)--Shortname "Roar"
 
-mod:AddPrivateAuraSoundOption(1243270, true, 1243270, 1, 2, "watchfeet", 8)--Dark Goo
-mod:AddPrivateAuraSoundOption(1241844, false, 1241836, 1, 3, "debuffyou", 17)--Smashed (debuff from shadowclaw slam)
-mod:AddPrivateAuraSoundOption(1272527, false, 1272527, 1, 1, "debuffyou", 17)--Creep Spit
-mod:AddPrivateAuraSoundOption(1254113, true, 1254113, 1, 2, "fixateyou", 19)--Fixate
+mod:AddAuraSoundOption(1243270, true, 1243270, 1, 2, "watchfeet", 8)--Dark Goo
+mod:AddAuraSoundOption(1241844, false, 1241836, 1, 3, "debuffyou", 17)--Smashed (debuff from shadowclaw slam)
+mod:AddAuraSoundOption(1272527, false, 1272527, 1, 1, "debuffyou", 17)--Creep Spit
+mod:AddAuraSoundOption(1254113, true, 1254113, 1, 2, "fixateyou", 19)--Fixate
 
 mod.vb.clawCount = 0
 mod.vb.breathCount = 0
@@ -49,7 +49,9 @@ local function setFallback(self, dontSetAlerts)
 		specWarnParasiteExpulsion:SetAlert(62, "watchstep", 2, 2)
 		specWarnPrimordialRoar:SetAlert(133, "pullin", 12, 3)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerShadowclawSlamCD:SetTimeline({59, 60}, onlyColor)
 --	timerVoidBreathCD:SetTimeline(61)
 	timerParasiteExpulsionCD:SetTimeline(62, onlyColor)

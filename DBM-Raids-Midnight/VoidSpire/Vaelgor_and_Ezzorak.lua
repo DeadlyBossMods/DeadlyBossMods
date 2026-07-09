@@ -45,17 +45,17 @@ local timerCosmosisDreadBreathCD	= mod:NewCDCountTimer("d20.5", 1277472, nil, ni
 local timerCosmosisVoidHowlCD		= mod:NewCDCountTimer(20.5, 1277473, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerRadiantBarrierCD			= mod:NewCDCountTimer(20.5, 1248847, nil, nil, nil, 5, nil, DBM_COMMON_L.IMPORTANT_ICON)
 
-mod:AddPrivateAuraSoundOption({1262676,1262656}, false, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
-mod:AddPrivateAuraSoundOption(1244672, true, 1262623, 1, 2, "lineapart", 2)--Null Zone Grippy hand
-mod:AddPrivateAuraSoundOption(1252157, false, 1262623, 1, 1, "debuffyou", 17)--Null Implosion
-mod:AddPrivateAuraSoundOption(1245554, true, 1245391, 1, 3, "gloomyou", 19)--Gloomtouched (soaked Gloom)
-mod:AddPrivateAuraSoundOption(1270852, false, 1245391, 1, 3, "debuffyou", 17)--Diminish (Gloomtouched ended, don't soak again)
-mod:AddPrivateAuraSoundOption(1245421, true, 1245391, 1, 2, "watchfeet", 8)--Gloomfield (GTFO left by gloom)
-mod:AddPrivateAuraSoundOption(1255612, true, 1244221, 1, 1, "runout", 2)--Dread Breath Target
---mod:AddPrivateAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
-mod:AddPrivateAuraSoundOption(1265152, true, 1245645, 1, 3, "stunyou", 19)--Impale (secondary attack of Rakfang)
---mod:AddPrivateAuraSoundOption(1248865, true, 1248865, 1, 1, "barrieryou", 19)--Radiant Barrier (Ultra Spammy)
-mod:AddPrivateAuraSoundOption(1270497, true, 1270497, 1, 1, "shadowyou", 15)--Shadowmark
+mod:AddAuraSoundOption({1262676,1262656}, false, 1262623, 1, 3, "beamyou", 19)--Null Beam (soaked it)
+mod:AddAuraSoundOption(1244672, true, 1262623, 1, 2, "lineapart", 2)--Null Zone Grippy hand
+mod:AddAuraSoundOption(1252157, false, 1262623, 1, 1, "debuffyou", 17)--Null Implosion
+mod:AddAuraSoundOption(1245554, true, 1245391, 1, 3, "gloomyou", 19)--Gloomtouched (soaked Gloom)
+mod:AddAuraSoundOption(1270852, false, 1245391, 1, 3, "debuffyou", 17)--Diminish (Gloomtouched ended, don't soak again)
+mod:AddAuraSoundOption(1245421, true, 1245391, 1, 2, "watchfeet", 8)--Gloomfield (GTFO left by gloom)
+mod:AddAuraSoundOption(1255612, true, 1244221, 1, 1, "runout", 2)--Dread Breath Target
+--mod:AddAuraSoundOption(1255979, true, 1244221, 1, 3)--Dread Breath debuff
+mod:AddAuraSoundOption(1265152, true, 1245645, 1, 3, "stunyou", 19)--Impale (secondary attack of Rakfang)
+--mod:AddAuraSoundOption(1248865, true, 1248865, 1, 1, "barrieryou", 19)--Radiant Barrier (Ultra Spammy)
+mod:AddAuraSoundOption(1270497, true, 1270497, 1, 1, "shadowyou", 15)--Shadowmark
 
 mod.vb.beamCount = 0
 mod.vb.howlCount = 0
@@ -133,7 +133,9 @@ local function setFallback(self, dontSetAlerts)
 		specWarnCosmosisVoidHowl:SetAlert(380, "range5", 2, 2)
 		specWarnRadiantBarrier:SetAlert(381, "findshield", 2, 3, 0)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerNullBeamCD:SetTimeline(101, onlyColor)
 	timerVoidHowlCD:SetTimeline(102, onlyColor)
 	timerGloomCD:SetTimeline(103, onlyColor)

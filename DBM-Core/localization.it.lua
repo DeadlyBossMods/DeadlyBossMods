@@ -589,7 +589,7 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2	= "Mostra riquadro informativo per la panoramica 
 --L.AUTO_INFO_FRAME_OPTION_TEXT3			= "Show info frame for $spell:%s (when threshold of %%s is met)"
 L.AUTO_READY_CHECK_OPTION_TEXT	= "Riproduti il suono controllo gruppo al pull del boss (anche se non bersagliato)"
 --L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "Mostra timer per il completamento più veloce di questa zona"
---L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Play DBM sound alerts for $spell:%s private auras on this fight."
+--L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Play DBM sound alerts for $spell:%s auras on this fight."
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "Annunci mobili"

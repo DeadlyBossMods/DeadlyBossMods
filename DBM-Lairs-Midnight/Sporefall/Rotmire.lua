@@ -34,10 +34,10 @@ local timerPutridFistCD						= mod:NewCDCountTimer(20.5, 1221781, nil, "Tank|Hea
 local timerFesteringVinesCD					= mod:NewCDCountTimer(20.5, 1222088, nil, nil, nil, 3)
 --local timerBerserkCD						= mod:NewBerserkTimer(600)
 
-mod:AddPrivateAuraSoundOption(1221639, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough
-mod:AddPrivateAuraSoundOption(1299508, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough)
---mod:AddPrivateAuraSoundOption(1222088, true, 1222088, 1, 1, "runout", 2)--Festering Vines
-mod:AddPrivateAuraSoundOption(1222129, true, 1222088, 1, 2, "watchfeet", 8)--Writhing Vines (GTFO left by Festering Vines)
+mod:AddAuraSoundOption(1221639, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough
+mod:AddAuraSoundOption(1299508, true, 1221622, 1, 1, "fixateyou", 19)--Mob fixates from awaken fungi (may stop being a private aura soon enough)
+--mod:AddAuraSoundOption(1222088, true, 1222088, 1, 1, "runout", 2)--Festering Vines
+mod:AddAuraSoundOption(1222129, true, 1222088, 1, 2, "watchfeet", 8)--Writhing Vines (GTFO left by Festering Vines)
 
 mod.vb.fungalBloomCount = 0
 mod.vb.awakenFungiCount = 0
@@ -63,7 +63,9 @@ local function setFallback(self, dontSetAlerts)
 		--specWarnFunglingFixate:SetAlert(808, "fixateyou", 1, 3)
 		--specWarnShroomingFixate:SetAlert(809, "fixateyou", 1, 3)
 	end
-	local onlyColor = not DBM.Options.HideDBMBars
+	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
+	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
+	local onlyColor = not DBM.Options.HideDBMBars and not badStateDetected
 	timerFungalBloomCD:SetTimeline(424, onlyColor)
 	timerAwakenFungiCD:SetTimeline(425, onlyColor)
 	timerBurstingPustulesCD:SetTimeline(426, onlyColor)
