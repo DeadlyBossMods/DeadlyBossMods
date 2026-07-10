@@ -1354,7 +1354,7 @@ do
 
 	---Function to check valid voice pack sound
 	---@param self DBMMod
-	---@param optionType string "SpecialWarningSound" or "AuraSound"
+	---@param optionType string "SpecialWarningSound" or "PrivateAuraSound"
 	---@param optionId number
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number
@@ -1408,9 +1408,9 @@ do
 			DBM:Debug("Attempting to register aura sound for spell ID " .. optionId .. " which is not a valid spell ID. This sound will not be registered.", 2)
 			return
 		end
-		if DBM.Options.DontPlayAuraSound then return end
-		if optionId and mod.Options["AuraSound" .. optionId] then
-			local mediaPath = checkValidVPSound(mod, "AuraSound", optionId, voice, voiceVersion)
+		if DBM.Options.DontPlayPrivateAuraSound then return end
+		if optionId and mod.Options["PrivateAuraSound" .. optionId] then
+			local mediaPath = checkValidVPSound(mod, "PrivateAuraSound", optionId, voice, voiceVersion)
 			if DBM:IsNoneValue(mediaPath) then return end--Don't register if media path is none, even if option is enabled
 			if type(auraspellId) == "table" then
 				for _, spellId in ipairs(auraspellId) do
