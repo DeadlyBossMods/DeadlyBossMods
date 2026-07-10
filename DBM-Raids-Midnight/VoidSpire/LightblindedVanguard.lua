@@ -61,7 +61,7 @@ mod:AddAuraSoundOption(1246158, true, 1246158, 1, 2, "watchfeet", 8)--Consecrati
 mod:AddAuraSoundOption(1248721, true, 1248721, 1, 1, "absorbyou", 19)--Tyrs Wrath
 mod:AddAuraSoundOption(1251857, true, 1251857, 1, 3, "debuffyou", 17)--Judgement for Shield of the Righteous
 mod:AddAuraSoundOption(1246487, true, 1246485, 1, 1, "scatter", 2)--Avenger's Shield
-mod:AddAuraSoundOption(1248652, true, 1248652, 1, 1, "debuffyou", 17)--Divine Toll
+mod:AddAuraSoundOption(1248652, true, 1248652, 1, 1, "silenceyou", 19)--Divine Toll
 mod:AddAuraSoundOption(1246736, true, 1246736, 1, 3, "debuffyou", 17)--Judgement for Final Verdict
 mod:AddAuraSoundOption({1248985,1248994}, true, 1276368, 1, 1, "gathershare", 2)--Execution Sentence targets
 mod:AddAuraSoundOption({1249008,1249024}, false, 1276368, 1, 3, "debuffyou", 17)--Execution Sentence Soak debuff

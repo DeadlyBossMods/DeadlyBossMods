@@ -325,6 +325,7 @@ local VPSound = {
 	["shockwave"] = 2,
 	["shockyou"] = 18,
 	["silencesoon"] = 0,
+	["silenceyou"] = 19,--Neuro Done
 	["slagelementalcoming"] = 12,
 	["slamincoming"] = 19,
 	["soakbeam"] = 17,
