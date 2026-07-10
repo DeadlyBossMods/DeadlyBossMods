@@ -46,6 +46,10 @@ local timerRousetheBroodCD				= mod:NewCDCountTimer(20.5, 1308356, nil, nil, nil
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local next68Event = "caustic"
 local next6Event = "surge"
+local nextMythic8Event = "caustic"
+local nextMythic33Event = "beckon"
+local nextMythic61Event = "caustic"
+local nextMythic6Event = "barrage"
 
 mod.vb.CausticDelugeCount = 0
 mod.vb.StoneBreakerCount = 0
@@ -99,6 +103,10 @@ function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	next68Event = "caustic"
 	next6Event = "surge"
+	nextMythic8Event = "caustic"
+	nextMythic33Event = "beckon"
+	nextMythic61Event = "caustic"
+	nextMythic6Event = "barrage"
 	self.vb.CausticDelugeCount = 1
 	self.vb.StoneBreakerCount = 1
 	self.vb.SurgeCount = 1
@@ -111,7 +119,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.BarrageCount = 1
 	self.vb.RousetheBroodCount = 1
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsMythic()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -128,6 +136,10 @@ function mod:OnCombatEnd()
 	self:TLCountReset()
 	next68Event = "caustic"
 	next6Event = "surge"
+	nextMythic8Event = "caustic"
+	nextMythic33Event = "beckon"
+	nextMythic61Event = "caustic"
+	nextMythic6Event = "barrage"
 	self:UnregisterShortTermEvents()
 end
 
@@ -198,16 +210,102 @@ do
 		end
 	end
 
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersMythic(self, timer, timerExact, eventID)
+		local handled = false
+		if timer == 8 then
+			handled = true
+			if nextMythic8Event == "caustic" then
+				timerCausticDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "caustic", "CausticDelugeCount"))
+				nextMythic8Event = "blood"
+			else
+				timerBloodTorrentCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blood", "BloodTorrentCount"))
+				nextMythic8Event = "caustic"
+			end
+		elseif timer == 18 then
+			handled = true
+			timerStoneBreakerCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "stone", "StoneBreakerCount"))
+		elseif timer == 33 then
+			handled = true
+			if nextMythic33Event == "beckon" then
+				timerBeckonProgenyCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "beckon", "BeckonProgenyCount"))
+				nextMythic33Event = "rouse"
+			else
+				timerRousetheBroodCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rouse", "RousetheBroodCount"))
+				nextMythic33Event = "beckon"
+			end
+		elseif timer == 40 then
+			handled = true
+			timerCoilingToxinCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingToxinCount"))
+		elseif timer == 47 then
+			handled = true
+			timerStirtheDepthsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "stir", "StirtheDepthsCount"))
+		elseif timer == 57 then
+			handled = true
+			timerRavenousFeastCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenous", "RavenousFeastCount"))
+		elseif timer == 61 then
+			handled = true
+			if nextMythic61Event == "caustic" then
+				timerCausticDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "caustic", "CausticDelugeCount"))
+				nextMythic61Event = "blood"
+			elseif nextMythic61Event == "blood" then
+				timerBloodTorrentCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blood", "BloodTorrentCount"))
+				nextMythic61Event = "stone"
+			elseif nextMythic61Event == "stone" then
+				timerStoneBreakerCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "stone", "StoneBreakerCount"))
+				nextMythic61Event = "beckon"
+			elseif nextMythic61Event == "beckon" then
+				timerBeckonProgenyCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "beckon", "BeckonProgenyCount"))
+				nextMythic61Event = "rouse"
+			elseif nextMythic61Event == "rouse" then
+				timerRousetheBroodCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rouse", "RousetheBroodCount"))
+				nextMythic61Event = "coiling"
+			elseif nextMythic61Event == "coiling" then
+				timerCoilingToxinCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingToxinCount"))
+				nextMythic61Event = "stir"
+			elseif nextMythic61Event == "stir" then
+				timerStirtheDepthsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "stir", "StirtheDepthsCount"))
+				nextMythic61Event = "ravenous"
+			else
+				timerRavenousFeastCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenous", "RavenousFeastCount"))
+				nextMythic61Event = "caustic"
+			end
+		elseif timer == 6 then
+			handled = true
+			if nextMythic6Event == "barrage" then
+				timerBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "barrage", "BarrageCount"))
+				nextMythic6Event = "surge"
+			else
+				timerSurgeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "surge", "SurgeCount"))
+				nextMythic6Event = "barrage"
+			end
+		end
+
+		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+		end
+	end
+
 	--Note, bar state changing and canceling is handled by core
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if not self:IsHeroic() then return end--Hardcoded routing currently Heroic-only
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			timersHeroic(self, timer, timerExact, eventID)
+			if self:IsMythic() then
+				timersMythic(self, timer, timerExact, eventID)
+			elseif self:IsHeroic() then
+				timersHeroic(self, timer, timerExact, eventID)
+			end
 		end
 	end
 
@@ -241,6 +339,12 @@ do
 			elseif eventType == "barrage" then
 				specWarnBarrage:Show(eventCount)
 				specWarnBarrage:Play("watchstep")
+			elseif eventType == "blood" then
+				specWarnBloodTorrent:Show(eventCount)
+				specWarnBloodTorrent:Play("bigmob")
+			elseif eventType == "rouse" then
+				specWarnRousetheBrood:Show(eventCount)
+				specWarnRousetheBrood:Play("mobsoon")
 			end
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)
