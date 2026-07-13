@@ -137,7 +137,13 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["PrivateAuraSound" .. optionId] = (default == nil) or default
-	if not DBM:GetSpellInfo(optionId) then
+	--12.0 and older check, if it's not a private aura don't add it at all
+	if C_UnitAuras and C_UnitAuras.AuraIsPrivate and not C_UnitAuras.AuraIsPrivate(optionId) then
+		DBM:Debug("Attempting to add private aura sound failed because spell ID " .. optionId .. " is not a private aura. Check spell ID and try again for mod " .. self.id, 1, nil, nil, true)
+		return
+	end
+	--12.1 and later check, we accept any aura, if it exists
+	if not DBM:DoesSpellExist(optionId) then
 		DBM:Debug("Attempting to add aura sound failed because spell ID " .. optionId .. " does not exist. Check spell ID and try again for mod " .. self.id, 1, nil, nil, true)
 		return
 	end
