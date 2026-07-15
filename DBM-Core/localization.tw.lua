@@ -527,6 +527,7 @@ L.AUTO_TIMER_TEXTS.castpnp				= L.AUTO_TIMER_TEXTS.cast -- OPTIONAL
 L.AUTO_TIMER_OPTIONS.target					= "計時條：$spell:%s減益效果持續時間"
 L.AUTO_TIMER_OPTIONS.targetcount			= "計時條：$spell:%s減益效果持續時間(包含計數)"
 L.AUTO_TIMER_OPTIONS.cast					= "計時條：$spell:%s施法時間"
+L.AUTO_TIMER_OPTIONS.castpnp 				= "計時條：$spell:%s的施放顯示優先名條僅有計時器"
 L.AUTO_TIMER_OPTIONS.castcount				= "計時條：$spell:%s施法時間(包含計數)"
 L.AUTO_TIMER_OPTIONS.castsource				= "計時條：$spell:%s施放(包含來源)"
 L.AUTO_TIMER_OPTIONS.active					= "計時條：$spell:%s效果持續時間"
