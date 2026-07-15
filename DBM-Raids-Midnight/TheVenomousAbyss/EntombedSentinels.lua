@@ -41,6 +41,7 @@ local timerBerserkCD					= mod:NewBerserkTimer(600)
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local firstBerserkIgnored = false
 local next22Event = "empoweringslam"
+local mythic20EventCycleIndex = 1
 local batchTimerValues = {
 	[4] = true,
 	[6] = true,
@@ -98,6 +99,7 @@ function mod:OnLimitedCombatStart()
 	self:TLBatchReset()
 	firstBerserkIgnored = false
 	next22Event = "empoweringslam"
+	mythic20EventCycleIndex = 1
 	self.vb.VenomCoagulationCount = 1
 	self.vb.ToxicDropletsCount = 1
 	self.vb.EmpoweringSlamCount = 1
@@ -108,7 +110,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.UnstableMiasmaCount = 1
 	self.vb.ShiftingProtovenomCount = 1
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsMythic()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -126,6 +128,7 @@ function mod:OnCombatEnd()
 	self:TLBatchReset()
 	firstBerserkIgnored = false
 	next22Event = "empoweringslam"
+	mythic20EventCycleIndex = 1
 	self:UnregisterShortTermEvents()
 end
 
@@ -165,7 +168,20 @@ do
 			timerUnstableMiasmaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "unstablemiasma", "UnstableMiasmaCount"))
 		elseif timer == 20 then
 			handled = true
-			timerVitriolicStasisCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vitriolicstasis", "VitriolicStasisCount"))
+			if self:IsMythic() then
+				-- Mythic 20s cadence is repeating S, V, S (Shifting, Vitriolic, Shifting)
+				if mythic20EventCycleIndex == 2 then
+					timerVitriolicStasisCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vitriolicstasis", "VitriolicStasisCount"))
+				else
+					timerShiftingProtovenomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shiftingprotovenom", "ShiftingProtovenomCount"))
+				end
+				mythic20EventCycleIndex = mythic20EventCycleIndex + 1
+				if mythic20EventCycleIndex > 3 then
+					mythic20EventCycleIndex = 1
+				end
+			else
+				timerVitriolicStasisCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vitriolicstasis", "VitriolicStasisCount"))
+			end
 		elseif timer == 22 then
 			handled = true
 			if next22Event == "empoweringslam" then
@@ -210,7 +226,7 @@ do
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if not self:IsHeroic() then return end--Hardcoded routing currently Heroic-only
+		if not (self:IsHeroic() or self:IsMythic()) then return end
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
@@ -244,6 +260,9 @@ do
 			elseif eventType == "unstablemiasma" then
 				specWarnUnstableMiasma:Show(eventCount)
 				specWarnUnstableMiasma:Play("gathershare")
+			elseif eventType == "shiftingprotovenom" then
+				specWarnShiftingProtovenom:Show(eventCount)
+				specWarnShiftingProtovenom:Play("colorchange")
 			elseif eventType == "vitriolicstasis" then
 				warnVitriolicStasis:Show(eventCount)
 			end

@@ -85,10 +85,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 416, "1888a1e"--416.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.0.55 alpha"--Core version
+DBM.DisplayVersion = "12.1.0 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 6, 26) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 7, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -6747,12 +6747,12 @@ end
 
 do
 	--Handle new spell name requesting with wrapper, to make api changes easier to handle
-	local GetSpellInfo, GetSpellTexture, GetSpellCooldown, GetSpellName
+	local GetSpellInfo, GetSpellTexture, GetSpellCooldown, GetSpellName, DoesSpellExist
 	local halfAssedClassicPath
 	if C_Spell and C_Spell.GetSpellInfo then
-		GetSpellInfo, GetSpellTexture, GetSpellName = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellName
+		GetSpellInfo, GetSpellTexture, GetSpellName, DoesSpellExist = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture, C_Spell.GetSpellName, C_Spell.DoesSpellExist
 		--Blizzard forgot to sync GetSpellCooldown to C Space with other spells in all classic versions (cata and vanilla and wrath alike)
-		--This is what happens when you do half assed syncs that can't even maintain parity properly during rebases
+		--DoesSpellExist likely has same probelm with titan wrath client but any apis using it won't be used there so safe to exclude, maybe
 		if not C_Spell.GetSpellCooldown then
 			---@diagnostic disable-next-line: undefined-field
 			GetSpellCooldown = _G.GetSpellCooldown
@@ -6799,6 +6799,12 @@ do
 		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
 		local spellName = GetSpellName(spellId)
 		return spellName
+	end
+
+	function DBM:DoesSpellExist(spellId)
+		if not spellId then return false end
+		local spellExists = DoesSpellExist(spellId)
+		return spellExists
 	end
 
 	---Wrapper for Blizzard GetSpellCooldown global that converts new table returns to old arg returns

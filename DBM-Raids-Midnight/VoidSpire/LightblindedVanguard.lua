@@ -61,7 +61,7 @@ mod:AddAuraSoundOption(1246158, true, 1246158, 1, 2, "watchfeet", 8)--Consecrati
 mod:AddAuraSoundOption(1248721, true, 1248721, 1, 1, "absorbyou", 19)--Tyrs Wrath
 mod:AddAuraSoundOption(1251857, true, 1251857, 1, 3, "debuffyou", 17)--Judgement for Shield of the Righteous
 mod:AddAuraSoundOption(1246487, true, 1246485, 1, 1, "scatter", 2)--Avenger's Shield
-mod:AddAuraSoundOption(1248652, true, 1248652, 1, 1, "debuffyou", 17)--Divine Toll
+mod:AddAuraSoundOption(1248652, true, 1248652, 1, 1, "silenceyou", 19)--Divine Toll
 mod:AddAuraSoundOption(1246736, true, 1246736, 1, 3, "debuffyou", 17)--Judgement for Final Verdict
 mod:AddAuraSoundOption({1248985,1248994}, true, 1276368, 1, 1, "gathershare", 2)--Execution Sentence targets
 mod:AddAuraSoundOption({1249008,1249024}, false, 1276368, 1, 3, "debuffyou", 17)--Execution Sentence Soak debuff
@@ -110,6 +110,7 @@ local timer60Count = 0
 local timer7Count = 0
 local timer18Count = 0
 local timer18LateShift = false
+local timer18UsesLateTwelveVariant = false
 local timer36Count = 0
 local timer54Count = 0
 local timer57Count = 0
@@ -120,6 +121,7 @@ local timer159Uses156Variant = false
 local timer159Uses172Variant = false
 local timer159V172AnchorCount = 0
 local timer159DefaultSawAoP = false
+local mythicPullStartedAt = 0
 
 ---@param self DBMMod
 	---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -205,6 +207,7 @@ function mod:OnLimitedCombatStart()
 	timer7Count = 0
 	timer18Count = 0
 	timer18LateShift = false
+	timer18UsesLateTwelveVariant = false
 	timer36Count = 0
 	timer54Count = 0
 	timer57Count = 0
@@ -215,6 +218,7 @@ function mod:OnLimitedCombatStart()
 	timer159Uses172Variant = false
 	timer159V172AnchorCount = 0
 	timer159DefaultSawAoP = false
+	mythicPullStartedAt = GetTime()
 	badStateDetectedAt = nil
 	--Use FixBlizzardAPI to force fight to only show bars < 60 seconds by default since blizzard EXCESSIVELY overschedules timers on this fight
 	self:FixBlizzardAPI()
@@ -259,6 +263,7 @@ function mod:OnCombatEnd()
 	timer7Count = 0
 	timer18Count = 0
 	timer18LateShift = false
+	timer18UsesLateTwelveVariant = false
 	timer36Count = 0
 	timer54Count = 0
 	timer57Count = 0
@@ -269,6 +274,7 @@ function mod:OnCombatEnd()
 	timer159Uses172Variant = false
 	timer159V172AnchorCount = 0
 	timer159DefaultSawAoP = false
+	mythicPullStartedAt = 0
 	self:UnregisterShortTermEvents()
 end
 
@@ -668,8 +674,9 @@ do
 			end
 		elseif timer == 123 or timer == 144 then--Divine Storm
 			--Empowered Cast (1272310)
-			timerEmpoweredDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "empDivineStorm", "empoweredDivineStormCount"))
-			if timer == 144 and self.vb.empoweredDivineStormCount >= 3 then
+			local empDivineStormCount = self:TLCountStart(eventID, "empDivineStorm", "empoweredDivineStormCount")
+			timerEmpoweredDivineStormCD:TLStart(timerExact, eventID, empDivineStormCount)
+			if timer == 144 and empDivineStormCount >= 3 then
 				--Week17 late pull drift: after the 3rd empowered DS (rounded 144),
 				--the observed rounded-18 chain shifts by one step.
 				timer18LateShift = true
@@ -760,7 +767,11 @@ do
 			--Wipe2 (rounded-156 SR present): ZS, AoD, DT, ZS, AoW, ES, ZS, AoP, TW, ZS, AoD, DT, ZS, SR, AoW, ES, ZS, TW
 			--Wipe4 (rounded-172/157 SR present): ZS, AoD, DT, ZS, AoW, ES, AoP, TW, ZS, AoD, DT, ZS, SR, AoW, ES, ZS, TW
 			timer159Count = timer159Count + 1
-			local function startAmbiguousSearing159()
+			local function startAmbiguousSearing159(forceEmpowered)
+				if forceEmpowered then
+					timerEmpoweredSearingRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "empSearingRadiance", "empoweredSearingRadianceCount"))
+					return
+				end
 				--Count-based disambiguation:
 				--If empowered Searing is currently one cast behind regular Searing,
 				--the next ambiguous rounded-159 Searing should be empowered (Week16 T-180 case).
@@ -898,7 +909,8 @@ do
 					elseif timer159Count == 10 then
 						timerZealousSpiritCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "zealousSpirit", "zealousSpiritCount"))
 					elseif timer159Count == 11 then
-						startAmbiguousSearing159()
+						--Observed Week16/17 regressions: default+AoP path at count 11 is empowered SR.
+						startAmbiguousSearing159(true)
 					elseif timer159Count == 12 then
 						timerAuraofDevotionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "auraDevotion", "auraofDevotionCount"))
 					elseif timer159Count == 13 then
@@ -950,7 +962,13 @@ do
 			--Observed Mythic Week4 VanguardWipe3 18s sequence:
 			--1DS 2ST 3DS 4ST 5DS 6ST 7AS 8ST 9DS 10JS 11JF 12AS 13DS 14ST 15DS 16ST 17DS 18ST 19DS 20AS 21ST 22DS 23ST 24JS 25JF 26DS 27ST 28DS 29ST 30DS 31ST 32DS 33AS 34AS
 			timer18Count = timer18Count + 1
-			if timer18LateShift and timer18Count >= 22 then
+			if timer18Count == 12 then
+				--Two observed variants around the 12th rounded-18 event:
+				--~156s => AS@12 (default), ~159s => DS@12 (late-twelve variant)
+				local pullElapsed = mythicPullStartedAt > 0 and (GetTime() - mythicPullStartedAt) or 0
+				timer18UsesLateTwelveVariant = pullElapsed >= 157.5
+			end
+			if (timer18LateShift or timer18Count >= 22) and timer18Count >= 22 then
 				--Week17 observed continuation after late-shift pivot:
 				--22 ST, 23 DS, 24 ST, 25 JS, 26 JF, 27 DS, 28 ST, 29 DS
 				if timer18Count == 22 or timer18Count == 24 or timer18Count == 28 then
@@ -966,6 +984,20 @@ do
 				elseif timer18Count == 31 or timer18Count == 33 then
 					timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
 				elseif timer18Count == 34 or timer18Count == 35 then
+					timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
+				else
+					badStateDetected = true
+					self:ResumeBlizzardAPI()
+					self:UnregisterShortTermEvents()
+					setFallback(self)
+					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				end
+			elseif timer18UsesLateTwelveVariant and timer18Count >= 12 and timer18Count <= 21 then
+				if timer18Count == 12 or timer18Count == 14 or timer18Count == 16 or timer18Count == 18 then
+					timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
+				elseif timer18Count == 13 or timer18Count == 15 or timer18Count == 17 or timer18Count == 20 or timer18Count == 21 then
+					timerSacredTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sacredToll", "sacredTollCount"))
+				elseif timer18Count == 19 then
 					timerAvengerShieldCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "avengerShield", "avengerShieldCount"))
 				else
 					badStateDetected = true

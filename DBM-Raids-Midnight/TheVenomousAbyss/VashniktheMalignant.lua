@@ -90,7 +90,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.StygianBurstCount = 1
 
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -120,6 +120,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersHeroic(self, timer, timerExact, eventID)
+		--Confirmed same on heroic and mythic so far
 		local handled
 		if timer == 8 or timer == 11 or timer == 22 then
 			handled = true
@@ -160,7 +161,6 @@ do
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if not self:IsHeroic() then return end--Hardcoded routing currently Heroic-only
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)

@@ -20,7 +20,7 @@ local specWarnCausticClaws				= mod:NewSpecialWarningCount(1285733, nil, nil, ni
 
 local timerRagingCrosswindsCD			= mod:NewCDCountTimer(20.5, 1285425, nil, nil, nil, 3)
 local timerVenomousSurgeCD				= mod:NewCDCountTimer(20.5, 1305959, nil, nil, nil, 3)
-local timerApexPedatorCD				= mod:NewCDCountTimer(20.5, 1285430, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerApexPedatorCD				= mod:NewCDCountTimer(20.5, 1285430, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerHowlingMaelstromCD			= mod:NewCDCountTimer(20.5, 1285732, nil, nil, nil, 2, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
