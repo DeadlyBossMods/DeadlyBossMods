@@ -570,6 +570,13 @@ local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
 -- 0 variables
 local LastInstanceMapID = -1
 
+local function GetAuraHandler()
+	if DBM:GetTOC() >= 120100 then
+		return DBM.AuraTracking
+	end
+	return DBM.PrivateAuras
+end
+
 local deprecatedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
 	"DBM-SiegeOfOrgrimmar",--Block legacy version. New version is "DBM-SiegeOfOrgrimmarV2"
@@ -3157,12 +3164,15 @@ do
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
 		end
-		if private.isRetail and DBM:GetTOC() < 120100 then
-			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
-			if not succeeded then
-				pendingPAAnchorCheck = 2
-			else
-				pendingPAAnchorCheck = 0
+		if private.isRetail then
+			local auraHandler = GetAuraHandler()
+			if auraHandler then
+				local succeeded = auraHandler:UpdatePrivateAuraAnchors()
+				if not succeeded then
+					pendingPAAnchorCheck = 2
+				else
+					pendingPAAnchorCheck = 0
+				end
 			end
 		end
 	end
@@ -4745,8 +4755,9 @@ do
 		if private.isRetail then
 			--Handle private aura sounds and anchors
 			syncZoneAuraSounds(self, mapID)
-			if self:GetTOC() < 120100 then
-				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+			local auraHandler = GetAuraHandler()
+			if auraHandler then
+				local succeeded = auraHandler:UpdatePrivateAuraAnchors()
 				if not succeeded then
 					pendingPAAnchorCheck = 1
 				else
@@ -5189,9 +5200,12 @@ do
 				syncZoneAuraSounds(self, pendingPASoundZoneSync)
 			end
 			if pendingPAAnchorCheck > 0 then
-				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
-				if succeeded then
-					pendingPAAnchorCheck = 0
+				local auraHandler = GetAuraHandler()
+				if auraHandler then
+					local succeeded = auraHandler:UpdatePrivateAuraAnchors()
+					if succeeded then
+						pendingPAAnchorCheck = 0
+					end
 				end
 			end
 		end

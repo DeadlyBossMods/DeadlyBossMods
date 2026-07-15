@@ -9,6 +9,13 @@ local L = DBM_CORE_L
 local stringUtils = private:GetPrototype("StringUtils")
 local difficulties = private:GetPrototype("Difficulties")
 
+local function GetAuraHandler()
+	if DBM:GetTOC() >= 120100 then
+		return DBM.AuraTracking
+	end
+	return DBM.PrivateAuras
+end
+
 local function getPTCountThreshold(self)
 	return floor(self.Options.PTCountThreshold2)
 end
@@ -103,10 +110,11 @@ do
 			if self.Options.RecordOnlyBosses then
 				self:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
 			end
-			if private.isRetail and DBM:GetTOC() < 120100 then
-				if not InCombatLockdown() and not self.PrivateAuras:IsRegistered() then
+			if private.isRetail then
+				local auraHandler = GetAuraHandler()
+				if auraHandler and not InCombatLockdown() and not auraHandler:IsRegistered() then
 					--Locked down in combat, so we try to do it early in pull timer
-					self.PrivateAuras:RegisterAllUnits()
+					auraHandler:RegisterAllUnits()
 				end
 			end
 			if private.isRetail and self.Options.CheckGear and not private.testBuild then
