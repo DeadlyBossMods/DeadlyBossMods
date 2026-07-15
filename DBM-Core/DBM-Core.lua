@@ -570,13 +570,6 @@ local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
 -- 0 variables
 local LastInstanceMapID = -1
 
-local function GetAuraHandler()
-	if DBM:GetTOC() >= 120100 then
-		return DBM.AuraTracking
-	end
-	return DBM.PrivateAuras
-end
-
 local deprecatedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
 	"DBM-SiegeOfOrgrimmar",--Block legacy version. New version is "DBM-SiegeOfOrgrimmarV2"
@@ -3165,9 +3158,10 @@ do
 			lastGroupLeader = nil
 		end
 		if private.isRetail then
-			local auraHandler = GetAuraHandler()
+			local auraHandler = DBM.Auras
 			if auraHandler then
-				local succeeded = auraHandler:UpdatePrivateAuraAnchors()
+				local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+				local succeeded = updateMethod and updateMethod(auraHandler)
 				if not succeeded then
 					pendingPAAnchorCheck = 2
 				else
@@ -4755,9 +4749,10 @@ do
 		if private.isRetail then
 			--Handle private aura sounds and anchors
 			syncZoneAuraSounds(self, mapID)
-			local auraHandler = GetAuraHandler()
+			local auraHandler = DBM.Auras
 			if auraHandler then
-				local succeeded = auraHandler:UpdatePrivateAuraAnchors()
+				local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+				local succeeded = updateMethod and updateMethod(auraHandler)
 				if not succeeded then
 					pendingPAAnchorCheck = 1
 				else
@@ -5200,9 +5195,10 @@ do
 				syncZoneAuraSounds(self, pendingPASoundZoneSync)
 			end
 			if pendingPAAnchorCheck > 0 then
-				local auraHandler = GetAuraHandler()
+				local auraHandler = DBM.Auras
 				if auraHandler then
-					local succeeded = auraHandler:UpdatePrivateAuraAnchors()
+					local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+					local succeeded = updateMethod and updateMethod(auraHandler)
 					if succeeded then
 						pendingPAAnchorCheck = 0
 					end

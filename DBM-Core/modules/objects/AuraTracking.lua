@@ -7,7 +7,7 @@ local private = select(2, ...)
 
 ---@class DBMAuraTracking
 local AuraTracking = {}
-DBM.AuraTracking = AuraTracking
+DBM.Auras = AuraTracking
 
 local AuraTrackingFilters = {
 	"HARMFUL|!PLAYER",
@@ -21,7 +21,7 @@ local auraAnchorsRegistered = false
 
 ---@param prefix string The prefix for the option keys (e.g., "PrivateAurasPlayer")
 ---@return table Settings table with all configuration properties
-local function GetPrivateAuraSettings(prefix)
+local function GetAuraSettings(prefix)
 	return {
 		HideBorder = DBM.Options[prefix .. "HideBorder"],
 		HideTooltip = DBM.Options[prefix .. "HideTooltip"],
@@ -52,7 +52,7 @@ end
 ---@param index integer
 ---@return table
 local function GetCoTankSettings(index)
-	local settings = GetPrivateAuraSettings("PrivateAurasCoTank")
+	local settings = GetAuraSettings("PrivateAurasCoTank")
 	if index and index > 1 then
 		settings.yOffset = settings.yOffset - GetCoTankRowYOffset(settings) * (index - 1)
 	end
@@ -296,11 +296,11 @@ end
 function AuraTracking:RegisterAllUnits()
 	auraAnchorsRegistered = true
 	if DBM.Options.DontShowPrivateAuraFrame then
-		self:UnregisterPrivateAuras()
+		self:UnregisterAuras()
 		return
 	end
 
-	RegisterAuraContainer(self, "player", "player", GetPrivateAuraSettings("PrivateAurasPlayer"))
+	RegisterAuraContainer(self, "player", "player", GetAuraSettings("PrivateAurasPlayer"))
 
 	HideContainerState(self, "cotank1")
 	HideContainerState(self, "cotank2")
@@ -321,7 +321,7 @@ function AuraTracking:RegisterAllUnits()
 end
 
 ---@param unit string? if nil, will unregister all units.
-function AuraTracking:UnregisterPrivateAuras(unit)
+function AuraTracking:UnregisterAuras(unit)
 	auraAnchorsRegistered = false
 	if unit == nil then
 		HideContainerState(self, "player")
@@ -347,13 +347,13 @@ local function IsInValidInstance()
 	return inInstance and instanceType ~= "pvp" and instanceType ~= "arena"
 end
 
-function AuraTracking:UpdatePrivateAuraAnchors()
+function AuraTracking:UpdateAuraAnchors()
 	if InCombatLockdown() then
 		return false
 	end
 	if auraAnchorsRegistered then
 		auraAnchorsRegistered = false
-		AuraTracking:UnregisterPrivateAuras()
+		AuraTracking:UnregisterAuras()
 	end
 	if IsInValidInstance() then
 		AuraTracking:RegisterAllUnits()
@@ -364,12 +364,12 @@ end
 ---@param player boolean?
 function AuraTracking:OnSettingsChange(player)
 	if not self.IsInPreview then
-		self:UpdatePrivateAuraAnchors()
+		self:UpdateAuraAnchors()
 		return
 	end
 	if player then
 		if self.PlayerPreview then
-			local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
+			local PlayerSettings = GetAuraSettings("PrivateAurasPlayer")
 			self.PlayerPreview:ClearAllPoints()
 			self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
 			self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
@@ -406,14 +406,14 @@ function AuraTracking:PreviewToggle()
 		DBM:AddMsg(DBM_CORE_L.MOVE_PRIVATE_AURA_DISABLED)
 		return
 	end
-	local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
+	local PlayerSettings = GetAuraSettings("PrivateAurasPlayer")
 	local CoTankSettings = GetCoTankSettings(1)
 	local CoTankSettings2 = GetCoTankSettings(2)
 	if self.IsInPreview then
 		DBM:Unschedule(stopMoving)
 		stopMoving(self)
 		DBT:CancelBar("AuraMove")
-		self:UpdatePrivateAuraAnchors()
+		self:UpdateAuraAnchors()
 	else
 		DBM:Schedule(30, stopMoving, self)
 		DBT:CreateBar(30, "AuraMove", 136116, true):SetText(DBM_CORE_L.MOVABLE_FRAMES)

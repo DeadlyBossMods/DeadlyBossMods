@@ -734,13 +734,6 @@ end
 do
 	local oldInfoFrameLocked, unlockTriggeredPrivateAurasPreview--oldRangeFrameLocked
 
-	local function GetAuraHandler()
-		if DBM:GetTOC() >= 120100 then
-			return DBM.AuraTracking
-		end
-		return DBM.PrivateAuras
-	end
-
 	local function updateClickThrough(self, newValue)
 		if not self.movable then
 			for bar in self:GetBarIterator() do
@@ -760,7 +753,7 @@ do
 --		DBM.Options.RangeFrameLocked = oldRangeFrameLocked
 --		DBM.RangeCheck:Hide(true)
 		if unlockTriggeredPrivateAurasPreview then
-			local auraHandler = GetAuraHandler()
+			local auraHandler = DBM.Auras
 			if auraHandler and auraHandler.IsInPreview then
 				auraHandler:PreviewToggle()
 			end
@@ -785,7 +778,7 @@ do
 --		oldRangeFrameLocked = DBM.Options.RangeFrameLocked
 --		DBM.Options.RangeFrameLocked = false
 --		DBM.RangeCheck:Show(nil, nil, true)
-		local auraHandler = GetAuraHandler()
+		local auraHandler = DBM.Auras
 		if auraHandler and not auraHandler.IsInPreview then
 			auraHandler:PreviewToggle()
 			unlockTriggeredPrivateAurasPreview = true

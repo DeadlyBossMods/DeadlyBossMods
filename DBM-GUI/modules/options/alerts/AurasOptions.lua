@@ -1,22 +1,15 @@
 local L = DBM_GUI_L
 local isAuraTracking121 = DBM:GetTOC() >= 120100
 
-local function GetAuraHandler()
-	if DBM:GetTOC() >= 120100 then
-		return DBM.AuraTracking
-	end
-	return DBM.PrivateAuras
-end
-
-local function OnPrivateAuraSettingsChange(player)
-	local auraHandler = GetAuraHandler()
+local function OnAuraSettingsChange(player)
+	local auraHandler = DBM.Auras
 	if auraHandler and auraHandler.OnSettingsChange then
 		auraHandler:OnSettingsChange(player)
 	end
 end
 
-local function TogglePrivateAuraPreview()
-	local auraHandler = GetAuraHandler()
+local function ToggleAuraPreview()
+	local auraHandler = DBM.Auras
 	if auraHandler and auraHandler.PreviewToggle then
 		auraHandler:PreviewToggle()
 	end
@@ -51,7 +44,7 @@ local personalAuraArea 	= auraPanel:CreateArea(L.Area_PersonalPrivateAuras)
 local personalAuraIcon	= personalAuraArea:CreateCheckButton(L.EnablePersonalPrivateAuraIcons, true, nil, "PrivateAurasPlayerEnabled")
 personalAuraIcon:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerEnabled = not DBM.Options.PrivateAurasPlayerEnabled
-	OnPrivateAuraSettingsChange(true)
+	OnAuraSettingsChange(true)
 end)
 local personalUpscaleDText
 local personalAuraText
@@ -59,30 +52,30 @@ if not isAuraTracking121 then
 	personalUpscaleDText = personalAuraArea:CreateCheckButton(L.UpscaleDurationText, true, nil, "PrivateAurasPlayerUpscaleDuration")
 	personalUpscaleDText:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasPlayerUpscaleDuration = not DBM.Options.PrivateAurasPlayerUpscaleDuration
-		OnPrivateAuraSettingsChange(true)
+		OnAuraSettingsChange(true)
 	end)
 	personalAuraText = personalAuraArea:CreateCheckButton(L.EnablePersonalPrivateAuraText, true, nil, "PrivateAurasTextAnchorEnabled")
 	personalAuraText:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasTextAnchorEnabled = not DBM.Options.PrivateAurasTextAnchorEnabled
-		OnPrivateAuraSettingsChange(true)
+		OnAuraSettingsChange(true)
 	end)
 end
 local personalAuraBorder 	= personalAuraArea:CreateCheckButton(L.HidePABorder, true, nil, "PrivateAurasPlayerHideBorder")
 personalAuraBorder:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerHideBorder = not DBM.Options.PrivateAurasPlayerHideBorder
-	OnPrivateAuraSettingsChange(true)
+	OnAuraSettingsChange(true)
 end)
 local personalAuraTooltip = personalAuraArea:CreateCheckButton(L.HidePATooltip, true, nil, "PrivateAurasPlayerHideTooltip")
 personalAuraTooltip:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerHideTooltip = not DBM.Options.PrivateAurasPlayerHideTooltip
-	OnPrivateAuraSettingsChange(true)
+	OnAuraSettingsChange(true)
 end)
 personalAuraTooltip:SetPoint("TOPLEFT", personalAuraBorder, "TOPLEFT", 150, 0)
 personalAuraTooltip.myheight = 0
 
 local personalAuraGrowDir = personalAuraArea:CreateDropdown(L.SetPAGrowDirection, growDirections, "DBM", "PrivateAurasPlayerGrowDirection", function(value)
 	DBM.Options.PrivateAurasPlayerGrowDirection = value
-	OnPrivateAuraSettingsChange(true)
+	OnAuraSettingsChange(true)
 end)
 personalAuraGrowDir:SetPoint("TOPLEFT", personalAuraBorder, "BOTTOMLEFT", 0, -20)
 personalAuraGrowDir.myheight = 30
@@ -92,7 +85,7 @@ personalSpacing:SetPoint("TOPLEFT", personalAuraGrowDir, "TOPLEFT", 180, 0)
 personalSpacing:SetValue(DBM.Options.PrivateAurasPlayerSpacing)
 personalSpacing:HookScript("OnValueChanged", function(self)
 	DBM.Options.PrivateAurasPlayerSpacing = self:GetValue()
-	OnPrivateAuraSettingsChange(true)
+	OnAuraSettingsChange(true)
 end)
 personalSpacing.myheight = 0
 
@@ -102,7 +95,7 @@ personalAuraIconScale:SetValue(DBM.Options.PrivateAurasPlayerWidth)
 personalAuraIconScale:HookScript("OnValueChanged", function(self)
 	DBM.Options.PrivateAurasPlayerWidth = self:GetValue()
 	DBM.Options.PrivateAurasPlayerHeight = self:GetValue()
-	OnPrivateAuraSettingsChange(true)
+	OnAuraSettingsChange(true)
 end)
 personalAuraIconScale.myheight = 50
 
@@ -111,7 +104,7 @@ personalAuraMaxIcons:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 180, 
 personalAuraMaxIcons:SetValue(DBM.Options.PrivateAurasPlayerLimit)
 personalAuraMaxIcons:HookScript("OnValueChanged", function(self)
 	DBM.Options.PrivateAurasPlayerLimit = self:GetValue()
-	OnPrivateAuraSettingsChange(true)
+	OnAuraSettingsChange(true)
 end)
 personalAuraMaxIcons.myheight = 0
 
@@ -120,7 +113,7 @@ personalAuraStackScale:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 0, 
 personalAuraStackScale:SetValue(DBM.Options.PrivateAurasPlayerScale)
 personalAuraStackScale:HookScript("OnValueChanged", function(self)
 	DBM.Options.PrivateAurasPlayerScale = self:GetValue()
-	OnPrivateAuraSettingsChange(true)
+	OnAuraSettingsChange(true)
 end)
 personalAuraStackScale.myheight = 50
 
@@ -131,7 +124,7 @@ if not isAuraTracking121 then
 	personalAuraTextMesssageScale:SetValue(DBM.Options.PrivateAurasTextAnchorScale)
 	personalAuraTextMesssageScale:HookScript("OnValueChanged", function(self)
 		DBM.Options.PrivateAurasTextAnchorScale = self:GetValue()
-		OnPrivateAuraSettingsChange(true)
+		OnAuraSettingsChange(true)
 	end)
 	personalAuraTextMesssageScale.myheight = 0
 end
@@ -141,7 +134,7 @@ personalMovemebutton:SetPoint("TOPRIGHT", personalAuraArea.frame, "TOPRIGHT", -2
 personalMovemebutton:SetNormalFontObject(GameFontNormalSmall)
 personalMovemebutton:SetHighlightFontObject(GameFontNormalSmall)
 personalMovemebutton:SetScript("OnClick", function()
-	TogglePrivateAuraPreview()
+	ToggleAuraPreview()
 end)
 
 local personalAuraReset = personalAuraArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
@@ -194,7 +187,7 @@ personalAuraReset:SetScript("OnClick", function()
 	end
 	--personalPASound:SetChecked(DBM.Options.DontPlayPrivateAuraSound)
 	--TODO, PrivateAurasPlayerXOffset and PrivateAurasPlayerYOffset are not yet implemented, need to add those to the UI and then set them here as well
-	OnPrivateAuraSettingsChange(true)
+	OnAuraSettingsChange(true)
 end)
 
 ----------------------------------
@@ -204,37 +197,37 @@ local coTankAuraArea		= auraPanel:CreateArea(L.Area_TankPrivateAuras)
 local coTankAuraIcon		= coTankAuraArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "PrivateAurasCoTankEnabled")
 coTankAuraIcon:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankEnabled = not DBM.Options.PrivateAurasCoTankEnabled
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
 local coTankAuraSecond	= coTankAuraArea:CreateCheckButton(L.ShowSecondCoTank, true, nil, "PrivateAurasCoTankShowSecond")
 coTankAuraSecond:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankShowSecond = not DBM.Options.PrivateAurasCoTankShowSecond
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
 local coTankUpscaleDText
 if not isAuraTracking121 then
 	coTankUpscaleDText = coTankAuraArea:CreateCheckButton(L.UpscaleDurationText, true, nil, "PrivateAurasCoTankUpscaleDuration")
 	coTankUpscaleDText:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasCoTankUpscaleDuration = not DBM.Options.PrivateAurasCoTankUpscaleDuration
-		OnPrivateAuraSettingsChange(true)
+		OnAuraSettingsChange(true)
 	end)
 end
 local coTankAuraBorder 	= coTankAuraArea:CreateCheckButton(L.HidePABorder, true, nil, "PrivateAurasCoTankHideBorder")
 coTankAuraBorder:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankHideBorder = not DBM.Options.PrivateAurasCoTankHideBorder
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
 local coTankAuraTooltip	= coTankAuraArea:CreateCheckButton(L.HidePATooltip, true, nil, "PrivateAurasCoTankHideTooltip")
 coTankAuraTooltip:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankHideTooltip = not DBM.Options.PrivateAurasCoTankHideTooltip
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
 coTankAuraTooltip:SetPoint("TOPLEFT", coTankAuraBorder, "TOPLEFT", 150, 0)
 coTankAuraTooltip.myheight = 0
 
 local coTankGrowDir = coTankAuraArea:CreateDropdown(L.SetPAGrowDirection, growDirections, "DBM", "PrivateAurasCoTankGrowDirection", function(value)
 	DBM.Options.PrivateAurasCoTankGrowDirection = value
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
 coTankGrowDir:SetPoint("TOPLEFT", coTankAuraBorder, "BOTTOMLEFT", 0, -20)
 coTankGrowDir.myheight = 30
@@ -244,7 +237,7 @@ coTankSpacing:SetPoint("TOPLEFT", coTankGrowDir, "TOPLEFT", 180, 0)
 coTankSpacing:SetValue(DBM.Options.PrivateAurasCoTankSpacing)
 coTankSpacing:HookScript("OnValueChanged", function(self)
 	DBM.Options.PrivateAurasCoTankSpacing = self:GetValue()
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
 coTankSpacing.myheight = 0
 
@@ -254,7 +247,7 @@ coTankIconScale:SetValue(DBM.Options.PrivateAurasCoTankWidth)
 coTankIconScale:HookScript("OnValueChanged", function(self)
 	DBM.Options.PrivateAurasCoTankWidth = self:GetValue()
 	DBM.Options.PrivateAurasCoTankHeight = self:GetValue()
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
 coTankIconScale.myheight = 50
 
@@ -263,7 +256,7 @@ coTankAuraMaxIcons:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 180, 0)
 coTankAuraMaxIcons:SetValue(DBM.Options.PrivateAurasCoTankLimit)
 coTankAuraMaxIcons:HookScript("OnValueChanged", function(self)
 	DBM.Options.PrivateAurasCoTankLimit = self:GetValue()
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
 coTankAuraMaxIcons.myheight = 0
 
@@ -272,7 +265,7 @@ coTankStackScale:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 0, -50)
 coTankStackScale:SetValue(DBM.Options.PrivateAurasCoTankScale)
 coTankStackScale:HookScript("OnValueChanged", function(self)
 	DBM.Options.PrivateAurasCoTankScale = self:GetValue()
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
 
 local coTankMovemebutton = coTankAuraArea:CreateButton(L.MoveMe, 100, 16)
@@ -280,7 +273,7 @@ coTankMovemebutton:SetPoint("TOPRIGHT", coTankAuraArea.frame, "TOPRIGHT", -2, -4
 coTankMovemebutton:SetNormalFontObject(GameFontNormalSmall)
 coTankMovemebutton:SetHighlightFontObject(GameFontNormalSmall)
 coTankMovemebutton:SetScript("OnClick", function()
-	TogglePrivateAuraPreview()
+	ToggleAuraPreview()
 end)
 
 local coTankAuraReset = coTankAuraArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
@@ -320,5 +313,5 @@ coTankAuraReset:SetScript("OnClick", function()
 	if coTankUpscaleDText then
 		coTankUpscaleDText:SetChecked(DBM.Options.PrivateAurasCoTankUpscaleDuration)
 	end
-	OnPrivateAuraSettingsChange(false)
+	OnAuraSettingsChange(false)
 end)
