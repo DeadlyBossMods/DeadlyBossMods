@@ -379,7 +379,9 @@ local function AcquireContainerState(self, key)
 		if not C_AddOns.IsAddOnLoaded("Blizzard_AuraContainer") then
 			C_AddOns.LoadAddOn("Blizzard_AuraContainer")
 		end
-		state.container = CreateFrame("AuraContainer", nil, UIParent, "CustomAuraContainerTemplate")
+		local container = CreateFrame("AuraContainer", nil, UIParent, "CustomAuraContainerTemplate")
+		---@cast container DBMAuraContainer
+		state.container = container
 		state.anchor = CreateFrame("Frame", nil, UIParent)
 		state.groupKey = "DBM_Aura_" .. key
 		state.key = key
