@@ -286,6 +286,7 @@ do
 			DBM:AddMsg(DBM_CORE_L.MOVE_PRIVATE_AURA_DISABLED)
 			return
 		end
+        local previewDuration = 30
         local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
         local TextAnchorSettings = GetPrivateAuraSettings("PrivateAurasTextAnchor")
         local CoTankSettings = GetCoTankSettings(1)
@@ -295,8 +296,8 @@ do
 	        stopMoving(self)
 			DBT:CancelBar("PAMove")
 	    else
-			DBM:Schedule(30, stopMoving, self)
-			DBT:CreateBar(30, "PAMove", 136116, true):SetText(DBM_CORE_L.MOVABLE_FRAMES)
+            DBM:Schedule(previewDuration, stopMoving, self)
+            DBT:CreateBar(previewDuration, "PAMove", 136116, true):SetText(DBM_CORE_L.MOVABLE_FRAMES)
 	        self.IsInPreview = true
 	        if PlayerSettings.enabled then
 	            if not self.PlayerPreview then
@@ -427,6 +428,7 @@ do
                         self.CoTankPreview2:Hide()
                     end
                 end
+                return previewDuration
 	        end
 	    end
 	end

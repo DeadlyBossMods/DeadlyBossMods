@@ -68,7 +68,7 @@ local bmtestmode = generaloptions:CreateButton(L.Button_TestBars, 120, 30)
 bmtestmode.myheight = 0
 bmtestmode:SetPoint("LEFT", bmrange, "RIGHT", 6, 0)
 bmtestmode:SetScript("OnClick", function()
-	DBM:DemoMode()
+	DBM_GUI:CollapseForPreview(DBM:DemoMode())
 end)
 
 if DBM:IsPostMidnight() then
@@ -83,7 +83,7 @@ end
 local moveme = generaloptions:CreateButton(L.Button_MoveBars, 120, 30)
 moveme:SetPoint("TOPLEFT", bmtestmode, "BOTTOMLEFT", 0, -2)
 moveme:SetScript("OnClick", function()
-	DBT:ShowMovableBar()
+	DBM_GUI:CollapseForPreview(DBT:ShowMovableBar())
 end)
 
 local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210)

@@ -732,6 +732,7 @@ do
 end
 
 do
+	local moveDuration = 20
 	local oldInfoFrameLocked, unlockTriggeredPrivateAurasPreview--oldRangeFrameLocked
 
 	local function updateClickThrough(self, newValue)
@@ -763,15 +764,15 @@ do
 
 	function DBT:ShowMovableBar(small, large)
 		if small or small == nil then
-			self:CreateBar(20, "Move1", 136116, nil, true):SetText(DBM_CORE_L.MOVABLE_BAR)
+			self:CreateBar(moveDuration, "Move1", 136116, nil, true):SetText(DBM_CORE_L.MOVABLE_BAR)
 		end
 		if large or large == nil then
-			self:CreateBar(20, "Move2", 136116, true):SetText(DBM_CORE_L.MOVABLE_BAR)
+			self:CreateBar(moveDuration, "Move2", 136116, true):SetText(DBM_CORE_L.MOVABLE_BAR)
 		end
 		updateClickThrough(self, false)
 		self.movable = true
 		DBM:Unschedule(moveEnd, self)
-		DBM:Schedule(20, moveEnd, self)
+		DBM:Schedule(moveDuration, moveEnd, self)
 		oldInfoFrameLocked = DBM.Options.InfoFrameLocked
 		DBM.Options.InfoFrameLocked = false
 		DBM.InfoFrame:Show(5, "test")
@@ -785,6 +786,7 @@ do
 		else
 			unlockTriggeredPrivateAurasPreview = false
 		end
+		return moveDuration
 	end
 
 	function DBT:SetOption(option, value, noUpdate)

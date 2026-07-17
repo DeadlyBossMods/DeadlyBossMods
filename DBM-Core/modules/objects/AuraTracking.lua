@@ -649,6 +649,7 @@ function AuraTracking:PreviewToggle()
 		DBM:AddMsg(DBM_CORE_L.MOVE_PRIVATE_AURA_DISABLED)
 		return
 	end
+	local previewDuration = 30
 	local PlayerSettings = GetAuraSettings("PrivateAurasPlayer")
 	local CoTankSettings = GetCoTankSettings(1)
 	local CoTankSettings2 = GetCoTankSettings(2)
@@ -657,8 +658,8 @@ function AuraTracking:PreviewToggle()
 		stopMoving(self)
 		DBT:CancelBar("AuraMove")
 	else
-		DBM:Schedule(30, stopMoving, self)
-		DBT:CreateBar(30, "AuraMove", 136116, true):SetText(DBM_CORE_L.MOVABLE_FRAMES)
+		DBM:Schedule(previewDuration, stopMoving, self)
+		DBT:CreateBar(previewDuration, "AuraMove", 136116, true):SetText(DBM_CORE_L.MOVABLE_FRAMES)
 		self.IsInPreview = true
 		if PlayerSettings.enabled then
 			if not self.PlayerPreview then
@@ -738,5 +739,6 @@ function AuraTracking:PreviewToggle()
 				self.CoTankPreview2:Hide()
 			end
 		end
+		return previewDuration
 	end
 end

@@ -8,7 +8,7 @@ movemebutton:SetPoint("TOPRIGHT", BarBehaviors.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
 movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 movemebutton:SetScript("OnClick", function()
-	DBT:ShowMovableBar()
+	DBM_GUI:CollapseForPreview(DBT:ShowMovableBar())
 end)
 
 local testmebutton = BarBehaviors:CreateButton(L.Button_TestBars, 100, 16)
@@ -16,7 +16,7 @@ testmebutton:SetPoint("BOTTOMRIGHT", BarBehaviors.frame, "BOTTOMRIGHT", -2, 4)
 testmebutton:SetNormalFontObject(GameFontNormalSmall)
 testmebutton:SetHighlightFontObject(GameFontNormalSmall)
 testmebutton:SetScript("OnClick", function()
-	DBM:DemoMode()
+	DBM_GUI:CollapseForPreview(DBM:DemoMode())
 end)
 
 -- Functions for bar setup

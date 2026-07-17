@@ -11,7 +11,7 @@ end
 local function ToggleAuraPreview()
 	local auraHandler = DBM.Auras
 	if auraHandler and auraHandler.PreviewToggle then
-		auraHandler:PreviewToggle()
+		return auraHandler:PreviewToggle()
 	end
 end
 
@@ -249,7 +249,7 @@ if isAuraTracking121 then
 		OnAuraSettingsChange(true)
 	end)
 	personalAuraStackYOffset.myheight = 0
-	personalAuraStackColor.myheight = 135
+	personalAuraStackColor.myheight = 50
 end
 
 local personalAuraTextMesssageScale
@@ -269,7 +269,7 @@ personalMovemebutton:SetPoint("TOPRIGHT", personalAuraArea.frame, "TOPRIGHT", -2
 personalMovemebutton:SetNormalFontObject(GameFontNormalSmall)
 personalMovemebutton:SetHighlightFontObject(GameFontNormalSmall)
 personalMovemebutton:SetScript("OnClick", function()
-	ToggleAuraPreview()
+	DBM_GUI:CollapseForPreview(ToggleAuraPreview())
 end)
 
 local personalAuraReset = personalAuraArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
@@ -513,7 +513,7 @@ if isAuraTracking121 then
 		OnAuraSettingsChange(false)
 	end)
 	coTankAuraStackYOffset.myheight = 0
-	coTankAuraStackColor.myheight = 135
+	coTankAuraStackColor.myheight = 50
 end
 
 local coTankMovemebutton = coTankAuraArea:CreateButton(L.MoveMe, 100, 16)
@@ -521,7 +521,7 @@ coTankMovemebutton:SetPoint("TOPRIGHT", coTankAuraArea.frame, "TOPRIGHT", -2, -4
 coTankMovemebutton:SetNormalFontObject(GameFontNormalSmall)
 coTankMovemebutton:SetHighlightFontObject(GameFontNormalSmall)
 coTankMovemebutton:SetScript("OnClick", function()
-	ToggleAuraPreview()
+	DBM_GUI:CollapseForPreview(ToggleAuraPreview())
 end)
 
 local coTankAuraReset = coTankAuraArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)

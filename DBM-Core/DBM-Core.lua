@@ -7489,6 +7489,7 @@ end
 AddMsg = DBM.AddMsg
 
 do
+	local demoDuration = 62
 	local testMod
 	local testWarning1, testWarning2, testWarning3
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
@@ -7544,7 +7545,7 @@ do
 			testSpecialWarning3:Cancel()
 			testSpecialWarning3:CancelVoice()
 			testWarning1:Show("Test-mode started...")
-			testWarning1:Schedule(62, "Test-mode finished!")
+			testWarning1:Schedule(demoDuration, "Test-mode finished!")
 			testWarning3:Schedule(50, "Boom in 10 sec!")
 			testWarning3:Schedule(20, "Pew Pew Laser Owl!")
 			testWarning2:Schedule(38, "Evil Spell in 5 sec!")
@@ -7557,6 +7558,7 @@ do
 			testSpecialWarning3:Schedule(60, "Boom!")
 			testSpecialWarning3:ScheduleVoice(60, "defensive")
 		end
+		return demoDuration
 	end
 end
 
