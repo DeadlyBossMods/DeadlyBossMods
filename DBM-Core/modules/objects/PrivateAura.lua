@@ -7,7 +7,7 @@ local private = select(2, ...)
 
 ---@class DBMPrivateAuras
 local PrivateAuras = {}
-DBM.PrivateAuras = PrivateAuras
+DBM.Auras = PrivateAuras
 
 local PAAnchorsRegistered = false
 
@@ -19,7 +19,7 @@ local function GetPrivateAuraSettings(prefix)
         HideBorder = DBM.Options[prefix .. "HideBorder"],
         HideTooltip = DBM.Options[prefix .. "HideTooltip"],
         Scale = DBM.Options[prefix .. "Scale"],
-        Spacing = DBM.Options[prefix .. "Spacing"],
+        Spacing = DBM.Options[prefix .. "Spacing2"],
         Limit = DBM.Options[prefix .. "Limit"],
         GrowDirection = DBM.Options[prefix .. "GrowDirection"],
         enabled = DBM.Options[prefix .. "Enabled"],
@@ -235,7 +235,7 @@ function PrivateAuras:UnregisterPrivateAuras(unit)
     if not self.PAFrames then return end
     if not unit then
         for u, _ in pairs(self.PAFrames) do
-            self:UnregisterPrivateAuras(u)
+			self:UnregisterPrivateAuras(u)
         end
     elseif unit then
         if self.PAFrames[unit] then
@@ -286,8 +286,8 @@ do
 			DBM:AddMsg(DBM_CORE_L.MOVE_PRIVATE_AURA_DISABLED)
 			return
 		end
-	    local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
-	    local TextAnchorSettings = GetPrivateAuraSettings("PrivateAurasTextAnchor")
+        local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
+        local TextAnchorSettings = GetPrivateAuraSettings("PrivateAurasTextAnchor")
         local CoTankSettings = GetCoTankSettings(1)
         local CoTankSettings2 = GetCoTankSettings(2)
 	    if self.IsInPreview then
@@ -459,10 +459,10 @@ do
 		return inInstance and instanceType ~= "pvp" and instanceType ~= "arena"
 	end
 
-	function PrivateAuras:UpdatePrivateAuraAnchors()
+    function PrivateAuras:UpdatePrivateAuraAnchors()
 		if PAAnchorsRegistered then
 			PAAnchorsRegistered = false
-			PrivateAuras:UnregisterPrivateAuras()
+            PrivateAuras:UnregisterPrivateAuras()
 		end
 		if IsInValidInstance() then
 			--No need to call unregister first, RegisterAllUnits already clears existing units first
@@ -477,7 +477,7 @@ function PrivateAuras:OnSettingsChange(player)
     if not self.IsInPreview then return end
     if player then
         if self.PlayerPreview then
-	        local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
+            local PlayerSettings = GetPrivateAuraSettings("PrivateAurasPlayer")
             self.PlayerPreview:ClearAllPoints()
 	        self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
 	        self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)

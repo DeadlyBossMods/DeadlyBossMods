@@ -1,5 +1,6 @@
 ---@class DBMLocale
 local L = {}
+L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
 
 DBM_CORE_L = L
 
