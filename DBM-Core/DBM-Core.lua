@@ -490,11 +490,20 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerHideTooltip = false,
 	PrivateAurasPlayerUpscaleDuration = true,
 	PrivateAurasPlayerScale = 3,
-	PrivateAurasPlayerSpacing = -1,
+	PrivateAurasPlayerSpacing2 = 1,
 	PrivateAurasPlayerLimit = 5,
 	PrivateAurasPlayerGrowDirection = "RIGHT",
-	PrivateAurasPlayerWidth = 60,
-	PrivateAurasPlayerHeight = 60,
+	PrivateAurasPlayerWidth = 65,
+	PrivateAurasPlayerHeight = 65,
+	PrivateAurasPlayerTextFont = "standardFont",
+	PrivateAurasPlayerTextFontStyle = "None",
+	PrivateAurasPlayerDurationFontSize = 22,
+	PrivateAurasPlayerStackFontSize = 25,
+	PrivateAurasPlayerStackColor = {r = 1, g = 1, b = 1},
+	PrivateAurasPlayerStackXOffset = -1,
+	PrivateAurasPlayerStackYOffset = 1,
+	PrivateAurasPlayerShowStacks = true,
+	PrivateAurasPlayerShowDispelBorder = true,
 	PrivateAurasPlayerAnchor = "CENTER",--NYI
 	PrivateAurasPlayerRelativeTo = "CENTER",--NYI
 	PrivateAurasPlayerXOffset = 185,--Partial (drag and drop only, no UI slider/editbox)
@@ -505,11 +514,20 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankHideTooltip = false,
 	PrivateAurasCoTankUpscaleDuration = true,
 	PrivateAurasCoTankScale = 3,
-	PrivateAurasCoTankSpacing = -1,
+	PrivateAurasCoTankSpacing2 = 1,
 	PrivateAurasCoTankLimit = 5,
 	PrivateAurasCoTankGrowDirection = "LEFT",
-	PrivateAurasCoTankWidth = 60,
-	PrivateAurasCoTankHeight = 60,
+	PrivateAurasCoTankWidth = 65,
+	PrivateAurasCoTankHeight = 65,
+	PrivateAurasCoTankTextFont = "standardFont",
+	PrivateAurasCoTankTextFontStyle = "None",
+	PrivateAurasCoTankDurationFontSize = 22,
+	PrivateAurasCoTankStackFontSize = 25,
+	PrivateAurasCoTankStackColor = {r = 1, g = 1, b = 1},
+	PrivateAurasCoTankStackXOffset = -1,
+	PrivateAurasCoTankStackYOffset = 1,
+	PrivateAurasCoTankShowStacks = true,
+	PrivateAurasCoTankShowDispelBorder = true,
 	PrivateAurasCoTankAnchor = "CENTER",--NYI
 	PrivateAurasCoTankRelativeTo = "CENTER",--NYI
 	PrivateAurasCoTankXOffset = -196,--Partial (drag and drop only, no UI slider/editbox)
@@ -569,6 +587,11 @@ local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, 
 local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
 -- 0 variables
 local LastInstanceMapID = -1
+
+---@param priority number?
+function DBM:QueueAuraAnchorUpdate(priority)
+	pendingPAAnchorCheck = math.max(pendingPAAnchorCheck, priority or 1)
+end
 
 local deprecatedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP

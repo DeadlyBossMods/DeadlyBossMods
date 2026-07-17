@@ -15,18 +15,27 @@ local AuraTrackingFilters = {
 
 local AuraSortMethod = _G.AuraContainerSortMethod or { Default = 1 }
 local AuraSortDirection = _G.AuraContainerSortDirection or { Normal = 1 }
-local ButtonRegions = setmetatable({}, { __mode = "k" })
+local AuraTrackingPreviewDispelTypes = {
+	"Magic",
+	"Curse",
+	"Disease",
+	"Poison",
+	"Bleed",
+}
 
 local auraAnchorsRegistered = false
+local auraTextFontResetNotified = false
 
 ---@param prefix string The prefix for the option keys (e.g., "PrivateAurasPlayer")
 ---@return table Settings table with all configuration properties
 local function GetAuraSettings(prefix)
+	local stackColor = DBM.Options[prefix .. "StackColor"] or DBM.DefaultOptions[prefix .. "StackColor"]
 	return {
+		optionPrefix = prefix,
 		HideBorder = DBM.Options[prefix .. "HideBorder"],
 		HideTooltip = DBM.Options[prefix .. "HideTooltip"],
 		Scale = DBM.Options[prefix .. "Scale"],
-		Spacing = DBM.Options[prefix .. "Spacing"],
+		Spacing = DBM.Options[prefix .. "Spacing2"],
 		Limit = DBM.Options[prefix .. "Limit"],
 		GrowDirection = DBM.Options[prefix .. "GrowDirection"],
 		enabled = DBM.Options[prefix .. "Enabled"],
@@ -36,7 +45,37 @@ local function GetAuraSettings(prefix)
 		relativeTo = DBM.Options[prefix .. "RelativeTo"],
 		xOffset = DBM.Options[prefix .. "XOffset"],
 		yOffset = DBM.Options[prefix .. "YOffset"],
+		TextFont = DBM.Options[prefix .. "TextFont"],
+		TextFontStyle = DBM.Options[prefix .. "TextFontStyle"],
+		DurationFontSize = DBM.Options[prefix .. "DurationFontSize"],
+		StackFontSize = DBM.Options[prefix .. "StackFontSize"],
+		StackColor = stackColor,
+		StackXOffset = DBM.Options[prefix .. "StackXOffset"] or DBM.DefaultOptions[prefix .. "StackXOffset"],
+		StackYOffset = DBM.Options[prefix .. "StackYOffset"] or DBM.DefaultOptions[prefix .. "StackYOffset"],
+		ShowStacks = DBM.Options[prefix .. "ShowStacks"],
+		ShowDispelBorder = DBM.Options[prefix .. "ShowDispelBorder"],
 	}
+end
+
+
+local function GetAuraTextFontSettings(settings)
+	local prefix = settings and settings.optionPrefix
+	if not prefix then return private.standardFont, "" end
+	local fontOption = DBM.Options[prefix .. "TextFont"] or DBM.DefaultOptions[prefix .. "TextFont"]
+	local font = fontOption == "standardFont" and private.standardFont or fontOption
+	local fontStyle = (DBM.Options[prefix .. "TextFontStyle"] and not DBM:IsNoneValue(DBM.Options[prefix .. "TextFontStyle"])) and DBM.Options[prefix .. "TextFontStyle"] or ""
+	local size = DBM.Options[prefix .. "DurationFontSize"] or DBM.DefaultOptions[prefix .. "DurationFontSize"]
+	if not DBM:IsFontValid(font, private.standardFont, size, fontStyle) then
+		DBM.Options[prefix .. "TextFont"] = DBM.DefaultOptions[prefix .. "TextFont"]
+		DBM.Options[prefix .. "TextFontStyle"] = DBM.DefaultOptions[prefix .. "TextFontStyle"]
+		if not auraTextFontResetNotified then
+			DBM:AddMsg(DBM_CORE_L.AURA_FONT_RESET)
+			auraTextFontResetNotified = true
+		end
+		font = private.standardFont
+		fontStyle = ""
+	end
+	return font, fontStyle
 end
 
 ---@param settings table
@@ -95,11 +134,96 @@ local function GetRowWidth(settings)
 	return math.max(width, (width * limit) + (spacing * math.max(limit - 1, 0)))
 end
 
+---@param frame Frame
+---@param settings table
+---@param index integer
+---@param texture number|string
+---@param dispelType string?
+local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType)
+	---@diagnostic disable: inject-field
+	frame.Textures = frame.Textures or {}
+	frame.BorderTextures = frame.BorderTextures or {}
+	frame.Symbols = frame.Symbols or {}
+	frame.DurationTexts = frame.DurationTexts or {}
+	frame.StackTexts = frame.StackTexts or {}
+	---@diagnostic enable: inject-field
+
+	local xOffset = (settings.GrowDirection == "RIGHT" and (index - 1) * (settings.Width + settings.Spacing)) or (settings.GrowDirection == "LEFT" and -(index - 1) * (settings.Width + settings.Spacing)) or 0
+	local yOffset = (settings.GrowDirection == "UP" and (index - 1) * (settings.Height + settings.Spacing)) or (settings.GrowDirection == "DOWN" and -(index - 1) * (settings.Height + settings.Spacing)) or 0
+
+	if not frame.Textures[index] then
+		frame.Textures[index] = frame:CreateTexture(nil, "ARTWORK")
+	end
+	local icon = frame.Textures[index]
+	icon:SetTexture(texture)
+	icon:SetSize(settings.Width, settings.Height)
+	icon:ClearAllPoints()
+	icon:SetPoint("CENTER", frame, "CENTER", xOffset, yOffset)
+	icon:Show()
+
+	if settings.ShowDispelBorder and not settings.HideBorder then
+		if not frame.BorderTextures[index] then
+			frame.BorderTextures[index] = frame:CreateTexture(nil, "OVERLAY")
+		end
+		local border = frame.BorderTextures[index]
+		border:ClearAllPoints()
+		border:SetPoint("CENTER", icon, "CENTER", 0, 0)
+		border:SetSize(settings.Width * 1.25, settings.Height * 1.25)
+		AuraUtil.SetAuraBorderAtlas(border, dispelType, true)
+		border:Show()
+
+		if not frame.Symbols[index] then
+			frame.Symbols[index] = frame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
+		end
+		local symbol = frame.Symbols[index]
+		symbol:ClearAllPoints()
+		symbol:SetPoint("TOPLEFT", icon, "TOPLEFT", 2, -2)
+		AuraUtil.SetAuraSymbol(symbol, dispelType)
+	else
+		if frame.BorderTextures[index] then
+			frame.BorderTextures[index]:Hide()
+		end
+		if frame.Symbols[index] then
+			frame.Symbols[index]:Hide()
+		end
+	end
+
+	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
+	if not frame.DurationTexts[index] then
+		frame.DurationTexts[index] = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	end
+	local durationText = frame.DurationTexts[index]
+	durationText:ClearAllPoints()
+	durationText:SetPoint("CENTER", icon, "CENTER", 0, 0)
+	durationText:SetFont(fontPath, settings.DurationFontSize, fontFlags)
+	durationText:SetText(index % 2 == 0 and "1m" or tostring(10 + index))
+	durationText:Show()
+
+	if not frame.StackTexts[index] then
+		frame.StackTexts[index] = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	end
+	local stackText = frame.StackTexts[index]
+	if settings.ShowStacks then
+		stackText:ClearAllPoints()
+		stackText:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", settings.StackXOffset, settings.StackYOffset)
+		stackText:SetFont(fontPath, settings.StackFontSize, fontFlags)
+		stackText:SetTextColor(settings.StackColor.r, settings.StackColor.g, settings.StackColor.b)
+		stackText:SetText(index + 1)
+		stackText:Show()
+	else
+		stackText:SetText("")
+		stackText:Hide()
+	end
+end
+
+---@param state table
 ---@param button Frame
 ---@param settings table
 ---@param unit playerUUIDs
-local function ConfigureButton(button, settings, unit)
-	local regions = ButtonRegions[button]
+local function ConfigureButton(state, button, settings, unit)
+	local prefix = settings and settings.optionPrefix or ""
+	state.buttonRegions = state.buttonRegions or setmetatable({}, {__mode = "k"})
+	local regions = state.buttonRegions[button]
 	if not regions then
 		regions = {}
 		regions.icon = button:CreateTexture(nil, "ARTWORK")
@@ -108,20 +232,47 @@ local function ConfigureButton(button, settings, unit)
 		regions.textOverlay = CreateFrame("Frame", nil, button)
 		regions.textOverlay:SetAllPoints()
 		regions.textOverlay:SetFrameLevel(button:GetFrameLevel() + 3)
-		ButtonRegions[button] = regions
+		state.buttonRegions[button] = regions
 	end
 
 	button:SetSize(settings.Width, settings.Height)
 	regions.textOverlay:SetFrameLevel(button:GetFrameLevel() + 3)
-
-	if settings.HideBorder then
-		button:ClearAuraBorder()
-	elseif regions.borderTexture then
-		button:SetAuraBorder(regions.borderTexture, {
+	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
+	if settings.ShowDispelBorder and not settings.HideBorder then
+		if not regions.dispelOverlay then
+			regions.dispelOverlay = CreateFrame("Frame", nil, button)
+			regions.dispelOverlay:SetFrameLevel(button:GetFrameLevel() + 2)
+		end
+		regions.dispelOverlay:ClearAllPoints()
+		regions.dispelOverlay:SetAllPoints(regions.icon)
+		regions.dispelOverlay:Show()
+		if not regions.dispelBorder then
+			regions.dispelBorder = regions.dispelOverlay:CreateTexture(nil, "OVERLAY")
+		end
+		regions.dispelBorder:ClearAllPoints()
+		regions.dispelBorder:SetPoint("CENTER", regions.icon, "CENTER", 0, 0)
+		regions.dispelBorder:SetSize(settings.Width * 1.25, settings.Height * 1.25)
+		button:SetAuraBorder(regions.dispelBorder, {
 			showIcon = true,
 			showWhenHarmful = true,
-			showWhenHelpful = true,
+			showWhenHelpful = false,
 		})
+		if not regions.dispelSymbol then
+			regions.dispelSymbol = regions.textOverlay:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
+			regions.dispelSymbol:SetPoint("TOPLEFT", button, "TOPLEFT", 2, -2)
+			regions.dispelSymbol:SetTextColor(1, 1, 1, 1)
+		end
+		regions.dispelSymbol:SetFont(fontPath, settings.StackFontSize, fontFlags)
+		button:SetAuraSymbol(regions.dispelSymbol, {
+			showWhenHarmful = true,
+			showWhenHelpful = false,
+		})
+	else
+		if regions.dispelOverlay then regions.dispelOverlay:Hide() end
+		if regions.dispelBorder then regions.dispelBorder:Hide() end
+		if regions.dispelSymbol then regions.dispelSymbol:Hide() end
+		button:ClearAuraBorder()
+		button:ClearAuraSymbol()
 	end
 
 	button:SetMouseMotionEnabled(not settings.HideTooltip)
@@ -130,9 +281,25 @@ local function ConfigureButton(button, settings, unit)
 	end
 	regions.durationText:ClearAllPoints()
 	regions.durationText:SetPoint("CENTER", button, "CENTER", 0, 0)
-	regions.durationText:SetFont(private.standardFont, 14, "OUTLINE")
+	regions.durationText:SetFont(fontPath, settings.DurationFontSize or DBM.DefaultOptions[prefix .. "DurationFontSize"], fontFlags)
 	regions.durationText:Show()
 	button:SetDurationText(regions.durationText, nil)
+
+	if not regions.countText then
+		regions.countText = regions.textOverlay:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	end
+	if settings.ShowStacks then
+		regions.countText:ClearAllPoints()
+		regions.countText:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", settings.StackXOffset, settings.StackYOffset)
+		regions.countText:SetFont(fontPath, settings.StackFontSize or DBM.DefaultOptions[prefix .. "StackFontSize"], fontFlags)
+		regions.countText:SetTextColor(settings.StackColor.r, settings.StackColor.g, settings.StackColor.b)
+		regions.countText:Show()
+		button:SetApplicationCount(regions.countText, {})
+	else
+		button:ClearApplicationCount()
+		regions.countText:SetText("")
+		regions.countText:Hide()
+	end
 
 end
 
@@ -151,6 +318,8 @@ local function AcquireContainerState(self, key)
 		state.container = CreateFrame("AuraContainer", nil, UIParent, "CustomAuraContainerTemplate")
 		state.anchor = CreateFrame("Frame", nil, UIParent)
 		state.groupKey = "DBM_Aura_" .. key
+		state.key = key
+		state.buttonRegions = setmetatable({}, {__mode = "k"})
 		state.initialized = false
 	end
 	return state
@@ -163,6 +332,10 @@ local function InitContainerState(state, settings, unit)
 	local container = state.container
 	local anchor = state.anchor
 	local groupKey = state.groupKey
+	state.unit = unit
+	state.settings = settings
+	state.width = settings.Width
+	state.height = settings.Height
 
 	local layoutAnchorPoint = GetLayoutAnchorPoint(settings)
 
@@ -186,7 +359,7 @@ local function InitContainerState(state, settings, unit)
 		sortMethod = AuraSortMethod.Default,
 		sortDirection = AuraSortDirection.Normal,
 		initializeFrame = function(button)
-			ConfigureButton(button, settings, unit)
+			ConfigureButton(state, button, state.settings, state.unit)
 		end,
 		candidateFilters = {},
 		layout = {
@@ -205,11 +378,12 @@ local function InitContainerState(state, settings, unit)
 	else
 		container:AddAuraGroup(groupKey, AuraTrackingFilters[1], options)
 	end
+	for button in pairs(state.buttonRegions) do
+		ConfigureButton(state, button, settings, unit)
+	end
 
 	container:Show()
 	container:SetEnabled(true)
-	state.unit = unit
-	state.settings = settings
 	state.initialized = true
 end
 
@@ -263,27 +437,41 @@ local function stopMoving(self, player)
 			self.CoTankPreview2:Hide()
 		end
 	end
+	if not self:UpdateAuraAnchors() then
+		DBM:QueueAuraAnchorUpdate()
+	end
 end
 
 ---@param frame Frame
 ---@param settings table
-local function UpdateCoTankPreviewFrame(frame, settings)
+---@param texture number|string
+local function UpdatePreviewFrame(frame, settings, texture)
 	---@diagnostic disable-next-line: inject-field
 	frame.Textures = frame.Textures or {}
+	---@diagnostic disable-next-line: inject-field
+	frame.BorderTextures = frame.BorderTextures or {}
+	---@diagnostic disable-next-line: inject-field
+	frame.Symbols = frame.Symbols or {}
+	---@diagnostic disable-next-line: inject-field
+	frame.DurationTexts = frame.DurationTexts or {}
+	---@diagnostic disable-next-line: inject-field
+	frame.StackTexts = frame.StackTexts or {}
 	frame:ClearAllPoints()
 	frame:SetPoint(settings.Anchor, UIParent, settings.relativeTo, settings.xOffset, settings.yOffset)
 	frame:SetSize(settings.Width, settings.Height)
 	for i=1, 10 do
 		if i <= settings.Limit then
-			frame.Textures[i] = frame.Textures[i] or frame:CreateTexture(nil, "ARTWORK")
-			frame.Textures[i]:SetTexture(236318)
-			frame.Textures[i]:SetSize(settings.Width, settings.Height)
-			local xOffset = (settings.GrowDirection == "RIGHT" and (i-1)*(settings.Width+settings.Spacing)) or (settings.GrowDirection == "LEFT" and -(i-1)*(settings.Width+settings.Spacing)) or 0
-			local yOffset = (settings.GrowDirection == "UP" and (i-1)*(settings.Height+settings.Spacing)) or (settings.GrowDirection == "DOWN" and -(i-1)*(settings.Height+settings.Spacing)) or 0
-			frame.Textures[i]:SetPoint("CENTER", frame, "CENTER", xOffset, yOffset)
-			frame.Textures[i]:Show()
+			ConfigurePreviewSlot(frame, settings, i, texture, AuraTrackingPreviewDispelTypes[((i - 1) % #AuraTrackingPreviewDispelTypes) + 1])
 		elseif frame.Textures[i] then
 			frame.Textures[i]:Hide()
+			if frame.BorderTextures[i] then
+				frame.BorderTextures[i]:Hide()
+			end
+			if frame.Symbols[i] then
+				frame.Symbols[i]:Hide()
+			end
+			if frame.DurationTexts[i] then frame.DurationTexts[i]:Hide() end
+			if frame.StackTexts[i] then frame.StackTexts[i]:Hide() end
 		end
 	end
 end
@@ -364,36 +552,22 @@ end
 ---@param player boolean?
 function AuraTracking:OnSettingsChange(player)
 	if not self.IsInPreview then
-		self:UpdateAuraAnchors()
+		if not self:UpdateAuraAnchors() then
+			DBM:QueueAuraAnchorUpdate()
+		end
 		return
 	end
 	if player then
 		if self.PlayerPreview then
 			local PlayerSettings = GetAuraSettings("PrivateAurasPlayer")
-			self.PlayerPreview:ClearAllPoints()
-			self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
-			self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
-			for i=1, 10 do
-				if i <= PlayerSettings.Limit then
-					self.PlayerPreview.Textures[i] = self.PlayerPreview.Textures[i] or self.PlayerPreview:CreateTexture(nil, "ARTWORK")
-					self.PlayerPreview.Textures[i]:SetTexture(237555)
-					self.PlayerPreview.Textures[i]:SetSize(PlayerSettings.Width, PlayerSettings.Height)
-					local xOffset = (PlayerSettings.GrowDirection == "RIGHT" and (i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "LEFT" and -(i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or 0
-					local yOffset = (PlayerSettings.GrowDirection == "UP" and (i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "DOWN" and -(i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or 0
-					self.PlayerPreview.Textures[i]:SetPoint("CENTER", self.PlayerPreview, "CENTER", xOffset, yOffset)
-					self.PlayerPreview.Textures[i]:Show()
-				elseif self.PlayerPreview.Textures[i] then
-					self.PlayerPreview.Textures[i]:Hide()
-				end
-			end
+			UpdatePreviewFrame(self.PlayerPreview, PlayerSettings, 237555)
 		end
 	elseif self.CoTankPreview then
 		local CoTankSettings = GetCoTankSettings(1)
-		UpdateCoTankPreviewFrame(self.CoTankPreview, CoTankSettings)
+		UpdatePreviewFrame(self.CoTankPreview, CoTankSettings, 236318)
 		if DBM.Options.PrivateAurasCoTankShowSecond then
 			self.CoTankPreview2 = self.CoTankPreview2 or CreateFrame("Frame", nil, UIParent)
-			self.CoTankPreview2.Textures = self.CoTankPreview2.Textures or {}
-			UpdateCoTankPreviewFrame(self.CoTankPreview2, GetCoTankSettings(2))
+			UpdatePreviewFrame(self.CoTankPreview2, GetCoTankSettings(2), 236318)
 			self.CoTankPreview2:Show()
 		elseif self.CoTankPreview2 then
 			self.CoTankPreview2:Hide()
@@ -413,7 +587,6 @@ function AuraTracking:PreviewToggle()
 		DBM:Unschedule(stopMoving)
 		stopMoving(self)
 		DBT:CancelBar("AuraMove")
-		self:UpdateAuraAnchors()
 	else
 		DBM:Schedule(30, stopMoving, self)
 		DBT:CreateBar(30, "AuraMove", 136116, true):SetText(DBM_CORE_L.MOVABLE_FRAMES)
@@ -424,6 +597,10 @@ function AuraTracking:PreviewToggle()
 				self.PlayerPreview:RegisterForDrag("LeftButton")
 				self.PlayerPreview:SetClampedToScreen(true)
 				self.PlayerPreview.Textures = {}
+				self.PlayerPreview.BorderTextures = {}
+				self.PlayerPreview.Symbols = {}
+				self.PlayerPreview.DurationTexts = {}
+				self.PlayerPreview.StackTexts = {}
 				self.PlayerPreview.Border = CreateFrame("Frame", nil, self.PlayerPreview, "BackdropTemplate")
 				self.PlayerPreview.Border:SetPoint("TOPLEFT", self.PlayerPreview, "TOPLEFT", -6, 6)
 				self.PlayerPreview.Border:SetPoint("BOTTOMRIGHT", self.PlayerPreview, "BOTTOMRIGHT", 6, -6)
@@ -441,22 +618,7 @@ function AuraTracking:PreviewToggle()
 					DBM.Options.PrivateAurasPlayerRelativeTo = relativeTo
 				end)
 			end
-			self.PlayerPreview:ClearAllPoints()
-			self.PlayerPreview:SetPoint(PlayerSettings.Anchor, UIParent, PlayerSettings.relativeTo, PlayerSettings.xOffset, PlayerSettings.yOffset)
-			self.PlayerPreview:SetSize(PlayerSettings.Width, PlayerSettings.Height)
-			for i=1, 10 do
-				if i <= PlayerSettings.Limit then
-					self.PlayerPreview.Textures[i] = self.PlayerPreview.Textures[i] or self.PlayerPreview:CreateTexture(nil, "ARTWORK")
-					self.PlayerPreview.Textures[i]:SetTexture(237555)
-					self.PlayerPreview.Textures[i]:SetSize(PlayerSettings.Width, PlayerSettings.Height)
-					local xOffset = (PlayerSettings.GrowDirection == "RIGHT" and (i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "LEFT" and -(i-1)*(PlayerSettings.Width+PlayerSettings.Spacing)) or 0
-					local yOffset = (PlayerSettings.GrowDirection == "UP" and (i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or (PlayerSettings.GrowDirection == "DOWN" and -(i-1)*(PlayerSettings.Height+PlayerSettings.Spacing)) or 0
-					self.PlayerPreview.Textures[i]:SetPoint("CENTER", self.PlayerPreview, "CENTER", xOffset, yOffset)
-					self.PlayerPreview.Textures[i]:Show()
-				elseif self.PlayerPreview.Textures[i] then
-					self.PlayerPreview.Textures[i]:Hide()
-				end
-			end
+			UpdatePreviewFrame(self.PlayerPreview, PlayerSettings, 237555)
 			self.PlayerPreview:Show()
 			self.PlayerPreview:SetMovable(true)
 			self.PlayerPreview:EnableMouse(true)
@@ -467,6 +629,10 @@ function AuraTracking:PreviewToggle()
 				self.CoTankPreview:RegisterForDrag("LeftButton")
 				self.CoTankPreview:SetClampedToScreen(true)
 				self.CoTankPreview.Textures = {}
+				self.CoTankPreview.BorderTextures = {}
+				self.CoTankPreview.Symbols = {}
+				self.CoTankPreview.DurationTexts = {}
+				self.CoTankPreview.StackTexts = {}
 				self.CoTankPreview.Border = CreateFrame("Frame", nil, self.CoTankPreview, "BackdropTemplate")
 				self.CoTankPreview.Border:SetPoint("TOPLEFT", self.CoTankPreview, "TOPLEFT", -6, 6)
 				self.CoTankPreview.Border:SetPoint("BOTTOMRIGHT", self.CoTankPreview, "BOTTOMRIGHT", 6, -6)
@@ -484,7 +650,7 @@ function AuraTracking:PreviewToggle()
 					DBM.Options.PrivateAurasCoTankRelativeTo = relativeTo
 				end)
 			end
-			UpdateCoTankPreviewFrame(self.CoTankPreview, CoTankSettings)
+			UpdatePreviewFrame(self.CoTankPreview, CoTankSettings, 236318)
 			self.CoTankPreview:Show()
 			self.CoTankPreview:SetMovable(true)
 			self.CoTankPreview:EnableMouse(true)
@@ -492,8 +658,12 @@ function AuraTracking:PreviewToggle()
 				if not self.CoTankPreview2 then
 					self.CoTankPreview2 = CreateFrame("Frame", nil, UIParent)
 					self.CoTankPreview2.Textures = {}
+					self.CoTankPreview2.BorderTextures = {}
+					self.CoTankPreview2.Symbols = {}
+					self.CoTankPreview2.DurationTexts = {}
+					self.CoTankPreview2.StackTexts = {}
 				end
-				UpdateCoTankPreviewFrame(self.CoTankPreview2, CoTankSettings2)
+				UpdatePreviewFrame(self.CoTankPreview2, CoTankSettings2, 236318)
 				self.CoTankPreview2:Show()
 			elseif self.CoTankPreview2 then
 				self.CoTankPreview2:Hide()

@@ -36,6 +36,52 @@ local growDirections = {
 	}
 }
 
+local Fonts = DBM_GUI:MixinSharedMedia3("font", {
+	{
+		text	= DEFAULT,
+		value	= "standardFont"
+	},
+	{
+		text	= "Arial",
+		value	= "Fonts\\ARIALN.TTF"
+	},
+	{
+		text	= "Skurri",
+		value	= "Fonts\\SKURRI_CYR.ttf"
+	},
+	{
+		text	= "Morpheus",
+		value	= "Fonts\\MORPHEUS_CYR.ttf"
+	}
+})
+
+local FontStyles = {
+	{
+		text	= L.None,
+		value	= "None"
+	},
+	{
+		text	= L.Outline,
+		value	= "OUTLINE",
+		flag	= true
+	},
+	{
+		text	= L.ThickOutline,
+		value	= "THICKOUTLINE",
+		flag	= true
+	},
+	{
+		text	= L.MonochromeOutline,
+		value	= "MONOCHROME,OUTLINE",
+		flag	= true
+	},
+	{
+		text	= L.MonochromeThickOutline,
+		value	= "MONOCHROME,THICKOUTLINE",
+		flag	= true
+	}
+}
+
 -----------------------------------
 --  Personal Aura Frame  --
 -----------------------------------
@@ -82,9 +128,9 @@ personalAuraGrowDir.myheight = 30
 
 local personalSpacing = personalAuraArea:CreateSlider(L.SetPAIconSpacing, -2, 5, 1, 150)
 personalSpacing:SetPoint("TOPLEFT", personalAuraGrowDir, "TOPLEFT", 180, 0)
-personalSpacing:SetValue(DBM.Options.PrivateAurasPlayerSpacing)
+personalSpacing:SetValue(DBM.Options.PrivateAurasPlayerSpacing2)
 personalSpacing:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasPlayerSpacing = self:GetValue()
+	DBM.Options.PrivateAurasPlayerSpacing2 = self:GetValue()
 	OnAuraSettingsChange(true)
 end)
 personalSpacing.myheight = 0
@@ -108,14 +154,103 @@ personalAuraMaxIcons:HookScript("OnValueChanged", function(self)
 end)
 personalAuraMaxIcons.myheight = 0
 
-local personalAuraStackScale = personalAuraArea:CreateSlider(L.SetPAStackScale, 1, 10, 1, 150)
-personalAuraStackScale:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 0, -50)
-personalAuraStackScale:SetValue(DBM.Options.PrivateAurasPlayerScale)
-personalAuraStackScale:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasPlayerScale = self:GetValue()
-	OnAuraSettingsChange(true)
-end)
-personalAuraStackScale.myheight = 50
+local personalAuraStackScale
+if not isAuraTracking121 then
+	personalAuraStackScale = personalAuraArea:CreateSlider(L.SetPAStackScale, 1, 10, 1, 150)
+	personalAuraStackScale:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 0, -50)
+	personalAuraStackScale:SetValue(DBM.Options.PrivateAurasPlayerScale)
+	personalAuraStackScale:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasPlayerScale = self:GetValue()
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraStackScale.myheight = 50
+end
+
+local personalAuraFontDropDown
+local personalAuraFontStyleDropDown
+local personalAuraDurationFontSize
+local personalAuraStackFontSize
+local personalAuraStackColor
+local personalAuraStackXOffset
+local personalAuraStackYOffset
+local personalAuraShowStacks
+local personalAuraShowDispelBorder
+if isAuraTracking121 then
+	personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "DBM", "PrivateAurasPlayerTextFont", function(value)
+		DBM.Options.PrivateAurasPlayerTextFont = value
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraFontDropDown:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 0, -50)
+
+	personalAuraFontStyleDropDown = personalAuraArea:CreateDropdown(L.FontStyle, FontStyles, "DBM", "PrivateAurasPlayerTextFontStyle", function(value)
+		DBM.Options.PrivateAurasPlayerTextFontStyle = value
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraFontStyleDropDown:SetPoint("LEFT", personalAuraFontDropDown, "RIGHT", 25, 0)
+	personalAuraFontStyleDropDown.myheight = 0
+
+	personalAuraDurationFontSize = personalAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150)
+	personalAuraDurationFontSize:SetPoint("TOPLEFT", personalAuraFontDropDown, "TOPLEFT", 20, -50)
+	personalAuraDurationFontSize:SetValue(DBM.Options.PrivateAurasPlayerDurationFontSize)
+	personalAuraDurationFontSize:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasPlayerDurationFontSize = self:GetValue()
+		OnAuraSettingsChange(true)
+	end)
+
+	personalAuraStackFontSize = personalAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150)
+	personalAuraStackFontSize:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", 180, 0)
+	personalAuraStackFontSize:SetValue(DBM.Options.PrivateAurasPlayerStackFontSize)
+	personalAuraStackFontSize:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasPlayerStackFontSize = self:GetValue()
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraStackFontSize.myheight = 0
+
+	personalAuraShowStacks = personalAuraArea:CreateCheckButton(L.AuraShowStacks, true, nil, "PrivateAurasPlayerShowStacks")
+	personalAuraShowStacks:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasPlayerShowStacks = not DBM.Options.PrivateAurasPlayerShowStacks
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraShowStacks:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", 0, -40)
+
+	personalAuraShowDispelBorder = personalAuraArea:CreateCheckButton(L.AuraShowDispelBorder, true, nil, "PrivateAurasPlayerShowDispelBorder")
+	personalAuraShowDispelBorder:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasPlayerShowDispelBorder = not DBM.Options.PrivateAurasPlayerShowDispelBorder
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraShowDispelBorder:SetPoint("TOPLEFT", personalAuraShowStacks, "TOPLEFT", 200, 0)
+	personalAuraShowDispelBorder.myheight = 0
+
+	personalAuraStackColor = personalAuraArea:CreateColorSelect(L.FontColor, function(_, r, g, b)
+		DBM.Options.PrivateAurasPlayerStackColor.r = r
+		DBM.Options.PrivateAurasPlayerStackColor.g = g
+		DBM.Options.PrivateAurasPlayerStackColor.b = b
+		OnAuraSettingsChange(true)
+	end, function(self)
+		local color = DBM.DefaultOptions.PrivateAurasPlayerStackColor
+		self:SetColorRGB(color.r, color.g, color.b, true)
+	end)
+	personalAuraStackColor:SetPoint("TOPLEFT", personalAuraShowStacks, "TOPLEFT", 0, -45)
+	personalAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasPlayerStackColor.r, DBM.Options.PrivateAurasPlayerStackColor.g, DBM.Options.PrivateAurasPlayerStackColor.b)
+
+	personalAuraStackXOffset = personalAuraArea:CreateSlider(L.Slider_TextOffSetX, -20, 20, 1, 150)
+	personalAuraStackXOffset:SetPoint("TOPLEFT", personalAuraStackColor, "TOPLEFT", 130, 0)
+	personalAuraStackXOffset:SetValue(DBM.Options.PrivateAurasPlayerStackXOffset)
+	personalAuraStackXOffset:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasPlayerStackXOffset = self:GetValue()
+		OnAuraSettingsChange(true)
+	end)
+
+	personalAuraStackYOffset = personalAuraArea:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 150)
+	personalAuraStackYOffset:SetPoint("TOPLEFT", personalAuraStackXOffset, "TOPLEFT", 180, 0)
+	personalAuraStackYOffset:SetValue(DBM.Options.PrivateAurasPlayerStackYOffset)
+	personalAuraStackYOffset:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasPlayerStackYOffset = self:GetValue()
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraStackYOffset.myheight = 0
+	personalAuraStackColor.myheight = 135
+end
 
 local personalAuraTextMesssageScale
 if not isAuraTracking121 then
@@ -147,11 +282,22 @@ personalAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerHideBorder = DBM.DefaultOptions.PrivateAurasPlayerHideBorder
 	DBM.Options.PrivateAurasPlayerHideTooltip = DBM.DefaultOptions.PrivateAurasPlayerHideTooltip
 	DBM.Options.PrivateAurasPlayerGrowDirection = DBM.DefaultOptions.PrivateAurasPlayerGrowDirection
-	DBM.Options.PrivateAurasPlayerSpacing = DBM.DefaultOptions.PrivateAurasPlayerSpacing
+	DBM.Options.PrivateAurasPlayerSpacing2 = DBM.DefaultOptions.PrivateAurasPlayerSpacing2
 	DBM.Options.PrivateAurasPlayerWidth = DBM.DefaultOptions.PrivateAurasPlayerWidth
 	DBM.Options.PrivateAurasPlayerHeight = DBM.DefaultOptions.PrivateAurasPlayerHeight
 	DBM.Options.PrivateAurasPlayerScale = DBM.DefaultOptions.PrivateAurasPlayerScale
 	DBM.Options.PrivateAurasPlayerLimit = DBM.DefaultOptions.PrivateAurasPlayerLimit
+	if isAuraTracking121 then
+		DBM.Options.PrivateAurasPlayerTextFont = DBM.DefaultOptions.PrivateAurasPlayerTextFont
+		DBM.Options.PrivateAurasPlayerTextFontStyle = DBM.DefaultOptions.PrivateAurasPlayerTextFontStyle
+		DBM.Options.PrivateAurasPlayerDurationFontSize = DBM.DefaultOptions.PrivateAurasPlayerDurationFontSize
+		DBM.Options.PrivateAurasPlayerStackFontSize = DBM.DefaultOptions.PrivateAurasPlayerStackFontSize
+		DBM.Options.PrivateAurasPlayerStackColor = CopyTable(DBM.DefaultOptions.PrivateAurasPlayerStackColor)
+		DBM.Options.PrivateAurasPlayerStackXOffset = DBM.DefaultOptions.PrivateAurasPlayerStackXOffset
+		DBM.Options.PrivateAurasPlayerStackYOffset = DBM.DefaultOptions.PrivateAurasPlayerStackYOffset
+		DBM.Options.PrivateAurasPlayerShowStacks = DBM.DefaultOptions.PrivateAurasPlayerShowStacks
+		DBM.Options.PrivateAurasPlayerShowDispelBorder = DBM.DefaultOptions.PrivateAurasPlayerShowDispelBorder
+	end
 	DBM.Options.PrivateAurasPlayerXOffset = DBM.DefaultOptions.PrivateAurasPlayerXOffset
 	DBM.Options.PrivateAurasPlayerYOffset = DBM.DefaultOptions.PrivateAurasPlayerYOffset
 	DBM.Options.PrivateAurasPlayerAnchor = DBM.DefaultOptions.PrivateAurasPlayerAnchor
@@ -164,7 +310,7 @@ personalAuraReset:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasTextAnchorXOffset = DBM.DefaultOptions.PrivateAurasTextAnchorXOffset
 		DBM.Options.PrivateAurasTextAnchorYOffset = DBM.DefaultOptions.PrivateAurasTextAnchorYOffset
 		DBM.Options.PrivateAurasTextAnchorRelativeTo = DBM.DefaultOptions.PrivateAurasTextAnchorRelativeTo
-		DBM.Options.PrivateAurasTextAnchor = DBM.DefaultOptions.PrivateAurasTextAnchor
+		DBM.Options.PrivateAurasTextAnchorAnchor = DBM.DefaultOptions.PrivateAurasTextAnchorAnchor
 	end
 --	DBM.Options.DontPlayPrivateAuraSound = DBM.DefaultOptions.DontPlayPrivateAuraSound
 	-- Set UI visuals
@@ -175,10 +321,23 @@ personalAuraReset:SetScript("OnClick", function()
 	personalAuraBorder:SetChecked(DBM.Options.PrivateAurasPlayerHideBorder)
 	personalAuraTooltip:SetChecked(DBM.Options.PrivateAurasPlayerHideTooltip)
 	personalAuraGrowDir:SetSelectedValue(DBM.Options.PrivateAurasPlayerGrowDirection)
-	personalSpacing:SetValue(DBM.Options.PrivateAurasPlayerSpacing)
+	personalSpacing:SetValue(DBM.Options.PrivateAurasPlayerSpacing2)
 	personalAuraIconScale:SetValue(DBM.Options.PrivateAurasPlayerWidth)
-	personalAuraStackScale:SetValue(DBM.Options.PrivateAurasPlayerScale)
+	if personalAuraStackScale then
+		personalAuraStackScale:SetValue(DBM.Options.PrivateAurasPlayerScale)
+	end
 	personalAuraMaxIcons:SetValue(DBM.Options.PrivateAurasPlayerLimit)
+	if isAuraTracking121 then
+		personalAuraFontDropDown:SetSelectedValue(DBM.Options.PrivateAurasPlayerTextFont)
+		personalAuraFontStyleDropDown:SetSelectedValue(DBM.Options.PrivateAurasPlayerTextFontStyle)
+		personalAuraDurationFontSize:SetValue(DBM.Options.PrivateAurasPlayerDurationFontSize)
+		personalAuraStackFontSize:SetValue(DBM.Options.PrivateAurasPlayerStackFontSize)
+		personalAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasPlayerStackColor.r, DBM.Options.PrivateAurasPlayerStackColor.g, DBM.Options.PrivateAurasPlayerStackColor.b)
+		personalAuraStackXOffset:SetValue(DBM.Options.PrivateAurasPlayerStackXOffset)
+		personalAuraStackYOffset:SetValue(DBM.Options.PrivateAurasPlayerStackYOffset)
+		personalAuraShowStacks:SetChecked(DBM.Options.PrivateAurasPlayerShowStacks)
+		personalAuraShowDispelBorder:SetChecked(DBM.Options.PrivateAurasPlayerShowDispelBorder)
+	end
 	if personalAuraTextMesssageScale then
 		personalAuraTextMesssageScale:SetValue(DBM.Options.PrivateAurasTextAnchorScale)
 	end
@@ -209,7 +368,7 @@ if not isAuraTracking121 then
 	coTankUpscaleDText = coTankAuraArea:CreateCheckButton(L.UpscaleDurationText, true, nil, "PrivateAurasCoTankUpscaleDuration")
 	coTankUpscaleDText:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasCoTankUpscaleDuration = not DBM.Options.PrivateAurasCoTankUpscaleDuration
-		OnAuraSettingsChange(true)
+		OnAuraSettingsChange(false)
 	end)
 end
 local coTankAuraBorder 	= coTankAuraArea:CreateCheckButton(L.HidePABorder, true, nil, "PrivateAurasCoTankHideBorder")
@@ -234,9 +393,9 @@ coTankGrowDir.myheight = 30
 
 local coTankSpacing = coTankAuraArea:CreateSlider(L.SetPAIconSpacing, -2, 5, 1, 150)
 coTankSpacing:SetPoint("TOPLEFT", coTankGrowDir, "TOPLEFT", 180, 0)
-coTankSpacing:SetValue(DBM.Options.PrivateAurasCoTankSpacing)
+coTankSpacing:SetValue(DBM.Options.PrivateAurasCoTankSpacing2)
 coTankSpacing:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasCoTankSpacing = self:GetValue()
+	DBM.Options.PrivateAurasCoTankSpacing2 = self:GetValue()
 	OnAuraSettingsChange(false)
 end)
 coTankSpacing.myheight = 0
@@ -260,13 +419,102 @@ coTankAuraMaxIcons:HookScript("OnValueChanged", function(self)
 end)
 coTankAuraMaxIcons.myheight = 0
 
-local coTankStackScale = coTankAuraArea:CreateSlider(L.SetPAStackScale, 1, 10, 1, 150)
-coTankStackScale:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 0, -50)
-coTankStackScale:SetValue(DBM.Options.PrivateAurasCoTankScale)
-coTankStackScale:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasCoTankScale = self:GetValue()
-	OnAuraSettingsChange(false)
-end)
+local coTankStackScale
+if not isAuraTracking121 then
+	coTankStackScale = coTankAuraArea:CreateSlider(L.SetPAStackScale, 1, 10, 1, 150)
+	coTankStackScale:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 0, -50)
+	coTankStackScale:SetValue(DBM.Options.PrivateAurasCoTankScale)
+	coTankStackScale:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasCoTankScale = self:GetValue()
+		OnAuraSettingsChange(false)
+	end)
+end
+
+local coTankAuraFontDropDown
+local coTankAuraFontStyleDropDown
+local coTankAuraDurationFontSize
+local coTankAuraStackFontSize
+local coTankAuraStackColor
+local coTankAuraStackXOffset
+local coTankAuraStackYOffset
+local coTankAuraShowStacks
+local coTankAuraShowDispelBorder
+if isAuraTracking121 then
+	coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM", "PrivateAurasCoTankTextFont", function(value)
+		DBM.Options.PrivateAurasCoTankTextFont = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraFontDropDown:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 0, -50)
+
+	coTankAuraFontStyleDropDown = coTankAuraArea:CreateDropdown(L.FontStyle, FontStyles, "DBM", "PrivateAurasCoTankTextFontStyle", function(value)
+		DBM.Options.PrivateAurasCoTankTextFontStyle = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraFontStyleDropDown:SetPoint("LEFT", coTankAuraFontDropDown, "RIGHT", 25, 0)
+	coTankAuraFontStyleDropDown.myheight = 0
+
+	coTankAuraDurationFontSize = coTankAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150)
+	coTankAuraDurationFontSize:SetPoint("TOPLEFT", coTankAuraFontDropDown, "TOPLEFT", 20, -50)
+	coTankAuraDurationFontSize:SetValue(DBM.Options.PrivateAurasCoTankDurationFontSize)
+	coTankAuraDurationFontSize:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasCoTankDurationFontSize = self:GetValue()
+		OnAuraSettingsChange(false)
+	end)
+
+	coTankAuraStackFontSize = coTankAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150)
+	coTankAuraStackFontSize:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", 180, 0)
+	coTankAuraStackFontSize:SetValue(DBM.Options.PrivateAurasCoTankStackFontSize)
+	coTankAuraStackFontSize:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasCoTankStackFontSize = self:GetValue()
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraStackFontSize.myheight = 0
+
+	coTankAuraShowStacks = coTankAuraArea:CreateCheckButton(L.AuraShowStacks, true, nil, "PrivateAurasCoTankShowStacks")
+	coTankAuraShowStacks:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasCoTankShowStacks = not DBM.Options.PrivateAurasCoTankShowStacks
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraShowStacks:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", 0, -40)
+
+	coTankAuraShowDispelBorder = coTankAuraArea:CreateCheckButton(L.AuraShowDispelBorder, true, nil, "PrivateAurasCoTankShowDispelBorder")
+	coTankAuraShowDispelBorder:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasCoTankShowDispelBorder = not DBM.Options.PrivateAurasCoTankShowDispelBorder
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraShowDispelBorder:SetPoint("TOPLEFT", coTankAuraShowStacks, "TOPLEFT", 200, 0)
+	coTankAuraShowDispelBorder.myheight = 0
+
+	coTankAuraStackColor = coTankAuraArea:CreateColorSelect(L.FontColor, function(_, r, g, b)
+		DBM.Options.PrivateAurasCoTankStackColor.r = r
+		DBM.Options.PrivateAurasCoTankStackColor.g = g
+		DBM.Options.PrivateAurasCoTankStackColor.b = b
+		OnAuraSettingsChange(false)
+	end, function(self)
+		local color = DBM.DefaultOptions.PrivateAurasCoTankStackColor
+		self:SetColorRGB(color.r, color.g, color.b, true)
+	end)
+	coTankAuraStackColor:SetPoint("TOPLEFT", coTankAuraShowStacks, "TOPLEFT", 0, -45)
+	coTankAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasCoTankStackColor.r, DBM.Options.PrivateAurasCoTankStackColor.g, DBM.Options.PrivateAurasCoTankStackColor.b)
+
+	coTankAuraStackXOffset = coTankAuraArea:CreateSlider(L.Slider_TextOffSetX, -20, 20, 1, 150)
+	coTankAuraStackXOffset:SetPoint("TOPLEFT", coTankAuraStackColor, "TOPLEFT", 130, 0)
+	coTankAuraStackXOffset:SetValue(DBM.Options.PrivateAurasCoTankStackXOffset)
+	coTankAuraStackXOffset:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasCoTankStackXOffset = self:GetValue()
+		OnAuraSettingsChange(false)
+	end)
+
+	coTankAuraStackYOffset = coTankAuraArea:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 150)
+	coTankAuraStackYOffset:SetPoint("TOPLEFT", coTankAuraStackXOffset, "TOPLEFT", 180, 0)
+	coTankAuraStackYOffset:SetValue(DBM.Options.PrivateAurasCoTankStackYOffset)
+	coTankAuraStackYOffset:HookScript("OnValueChanged", function(self)
+		DBM.Options.PrivateAurasCoTankStackYOffset = self:GetValue()
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraStackYOffset.myheight = 0
+	coTankAuraStackColor.myheight = 135
+end
 
 local coTankMovemebutton = coTankAuraArea:CreateButton(L.MoveMe, 100, 16)
 coTankMovemebutton:SetPoint("TOPRIGHT", coTankAuraArea.frame, "TOPRIGHT", -2, -4)
@@ -286,11 +534,22 @@ coTankAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankHideBorder = DBM.DefaultOptions.PrivateAurasCoTankHideBorder
 	DBM.Options.PrivateAurasCoTankHideTooltip = DBM.DefaultOptions.PrivateAurasCoTankHideTooltip
 	DBM.Options.PrivateAurasCoTankGrowDirection = DBM.DefaultOptions.PrivateAurasCoTankGrowDirection
-	DBM.Options.PrivateAurasCoTankSpacing = DBM.DefaultOptions.PrivateAurasCoTankSpacing
+	DBM.Options.PrivateAurasCoTankSpacing2 = DBM.DefaultOptions.PrivateAurasCoTankSpacing2
 	DBM.Options.PrivateAurasCoTankWidth = DBM.DefaultOptions.PrivateAurasCoTankWidth
 	DBM.Options.PrivateAurasCoTankHeight = DBM.DefaultOptions.PrivateAurasCoTankHeight
 	DBM.Options.PrivateAurasCoTankScale = DBM.DefaultOptions.PrivateAurasCoTankScale
 	DBM.Options.PrivateAurasCoTankLimit = DBM.DefaultOptions.PrivateAurasCoTankLimit
+	if isAuraTracking121 then
+		DBM.Options.PrivateAurasCoTankTextFont = DBM.DefaultOptions.PrivateAurasCoTankTextFont
+		DBM.Options.PrivateAurasCoTankTextFontStyle = DBM.DefaultOptions.PrivateAurasCoTankTextFontStyle
+		DBM.Options.PrivateAurasCoTankDurationFontSize = DBM.DefaultOptions.PrivateAurasCoTankDurationFontSize
+		DBM.Options.PrivateAurasCoTankStackFontSize = DBM.DefaultOptions.PrivateAurasCoTankStackFontSize
+		DBM.Options.PrivateAurasCoTankStackColor = CopyTable(DBM.DefaultOptions.PrivateAurasCoTankStackColor)
+		DBM.Options.PrivateAurasCoTankStackXOffset = DBM.DefaultOptions.PrivateAurasCoTankStackXOffset
+		DBM.Options.PrivateAurasCoTankStackYOffset = DBM.DefaultOptions.PrivateAurasCoTankStackYOffset
+		DBM.Options.PrivateAurasCoTankShowStacks = DBM.DefaultOptions.PrivateAurasCoTankShowStacks
+		DBM.Options.PrivateAurasCoTankShowDispelBorder = DBM.DefaultOptions.PrivateAurasCoTankShowDispelBorder
+	end
 	DBM.Options.PrivateAurasCoTankXOffset = DBM.DefaultOptions.PrivateAurasCoTankXOffset
 	DBM.Options.PrivateAurasCoTankYOffset = DBM.DefaultOptions.PrivateAurasCoTankYOffset
 	DBM.Options.PrivateAurasCoTankAnchor = DBM.DefaultOptions.PrivateAurasCoTankAnchor
@@ -305,10 +564,23 @@ coTankAuraReset:SetScript("OnClick", function()
 	coTankAuraBorder:SetChecked(DBM.Options.PrivateAurasCoTankHideBorder)
 	coTankAuraTooltip:SetChecked(DBM.Options.PrivateAurasCoTankHideTooltip)
 	coTankGrowDir:SetSelectedValue(DBM.Options.PrivateAurasCoTankGrowDirection)
-	coTankSpacing:SetValue(DBM.Options.PrivateAurasCoTankSpacing)
+	coTankSpacing:SetValue(DBM.Options.PrivateAurasCoTankSpacing2)
 	coTankIconScale:SetValue(DBM.Options.PrivateAurasCoTankWidth)
-	coTankStackScale:SetValue(DBM.Options.PrivateAurasCoTankScale)
+	if coTankStackScale then
+		coTankStackScale:SetValue(DBM.Options.PrivateAurasCoTankScale)
+	end
 	coTankAuraMaxIcons:SetValue(DBM.Options.PrivateAurasCoTankLimit)
+	if isAuraTracking121 then
+		coTankAuraFontDropDown:SetSelectedValue(DBM.Options.PrivateAurasCoTankTextFont)
+		coTankAuraFontStyleDropDown:SetSelectedValue(DBM.Options.PrivateAurasCoTankTextFontStyle)
+		coTankAuraDurationFontSize:SetValue(DBM.Options.PrivateAurasCoTankDurationFontSize)
+		coTankAuraStackFontSize:SetValue(DBM.Options.PrivateAurasCoTankStackFontSize)
+		coTankAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasCoTankStackColor.r, DBM.Options.PrivateAurasCoTankStackColor.g, DBM.Options.PrivateAurasCoTankStackColor.b)
+		coTankAuraStackXOffset:SetValue(DBM.Options.PrivateAurasCoTankStackXOffset)
+		coTankAuraStackYOffset:SetValue(DBM.Options.PrivateAurasCoTankStackYOffset)
+		coTankAuraShowStacks:SetChecked(DBM.Options.PrivateAurasCoTankShowStacks)
+		coTankAuraShowDispelBorder:SetChecked(DBM.Options.PrivateAurasCoTankShowDispelBorder)
+	end
 	--TODO, PrivateAurasCoTankXOffset and PrivateAurasCoTankYOffset are not yet implemented, need to add those to the UI and then set them here as well
 	if coTankUpscaleDText then
 		coTankUpscaleDText:SetChecked(DBM.Options.PrivateAurasCoTankUpscaleDuration)
