@@ -70,6 +70,14 @@ local private = select(2, ...)
 local AuraTracking = {}
 DBM.Auras = AuraTracking
 
+---@class DBMAuraPreviewFrame: Frame
+---@field Textures table<integer, Texture>
+---@field BorderTextures table<integer, Texture>
+---@field Symbols table<integer, FontString>
+---@field DurationTexts table<integer, FontString>
+---@field StackTexts table<integer, FontString>
+---@field Border Frame?
+
 local AuraTrackingFilters = {
 	"HARMFUL|!PLAYER",
 }
@@ -201,13 +209,12 @@ end
 ---@param texture number|string
 ---@param dispelType string?
 local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType)
-	---@diagnostic disable: inject-field
+	---@cast frame DBMAuraPreviewFrame
 	frame.Textures = frame.Textures or {}
 	frame.BorderTextures = frame.BorderTextures or {}
 	frame.Symbols = frame.Symbols or {}
 	frame.DurationTexts = frame.DurationTexts or {}
 	frame.StackTexts = frame.StackTexts or {}
-	---@diagnostic enable: inject-field
 
 	local xOffset = (settings.GrowDirection == "RIGHT" and (index - 1) * (settings.Width + settings.Spacing)) or (settings.GrowDirection == "LEFT" and -(index - 1) * (settings.Width + settings.Spacing)) or 0
 	local yOffset = (settings.GrowDirection == "UP" and (index - 1) * (settings.Height + settings.Spacing)) or (settings.GrowDirection == "DOWN" and -(index - 1) * (settings.Height + settings.Spacing)) or 0
@@ -270,6 +277,7 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType)
 		stackText:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", settings.StackXOffset, settings.StackYOffset)
 		stackText:SetFont(fontPath, settings.StackFontSize, fontFlags)
 		stackText:SetTextColor(settings.StackColor.r, settings.StackColor.g, settings.StackColor.b)
+		---@diagnostic disable-next-line: param-type-mismatch
 		stackText:SetText(index + 1)
 		stackText:Show()
 	else
@@ -371,7 +379,6 @@ end
 ---@param key string
 ---@return DBMAuraContainerState
 local function AcquireContainerState(self, key)
-	---@diagnostic disable-next-line: inject-field
 	if not self.AuraTrackingState then self.AuraTrackingState = {} end
 	if not self.AuraTrackingState[key] then self.AuraTrackingState[key] = {} end
 	local state = self.AuraTrackingState[key]
@@ -512,15 +519,11 @@ end
 ---@param settings table
 ---@param texture number|string
 local function UpdatePreviewFrame(frame, settings, texture)
-	---@diagnostic disable-next-line: inject-field
+	---@cast frame DBMAuraPreviewFrame
 	frame.Textures = frame.Textures or {}
-	---@diagnostic disable-next-line: inject-field
 	frame.BorderTextures = frame.BorderTextures or {}
-	---@diagnostic disable-next-line: inject-field
 	frame.Symbols = frame.Symbols or {}
-	---@diagnostic disable-next-line: inject-field
 	frame.DurationTexts = frame.DurationTexts or {}
-	---@diagnostic disable-next-line: inject-field
 	frame.StackTexts = frame.StackTexts or {}
 	frame:ClearAllPoints()
 	frame:SetPoint(settings.Anchor, UIParent, settings.relativeTo, settings.xOffset, settings.yOffset)
