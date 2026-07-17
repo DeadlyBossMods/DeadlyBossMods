@@ -15,8 +15,21 @@ local private = select(2, ...)
 ---@field SetApplicationCount fun(self: DBMAuraButton, region: FontString, options: table)
 ---@field ClearApplicationCount fun(self: DBMAuraButton)
 
+---@class DBMAuraContainer: Frame
+---@field SetEnabled fun(self: DBMAuraContainer, enabled: boolean)
+---@field SetUnit fun(self: DBMAuraContainer, unit: playerUUIDs)
+---@field SetAuraLayoutAnchorPoint fun(self: DBMAuraContainer, anchor: string)
+---@field SetAuraLayoutGrowthDirection fun(self: DBMAuraContainer, horizontal: number, vertical: number)
+---@field SetAuraLayoutRowWidth fun(self: DBMAuraContainer, width: number)
+---@field HasAuraGroup fun(self: DBMAuraContainer, groupKey: string): boolean
+---@field SetAuraGroupMaxFrameCount fun(self: DBMAuraContainer, groupKey: string, maxFrameCount: number)
+---@field SetAuraGroupCandidateFilters fun(self: DBMAuraContainer, groupKey: string, filters: table)
+---@field SetAuraGroupLayout fun(self: DBMAuraContainer, groupKey: string, layout: table)
+---@field SetAuraGroupSortMethod fun(self: DBMAuraContainer, groupKey: string, sortMethod: number, sortDirection: number)
+---@field AddAuraGroup fun(self: DBMAuraContainer, groupKey: string, filters: string, options: table)
+
 ---@class DBMAuraContainerState
----@field container Frame?
+---@field container DBMAuraContainer?
 ---@field anchor Frame?
 ---@field groupKey string?
 ---@field key string?
