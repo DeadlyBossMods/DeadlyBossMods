@@ -2,6 +2,7 @@ if GetLocale() ~= "frFR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
 
 local dateTable = date("*t")
 if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
@@ -163,7 +164,7 @@ L.OPTION_CATEGORY_DROPDOWNS			= "Menu déroulants"--Still put in MISC sub grooup
 L.OPTION_CATEGORY_YELLS 			= "Cris"
 L.OPTION_CATEGORY_NAMEPLATES 		= "Barre d'info"
 L.OPTION_CATEGORY_ICONS 			= "Icônes"
-L.OPTION_CATEGORY_PAURAS 			= "Auras privées"
+L.OPTION_CATEGORY_PAURAS 			= "Auras"
 
 L.AUTO_RESPONDED					= "Répondu automatiquement."
 L.STATUS_WHISPER					= "%s: %s, %d/%d joueurs en vie"
@@ -185,8 +186,8 @@ L.VERSIONCHECK_HEADER				= "Module de boss - Versions"
 L.VERSIONCHECK_ENTRY				= "%s: %s (%s)"
 L.VERSIONCHECK_ENTRY_TWO			= "%s: %s (%s) & %s (%s)"--Two Boss mods
 L.VERSIONCHECK_ENTRY_NO_DBM			= "%s: " .. L.DBM .. " non installé"--Two Boss mods
-L.VERSIONCHECK_FOOTER				= "%d joueurs trouvés avec " .. L.DEADLY_BOSS_MODS .. " & %d joueurs avec BigWigs"
-L.VERSIONCHECK_OUTDATED				= "Les joueurs suivants %d ont une version périmée du bossmod: %s"
+L.VERSIONCHECK_FOOTER				= "%d |4joueur;joueurs trouvés avec " .. L.DEADLY_BOSS_MODS .. " et %d |4joueur;joueurs avec BigWigs"
+L.VERSIONCHECK_OUTDATED				= "Les joueurs suivants %d ont une version périmée du bossmod : %s"
 L.YOUR_VERSION_OUTDATED	  			= "Votre version de " .. L.DEADLY_BOSS_MODS .. " est périmée. Veuillez vous rendre sur Curse, Wago, WoWInterface ou Github pour obtenir la dernière version."
 L.VOICE_PACK_OUTDATED				= "Il semble que votre paquet de voix " .. L.DBM .. " manque de sons supportés sur cette version de " .. L.DBM .. ". Certains sons d'alertes spéciales ne seront pas joués s'ils utilisent des voix non supportées par votre version. Téléchargez une nouvelle version du paquet de voix ou contactez l'auteur pour une mise à jour qui l'inclut."
 L.VOICE_MISSING						= "Vous aviez un paquet de voix sélectionné qui ne pouvait pas être trouvé. Votre sélection a été réinitialisée à 'Aucun'. Si ceci est une erreur, assurez-vous que votre paquet est correctement installé et activé."
@@ -626,10 +627,10 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2 			= "Afficher la fenêtre d'information pour un 
 L.AUTO_INFO_FRAME_OPTION_TEXT3 			= "Afficher la fenêtre d'information pour $spell:%s (lorsque le seuil de %%s est atteint)"
 L.AUTO_READY_CHECK_OPTION_TEXT   		= "Jouer le son de l'appel lorsque le boss est engagé (même si ce dernier n'est pas la cible)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "Afficher un chronomètre pour le run plus rapide de cette zone"
-L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Jouer les alertes sonores des auras privées de DBM pour $spell:%s pendant cette rencontre"
-L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Jouer les alertes sonores des auras privées de DBM lorsque vous êtes ciblé par $spell:%s"
-L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Jouer les alertes sonores des auras privées de DBM lorsque vous devez vous éloigner de $spell:%s"
-L.AUTO_PRIVATEAURA_OPTION_POST_TEXT   	= "Jouer les alertes sonores des auras privées de DBM pour les effets persistants de $spell:%s."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Jouer les alertes sonores de DBM pour $spell:%s pendant cette rencontre"
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Jouer les alertes sonores de DBM lorsque vous êtes ciblé par $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Jouer les alertes sonores de DBM lorsque vous devez vous éloigner de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_POST_TEXT   	= "Jouer les alertes sonores de DBM pour les effets persistants de $spell:%s."
 L.AUTO_CUSTOMTIMER_OPTION_TEXT        	= "Afficher un chronomètre pour $spell:%s"
 L.AUTO_CUSTOMALERT_OPTION_TEXT        	= "Définir une alerte sonore lorsque $spell:%s est sur le point d'être incanté"
 
@@ -640,7 +641,7 @@ L.MOVE_SPECIAL_WARNING_BAR	= "Alertes spéciales mobiles"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
 
 L.MOVE_PRIVATE_AURA_TEXT 	= "<valeur secrète> vous cible avec le sort <valeur secrète>"
-L.MOVE_PRIVATE_AURA_DISABLED = "L’aperçu est désactivé car les cadres d’auras privées sont désactivés globalement dans les options."
+L.MOVE_PRIVATE_AURA_DISABLED = "L’aperçu est désactivé car les cadres d'auras sont désactivés globalement dans les options."
 
 L.HUD_INVALID_TYPE			= "Type de HUD défini invalide"
 L.HUD_INVALID_TARGET		= "Pas de cible valide disponible pour le HUD"

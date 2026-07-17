@@ -490,11 +490,20 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerHideTooltip = false,
 	PrivateAurasPlayerUpscaleDuration = true,
 	PrivateAurasPlayerScale = 3,
-	PrivateAurasPlayerSpacing = -1,
+	PrivateAurasPlayerSpacing2 = 1,
 	PrivateAurasPlayerLimit = 5,
 	PrivateAurasPlayerGrowDirection = "RIGHT",
-	PrivateAurasPlayerWidth = 60,
-	PrivateAurasPlayerHeight = 60,
+	PrivateAurasPlayerWidth = 65,
+	PrivateAurasPlayerHeight = 65,
+	PrivateAurasPlayerTextFont = "standardFont",
+	PrivateAurasPlayerTextFontStyle = "None",
+	PrivateAurasPlayerDurationFontSize = 22,
+	PrivateAurasPlayerStackFontSize = 25,
+	PrivateAurasPlayerStackColor = {r = 1, g = 1, b = 1},
+	PrivateAurasPlayerStackXOffset = -1,
+	PrivateAurasPlayerStackYOffset = 1,
+	PrivateAurasPlayerShowStacks = true,
+	PrivateAurasPlayerShowDispelBorder = true,
 	PrivateAurasPlayerAnchor = "CENTER",--NYI
 	PrivateAurasPlayerRelativeTo = "CENTER",--NYI
 	PrivateAurasPlayerXOffset = 185,--Partial (drag and drop only, no UI slider/editbox)
@@ -505,11 +514,20 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankHideTooltip = false,
 	PrivateAurasCoTankUpscaleDuration = true,
 	PrivateAurasCoTankScale = 3,
-	PrivateAurasCoTankSpacing = -1,
+	PrivateAurasCoTankSpacing2 = 1,
 	PrivateAurasCoTankLimit = 5,
 	PrivateAurasCoTankGrowDirection = "LEFT",
-	PrivateAurasCoTankWidth = 60,
-	PrivateAurasCoTankHeight = 60,
+	PrivateAurasCoTankWidth = 65,
+	PrivateAurasCoTankHeight = 65,
+	PrivateAurasCoTankTextFont = "standardFont",
+	PrivateAurasCoTankTextFontStyle = "None",
+	PrivateAurasCoTankDurationFontSize = 22,
+	PrivateAurasCoTankStackFontSize = 25,
+	PrivateAurasCoTankStackColor = {r = 1, g = 1, b = 1},
+	PrivateAurasCoTankStackXOffset = -1,
+	PrivateAurasCoTankStackYOffset = 1,
+	PrivateAurasCoTankShowStacks = true,
+	PrivateAurasCoTankShowDispelBorder = true,
 	PrivateAurasCoTankAnchor = "CENTER",--NYI
 	PrivateAurasCoTankRelativeTo = "CENTER",--NYI
 	PrivateAurasCoTankXOffset = -196,--Partial (drag and drop only, no UI slider/editbox)
@@ -569,6 +587,11 @@ local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, 
 local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
 -- 0 variables
 local LastInstanceMapID = -1
+
+---@param priority number?
+function DBM:QueueAuraAnchorUpdate(priority)
+	pendingPAAnchorCheck = math.max(pendingPAAnchorCheck, priority or 1)
+end
 
 local deprecatedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
@@ -3157,12 +3180,16 @@ do
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
 		end
-		if private.isRetail and DBM:GetTOC() < 120100 then
-			local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
-			if not succeeded then
-				pendingPAAnchorCheck = 2
-			else
-				pendingPAAnchorCheck = 0
+		if private.isRetail then
+			local auraHandler = DBM.Auras
+			if auraHandler then
+				local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+				local succeeded = updateMethod and updateMethod(auraHandler)
+				if not succeeded then
+					pendingPAAnchorCheck = 2
+				else
+					pendingPAAnchorCheck = 0
+				end
 			end
 		end
 	end
@@ -4745,8 +4772,10 @@ do
 		if private.isRetail then
 			--Handle private aura sounds and anchors
 			syncZoneAuraSounds(self, mapID)
-			if self:GetTOC() < 120100 then
-				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
+			local auraHandler = DBM.Auras
+			if auraHandler then
+				local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+				local succeeded = updateMethod and updateMethod(auraHandler)
 				if not succeeded then
 					pendingPAAnchorCheck = 1
 				else
@@ -5189,9 +5218,13 @@ do
 				syncZoneAuraSounds(self, pendingPASoundZoneSync)
 			end
 			if pendingPAAnchorCheck > 0 then
-				local succeeded = self.PrivateAuras:UpdatePrivateAuraAnchors()
-				if succeeded then
-					pendingPAAnchorCheck = 0
+				local auraHandler = DBM.Auras
+				if auraHandler then
+					local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+					local succeeded = updateMethod and updateMethod(auraHandler)
+					if succeeded then
+						pendingPAAnchorCheck = 0
+					end
 				end
 			end
 		end

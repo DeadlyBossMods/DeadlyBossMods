@@ -753,8 +753,9 @@ do
 --		DBM.Options.RangeFrameLocked = oldRangeFrameLocked
 --		DBM.RangeCheck:Hide(true)
 		if unlockTriggeredPrivateAurasPreview then
-			if DBM.PrivateAuras and DBM.PrivateAuras.IsInPreview then
-				DBM.PrivateAuras:PreviewToggle()
+			local auraHandler = DBM.Auras
+			if auraHandler and auraHandler.IsInPreview then
+				auraHandler:PreviewToggle()
 			end
 			unlockTriggeredPrivateAurasPreview = false
 		end
@@ -777,8 +778,9 @@ do
 --		oldRangeFrameLocked = DBM.Options.RangeFrameLocked
 --		DBM.Options.RangeFrameLocked = false
 --		DBM.RangeCheck:Show(nil, nil, true)
-		if DBM.PrivateAuras and not DBM.PrivateAuras.IsInPreview then
-			DBM.PrivateAuras:PreviewToggle()
+		local auraHandler = DBM.Auras
+		if auraHandler and not auraHandler.IsInPreview then
+			auraHandler:PreviewToggle()
 			unlockTriggeredPrivateAurasPreview = true
 		else
 			unlockTriggeredPrivateAurasPreview = false
