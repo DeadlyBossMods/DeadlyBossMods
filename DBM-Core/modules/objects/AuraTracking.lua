@@ -5,7 +5,55 @@ local DBM = DBM
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
+---@class DBMAuraButton: Frame
+---@field SetIcon fun(self: DBMAuraButton, icon: Texture)
+---@field SetAuraBorder fun(self: DBMAuraButton, region: Texture, options: table)
+---@field SetAuraSymbol fun(self: DBMAuraButton, region: FontString, options: table)
+---@field ClearAuraBorder fun(self: DBMAuraButton)
+---@field ClearAuraSymbol fun(self: DBMAuraButton)
+---@field SetDurationText fun(self: DBMAuraButton, region: FontString, options: table?)
+---@field SetApplicationCount fun(self: DBMAuraButton, region: FontString, options: table)
+---@field ClearApplicationCount fun(self: DBMAuraButton)
+
+---@class DBMAuraContainerState
+---@field container Frame?
+---@field anchor Frame?
+---@field groupKey string?
+---@field key string?
+---@field buttonRegions table<Frame, table>?
+---@field initialized boolean?
+---@field unit playerUUIDs?
+---@field settings DBMAuraSettings?
+---@field width number?
+---@field height number?
+
+---@class DBMAuraSettings
+---@field optionPrefix string
+---@field HideBorder boolean
+---@field HideTooltip boolean
+---@field Scale number
+---@field Spacing number
+---@field Limit number
+---@field GrowDirection string
+---@field enabled boolean
+---@field Width number
+---@field Height number
+---@field Anchor string
+---@field relativeTo string
+---@field xOffset number
+---@field yOffset number
+---@field TextFont string
+---@field TextFontStyle string
+---@field DurationFontSize number
+---@field StackFontSize number
+---@field StackColor { r: number, g: number, b: number }
+---@field StackXOffset number
+---@field StackYOffset number
+---@field ShowStacks boolean
+---@field ShowDispelBorder boolean
+
 ---@class DBMAuraTracking
+---@field AuraTrackingState table<string, DBMAuraContainerState>?
 local AuraTracking = {}
 DBM.Auras = AuraTracking
 
@@ -13,8 +61,8 @@ local AuraTrackingFilters = {
 	"HARMFUL|!PLAYER",
 }
 
-local AuraSortMethod = _G.AuraContainerSortMethod or { Default = 1 }
-local AuraSortDirection = _G.AuraContainerSortDirection or { Normal = 1 }
+local AuraSortMethod = rawget(_G, "AuraContainerSortMethod") or { Default = 1 }
+local AuraSortDirection = rawget(_G, "AuraContainerSortDirection") or { Normal = 1 }
 local AuraTrackingPreviewDispelTypes = {
 	"Magic",
 	"Curse",
@@ -27,7 +75,7 @@ local auraAnchorsRegistered = false
 local auraTextFontResetNotified = false
 
 ---@param prefix string The prefix for the option keys (e.g., "PrivateAurasPlayer")
----@return table Settings table with all configuration properties
+---@return DBMAuraSettings Settings table with all configuration properties
 local function GetAuraSettings(prefix)
 	local stackColor = DBM.Options[prefix .. "StackColor"] or DBM.DefaultOptions[prefix .. "StackColor"]
 	return {
@@ -179,6 +227,7 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType)
 		symbol:ClearAllPoints()
 		symbol:SetPoint("TOPLEFT", icon, "TOPLEFT", 2, -2)
 		AuraUtil.SetAuraSymbol(symbol, dispelType)
+		symbol:Show()
 	else
 		if frame.BorderTextures[index] then
 			frame.BorderTextures[index]:Hide()
@@ -216,9 +265,9 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType)
 	end
 end
 
----@param state table
----@param button Frame
----@param settings table
+---@param state DBMAuraContainerState
+---@param button DBMAuraButton
+---@param settings DBMAuraSettings
 ---@param unit playerUUIDs
 local function ConfigureButton(state, button, settings, unit)
 	local prefix = settings and settings.optionPrefix or ""
@@ -238,6 +287,8 @@ local function ConfigureButton(state, button, settings, unit)
 	button:SetSize(settings.Width, settings.Height)
 	regions.textOverlay:SetFrameLevel(button:GetFrameLevel() + 3)
 	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
+	local durationFontSize = tonumber(settings.DurationFontSize) or tonumber(DBM.DefaultOptions[prefix .. "DurationFontSize"]) or 12
+	local stackFontSize = tonumber(settings.StackFontSize) or tonumber(DBM.DefaultOptions[prefix .. "StackFontSize"]) or 12
 	if settings.ShowDispelBorder and not settings.HideBorder then
 		if not regions.dispelOverlay then
 			regions.dispelOverlay = CreateFrame("Frame", nil, button)
@@ -262,7 +313,7 @@ local function ConfigureButton(state, button, settings, unit)
 			regions.dispelSymbol:SetPoint("TOPLEFT", button, "TOPLEFT", 2, -2)
 			regions.dispelSymbol:SetTextColor(1, 1, 1, 1)
 		end
-		regions.dispelSymbol:SetFont(fontPath, settings.StackFontSize, fontFlags)
+		regions.dispelSymbol:SetFont(fontPath, stackFontSize, fontFlags)
 		button:SetAuraSymbol(regions.dispelSymbol, {
 			showWhenHarmful = true,
 			showWhenHelpful = false,
@@ -281,7 +332,7 @@ local function ConfigureButton(state, button, settings, unit)
 	end
 	regions.durationText:ClearAllPoints()
 	regions.durationText:SetPoint("CENTER", button, "CENTER", 0, 0)
-	regions.durationText:SetFont(fontPath, settings.DurationFontSize or DBM.DefaultOptions[prefix .. "DurationFontSize"], fontFlags)
+	regions.durationText:SetFont(fontPath, durationFontSize, fontFlags)
 	regions.durationText:Show()
 	button:SetDurationText(regions.durationText, nil)
 
@@ -291,7 +342,7 @@ local function ConfigureButton(state, button, settings, unit)
 	if settings.ShowStacks then
 		regions.countText:ClearAllPoints()
 		regions.countText:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", settings.StackXOffset, settings.StackYOffset)
-		regions.countText:SetFont(fontPath, settings.StackFontSize or DBM.DefaultOptions[prefix .. "StackFontSize"], fontFlags)
+		regions.countText:SetFont(fontPath, stackFontSize, fontFlags)
 		regions.countText:SetTextColor(settings.StackColor.r, settings.StackColor.g, settings.StackColor.b)
 		regions.countText:Show()
 		button:SetApplicationCount(regions.countText, {})
@@ -305,7 +356,7 @@ end
 
 ---@param self DBMAuraTracking
 ---@param key string
----@return table
+---@return DBMAuraContainerState
 local function AcquireContainerState(self, key)
 	---@diagnostic disable-next-line: inject-field
 	if not self.AuraTrackingState then self.AuraTrackingState = {} end

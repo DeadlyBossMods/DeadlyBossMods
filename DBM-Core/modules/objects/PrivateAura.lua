@@ -19,7 +19,7 @@ local function GetPrivateAuraSettings(prefix)
         HideBorder = DBM.Options[prefix .. "HideBorder"],
         HideTooltip = DBM.Options[prefix .. "HideTooltip"],
         Scale = DBM.Options[prefix .. "Scale"],
-        Spacing = DBM.Options[prefix .. "Spacing"],
+        Spacing = DBM.Options[prefix .. "Spacing2"],
         Limit = DBM.Options[prefix .. "Limit"],
         GrowDirection = DBM.Options[prefix .. "GrowDirection"],
         enabled = DBM.Options[prefix .. "Enabled"],
