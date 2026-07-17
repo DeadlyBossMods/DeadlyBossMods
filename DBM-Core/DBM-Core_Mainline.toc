@@ -119,4 +119,5 @@ modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
 modules\objects\Sorting.lua
 modules\objects\PrivateAura.lua
+modules\objects\AuraTracking.lua
 modules\objects\EncounterEvents.lua

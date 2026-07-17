@@ -2,6 +2,7 @@ if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
 
 local dateTable = date("*t")
 if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
@@ -163,7 +164,7 @@ L.OPTION_CATEGORY_DROPDOWNS			= "Menús desplegables"
 L.OPTION_CATEGORY_YELLS				= "Gritos"
 L.OPTION_CATEGORY_NAMEPLATES		= "Placas de nombre"
 L.OPTION_CATEGORY_ICONS				= "Iconos"
-L.OPTION_CATEGORY_PAURAS			= "Auras privadas"
+L.OPTION_CATEGORY_PAURAS			= "Auras"
 
 L.AUTO_RESPONDED					= "Respondido automáticamente."
 L.STATUS_WHISPER					= "%s: %s, %d/%d jugadores vivos."
@@ -185,7 +186,7 @@ L.VERSIONCHECK_HEADER				= "Módulos de jefe - Versiones"
 L.VERSIONCHECK_ENTRY				= "%s: %s (r%d)"--One Boss mod
 L.VERSIONCHECK_ENTRY_TWO			= "%s: %s (r%d) y %s (r%d)"--Two Boss mods
 L.VERSIONCHECK_ENTRY_NO_DBM			= "%s: Sin instalar"
-L.VERSIONCHECK_FOOTER				= "Se ha encontrado %d jugador(es) con " .. L.DBM .. " y %d jugador(es) con BigWigs."
+L.VERSIONCHECK_FOOTER				= "Se ha encontrado %d |4jugador;jugadores con " .. L.DBM .. " y %d |4jugador;jugadores con BigWigs."
 L.VERSIONCHECK_OUTDATED				= "Los siguientes %d jugadores tienen una versión desactualizada de " .. L.DBM .. ": %s"
 L.YOUR_VERSION_OUTDATED				= "Tu versión de " .. L.DEADLY_BOSS_MODS .. " está desactualizada. Por favor, descarga la última versión a través de Curse, Wago, Github o WoWInterface."
 L.VOICE_PACK_OUTDATED				= "A este paquete de voces le faltan sonidos compatibles con esta versión de " .. L.DBM .. ". No se sustituirán los sonidos de anuncios especiales que no tengan un sustituto. Por favor, descarga una versión más reciente del paquete de voces o contacta con el autor para informarle sobre los archivos de sonido que faltan."
@@ -626,10 +627,10 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2			= "Mostrar marco de información con una vista 
 L.AUTO_INFO_FRAME_OPTION_TEXT3			= "Mostrar marco de información para $spell:%s (cuando se alcanza el umbral de %%s)"
 L.AUTO_READY_CHECK_OPTION_TEXT			= "Reproducir sonido de comprobación de banda cuando se inicie el encuentro (aunque no lo tengas como objetivo)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "Mostrar temporizador para el récord actual de completar esta zona"
-L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Reproducir alertas de sonido de auras privadas de DBM para $spell:%s en este encuentro"
-L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Reproducir alertas de sonido de auras privadas de DBM cuando seas objetivo de $spell:%s"
-L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproducir alertas de sonido de auras privadas de DBM cuando necesites alejarte de $spell:%s"
-L.AUTO_PRIVATEAURA_OPTION_POST_TEXT   	= "Reproducir alertas de sonido de auras privadas de DBM para efectos persistentes de $spell:%s."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Reproducir alertas de sonido de DBM para $spell:%s en este encuentro"
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Reproducir alertas de sonido de DBM cuando seas objetivo de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproducir alertas de sonido de DBM cuando necesites alejarte de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_POST_TEXT   	= "Reproducir alertas de sonido de DBM para efectos persistentes de $spell:%s."
 L.AUTO_CUSTOMTIMER_OPTION_TEXT        	= "Mostrar temporizador para $spell:%s"
 L.AUTO_CUSTOMALERT_OPTION_TEXT        	= "Establecer alerta sonora cuando $spell:%s esté a punto de ser lanzado"
 
@@ -640,7 +641,7 @@ L.MOVE_SPECIAL_WARNING_BAR	= "Aviso especial desplazable"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Aviso especial"
 
 L.MOVE_PRIVATE_AURA_TEXT 		= "<valor secreto> te apunta con el hechizo <valor secreto>"
-L.MOVE_PRIVATE_AURA_DISABLED 	= "La vista previa está desactivada porque los marcos de auras privadas están desactivados globalmente en las opciones."
+L.MOVE_PRIVATE_AURA_DISABLED 	= "La vista previa está desactivada porque los marcos de auras están desactivados globalmente en las opciones."
 
 L.HUD_INVALID_TYPE			= "No se ha proporcionado un tipo de indicador en pantalla válido."
 L.HUD_INVALID_TARGET		= "No se ha proporcionado un objetivo válido."

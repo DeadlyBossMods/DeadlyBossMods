@@ -2,6 +2,7 @@ if GetLocale() ~= "ptBR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
 
 local dateTable = date("*t")
 if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
@@ -164,7 +165,7 @@ L.OPTION_CATEGORY_DROPDOWNS			= "Menus suspensos"--Still put in MISC sub grooup,
 L.OPTION_CATEGORY_YELLS 			= "Gritos"
 L.OPTION_CATEGORY_NAMEPLATES 		= "Placas de nome"
 L.OPTION_CATEGORY_ICONS 			= "Ícones"
-L.OPTION_CATEGORY_PAURAS 			= "Auras privadas"
+L.OPTION_CATEGORY_PAURAS 			= "Auras"
 
 L.AUTO_RESPONDED					= "Respondido automaticamente"
 L.STATUS_WHISPER					= "%s: %s, %d/%d pessoas vivas"
@@ -186,7 +187,7 @@ L.VERSIONCHECK_HEADER				= "Módulo de chefe - Versões"
 L.VERSIONCHECK_ENTRY				= "%s: %s (%s)"
 L.VERSIONCHECK_ENTRY_TWO			= "%s: %s (%s) & %s (%s)"--Two Boss mods
 L.VERSIONCHECK_ENTRY_NO_DBM			= "%s: " .. L.DBM .. " não instalado"
-L.VERSIONCHECK_FOOTER				= "Encontrados %d jogadores com " .. L.DBM .. " & %d jogadores com Bigwigs"
+L.VERSIONCHECK_FOOTER				= "Encontrados %d |4jogador;jogadores com " .. L.DBM .. " e %d |4jogador;jogadores com BigWigs"
 L.VERSIONCHECK_OUTDATED				= "Os seguintes %d jogadores estão com versões desatualizadas de boss mods: %s"
 L.YOUR_VERSION_OUTDATED				= "Sua versão do " .. L.DEADLY_BOSS_MODS .. " está desatualizada. Por favor, acesse no Curse, Wago, WoWI ou Github para baixar a versão mais recente."
 L.VOICE_PACK_OUTDATED				= "O pacote de vozes do seu " .. L.DBM .. " pode estar sem alguns dos sons suportados por esta versão do " .. L.DBM .. ". O filtro de anúncio especial sonoro foi desativado. Por favor, baixe a versão mais recente do pacote de vozes ou entre em contato com o autor para obter um pacote que contenha os sons mencionados."
@@ -628,10 +629,10 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2 			= "Exibir quadro de informações para visão 
 L.AUTO_INFO_FRAME_OPTION_TEXT3 			= "Exibir quadro de informações para $spell:%s (quando o limiar de %%s é atingido)"
 L.AUTO_READY_CHECK_OPTION_TEXT 			= "Reproduzir som de verificação de prontidão quando o chefe for puxado (mesmo que não seja direcionado)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT 			= "Exibir cronômetro para limpeza mais rápida desta zona"
-L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Reproduzir alertas sonoros de auras privadas do DBM para $spell:%s neste encontro"
-L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Reproduzir alertas sonoros de auras privadas do DBM quando você for alvo de $spell:%s"
-L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproduzir alertas sonoros de auras privadas do DBM quando você precisar se afastar de $spell:%s"
-L.AUTO_PRIVATEAURA_OPTION_POST_TEXT   	= "Reproduzir alertas sonoros de auras privadas do DBM para efeitos persistentes de $spell:%s."
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Reproduzir alertas sonoros do DBM para $spell:%s neste encontro"
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "Reproduzir alertas sonoros do DBM quando você for alvo de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproduzir alertas sonoros do DBM quando você precisar se afastar de $spell:%s"
+L.AUTO_PRIVATEAURA_OPTION_POST_TEXT   	= "Reproduzir alertas sonoros do DBM para efeitos persistentes de $spell:%s."
 L.AUTO_CUSTOMTIMER_OPTION_TEXT        	= "Exibir cronômetro para $spell:%s"
 L.AUTO_CUSTOMALERT_OPTION_TEXT        	= "Definir alerta sonoro quando $spell:%s estiver prestes a ser lançado"
 
@@ -642,7 +643,7 @@ L.MOVE_SPECIAL_WARNING_BAR				= "Aviso especial móvel"
 L.MOVE_SPECIAL_WARNING_TEXT				= "Aviso especial"
 
 L.MOVE_PRIVATE_AURA_TEXT 				= "<valor secreto> tem você como alvo com o feitiço <valor secreto>"
-L.MOVE_PRIVATE_AURA_DISABLED 			= "A pré-visualização está desativada porque os quadros de auras privadas estão desativados globalmente nas opções."
+L.MOVE_PRIVATE_AURA_DISABLED 			= "A pré-visualização está desativada porque os quadros de auras estão desativados globalmente nas opções."
 
 L.HUD_INVALID_TYPE 						= "Tipo de HUD definido inválido"
 L.HUD_INVALID_TARGET 					= "Nenhum alvo válido fornecido para o HUD"
