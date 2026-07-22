@@ -147,8 +147,6 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 		DBM:Debug("Attempting to add aura sound failed because spell ID " .. optionId .. " does not exist. Check spell ID and try again for mod " .. self.id, 1, nil, nil, true)
 		return
 	end
-	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
-	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options["PrivateAuraSound" .. optionId .. "SWSound"] = defaultSound or 1
 	subType = subType or 0
 	if subType == 1 then
@@ -211,8 +209,6 @@ function bossModPrototype:AddCustomAlertSoundOption(auraspellId, default, defaul
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["CustomAlertOption" .. auraspellId] = (default == nil) or default
-	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
-	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound or 1
 	self.localization.options["CustomAlertOption" .. auraspellId] = L.AUTO_CUSTOMALERT_OPTION_TEXT:format(auraspellId)
 	self:GroupSpellsPA(groupSpellId or auraspellId, "CustomAlertOption" .. auraspellId)

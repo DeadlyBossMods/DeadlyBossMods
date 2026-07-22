@@ -36,6 +36,8 @@ local mt = {__index = bossModPrototype}
 ---@field OnInitialize fun(self: DBMMod, mod: DBMMod)
 ---@field OnTimerRecovery fun(self: DBMMod)
 ---@field CustomHealthUpdate fun(self: DBMMod): string
+---@field Options table<string, any>
+---@field DefaultOptions table<string, any>
 ---@field stats ModStats
 ---@field registeredUnitEvents table<string, boolean>?
 ---@field bossHealthUpdateTime number?
@@ -73,6 +75,7 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 	---@class DBMMod
 	local obj = setmetatable(
 		{
+			---@type table<string, any>
 			Options = {
 				Enabled = true,
 			},
@@ -1327,8 +1330,6 @@ do
 		if type(media) == "number" then
 			soundInfo.soundFileID = media
 		else--It's a string, so it's not an ID, we need to set soundFileName instead
-			--Another cause of LuaLS being stupid for some reason
-			---@diagnostic disable-next-line: assign-type-mismatch
 			soundInfo.soundFileName = media
 		end
 		local auraSoundId
