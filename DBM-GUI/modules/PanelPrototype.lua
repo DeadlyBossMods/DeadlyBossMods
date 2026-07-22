@@ -68,6 +68,17 @@ setmetatable(PanelPrototype, {
 
 local abilityTestContextByFrame = setmetatable({}, { __mode = "k" })
 
+function DBM_GUI:CollapseForPreview(duration)
+	local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+	if not duration or duration <= 0 or not optionsFrame or not optionsFrame:IsShown() or not optionsFrame.SetCollapsed then
+		return
+	end
+	optionsFrame:SetCollapsed(true)
+	if optionsFrame.ScheduleAutoUncollapse then
+		optionsFrame:ScheduleAutoUncollapse(duration)
+	end
+end
+
 function PanelPrototype:GetLastObj()
 	return self.lastobject
 end
@@ -891,13 +902,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 		testButton:SetPoint("LEFT", resetButton, "RIGHT", 4, 0)
 
 		testButton:SetScript("OnClick", function()
-			local optionsFrame = _G["DBM_GUI_OptionsFrame"]
-			if optionsFrame and optionsFrame:IsShown() and optionsFrame.SetCollapsed then
-				optionsFrame:SetCollapsed(true)
-				if optionsFrame.ScheduleAutoUncollapse then
-					optionsFrame:ScheduleAutoUncollapse(5)
-				end
-			end
+			DBM_GUI:CollapseForPreview(5)
 			local context = abilityTestContextByFrame[area]
 			local timerObject, announceObject = findFirstTimerAndAnnounceForSpellKey(context and context.mod, context and context.spellKey, context and context.renameSpellId)
 			local timerTriggered = triggerAbilityTestTimer(timerObject)

@@ -10,7 +10,7 @@ testbutton:SetPoint("TOPRIGHT", general.frame, "TOPRIGHT", -2, 14)
 testbutton:SetNormalFontObject(GameFontNormalSmall)
 testbutton:SetHighlightFontObject(GameFontNormalSmall)
 testbutton:SetScript("OnClick", function()
-	DBM:DemoMode()
+	DBM_GUI:CollapseForPreview(DBM:DemoMode())
 end)
 testbutton.myheight = 0
 
