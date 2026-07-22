@@ -84,6 +84,7 @@ local AuraTrackingFilters = {
 
 local AuraSortMethod = rawget(_G, "AuraContainerSortMethod") or { Default = 1 }
 local AuraSortDirection = rawget(_G, "AuraContainerSortDirection") or { Normal = 1 }
+local ShouldAurasBeSecret = C_Secrets.ShouldAurasBeSecret
 local AuraTrackingPreviewDispelTypes = {
 	"Magic",
 	"Curse",
@@ -451,8 +452,10 @@ local function InitContainerState(state, settings, unit)
 	else
 		container:AddAuraGroup(groupKey, AuraTrackingFilters[1], options)
 	end
-	for button in pairs(state.buttonRegions) do
-		ConfigureButton(state, button, settings, unit)
+	if not ShouldAurasBeSecret() then
+		for button in pairs(state.buttonRegions) do
+			ConfigureButton(state, button, settings, unit)
+		end
 	end
 
 	container:Show()
@@ -605,7 +608,7 @@ local function IsInValidInstance()
 end
 
 function AuraTracking:UpdateAuraAnchors()
-	if InCombatLockdown() then
+	if InCombatLockdown() or ShouldAurasBeSecret() then
 		return false
 	end
 	if auraAnchorsRegistered then

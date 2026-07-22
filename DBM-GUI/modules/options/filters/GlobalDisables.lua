@@ -22,10 +22,8 @@ if DBM:IsPostMidnight() then
 		DBM.Options.DontShowPrivateAuraFrame = not DBM.Options.DontShowPrivateAuraFrame
 		local auraHandler = DBM.Auras
 		local updateMethod = auraHandler and (auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors)
-		if InCombatLockdown() then
+		if updateMethod and not updateMethod(auraHandler) then
 			DBM:QueueAuraAnchorUpdate()
-		elseif updateMethod then
-			updateMethod(auraHandler)
 		end
 	end)
 	spamPrivateAuras:CreateCheckButton(L.SpamBlockNoPrivateAuraSound, true, nil, "DontPlayPrivateAuraSound")
