@@ -2958,7 +2958,22 @@ do
 	local inRaid = false
 
 	local raidGuids = {}
+	local raidUnitIds = {}
 	local iconSeter = {}
+
+	---@param uId string
+	---@return table?
+	local function getRaidMemberByUnitId(uId)
+		local name = GetUnitName(uId, true)
+		-- A visible identity is authoritative: this avoids using stale metadata when a roster token changed or disappeared mid-fight.
+		if not DBM:issecretvalue(name) then
+			return name and raid[name]
+		end
+		-- During identity restrictions, retain the last known roster member for this stable token.
+		local cachedName = raidUnitIds[uId]
+		return cachedName and raid[cachedName]
+	end
+	private.getRaidMemberByUnitId = getRaidMemberByUnitId
 
 	--	save playerinfo into raid table on load. (for solo raid)
 	DBM:RegisterOnLoadCallback(function()
@@ -2970,6 +2985,7 @@ do
 				raid[playerName].guid = UnitGUID("player")
 				raid[playerName].rank = 0
 				raid[playerName].class = playerClass
+				raid[playerName].role = UnitGroupRolesAssigned("player")
 				raid[playerName].id = "player"
 				raid[playerName].groupId = 0
 				raid[playerName].revision = DBM.Revision
@@ -2981,6 +2997,7 @@ do
 				raid[playerName].dungeonSubVers = DBM.dungeonSubVersion
 				raid[playerName].locale = GetLocale()
 				raid[playerName].enabledIcons = tostring(not DBM.Options.DontSetIcons)
+				raidUnitIds.player = playerName
 				raidGuids[UnitGUID("player") or ""] = playerName
 			end
 		end)
@@ -2990,6 +3007,7 @@ do
 	---@param self DBM
 	local function updateAllRoster(self)
 		if IsInRaid() then
+			twipe(raidUnitIds)
 			if not inRaid then
 				self:ResetVersionCheck()
 				inRaid = true
@@ -3010,6 +3028,7 @@ do
 					local id = "raid" .. i
 					local shortname = UnitName(id)
 					local guid = UnitGUID(id)
+					local role = UnitGroupRolesAssigned(id)
 					if self:issecretvalue(guid) then
 						guid = nil
 					end
@@ -3022,11 +3041,13 @@ do
 					raid[name].rank = rank
 					raid[name].subgroup = subgroup
 					raid[name].class = className
+					raid[name].role = role
 					raid[name].id = id
 					raid[name].groupId = i
 					raid[name].guid = guid or ""
 					raid[name].updated = true
 					raid[name].isOnline = isOnline
+					raidUnitIds[id] = name
 					if guid then
 						raidGuids[guid] = name
 					end
@@ -3034,6 +3055,9 @@ do
 						lastGroupLeader = name
 					end
 				end
+			end
+			if raid[playerName] then
+				raidUnitIds.player = playerName
 			end
 			private.enableIcons = false
 			twipe(iconSeter)
@@ -3079,6 +3103,7 @@ do
 				end
 			end
 		elseif IsInGroup() then
+			twipe(raidUnitIds)
 			if not inRaid then
 				-- joined a new party
 				self:ResetVersionCheck()
@@ -3103,6 +3128,7 @@ do
 				local shortname = UnitName(id)
 				local rank = UnitIsGroupLeader(id) and 2 or 0
 				local _, className = UnitClass(id)
+				local role = UnitGroupRolesAssigned(id)
 				local isOnline = UnitIsConnected(id)
 				if (not raid[name]) and inRaid then
 					fireEvent("DBM_partyJoin", name)
@@ -3113,10 +3139,12 @@ do
 				raid[name].guid = UnitGUID(id) or ""
 				raid[name].rank = rank
 				raid[name].class = className
+				raid[name].role = role
 				raid[name].id = id
 				raid[name].groupId = i
 				raid[name].updated = true
 				raid[name].isOnline = isOnline
+				raidUnitIds[id] = name
 				raidGuids[UnitGUID(id) or ""] = name
 				if rank >= 1 then
 					lastGroupLeader = name
@@ -3159,6 +3187,7 @@ do
 			private.enableIcons = true
 			fireEvent("DBM_raidLeave", playerName)
 			twipe(raid)
+			twipe(raidUnitIds)
 			self:ResetVersionCheck()
 			-- restore playerinfo into raid table on raidleave. (for solo raid)
 			raid[playerName] = {}
@@ -3167,6 +3196,7 @@ do
 			raid[playerName].guid = UnitGUID("player")
 			raid[playerName].rank = 0
 			raid[playerName].class = playerClass
+			raid[playerName].role = UnitGroupRolesAssigned("player")
 			raid[playerName].id = "player"
 			raid[playerName].groupId = 0
 			raid[playerName].revision = DBM.Revision
@@ -3177,6 +3207,7 @@ do
 			end
 			raid[playerName].dungeonSubVers = DBM.dungeonSubVersion
 			raid[playerName].locale = GetLocale()
+			raidUnitIds.player = playerName
 			raidGuids[UnitGUID("player")] = playerName
 			lastGroupLeader = nil
 		end
@@ -3522,7 +3553,11 @@ do
 	---@return number
 	function DBM:GetGroupId(name, higher)
 		local raidMember = raid[name] or raid[self:GetUnitFullName(name) or ""]
-		return raidMember and raidMember.groupId or UnitInRaid(name) or higher and 99 or 0
+		local groupId = UnitInRaid(name)
+		if self:issecretvalue(groupId) then
+			groupId = nil
+		end
+		return raidMember and raidMember.groupId or groupId or higher and 99 or 0
 	end
 end
 
@@ -7795,21 +7830,32 @@ do
 	---@param uId playerUUIDs?
 	function bossModPrototype:IsMeleeDps(uId)
 		if uId then--This version includes ONLY melee dps
-			local name = GetUnitName(uId, true)
+			local raidMember = private.getRaidMemberByUnitId(uId)
 			--First we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
-				local specID = raid[name].specID
+			if (private.isRetail or private.isCata or private.isMop) and raidMember and raidMember.specID then--We know their specId
+				local specID = raidMember.specID
 				return private.specRoleTable[specID]["MeleeDps"]
 			else
 				--Role checks are second best thing
-				local role = UnitGroupRolesAssigned(uId)
-				if private.isRetail and (role == "HEALER" or role == "TANK") or GetPartyAssignment("MAINTANK", uId, true) then--Auto filter healer/tank from dps check, can't filter healers in classic
+				local secretUnit = self:issecretunit(uId)
+				local role = raidMember and raidMember.role
+				if not role and not secretUnit then
+					role = UnitGroupRolesAssigned(uId)
+				end
+				if private.isRetail and (role == "HEALER" or role == "TANK") or not secretUnit and GetPartyAssignment("MAINTANK", uId, true) then--Auto filter healer/tank from dps check, can't filter healers in classic
 					return false
 				end
 				--Class checks for things that are a sure thing anywyas
-				local _, class = UnitClass(uId)
+				local class = raidMember and raidMember.class
+				if not class and not secretUnit then
+					local _, unitClass = UnitClass(uId)
+					class = unitClass
+				end
 				if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "DEMONHUNTER" then
 					return true
+				end
+				if secretUnit then
+					return false
 				end
 				--Now we do the ugly checks thanks to Inspect throttle
 				if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" or class == "MONK" then
@@ -7841,17 +7887,25 @@ do
 	---@param uId playerUUIDs?
 	function DBM:IsMelee(uId)
 		if uId then--This version includes monk healers as melee and tanks as melee
+			local raidMember = private.getRaidMemberByUnitId(uId)
+			local secretUnit = self:issecretunit(uId)
 			--Class checks performed first on classes that are absolutely definitive (cause they'll work even if user doesn't have DBM or BW)
-			local _, class = UnitClass(uId)
+			local class = raidMember and raidMember.class
+			if not class and not secretUnit then
+				local _, unitClass = UnitClass(uId)
+				class = unitClass
+			end
 			if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "MONK" or class == "DEMONHUNTER" or class == "PALADIN" then
 				return true
 			end
 			--Now we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
-				local specID = raid[name].specID
+			if (private.isRetail or private.isCata or private.isMop) and raidMember and raidMember.specID then--We know their specId
+				local specID = raidMember.specID
 				return private.specRoleTable[specID]["Melee"]
 			else
+				if secretUnit then
+					return false
+				end
 				--Now we do the ugly checks thanks to Inspect throttle
 				if (class == "DRUID" or class == "SHAMAN") then
 					local unitMaxPower = UnitPowerMax(uId)
@@ -7939,6 +7993,13 @@ end
 ---@param uId string? Used for querying external unit. If nil, queries "player"
 function bossModPrototype:UnitClass(uId)
 	if uId then--Return unit requested
+		local raidMember = private.getRaidMemberByUnitId(uId)
+		if raidMember then
+			return raidMember.class
+		end
+		if self:issecretunit(uId) then
+			return
+		end
 		local _, class = UnitClass(uId)
 		return class
 	end
@@ -7980,7 +8041,14 @@ function bossModPrototype:IsDps(uId)
 	if uId then--External unit call.
 		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
 		--This check is VERY problematic in classic if raid doesn't set main tanks correctly cause it'll also flag tanks as dps without question
-		return (private.isRetail or private.isMop) and UnitGroupRolesAssigned(uId) == "DAMAGER" or not GetPartyAssignment("MAINTANK", uId, true)
+		local raidMember = private.getRaidMemberByUnitId(uId)
+		if private.isRetail or private.isMop then
+			if raidMember then
+				return raidMember.role == "DAMAGER"
+			end
+			return not self:issecretunit(uId) and UnitGroupRolesAssigned(uId) == "DAMAGER"
+		end
+		return not self:issecretunit(uId) and not GetPartyAssignment("MAINTANK", uId, true)
 	end
 	if (not currentSpecID or currentSpecID == 0) then
 		DBM:SetCurrentSpecInfo()
@@ -8002,7 +8070,11 @@ function DBM:IsHealer(uId)
 			return false
 		end
 		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
-		return UnitGroupRolesAssigned(uId) == "HEALER"
+		local raidMember = private.getRaidMemberByUnitId(uId)
+		if raidMember then
+			return raidMember.role == "HEALER"
+		end
+		return not self:issecretunit(uId) and UnitGroupRolesAssigned(uId) == "HEALER"
 	end
 	if (not currentSpecID or currentSpecID == 0) then
 		DBM:SetCurrentSpecInfo()
@@ -8040,6 +8112,8 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 		DBM:Debug("IsTanking passed with invalid unit", 2, nil, nil, true)
 		return false
 	end
+	local raidMember = private.getRaidMemberByUnitId(playerUnitID)
+	local secretUnit = self:issecretunit(playerUnitID)
 	--If we don't know enemy unit token, but know it's GUID
 	if not enemyUnitID and enemyGUID then
 		enemyUnitID = self:GetUnitIdFromGUID(enemyGUID)
@@ -8070,12 +8144,15 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	--if onlyRequested is false/nil, it means we also accept anyone that's a tank role or tanking any boss unit
 	if not onlyRequested then
 		--Use these as fallback if threat target not found
-		if GetPartyAssignment("MAINTANK", playerUnitID, true) then
+		if not secretUnit and GetPartyAssignment("MAINTANK", playerUnitID, true) then
 			return true
 		end
 		if not private.isClassic and not private.isBCC then--Allow boss checks in wrath and later
 			--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
-			if UnitGroupRolesAssigned and UnitGroupRolesAssigned(playerUnitID) == "TANK" then
+			if raidMember and raidMember.role == "TANK" then
+				return true
+			end
+			if not secretUnit and UnitGroupRolesAssigned and UnitGroupRolesAssigned(playerUnitID) == "TANK" then
 				return true
 			end
 			if not self:MidRestrictionsActive() then
@@ -8114,7 +8191,11 @@ function bossModPrototype:GetNumAliveTanks()
 	local count = 0
 	local uId = (IsInRaid() and "raid") or "party"
 	for i = 1, DBM:GetNumRealGroupMembers() do
-		if (private.isRetail and UnitGroupRolesAssigned(uId .. i) == "TANK" or GetPartyAssignment("MAINTANK", uId .. i, true)) and not UnitIsDeadOrGhost(uId .. i) then
+		local unitId = uId .. i
+		local raidMember = private.getRaidMemberByUnitId(unitId)
+		local secretUnit = DBM:issecretunit(unitId)
+		local isTank = private.isRetail and (raidMember and raidMember.role == "TANK" or not raidMember and not secretUnit and UnitGroupRolesAssigned(unitId) == "TANK") or not secretUnit and GetPartyAssignment("MAINTANK", unitId, true)
+		if isTank and not UnitIsDeadOrGhost(unitId) then
 			count = count + 1
 		end
 	end
