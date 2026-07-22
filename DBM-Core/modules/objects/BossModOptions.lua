@@ -114,7 +114,8 @@ end
 ---@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo, 3: post debuff. Also accepts a voice string as shorthand for migrated 6-arg calls.
 ---@param voice VPSound|number? voice pack media path for zone-based aura sound registration. Also accepts the shorthand voiceVersion number when subType is passed as a voice string.
 ---@param voiceVersion number? required voice pack version; if voice pack version is below this value, falls back to default sound
-function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion)
+---@param soundType number? UnitAuraSoundTrigger: 0 = added, 1 = applications increased, 2 = removed; defaults to 0
+function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion, soundType)
 	if type(subType) == "string" then
 		local shorthandVoiceVersion = type(voice) == "number" and voice or nil
 		voice = subType
@@ -169,7 +170,7 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 			if not self.pendingPASoundsByZone then self.pendingPASoundsByZone = {} end
 			for zoneID in pairs(self.zones) do
 				self.pendingPASoundsByZone[zoneID] = self.pendingPASoundsByZone[zoneID] or {}
-				self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, voice, voiceVersion or 0}
+				self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, voice, voiceVersion or 0, soundType or 0}
 			end
 		end
 	end

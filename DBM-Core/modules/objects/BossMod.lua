@@ -51,6 +51,7 @@ local mt = {__index = bossModPrototype}
 ---@field sendMainBossGUID boolean? Used to force enable nameplate timers for main boss
 ---@field paSounds table<number, number[]>?
 ---@field pendingPASoundsByZone table<number, table<integer, table>>?
+---@field tlCountValue number? Cached encounter timeline countdown highlight duration (5000 or 10000 ms).
 
 ---@param name string|number Name of mod is usually journalID for auto translation or a unique string
 ---@param modId string? Must match parent module name (ie DBM-Party-Classic) or it won't appear in GUI
@@ -1295,16 +1296,18 @@ end
 --  Private/Secret API Methods  --
 ----------------------------------
 do
-	local addAuraAppliedSound = C_UnitAuras.AddAuraAppliedSound or C_UnitAuras.AddPrivateAuraAppliedSound
-	local removeAuraAppliedSound = C_UnitAuras.RemoveAuraAppliedSound or C_UnitAuras.RemovePrivateAuraAppliedSound
+	local AddAuraSound = C_UnitAuras.AddAuraSound
+	local AddPrivateAuraAppliedSound = C_UnitAuras.AddPrivateAuraAppliedSound
+	local RemoveAuraSound = C_UnitAuras.RemoveAuraSound or C_UnitAuras.RemovePrivateAuraAppliedSound
 
 	-- Helper function to register an aura sound for a single spell ID
 	---@param self DBMMod
 	---@param optionId number
 	---@param spellId number
 	---@param media number|string
-	local function registerAuraSound(self, optionId, spellId, media)
-		if not addAuraAppliedSound then
+	---@param soundType number? UnitAuraSoundTrigger: 0 = added, 1 = applications increased, 2 = removed
+	local function registerAuraSound(self, optionId, spellId, media, soundType)
+		if not AddAuraSound and not AddPrivateAuraAppliedSound then
 			DBM:Debug("Attempting to register aura sound failed because no aura sound API is available for mod " .. self.id, 2)
 			return
 		end
@@ -1315,24 +1318,24 @@ do
 		if not self.paSounds[optionId] then
 			self.paSounds[optionId] = {}
 		end
-		local auraSoundId
+		local soundInfo = {
+			spellID = spellId,
+			unitToken = "player",
+			outputChannel = soundSetting,
+		}
 		--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
 		if type(media) == "number" then
-			auraSoundId = addAuraAppliedSound({
-				spellID = spellId,
-				unitToken = "player",
-				soundFileID = media,
-				outputChannel = soundSetting,
-			})
+			soundInfo.soundFileID = media
 		else--It's a string, so it's not an ID, we need to set soundFileName instead
-			auraSoundId = addAuraAppliedSound({
-				spellID = spellId,
-				unitToken = "player",
-				--Another cause of LuaLS being stupid for some reason
-				---@diagnostic disable-next-line: assign-type-mismatch
-				soundFileName = media,
-				outputChannel = soundSetting,
-			})
+			--Another cause of LuaLS being stupid for some reason
+			---@diagnostic disable-next-line: assign-type-mismatch
+			soundInfo.soundFileName = media
+		end
+		local auraSoundId
+		if AddAuraSound then
+			auraSoundId = AddAuraSound(soundType or 0, soundInfo)
+		else
+			auraSoundId = AddPrivateAuraAppliedSound(soundInfo)
 		end
 		self.paSounds[optionId][#self.paSounds[optionId] + 1] = auraSoundId
 	end
@@ -1342,8 +1345,8 @@ do
 	local function disableAuraSoundOption(self, optionId)
 		if not self.paSounds or not self.paSounds[optionId] then return end
 		for _, id in ipairs(self.paSounds[optionId]) do
-			if removeAuraAppliedSound then
-				removeAuraAppliedSound(id)
+			if RemoveAuraSound then
+				RemoveAuraSound(id)
 			end
 		end
 		self.paSounds[optionId] = nil
@@ -1389,7 +1392,8 @@ do
 	---@param auraspellId number|number[] ID(s) of the aura(s) to register sound for
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number Required voice pack version (if not met, falls back to default special warning sounds)
-	local function enableAuraSound(mod, auraspellId, voice, voiceVersion)
+	---@param soundType number? UnitAuraSoundTrigger: 0 = added, 1 = applications increased, 2 = removed
+	local function enableAuraSound(mod, auraspellId, voice, voiceVersion, soundType)
 		local optionId
 		if type(auraspellId) == "table" then
 			optionId = auraspellId[1]
@@ -1414,10 +1418,10 @@ do
 			if DBM:IsNoneValue(mediaPath) then return end--Don't register if media path is none, even if option is enabled
 			if type(auraspellId) == "table" then
 				for _, spellId in ipairs(auraspellId) do
-					registerAuraSound(mod, optionId, spellId, mediaPath)
+					registerAuraSound(mod, optionId, spellId, mediaPath, soundType)
 				end
 			else
-				registerAuraSound(mod, optionId, auraspellId, mediaPath)
+				registerAuraSound(mod, optionId, auraspellId, mediaPath, soundType)
 			end
 		end
 	end
@@ -1430,7 +1434,7 @@ do
 		local zoneEntries = self.pendingPASoundsByZone[mapID]
 		if not zoneEntries then return end
 		for _, entry in ipairs(zoneEntries) do
-			enableAuraSound(self, entry[1], entry[2], entry[3])
+			enableAuraSound(self, entry[1], entry[2], entry[3], entry[4])
 		end
 	end
 
@@ -1453,7 +1457,7 @@ do
 		for _, entry in ipairs(zoneEntries) do
 			local entryOptionId = type(entry[1]) == "table" and entry[1][1] or entry[1]
 			if entryOptionId == optionId then
-				enableAuraSound(self, entry[1], entry[2], entry[3])
+				enableAuraSound(self, entry[1], entry[2], entry[3], entry[4])
 			end
 		end
 		return true
