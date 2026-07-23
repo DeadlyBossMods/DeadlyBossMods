@@ -2347,10 +2347,12 @@ do
 								local subTabs = self.AddOns[#self.AddOns].subTabs
 								-- Remove SoD-only raid subtabs on Classic Era
 								if private.isClassic and not private.currentSeason then
-									local sodOnlyRaids = {[48]=true, [90]=true, [109]=true, [2784]=true, [2856]=true, [2875]=true}
+									local sodOnlyRaids = {[48]=true, [90]=true, [109]=true, [2856]=true}
+									local sodOnlyDungeons = {[2784]=true, [2875]=true}
+									local filter = addonName == "DBM-Raids-Vanilla" and sodOnlyRaids or sodOnlyDungeons
 									for k = #subTabs, 1, -1 do
 										local id = tonumber(subTabs[k])
-										if id and sodOnlyRaids[id] then
+										if id and filter[id] then
 											tremove(subTabs, k)
 										end
 									end
