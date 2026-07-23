@@ -2345,6 +2345,16 @@ do
 							})
 							if self.AddOns[#self.AddOns].subTabs then
 								local subTabs = self.AddOns[#self.AddOns].subTabs
+								-- Remove SoD-only raid subtabs on Classic Era
+								if private.isClassic and not private.currentSeason then
+									local sodOnlyRaids = {[48]=true, [90]=true, [109]=true, [2856]=true}
+									for k = #subTabs, 1, -1 do
+										local id = tonumber(subTabs[k])
+										if id and sodOnlyRaids[id] then
+											tremove(subTabs, k)
+										end
+									end
+								end
 								for k, _ in ipairs(subTabs) do
 									--Ugly hack to inject custom string text into auto localized zone name sub cats
 									if subTabs[k]:find("|") then
