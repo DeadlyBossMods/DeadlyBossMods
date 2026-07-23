@@ -112,9 +112,10 @@ end
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 ---@param defaultSound acceptedSASounds? is used to set default Special announce sound (1-4) just like regular special announce objects
 ---@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo, 3: post debuff. Also accepts a voice string as shorthand for migrated 6-arg calls.
----@param voice VPSound|number? voice pack media path for zone-based aura sound registration. Also accepts the shorthand voiceVersion number when subType is passed as a voice string.
----@param voiceVersion number? required voice pack version; if voice pack version is below this value, falls back to default sound
-function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion)
+---@param voice VPSound|VPSound[]|number? voice pack media path(s) for zone-based aura sound registration. Tables are paired by index with voiceVersion and soundType; scalar values broadcast to every table entry. Also accepts the shorthand voiceVersion number when subType is passed as a voice string.
+---@param voiceVersion number|number[]? required voice pack version(s); if voice pack version is below this value, falls back to default sound
+---@param soundType number|number[]? UnitAuraSoundTrigger(s): 0 = added, 1 = applications increased, 2 = removed; defaults to 0
+function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion, soundType)
 	if type(subType) == "string" then
 		local shorthandVoiceVersion = type(voice) == "number" and voice or nil
 		voice = subType
@@ -146,8 +147,6 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 		DBM:Debug("Attempting to add aura sound failed because spell ID " .. optionId .. " does not exist. Check spell ID and try again for mod " .. self.id, 1, nil, nil, true)
 		return
 	end
-	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
-	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options["PrivateAuraSound" .. optionId .. "SWSound"] = defaultSound or 1
 	subType = subType or 0
 	if subType == 1 then
@@ -166,10 +165,40 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 	-- Store for zone-based registration in SecondaryLoadCheck, keyed by exact zone IDs captured from SetZone at option registration time.
 	if voice then
 		if self.zones then
-			if not self.pendingPASoundsByZone then self.pendingPASoundsByZone = {} end
-			for zoneID in pairs(self.zones) do
-				self.pendingPASoundsByZone[zoneID] = self.pendingPASoundsByZone[zoneID] or {}
-				self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, voice, voiceVersion or 0}
+			-- C_UnitAuras accepts one voice/trigger combination per registration. To support sounds on
+			-- several aura transitions, tables are zipped by index while scalar values broadcast to every
+			-- table entry. Each complete combination remains an independent pending tuple, preserving the
+			-- existing RegisterZoneAuraSounds/RefreshAuraSound consumer contract. A missing table entry is
+			-- never defaulted: it is skipped below so a malformed registration cannot play the wrong sound.
+			local voiceIsTable = type(voice) == "table"
+			local voiceVersionIsTable = type(voiceVersion) == "table"
+			local soundTypeIsTable = type(soundType) == "table"
+			local registrationCount = math.max(voiceIsTable and #voice or 1, voiceVersionIsTable and #voiceVersion or 1, soundTypeIsTable and #soundType or 1)
+			local invalidRegistration
+			for i = 1, registrationCount do
+				local pairedVoice = voiceIsTable and voice[i] or voice
+				local pairedVoiceVersion = voiceVersion or 0
+				if voiceVersionIsTable then
+					---@cast voiceVersion number[]
+					pairedVoiceVersion = voiceVersion[i]
+				end
+				local pairedSoundType = soundType or 0
+				if soundTypeIsTable then
+					---@cast soundType number[]
+					pairedSoundType = soundType[i]
+				end
+				if pairedVoice and pairedVoiceVersion ~= nil and pairedSoundType ~= nil then
+					if not self.pendingPASoundsByZone then self.pendingPASoundsByZone = {} end
+					for zoneID in pairs(self.zones) do
+						self.pendingPASoundsByZone[zoneID] = self.pendingPASoundsByZone[zoneID] or {}
+						self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, pairedVoice, pairedVoiceVersion, pairedSoundType}
+					end
+				else
+					invalidRegistration = true
+				end
+			end
+			if invalidRegistration then
+				DBM:Debug("Attempting to add aura sound failed due to mismatched voice, voiceVersion, or soundType tables for mod " .. self.id, 2, nil, nil, true)
 			end
 		end
 	end
@@ -210,8 +239,6 @@ function bossModPrototype:AddCustomAlertSoundOption(auraspellId, default, defaul
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["CustomAlertOption" .. auraspellId] = (default == nil) or default
-	--LuaLS is just stupid here. There is no rule that says self.Options.Variable has to be a bool. Entire SWSound variable scope is always a number
-	---@diagnostic disable-next-line: assign-type-mismatch
 	self.Options["CustomAlertOption" .. auraspellId .. "SWSound"] = defaultSound or 1
 	self.localization.options["CustomAlertOption" .. auraspellId] = L.AUTO_CUSTOMALERT_OPTION_TEXT:format(auraspellId)
 	self:GroupSpellsPA(groupSpellId or auraspellId, "CustomAlertOption" .. auraspellId)
