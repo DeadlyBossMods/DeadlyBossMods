@@ -970,11 +970,11 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		"follower", "story", "lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker", "duos"
 	}
 
-	-- Find trash mod for this addon and display fastest clear time
+	-- Find mod with fastest clear time for this subtab and display it
 	local fastestClearOffset = 0
-	for _, trashMod in ipairs(DBM.Mods) do
-		if trashMod.modId == addon.modId and trashMod.isTrashMod and (not subtab or subtab == trashMod.subTab) then
-			for key, value in pairs(trashMod.Options) do
+	for _, mod in ipairs(DBM.Mods) do
+		if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
+			for key, value in pairs(mod.Options) do
 				if key:find("FastestClear") and type(value) == "number" then
 					local fastestClearText = area:CreateText(L.Statistic_FastestClear .. " " .. DBM:strFromTime(value))
 					fastestClearText:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
@@ -983,7 +983,9 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 					break
 				end
 			end
-			break
+			if fastestClearOffset > 0 then
+				break
+			end
 		end
 	end
 
