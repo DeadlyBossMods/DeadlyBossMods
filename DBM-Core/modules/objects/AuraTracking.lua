@@ -7,10 +7,10 @@ local private = select(2, ...)
 
 ---@class DBMAuraButton: Frame
 ---@field SetIcon fun(self: DBMAuraButton, icon: Texture)
----@field SetAuraBorder fun(self: DBMAuraButton, region: Texture, options: table)
----@field SetAuraSymbol fun(self: DBMAuraButton, region: FontString, options: table)
----@field ClearAuraBorder fun(self: DBMAuraButton)
----@field ClearAuraSymbol fun(self: DBMAuraButton)
+---@field AddDispelTypeTexture fun(self: DBMAuraButton, region: Texture, options: table): integer
+---@field ClearDispelTypeTextures fun(self: DBMAuraButton)
+---@field SetDispelTypeText fun(self: DBMAuraButton, region: FontString, options: table)
+---@field ClearDispelTypeText fun(self: DBMAuraButton)
 ---@field SetDurationText fun(self: DBMAuraButton, region: FontString, options: table?)
 ---@field SetApplicationCount fun(self: DBMAuraButton, region: FontString, options: table)
 ---@field ClearApplicationCount fun(self: DBMAuraButton)
@@ -325,8 +325,8 @@ local function ConfigureButton(state, button, settings, unit)
 		regions.dispelBorder:ClearAllPoints()
 		regions.dispelBorder:SetPoint("CENTER", regions.icon, "CENTER", 0, 0)
 		regions.dispelBorder:SetSize(settings.Width * 1.25, settings.Height * 1.25)
-		button:SetAuraBorder(regions.dispelBorder, {
-			showIcon = true,
+		button:ClearDispelTypeTextures()
+		button:AddDispelTypeTexture(regions.dispelBorder, {
 			showWhenHarmful = true,
 			showWhenHelpful = false,
 		})
@@ -336,7 +336,7 @@ local function ConfigureButton(state, button, settings, unit)
 			regions.dispelSymbol:SetTextColor(1, 1, 1, 1)
 		end
 		regions.dispelSymbol:SetFont(fontPath, stackFontSize, fontFlags)
-		button:SetAuraSymbol(regions.dispelSymbol, {
+		button:SetDispelTypeText(regions.dispelSymbol, {
 			showWhenHarmful = true,
 			showWhenHelpful = false,
 		})
@@ -344,8 +344,8 @@ local function ConfigureButton(state, button, settings, unit)
 		if regions.dispelOverlay then regions.dispelOverlay:Hide() end
 		if regions.dispelBorder then regions.dispelBorder:Hide() end
 		if regions.dispelSymbol then regions.dispelSymbol:Hide() end
-		button:ClearAuraBorder()
-		button:ClearAuraSymbol()
+		button:ClearDispelTypeTextures()
+		button:ClearDispelTypeText()
 	end
 
 	button:SetMouseMotionEnabled(not settings.HideTooltip)
@@ -608,7 +608,7 @@ local function IsInValidInstance()
 end
 
 function AuraTracking:UpdateAuraAnchors()
-	if InCombatLockdown() or ShouldAurasBeSecret() then
+	if ShouldAurasBeSecret() then
 		return false
 	end
 	if auraAnchorsRegistered then
