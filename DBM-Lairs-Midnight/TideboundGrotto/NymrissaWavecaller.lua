@@ -13,6 +13,8 @@ mod:RegisterCombat("combat")
 
 --654, 655, and 745 also belong to this fight even though assigned encounter 0
 --371 connects to an ability that does not exist in data files anymore 1273013
+--977 belongs to https://www.wowhead.com/ptr/spell=1294159/alluring-bubble
+--976 belongs to https://www.wowhead.com/ptr/spell=1313393/chilling-frost
 --372 is linked to https://www.wowhead.com/ptr/spell=1276710/call-of-the-bubble which may be actual summon event for murlocs and not Alluring bubble
 --TODO, verify which alerts are actually personal and what aren't in world without private auras
 --TODO, is rush an aoe or something you dodge or both?
