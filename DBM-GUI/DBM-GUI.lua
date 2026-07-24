@@ -976,7 +976,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
 			for key, value in pairs(mod.Options) do
 				if key:find("FastestClear") and type(value) == "number" then
-					local fastestClearText = area:CreateText(L.Statistic_FastestClear .. " " .. DBM:strFromTime(value))
+					local fastestClearText = area:CreateText(L.Statistic_BestClear .. " " .. DBM:strFromTime(value))
 					fastestClearText:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
 					fastestClearOffset = L.FontHeight * 2
 					area.frame:SetHeight(area.frame:GetHeight() + fastestClearOffset)
