@@ -59,6 +59,7 @@ L.Statistic_Kills					= "Vitórias:"
 L.Statistic_Wipes					= "Derrotas:"
 L.Statistic_Incompletes				= "Incompletos:"--Para cenários, TODO, encontrar um jeito limpo de substituir derrotas por estatística incompleto para mods de cenário
 L.Statistic_BestKill				= "Melhor tempo:"
+L.Statistic_FastestClear			= "Limpeza mais rápida:"
 L.Statistic_BestRank				= "Melhor posto:"--Maybe not get used, not sure yet, localize anyways
 L.TabCategory_Options	 			= "Opções gerais"
 L.Area_BasicSetup					= "Dicas iniciais de configuração de DBM"

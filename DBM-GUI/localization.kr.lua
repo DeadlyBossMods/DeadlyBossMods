@@ -72,6 +72,7 @@ L.Statistic_Kills					= "승리:"
 L.Statistic_Wipes					= "전멸:"
 L.Statistic_Incompletes				= "미완료:"
 L.Statistic_BestKill				= "최고 승리 기록:"
+L.Statistic_FastestClear			= "최고 클리어 기록:"
 L.Statistic_BestRank				= "최고 등급:"--Maybe not get used, not sure yet, localize anyways
 
 -- Tab: General Options

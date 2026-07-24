@@ -970,6 +970,23 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		"follower", "story", "lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker", "duos"
 	}
 
+	-- Find trash mod for this addon and display fastest clear time
+	local fastestClearOffset = 0
+	for _, trashMod in ipairs(DBM.Mods) do
+		if trashMod.modId == addon.modId and trashMod.isTrashMod and (not subtab or subtab == trashMod.subTab) then
+			for key, value in pairs(trashMod.Options) do
+				if key:find("FastestClear") and type(value) == "number" then
+					local fastestClearText = area:CreateText(L.Statistic_FastestClear .. " " .. DBM:strFromTime(value))
+					fastestClearText:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
+					fastestClearOffset = L.FontHeight * 2
+					area.frame:SetHeight(area.frame:GetHeight() + fastestClearOffset)
+					break
+				end
+			end
+			break
+		end
+	end
+
 	for _, mod in ipairs(DBM.Mods) do
 		if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) and not mod.isTrashMod and not mod.noStatistics then
 			if not mod.stats then
@@ -1077,7 +1094,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 					end
 				end
 			end
-			Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 5 * noHeaderLine) - (L.FontHeight * 6 * singleLine) - (L.FontHeight * 10 * doubleLine))
+			Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - fastestClearOffset - (L.FontHeight * 5 * noHeaderLine) - (L.FontHeight * 6 * singleLine) - (L.FontHeight * 10 * doubleLine))
 			if statCount == 1 then
 				sections[1].header:Hide()
 				sections[1].text1:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
