@@ -74,6 +74,7 @@ L.Statistic_Kills					= "Victories:"
 L.Statistic_Wipes					= "Wipes:"
 L.Statistic_Incompletes				= "Incompletes:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
 L.Statistic_BestKill				= "Best Victory:"
+L.Statistic_BestClear			    = "Best Clear:"
 L.Statistic_BestRank				= "Best Rank:"--Maybe not get used, not sure yet, localize anyways
 
 -- Tab: General Options

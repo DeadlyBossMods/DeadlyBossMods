@@ -57,6 +57,7 @@ L.Statistic_Kills					= "Victoires :"
 L.Statistic_Wipes					= "Défaites :"
 L.Statistic_Incompletes				= "Incomplets :"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
 L.Statistic_BestKill				= "Meilleur temps :"
+L.Statistic_BestClear			    = "Meilleur clear :"
 L.Statistic_BestRank				= "Meilleur rang :"--Maybe not get used, not sure yet, localize anyways
 L.TabCategory_Options	 			= "Options générales"
 L.Area_BasicSetup					= "Aide à la configuration initiale de DBM"
