@@ -2,7 +2,7 @@ if GetLocale() ~= "ptBR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
-L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
+L.AURA_FONT_RESET = "Configurações de fonte de texto de aura inválidas detectadas e redefinidas para os padrões."
 
 local dateTable = date("*t")
 if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
