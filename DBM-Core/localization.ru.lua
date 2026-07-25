@@ -2,7 +2,7 @@ if GetLocale() ~= "ruRU" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
-L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
+L.AURA_FONT_RESET = "Обнаружены некорректные настройки шрифта для ауры, они сброшены на стандартные."
 
 L.DEADLY_BOSS_MODS						= "Deadly Boss Mods"
 L.DBM									= "DBM"

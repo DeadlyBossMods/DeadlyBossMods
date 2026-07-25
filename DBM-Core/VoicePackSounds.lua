@@ -203,6 +203,7 @@ local VPSound = {
 	["killmine"] = 0,
 	["killmob"] = 0,
 	["killspirit"] = 0,
+	["kite"] = 19,--Neuro Done
 	["laserrun"] = 0,
 	["leapyou"] = 19,
 	["leavecenter"] = 0,

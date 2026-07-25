@@ -139,7 +139,7 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 	end
 	self.Options["PrivateAuraSound" .. optionId] = (default == nil) or default
 	--12.0 and older check, if it's not a private aura don't add it at all
-	if C_UnitAuras and C_UnitAuras.AuraIsPrivate and not C_UnitAuras.AuraIsPrivate(optionId) then
+	if DBM:GetTOC() < 120100 and C_UnitAuras and C_UnitAuras.AuraIsPrivate and not C_UnitAuras.AuraIsPrivate(optionId) then
 		return
 	end
 	--12.1 and later check, we accept any aura, if it exists
