@@ -85,10 +85,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 416, "1888a1e"--416.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.0 alpha"--Core version
+DBM.DisplayVersion = "12.1.1 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 7, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 7, 24) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -2345,6 +2345,18 @@ do
 							})
 							if self.AddOns[#self.AddOns].subTabs then
 								local subTabs = self.AddOns[#self.AddOns].subTabs
+								-- Remove SoD-only raid subtabs on Classic Era
+								if private.isClassic and not private.currentSeason then
+									local sodOnlyRaids = {[48]=true, [90]=true, [109]=true, [2856]=true}
+									local sodOnlyDungeons = {[2784]=true, [2875]=true}
+									local filter = addonName == "DBM-Raids-Vanilla" and sodOnlyRaids or sodOnlyDungeons
+									for k = #subTabs, 1, -1 do
+										local id = tonumber(subTabs[k])
+										if id and filter[id] then
+											tremove(subTabs, k)
+										end
+									end
+								end
 								for k, _ in ipairs(subTabs) do
 									--Ugly hack to inject custom string text into auto localized zone name sub cats
 									if subTabs[k]:find("|") then
@@ -7382,32 +7394,46 @@ do
 	function DBM:HideBlizzardEvents(toggle, custom)
 		if toggle == 1 then
 			if (self.Options.HideBossEmoteFrame2 or custom) and not private.testBuild then
-				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
-				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
-				DisableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				if RaidBossEmoteFrame then
+					DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
+					DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
+					DisableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				end
+				if RaidWarningFrame then
+					DisableEvent(RaidWarningFrame, "RAID_BOSS_EMOTE")
+					DisableEvent(RaidWarningFrame, "RAID_BOSS_WHISPER")
+					DisableEvent(RaidWarningFrame, "CLEAR_BOSS_EMOTES")
+				end
 				MuteSoundFile(567394) -- SOUNDKIT.RAID_BOSS_EMOTE_WARNING
 				MuteSoundFile(876098) -- SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING
 			end
-			if self.Options.HideGarrisonToasts or custom then
+			if (self.Options.HideGarrisonToasts or custom) and AlertFrame then
 				DisableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
 				DisableEvent(AlertFrame, "GARRISON_BUILDING_ACTIVATABLE")
 			end
-			if self.Options.HideGuildChallengeUpdates or custom then
+			if (self.Options.HideGuildChallengeUpdates or custom) and AlertFrame then
 				DisableEvent(AlertFrame, "GUILD_CHALLENGE_COMPLETED")
 			end
 		elseif toggle == 0 then
 			if (self.Options.HideBossEmoteFrame2 or custom) and not private.testBuild then
-				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
-				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
-				EnableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				if RaidBossEmoteFrame then
+					EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
+					EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
+					EnableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				end
+				if RaidWarningFrame then
+					EnableEvent(RaidWarningFrame, "RAID_BOSS_EMOTE")
+					EnableEvent(RaidWarningFrame, "RAID_BOSS_WHISPER")
+					EnableEvent(RaidWarningFrame, "CLEAR_BOSS_EMOTES")
+				end
 				UnmuteSoundFile(567394) -- SOUNDKIT.RAID_BOSS_EMOTE_WARNING
 				UnmuteSoundFile(876098) -- SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING
 			end
-			if self.Options.HideGarrisonToasts then
+			if self.Options.HideGarrisonToasts and AlertFrame then
 				EnableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
 				EnableEvent(AlertFrame, "GARRISON_BUILDING_ACTIVATABLE")
 			end
-			if self.Options.HideGuildChallengeUpdates then
+			if self.Options.HideGuildChallengeUpdates and AlertFrame then
 				EnableEvent(AlertFrame, "GUILD_CHALLENGE_COMPLETED")
 			end
 		end

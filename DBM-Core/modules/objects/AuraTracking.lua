@@ -18,9 +18,10 @@ local private = select(2, ...)
 ---@class DBMAuraContainer: Frame
 ---@field SetEnabled fun(self: DBMAuraContainer, enabled: boolean)
 ---@field SetUnit fun(self: DBMAuraContainer, unit: playerUUIDs)
----@field SetAuraLayoutAnchorPoint fun(self: DBMAuraContainer, anchor: string)
----@field SetAuraLayoutGrowthDirection fun(self: DBMAuraContainer, horizontal: number, vertical: number)
----@field SetAuraLayoutRowWidth fun(self: DBMAuraContainer, width: number)
+---@field SetFlowLayoutAxis fun(self: DBMAuraContainer, layoutAxis: number)
+---@field SetFlowLayoutAnchorPoint fun(self: DBMAuraContainer, anchor: string)
+---@field SetFlowLayoutGrowthDirection fun(self: DBMAuraContainer, horizontal: number, vertical: number)
+---@field SetFlowLayoutMaximumLineSize fun(self: DBMAuraContainer, maximumLineSize: number?)
 ---@field HasAuraGroup fun(self: DBMAuraContainer, groupKey: string): boolean
 ---@field SetAuraGroupMaxFrameCount fun(self: DBMAuraContainer, groupKey: string, maxFrameCount: number)
 ---@field SetAuraGroupCandidateFilters fun(self: DBMAuraContainer, groupKey: string, filters: table)
@@ -190,6 +191,15 @@ local function GetLayoutAnchorPoint(settings)
 		return "BOTTOMLEFT"
 	end
 	return "TOPLEFT"
+end
+
+---@param settings table
+---@return number
+local function GetFlowLayoutAxis(settings)
+	if settings.GrowDirection == "UP" or settings.GrowDirection == "DOWN" then
+		return AnchorUtil.FlowLayoutAxis.Vertical
+	end
+	return AnchorUtil.FlowLayoutAxis.Horizontal
 end
 
 ---@param settings table
@@ -424,9 +434,10 @@ local function InitContainerState(state, settings, unit)
 	container:SetSize(settings.Width, settings.Height)
 	container:SetPoint(layoutAnchorPoint, anchor, layoutAnchorPoint, 0, 0)
 	container:SetUnit(unit)
-	container:SetAuraLayoutAnchorPoint(layoutAnchorPoint)
-	container:SetAuraLayoutGrowthDirection(GetFlowDirections(settings.GrowDirection))
-	container:SetAuraLayoutRowWidth(GetRowWidth(settings))
+	container:SetFlowLayoutAxis(GetFlowLayoutAxis(settings))
+	container:SetFlowLayoutAnchorPoint(layoutAnchorPoint)
+	container:SetFlowLayoutGrowthDirection(GetFlowDirections(settings.GrowDirection))
+	container:SetFlowLayoutMaximumLineSize(GetRowWidth(settings))
 
 	local options = {
 		maxFrameCount = settings.Limit,
@@ -439,8 +450,8 @@ local function InitContainerState(state, settings, unit)
 		layout = {
 			elementWidth = settings.Width,
 			elementHeight = settings.Height,
-			elementSpacingX = settings.Spacing or 0,
-			elementSpacingY = settings.Spacing or 0,
+			elementSpacing = settings.Spacing or 0,
+			lineSpacing = settings.Spacing or 0,
 		},
 	}
 
