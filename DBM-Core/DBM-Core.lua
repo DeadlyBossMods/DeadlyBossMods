@@ -7394,32 +7394,46 @@ do
 	function DBM:HideBlizzardEvents(toggle, custom)
 		if toggle == 1 then
 			if (self.Options.HideBossEmoteFrame2 or custom) and not private.testBuild then
-				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
-				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
-				DisableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				if RaidBossEmoteFrame then
+					DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
+					DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
+					DisableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				end
+				if RaidWarningFrame then
+					DisableEvent(RaidWarningFrame, "RAID_BOSS_EMOTE")
+					DisableEvent(RaidWarningFrame, "RAID_BOSS_WHISPER")
+					DisableEvent(RaidWarningFrame, "CLEAR_BOSS_EMOTES")
+				end
 				MuteSoundFile(567394) -- SOUNDKIT.RAID_BOSS_EMOTE_WARNING
 				MuteSoundFile(876098) -- SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING
 			end
-			if self.Options.HideGarrisonToasts or custom then
+			if (self.Options.HideGarrisonToasts or custom) and AlertFrame then
 				DisableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
 				DisableEvent(AlertFrame, "GARRISON_BUILDING_ACTIVATABLE")
 			end
-			if self.Options.HideGuildChallengeUpdates or custom then
+			if (self.Options.HideGuildChallengeUpdates or custom) and AlertFrame then
 				DisableEvent(AlertFrame, "GUILD_CHALLENGE_COMPLETED")
 			end
 		elseif toggle == 0 then
 			if (self.Options.HideBossEmoteFrame2 or custom) and not private.testBuild then
-				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
-				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
-				EnableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				if RaidBossEmoteFrame then
+					EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
+					EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
+					EnableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				end
+				if RaidWarningFrame then
+					EnableEvent(RaidWarningFrame, "RAID_BOSS_EMOTE")
+					EnableEvent(RaidWarningFrame, "RAID_BOSS_WHISPER")
+					EnableEvent(RaidWarningFrame, "CLEAR_BOSS_EMOTES")
+				end
 				UnmuteSoundFile(567394) -- SOUNDKIT.RAID_BOSS_EMOTE_WARNING
 				UnmuteSoundFile(876098) -- SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING
 			end
-			if self.Options.HideGarrisonToasts then
+			if self.Options.HideGarrisonToasts and AlertFrame then
 				EnableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
 				EnableEvent(AlertFrame, "GARRISON_BUILDING_ACTIVATABLE")
 			end
-			if self.Options.HideGuildChallengeUpdates then
+			if self.Options.HideGuildChallengeUpdates and AlertFrame then
 				EnableEvent(AlertFrame, "GUILD_CHALLENGE_COMPLETED")
 			end
 		end
