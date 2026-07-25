@@ -220,24 +220,27 @@ refresh:SetScript("OnClick", function()
 	end
 end)
 local function TeleportTooltipOnEnter(self)
-	GameTooltip:SetOwner(self, "ANCHOR_TOP")
+	if not self.spellID then
+		GameTooltip:SetOwner(self, "ANCHOR_TOP")
+	end
+	GameTooltip_AddNormalLine(GameTooltip, TELEPORT_TO_DUNGEON)
 	if InCombatLockdown() then
-		GameTooltip:SetText(ERR_NOT_IN_COMBAT, 1, 1, 1)
+		GameTooltip_AddColoredLine(GameTooltip, ERR_NOT_IN_COMBAT, HIGHLIGHT_FONT_COLOR)
 	else
 		if not DBMExtraGlobal:IsSpellKnown(self:GetAttribute('spell')) then
-			GameTooltip:SetText(SPELL_FAILED_NOT_KNOWN, 1, 1, 1)
+			GameTooltip_AddColoredLine(GameTooltip, SPELL_FAILED_NOT_KNOWN, HIGHLIGHT_FONT_COLOR)
 		else
 			local start, duration = DBM:GetSpellCooldown(self:GetAttribute('spell'))
 			if start > 0 and duration > 0 then
 				local remainingSec = (start + duration) - GetTime()
 				local hours, minutes = mfloor(remainingSec / 3600), mfloor(remainingSec / 60)
 				if hours > 0 then
-					GameTooltip:SetText(ITEM_COOLDOWN_TIME_HOURS:format(hours), 1, 1, 1)
+					GameTooltip_AddColoredLine(GameTooltip, ITEM_COOLDOWN_TIME_HOURS:format(hours), HIGHLIGHT_FONT_COLOR)
 				else
-					GameTooltip:SetText(ITEM_COOLDOWN_TIME_MIN:format(minutes), 1, 1, 1)
+					GameTooltip_AddColoredLine(GameTooltip, ITEM_COOLDOWN_TIME_MIN:format(minutes), HIGHLIGHT_FONT_COLOR)
 				end
 			else
-				GameTooltip:SetText(LFG_READY_CHECK_PLAYER_IS_READY:format(DBM:GetSpellName(self:GetAttribute('spell'))), 1, 1, 1)
+				GameTooltip_AddColoredLine(GameTooltip, LFG_READY_CHECK_PLAYER_IS_READY:format(DBM:GetSpellName(self:GetAttribute('spell'))), HIGHLIGHT_FONT_COLOR)
 			end
 		end
 	end
@@ -557,10 +560,76 @@ local function delayedKeySlashCheck()
 	end
 end
 
+local RegisterChallengesUI
+do
+	local initializedChallengesUI = false
+	local iconButtons = {}
+
+	local function CreateChallengeIconButton(icon, spellID)
+		local button = CreateFrame('Button', nil, icon, 'InsecureActionButtonTemplate')
+		button:SetAllPoints(icon)
+		button:RegisterForClicks('AnyDown', 'AnyUp')
+		button:SetScript('OnEnter', function()
+			local parentOnEnter = icon:GetScript('OnEnter')
+			if parentOnEnter then
+				parentOnEnter(icon)
+			end
+			GameTooltip_AddBlankLineToTooltip(GameTooltip)
+			TeleportTooltipOnEnter(button)
+		end)
+		button:SetScript('OnLeave', GameTooltip_Hide)
+		button:SetAttribute('type', 'spell')
+		button:SetAttribute('spell', spellID)
+		button.spellID = spellID
+	end
+
+	local function RefreshChallengesUI()
+		if InCombatLockdown() then
+			return
+		end
+		if not ChallengesFrame or not ChallengesFrame.DungeonIcons then
+			return
+		end
+
+		for _, icon in pairs(ChallengesFrame.DungeonIcons) do
+			local data = teleportMap[icon.mapID]
+			if data then
+				if not iconButtons[icon] then
+					iconButtons[icon] = CreateChallengeIconButton(icon, data[2])
+				elseif iconButtons[icon].spellID ~= data[2] then
+					iconButtons[icon]:SetAttribute('spell', data[2])
+					iconButtons[icon].spellID = data[2]
+				end
+			elseif icon.mapID then
+				DBM:Debug("Missing keystone info for challengeMapID: " .. icon.mapID)
+			end
+		end
+	end
+
+	function RegisterChallengesUI()
+		if initializedChallengesUI then
+			return
+		end
+		if not C_AddOns.IsAddOnLoaded('Blizzard_ChallengesUI') then
+			return
+		end
+		if not ChallengesFrame then
+			return
+		end
+		hooksecurefunc(ChallengesFrame, 'Update', RefreshChallengesUI)
+		RefreshChallengesUI()
+		initializedChallengesUI = true
+	end
+end
+
 frame:SetScript('OnEvent', function(_, event, arg1, arg2)
 	if event == 'UNIT_CONNECTION' then
 		if selectedTab == 1 and arg2 then -- isConnected
 			LibKeystone.Request("PARTY")
+		end
+	elseif event == 'ADDON_LOADED' then
+		if arg1 == 'Blizzard_ChallengesUI' then
+			RegisterChallengesUI()
 		end
 	elseif event == 'PLAYER_ENTERING_WORLD' then
 		updateTeleports()
@@ -575,6 +644,7 @@ frame:SetScript('OnEvent', function(_, event, arg1, arg2)
 			delayedKeySlashCheck()
 		end)
 		UpdateKeystones()
+		RegisterChallengesUI()
 	elseif event == 'PLAYER_INTERACTION_MANAGER_FRAME_HIDE' then
 		if arg1 == 3 or arg1 == 49 then
 			UpdateKeystones()
@@ -590,3 +660,4 @@ frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 frame:RegisterEvent('PLAYER_INTERACTION_MANAGER_FRAME_HIDE')
 frame:RegisterEvent('UNIT_CONNECTION')
 frame:RegisterEvent('CHALLENGE_MODE_COMPLETED')
+frame:RegisterEvent('ADDON_LOADED')
