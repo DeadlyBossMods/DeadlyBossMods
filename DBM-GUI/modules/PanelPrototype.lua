@@ -530,7 +530,7 @@ do
 						end
 						mod.Options[modvar .. "SWSound"] = value
 						if optionId then
-							mod:RefreshPrivateAuraSound(optionId)
+							mod:RefreshAuraSound(optionId)
 						end
 						DBM:PlaySpecialWarningSound(value, true)
 						return
