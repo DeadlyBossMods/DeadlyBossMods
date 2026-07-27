@@ -581,6 +581,7 @@ do
 		button:SetAttribute('type', 'spell')
 		button:SetAttribute('spell', spellID)
 		button.spellID = spellID
+		return button
 	end
 
 	local function RefreshChallengesUI()
