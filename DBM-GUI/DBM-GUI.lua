@@ -723,7 +723,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 				mod.Options = importTable[mod.id]
 				DBM:AddMsg(L.ModImportSuccess:format(mod.localization.general.name))
 			end
-		end, nil, nil, L.ModImportDecodeFailed:format(mod.localization.general.name))
+		end, nil, nil, L.ModImportFailed:format(mod.localization.general.name))
 	end)
 	local modNameForHTML = mod.localization.general.name:gsub("&", "&amp;")
 	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. modNameForHTML), true)
