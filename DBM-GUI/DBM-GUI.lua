@@ -713,7 +713,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	importMod:SetScript("OnClick", function()
 		DBM_GUI:CreateImportProfile(function(importTable)
 			if (importTable.payloadType and importTable.payloadType ~= "ModProfile") or not importTable[mod.id] then
-				DBM:AddMsg(L.ModImportDecodeFailed:format(mod.localization.general.name))
+				DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
 				return
 			end
 			local pid = getProfileID()
