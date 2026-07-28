@@ -49,6 +49,7 @@ local private = select(2, ...)
 ---@field Spacing number
 ---@field Limit number
 ---@field GrowDirection string
+---@field SortMode string
 ---@field enabled boolean
 ---@field Width number
 ---@field Height number
@@ -83,15 +84,32 @@ local AuraTrackingFilters = {
 	"HARMFUL|!PLAYER",
 }
 
-local AuraSortMethod = rawget(_G, "AuraContainerSortMethod") or { Default = 1 }
-local AuraSortDirection = rawget(_G, "AuraContainerSortDirection") or { Normal = 1 }
+local AuraSortMethod = rawget(_G, "AuraContainerSortMethod") or { Default = 1, ExpirationOnly = 2 }
+local AuraSortDirection = rawget(_G, "AuraContainerSortDirection") or { Normal = 1, Reverse = 2 }
 local ShouldAurasBeSecret = C_Secrets.ShouldAurasBeSecret
+local AuraSortModes = {
+	Default = { method = AuraSortMethod.Default, direction = AuraSortDirection.Normal },
+	ShortDurationFirst = { method = AuraSortMethod.ExpirationOnly, direction = AuraSortDirection.Normal },
+	LongDurationFirst = { method = AuraSortMethod.ExpirationOnly, direction = AuraSortDirection.Reverse },
+}
 local AuraTrackingPreviewDispelTypes = {
 	"Magic",
 	"Curse",
 	"Disease",
 	"Poison",
 	"Bleed",
+}
+local AuraTrackingPreviewDurations = {
+	34,
+	8,
+	60,
+	15,
+	42,
+	10,
+	55,
+	20,
+	30,
+	5,
 }
 
 local auraAnchorsRegistered = false
@@ -109,6 +127,7 @@ local function GetAuraSettings(prefix)
 		Spacing = DBM.Options[prefix .. "Spacing2"],
 		Limit = DBM.Options[prefix .. "Limit"],
 		GrowDirection = DBM.Options[prefix .. "GrowDirection"],
+		SortMode = DBM.Options[prefix .. "SortMode"] or DBM.DefaultOptions[prefix .. "SortMode"],
 		enabled = DBM.Options[prefix .. "Enabled"],
 		Width = DBM.Options[prefix .. "Width"],
 		Height = DBM.Options[prefix .. "Height"],
@@ -128,6 +147,11 @@ local function GetAuraSettings(prefix)
 	}
 end
 
+---@param settings DBMAuraSettings
+---@return table
+local function GetAuraSortMode(settings)
+	return AuraSortModes[settings.SortMode] or AuraSortModes.Default
+end
 
 local function GetAuraTextFontSettings(settings)
 	local prefix = settings and settings.optionPrefix
@@ -219,7 +243,8 @@ end
 ---@param index integer
 ---@param texture number|string
 ---@param dispelType string?
-local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType)
+---@param durationIndex integer
+local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType, durationIndex)
 	---@cast frame DBMAuraPreviewFrame
 	frame.Textures = frame.Textures or {}
 	frame.BorderTextures = frame.BorderTextures or {}
@@ -276,7 +301,8 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType)
 	durationText:ClearAllPoints()
 	durationText:SetPoint("CENTER", icon, "CENTER", 0, 0)
 	durationText:SetFont(fontPath, settings.DurationFontSize, fontFlags)
-	durationText:SetText(index % 2 == 0 and "1m" or tostring(10 + index))
+	local duration = AuraTrackingPreviewDurations[durationIndex]
+	durationText:SetText(duration >= 60 and math.floor(duration / 60) .. "m" or tostring(duration))
 	durationText:Show()
 
 	if not frame.StackTexts[index] then
@@ -441,8 +467,8 @@ local function InitContainerState(state, settings, unit)
 
 	local options = {
 		maxFrameCount = settings.Limit,
-		sortMethod = AuraSortMethod.Default,
-		sortDirection = AuraSortDirection.Normal,
+		sortMethod = GetAuraSortMode(settings).method,
+		sortDirection = GetAuraSortMode(settings).direction,
 		initializeFrame = function(button)
 			ConfigureButton(state, button, state.settings, state.unit)
 		end,
@@ -542,9 +568,25 @@ local function UpdatePreviewFrame(frame, settings, texture)
 	frame:ClearAllPoints()
 	frame:SetPoint(settings.Anchor, UIParent, settings.relativeTo, settings.xOffset, settings.yOffset)
 	frame:SetSize(settings.Width, settings.Height)
+	local previewOrder = {}
+	for i = 1, #AuraTrackingPreviewDurations do
+		previewOrder[i] = i
+	end
+	if settings.SortMode == "ShortDurationFirst" or settings.SortMode == "LongDurationFirst" then
+		local ascending = settings.SortMode == "ShortDurationFirst"
+		table.sort(previewOrder, function(a, b)
+			if AuraTrackingPreviewDurations[a] == AuraTrackingPreviewDurations[b] then
+				return a < b
+			end
+			if ascending then
+				return AuraTrackingPreviewDurations[a] < AuraTrackingPreviewDurations[b]
+			end
+			return AuraTrackingPreviewDurations[a] > AuraTrackingPreviewDurations[b]
+		end)
+	end
 	for i=1, 10 do
 		if i <= settings.Limit then
-			ConfigurePreviewSlot(frame, settings, i, texture, AuraTrackingPreviewDispelTypes[((i - 1) % #AuraTrackingPreviewDispelTypes) + 1])
+			ConfigurePreviewSlot(frame, settings, i, texture, AuraTrackingPreviewDispelTypes[((i - 1) % #AuraTrackingPreviewDispelTypes) + 1], previewOrder[i])
 		elseif frame.Textures[i] then
 			frame.Textures[i]:Hide()
 			if frame.BorderTextures[i] then
