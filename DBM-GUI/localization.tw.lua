@@ -52,6 +52,7 @@ L.ButtonExportMod					= "匯出模組"
 L.ButtonImportMod					= "匯入模組"
 L.ModImportSuccess					= "已為 %s 匯入設定。"
 L.ModImportFailed					= "匯入失敗：找不到 %s 的設定。"
+L.ImportProfileFailed				= "無法匯入設定檔字串。資料可能無效/損壞或來自不支援的格式。"
 L.Enable							= ENABLE
 L.Disable							= DISABLE
 L.NoSound							= "靜音"

@@ -64,6 +64,7 @@ L.ButtonExportMod					= "Export mod"
 L.ButtonImportMod					= "Import mod"
 L.ModImportSuccess					= "Settings imported for %s."
 L.ModImportFailed					= "Import failed: no settings found for %s."
+L.ImportProfileFailed				= "Failed to import profile string. The data may be invalid/corrupted or from an unsupported format."
 
 L.Enable							= ENABLE
 L.Disable							= DISABLE

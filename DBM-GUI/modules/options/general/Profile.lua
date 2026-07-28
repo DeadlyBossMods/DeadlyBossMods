@@ -123,7 +123,7 @@ local localeTable = {
 local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 	DBM_GUI:CreateImportProfile(function(importTable)
 		if type(importTable.DBM) ~= "table" or type(importTable.DBT) ~= "table" or type(importTable.minimap) ~= "table" then
-			DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+			DBM:AddMsg(L.ImportProfileFailed)
 			return false
 		end
 		local errors = {}

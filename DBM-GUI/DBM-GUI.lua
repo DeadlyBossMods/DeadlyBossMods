@@ -249,13 +249,13 @@ do
 	end
 
 	local function decodeProfile(importText)
-		local decoded = C_EncodingUtil.DecodeBase64(importText, base64Variant)
-		if decoded then
-			local decompressed = C_EncodingUtil.DecompressString(decoded, compressionMethod)
-			if decompressed then
-				local deserialized = C_EncodingUtil.DeserializeCBOR(decompressed)
-				if type(deserialized) == "table" then
-					return deserialized, false
+		local ok, decoded = pcall(C_EncodingUtil.DecodeBase64, importText, base64Variant)
+		if ok and decoded then
+			ok, decoded = pcall(C_EncodingUtil.DecompressString, decoded, compressionMethod)
+			if ok and decoded then
+				ok, decoded = pcall(C_EncodingUtil.DeserializeCBOR, decoded)
+				if ok and type(decoded) == "table" then
+					return decoded, false
 				end
 			end
 		end
@@ -398,7 +398,7 @@ do
 		if not popupFrame then
 			createPopupFrame()
 		end
-		local failureMessage = importFailureMessage or "Failed to import profile string. The data may be invalid/corrupted or from an unsupported format."
+		local failureMessage = importFailureMessage or L.ImportProfileFailed
 		local typeMismatchMessage = payloadTypeFailureMessage or failureMessage
 		local versionMismatchMessage = payloadVersionFailureMessage or failureMessage
 		function popupFrame:VerifyImport(import)

@@ -62,6 +62,7 @@ L.ButtonExportMod					= "모듈 내보내기"
 L.ButtonImportMod					= "모듈 가져오기"
 L.ModImportSuccess					= "%s에 대한 설정을 가져왔습니다."
 L.ModImportFailed					= "가져오기 실패: %s에 대한 설정을 찾을 수 없습니다."
+L.ImportProfileFailed				= "프로필 문자열을 가져오지 못했습니다. 데이터가 잘못/손상되었거나 지원되지 않는 형식일 수 있습니다."
 
 L.Enable							= "활성화"
 L.Disable							= "비활성화"
