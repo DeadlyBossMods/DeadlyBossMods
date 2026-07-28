@@ -1072,9 +1072,22 @@ do
 			end
 		elseif eventState == 3 then--Canceled/removed
 			if self:IsMythic() and (self:GetStage(1.5) or self:GetStage(2.5)) then
-				--During mythic intermissions, none of abilities correctly fire state 2. We need to treat stage 3 has a finished bar
+				--During mythic intermissions, none of the Cosmosis abilities correctly fire state 2. We need to treat state 3 as a finished bar.
+				--Regular ability bars canceled at the intermission start never cast, so discard their reservations rather than advancing their counts.
 				--Breaths however are even more broken and not handled here. They are handled with scheduling BuggedBreathDelay
-				local eventType, eventCount = self:TLCountFinish(eventID)
+				local eventType, eventCount = self:TLCountFinish(eventID, "cosmosisgloom")
+				if not eventType then
+					eventType, eventCount = self:TLCountFinish(eventID, "cosmosisnullbeam")
+				end
+				if not eventType then
+					eventType, eventCount = self:TLCountFinish(eventID, "cosmosisdreadbreath")
+				end
+				if not eventType then
+					eventType, eventCount = self:TLCountFinish(eventID, "cosmosisvoidhowl")
+				end
+				if not eventType then
+					self:TLCountCancel(eventID)
+				end
 				if eventType and eventCount then
 					if eventType == "cosmosisgloom" then
 						specWarnCosmosisGloom:Show(eventCount)
