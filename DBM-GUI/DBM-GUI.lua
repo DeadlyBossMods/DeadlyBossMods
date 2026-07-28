@@ -970,10 +970,10 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		"follower", "story", "lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker", "duos"
 	}
 
-	-- Find mod with fastest clear time for this subtab and display it
+	-- Find mod with fastest clear time for this subtab and display it (only when viewing a specific raid subtab, not the overall root tab)
 	local fastestClearOffset = 0
 	for _, mod in ipairs(DBM.Mods) do
-		if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
+		if subtab and mod.modId == addon.modId and subtab == mod.subTab then
 			for key, value in pairs(mod.Options) do
 				if key:find("FastestClear") and type(value) == "number" then
 					local fastestClearText = area:CreateText(L.Statistic_BestClear .. " " .. DBM:strFromTime(value))
