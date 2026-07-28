@@ -25,6 +25,9 @@ function DBM_GUI:CreateTimewarpSlider(parent)
 			if DBM.Test.timeWarper then
 				DBM.Test.timeWarper:SetSpeed(0)
 			end
+			if timeWarpSlider.editBox then
+				timeWarpSlider.editBox:SetText(value)
+			end
 			return
 		end
 		value = self:TransformInput(value)
@@ -32,6 +35,9 @@ function DBM_GUI:CreateTimewarpSlider(parent)
 		timeWarpSlider.textFrame:SetFormattedText(L.TimewarpSetting, value)
 		if DBM.Test.timeWarper then
 			DBM.Test.timeWarper:SetSpeed(math.floor(value))
+		end
+		if timeWarpSlider.editBox then
+			timeWarpSlider.editBox:SetText(value)
 		end
 	end)
 

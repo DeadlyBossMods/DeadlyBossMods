@@ -315,16 +315,86 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	---@class DBMPanelSlider: Slider
 	local slider = CreateFrame("Slider", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "DBMPolyfill_OptionsSliderTemplate")
 	slider.mytype = "slider"
-	slider.myheight = 50
+	slider.myheight = 55
 	slider:SetMinMaxValues(low, high)
 	slider:SetValueStep(step)
 	slider:SetWidth(width or 180)
 	local sliderText = _G[slider:GetName() .. "Text"]
-	sliderText:SetText(parseDescription(text, true))
-	slider:SetScript("OnValueChanged", function(_, value)
-		sliderText:SetFormattedText(text, value)
+	local prefix, formatSpec, suffix = text:match("^(.-)(%%[%.%d]*[df])(.*)$")
+	if not prefix then
+		prefix = text
+	end
+	sliderText:SetText(parseDescription(prefix, true))
+	local precision = formatSpec and formatSpec:match("%.(%d+)")
+	local isInteger = formatSpec and formatSpec:match("%%d$")
+	local editBox = CreateFrame("EditBox", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate,InputBoxTemplate")
+	local function formatVal(val)
+		return formatSpec and formatSpec:format(val) or tostring(val)
+	end
+	local maxChars = math.max(#formatVal(low), #formatVal(high))
+	editBox:SetSize(math.ceil(math.max(maxChars * 8.5, 20)), 13)
+	editBox:SetAutoFocus(false)
+	editBox:SetFrameLevel(slider:GetFrameLevel() + 10)
+	editBox:SetHitRectInsets(-4, -4, -4, -4)
+	editBox:SetPoint("LEFT", sliderText, "RIGHT", 4, 0)
+	editBox:SetScript("OnEscapePressed", function(self)
+		self:SetText(formatVal(slider:GetValue()))
+		self:ClearFocus()
 	end)
+	editBox:SetScript("OnEnterPressed", function(self)
+		local newValue = tonumber(self:GetText())
+		if newValue then
+			newValue = math.max(low, math.min(high, newValue))
+			if step and step > 0 then
+				newValue = math.floor(newValue / step + 0.5) * step
+			end
+			slider:SetValue(newValue)
+		end
+		self:ClearFocus()
+	end)
+	editBox:SetScript("OnTabPressed", function(self)
+		self:ClearFocus()
+	end)
+	editBox:SetScript("OnEditFocusGained", function(self)
+		self:HighlightText()
+	end)
+	if suffix and suffix ~= "" then
+		local suffixText = slider:CreateFontString("$parentSuffix", "ARTWORK", "GameFontHighlight")
+		suffixText:SetPoint("LEFT", editBox, "RIGHT", 4, 0)
+		suffixText:SetText(parseDescription(suffix, true))
+	end
+	if isInteger or precision then
+		local sanitizing
+		editBox:SetScript("OnTextChanged", function(self)
+			if sanitizing then return end
+			sanitizing = true
+			local curText = self:GetText()
+			if isInteger then
+				local clean = curText:gsub("%D", "")
+				if clean ~= curText then
+					self:SetText(clean)
+				end
+			else
+				local clean = curText:gsub("[^%d.]", "")
+				local dot = clean:find("%.")
+				if dot then
+					local dec = clean:sub(dot + 1):gsub("%.", "")
+					dec = dec:sub(1, tonumber(precision))
+					clean = clean:sub(1, dot) .. dec
+				end
+				if clean ~= curText then
+					self:SetText(clean)
+				end
+			end
+			sanitizing = false
+		end)
+	end
+	local function updateDisplay(_, value)
+		editBox:SetText(formatVal(value))
+	end
+	slider:SetScript("OnValueChanged", updateDisplay)
 	slider.textFrame = sliderText
+	slider.editBox = editBox
 	self:SetLastObj(slider)
 	return slider
 end
