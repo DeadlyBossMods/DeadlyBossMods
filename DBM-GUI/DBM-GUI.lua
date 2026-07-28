@@ -605,6 +605,27 @@ local function getGTFOAbilityIcon(options, groupedSpellId)
 	return nil
 end
 
+local function GetSpecializationGroup()
+	if isRetail then
+		return GetSpecialization() or 1
+	else
+		local numTabs = GetNumTalentTabs()
+		local highestPointsSpent, currentSpecGroup = 0, 1
+		if MAX_TALENT_TABS then
+			for i=1, MAX_TALENT_TABS do
+				if ( i <= numTabs ) then
+					local _, _, _, _, pointsSpent = GetTalentTabInfo(i)
+					if pointsSpent > highestPointsSpent then
+						highestPointsSpent = pointsSpent
+						currentSpecGroup = i
+					end
+				end
+			end
+		end
+		return currentSpecGroup
+	end
+end
+
 ---@param mod DBMMod
 function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	local panel = isTestView and mod.testPanel or mod.panel
@@ -667,10 +688,46 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 			DBM_GUI_OptionsFrame:LoadAndShowFrame(mod.testPanel.frame)
 		end)
 	end
+	local function getProfileID()
+		if playerLevel > 9 and DBM_UseDualProfile then
+			return GetSpecializationGroup()
+		end
+		return 0
+	end
+	local exportMod = panel:CreateButton(L.ButtonExportMod, 120, 20, nil, GameFontNormalSmall)
+	exportMod.myheight = 24
+	exportMod:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 8, -10 - extraOffset)
+	exportMod:SetScript("OnClick", function()
+		local pid = getProfileID()
+		local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
+		if savedVars then
+			local exportData = {}
+			exportData[mod.id] = savedVars[playerName .. "-" .. realmName][mod.id][pid]
+			DBM_GUI:CreateExportProfile(exportData)
+		end
+	end)
+	local importMod = panel:CreateButton(L.ButtonImportMod, 120, 20, nil, GameFontNormalSmall)
+	importMod.myheight = 0
+	importMod:SetPoint("LEFT", exportMod, "RIGHT", 4, 0)
+	importMod:SetScript("OnClick", function()
+		DBM_GUI:CreateImportProfile(function(importTable)
+				if not importTable[mod.id] then
+				DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
+				return
+			end
+			local pid = getProfileID()
+			local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
+			if savedVars then
+				savedVars[playerName .. "-" .. realmName][mod.id][pid] = importTable[mod.id]
+				mod.Options = importTable[mod.id]
+				DBM:AddMsg(L.ModImportSuccess:format(mod.localization.general.name))
+			end
+		end)
+	end)
 	local modNameForHTML = mod.localization.general.name:gsub("&", "&amp;")
 	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. modNameForHTML), true)
 	button:SetChecked(mod.Options.Enabled)
-	button:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 8, -14 - extraOffset)
+	button:SetPoint("TOPLEFT", exportMod, "BOTTOMLEFT", 0, -8)
 	button:SetScript("OnClick", function()
 		mod:Toggle()
 	end)
@@ -752,33 +809,13 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 			end
 		end
 	end
+
 	-- For some reason the options aren't loaded in properly if the very first mod view you load is a test view
 	-- But just forcing a call to show fixes this
 	if isFirstModPanel and isTestView then
 		DBM_GUI:ShowHide(true)
 	end
 	isFirstModPanel = true
-end
-
-local function GetSpecializationGroup()
-	if isRetail then
-		return GetSpecialization() or 1
-	else
-		local numTabs = GetNumTalentTabs()
-		local highestPointsSpent, currentSpecGroup = 0, 1
-		if MAX_TALENT_TABS then
-			for i=1, MAX_TALENT_TABS do
-				if ( i <= numTabs ) then
-					local _, _, _, _, pointsSpent = GetTalentTabInfo(i)
-					if pointsSpent > highestPointsSpent then
-						highestPointsSpent = pointsSpent
-						currentSpecGroup = i
-					end
-				end
-			end
-		end
-		return currentSpecGroup
-	end
 end
 
 function DBM_GUI:CreateBossModTab(addon, panel, subtab)

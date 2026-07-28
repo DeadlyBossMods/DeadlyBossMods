@@ -60,6 +60,10 @@ L.Mod_Enabled						= "Enable: %s"
 L.Mod_Reset							= "Load default options"
 L.Reset 							= "Reset"
 L.Import							= "Import"
+L.ButtonExportMod					= "Export mod"
+L.ButtonImportMod					= "Import mod"
+L.ModImportSuccess					= "Settings imported for %s."
+L.ModImportFailed					= "Import failed: no settings found for %s."
 
 L.Enable							= ENABLE
 L.Disable							= DISABLE
