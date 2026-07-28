@@ -53,6 +53,7 @@ L.ButtonExportMod					= "Exportar módulo"
 L.ButtonImportMod					= "Importar módulo"
 L.ModImportSuccess					= "Configuración importada para %s."
 L.ModImportFailed					= "Importación fallida: no se encontró configuración para %s."
+L.ModImportDecodeFailed				= "No se pudieron importar los ajustes para %s. Los datos pueden ser inválidos/corruptos o de un formato no compatible."
 L.ImportProfileFailed				= "No se pudo importar la cadena del perfil. Los datos pueden ser inválidos/corruptos o de un formato no compatible."
 L.Enable							= ENABLE
 L.Disable							= DISABLE
