@@ -54,6 +54,8 @@ L.ModImportSuccess					= "已為%s匯入設定。"
 L.ModImportFailed					= "匯入失敗：找不到%s的設定。"
 L.ModImportDecodeFailed				= "無法匯入%s的設定。資料可能無效/損壞或來自不支援的格式。"
 L.ImportProfileFailed				= "無法匯入設定檔字串。資料可能無效/損壞或來自不支援的格式。"
+L.ProfileImported					= "已匯入設定檔。"
+
 L.Enable							= ENABLE
 L.Disable							= DISABLE
 L.NoSound							= "靜音"

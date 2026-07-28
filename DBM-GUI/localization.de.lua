@@ -51,6 +51,8 @@ L.ModImportSuccess					= "Einstellungen für %s importiert."
 L.ModImportFailed					= "Import fehlgeschlagen: Keine Einstellungen für %s gefunden."
 L.ModImportDecodeFailed				= "Import der Einstellungen für %s fehlgeschlagen. Die Daten sind möglicherweise ungültig/beschädigt oder stammen aus einem nicht unterstützten Format."
 L.ImportProfileFailed				= "Import der Profil-Zeichenfolge fehlgeschlagen. Die Daten sind möglicherweise ungültig/beschädigt oder stammen aus einem nicht unterstützten Format."
+L.ProfileImported					= "Profil importiert."
+
 L.Enable							= "Aktiviert"
 L.Disable							= "Deaktiviert"
 L.NoSound							= "Kein Sound"

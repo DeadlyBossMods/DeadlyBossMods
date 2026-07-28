@@ -55,6 +55,7 @@ L.ModImportSuccess					= "Configuración importada para %s."
 L.ModImportFailed					= "Importación fallida: no se encontró configuración para %s."
 L.ModImportDecodeFailed				= "No se pudo importar la configuración para %s. Los datos pueden ser inválidos/corruptos o de un formato no compatible."
 L.ImportProfileFailed				= "No se pudo importar la cadena del perfil. Los datos pueden ser inválidos/corruptos o de un formato no compatible."
+L.ProfileImported					= "Perfil importado."
 L.Enable							= ENABLE
 L.Disable							= DISABLE
 L.NoSound							= "Sin sonido"

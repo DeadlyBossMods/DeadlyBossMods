@@ -58,6 +58,8 @@ L.ModImportSuccess					= "已为%s导入设置。"
 L.ModImportFailed					= "导入失败：未找到%s的设置。"
 L.ModImportDecodeFailed				= "无法导入%s的设置。数据可能无效/损坏或来自不支持的格式。"
 L.ImportProfileFailed				= "无法导入配置文件字符串。数据可能无效/损坏或来自不支持的格式。"
+L.ProfileImported					= "已导入配置文件。"
+
 L.Enable							= "开启"
 L.Disable							= "关闭"
 L.NoSound							= "静音"

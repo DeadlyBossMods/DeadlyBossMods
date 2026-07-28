@@ -91,7 +91,7 @@ local function actuallyImport(importTable)
 		LibStub("LibDBIcon-1.0"):Show("DBM")
 	end
 	DBT:SetOption("Skin", DBT.Options.Skin) -- Forces a hard update on bars.
-	DBM:AddMsg("Profile imported.")
+	DBM:AddMsg(L.ProfileImported)
 end
 
 local importExportProfilesArea = profilePanel:CreateArea(L.Area_ImportExportProfile)

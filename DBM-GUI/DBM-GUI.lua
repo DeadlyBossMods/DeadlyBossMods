@@ -702,7 +702,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 		local pid = getProfileID()
 		local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
 		if savedVars then
-			local exportData = {}
+			local exportData = {payloadType = "ModProfile"}
 			exportData[mod.id] = savedVars[playerName .. "-" .. realmName][mod.id][pid]
 			DBM_GUI:CreateExportProfile(exportData)
 		end
@@ -712,7 +712,11 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	importMod:SetPoint("LEFT", exportMod, "RIGHT", 4, 0)
 	importMod:SetScript("OnClick", function()
 		DBM_GUI:CreateImportProfile(function(importTable)
-				if not importTable[mod.id] then
+			if importTable.payloadType and importTable.payloadType ~= "ModProfile" then
+				DBM:AddMsg(L.ModImportDecodeFailed:format(mod.localization.general.name))
+				return
+			end
+			if not importTable[mod.id] then
 				DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
 				return
 			end
@@ -935,17 +939,19 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		local function actuallyImport(importTable)
 			local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
 			for _, id in ipairs(DBM.ModLists[addon.modId]) do
-				_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID] = importTable[id]
-				---@diagnostic disable-next-line: inject-field
-				DBM:GetModByName(id).Options = importTable[id]
+				if importTable[id] then
+					_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID] = importTable[id]
+					---@diagnostic disable-next-line: inject-field
+					DBM:GetModByName(id).Options = importTable[id]
+				end
 			end
-			DBM:AddMsg("Profile imported.")
+			DBM:AddMsg(L.ProfileImported)
 		end
 
 		local importExportProfilesArea = panel:CreateArea(L.Area_ImportExportProfile)
 		local importExportText = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 		local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
-			local exportProfile = {}
+			local exportProfile = {payloadType = "AddonProfile"}
 			local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
 			for _, id in ipairs(DBM.ModLists[addon.modId]) do
 				exportProfile[id] = _G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID]
@@ -955,8 +961,24 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		exportProfile:SetPoint("TOPLEFT", importExportText, "BOTTOMLEFT", 0, -12)
 		local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 			DBM_GUI:CreateImportProfile(function(importTable)
+				if importTable.payloadType and importTable.payloadType ~= "AddonProfile" then
+					DBM:AddMsg(L.ImportProfileFailed)
+					return false
+				end
+				local hasValidMod = false
+				for _, id in ipairs(DBM.ModLists[addon.modId]) do
+					if importTable[id] then
+						hasValidMod = true
+						break
+					end
+				end
+				if not hasValidMod then
+					DBM:AddMsg(L.ImportProfileFailed)
+					return false
+				end
 				local errors = {}
 				for id, table in pairs(importTable) do
+					if type(table) == "table" then
 					-- Check if sound packs are missing
 					for settingName, settingValue in pairs(table) do
 						local ending = settingName:sub(-6):lower()
@@ -966,6 +988,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 							end
 						end
 					end
+						end
 				end
 				-- Create popup confirming if they wish to continue (and therefor resetting to default)
 				if #errors > 0 then

@@ -66,6 +66,7 @@ L.ModImportSuccess					= "Settings imported for %s."
 L.ModImportFailed					= "Import failed: no settings found for %s."
 L.ModImportDecodeFailed				= "Failed to import settings for %s. The data may be invalid/corrupted or from an unsupported format."
 L.ImportProfileFailed				= "Failed to import profile string. The data may be invalid/corrupted or from an unsupported format."
+L.ProfileImported					= "Profile imported."
 
 L.Enable							= ENABLE
 L.Disable							= DISABLE
