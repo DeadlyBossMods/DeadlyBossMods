@@ -253,9 +253,10 @@ do
 		if ok and decoded then
 			ok, decoded = pcall(C_EncodingUtil.DecompressString, decoded, compressionMethod)
 			if ok and decoded then
-				ok, decoded = pcall(C_EncodingUtil.DeserializeCBOR, decoded)
-				if ok and type(decoded) == "table" then
-					return decoded, false
+				local deserialized
+				ok, deserialized = pcall(C_EncodingUtil.DeserializeCBOR, decoded)
+				if ok and type(deserialized) == "table" then
+					return deserialized, false
 				end
 			end
 		end
