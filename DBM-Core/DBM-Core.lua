@@ -6605,8 +6605,17 @@ do
 		return type(value) == "string" and value:lower() == "none"
 	end
 
+	local fileAssetAPI = not private.isWrath and rawget(_G, "C_UIFileAsset")
+	local IsKnownFile = fileAssetAPI and fileAssetAPI.IsKnownFile
+
+	local function isKnownFile(path)
+		return IsKnownFile and IsKnownFile(path) or false
+	end
+
+	---@deprecated Wrath Classic lacks C_UIFileAsset.IsKnownFile; remove these caches when that API becomes available.
 	local LSMMediaCacheBuilt, sharedMediaFileCache, validateCache = false, {}, {}
 
+	---@deprecated Wrath Classic fallback only. Remove when C_UIFileAsset.IsKnownFile becomes available there.
 	local function buildLSMFileCache()
 		local LSM = LibStub and LibStub("LibSharedMedia-3.0", true)
 		if LSM then
@@ -6622,9 +6631,37 @@ do
 		end
 	end
 
+	local function reportInvalidSound(self, path, log, ignoreCustom, addon)
+		if not log then return end
+		if ignoreCustom then
+			-- This uses debug print because it has potential to cause mid fight spam
+			self:Debug("PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add missing sound or change setting using this sound to a different sound.")
+		elseif addon then
+			-- This uses actual user print because these events only occure at start or end of instance or fight.
+			AddMsg(self, "PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add/enable " .. addon .. " or change setting using this sound to a different sound.")
+		else
+			AddMsg(self, "PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add missing sound or change setting using this sound to a different sound.")
+		end
+	end
+
 	function DBM:ValidateSound(path, log, ignoreCustom)
-		-- Ignore built in sounds
-		if type(path) == "number" or string.find(path:lower(), "^sound[\\/]+") then
+		-- Built in media using FileDataID
+		if type(path) == "number" then
+			return true
+		end
+		if type(path) ~= "string" or path == "" then
+			reportInvalidSound(self, tostring(path), log, ignoreCustom)
+			return false
+		end
+		if not private.isWrath then
+			if not isKnownFile(path) then
+				reportInvalidSound(self, path, log, ignoreCustom)
+				return false
+			end
+			return true
+		end
+		-- Wrath Classic fallback. Remove when C_UIFileAsset.IsKnownFile becomes available there.
+		if string.find(path:lower(), "^sound[\\/]+") then
 			return true
 		end
 		-- Validate LibSharedMedia
@@ -6632,14 +6669,7 @@ do
 			buildLSMFileCache()
 		end
 		if not sharedMediaFileCache[path] and not path:find("DBM") then
-			if log then
-				if ignoreCustom then
-					-- This uses debug print because it has potential to cause mid fight spam
-					self:Debug("PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add missing sound or change setting using this sound to a different sound.")
-				else
-					AddMsg(self, "PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add missing sound or change setting using this sound to a different sound.")
-				end
-			end
+			reportInvalidSound(self, path, log, ignoreCustom)
 			return false
 		end
 		-- Validate audio packs
@@ -6664,10 +6694,7 @@ do
 			end
 		end
 		if validateCache[path] and not validateCache[path].exists then
-			if log then
-				-- This uses actual user print because these events only occure at start or end of instance or fight.
-				AddMsg(self, "PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add/enable " .. validateCache[path].AddOn .. " or change setting using this sound to a different sound.")
-			end
+			reportInvalidSound(self, path, log, ignoreCustom, validateCache[path].AddOn)
 			return false
 		end
 		return true
@@ -6705,32 +6732,46 @@ do
 		test:Trace(self, "PlaySound", path)
 	end
 
-	local fontProbe = UIParent:CreateFontString()
-	fontProbe:Hide()
+	local validFontFlags = {
+		[""] = true,
+		["MONOCHROME"] = true,
+		["OUTLINE"] = true,
+		["THICKOUTLINE"] = true,
+		["MONOCHROME,OUTLINE"] = true,
+		["MONOCHROME,THICKOUTLINE"] = true,
+	}
+	---@deprecated Wrath Classic fallback only. Remove when C_UIFileAsset.IsKnownFile becomes available there.
+	local fontProbe = private.isWrath and UIParent:CreateFontString()
+	if fontProbe then
+		fontProbe:Hide()
+	end
 	function DBM:IsFontValid(fontPath, standardFont, fontSize, fontFlags)
-		-- "standardFont" is always valid (maps to locale-specific standard)
-		if fontPath == "standardFont" then
-			return true
-		end
-		-- Locale resolved standard font path is always valid
-		if standardFont and fontPath == standardFont then
-			return true
-		end
 		if type(fontPath) ~= "string" or fontPath == "" then
 			return false
 		end
 		local resolvedSize = tonumber(fontSize)
-		if not resolvedSize then
-			resolvedSize = 12
-		end
-		if resolvedSize ~= resolvedSize or resolvedSize <= 0 or resolvedSize > 200 then
+		if not resolvedSize or resolvedSize ~= resolvedSize or resolvedSize < 1 or resolvedSize > 350 then
 			return false
 		end
 		local resolvedFlags = type(fontFlags) == "string" and fontFlags or ""
 		if self:IsNoneValue(resolvedFlags) then
 			resolvedFlags = ""
 		end
-		return pcall(fontProbe.SetFont, fontProbe, fontPath, resolvedSize, resolvedFlags)
+		if not validFontFlags[resolvedFlags] then
+			return false
+		end
+		-- "standardFont" maps to the locale-specific standard font and needs no asset lookup.
+		if fontPath == "standardFont" or (standardFont and fontPath == standardFont) then
+			return true
+		end
+		if not private.isWrath then
+			return isKnownFile(fontPath)
+		end
+		-- Wrath Classic fallback. Remove when C_UIFileAsset.IsKnownFile becomes available there.
+		if fontProbe then
+			return pcall(fontProbe.SetFont, fontProbe, fontPath, resolvedSize, resolvedFlags)
+		end
+		return false
 	end
 end
 
