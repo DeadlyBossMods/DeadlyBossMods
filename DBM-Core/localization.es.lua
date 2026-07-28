@@ -127,7 +127,7 @@ L.NOTESHAREERRORGROUPFINDER	= "No se puede compartir notas en campos de batalla,
 L.NOTESHAREERRORALREADYOPEN	= "No se puede abrir notas compartidas con el editor de notas ya abierto."
 
 L.ALLMOD_DEFAULT_LOADED		= "Se han cargado las opciones predeterminadas de todos los módulos de esta estancia."
-L.ALLMOD_STATS_RESETED		= "Se han restablecido todas las estadísticas de este módulo."
+L.ALLMOD_STATS_RESETED		= "Se han restablecido todas las estadísticas de módulos."
 L.MOD_DEFAULT_LOADED		= "Se han cargado las opciones predeterminadas de este encuentro."
 
 L.WORLDBOSS_ENGAGED			= "Es posible que el encuentro de %s se haya iniciado en tu reino a %s de su salud máxima. (Enviado por %s.)"
