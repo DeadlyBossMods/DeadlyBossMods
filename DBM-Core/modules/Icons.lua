@@ -63,7 +63,7 @@ do
 			error(("DBM:IconNumToTexture expects a number between 1 and 8, got %s"):format(tostring(number)), 2)
 			return
 		end
-		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_" .. number .. ".blp:12:12|t" or number
+		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_" .. number .. ".blp:12:12|t"
 	end
 end
 

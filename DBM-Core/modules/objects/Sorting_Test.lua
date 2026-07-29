@@ -1,3 +1,5 @@
+---@diagnostic disable: global-element
+-- Standalone test harness; this file is not loaded by any addon TOC.
 DBM = {}
 require "Sorting"
 
