@@ -3595,14 +3595,7 @@ do
 		if fontPath == "standardFont" or (standardFont and fontPath == standardFont) then
 			return true
 		end
-		if not private.isWrath then
-			return isKnownFile(fontPath)
-		end
-		-- Wrath Classic fallback. Remove when C_UIFileAsset.IsKnownFile becomes available there.
-		if fontProbe then
-			return pcall(fontProbe.SetFont, fontProbe, fontPath, resolvedSize, resolvedFlags)
-		end
-		return false
+		return IsKnownFile(fontPath)
 	end
 end
 
