@@ -46,7 +46,7 @@ end
 
 DBM.DefaultOptions = {
 	WarningColors = {
-		{r = 0.41, g = 0.80, b = 0.94}, -- Color 1 - #69CCF0 - Turqoise
+		{r = 0.41, g = 0.80, b = 0.94}, -- Color 1 - #69CCF0 - Turquoise
 		{r = 0.95, g = 0.95, b = 0.00}, -- Color 2 - #F2F200 - Yellow
 		{r = 1.00, g = 0.50, b = 0.00}, -- Color 3 - #FF8000 - Orange
 		{r = 1.00, g = 0.10, b = 0.10}, -- Color 4 - #FF1A1A - Red
@@ -723,7 +723,6 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			stats.mythicKills = stats.mythicKills or 0
 			stats.mythicPulls = stats.mythicPulls or 0
 			stats.normal25Kills = stats.normal25Kills or 0
-			stats.normal25Kills = stats.normal25Kills or 0
 			stats.normal25Pulls = stats.normal25Pulls or 0
 			stats.heroic25Kills = stats.heroic25Kills or 0
 			stats.heroic25Pulls = stats.heroic25Pulls or 0
@@ -1019,7 +1018,6 @@ function DBM:CreateDefaultModStats()
 	defaultStats.challengeBestRank = 0
 	defaultStats.mythicKills = 0
 	defaultStats.mythicPulls = 0
-	defaultStats.normal25Kills = 0
 	defaultStats.normal25Kills = 0
 	defaultStats.normal25Pulls = 0
 	defaultStats.heroic25Kills = 0
