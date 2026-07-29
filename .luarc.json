@@ -37,6 +37,8 @@
 		"UnitHealthPercent",
 		"C_StringUtil",
 		"C_Secrets",
+		"C_UIFileAsset",
+		"C_UIFileAsset.IsKnownFile",
 
 
 		"ALL",

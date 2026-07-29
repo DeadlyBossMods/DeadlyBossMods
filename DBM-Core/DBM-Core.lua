@@ -3500,31 +3500,7 @@ do
 		return type(value) == "string" and value:lower() == "none"
 	end
 
-	local fileAssetAPI = not private.isWrath and rawget(_G, "C_UIFileAsset")
-	local IsKnownFile = fileAssetAPI and fileAssetAPI.IsKnownFile
-
-	local function isKnownFile(path)
-		return IsKnownFile and IsKnownFile(path) or false
-	end
-
-	---@deprecated Wrath Classic lacks C_UIFileAsset.IsKnownFile; remove these caches when that API becomes available.
-	local LSMMediaCacheBuilt, sharedMediaFileCache, validateCache = false, {}, {}
-
-	---@deprecated Wrath Classic fallback only. Remove when C_UIFileAsset.IsKnownFile becomes available there.
-	local function buildLSMFileCache()
-		local LSM = LibStub and LibStub("LibSharedMedia-3.0", true)
-		if LSM then
-			local hashtable = LSM:HashTable("sound")
-			local keytable = {}
-			for k in next, hashtable do
-				tinsert(keytable, k)
-			end
-			for i = 1, #keytable do
-				sharedMediaFileCache[hashtable[keytable[i]]] = true
-			end
-			LSMMediaCacheBuilt = true
-		end
-	end
+	local IsKnownFile = C_UIFileAsset and C_UIFileAsset.IsKnownFile
 
 	local function reportInvalidSound(self, path, log, ignoreCustom, addon)
 		if not log then return end
@@ -3548,48 +3524,8 @@ do
 			reportInvalidSound(self, tostring(path), log, ignoreCustom)
 			return false
 		end
-		if not private.isWrath then
-			if not isKnownFile(path) then
-				reportInvalidSound(self, path, log, ignoreCustom)
-				return false
-			end
-			return true
-		end
-		-- Wrath Classic fallback. Remove when C_UIFileAsset.IsKnownFile becomes available there.
-		if string.find(path:lower(), "^sound[\\/]+") then
-			return true
-		end
-		-- Validate LibSharedMedia
-		if not LSMMediaCacheBuilt then
-			buildLSMFileCache()
-		end
-		if not sharedMediaFileCache[path] and not path:find("DBM") then
+		if not IsKnownFile(path) then
 			reportInvalidSound(self, path, log, ignoreCustom)
-			return false
-		end
-		-- Validate audio packs
-		if not validateCache[path] then
-			local splitTable = {}
-			for split in string.gmatch(path, "[^\\/]+") do -- Matches \ and / as path delimiters (incl. more than one)
-				tinsert(splitTable, split)
-			end
-			if #splitTable >= 3 and splitTable[3]:lower() == "dbm-customsounds" then
-				validateCache[path] = {
-					exists = ignoreCustom or false
-				}
-			elseif #splitTable >= 3 and splitTable[1]:lower() == "interface" and splitTable[2]:lower() == "addons" then -- We're an addon sound
-				validateCache[path] = {
-					exists = C_AddOns.IsAddOnLoaded(splitTable[3]),
-					AddOn = splitTable[3]
-				}
-			else
-				validateCache[path] = {
-					exists = true
-				}
-			end
-		end
-		if validateCache[path] and not validateCache[path].exists then
-			reportInvalidSound(self, path, log, ignoreCustom, validateCache[path].AddOn)
 			return false
 		end
 		return true
