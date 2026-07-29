@@ -59,6 +59,10 @@ do
 
 	---@param self DBMModOrDBM
 	function DBM:IconNumToTexture(number)
+		if not number or number < 1 or number > 8 then
+			error(("DBM:IconNumToTexture expects a number between 1 and 8, got %s"):format(tostring(number)), 2)
+			return
+		end
 		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_" .. number .. ".blp:12:12|t" or number
 	end
 end

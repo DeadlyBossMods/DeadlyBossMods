@@ -5436,12 +5436,12 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	if not enemyUnitID and enemyGUID then
 		enemyUnitID = self:GetUnitIdFromGUID(enemyGUID)
 	end
+	local tanking, status
 
 	--Threat/Tanking Checks
 	--We have both units. No need to find unitID
 	if enemyUnitID then
 		--Check threat first
-		local tanking, status
 		if private.isRetail then
 			--UnitDetailedThreatSituation is secret on retail even if you only read bool value
 			status = UnitThreatSituation(playerUnitID, enemyUnitID)
