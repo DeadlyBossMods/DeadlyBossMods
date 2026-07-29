@@ -46,6 +46,7 @@ local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
 local UnitAffectingCombat, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
+local InCombatLockdown = InCombatLockdown
 local GetNumGroupMembers = GetNumGroupMembers
 local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local C_TimerAfter = C_Timer.After
@@ -470,6 +471,164 @@ do
 		end
 	end
 
+	function DBM:PLAYER_REGEN_ENABLED()
+		module.PLAYER_REGEN_ENABLED()
+		private.onZonePlayerRegenEnabled(self)
+	end
+
+	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+		if self:issecretvalue(msg) then
+			if target then
+				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc .. " while looking at " .. target, 3, nil, nil, true, true)
+			else
+				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc, 3, nil, nil, true, true)
+			end
+			return
+		end
+		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
+			local targetName = target or "nil"
+			if targetName ~= "nil" then
+				local playerClass = self:GetRaidClass(targetName)
+				if playerClass then
+					local playerColor = RAID_CLASS_COLORS[playerClass]
+					if playerColor then
+						targetName = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, targetName, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+					end
+				end
+			end
+			self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 3, nil, nil, true, true)
+		end
+		if private.isClassic and not IsInInstance() then
+			if msg:find(L.WORLD_BUFFS.hordeOny) then
+				private.SendWorldSync(self, 4, "WBA", "Onyxia\tHorde\t22888\t15\t4")
+			elseif msg:find(L.WORLD_BUFFS.allianceOny) then
+				private.SendWorldSync(self, 4, "WBA", "Onyxia\tAlliance\t22888\t15\t4")
+			elseif msg:find(L.WORLD_BUFFS.hordeNef) then
+				private.SendWorldSync(self, 4, "WBA", "Nefarian\tHorde\t22888\t16\t4")
+			elseif msg:find(L.WORLD_BUFFS.allianceNef) then
+				private.SendWorldSync(self, 4, "WBA", "Nefarian\tAlliance\t22888\t16\t4")
+			elseif msg:find(L.WORLD_BUFFS.rendHead) then
+				private.SendWorldSync(self, 4, "WBA", "rendBlackhand\tHorde\t16609\t7\t4")
+			elseif msg:find(L.WORLD_BUFFS.zgHeartYojamba) then
+				-- zg buff transcripts https://gist.github.com/venuatu/18174f0e98759f83b9834574371b8d20
+				-- 28.58, 28.67, 27.77, 29.39, 28.67, 29.03, 28.12, 28.19, 29.61
+				private.SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t28\t4")
+			elseif msg:find(L.WORLD_BUFFS.zgHeartBooty) then
+				-- 48.7, 49.76, 50.64, 49.42, 49.8, 50.67, 50.94, 51.06
+				private.SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t49\t4")
+			elseif msg:find(L.WORLD_BUFFS.blackfathomBoon) then
+				--private.SendWorldSync(self, 4, "WBA", "Blackfathom\tBoth\t430947\t6\t4")
+			end
+		end
+		return module.OnMonsterMessage("yell", msg)
+	end
+
+	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
+		if self:issecretvalue(msg) then
+			self:Debug("|cffffa500CHAT_MSG_MONSTER_EMOTE: |r fired: " .. msg, 3, nil, nil, true, true)
+			return
+		end
+		return module.OnMonsterMessage("emote", msg)
+	end
+
+	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender, ...)
+		if self:issecretvalue(msg) then
+			--Still send the debug to debuglog
+			self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. msg .. " with sender of " .. sender, 3, nil, nil, true, true)
+			return
+		end
+		module.OnMonsterMessage("emote", msg)
+		local id = msg:match("|Hspell:([^|]+)|h")
+		if id then
+			local spellId = tonumber(id)
+			if spellId then
+				local spellName = DBM:GetSpellName(spellId) or CL.UNKNOWN
+				self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 3, nil, nil, true, true)
+			end
+		end
+		return self:FilterRaidBossEmote(msg, sender, ...)
+	end
+
+	function DBM:RAID_BOSS_EMOTE(msg, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
+		if self:issecretvalue(msg) then
+			return
+		end
+		module.OnMonsterMessage("emote", msg)
+		return self:FilterRaidBossEmote(msg, ...)
+	end
+
+	function DBM:RAID_BOSS_WHISPER(msg)
+		if self:issecretvalue(msg) then
+			self:Debug("RAID_BOSS_WHISPER fired: " .. msg, 2, nil, nil, true, true)
+			return
+		end
+		--Make it easier for devs to detect whispers they are unable to see
+		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
+		if msg and msg ~= "" and #msg < 255 and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
+			ChatThrottleLib:SendAddonMessage("ALERT", "Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")--Alert prio used since time accuracy is paramount for accurate logging
+		end
+	end
+
+	function DBM:CHAT_MSG_MONSTER_SAY(msg)
+		if self:issecretvalue(msg) then
+			self:Debug("CHAT_MSG_MONSTER_SAY fired: " .. msg, 3, nil, nil, true, true)
+			return
+		end
+		if private.isClassic and not IsInInstance() then
+			if msg:find(L.WORLD_BUFFS.zgHeart) then
+				-- 51.01 51.82 51.85 51.53
+				private.SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t51\t4")
+			end
+		end
+		return module.OnMonsterMessage("say", msg)
+	end
+
+end
+
+do
+	local autoLog = false
+	local autoTLog = false
+
+	function DBM:StartLogging(timer, checkFunc, force)
+		self:Unschedule(DBM.StopLogging)
+		if self:IsLogableContent(force) then
+			if self.Options.AutologBosses then
+				if not LoggingCombat() then
+					autoLog = true
+					self:AddMsg("|cffffff00" .. COMBATLOGENABLED .. "|r")
+					LoggingCombat(true)
+				end
+			end
+			local transcriptor = _G["Transcriptor"]
+			if self.Options.AdvancedAutologBosses and transcriptor then
+				if not transcriptor:IsLogging() then
+					autoTLog = true
+					self:AddMsg("|cffffff00" .. L.TRANSCRIPTOR_LOG_START .. "|r")
+					transcriptor:StartLog(1)
+				end
+			end
+			if checkFunc and (autoLog or autoTLog) then
+				self:Unschedule(checkFunc)
+				self:Schedule(timer + 10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
+			end
+		end
+	end
+
+	function DBM:StopLogging()
+		if self.Options.AutologBosses and LoggingCombat() and autoLog then
+			autoLog = false
+			self:AddMsg("|cffffff00" .. COMBATLOGDISABLED .. "|r")
+			LoggingCombat(false)
+		end
+		local transcriptor = _G["Transcriptor"]
+		if self.Options.AdvancedAutologBosses and transcriptor and autoTLog then
+			if transcriptor:IsLogging() then
+				autoTLog = false
+				self:AddMsg("|cffffff00" .. L.TRANSCRIPTOR_LOG_END .. "|r")
+				transcriptor:StopLog(1)
+			end
+		end
+	end
 end
 
 ---------------------------

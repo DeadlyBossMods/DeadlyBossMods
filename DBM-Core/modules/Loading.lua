@@ -20,6 +20,50 @@ local IsInGroup, IsInInstance = IsInGroup, IsInInstance
 local UnitGUID, UnitIsDead, UnitIsFriend = UnitGUID, UnitIsDead, UnitIsFriend
 local InCombatLockdown = InCombatLockdown
 local C_TimerAfter = C_Timer.After
+local GetCVar, SetCVar = GetCVar, SetCVar
+local PlayMusic, StopMusic = PlayMusic, StopMusic
+local GetRealZoneText = GetRealZoneText
+local fastrandom = fastrandom
+local inCombat = private.combatDetectionState.inCombat ---@type DBMMod[]
+local DBMScheduler = private:GetModule("DBMScheduler")
+
+local LastInstanceMapID = -1
+local targetEventsRegistered = false
+local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
+
+function DBM:GetCurrentArea()
+	return LastInstanceMapID
+end
+
+---@param priority number?
+function DBM:QueueAuraAnchorUpdate(priority)
+	pendingPAAnchorCheck = math.max(pendingPAAnchorCheck, priority or 1)
+end
+
+---@param priority number?
+function DBM:UpdateZoneAuraAnchors(priority)
+	if not private.isRetail then
+		return
+	end
+	local auraHandler = DBM.Auras
+	if auraHandler then
+		local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+		local succeeded = updateMethod and updateMethod(auraHandler)
+		if not succeeded then
+			pendingPAAnchorCheck = priority or 1
+		else
+			pendingPAAnchorCheck = 0
+		end
+	end
+end
+
+--[[
+test:RegisterLocalHook("LastInstanceMapID", function(val)
+	local old = LastInstanceMapID
+	LastInstanceMapID = val
+	return old
+end)
+]]
 
 --------------------------------
 --  Load Boss Mods on Demand  --
@@ -334,5 +378,244 @@ do
 	function DBM:UNIT_TARGET(uId)
 		if self:IsPostMidnight() and IsInInstance() then return end
 		loadModByUnit(uId .. "target")
+	end
+end
+
+---------------------------
+--  Zone Load Lifecycle  --
+---------------------------
+do
+	---@param force boolean? Only used when /dbm musicstart is used directly by user
+	---@param cleanup boolean? Runs on zone change/cinematic Start (first load delay) and combat end
+	function DBM:TransitionToDungeonBGM(force, cleanup)
+		if cleanup then
+			self:Unschedule(self.TransitionToDungeonBGM)
+			if self.Options.RestoreSettingCustomMusic then
+				SetCVar("Sound_EnableMusic", self.Options.RestoreSettingCustomMusic)
+				self.Options.RestoreSettingCustomMusic = nil
+				self:Debug("Restoring Sound_EnableMusic CVAR")
+			end
+			if self.Options.musicPlaying then--Primarily so DBM doesn't call StopMusic unless DBM is one that started it. We don't want to screw with other addons
+				StopMusic()
+				self.Options.musicPlaying = nil
+				self:Debug("Stopping music")
+			end
+			self:FireEvent("DBM_MusicStop", "ZoneOrCombatEndTransition")
+			return
+		end
+		if private.LastInstanceType ~= "raid" and private.LastInstanceType ~= "party" and not force then return end
+		if self.Options.RestoreSettingMusic then return end--Music was disabled by the music disable override, abort here
+		self:FireEvent("DBM_MusicStart", "RaidOrDungeon")
+		if self.Options.EventSoundDungeonBGM and not self:IsNoneValue(self.Options.EventSoundDungeonBGM) and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) then
+			if not self.Options.RestoreSettingCustomMusic then
+				self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
+				if self.Options.RestoreSettingCustomMusic == 0 then
+					SetCVar("Sound_EnableMusic", 1)
+				else
+					self.Options.RestoreSettingCustomMusic = nil--Don't actually need it
+				end
+			end
+			local path = "MISSING"
+			if self.Options.EventSoundDungeonBGM == "Random" then
+				local usedTable = self.Options.EventSoundMusicCombined and DBM:GetMusic() or DBM:GetDungeonMusic()
+				if #usedTable >= 3 then
+					local random = fastrandom(3, #usedTable)
+					---@diagnostic disable-next-line: cast-local-type
+					path = usedTable[random].value
+				end
+			else
+				path = self.Options.EventSoundDungeonBGM
+			end
+			if path ~= "MISSING" then
+				PlayMusic(path)
+				self.Options.musicPlaying = true
+				self:Debug("Starting Dungeon music with file: " .. path)
+			end
+		end
+	end
+
+	---@param self DBM
+	---@param mapID number
+	local function syncZoneAuraSounds(self, mapID)
+		if not private.isRetail then
+			return
+		end
+		if InCombatLockdown() or #inCombat > 0 then
+			pendingPASoundZoneSync = mapID
+			return
+		end
+		pendingPASoundZoneSync = nil
+		for _, mod in ipairs(DBM.Mods) do
+			mod:DisableAuraSounds()
+		end
+		for _, mod in ipairs(DBM.Mods) do
+			mod:RegisterZoneAuraSounds(mapID)
+		end
+	end
+
+	function private.syncPendingZoneAuraSounds()
+		if pendingPASoundZoneSync then
+			syncZoneAuraSounds(DBM, pendingPASoundZoneSync)
+		end
+	end
+
+	---@param self DBM
+	function private.onZonePlayerRegenEnabled(self)
+		if not private.isRetail then
+			return
+		end
+		if pendingPASoundZoneSync then
+			syncZoneAuraSounds(self, pendingPASoundZoneSync)
+		end
+		if pendingPAAnchorCheck > 0 then
+			local auraHandler = DBM.Auras
+			if auraHandler then
+				local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+				local succeeded = updateMethod and updateMethod(auraHandler)
+				if succeeded then
+					pendingPAAnchorCheck = 0
+				end
+			end
+		end
+	end
+
+	---@param self DBM
+	---@param delay number?
+	local function SecondaryLoadCheck(self, delay)
+		local _, instanceType, difficulty, _, _, _, _, mapID = private.GetInstanceInfo()
+		difficulties:RefreshCache(true)
+		self:Debug("Instance Check fired with mapID " .. mapID .. " and difficulty " .. difficulty .. " and delay " .. (delay or 0), 2)
+		-- Difficulty index also checked because in challenge modes and M+, difficulty changes with no ID change
+		-- if ID changes we need to execute updated autologging and checkavailable mods checks
+		-- ID and difficulty hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh stage 4 is a loading screen)
+		if LastInstanceMapID == mapID and difficulties.difficultyIndex == difficulty then
+			self:TransitionToDungeonBGM()
+			self:Debug("|c00F2F200No action taken because mapID and difficultyID hasn't changed since last check |r", 2)
+			return
+		end
+		self:Debug("|c0069CCF0mapID or difficulty has changed, updating LastInstanceMapID to |r" .. mapID, 2, nil, nil, true)
+		LastInstanceMapID = mapID
+		DBMScheduler:UpdateZone()--Also update zone in scheduler
+		self:FireEvent("DBM_UpdateZone", mapID)
+		if instanceType == "none" or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
+			private.LastInstanceType = "none"
+			if not targetEventsRegistered then
+				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "NAME_PLATE_UNIT_ADDED", "UNIT_TARGET player")
+				targetEventsRegistered = true
+			end
+		else
+			private.LastInstanceType = instanceType
+			if targetEventsRegistered then
+				self:UnregisterShortTermEvents()
+				targetEventsRegistered = false
+			end
+			if difficulties.savedDifficulty == "worldboss" then
+				for i = #inCombat, 1, -1 do
+					self:EndCombat(inCombat[i], true, nil, "Left zone of world boss")
+				end
+			end
+		end
+		-- Auto Logging for entire zone if record only bosses is off
+		if not self.Options.RecordOnlyBosses then
+			if private.LastInstanceType == "raid" or private.LastInstanceType == "party" then
+				self:StartLogging(0)
+			else
+				self:StopLogging()
+			end
+		end
+		-- LoadMod
+		self:LoadModsOnDemand("mapId", mapID, delay or 0)
+		self:CheckAvailableMods()
+		if self.BattleRezTimer then
+			self.BattleRezTimer:CheckSupported()
+		end
+		if private.isRetail then
+			--Handle private aura sounds and anchors
+			syncZoneAuraSounds(self, mapID)
+			self:UpdateZoneAuraAnchors(1)
+		end
+		self:UpdateMapRestrictions()
+		private:GetModule("DevToolsModule"):OnDebugToggle()
+		if self:HasMapRestrictions() then
+			self.Arrow:Hide()
+			self.HudMap:Disable()
+			if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
+				self.RangeCheck:Hide(true)
+			end
+		end
+	end
+
+	--Faster and more accurate loading for instances, but useless outside of them
+	function DBM:LOADING_SCREEN_DISABLED(delayedCheck)
+		--Extra stuff we want to clean up after loading screens only
+		if not private.isClassic and not private.isBCC then
+			DBT:CancelBar(L.LFG_INVITE)--Disable bar here since LFG_PROPOSAL_SUCCEEDED seems broken right now
+		end
+		self:FireEvent("DBM_TimerStop", "DBMLFGTimer")
+		private.setTimerRequestInProgress(false)
+		--Regular load zone code beyond this point
+		self:Debug("LOADING_SCREEN_DISABLED fired", 2)
+		self:Unschedule(SecondaryLoadCheck)
+		--SecondaryLoadCheck(self)
+		--In instance tranfers with no loading screen, InstanceInfo can actually return nil for first few seconds
+		if not delayedCheck then
+			self:Schedule(1, SecondaryLoadCheck, self)--Minimum time delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
+		end
+		self:TransitionToDungeonBGM(false, true)
+		self:Schedule(5, SecondaryLoadCheck, self, 5)
+		DBM:UpdateMapRestrictions()
+		if self:HasMapRestrictions() then
+			self.Arrow:Hide()
+			self.HudMap:Disable()
+			if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
+				self.RangeCheck:Hide(true)
+			end
+		end
+	end
+
+	-- Load based on MapIDs
+	function DBM:ZONE_CHANGED_NEW_AREA()
+		local mapID = C_Map.GetBestMapForUnit("player")
+		if mapID then
+			self:LoadModsOnDemand("mapId", "m" .. mapID)
+		end
+		DBM:CheckAvailableModsByMap()
+	end
+
+	---Special event that fires when changing zones in TWW
+	---@param oldZone number if oldZone is -1, it means it's a loading screen
+	---@param newZone number
+	function DBM:PLAYER_MAP_CHANGED(oldZone, newZone)
+		self:Debug("PLAYER_MAP_CHANGED fired with oldZone " .. oldZone .. " (" .. (GetRealZoneText(oldZone) or "Unknown") .. ") and newZone " .. newZone .. " (" .. (GetRealZoneText(newZone) or "Unknown") .. ")", 2, nil, nil, true)
+		if oldZone == -1 then return end--Let legacy LOADING_SCREEN_DISABLED handle it for now. In future, PLAYER_MAP_CHANGED may replace LSD if classic gets it
+		if LastInstanceMapID ~= newZone then
+			--self:Debug("Zone changed, firing secondary load check", 3)
+			--Different ID than cached, run secondary load checks
+			--Delay is still needed due to GetInstanceInfo not returning new information yet instantly on PLAYER_MAP_CHANGED
+			self:TransitionToDungeonBGM(false, true)
+			self:Unschedule(SecondaryLoadCheck)
+--			self:Schedule(1, SecondaryLoadCheck, self, 1)
+			self:Schedule(5, SecondaryLoadCheck, self, 5)
+			DBM:UpdateMapRestrictions()
+			if self:HasMapRestrictions() then
+				self.Arrow:Hide()
+				self.HudMap:Disable()
+				if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
+					self.RangeCheck:Hide(true)
+				end
+			end
+		end
+	end
+
+	function DBM:CHALLENGE_MODE_RESET()
+		--TODO, if blizzard ever removes loading screen from challenge modes start, then we need to run additional stuff from SecondaryLoadCheck here
+		difficulties.difficultyIndex = 8
+		self:CheckAvailableMods()
+		if not self.Options.RecordOnlyBosses then
+			self:StartLogging(0, nil, true)
+		end
+		if self.BattleRezTimer then
+			self.BattleRezTimer:CheckSupported()
+		end
 	end
 end

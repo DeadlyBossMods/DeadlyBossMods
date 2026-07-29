@@ -33,8 +33,6 @@ local private = select(2, ...)
 local DBM = private:GetPrototype("DBM")
 _G.DBM = DBM
 
---WARNING: DBM is dangerously close too 200 local variables, avoid adding locals to the file scope.
---More modulation or scoping is needed to reduce this
 local DBMPrefix = "D5"
 local DBMSyncProtocol = 1
 private.DBMPrefix = DBMPrefix
@@ -43,7 +41,6 @@ private.DBMSyncProtocol = DBMSyncProtocol
 local L = DBM_CORE_L
 local CL = DBM_COMMON_L
 
-local stringUtils = private:GetPrototype("StringUtils")
 local tableUtils = private:GetPrototype("TableUtils")
 local difficulties = private:GetPrototype("Difficulties")
 local test = private:GetPrototype("DBMTest")
@@ -136,7 +133,6 @@ private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDis
 --------------
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
-local combatDetection = private:GetModule("CombatDetection")
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
 local playerName = UnitName("player")
 private.playerLevel = UnitLevel("player")
@@ -153,19 +149,11 @@ local inCombat = private.combatDetectionState.inCombat ---@type DBMMod[]
 local combatInfo = private.combatDetectionState.combatInfo ---@type table<integer, CombatInfo[]>
 local inCombatTrash = {}
 -- False variables
-local targetEventsRegistered, timerRequestInProgress = false, false
+local timerRequestInProgress = false
 private.isTimerRequestInProgress = function() return timerRequestInProgress end
 private.setTimerRequestInProgress = function(value) timerRequestInProgress = value end
 -- Nil variables
-local currentSpecID, currentSpecName, currentSpecGroup, fireEvent, AddMsg, syncZoneAuraSounds
-local pendingPASoundZoneSync, pendingPAAnchorCheck = nil, 0
--- 0 variables
-local LastInstanceMapID = -1
-
----@param priority number?
-function DBM:QueueAuraAnchorUpdate(priority)
-	pendingPAAnchorCheck = math.max(pendingPAAnchorCheck, priority or 1)
-end
+local currentSpecID, currentSpecName, currentSpecGroup, fireEvent, AddMsg
 
 local deprecatedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
@@ -277,13 +265,13 @@ local tinsert, tremove, twipe, tsort = table.insert, table.remove, table.wipe, t
 local type, select = type, select
 local GetTime = GetTime
 local bband = bit.band
-local floor, mhuge, mmin, mmax = math.floor, math.huge, math.min, math.max
+local floor, mhuge = math.floor, math.huge
 local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterInfo
 local UnitName, GetUnitName = UnitName, GetUnitName
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
-local UnitAffectingCombat, InCombatLockdown, IsFalling, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
+local InCombatLockdown, IsFalling = InCombatLockdown, IsFalling
 local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
-local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit
+local UnitExists, UnitIsDead, UnitIsUnit = UnitExists, UnitIsDead, UnitIsUnit
 --local UnitTokenFromGUID, UnitPercentHealthFromGUID = UnitTokenFromGUID, UnitPercentHealthFromGUID
 local GetDungeonInfo = C_LFGInfo.GetDungeonInfo or GetDungeonInfo -- Classic has C_LFGInfo but not C_LFGInfo.GetDungeonInfo, need to use global for classic
 local EJ_GetSectionInfo, GetSectionIconFlags
@@ -296,7 +284,6 @@ local UnitIsGroupLeader, UnitIsGroupAssistant = UnitIsGroupLeader, UnitIsGroupAs
 local PlaySoundFile = PlaySoundFile
 local Ambiguate = Ambiguate
 local C_TimerAfter = C_Timer.After
-local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 
 -- Store globals that can be hooked/overriden by tests in private
 private.GetInstanceInfo = GetInstanceInfo
@@ -1083,7 +1070,7 @@ do
 			local zones = v.zones
 			local handler = v[event]
 			local modEvents = v.registeredUnitEvents
-			if (not isUnitEvent or not modEvents or modEvents[event .. ...]) and (not zones or zones[LastInstanceMapID]) and not (not v.isTrashModBossFightAllowed and v.isTrashMod and #inCombat > 0) then
+			if (not isUnitEvent or not modEvents or modEvents[event .. ...]) and (not zones or zones[DBM:GetCurrentArea()]) and not (not v.isTrashModBossFightAllowed and v.isTrashMod and #inCombat > 0) then
 				if handler then
 					handler(v, ...)
 				end
@@ -2156,13 +2143,13 @@ do
 			if RolePollPopup and RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") and private.isRetail then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
 			end
-			combatDetection:RegisterCoreEvents()
+			private:GetModule("CombatDetection"):RegisterCoreEvents()
 			self:GROUP_ROSTER_UPDATE(true)
-			combatDetection:StartInitializationTimers()
+			private:GetModule("CombatDetection"):StartInitializationTimers()
 			self:Schedule(10, runDelayedFunctions, self)
 			self:ZONE_CHANGED_NEW_AREA()
 			playerName = UnitName("player")--In case it's unknown at login, we check it again
-			combatDetection:SetPlayerName(playerName)
+			private:GetModule("CombatDetection"):SetPlayerName(playerName)
 			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
 			self.Options.fixBlizzApi = false
@@ -2634,18 +2621,7 @@ do
 			raidGuids[UnitGUID("player")] = playerName
 			private.lastGroupLeader = nil
 		end
-		if private.isRetail then
-			local auraHandler = DBM.Auras
-			if auraHandler then
-				local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
-				local succeeded = updateMethod and updateMethod(auraHandler)
-				if not succeeded then
-					pendingPAAnchorCheck = 2
-				else
-					pendingPAAnchorCheck = 0
-				end
-			end
-		end
+		DBM:UpdateZoneAuraAnchors(2)
 	end
 
 	function DBM:GROUP_ROSTER_UPDATE(force)
@@ -3192,6 +3168,20 @@ function DBM:SelectGossip(gossipOptionID, confirm)
 	end
 end
 
+function DBM:GOSSIP_SHOW()
+	if not IsInInstance() then return end--Don't really care about it if not in a dungeon or raid
+	local gossipOptionID = self:GetGossipID(true)
+	if gossipOptionID then--At least one must return for debug
+		if DBM:MidRestrictionsActive() then
+			--GUID is a secret in combat
+			self:Debug("|cffffff00GOSSIP_SHOW: |r triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)), 1, nil, nil, true)
+		else
+			local cid = self:GetUnitCreatureId("npc") or 0
+			self:Debug("|cffffff00GOSSIP_SHOW: |r triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid, 1, nil, nil, true)
+		end
+	end
+end
+
 function DBM:PLAYER_LEVEL_CHANGED()
 	private.playerLevel = UnitLevel("player")
 	if private.playerLevel < 15 and private.playerLevel > 9 then
@@ -3213,7 +3203,7 @@ do
 	function DBM:PLAYER_DIFFICULTY_CHANGED(force)
 		if not IsInGroup() then return end
 		--Filter queued or solo content sitations showing difficulty change alerts
-		if IsPartyLFG() or difficulties.difficultyIndex == 205 or difficulties:InstanceType(LastInstanceMapID) == 4 then return end--Follower dungeon and delves
+		if IsPartyLFG() or difficulties.difficultyIndex == 205 or difficulties:InstanceType(self:GetCurrentArea()) == 4 then return end--Follower dungeon and delves
 		--Also supress alerts if in any LFG queue state
 		if GetLFGMode(1) or GetLFGMode(2) or GetLFGMode(3) or GetLFGMode(4) or GetLFGMode(5) then return end
 		local currentRaidDifficulty = GetRaidDifficultyID()
@@ -3371,428 +3361,6 @@ function DBM:UPDATE_BATTLEFIELD_STATUS(queueID)
 end
 
 
----------------------------
---  Zone Load Lifecycle  --
----------------------------
-do
-	---@param force boolean? Only used when /dbm musicstart is used directly by user
-	---@param cleanup boolean? Runs on zone change/cinematic Start (first load delay) and combat end
-	function DBM:TransitionToDungeonBGM(force, cleanup)
-		if cleanup then
-			self:Unschedule(self.TransitionToDungeonBGM)
-			if self.Options.RestoreSettingCustomMusic then
-				SetCVar("Sound_EnableMusic", self.Options.RestoreSettingCustomMusic)
-				self.Options.RestoreSettingCustomMusic = nil
-				self:Debug("Restoring Sound_EnableMusic CVAR")
-			end
-			if self.Options.musicPlaying then--Primarily so DBM doesn't call StopMusic unless DBM is one that started it. We don't want to screw with other addons
-				StopMusic()
-				self.Options.musicPlaying = nil
-				self:Debug("Stopping music")
-			end
-			fireEvent("DBM_MusicStop", "ZoneOrCombatEndTransition")
-			return
-		end
-		if private.LastInstanceType ~= "raid" and private.LastInstanceType ~= "party" and not force then return end
-		if self.Options.RestoreSettingMusic then return end--Music was disabled by the music disable override, abort here
-		fireEvent("DBM_MusicStart", "RaidOrDungeon")
-		if self.Options.EventSoundDungeonBGM and not self:IsNoneValue(self.Options.EventSoundDungeonBGM) and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) then
-			if not self.Options.RestoreSettingCustomMusic then
-				self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
-				if self.Options.RestoreSettingCustomMusic == 0 then
-					SetCVar("Sound_EnableMusic", 1)
-				else
-					self.Options.RestoreSettingCustomMusic = nil--Don't actually need it
-				end
-			end
-			local path = "MISSING"
-			if self.Options.EventSoundDungeonBGM == "Random" then
-				local usedTable = self.Options.EventSoundMusicCombined and DBM:GetMusic() or DBM:GetDungeonMusic()
-				if #usedTable >= 3 then
-					local random = fastrandom(3, #usedTable)
-					---@diagnostic disable-next-line: cast-local-type
-					path = usedTable[random].value
-				end
-			else
-				path = self.Options.EventSoundDungeonBGM
-			end
-			if path ~= "MISSING" then
-				PlayMusic(path)
-				self.Options.musicPlaying = true
-				self:Debug("Starting Dungeon music with file: " .. path)
-			end
-		end
-	end
-
-	---@param self DBM
-	---@param mapID number
-	syncZoneAuraSounds = function(self, mapID)
-		if not private.isRetail then
-			return
-		end
-		if InCombatLockdown() or #inCombat > 0 then
-			pendingPASoundZoneSync = mapID
-			return
-		end
-		pendingPASoundZoneSync = nil
-		for _, mod in ipairs(DBM.Mods) do
-			mod:DisableAuraSounds()
-		end
-		for _, mod in ipairs(DBM.Mods) do
-			mod:RegisterZoneAuraSounds(mapID)
-		end
-	end
-
-	function private.syncPendingZoneAuraSounds()
-		if pendingPASoundZoneSync then
-			syncZoneAuraSounds(DBM, pendingPASoundZoneSync)
-		end
-	end
-
-	---@param self DBM
-	---@param delay number?
-	local function SecondaryLoadCheck(self, delay)
-		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = private.GetInstanceInfo()
-		difficulties:RefreshCache(true)
-		LastGroupSize = instanceGroupSize
-		self:Debug("Instance Check fired with mapID " .. mapID .. " and difficulty " .. difficulty .. " and delay " .. (delay or 0), 2)
-		-- Difficulty index also checked because in challenge modes and M+, difficulty changes with no ID change
-		-- if ID changes we need to execute updated autologging and checkavailable mods checks
-		-- ID and difficulty hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh stage 4 is a loading screen)
-		if LastInstanceMapID == mapID and difficulties.difficultyIndex == difficulty then
-			self:TransitionToDungeonBGM()
-			self:Debug("|c00F2F200No action taken because mapID and difficultyID hasn't changed since last check |r", 2)
-			return
-		end
-		self:Debug("|c0069CCF0mapID or difficulty has changed, updating LastInstanceMapID to |r" .. mapID, 2, nil, nil, true)
-		LastInstanceMapID = mapID
-		DBMScheduler:UpdateZone()--Also update zone in scheduler
-		fireEvent("DBM_UpdateZone", mapID)
-		if instanceType == "none" or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
-			private.LastInstanceType = "none"
-			if not targetEventsRegistered then
-				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "NAME_PLATE_UNIT_ADDED", "UNIT_TARGET player")
-				targetEventsRegistered = true
-			end
-		else
-			private.LastInstanceType = instanceType
-			if targetEventsRegistered then
-				self:UnregisterShortTermEvents()
-				targetEventsRegistered = false
-			end
-			if difficulties.savedDifficulty == "worldboss" then
-				for i = #inCombat, 1, -1 do
-					self:EndCombat(inCombat[i], true, nil, "Left zone of world boss")
-				end
-			end
-		end
-		-- Auto Logging for entire zone if record only bosses is off
-		if not self.Options.RecordOnlyBosses then
-			if private.LastInstanceType == "raid" or private.LastInstanceType == "party" then
-				self:StartLogging(0)
-			else
-				self:StopLogging()
-			end
-		end
-		-- LoadMod
-		self:LoadModsOnDemand("mapId", mapID, delay or 0)
-		self:CheckAvailableMods()
-		if self.BattleRezTimer then
-			self.BattleRezTimer:CheckSupported()
-		end
-		if private.isRetail then
-			--Handle private aura sounds and anchors
-			syncZoneAuraSounds(self, mapID)
-			local auraHandler = DBM.Auras
-			if auraHandler then
-				local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
-				local succeeded = updateMethod and updateMethod(auraHandler)
-				if not succeeded then
-					pendingPAAnchorCheck = 1
-				else
-					pendingPAAnchorCheck = 0
-				end
-			end
-		end
-		self:UpdateMapRestrictions()
-		private:GetModule("DevToolsModule"):OnDebugToggle()
-		if self:HasMapRestrictions() then
-			self.Arrow:Hide()
-			self.HudMap:Disable()
-			if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
-				self.RangeCheck:Hide(true)
-			end
-		end
-	end
-
-	--Faster and more accurate loading for instances, but useless outside of them
-	function DBM:LOADING_SCREEN_DISABLED(delayedCheck)
-		--Extra stuff we want to clean up after loading screens only
-		if not private.isClassic and not private.isBCC then
-			DBT:CancelBar(L.LFG_INVITE)--Disable bar here since LFG_PROPOSAL_SUCCEEDED seems broken right now
-		end
-		fireEvent("DBM_TimerStop", "DBMLFGTimer")
-		timerRequestInProgress = false
-		--Regular load zone code beyond this point
-		self:Debug("LOADING_SCREEN_DISABLED fired", 2)
-		self:Unschedule(SecondaryLoadCheck)
-		--SecondaryLoadCheck(self)
-		--In instance tranfers with no loading screen, InstanceInfo can actually return nil for first few seconds
-		if not delayedCheck then
-			self:Schedule(1, SecondaryLoadCheck, self)--Minimum time delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
-		end
-		self:TransitionToDungeonBGM(false, true)
-		self:Schedule(5, SecondaryLoadCheck, self, 5)
-		DBM:UpdateMapRestrictions()
-		if self:HasMapRestrictions() then
-			self.Arrow:Hide()
-			self.HudMap:Disable()
-			if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
-				self.RangeCheck:Hide(true)
-			end
-		end
-	end
-
-	-- Load based on MapIDs
-	function DBM:ZONE_CHANGED_NEW_AREA()
-		local mapID = C_Map.GetBestMapForUnit("player")
-		if mapID then
-			self:LoadModsOnDemand("mapId", "m" .. mapID)
-		end
-		DBM:CheckAvailableModsByMap()
-	end
-
-	---Special event that fires when changing zones in TWW
-	---@param oldZone number if oldZone is -1, it means it's a loading screen
-	---@param newZone number
-	function DBM:PLAYER_MAP_CHANGED(oldZone, newZone)
-		self:Debug("PLAYER_MAP_CHANGED fired with oldZone " .. oldZone .. " (" .. (GetRealZoneText(oldZone) or "Unknown") .. ") and newZone " .. newZone .. " (" .. (GetRealZoneText(newZone) or "Unknown") .. ")", 2, nil, nil, true)
-		if oldZone == -1 then return end--Let legacy LOADING_SCREEN_DISABLED handle it for now. In future, PLAYER_MAP_CHANGED may replace LSD if classic gets it
-		if LastInstanceMapID ~= newZone then
-			--self:Debug("Zone changed, firing secondary load check", 3)
-			--Different ID than cached, run secondary load checks
-			--Delay is still needed due to GetInstanceInfo not returning new information yet instantly on PLAYER_MAP_CHANGED
-			self:TransitionToDungeonBGM(false, true)
-			self:Unschedule(SecondaryLoadCheck)
---			self:Schedule(1, SecondaryLoadCheck, self, 1)
-			self:Schedule(5, SecondaryLoadCheck, self, 5)
-			DBM:UpdateMapRestrictions()
-			if self:HasMapRestrictions() then
-				self.Arrow:Hide()
-				self.HudMap:Disable()
-				if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
-					self.RangeCheck:Hide(true)
-				end
-			end
-		end
-	end
-
-	function DBM:CHALLENGE_MODE_RESET()
-		--TODO, if blizzard ever removes loading screen from challenge modes start, then we need to run additional stuff from SecondaryLoadCheck here
-		difficulties.difficultyIndex = 8
-		self:CheckAvailableMods()
-		if not self.Options.RecordOnlyBosses then
-			self:StartLogging(0, nil, true)
-		end
-		if self.BattleRezTimer then
-			self.BattleRezTimer:CheckSupported()
-		end
-	end
-
-end
-
-
-----------------------
---  Pull Detection  --
-----------------------
-do
-	function DBM:PLAYER_REGEN_ENABLED()
-		combatDetection.PLAYER_REGEN_ENABLED()
-		if private.isRetail then
-			if pendingPASoundZoneSync then
-				syncZoneAuraSounds(self, pendingPASoundZoneSync)
-			end
-			if pendingPAAnchorCheck > 0 then
-				local auraHandler = DBM.Auras
-				if auraHandler then
-					local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
-					local succeeded = updateMethod and updateMethod(auraHandler)
-					if succeeded then
-						pendingPAAnchorCheck = 0
-					end
-				end
-			end
-		end
-	end
-
-	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-		if self:issecretvalue(msg) then
-			if target then
-				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc .. " while looking at " .. target, 3, nil, nil, true, true)
-			else
-				self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r fired: '" .. msg .. "' with sender of " .. npc, 3, nil, nil, true, true)
-			end
-			return
-		end
-		if private.IsEncounterInProgress() or (IsInInstance() and InCombatLockdown()) then--Too many 5 mans/old raids don't properly return encounterinprogress
-			local targetName = target or "nil"
-			if targetName ~= "nil" then
-				local playerClass = self:GetRaidClass(targetName)
-				if playerClass then
-					local playerColor = RAID_CLASS_COLORS[playerClass]
-					if playerColor then
-						targetName = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, targetName, 0.41 * 255, 0.8 * 255, 0.94 * 255)
-					end
-				end
-			end
-			self:Debug("|cffff0000CHAT_MSG_MONSTER_YELL: |r from " .. npc .. " while looking at " .. targetName, 3, nil, nil, true, true)
-		end
-		if private.isClassic and not IsInInstance() then
-			if msg:find(L.WORLD_BUFFS.hordeOny) then
-				private.SendWorldSync(self, 4, "WBA", "Onyxia\tHorde\t22888\t15\t4")
-			elseif msg:find(L.WORLD_BUFFS.allianceOny) then
-				private.SendWorldSync(self, 4, "WBA", "Onyxia\tAlliance\t22888\t15\t4")
-			elseif msg:find(L.WORLD_BUFFS.hordeNef) then
-				private.SendWorldSync(self, 4, "WBA", "Nefarian\tHorde\t22888\t16\t4")
-			elseif msg:find(L.WORLD_BUFFS.allianceNef) then
-				private.SendWorldSync(self, 4, "WBA", "Nefarian\tAlliance\t22888\t16\t4")
-			elseif msg:find(L.WORLD_BUFFS.rendHead) then
-				private.SendWorldSync(self, 4, "WBA", "rendBlackhand\tHorde\t16609\t7\t4")
-			elseif msg:find(L.WORLD_BUFFS.zgHeartYojamba) then
-				-- zg buff transcripts https://gist.github.com/venuatu/18174f0e98759f83b9834574371b8d20
-				-- 28.58, 28.67, 27.77, 29.39, 28.67, 29.03, 28.12, 28.19, 29.61
-				private.SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t28\t4")
-			elseif msg:find(L.WORLD_BUFFS.zgHeartBooty) then
-				-- 48.7, 49.76, 50.64, 49.42, 49.8, 50.67, 50.94, 51.06
-				private.SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t49\t4")
-			elseif msg:find(L.WORLD_BUFFS.blackfathomBoon) then
-				--private.SendWorldSync(self, 4, "WBA", "Blackfathom\tBoth\t430947\t6\t4")
-			end
-		end
-		return combatDetection.OnMonsterMessage("yell", msg)
-	end
-
-	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
-		if self:issecretvalue(msg) then
-			self:Debug("|cffffa500CHAT_MSG_MONSTER_EMOTE: |r fired: " .. msg, 3, nil, nil, true, true)
-			return
-		end
-		return combatDetection.OnMonsterMessage("emote", msg)
-	end
-
-	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender, ...)
-		if self:issecretvalue(msg) then
-			--Still send the debug to debuglog
-			self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. msg .. " with sender of " .. sender, 3, nil, nil, true, true)
-			return
-		end
-		combatDetection.OnMonsterMessage("emote", msg)
-		local id = msg:match("|Hspell:([^|]+)|h")
-		if id then
-			local spellId = tonumber(id)
-			if spellId then
-				local spellName = DBM:GetSpellName(spellId) or CL.UNKNOWN
-				self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 3, nil, nil, true, true)
-			end
-		end
-		return self:FilterRaidBossEmote(msg, sender, ...)
-	end
-
-	function DBM:RAID_BOSS_EMOTE(msg, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
-		if self:issecretvalue(msg) then
-			return
-		end
-		combatDetection.OnMonsterMessage("emote", msg)
-		return self:FilterRaidBossEmote(msg, ...)
-	end
-
-	function DBM:RAID_BOSS_WHISPER(msg)
-		if self:issecretvalue(msg) then
-			self:Debug("RAID_BOSS_WHISPER fired: " .. msg, 2, nil, nil, true, true)
-			return
-		end
-		--Make it easier for devs to detect whispers they are unable to see
-		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
-		if msg and msg ~= "" and #msg < 255 and IsInGroup() and not _G["BigWigs"] and not IsTrialAccount() then
-			ChatThrottleLib:SendAddonMessage("ALERT", "Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")--Alert prio used since time accuracy is paramount for accurate logging
-		end
-	end
-
-	function DBM:GOSSIP_SHOW()
-		if not IsInInstance() then return end--Don't really care about it if not in a dungeon or raid
-		local gossipOptionID = self:GetGossipID(true)
-		if gossipOptionID then--At least one must return for debug
-			if DBM:MidRestrictionsActive() then
-				--GUID is a secret in combat
-				self:Debug("|cffffff00GOSSIP_SHOW: |r triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)), 1, nil, nil, true)
-			else
-				local cid = self:GetUnitCreatureId("npc") or 0
-				self:Debug("|cffffff00GOSSIP_SHOW: |r triggered with a gossip ID(s) of " .. strjoin(", ", tostring(gossipOptionID)) .. " on creatureID " .. cid, 1, nil, nil, true)
-			end
-		end
-	end
-
-	function DBM:CHAT_MSG_MONSTER_SAY(msg)
-		if self:issecretvalue(msg) then
-			self:Debug("CHAT_MSG_MONSTER_SAY fired: " .. msg, 3, nil, nil, true, true)
-			return
-		end
-		if private.isClassic and not IsInInstance() then
-			if msg:find(L.WORLD_BUFFS.zgHeart) then
-				-- 51.01 51.82 51.85 51.53
-				private.SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t51\t4")
-			end
-		end
-		return combatDetection.OnMonsterMessage("say", msg)
-	end
-end
-
-do
-	local autoLog = false
-	local autoTLog = false
-
-	function DBM:StartLogging(timer, checkFunc, force)
-		self:Unschedule(DBM.StopLogging)
-		if self:IsLogableContent(force) then
-			if self.Options.AutologBosses then
-				if not LoggingCombat() then
-					autoLog = true
-					self:AddMsg("|cffffff00" .. COMBATLOGENABLED .. "|r")
-					LoggingCombat(true)
-				end
-			end
-			local transcriptor = _G["Transcriptor"]
-			if self.Options.AdvancedAutologBosses and transcriptor then
-				if not transcriptor:IsLogging() then
-					autoTLog = true
-					self:AddMsg("|cffffff00" .. L.TRANSCRIPTOR_LOG_START .. "|r")
-					transcriptor:StartLog(1)
-				end
-			end
-			if checkFunc and (autoLog or autoTLog) then
-				self:Unschedule(checkFunc)
-				self:Schedule(timer + 10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
-			end
-		end
-	end
-
-	function DBM:StopLogging()
-		if self.Options.AutologBosses and LoggingCombat() and autoLog then
-			autoLog = false
-			self:AddMsg("|cffffff00" .. COMBATLOGDISABLED .. "|r")
-			LoggingCombat(false)
-		end
-		local transcriptor = _G["Transcriptor"]
-		if self.Options.AdvancedAutologBosses and transcriptor and autoTLog then
-			if transcriptor:IsLogging() then
-				autoTLog = false
-				self:AddMsg("|cffffff00" .. L.TRANSCRIPTOR_LOG_END .. "|r")
-				transcriptor:StopLog(1)
-			end
-		end
-	end
-end
-
 do
 	--In event api fails to pull any data at all, just assign classes to their initial template roles from exiles reach
 	local fallbackClassToRole = {
@@ -3879,10 +3447,6 @@ do
 		end
 		return currentSpecID, currentSpecName, currentSpecGroup
 	end
-end
-
-function DBM:GetCurrentArea()
-	return LastInstanceMapID
 end
 
 --Public api for requesting what phase a boss is in, in case they missed the DBM_SetStage callback
@@ -4791,7 +4355,7 @@ do
 		table.wipe(private.modSyncSpam)
 		table.wipe(private.lastBossEngage)
 		table.wipe(private.lastBossDefeat)
-		combatDetection:ClearSpamTimers(time)
+		private:GetModule("CombatDetection"):ClearSpamTimers(time)
 		--lastLFGAlert = time -- local to the event handler, but doesn't really matter
 		local function clearAntiSpam(obj)
 			for k, v in pairs(obj) do -- TODO: consider moving lastAntiSpam to its own table, it'd be much cleaner
@@ -5794,12 +5358,6 @@ end
 -- Expose some file-local data to private for testing purposes only.
 
 --[[
-test:RegisterLocalHook("LastInstanceMapID", function(val)
-	local old = LastInstanceMapID
-	LastInstanceMapID = val
-	return old
-end)
-
 test:RegisterLocalHook("GetTime", function(val)
 	local old = GetTime
 	GetTime = val
