@@ -417,7 +417,7 @@ do
 			end
 			local path = "MISSING"
 			if self.Options.EventSoundDungeonBGM == "Random" then
-				local usedTable = self.Options.EventSoundMusicCombined and DBM:GetMusic() or DBM:GetDungeonMusic()
+				local usedTable = self.Options.EventSoundMusicCombined and self:GetMusic() or self:GetDungeonMusic()
 				if #usedTable >= 3 then
 					local random = fastrandom(3, #usedTable)
 					---@diagnostic disable-next-line: cast-local-type
@@ -563,7 +563,7 @@ do
 		end
 		self:TransitionToDungeonBGM(false, true)
 		self:Schedule(5, SecondaryLoadCheck, self, 5)
-		DBM:UpdateMapRestrictions()
+		self:UpdateMapRestrictions()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
@@ -579,7 +579,7 @@ do
 		if mapID then
 			self:LoadModsOnDemand("mapId", "m" .. mapID)
 		end
-		DBM:CheckAvailableModsByMap()
+		self:CheckAvailableModsByMap()
 	end
 
 	---Special event that fires when changing zones in TWW
@@ -596,7 +596,7 @@ do
 			self:Unschedule(SecondaryLoadCheck)
 --			self:Schedule(1, SecondaryLoadCheck, self, 1)
 			self:Schedule(5, SecondaryLoadCheck, self, 5)
-			DBM:UpdateMapRestrictions()
+			self:UpdateMapRestrictions()
 			if self:HasMapRestrictions() then
 				self.Arrow:Hide()
 				self.HudMap:Disable()

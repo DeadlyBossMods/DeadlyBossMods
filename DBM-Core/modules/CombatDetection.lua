@@ -99,9 +99,9 @@ end
 
 --Scenario mods
 function DBM:ScenarioCheck(delay)
-	if DBM:IsEnabled() and combatInfo[DBM:GetCurrentArea()] then
-		for _, v in ipairs(combatInfo[DBM:GetCurrentArea()]) do
-			if (v.type == "scenario") and checkEntry(v.msgs, DBM:GetCurrentArea()) then
+	if self:IsEnabled() and combatInfo[self:GetCurrentArea()] then
+		for _, v in ipairs(combatInfo[self:GetCurrentArea()]) do
+			if (v.type == "scenario") and checkEntry(v.msgs, self:GetCurrentArea()) then
 				self:StartCombat(v.mod, delay or 0, "LOADING_SCREEN_DISABLED")
 			end
 		end
@@ -187,9 +187,9 @@ do
 		end
 		if not combatInitialized then return end
 		-- detects a boss pull based on combat state, this is required for legacy or outdoor bosses that do not fire ENCOUNTER_START event on engage
-		if DBM:IsEnabled() and combatInfo[DBM:GetCurrentArea()] then
+		if self:IsEnabled() and combatInfo[self:GetCurrentArea()] then
 			if not private.isRetail or not IsInInstance() then
-				for _, v in ipairs(combatInfo[DBM:GetCurrentArea()]) do
+				for _, v in ipairs(combatInfo[self:GetCurrentArea()]) do
 					if v.type:find("combat") and not v.noRegenDetection and not (#inCombat > 0 and v.noMultiBoss) then
 						if v.multiMobPullDetection then
 							for _, mob in ipairs(v.multiMobPullDetection) do
@@ -280,8 +280,8 @@ do
 
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if not private.isTimerRequestInProgress() then--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
-			if DBM:IsEnabled() and combatInfo[DBM:GetCurrentArea()] then
-				for _, v in ipairs(combatInfo[DBM:GetCurrentArea()]) do
+			if self:IsEnabled() and combatInfo[self:GetCurrentArea()] then
+				for _, v in ipairs(combatInfo[self:GetCurrentArea()]) do
 					if not v.noIEEUDetection and not (#inCombat > 0 and v.noMultiBoss) then
 						if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
 							self:StartCombat(v.mod, 0, "IEEU")
@@ -294,7 +294,7 @@ do
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
 		self:Debug("|cffff8800ENCOUNTER_START: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size, 1, nil, nil, true)
-		if DBM:IsEnabled() then
+		if self:IsEnabled() then
 			--Only nag in raids on engage
 			if IsInRaid() then
 				self:CheckAvailableMods()
@@ -302,8 +302,8 @@ do
 			if self.BattleRezTimer then
 				self.BattleRezTimer:CheckSupported()
 			end
-			if combatInfo[DBM:GetCurrentArea()] then
-				for _, v in ipairs(combatInfo[DBM:GetCurrentArea()]) do
+			if combatInfo[self:GetCurrentArea()] then
+				for _, v in ipairs(combatInfo[self:GetCurrentArea()]) do
 					if not v.noESDetection and not (#inCombat > 0 and v.noMultiBoss) then
 						if v.multiEncounterPullDetection then
 							for _, eId in ipairs(v.multiEncounterPullDetection) do
@@ -380,7 +380,7 @@ do
 				if timerEnabled then
 					DBT:CreateBar(v.respawnTime, L.TIMER_RESPAWN:format(name), private.isRetail and 237538 or 136106)--Interface\\Icons\\Spell_Holy_BorrowedTime, Spell_nature_timestop
 				end
-				DBM:FireEvent("DBM_TimerBegin", "DBMRespawnTimer", L.TIMER_RESPAWN:format(name), v.respawnTime, private.isRetail and "237538" or "136106", "extratimer", nil, 0, v.id, nil, nil, nil, nil, nil, nil, nil, nil, nil, timerEnabled)
+				self:FireEvent("DBM_TimerBegin", "DBMRespawnTimer", L.TIMER_RESPAWN:format(name), v.respawnTime, private.isRetail and "237538" or "136106", "extratimer", nil, 0, v.id, nil, nil, nil, nil, nil, nil, nil, nil, nil, timerEnabled)
 			end
 			if v.multiEncounterPullDetection then
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
@@ -542,7 +542,7 @@ do
 		if id then
 			local spellId = tonumber(id)
 			if spellId then
-				local spellName = DBM:GetSpellName(spellId) or CL.UNKNOWN
+				local spellName = self:GetSpellName(spellId) or CL.UNKNOWN
 				self:Debug("|cffffff00CHAT_MSG_RAID_BOSS_EMOTE: |r fired: " .. sender .. "'s " .. spellName .. "(" .. spellId .. ")", 3, nil, nil, true, true)
 			end
 		end
@@ -777,12 +777,12 @@ do
 			if mod.lastKillTime and GetTime() - mod.lastKillTime < (mod.reCombatTime or 120) and event ~= "LOADING_SCREEN_DISABLED" then return end
 			if mod.lastWipeTime and GetTime() - mod.lastWipeTime < (event == "ENCOUNTER_START" and 3 or mod.reCombatTime2 or 20) and event ~= "LOADING_SCREEN_DISABLED" then return end
 			if event then
-				self:Debug("StartCombat called by : " .. event .. ". DBM:GetCurrentArea() is " .. DBM:GetCurrentArea(), 1, nil, nil, true, true)
+				self:Debug("StartCombat called by : " .. event .. ". DBM:GetCurrentArea() is " .. self:GetCurrentArea(), 1, nil, nil, true, true)
 				if event ~= "ENCOUNTER_START" then
 					self:Debug("This event is started by " .. event .. ". Review ENCOUNTER_START event to ensure if this is still needed", 2)
 				end
 			else
-				self:Debug("StartCombat called by individual mod or unknown reason. DBM:GetCurrentArea() is " .. DBM:GetCurrentArea())
+				self:Debug("StartCombat called by individual mod or unknown reason. DBM:GetCurrentArea() is " .. self:GetCurrentArea())
 				event = ""
 			end
 			--check completed. starting combat
@@ -918,7 +918,7 @@ do
 					end
 				end
 			end
-			DBM:FireEvent("DBM_Pull", mod, delay, synced, startHp)
+			self:FireEvent("DBM_Pull", mod, delay, synced, startHp)
 			self:FlashClientIcon()
 			self:UpdateMapRestrictions()
 			--serperate timer recovery and normal start.
@@ -1020,7 +1020,7 @@ do
 					self:PlaySoundFile(self.Options.EventSoundEngage2, nil, true)
 				end
 				if not mod.inScenario and self.Options.EventSoundMusic and not self:IsNoneValue(self.Options.EventSoundMusic) and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) and not mod.noStatistics and not self.Options.RestoreSettingMusic then
-					DBM:FireEvent("DBM_MusicStart", "BossEncounter")
+					self:FireEvent("DBM_MusicStart", "BossEncounter")
 					if not self.Options.RestoreSettingCustomMusic then
 						self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
 						if self.Options.RestoreSettingCustomMusic == 0 then
@@ -1074,10 +1074,10 @@ do
 			end
 		end
 		if health < 2 then return end -- no worthy of combat start if health is below 2%
-		if DBM:IsEnabled() then
+		if self:IsEnabled() then
 			if cId ~= 0 and not bossHealth[cId] and bossIds[cId] and UnitAffectingCombat(uId) and not (UnitPlayerOrPetInRaid(uId) or UnitPlayerOrPetInParty(uId)) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH.
-				if combatInfo[DBM:GetCurrentArea()] then
-					for _, v in ipairs(combatInfo[DBM:GetCurrentArea()]) do
+				if combatInfo[self:GetCurrentArea()] then
+					for _, v in ipairs(combatInfo[self:GetCurrentArea()]) do
 						if v.mod.Options.Enabled and not v.mod.disableHealthCombat and v.type:find("combat") and (v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) and not (#inCombat > 0 and v.noMultiBoss) then
 							if v.mod.noFriendlyEngagement and UnitIsFriend("player", uId) then return end
 							-- Delay set, > 97% = 0.5 (consider as normal pulling), max delay limited to 20s.
@@ -1151,12 +1151,12 @@ do
 			end
 			if self.Options.IgnoreBlizzAPI then
 				self.Options.IgnoreBlizzAPI = false
-				DBM:FireEvent("DBM_ResumeBlizzAPI")
+				self:FireEvent("DBM_ResumeBlizzAPI")
 			end
 			self.Options.DisableSWSound = false
 			self.Options.fixBlizzApi = false
 			if event then
-				self:Debug("EndCombat called by : " .. event .. ". DBM:GetCurrentArea() is " .. DBM:GetCurrentArea(), 2, nil, nil, true)
+				self:Debug("EndCombat called by : " .. event .. ". DBM:GetCurrentArea() is " .. self:GetCurrentArea(), 2, nil, nil, true)
 			end
 			if private.enableIcons and not self.Options.DontSetIcons and not self.Options.DontRestoreIcons then
 				-- restore saved previous icon
@@ -1185,7 +1185,7 @@ do
 				--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
 				local thisTime = GetTime() - mod.combatInfo.pull
 				local wipeHP
-				if not DBM:IsPostMidnight() then
+				if not self:IsPostMidnight() then
 					local hp = mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()
 					wipeHP = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or hp and ("%d%%"):format(hp) or CL.UNKNOWN
 					if mod.vb.phase then
@@ -1229,7 +1229,7 @@ do
 							end
 							local check = private.isRetail and
 								((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or
-								usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10 -- Classic
+								usedDifficultyIndex ~= 1 and self:GetNumGuildPlayersInZone() >= 10 -- Classic
 							if check and not self.Options.DisableGuildStatus then
 								self:Unschedule(delayedGCSync, modId)
 								self:Schedule(private.isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, difficulties.difficultyModifier, name, stringUtils.strFromTime(thisTime), true, wipeHP)
@@ -1238,7 +1238,7 @@ do
 					end
 					if self.Options.EventSoundWipe and not self:IsNoneValue(self.Options.EventSoundWipe) and self.Options.EventSoundWipe ~= "" then
 						if self.Options.EventSoundWipe == "Random" then
-							local defeatSounds = DBM:GetDefeatSounds()
+							local defeatSounds = self:GetDefeatSounds()
 							if #defeatSounds >= 3 then
 								self:PlaySoundFile(defeatSounds[fastrandom(3, #defeatSounds)].value)
 							end
@@ -1270,7 +1270,7 @@ do
 					end
 					private.sendWhisper(k, msg)
 				end
-				DBM:FireEvent("DBM_Wipe", mod)
+				self:FireEvent("DBM_Wipe", mod)
 			elseif not wipe and mod.stats and not mod.noStatistics then
 				mod.lastKillTime = GetTime()
 				local thisTime = GetTime() - (mod.combatInfo.pull or 0)
@@ -1335,7 +1335,7 @@ do
 							msg = L.BOSS_DOWN_L:format(usedDifficultyText .. name, thisTimeString, stringUtils.strFromTime(lastTime), stringUtils.strFromTime(bestTime), totalKills)
 						end
 					end
-					local check = not private.statusGuildDisabled and (private.isRetail and ((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
+					local check = not private.statusGuildDisabled and (private.isRetail and ((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or usedDifficultyIndex ~= 1 and self:GetNumGuildPlayersInZone() >= 10) -- Classic
 					if not scenario and thisTimeString and check and not self.Options.DisableGuildStatus and private.updateNotificationDisplayed == 0 then
 						self:Unschedule(delayedGCSync, modId)
 						self:Schedule(private.isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, usedDifficultyModifier, name, thisTimeString)
@@ -1359,7 +1359,7 @@ do
 					end
 					private.sendWhisper(k, msg)
 				end
-				DBM:FireEvent("DBM_Kill", mod)
+				self:FireEvent("DBM_Kill", mod)
 				if usedDifficulty == "worldboss" and mod.WBEsync then
 					if private.lastBossDefeat[modId .. normalizedPlayerRealm] and (GetTime() - private.lastBossDefeat[modId .. normalizedPlayerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 					private.lastBossDefeat[modId .. normalizedPlayerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
@@ -1367,7 +1367,7 @@ do
 				end
 				if self.Options.EventSoundVictory2 and not self:IsNoneValue(self.Options.EventSoundVictory2) and self.Options.EventSoundVictory2 ~= "" and difficulties.difficultyIndex ~= 232 then--No victory in duos
 					if self.Options.EventSoundVictory2 == "Random" then
-						local victorySounds = DBM:GetVictorySounds()
+						local victorySounds = self:GetVictorySounds()
 						if #victorySounds >= 3 then
 							self:PlaySoundFile(victorySounds[fastrandom(3, #victorySounds)].value)
 						end
