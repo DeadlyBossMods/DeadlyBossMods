@@ -1427,7 +1427,7 @@ do
 		end
 	end
 
-	---Called by DBM-Core's SecondaryLoadCheck when entering a zone.
+	---Called by Loading's SecondaryLoadCheck when entering a zone.
 	---Registers only the pending aura sounds stored for the current zone.
 	---@param mapID number
 	function bossModPrototype:RegisterZoneAuraSounds(mapID)
