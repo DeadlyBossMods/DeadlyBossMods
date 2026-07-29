@@ -9,11 +9,13 @@ local DBM = private:GetPrototype("DBM")
 
 -- dual profile setup
 local _, playerClass = UnitClass("player")
-DBM_UseDualProfile = true
-if playerClass == "MAGE" or playerClass == "WARLOCK" or playerClass == "ROGUE" or (not private.isRetail and playerClass == "HUNTER") then
-	DBM_UseDualProfile = false
+if DBM_UseDualProfile == nil then
+	DBM_UseDualProfile = true
+	if playerClass == "MAGE" or playerClass == "WARLOCK" or playerClass == "ROGUE" or (not private.isRetail and playerClass == "HUNTER") then
+		DBM_UseDualProfile = false
+	end
 end
-DBM_CharSavedRevision = 2
+if DBM_CharSavedRevision == nil then DBM_CharSavedRevision = 2 end
 local locale = GetLocale()
 local countdownVoiceRenames = {
 	["Jérémy"] = "Jeremy",
@@ -784,6 +786,7 @@ function DBM:LoadAllModDefaultOption(modId)
 	local profileNum = private.playerLevel > 9 and DBM_UseDualProfile and currentSpecGroup or 0
 	-- prevent nil table error
 	if not _G[savedVarsName] then _G[savedVarsName] = {} end
+	if not _G[savedVarsName][fullname] then _G[savedVarsName][fullname] = {} end
 	for _, id in ipairs(self.ModLists[modId]) do
 		-- prevent nil table error
 		if not _G[savedVarsName][fullname][id] then _G[savedVarsName][fullname][id] = {} end
@@ -870,6 +873,7 @@ function DBM:CopyAllModOption(modId, sourceName, sourceProfile)
 		self:AddMsg(L.MPROFILE_COPY_S_ERROR)
 		return
 	end
+	if not _G[savedVarsName][targetName] then _G[savedVarsName][targetName] = {} end
 	for _, id in ipairs(self.ModLists[modId]) do
 		-- check source is exist
 		if not _G[savedVarsName][sourceName][id] then
@@ -928,6 +932,7 @@ function DBM:CopyAllModTypeOption(modId, sourceName, sourceProfile, Type)
 		self:AddMsg(L.MPROFILE_COPYS_S_ERROR)
 		return
 	end
+	if not _G[savedVarsName][targetName] then _G[savedVarsName][targetName] = {} end
 	for _, id in ipairs(self.ModLists[modId]) do
 		-- check source is exist
 		if not _G[savedVarsName][sourceName][id] then
@@ -940,6 +945,7 @@ function DBM:CopyAllModTypeOption(modId, sourceName, sourceProfile, Type)
 		end
 		-- prevent nil table error
 		if not _G[savedVarsName][targetName][id] then _G[savedVarsName][targetName][id] = {} end
+		if not _G[savedVarsName][targetName][id][targetProfile] then _G[savedVarsName][targetName][id][targetProfile] = {} end
 		-- copy table
 		for option, optionValue in pairs(_G[savedVarsName][sourceName][id][sourceProfile]) do
 			if option:find(Type) then
