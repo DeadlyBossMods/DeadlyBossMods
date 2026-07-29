@@ -76,6 +76,8 @@ modules\DevTools.lua
 modules\Icons.lua
 modules\TargetScanning.lua
 
+modules\CoreOptions.lua
+
 # Core
 DBM-Core.lua
 DBM-Arrow.lua
