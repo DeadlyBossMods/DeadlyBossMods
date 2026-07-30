@@ -13,7 +13,6 @@ local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, m
 local CreateFrame, C_Timer, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent = CreateFrame, C_Timer, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent
 local RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION = RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION
 local DBM, DBM_OPTION_SPACER = DBM, DBM_OPTION_SPACER
-local playerName, realmName, playerLevel = UnitName("player"), GetRealmName(), UnitLevel("player")
 
 StaticPopupDialogs["IMPORTPROFILE_ERROR"] = {
 	text = "There are one or more errors importing this profile. Please see the chat for more information. Would you like to continue and reset found errors to default?",
@@ -606,27 +605,6 @@ local function getGTFOAbilityIcon(options, groupedSpellId)
 	return nil
 end
 
-local function GetSpecializationGroup()
-	if isRetail then
-		return GetSpecialization() or 1
-	else
-		local numTabs = GetNumTalentTabs()
-		local highestPointsSpent, currentSpecGroup = 0, 1
-		if MAX_TALENT_TABS then
-			for i=1, MAX_TALENT_TABS do
-				if ( i <= numTabs ) then
-					local _, _, _, _, pointsSpent = GetTalentTabInfo(i)
-					if pointsSpent > highestPointsSpent then
-						highestPointsSpent = pointsSpent
-						currentSpecGroup = i
-					end
-				end
-			end
-		end
-		return currentSpecGroup
-	end
-end
-
 ---@param mod DBMMod
 function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	local panel = isTestView and mod.testPanel or mod.panel
@@ -689,21 +667,15 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 			DBM_GUI_OptionsFrame:LoadAndShowFrame(mod.testPanel.frame)
 		end)
 	end
-	local function getProfileID()
-		if playerLevel > 9 and DBM_UseDualProfile then
-			return GetSpecializationGroup()
-		end
-		return 0
-	end
 	local exportMod = panel:CreateButton(L.ButtonExportMod, 120, 20, nil, GameFontNormalSmall)
 	exportMod.myheight = 24
 	exportMod:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 8, -10 - extraOffset)
 	exportMod:SetScript("OnClick", function()
-		local pid = getProfileID()
+		local fullname, profileNum = DBM:GetProfileID()
 		local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
 		if savedVars then
 			local exportData = {payloadType = "ModProfile"}
-			exportData[mod.id] = savedVars[playerName .. "-" .. realmName][mod.id][pid]
+			exportData[mod.id] = savedVars[fullname][mod.id][profileNum]
 			DBM_GUI:CreateExportProfile(exportData)
 		end
 	end)
@@ -716,10 +688,10 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 				DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
 				return
 			end
-			local pid = getProfileID()
+			local fullname, profileNum = DBM:GetProfileID()
 			local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
 			if savedVars then
-				savedVars[playerName .. "-" .. realmName][mod.id][pid] = importTable[mod.id]
+				savedVars[fullname][mod.id][profileNum] = importTable[mod.id]
 				mod.Options = importTable[mod.id]
 				DBM:AddMsg(L.ModImportSuccess:format(mod.localization.general.name))
 			end
@@ -933,10 +905,10 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 
 		-- Start import/export
 		local function actuallyImport(importTable)
-			local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
+			local fullname, profileNum = DBM:GetProfileID()
 			for _, id in ipairs(DBM.ModLists[addon.modId]) do
 				if importTable[id] then
-					_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID] = importTable[id]
+					_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][fullname][id][profileNum] = importTable[id]
 					---@diagnostic disable-next-line: inject-field
 					DBM:GetModByName(id).Options = importTable[id]
 				end
@@ -948,9 +920,9 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		local importExportText = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 		local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
 			local exportProfile = {payloadType = "AddonProfile"}
-			local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
+			local fullname, profileNum = DBM:GetProfileID()
 			for _, id in ipairs(DBM.ModLists[addon.modId]) do
-				exportProfile[id] = _G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID]
+				exportProfile[id] = _G[addon.modId:gsub("-", "") .. "_AllSavedVars"][fullname][id][profileNum]
 			end
 			DBM_GUI:CreateExportProfile(exportProfile)
 		end)

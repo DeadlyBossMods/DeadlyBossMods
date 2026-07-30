@@ -3801,15 +3801,24 @@ do
 	end
 end
 
+function DBM:GetProfileID()
+	-- prevent error
+	if (not currentSpecID or currentSpecID == 0) or not currentSpecGroup or (currentSpecName or "") == playerClass then
+		self:SetCurrentSpecInfo()
+	end
+	-- variable init
+	local fullname = playerName .. "-" .. playerRealm
+	local profileNum = private.playerLevel > 9 and DBM_UseDualProfile and currentSpecGroup or 0
+
+	return fullname, profileNum
+end
+
 function DBM:LoadModOptions(modId, inCombat, first)
 	local oldSavedVarsName = modId:gsub("-", "") .. "_SavedVars"
 	local savedVarsName = modId:gsub("-", "") .. "_AllSavedVars"
 	local savedStatsName = modId:gsub("-", "") .. "_SavedStats"
-	local fullname = playerName .. "-" .. playerRealm
-	if (not currentSpecID or currentSpecID == 0) or not currentSpecGroup or (currentSpecName or "") == playerClass then
-		self:SetCurrentSpecInfo()
-	end
-	local profileNum = private.playerLevel > 9 and DBM_UseDualProfile and currentSpecGroup or 0
+	local fullname, profileNum = self:GetProfileID()
+
 	if not _G[savedVarsName] then _G[savedVarsName] = {} end
 	local savedOptions = _G[savedVarsName][fullname] or {}
 	local savedStats = _G[savedStatsName] or {}
@@ -4013,14 +4022,9 @@ end
 function DBM:LoadAllModDefaultOption(modId)
 	-- modId is string like "DBM-Highmaul"
 	if not modId or not self.ModLists[modId] then return end
-	-- prevent error
-	if (not currentSpecID or currentSpecID == 0) or not currentSpecGroup or (currentSpecName or "") == playerClass then
-		self:SetCurrentSpecInfo()
-	end
 	-- variable init
 	local savedVarsName = modId:gsub("-", "") .. "_AllSavedVars"
-	local fullname = playerName .. "-" .. playerRealm
-	local profileNum = private.playerLevel > 9 and DBM_UseDualProfile and currentSpecGroup or 0
+	local fullname, profileNum = self:GetProfileID()
 	-- prevent nil table error
 	if not _G[savedVarsName] then _G[savedVarsName] = {} end
 	for _, id in ipairs(self.ModLists[modId]) do
@@ -4054,14 +4058,9 @@ end
 function DBM:LoadModDefaultOption(mod)
 	-- mod must be table
 	if not mod then return end
-	-- prevent error
-	if (not currentSpecID or currentSpecID == 0) or not currentSpecGroup or (currentSpecName or "") == playerClass then
-		self:SetCurrentSpecInfo()
-	end
 	-- variable init
 	local savedVarsName = (mod.modId):gsub("-", "") .. "_AllSavedVars"
-	local fullname = playerName .. "-" .. playerRealm
-	local profileNum = private.playerLevel > 9 and DBM_UseDualProfile and currentSpecGroup or 0
+	local fullname, profileNum = self:GetProfileID()
 	-- prevent nil table error
 	if not _G[savedVarsName] then _G[savedVarsName] = {} end
 	if not _G[savedVarsName][fullname] then _G[savedVarsName][fullname] = {} end
@@ -4207,14 +4206,9 @@ end
 function DBM:DeleteAllModOption(modId, name, profile)
 	-- modId is string like "DBM-Highmaul"
 	if not modId or not name or not profile or not self.ModLists[modId] then return end
-	-- prevent error
-	if (not currentSpecID or currentSpecID == 0) or not currentSpecGroup or (currentSpecName or "") == playerClass then
-		self:SetCurrentSpecInfo()
-	end
 	-- variable init
 	local savedVarsName = modId:gsub("-", "") .. "_AllSavedVars"
-	local fullname = playerName .. "-" .. playerRealm
-	local profileNum = private.playerLevel > 9 and DBM_UseDualProfile and currentSpecGroup or 0
+	local fullname, profileNum = self:GetProfileID()
 	-- cannot delete current profile.
 	if fullname == name and profileNum == profile then
 		self:AddMsg(L.MPROFILE_DELETE_SELF_ERROR)
