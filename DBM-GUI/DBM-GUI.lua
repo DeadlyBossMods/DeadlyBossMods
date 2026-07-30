@@ -13,7 +13,6 @@ local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, m
 local CreateFrame, C_Timer, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent = CreateFrame, C_Timer, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent
 local RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION = RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION
 local DBM, DBM_OPTION_SPACER = DBM, DBM_OPTION_SPACER
-local playerName, realmName, playerLevel = UnitName("player"), GetRealmName(), UnitLevel("player")
 
 StaticPopupDialogs["IMPORTPROFILE_ERROR"] = {
 	text = "There are one or more errors importing this profile. Please see the chat for more information. Would you like to continue and reset found errors to default?",
@@ -249,12 +248,13 @@ do
 	end
 
 	local function decodeProfile(importText)
-		local decoded = C_EncodingUtil.DecodeBase64(importText, base64Variant)
-		if decoded then
-			local decompressed = C_EncodingUtil.DecompressString(decoded, compressionMethod)
-			if decompressed then
-				local deserialized = C_EncodingUtil.DeserializeCBOR(decompressed)
-				if type(deserialized) == "table" then
+		local ok, decoded = pcall(C_EncodingUtil.DecodeBase64, importText, base64Variant)
+		if ok and decoded then
+			ok, decoded = pcall(C_EncodingUtil.DecompressString, decoded, compressionMethod)
+			if ok and decoded then
+				local deserialized
+				ok, deserialized = pcall(C_EncodingUtil.DeserializeCBOR, decoded)
+				if ok and type(deserialized) == "table" then
 					return deserialized, false
 				end
 			end
@@ -398,7 +398,7 @@ do
 		if not popupFrame then
 			createPopupFrame()
 		end
-		local failureMessage = importFailureMessage or "Failed to import profile string. The data may be invalid/corrupted or from an unsupported format."
+		local failureMessage = importFailureMessage or L.ImportProfileFailed
 		local typeMismatchMessage = payloadTypeFailureMessage or failureMessage
 		local versionMismatchMessage = payloadVersionFailureMessage or failureMessage
 		function popupFrame:VerifyImport(import)
@@ -667,10 +667,41 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 			DBM_GUI_OptionsFrame:LoadAndShowFrame(mod.testPanel.frame)
 		end)
 	end
+	local exportMod = panel:CreateButton(L.ButtonExportMod, 120, 20, nil, GameFontNormalSmall)
+	exportMod.myheight = 24
+	exportMod:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 8, -10 - extraOffset)
+	exportMod:SetScript("OnClick", function()
+		local fullname, profileNum = DBM:GetProfileID()
+		local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
+		if savedVars then
+			local exportData = {payloadType = "ModProfile"}
+			exportData[mod.id] = savedVars[fullname][mod.id][profileNum]
+			DBM_GUI:CreateExportProfile(exportData)
+		end
+	end)
+	local importMod = panel:CreateButton(L.ButtonImportMod, 120, 20, nil, GameFontNormalSmall)
+	importMod.myheight = 0
+	importMod:SetPoint("LEFT", exportMod, "RIGHT", 4, 0)
+	importMod:SetScript("OnClick", function()
+		DBM_GUI:CreateImportProfile(function(importTable)
+			if (importTable.payloadType and importTable.payloadType ~= "ModProfile") or not importTable[mod.id] then
+				DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
+				return false
+			end
+			local fullname, profileNum = DBM:GetProfileID()
+			local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
+			if savedVars then
+				savedVars[fullname][mod.id][profileNum] = importTable[mod.id]
+				mod.Options = importTable[mod.id]
+				DBM:AddMsg(L.ModImportSuccess:format(mod.localization.general.name))
+			end
+			return true
+		end, nil, nil, L.ModImportFailed:format(mod.localization.general.name))
+	end)
 	local modNameForHTML = mod.localization.general.name:gsub("&", "&amp;")
 	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. modNameForHTML), true)
 	button:SetChecked(mod.Options.Enabled)
-	button:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 8, -14 - extraOffset)
+	button:SetPoint("TOPLEFT", exportMod, "BOTTOMLEFT", 0, -8)
 	button:SetScript("OnClick", function()
 		mod:Toggle()
 	end)
@@ -752,33 +783,13 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 			end
 		end
 	end
+
 	-- For some reason the options aren't loaded in properly if the very first mod view you load is a test view
 	-- But just forcing a call to show fixes this
 	if isFirstModPanel and isTestView then
 		DBM_GUI:ShowHide(true)
 	end
 	isFirstModPanel = true
-end
-
-local function GetSpecializationGroup()
-	if isRetail then
-		return GetSpecialization() or 1
-	else
-		local numTabs = GetNumTalentTabs()
-		local highestPointsSpent, currentSpecGroup = 0, 1
-		if MAX_TALENT_TABS then
-			for i=1, MAX_TALENT_TABS do
-				if ( i <= numTabs ) then
-					local _, _, _, _, pointsSpent = GetTalentTabInfo(i)
-					if pointsSpent > highestPointsSpent then
-						highestPointsSpent = pointsSpent
-						currentSpecGroup = i
-					end
-				end
-			end
-		end
-		return currentSpecGroup
-	end
 end
 
 function DBM_GUI:CreateBossModTab(addon, panel, subtab)
@@ -923,36 +934,55 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 
 		-- Start import/export
 		local function actuallyImport(importTable)
-			local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
+			local fullname, profileNum = DBM:GetProfileID()
 			for _, id in ipairs(DBM.ModLists[addon.modId]) do
-				_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID] = importTable[id]
-				---@diagnostic disable-next-line: inject-field
-				DBM:GetModByName(id).Options = importTable[id]
+				if importTable[id] then
+					_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][fullname][id][profileNum] = importTable[id]
+					---@diagnostic disable-next-line: inject-field
+					DBM:GetModByName(id).Options = importTable[id]
+				end
 			end
-			DBM:AddMsg("Profile imported.")
+			DBM:AddMsg(L.ProfileImported)
 		end
 
 		local importExportProfilesArea = panel:CreateArea(L.Area_ImportExportProfile)
 		local importExportText = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 		local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
-			local exportProfile = {}
-			local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
+			local exportProfile = {payloadType = "AddonProfile"}
+			local fullname, profileNum = DBM:GetProfileID()
 			for _, id in ipairs(DBM.ModLists[addon.modId]) do
-				exportProfile[id] = _G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID]
+				exportProfile[id] = _G[addon.modId:gsub("-", "") .. "_AllSavedVars"][fullname][id][profileNum]
 			end
 			DBM_GUI:CreateExportProfile(exportProfile)
 		end)
 		exportProfile:SetPoint("TOPLEFT", importExportText, "BOTTOMLEFT", 0, -12)
 		local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 			DBM_GUI:CreateImportProfile(function(importTable)
+				if importTable.payloadType and importTable.payloadType ~= "AddonProfile" then
+					DBM:AddMsg(L.ImportProfileFailed)
+					return false
+				end
+				local hasValidMod = false
+				for _, id in ipairs(DBM.ModLists[addon.modId]) do
+					if importTable[id] then
+						hasValidMod = true
+						break
+					end
+				end
+				if not hasValidMod then
+					DBM:AddMsg(L.ImportProfileFailed)
+					return false
+				end
 				local errors = {}
-				for id, table in pairs(importTable) do
-					-- Check if sound packs are missing
-					for settingName, settingValue in pairs(table) do
-						local ending = settingName:sub(-6):lower()
-						if ending == "cvoice" or ending == "wsound" then -- CVoice or SWSound (s is ignored so we only have to sub once)
-							if type(settingValue) == "string" and not DBM:IsNoneValue(settingValue) and not DBM:ValidateSound(settingValue, true, true) then
-								tinsert(errors, id .. "-" .. settingName)
+				for id, imprtTable in pairs(importTable) do
+					if type(imprtTable) == "table" then
+						-- Check if sound packs are missing
+						for settingName, settingValue in pairs(imprtTable) do
+							local ending = settingName:sub(-6):lower()
+							if ending == "cvoice" or ending == "wsound" then -- CVoice or SWSound (s is ignored so we only have to sub once)
+								if type(settingValue) == "string" and not DBM:IsNoneValue(settingValue) and not DBM:ValidateSound(settingValue, true, true) then
+									tinsert(errors, id .. "-" .. settingName)
+								end
 							end
 						end
 					end
