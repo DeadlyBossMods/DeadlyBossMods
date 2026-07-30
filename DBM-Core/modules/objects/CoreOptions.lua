@@ -855,7 +855,7 @@ function DBM:CopyAllModOption(modId, sourceName, sourceProfile)
 
 	-- variable init
 	local savedVarsName = modId:gsub("-", "") .. "_AllSavedVars"
-	local fullname, profileNum, currentSpecName = self:GetProfileID()
+	local targetName, targetProfile, currentSpecName = self:GetProfileID()
 
 	-- do not copy setting itself
 	if targetName == sourceName and targetProfile == sourceProfile then
@@ -912,7 +912,7 @@ function DBM:CopyAllModTypeOption(modId, sourceName, sourceProfile, Type)
 
 	-- variable init
 	local savedVarsName = modId:gsub("-", "") .. "_AllSavedVars"
-	local fullname, profileNum, currentSpecName = self:GetProfileID()
+	local targetName, targetProfile, currentSpecName = self:GetProfileID()
 
 	-- do not copy setting itself
 	if targetName == sourceName and targetProfile == sourceProfile then
