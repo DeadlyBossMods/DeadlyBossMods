@@ -1,6 +1,9 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
+---@class DBM
+local DBM = private:GetPrototype("DBM")
+
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local GetTime = GetTime
 local tinsert, tsort = table.insert, table.sort
@@ -43,6 +46,21 @@ end
 local function clearIconTable(scanId)
 	iconUnitTable[scanId] = nil
 	iconSet[scanId] = nil
+end
+
+do
+	--Search Tags: iconto, toicon, raid icon, diamond, star, triangle
+	local iconStrings = {[1] = RAID_TARGET_1, [2] = RAID_TARGET_2, [3] = RAID_TARGET_3, [4] = RAID_TARGET_4, [5] = RAID_TARGET_5, [6] = RAID_TARGET_6, [7] = RAID_TARGET_7, [8] = RAID_TARGET_8,}
+
+	---@param self DBMModOrDBM
+	function DBM:IconNumToString(number)
+		return iconStrings[number] or number
+	end
+
+	---@param self DBMModOrDBM
+	function DBM:IconNumToTexture(number)
+		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_" .. number .. ".blp:12:12|t" or number
+	end
 end
 
 ---Set icon on a target
@@ -197,6 +215,28 @@ end
 
 function bossModPrototype:CanSetIcon(optionName)
 	return private.canSetIcons[optionName] or false
+end
+
+---@param mod DBMMod
+function DBM:ElectIconSetter(mod)
+	--elect icon person
+	if mod.findFastestComputer and not self.Options.DontSetIcons then
+		if mod:IsDungeon() or self:GetRaidRank() > 0 then
+			for i = 1, #mod.findFastestComputer do
+				local option = mod.findFastestComputer[i]
+				if mod.Options[option] then
+					private.sendSync(private.DBMSyncProtocol, "IS", UnitGUID("player") .. "\t" .. tostring(self.Revision) .. "\t" .. option, "NORMAL")
+				end
+			end
+		elseif not IsInGroup() then
+			for i = 1, #mod.findFastestComputer do
+				local option = mod.findFastestComputer[i]
+				if mod.Options[option] then
+					private.canSetIcons[option] = true
+				end
+			end
+		end
+	end
 end
 
 --Special Icon Methods

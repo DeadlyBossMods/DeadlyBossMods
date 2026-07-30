@@ -329,6 +329,92 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	return slider
 end
 
+function PanelPrototype:CreateFontDropdown(title, vartype, var, CallbackFn, width, height, parent, overrideText)
+	local fontFlags = {
+		{ text = L.Outline, value = "OUTLINE", flag = true },
+		{ text = L.ThickOutline, value = "THICKOUTLINE", flag = true },
+		{ text = L.Monochrome, value = "MONOCHROME", flag = true },
+		{ text = L.Slug, value = "SLUG", flag = true },
+	}
+	local function GetOptions()
+		if vartype == "DBM" then
+			return DBM.Options[var]
+		elseif vartype == "DBT" then
+			return DBT.Options[var]
+		elseif type(vartype) == "table" and vartype.Options then
+			return vartype.Options[var]
+		end
+	end
+	local function GetSelectedFlags()
+		local selected = {}
+		local currentValue = GetOptions()
+		if type(currentValue) ~= "string" or DBM:IsNoneValue(currentValue) then
+			return selected
+		end
+		for flag in currentValue:gmatch("[^,]+") do
+			selected[flag] = true
+		end
+		return selected
+	end
+	local function SerializeSelectedFlags(selected)
+		local flags = {}
+		if selected.MONOCHROME then
+			tinsert(flags, "MONOCHROME")
+		end
+		if selected.OUTLINE then
+			tinsert(flags, "OUTLINE")
+		elseif selected.THICKOUTLINE then
+			tinsert(flags, "THICKOUTLINE")
+		end
+		if selected.SLUG then
+			tinsert(flags, "SLUG")
+		end
+		return #flags > 0 and table.concat(flags, ",") or "None"
+	end
+	local function GetDisplayText()
+		local selected = GetSelectedFlags()
+		local labels = {}
+		for _, flag in ipairs(fontFlags) do
+			if selected[flag.value] then
+				tinsert(labels, flag.text)
+			end
+		end
+		return #labels > 0 and table.concat(labels, ", ") or L.None
+	end
+	local dropdown
+	local function UpdateDisplayText()
+		local displayText = GetDisplayText()
+		dropdown.text = displayText
+		---@diagnostic disable-next-line: undefined-field
+		if dropdown.OverrideText then
+			---@diagnostic disable-next-line: undefined-field
+			dropdown:OverrideText(displayText)
+		end
+	end
+	dropdown = self:CreateDropdown(title, fontFlags, nil, nil, function(value)
+		local selected = GetSelectedFlags()
+		selected[value] = not selected[value]
+		if value == "OUTLINE" and selected.OUTLINE then
+			selected.THICKOUTLINE = nil
+		elseif value == "THICKOUTLINE" and selected.THICKOUTLINE then
+			selected.OUTLINE = nil
+		end
+		local newValue = SerializeSelectedFlags(selected)
+		if CallbackFn then
+			CallbackFn(newValue)
+		end
+		UpdateDisplayText()
+	end, width, height, parent, overrideText, "checkbox")
+	dropdown:IsSelectedCallback(function(_, v)
+		return GetSelectedFlags()[v.value] or false
+	end)
+	dropdown:SetScript("OnShow", UpdateDisplayText)
+	---@diagnostic disable-next-line: undefined-field
+	dropdown:GenerateMenu()
+	UpdateDisplayText()
+	return dropdown
+end
+
 function PanelPrototype:CreateScrollingMessageFrame(width, height, _, fading, fontobject)
 	---@class DBMScrollingMessageFrame: ScrollFrame, MessageFrame, FontString
 	---@diagnostic disable-next-line:assign-type-mismatch

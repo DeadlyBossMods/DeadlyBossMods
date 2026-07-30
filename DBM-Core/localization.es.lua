@@ -127,7 +127,7 @@ L.NOTESHAREERRORGROUPFINDER	= "No se puede compartir notas en campos de batalla,
 L.NOTESHAREERRORALREADYOPEN	= "No se puede abrir notas compartidas con el editor de notas ya abierto."
 
 L.ALLMOD_DEFAULT_LOADED		= "Se han cargado las opciones predeterminadas de todos los módulos de esta estancia."
-L.ALLMOD_STATS_RESETED		= "Se han restablecido todas las estadísticas de este módulo."
+L.ALLMOD_STATS_RESETED		= "Se han restablecido todas las estadísticas de módulos."
 L.MOD_DEFAULT_LOADED		= "Se han cargado las opciones predeterminadas de este encuentro."
 
 L.WORLDBOSS_ENGAGED			= "Es posible que el encuentro de %s se haya iniciado en tu reino a %s de su salud máxima. (Enviado por %s.)"
@@ -337,6 +337,7 @@ L.AUTO_ANNOUNCE_TEXTS.incomingcount	= "%s perjuicio entrante (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends 			= "%s ha terminado"
 L.AUTO_ANNOUNCE_TEXTS.endtarget		= "%s ha terminado: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.fades			= "%s se ha desvanecido"
+L.AUTO_ANNOUNCE_TEXTS.fadesoon		= "%s se desvanece en breve"
 L.AUTO_ANNOUNCE_TEXTS.addsleft		= "%s restantes: %%d"
 L.AUTO_ANNOUNCE_TEXTS.cast			= "Lanzando %s en %.1f s"
 L.AUTO_ANNOUNCE_TEXTS.soon			= "%s en breve"
@@ -364,6 +365,7 @@ L.AUTO_ANNOUNCE_OPTIONS.incomingcount	= "Mostrar anuncio cuando $spell:%s tiene 
 L.AUTO_ANNOUNCE_OPTIONS.ends			= "Mostrar anuncio cuando $spell:%s termine"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget		= "Mostrar anuncio cuando $spell:%s termine"
 L.AUTO_ANNOUNCE_OPTIONS.fades			= "Mostrar anuncio cuando $spell:%s se desvanezca"
+L.AUTO_ANNOUNCE_OPTIONS.fadesoon		= "Mostrar anuncio anticipado para cuando $spell:%s se desvanezca"
 L.AUTO_ANNOUNCE_OPTIONS.addsleft		= "Mostrar anuncio para el número de $spell:%s restantes"
 L.AUTO_ANNOUNCE_OPTIONS.cast			= "Mostrar anuncio cuando $spell:%s comience a lanzarse"
 L.AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption

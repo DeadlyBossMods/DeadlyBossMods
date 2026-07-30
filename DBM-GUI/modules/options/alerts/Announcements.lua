@@ -43,35 +43,7 @@ end)
 local isNewDropdown = FontDropDown.mytype == "dropdown2"
 FontDropDown:SetPoint("TOPLEFT", check6, "BOTTOMLEFT", isNewDropdown and 5 or 0, isNewDropdown and -15 or -10)
 
--- RaidWarn Font Style
-local FontStyles = {
-	{
-		text	= L.None,
-		value	= "None"
-	},
-	{
-		text	= L.Outline,
-		value	= "OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.ThickOutline,
-		value	= "THICKOUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE",
-		flag	= true
-	}
-}
-
-local FontStyleDropDown = raidwarnoptions:CreateDropdown(L.FontStyle, FontStyles, "DBM", "WarningFontStyle", function(value)
+local FontStyleDropDown = raidwarnoptions:CreateFontDropdown(L.FontStyle, "DBM", "WarningFontStyle", function(value)
 	DBM.Options.WarningFontStyle = value
 	DBM:UpdateWarningOptions()
 	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
@@ -153,7 +125,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.WarningAlphabetical = DBM.DefaultOptions.WarningAlphabetical
 	DBM.Options.WarningShortText = DBM.DefaultOptions.WarningShortText
 	DBM.Options.WarningFont = DBM.DefaultOptions.WarningFont
-	DBM.Options.FontStyles = DBM.DefaultOptions.FontStyles
+	DBM.Options.WarningFontStyle = DBM.DefaultOptions.WarningFontStyle
 	DBM.Options.WarningFontSize = DBM.DefaultOptions.WarningFontSize
 	DBM.Options.WarningDuration2 = DBM.DefaultOptions.WarningDuration2
 	DBM.Options.WarningFontShadow = DBM.DefaultOptions.WarningFontShadow
@@ -171,7 +143,7 @@ resetbutton:SetScript("OnClick", function()
 		check6:SetChecked(DBM.Options.WarningShortText)
 	end
 	FontDropDown:SetSelectedValue(DBM.Options.WarningFont)
-	FontStyleDropDown:SetSelectedValue(DBM.Options.FontStyles)
+	FontStyleDropDown:SetSelectedValue(DBM.Options.WarningFontStyle)
 	fontSizeSlider:SetValue(DBM.DefaultOptions.WarningFontSize)
 	durationSlider:SetValue(DBM.DefaultOptions.WarningDuration2)
 	FontShadow:SetChecked(DBM.Options.WarningFontShadow)

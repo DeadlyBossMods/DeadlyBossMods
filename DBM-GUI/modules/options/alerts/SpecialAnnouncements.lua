@@ -67,34 +67,7 @@ end)
 FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 115, DBM:IsPostMidnight() and -90 or -220)
 FontDropDown.myheight = 0
 
-local FontStyles = {
-	{
-		text	= L.None,
-		value	= "None"
-	},
-	{
-		text	= L.Outline,
-		value	= "OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.ThickOutline,
-		value	= "THICKOUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE",
-		flag	= true
-	}
-}
-
-local FontStyleDropDown = specArea:CreateDropdown(L.FontStyle, FontStyles, "DBM", "SpecialWarningFontStyle", function(value)
+local FontStyleDropDown = specArea:CreateFontDropdown(L.FontStyle, "DBM", "SpecialWarningFontStyle", function(value)
 	DBM.Options.SpecialWarningFontStyle = value
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1)

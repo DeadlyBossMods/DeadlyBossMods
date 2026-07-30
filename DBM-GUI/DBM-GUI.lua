@@ -808,8 +808,22 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		modProfileArea.frame:SetPoint("TOPLEFT", 10, -25)
 		local resetButton = modProfileArea:CreateButton(L.ModAllReset, 200, 20)
 		resetButton:SetPoint("TOPLEFT", 10, -14)
+		if not StaticPopupDialogs["DBM_CONFIRM_RESET_SETTINGS"] then
+			StaticPopupDialogs["DBM_CONFIRM_RESET_SETTINGS"] = {
+				text = L.ModAllResetConfirm or "Are you sure you want to reset all settings for %s?",
+				button1 = YES,
+				button2 = NO,
+				OnAccept = function(_, data)
+					DBM:LoadAllModDefaultOption(data)
+				end,
+				timeout = 0,
+				whileDead = true,
+				hideOnEscape = true,
+				preferredIndex = 3,
+			}
+		end
 		resetButton:SetScript("OnClick", function()
-			DBM:LoadAllModDefaultOption(addon.modId)
+			StaticPopup_Show("DBM_CONFIRM_RESET_SETTINGS", addon.name, nil, addon.modId)
 		end)
 		for charname, charTable in pairs(_G[addon.modId:gsub("-", "") .. "_AllSavedVars"] or {}) do
 			for _, optionTable in pairs(charTable) do
@@ -830,8 +844,22 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		local resetStatButton = modProfileArea:CreateButton(L.ModAllStatReset, 200, 20)
 		resetStatButton.myheight = 0
 		resetStatButton:SetPoint("LEFT", resetButton, "RIGHT", 40, 0)
+		if not StaticPopupDialogs["DBM_CONFIRM_RESET_STATS"] then
+			StaticPopupDialogs["DBM_CONFIRM_RESET_STATS"] = {
+				text = L.ModAllStatResetConfirm or "Are you sure you want to reset all stats for %s?",
+				button1 = YES,
+				button2 = NO,
+				OnAccept = function(_, data)
+					DBM:ClearAllStats(data)
+				end,
+				timeout = 0,
+				whileDead = true,
+				hideOnEscape = true,
+				preferredIndex = 3,
+			}
+		end
 		resetStatButton:SetScript("OnClick", function()
-			DBM:ClearAllStats(addon.modId)
+			StaticPopup_Show("DBM_CONFIRM_RESET_STATS", addon.name, nil, addon.modId)
 		end)
 
 		local refresh
@@ -999,10 +1027,10 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		"follower", "story", "lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker", "duos"
 	}
 
-	-- Find mod with fastest clear time for this subtab and display it
+	-- Find mod with fastest clear time for this subtab and display it (only when viewing a specific raid subtab, not the overall root tab)
 	local fastestClearOffset = 0
 	for _, mod in ipairs(DBM.Mods) do
-		if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
+		if subtab and mod.modId == addon.modId and subtab == mod.subTab then
 			for key, value in pairs(mod.Options) do
 				if key:find("FastestClear") and type(value) == "number" then
 					local fastestClearText = area:CreateText(L.Statistic_BestClear .. " " .. DBM:strFromTime(value))
