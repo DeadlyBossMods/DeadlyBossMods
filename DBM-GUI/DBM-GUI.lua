@@ -686,7 +686,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 		DBM_GUI:CreateImportProfile(function(importTable)
 			if (importTable.payloadType and importTable.payloadType ~= "ModProfile") or not importTable[mod.id] then
 				DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
-				return
+				return false
 			end
 			local fullname, profileNum = DBM:GetProfileID()
 			local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
@@ -695,6 +695,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 				mod.Options = importTable[mod.id]
 				DBM:AddMsg(L.ModImportSuccess:format(mod.localization.general.name))
 			end
+			return true
 		end, nil, nil, L.ModImportFailed:format(mod.localization.general.name))
 	end)
 	local modNameForHTML = mod.localization.general.name:gsub("&", "&amp;")
@@ -973,18 +974,18 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 					return false
 				end
 				local errors = {}
-				for id, table in pairs(importTable) do
-					if type(table) == "table" then
-					-- Check if sound packs are missing
-					for settingName, settingValue in pairs(table) do
-						local ending = settingName:sub(-6):lower()
-						if ending == "cvoice" or ending == "wsound" then -- CVoice or SWSound (s is ignored so we only have to sub once)
-							if type(settingValue) == "string" and not DBM:IsNoneValue(settingValue) and not DBM:ValidateSound(settingValue, true, true) then
-								tinsert(errors, id .. "-" .. settingName)
+				for id, imprtTable in pairs(importTable) do
+					if type(imprtTable) == "table" then
+						-- Check if sound packs are missing
+						for settingName, settingValue in pairs(imprtTable) do
+							local ending = settingName:sub(-6):lower()
+							if ending == "cvoice" or ending == "wsound" then -- CVoice or SWSound (s is ignored so we only have to sub once)
+								if type(settingValue) == "string" and not DBM:IsNoneValue(settingValue) and not DBM:ValidateSound(settingValue, true, true) then
+									tinsert(errors, id .. "-" .. settingName)
+								end
 							end
 						end
 					end
-						end
 				end
 				-- Create popup confirming if they wish to continue (and therefor resetting to default)
 				if #errors > 0 then
