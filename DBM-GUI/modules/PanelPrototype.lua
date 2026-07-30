@@ -385,9 +385,7 @@ function PanelPrototype:CreateFontDropdown(title, vartype, var, CallbackFn, widt
 	local function UpdateDisplayText()
 		local displayText = GetDisplayText()
 		dropdown.text = displayText
-		---@diagnostic disable-next-line: undefined-field
 		if dropdown.OverrideText then
-			---@diagnostic disable-next-line: undefined-field
 			dropdown:OverrideText(displayText)
 		end
 	end

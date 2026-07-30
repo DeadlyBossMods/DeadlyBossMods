@@ -78,7 +78,7 @@ local function AttachBasicButton(parent, width, height)
 end
 
 -- values can either be a table or a function, if it's a function it gets called every time the dropdown is opened to populate the values
----@diagnostic disable-next-line: duplicate-set-field
+---@return DBMDropDown
 function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent, overrideText, dropdownType)
 	if type(values) == "table" then
 		for _, entry in next, values do
@@ -94,6 +94,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	---@field IsSelectedCallback fun(self: DBMDropDown, callback: function)
 	---@field SetSelectedValue fun(self: DBMDropDown, selected: any)
 	---@field RefreshLazyValues fun(self: DBMDropDown)
+	---@field OverrideText fun(self: DBMDropDown, text: string)
 	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
 	local dropdown = CreateFrame("DropdownButton", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "WowStyle1DropdownTemplate")
 	setmetatable(dropdown, {
