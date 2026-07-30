@@ -3568,8 +3568,7 @@ do
 		["MONOCHROME"] = true,
 		["OUTLINE"] = true,
 		["THICKOUTLINE"] = true,
-		["MONOCHROME,OUTLINE"] = true,
-		["MONOCHROME,THICKOUTLINE"] = true,
+		["SLUG"] = true,
 	}
 	---@deprecated Wrath Classic fallback only. Remove when C_UIFileAsset.IsKnownFile becomes available there.
 	local fontProbe = private.isWrath and UIParent:CreateFontString()
@@ -3588,8 +3587,10 @@ do
 		if self:IsNoneValue(resolvedFlags) then
 			resolvedFlags = ""
 		end
-		if not validFontFlags[resolvedFlags] then
-			return false
+		for flag in resolvedFlags:gmatch("[^,]+") do
+			if not validFontFlags[flag] then
+				return false
+			end
 		end
 		-- "standardFont" maps to the locale-specific standard font and needs no asset lookup.
 		if fontPath == "standardFont" or (standardFont and fontPath == standardFont) then

@@ -70,33 +70,6 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	}
 })
 
-local FontStyles = {
-	{
-		text	= L.None,
-		value	= "None"
-	},
-	{
-		text	= L.Outline,
-		value	= "OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.ThickOutline,
-		value	= "THICKOUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE",
-		flag	= true
-	}
-}
-
 -----------------------------------
 --  Personal Aura Frame  --
 -----------------------------------
@@ -205,7 +178,7 @@ if isAuraTracking121 then
 	end)
 	personalAuraFontDropDown:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 0, -50)
 
-	personalAuraFontStyleDropDown = personalAuraArea:CreateDropdown(L.FontStyle, FontStyles, "DBM", "PrivateAurasPlayerTextFontStyle", function(value)
+	personalAuraFontStyleDropDown = personalAuraArea:CreateFontDropdown(L.FontStyle, "DBM", "PrivateAurasPlayerTextFontStyle", function(value)
 		DBM.Options.PrivateAurasPlayerTextFontStyle = value
 		OnAuraSettingsChange(true)
 	end)
@@ -481,7 +454,7 @@ if isAuraTracking121 then
 	end)
 	coTankAuraFontDropDown:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 0, -50)
 
-	coTankAuraFontStyleDropDown = coTankAuraArea:CreateDropdown(L.FontStyle, FontStyles, "DBM", "PrivateAurasCoTankTextFontStyle", function(value)
+	coTankAuraFontStyleDropDown = coTankAuraArea:CreateFontDropdown(L.FontStyle, "DBM", "PrivateAurasCoTankTextFontStyle", function(value)
 		DBM.Options.PrivateAurasCoTankTextFontStyle = value
 		OnAuraSettingsChange(false)
 	end)

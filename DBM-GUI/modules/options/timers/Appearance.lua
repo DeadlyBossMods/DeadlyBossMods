@@ -155,33 +155,6 @@ end)
 FontDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 FontDropDown.myheight = 0
 
-local FontFlags = {
-	{
-		text	= L.None,
-		value	= "None"
-	},
-	{
-		text	= L.Outline,
-		value	= "OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.ThickOutline,
-		value	= "THICKOUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE",
-		flag	= true
-	}
-}
-
 -- Functions for bar setup
 local function createDBTOnValueChangedHandler(option)
 	return function(self)
@@ -202,7 +175,7 @@ FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -140)
 FontSizeSlider:SetValue(DBT.Options.FontSize)
 FontSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("FontSize"))
 
-local FontFlagDropDown = BarSetup:CreateDropdown(L.FontStyle, FontFlags, "DBT", "FontFlag", function(value)
+local FontFlagDropDown = BarSetup:CreateFontDropdown(L.FontStyle, "DBT", "FontFlag", function(value)
 	DBT:SetOption("FontFlag", value)
 end)
 FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)

@@ -178,34 +178,7 @@ local FontDropDownTimer = style:CreateDropdown(L.FontTypeTimer, Fonts, "DBM", "N
 end)
 FontDropDownTimer:SetPoint("TOPLEFT", iconGrowthDirection, "TOPLEFT", 0, -50)
 
-local FontStyles = {
-	{
-		text	= L.None,
-		value	= "None"
-	},
-	{
-		text	= L.Outline,
-		value	= "OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.ThickOutline,
-		value	= "THICKOUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE",
-		flag	= true
-	}
-}
-
-local TimerFontStyleDropDown = style:CreateDropdown(L.FontStyle, FontStyles, "DBM", "NPIconTimerFontStyle", function(value)
+local TimerFontStyleDropDown = style:CreateFontDropdown(L.FontStyle, "DBM", "NPIconTimerFontStyle", function(value)
 	DBM.Options.NPIconTimerFontStyle = value
 	DBM.Nameplate:UpdateIconOptions()
 end)
@@ -229,7 +202,7 @@ local FontDropDownText = style:CreateDropdown(L.FontTypeText, Fonts, "DBM", "NPI
 end)
 FontDropDownText:SetPoint("TOPLEFT", timerFontSizeSlider, "TOPLEFT", -20, -50)
 
-local TextFontStyleDropDown = style:CreateDropdown(L.FontStyle, FontStyles, "DBM", "NPIconTextFontStyle", function(value)
+local TextFontStyleDropDown = style:CreateFontDropdown(L.FontStyle, "DBM", "NPIconTextFontStyle", function(value)
 	DBM.Options.NPIconTextFontStyle = value
 	DBM.Nameplate:UpdateIconOptions()
 end)
