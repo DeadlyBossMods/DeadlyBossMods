@@ -64,7 +64,7 @@ local FontDropDown = specArea:CreateDropdown(L.FontType, Fonts, "DBM", "SpecialW
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1, nil, true)
 end)
-FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 115, DBM:IsPostMidnight() and -90 or -220)
+FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 115, DBM:IsPostMidnight() and -110 or -220)
 FontDropDown.myheight = 0
 
 local FontStyleDropDown = specArea:CreateFontDropdown(L.FontStyle, "DBM", "SpecialWarningFontStyle", function(value)

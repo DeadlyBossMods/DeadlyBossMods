@@ -22,7 +22,6 @@ local CountSoundDropDown = spokenGeneralArea:CreateDropdown(L.CountdownVoice, DB
 end, 180)
 local isNewDropdown = CountSoundDropDown.mytype == "dropdown2"
 CountSoundDropDown:SetPoint("TOPLEFT", spokenGeneralArea.frame, "TOPLEFT", isNewDropdown and 20 or 0, -20)
-CountSoundDropDown.myheight = isNewDropdown and 25 or 20
 
 local CountSoundDropDown2 = spokenGeneralArea:CreateDropdown(L.CountdownVoice2, DBM:GetCountSounds(), "DBM", "CountdownVoice2", function(value)
 	DBM.Options.CountdownVoice2 = value
@@ -37,7 +36,6 @@ local CountSoundDropDown3 = spokenGeneralArea:CreateDropdown(L.CountdownVoice3, 
 	DBM:BuildVoiceCountdownCache()
 end, 180)
 CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -45)
-CountSoundDropDown3.myheight = isNewDropdown and 25 or 20
 
 local CountSoundDropDown4 = spokenGeneralArea:CreateDropdown(L.PullVoice, DBM:GetCountSounds(), "DBM", "PullVoice", function(value)
 	DBM.Options.PullVoice = value
@@ -56,13 +54,13 @@ local VoiceDropDown = spokenGeneralArea:CreateDropdown(L.VoicePackChoice, voices
 	DBM:PlayCountSound(1, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack2.."\\count\\")
 end, 180)
 VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown3, "TOPLEFT", 0, -45)
-VoiceDropDown.myheight = isNewDropdown and 25 or 20 -- TODO: +10 padding per dropdown text
 
 if DBM:IsRetail() then
 	local CountStartDropDown = spokenGeneralArea:CreateDropdown(L.CountdownStartTime, countdownVoiceSize, "DBM", "CountSize", function(value)
 		DBM.Options.CountSize = value
 	end, 180)
 	CountStartDropDown:SetPoint("TOPLEFT", CountSoundDropDown4, "TOPLEFT", 0, -45)
+	CountStartDropDown.myheight = 0
 end
 
 local voiceReplaceArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackReplace)

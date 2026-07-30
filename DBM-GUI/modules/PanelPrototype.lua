@@ -243,7 +243,6 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		colorSelect.g = g
 		colorSelect.b = b
 		swatch:SetVertexColor(r, g, b)
-		text:SetTextColor(r, g, b)
 		if save then
 			CallbackFn(colorSelect, r, g, b)
 		end
@@ -257,7 +256,6 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		end
 		self:SetColorRGB(r, g, b)
 		CallbackFn(self, r, g, b)
-		text:SetTextColor(r, g, b)
 	end
 	colorSelect:SetScript("OnClick", function(self)
 		local r1, g1, b1 = self.r, self.g, self.b
@@ -279,34 +277,6 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		})
 	end)
 
-	--[[
-	---@class DBMPanelColorSelect: ColorSelect
-	---@field myheight number
-	local colorSelect = CreateFrame("ColorSelect", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
-	colorSelect.mytype = "colorselect"
-	colorSelect:SetSize((dimension or 128) + (useAlpha and 38 or 0), dimension or 128)
-	local colorWheel = colorSelect:CreateTexture()
-	colorWheel:SetSize(dimension or 128, dimension or 128)
-	colorWheel:SetPoint("TOPLEFT", colorSelect, "TOPLEFT", 5, 0)
-	colorSelect:SetColorWheelTexture(colorWheel)
-	local colorTexture = colorSelect:CreateTexture()
-	colorTexture:SetTexture(130756) -- "Interface\\Buttons\\UI-ColorPicker-Buttons"
-	colorTexture:SetSize(10, 10)
-	colorTexture:SetTexCoord(0, 0.15625, 0, 0.625)
-	colorSelect:SetColorWheelThumbTexture(colorTexture)
-	if useAlpha then
-		local colorValue = colorSelect:CreateTexture()
-		colorValue:SetWidth(alphaWidth or 32)
-		colorValue:SetHeight(dimension or 128)
-		colorValue:SetPoint("LEFT", colorWheel, "RIGHT", 10, -3)
-		colorSelect:SetColorValueTexture(colorValue)
-		local colorTexture2 = colorSelect:CreateTexture()
-		colorTexture2:SetTexture(130756) -- "Interface\\Buttons\\UI-ColorPicker-Buttons"
-		colorTexture2:SetSize(alphaWidth / 32 * 48, alphaWidth / 32 * 14)
-		colorTexture2:SetTexCoord(0.25, 1, 0.875, 0)
-		colorSelect:SetColorValueThumbTexture(colorTexture2)
-	end
-	--]]
 	self:SetLastObj(colorSelect)
 	return colorSelect
 end
@@ -315,7 +285,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	---@class DBMPanelSlider: Slider
 	local slider = CreateFrame("Slider", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "DBMPolyfill_OptionsSliderTemplate")
 	slider.mytype = "slider"
-	slider.myheight = 50
+	slider.myheight = 60
 	slider:SetMinMaxValues(low, high)
 	slider:SetValueStep(step)
 	slider:SetWidth(width or 180)

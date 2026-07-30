@@ -293,7 +293,7 @@ L.SpecialWarnHeaderMedium			= "SA 1: 블리자드에서 '중간' 등급으로 �
 L.SpecialWarnHeaderCritical			= "SA 2: 블리자드에서 '치명적' 등급으로 분류한 스킬 알림"
 
 -- Panel: Debuff Auras Frame
---Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
+--Note, SpamBlockNoPrivateAuraSound reused here
 L.Panel_PrivateAuras				= "디버프 오라"
 L.Area_PersonalPrivateAuras			= "내 디버프 오라 설정"
 L.EnablePersonalPrivateAuraIcons	= "화면에 내 디버프 오라 아이콘 표시"--checkbox
@@ -397,8 +397,8 @@ L.BarSimple							= "Simple (처음 바는 사라지고 큰 바가 새로 생성
 L.BarStartColor						= "시작 색상"
 L.BarEndColor 						= "종료 색상"
 L.Bar_Height						= "바 높이: %d"
-L.Slider_BarOffSetX 				= "X 위치 조정: %d"--Reused in other regions like Auras
-L.Slider_BarOffSetY 				= "Y 위치 조정: %d"--Reused in other regions like Auras
+L.Slider_BarOffSetX 				= "수평 간격: %d"
+L.Slider_BarOffSetY 				= "수직 간격: %d"
 L.Slider_BarWidth 					= "바 너비: %d"
 L.Slider_BarScale 					= "바 크기: %0.2f"
 L.BarSaturation						= "작은 바 채도 (커다란 바 사용시 비활성): %0.2f"

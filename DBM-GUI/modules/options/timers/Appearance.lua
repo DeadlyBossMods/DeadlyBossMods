@@ -331,12 +331,12 @@ BarWidthSlider:SetValue(DBT.Options.Width)
 BarWidthSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Width"))
 
 local BarHeightSlider = BarSetupSmall:CreateSlider(L.Bar_Height, 10, 35, 1, 310)
-BarHeightSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
+BarHeightSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -20)
 BarHeightSlider:SetValue(DBT.Options.Height)
 BarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Height"))
 
 local BarScaleSlider = BarSetupSmall:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05, 310)
-BarScaleSlider:SetPoint("TOPLEFT", BarHeightSlider, "BOTTOMLEFT", 0, -10)
+BarScaleSlider:SetPoint("TOPLEFT", BarHeightSlider, "BOTTOMLEFT", 0, -20)
 BarScaleSlider:SetValue(DBT.Options.Scale)
 BarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
 
@@ -410,13 +410,13 @@ BarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Ba
 BarOffsetXSlider.myheight = 0
 
 local BarOffsetYSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetY, -5, 35, 1, 120)
-BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
+BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -20)
 BarOffsetYSlider:SetValue(DBT.Options.BarYOffset)
 BarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
 BarOffsetYSlider.myheight = 0
 
 local AlphaSlider = BarSetupSmall:CreateSlider(L.Bar_Alpha, 0, 1, 0.1, 120)
-AlphaSlider:SetPoint("TOPLEFT", BarOffsetYSlider, "BOTTOMLEFT", 0, -10)
+AlphaSlider:SetPoint("TOPLEFT", BarOffsetYSlider, "BOTTOMLEFT", 0, -20)
 AlphaSlider:SetValue(DBT.Options.Alpha)
 AlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Alpha"))
 AlphaSlider.myheight = 0
@@ -476,12 +476,12 @@ HugeBarWidthSlider:SetValue(DBT.Options.HugeWidth)
 HugeBarWidthSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeWidth"))
 
 local HugeBarHeightSlider = BarSetupHuge:CreateSlider(L.Bar_Height, 10, 35, 1, 310)
-HugeBarHeightSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -10)
+HugeBarHeightSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -20)
 HugeBarHeightSlider:SetValue(DBT.Options.HugeHeight)
 HugeBarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeHeight"))
 
 local HugeBarScaleSlider = BarSetupHuge:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05, 310)
-HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarHeightSlider, "BOTTOMLEFT", 0, -10)
+HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarHeightSlider, "BOTTOMLEFT", 0, -20)
 HugeBarScaleSlider:SetValue(DBT.Options.HugeScale)
 HugeBarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
 
@@ -548,13 +548,13 @@ HugeBarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler
 HugeBarOffsetXSlider.myheight = 0
 
 local HugeBarOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetY, -5, 35, 1, 120)
-HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
+HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -20)
 HugeBarOffsetYSlider:SetValue(DBT.Options.HugeBarYOffset)
 HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
 HugeBarOffsetYSlider.myheight = 0
 
 local HugeAlphaSlider = BarSetupHuge:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1, 120)
-HugeAlphaSlider:SetPoint("TOPLEFT", HugeBarOffsetYSlider, "BOTTOMLEFT", 0, -10)
+HugeAlphaSlider:SetPoint("TOPLEFT", HugeBarOffsetYSlider, "BOTTOMLEFT", 0, -20)
 HugeAlphaSlider:SetValue(DBT.Options.HugeAlpha)
 HugeAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeAlpha"))
 HugeAlphaSlider.myheight = 0
