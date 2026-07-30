@@ -71,11 +71,14 @@ modules\objects\TableUtils.lua
 modules\objects\StandardFont.lua
 modules\Modules.lua
 
-modules\SpecRole.lua
+modules\objects\SpecRole.lua
 modules\Scheduler.lua
 modules\DevTools.lua
 modules\Icons.lua
 modules\TargetScanning.lua
+
+modules\objects\CoreOptions.lua
+modules\CombatDetection.lua
 
 # Core
 DBM-Core.lua
@@ -94,30 +97,31 @@ modules\gui\Keystones.lua
 modules\gui\BattleRezTimer.lua
 
 # Modules
+modules\Loading.lua
 modules\Commands.lua
 modules\Hyperlinks.lua
 modules\MinimapButton.lua
 modules\MidnightPopup.lua
 modules\Notes.lua
-modules\Sounds.lua
+modules\objects\Sounds.lua
 modules\UpdateReminder.lua
 modules\AnnoyingPopup.lua
 modules\ZoneCombatScanner.lua
 
 modules\objects\Difficulties.lua
-modules\objects\AddonComms.lua
+modules\AddonComms.lua
 modules\objects\BossMod.lua
 modules\objects\BossModOptions.lua
 modules\objects\BossModEventDispatcher.lua
 modules\objects\Localization.lua
 modules\objects\VoicePacks.lua
 modules\objects\Timer.lua
-modules\objects\UserTimers.lua
+modules\UserTimers.lua
 modules\objects\EnrageTimer.lua
 modules\objects\Announce.lua
 modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
 modules\objects\Sorting.lua
-modules\objects\PrivateAura.lua
-modules\objects\AuraTracking.lua
-modules\objects\EncounterEvents.lua
+modules\PrivateAura.lua
+modules\AuraTracking.lua
+modules\EncounterEvents.lua

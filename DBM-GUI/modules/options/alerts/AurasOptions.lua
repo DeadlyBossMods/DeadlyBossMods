@@ -36,6 +36,21 @@ local growDirections = {
 	}
 }
 
+local auraSortModes = {
+	{
+		text	= L.AuraSortDefault,
+		value	= "Default"
+	},
+	{
+		text	= L.AuraSortShortDurationFirst,
+		value	= "ShortDurationFirst"
+	},
+	{
+		text	= L.AuraSortLongDurationFirst,
+		value	= "LongDurationFirst"
+	}
+}
+
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
 		text	= DEFAULT,
@@ -175,7 +190,15 @@ local personalAuraStackXOffset
 local personalAuraStackYOffset
 local personalAuraShowStacks
 local personalAuraShowDispelBorder
+local personalAuraSort
 if isAuraTracking121 then
+	personalAuraSort = personalAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasPlayerSortMode", function(value)
+		DBM.Options.PrivateAurasPlayerSortMode = value
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraSort:SetPoint("TOPLEFT", personalAuraMaxIcons, "TOPLEFT", 0, -50)
+	personalAuraSort.myheight = 0
+
 	personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "DBM", "PrivateAurasPlayerTextFont", function(value)
 		DBM.Options.PrivateAurasPlayerTextFont = value
 		OnAuraSettingsChange(true)
@@ -282,6 +305,7 @@ personalAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerHideBorder = DBM.DefaultOptions.PrivateAurasPlayerHideBorder
 	DBM.Options.PrivateAurasPlayerHideTooltip = DBM.DefaultOptions.PrivateAurasPlayerHideTooltip
 	DBM.Options.PrivateAurasPlayerGrowDirection = DBM.DefaultOptions.PrivateAurasPlayerGrowDirection
+	DBM.Options.PrivateAurasPlayerSortMode = DBM.DefaultOptions.PrivateAurasPlayerSortMode
 	DBM.Options.PrivateAurasPlayerSpacing2 = DBM.DefaultOptions.PrivateAurasPlayerSpacing2
 	DBM.Options.PrivateAurasPlayerWidth = DBM.DefaultOptions.PrivateAurasPlayerWidth
 	DBM.Options.PrivateAurasPlayerHeight = DBM.DefaultOptions.PrivateAurasPlayerHeight
@@ -321,6 +345,9 @@ personalAuraReset:SetScript("OnClick", function()
 	personalAuraBorder:SetChecked(DBM.Options.PrivateAurasPlayerHideBorder)
 	personalAuraTooltip:SetChecked(DBM.Options.PrivateAurasPlayerHideTooltip)
 	personalAuraGrowDir:SetSelectedValue(DBM.Options.PrivateAurasPlayerGrowDirection)
+	if personalAuraSort then
+		personalAuraSort:SetSelectedValue(DBM.Options.PrivateAurasPlayerSortMode)
+	end
 	personalSpacing:SetValue(DBM.Options.PrivateAurasPlayerSpacing2)
 	personalAuraIconScale:SetValue(DBM.Options.PrivateAurasPlayerWidth)
 	if personalAuraStackScale then
@@ -439,7 +466,15 @@ local coTankAuraStackXOffset
 local coTankAuraStackYOffset
 local coTankAuraShowStacks
 local coTankAuraShowDispelBorder
+local coTankAuraSort
 if isAuraTracking121 then
+	coTankAuraSort = coTankAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasCoTankSortMode", function(value)
+		DBM.Options.PrivateAurasCoTankSortMode = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraSort:SetPoint("TOPLEFT", coTankAuraMaxIcons, "TOPLEFT", 0, -50)
+	coTankAuraSort.myheight = 0
+
 	coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM", "PrivateAurasCoTankTextFont", function(value)
 		DBM.Options.PrivateAurasCoTankTextFont = value
 		OnAuraSettingsChange(false)
@@ -534,6 +569,7 @@ coTankAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankHideBorder = DBM.DefaultOptions.PrivateAurasCoTankHideBorder
 	DBM.Options.PrivateAurasCoTankHideTooltip = DBM.DefaultOptions.PrivateAurasCoTankHideTooltip
 	DBM.Options.PrivateAurasCoTankGrowDirection = DBM.DefaultOptions.PrivateAurasCoTankGrowDirection
+	DBM.Options.PrivateAurasCoTankSortMode = DBM.DefaultOptions.PrivateAurasCoTankSortMode
 	DBM.Options.PrivateAurasCoTankSpacing2 = DBM.DefaultOptions.PrivateAurasCoTankSpacing2
 	DBM.Options.PrivateAurasCoTankWidth = DBM.DefaultOptions.PrivateAurasCoTankWidth
 	DBM.Options.PrivateAurasCoTankHeight = DBM.DefaultOptions.PrivateAurasCoTankHeight
@@ -564,6 +600,9 @@ coTankAuraReset:SetScript("OnClick", function()
 	coTankAuraBorder:SetChecked(DBM.Options.PrivateAurasCoTankHideBorder)
 	coTankAuraTooltip:SetChecked(DBM.Options.PrivateAurasCoTankHideTooltip)
 	coTankGrowDir:SetSelectedValue(DBM.Options.PrivateAurasCoTankGrowDirection)
+	if coTankAuraSort then
+		coTankAuraSort:SetSelectedValue(DBM.Options.PrivateAurasCoTankSortMode)
+	end
 	coTankSpacing:SetValue(DBM.Options.PrivateAurasCoTankSpacing2)
 	coTankIconScale:SetValue(DBM.Options.PrivateAurasCoTankWidth)
 	if coTankStackScale then
