@@ -580,8 +580,8 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		--Message: Full message text
 		--Icon: Texture path/id for icon
 		--Type: Announce type
-		----Types: you, target, targetcount, targetsource, spell, ends, endtarget, fades, adds, count, stack, cast, soon, sooncount, prewarn, bait, stage, stagechange, prestage, moveto
-		------Personal/Role (Applies to you, or your job): you, stack, bait, moveto, fades
+		----Types: you, target, targetcount, targetsource, spell, ends, endtarget, fades, fadesoon, adds, count, stack, cast, soon, sooncount, prewarn, bait, stage, stagechange, prestage, moveto
+		------Personal/Role (Applies to you, or your job): you, stack, bait, moveto, fades, fadesoon
 		------General Target Messages (informative, doesn't usually apply to you): target, targetsource, targetcount
 		------Fight Changes (Stages, adds, boss buff/debuff, etc): stage, stagechange, prestage, adds, ends, endtarget
 		------General (can really apply to anything): spell, count, soon, sooncount, prewarn
@@ -947,6 +947,12 @@ end
 function bossModPrototype:NewFadesAnnounce(spellId, color, ...)
 	---@type Announce0
 	return newAnnounce(self, "fades", spellId, color or 2, ...)
+end
+
+---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|optionNumbers|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce0
+function bossModPrototype:NewFadesSoonAnnounce(spellId, color, ...)
+	---@type Announce0
+	return newAnnounce(self, "fadesoon", spellId, color or 2, ...)
 end
 
 ---@overload fun(self, spellId: number|string, color: number?, icon: number|string?, optionDefault: SpecFlags|boolean?, optionName: string|optionNumbers|boolean?, castTime: number?, preWarnTime: number?, soundOption: number|boolean?, noFilter: boolean?): Announce1Num
