@@ -293,6 +293,7 @@ do
 	end
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
+		private:StartDebugLogFight()
 		self:Debug("|cffff8800ENCOUNTER_START: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size, 1, nil, nil, true)
 		if self:IsEnabled() then
 			--Only nag in raids on engage
@@ -363,6 +364,7 @@ do
 
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success, encounterUnitStatus)
 		self:Debug("|cffff8800ENCOUNTER_END: |r event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size .. " " .. success, 1, nil, nil, true)
+		private:EndDebugLogFight()
 		if success == 0 then
 			--Only nag on wipes (in any content)
 			self:CheckAvailableMods()

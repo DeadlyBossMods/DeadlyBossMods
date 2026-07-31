@@ -10,6 +10,7 @@ local module = private:NewModule("DevToolsModule")
 local DBM = private:GetPrototype("DBM")
 
 local appendToDebugLog, showDebugLog, hideDebugLog
+local debugLogFightStartTime
 
 function module:OnModuleLoad()
 	self:OnDebugToggle()
@@ -243,17 +244,16 @@ do
 
 	--Debug Mode
 	local function getFightTime()
-		local inCombat = private.getInCombat()
-		if #inCombat > 0 then--At least one boss is engaged
-			for i = #inCombat, 1, -1 do
-				local mod = inCombat[i]
-				if mod and mod.combatInfo then
-					return mfloor((GetTime() - (mod.combatInfo.pull or 0)) * 100 + 0.5) / 100
-				end
-			end
-		else
-			return nil
-		end
+		if not debugLogFightStartTime then return nil end
+		return mfloor((GetTime() - debugLogFightStartTime) * 100 + 0.5) / 100
+	end
+
+	function private:StartDebugLogFight()
+		debugLogFightStartTime = GetTime()
+	end
+
+	function private:EndDebugLogFight()
+		debugLogFightStartTime = nil
 	end
 
 	function appendToDebugLog(text)
