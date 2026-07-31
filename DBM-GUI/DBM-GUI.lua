@@ -369,6 +369,14 @@ do
 		scrollFrame:SetPoint("TOPLEFT", 15, -22)
 		scrollFrame:SetPoint("BOTTOMRIGHT", -40, 45)
 
+		local footer = popupFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+		footer:SetPoint("BOTTOMLEFT", 25, 38)
+		footer:SetPoint("BOTTOMRIGHT", -50, 38)
+		footer:SetHeight(30)
+		footer:SetJustifyH("CENTER")
+		footer:SetJustifyV("MIDDLE")
+		footer:Hide()
+
 		local input = CreateFrame("EditBox", nil, scrollFrame)
 		input:SetTextInsets(7, 7, 3, 3)
 		input:SetFontObject(ChatFontNormal)
@@ -425,9 +433,22 @@ do
 			input:SetText(text)
 			self.text = text
 		end
+
+		function popupFrame:SetFooterText(text)
+			if text then
+				footer:SetText(text)
+				footer:Show()
+				scrollFrame:SetPoint("BOTTOMRIGHT", -40, 73)
+				backdrop:SetPoint("BOTTOMRIGHT", -40, 68)
+			else
+				footer:Hide()
+				scrollFrame:SetPoint("BOTTOMRIGHT", -40, 45)
+				backdrop:SetPoint("BOTTOMRIGHT", -40, 40)
+			end
+		end
 	end
 
-	function DBM_GUI:CreateExportProfile(export, exportFailureMessage)
+	function DBM_GUI:CreateExportProfile(export, exportFailureMessage, footerText)
 		if not popupFrame then
 			createPopupFrame()
 		end
@@ -438,10 +459,11 @@ do
 			return
 		end
 		popupFrame:SetText(encoded)
+		popupFrame:SetFooterText(footerText)
 		popupFrame:Show()
 	end
 
-	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage, payloadTypeFailureMessage, payloadVersionFailureMessage, allowUnversionedPayload)
+	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage, payloadTypeFailureMessage, payloadVersionFailureMessage, allowUnversionedPayload, footerText)
 		if not popupFrame then
 			createPopupFrame()
 		end
@@ -496,6 +518,7 @@ do
 		end
 		popupFrame.import:Show()
 		popupFrame:SetText("")
+		popupFrame:SetFooterText(footerText)
 		popupFrame:Show()
 	end
 
@@ -885,7 +908,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 		if savedVars then
 			local exportData = {payloadType = "ModProfile", payloadVersion = modProfileVersion}
 			exportData[mod.id] = savedVars[fullname][mod.id][profileNum]
-			DBM_GUI:CreateExportProfile(exportData)
+			DBM_GUI:CreateExportProfile(exportData, nil, L.ModProfileExportFooter)
 		end
 	end)
 	local importMod = panel:CreateButton(L.ButtonImportMod, 120, 20, nil, GameFontNormalSmall)
@@ -917,7 +940,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 				return true
 			end
 			return importSingleModProfile(mod, importTable)
-		end, {ModProfile = true, AddonProfile = true}, modProfileVersion, L.ModImportFailed:format(mod.localization.general.name), L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, true)
+		end, {ModProfile = true, AddonProfile = true}, modProfileVersion, L.ModImportFailed:format(mod.localization.general.name), L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, true, L.ModProfileImportFooter)
 	end)
 	local modNameForHTML = mod.localization.general.name:gsub("&", "&amp;")
 	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. modNameForHTML), true)
@@ -1162,13 +1185,13 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			for _, id in ipairs(DBM.ModLists[addon.modId]) do
 				exportProfile[id] = _G[addon.modId:gsub("-", "") .. "_AllSavedVars"][fullname][id][profileNum]
 			end
-			DBM_GUI:CreateExportProfile(exportProfile)
+			DBM_GUI:CreateExportProfile(exportProfile, nil, L.AddonProfileExportFooter)
 		end)
 		exportProfile:SetPoint("TOPLEFT", importExportText, "BOTTOMLEFT", 0, -12)
 		local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 			DBM_GUI:CreateImportProfile(function(importTable)
 				return importAddonProfile(addon, importTable)
-			end, "AddonProfile", modProfileVersion, L.ImportProfileFailed, L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, true)
+			end, {AddonProfile = true, ModProfile = true}, modProfileVersion, L.ImportProfileFailed, L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, true, L.AddonProfileImportFooter)
 		end)
 		importProfile.myheight = 12
 		importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
