@@ -903,10 +903,6 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 				end
 			end
 			if isAddonProfile then
-				if type(importTable[mod.id]) ~= "table" then
-					DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
-					return false
-				end
 				local popup = StaticPopup_Show("DBM_IMPORT_INSTANCE_FROM_MOD", mod.localization.general.name)
 				if not popup then
 					DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
