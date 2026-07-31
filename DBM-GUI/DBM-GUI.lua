@@ -1048,7 +1048,6 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 
 	local modProfileArea
 	if not subtab then
-		local modProfileDropdown = {}
 		modProfileArea = panel:CreateArea(L.Area_ModProfile)
 		modProfileArea.frame:SetPoint("TOPLEFT", 10, -25)
 		local resetButton = modProfileArea:CreateButton(L.ModAllReset, 200, 20)
@@ -1070,20 +1069,24 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		resetButton:SetScript("OnClick", function()
 			StaticPopup_Show("DBM_CONFIRM_RESET_SETTINGS", addon.name, nil, addon.modId)
 		end)
-		for charname, charTable in pairs(_G[addon.modId:gsub("-", "") .. "_AllSavedVars"] or {}) do
-			for _, optionTable in pairs(charTable) do
-				if type(optionTable) == "table" then
-					for i = 0, 4 do
-						if optionTable[i] then
-							tinsert(modProfileDropdown, {
-								text	= (i == 0 and charname .. " (" .. ALL.. ")") or charname .. " (" .. SPECIALIZATION .. i .. "-" .. (charTable["talent" .. i] or "") .. ")",
-								value	= charname .. "|" .. tostring(i)
-							})
+		local function getModProfileDropdown()
+			local values = {}
+			for charname, charTable in pairs(_G[addon.modId:gsub("-", "") .. "_AllSavedVars"] or {}) do
+				for _, optionTable in pairs(charTable) do
+					if type(optionTable) == "table" then
+						for i = 0, 4 do
+							if optionTable[i] then
+								tinsert(values, {
+									text	= (i == 0 and charname .. " (" .. ALL.. ")") or charname .. " (" .. SPECIALIZATION .. i .. "-" .. (charTable["talent" .. i] or "") .. ")",
+									value	= charname .. "|" .. tostring(i)
+								})
+							end
 						end
+						break
 					end
-					break
 				end
 			end
+			return values
 		end
 
 		local resetStatButton = modProfileArea:CreateButton(L.ModAllStatReset, 200, 20)
@@ -1109,7 +1112,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 
 		local refresh
 
-		local copyModProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopy, modProfileDropdown, nil, nil, function(value)
+		local copyModProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopy, getModProfileDropdown, nil, nil, function(value)
 			local name, profile = strsplit("|", value)
 			DBM:CopyAllModOption(addon.modId, name, tonumber(profile))
 			C_Timer.After(0.05, refresh)
@@ -1124,7 +1127,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			end
 		end)
 
-		local copyModSoundProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopySound, modProfileDropdown, nil, nil, function(value)
+		local copyModSoundProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopySound, getModProfileDropdown, nil, nil, function(value)
 			local name, profile = strsplit("|", value)
 			DBM:CopyAllModTypeOption(addon.modId, name, tonumber(profile), "SWSound")
 			C_Timer.After(0.05, refresh)
@@ -1139,7 +1142,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			end
 		end)
 
-		local copyModNoteProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopyNote, modProfileDropdown, nil, nil, function(value)
+		local copyModNoteProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopyNote, getModProfileDropdown, nil, nil, function(value)
 			local name, profile = strsplit("|", value)
 			DBM:CopyAllModTypeOption(addon.modId, name, tonumber(profile), "SWNote")
 			C_Timer.After(0.05, refresh)
@@ -1154,10 +1157,22 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			end
 		end)
 
-		local deleteModProfile = modProfileArea:CreateDropdown(L.SelectModProfileDelete, modProfileDropdown, nil, nil, function(value)
-			local name, profile = strsplit("|", value)
-			DBM:DeleteAllModOption(addon.modId, name, tonumber(profile))
-			C_Timer.After(0.05, refresh)
+		local deleteModProfile = modProfileArea:CreateDropdown(L.SelectModProfileDelete, getModProfileDropdown, nil, nil, function(value)
+			local profileText = value
+			for _, entry in ipairs(getModProfileDropdown()) do
+				if entry.value == value then
+					profileText = entry.text
+					break
+				end
+			end
+			local popupData = {
+				modId = addon.modId,
+				value = value,
+				refreshFunc = refresh
+			}
+			if not StaticPopup_Show("DBM_CONFIRM_DELETE_MOD_PROFILE", profileText, nil, popupData) then
+				refresh()
+			end
 		end, 100)
 		deleteModProfile.myheight = 60
 		deleteModProfile:SetPoint("TOPLEFT", copyModSoundProfile, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
@@ -1170,10 +1185,32 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		end)
 
 		function refresh()
-			copyModProfile:GetScript("OnShow")()
-			copyModSoundProfile:GetScript("OnShow")()
-			copyModNoteProfile:GetScript("OnShow")()
-			deleteModProfile:GetScript("OnShow")()
+			for _, dropdown in ipairs({copyModProfile, copyModSoundProfile, copyModNoteProfile, deleteModProfile}) do
+				dropdown.value = nil
+				dropdown.text = nil
+				dropdown:RefreshLazyValues()
+				dropdown:GenerateMenu()
+			end
+		end
+
+		if not StaticPopupDialogs["DBM_CONFIRM_DELETE_MOD_PROFILE"] then
+			StaticPopupDialogs["DBM_CONFIRM_DELETE_MOD_PROFILE"] = {
+				text = L.ModProfileDeleteConfirm,
+				button1 = YES,
+				button2 = NO,
+				OnAccept = function(_, data)
+					local name, profile = strsplit("|", data.value)
+					DBM:DeleteAllModOption(data.modId, name, tonumber(profile))
+					data.refreshFunc()
+				end,
+				OnCancel = function(_, data)
+					data.refreshFunc()
+				end,
+				timeout = 0,
+				whileDead = true,
+				hideOnEscape = true,
+				preferredIndex = 3,
+			}
 		end
 
 		-- Start import/export
