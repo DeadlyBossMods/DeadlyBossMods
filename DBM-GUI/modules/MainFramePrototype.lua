@@ -592,9 +592,11 @@ local function resize(targetFrame, hasScroll)
 							lastObject = child2
 						elseif child2.mytype == "checkbutton" then
 							local buttonText = child2.textObj
+							buttonText:SetText(child2.text)
 							local height = buttonText:GetContentHeight()
 							buttonText:SetSize(buttonText:GetWidth(), height)
 							buttonText:SetText(child2.text)
+							height = buttonText:GetContentHeight()
 							if not child2.customPoint then
 								if lastObject then
 									child2:SetPointOld("TOPLEFT", lastObject, "BOTTOMLEFT", 0, -mmax((lastObject.textObj and lastObject.textObj:GetContentHeight() or 0) - lastObject:GetHeight() + 6, 5))
