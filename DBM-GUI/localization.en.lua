@@ -60,6 +60,12 @@ L.Mod_Enabled						= "Enable: %s"
 L.Mod_Reset							= "Load default options"
 L.Reset 							= "Reset"
 L.Import							= "Import"
+L.ButtonExportMod					= "Export mod"
+L.ButtonImportMod					= "Import mod"
+L.ModImportSuccess					= "Settings imported for %s."
+L.ModImportFailed				    = "Failed to import settings for %s. The data may be invalid/corrupted or from an unsupported format."
+L.ImportProfileFailed				= "Failed to import profile string. The data may be invalid/corrupted or from an unsupported format."
+L.ProfileImported					= "Profile imported."
 
 L.Enable							= ENABLE
 L.Disable							= DISABLE
@@ -255,8 +261,8 @@ L.None								= "None"
 L.Random							= "Random"
 L.Outline							= "Outline"
 L.ThickOutline						= "Thick outline"
-L.MonochromeOutline					= "Monochrome outline"
-L.MonochromeThickOutline			= "Monochrome thick outline"
+L.Monochrome						= "Monochrome"
+L.Slug								= "Slug"
 L.RaidWarnSound						= "Play sound on raid announcement"
 L.AnnouncementMidnightNotice		= "Options on this pannel are for warnings Blizzard classifies as 'minor'"
 
@@ -289,7 +295,7 @@ L.SpecialWarnHeaderMedium			= "SA 1: Announcements for mechanics that blizzard c
 L.SpecialWarnHeaderCritical			= "SA 2: Announcements for mechanics that blizzard classifies as 'critical'"
 
 -- Panel: Debuff Auras Frame
---Note, Slider_BarOffSetX and Slider_BarOffSetY and SpamBlockNoPrivateAuraSound reused here
+--Note, SpamBlockNoPrivateAuraSound reused here
 L.Panel_PrivateAuras				= "Debuff Auras"
 L.Area_PersonalPrivateAuras			= "Personal Debuff Aura Options"
 L.EnablePersonalPrivateAuraIcons	= "Show Personal Debuff Aura icons on screen"--checkbox
@@ -397,8 +403,8 @@ L.BarSimple							= "Simple (small bar disappears and new large bar created)"
 L.BarStartColor						= "Start color"
 L.BarEndColor 						= "End color"
 L.Bar_Height						= "Bar height: %d"
-L.Slider_BarOffSetX 				= "Offset X: %d"--Reused in other regions like Auras
-L.Slider_BarOffSetY 				= "Offset Y: %d"--Reused in other regions like Auras
+L.Slider_BarOffSetX 				= "Horizontal Spacing: %d"
+L.Slider_BarOffSetY 				= "Vertical Spacing: %d"
 L.Slider_BarWidth 					= "Bar width: %d"
 L.Slider_BarScale 					= "Bar scale: %0.2f"
 L.BarSaturation						= "Bar saturation for small timers (When huge bars are disabled): %0.2f"

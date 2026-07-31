@@ -135,34 +135,7 @@ if isNewDropdown then
 	FontDropDown.myheight = 40
 end
 
-local FontStyles = {
-	{
-		text	= L.None,
-		value	= "None"
-	},
-	{
-		text	= L.Outline,
-		value	= "OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.ThickOutline,
-		value	= "THICKOUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE",
-		flag	= true
-	}
-}
-
-local FontStyleDropDown = style:CreateDropdown(L.FontStyle, FontStyles, "DBM", "InfoFrameFontStyle", function(value)
+local FontStyleDropDown = style:CreateFontDropdown(L.FontStyle, "DBM", "InfoFrameFontStyle", function(value)
 	DBM.Options.InfoFrameFontStyle = value
 	DBM.InfoFrame:UpdateStyle()
 end)

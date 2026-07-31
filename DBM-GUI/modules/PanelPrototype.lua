@@ -243,7 +243,6 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		colorSelect.g = g
 		colorSelect.b = b
 		swatch:SetVertexColor(r, g, b)
-		text:SetTextColor(r, g, b)
 		if save then
 			CallbackFn(colorSelect, r, g, b)
 		end
@@ -257,7 +256,6 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		end
 		self:SetColorRGB(r, g, b)
 		CallbackFn(self, r, g, b)
-		text:SetTextColor(r, g, b)
 	end
 	colorSelect:SetScript("OnClick", function(self)
 		local r1, g1, b1 = self.r, self.g, self.b
@@ -279,34 +277,6 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		})
 	end)
 
-	--[[
-	---@class DBMPanelColorSelect: ColorSelect
-	---@field myheight number
-	local colorSelect = CreateFrame("ColorSelect", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
-	colorSelect.mytype = "colorselect"
-	colorSelect:SetSize((dimension or 128) + (useAlpha and 38 or 0), dimension or 128)
-	local colorWheel = colorSelect:CreateTexture()
-	colorWheel:SetSize(dimension or 128, dimension or 128)
-	colorWheel:SetPoint("TOPLEFT", colorSelect, "TOPLEFT", 5, 0)
-	colorSelect:SetColorWheelTexture(colorWheel)
-	local colorTexture = colorSelect:CreateTexture()
-	colorTexture:SetTexture(130756) -- "Interface\\Buttons\\UI-ColorPicker-Buttons"
-	colorTexture:SetSize(10, 10)
-	colorTexture:SetTexCoord(0, 0.15625, 0, 0.625)
-	colorSelect:SetColorWheelThumbTexture(colorTexture)
-	if useAlpha then
-		local colorValue = colorSelect:CreateTexture()
-		colorValue:SetWidth(alphaWidth or 32)
-		colorValue:SetHeight(dimension or 128)
-		colorValue:SetPoint("LEFT", colorWheel, "RIGHT", 10, -3)
-		colorSelect:SetColorValueTexture(colorValue)
-		local colorTexture2 = colorSelect:CreateTexture()
-		colorTexture2:SetTexture(130756) -- "Interface\\Buttons\\UI-ColorPicker-Buttons"
-		colorTexture2:SetSize(alphaWidth / 32 * 48, alphaWidth / 32 * 14)
-		colorTexture2:SetTexCoord(0.25, 1, 0.875, 0)
-		colorSelect:SetColorValueThumbTexture(colorTexture2)
-	end
-	--]]
 	self:SetLastObj(colorSelect)
 	return colorSelect
 end
@@ -315,7 +285,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	---@class DBMPanelSlider: Slider
 	local slider = CreateFrame("Slider", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "DBMPolyfill_OptionsSliderTemplate")
 	slider.mytype = "slider"
-	slider.myheight = 50
+	slider.myheight = 60
 	slider:SetMinMaxValues(low, high)
 	slider:SetValueStep(step)
 	slider:SetWidth(width or 180)
@@ -327,6 +297,90 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	slider.textFrame = sliderText
 	self:SetLastObj(slider)
 	return slider
+end
+
+function PanelPrototype:CreateFontDropdown(title, vartype, var, CallbackFn, width, height, parent, overrideText)
+	local fontFlags = {
+		{ text = L.Outline, value = "OUTLINE", flag = true },
+		{ text = L.ThickOutline, value = "THICKOUTLINE", flag = true },
+		{ text = L.Monochrome, value = "MONOCHROME", flag = true },
+		{ text = L.Slug, value = "SLUG", flag = true },
+	}
+	local function GetOptions()
+		if vartype == "DBM" then
+			return DBM.Options[var]
+		elseif vartype == "DBT" then
+			return DBT.Options[var]
+		elseif type(vartype) == "table" and vartype.Options then
+			return vartype.Options[var]
+		end
+	end
+	local function GetSelectedFlags()
+		local selected = {}
+		local currentValue = GetOptions()
+		if type(currentValue) ~= "string" or DBM:IsNoneValue(currentValue) then
+			return selected
+		end
+		for flag in currentValue:gmatch("[^,]+") do
+			selected[flag] = true
+		end
+		return selected
+	end
+	local function SerializeSelectedFlags(selected)
+		local flags = {}
+		if selected.MONOCHROME then
+			tinsert(flags, "MONOCHROME")
+		end
+		if selected.OUTLINE then
+			tinsert(flags, "OUTLINE")
+		elseif selected.THICKOUTLINE then
+			tinsert(flags, "THICKOUTLINE")
+		end
+		if selected.SLUG then
+			tinsert(flags, "SLUG")
+		end
+		return #flags > 0 and table.concat(flags, ",") or "None"
+	end
+	local function GetDisplayText()
+		local selected = GetSelectedFlags()
+		local labels = {}
+		for _, flag in ipairs(fontFlags) do
+			if selected[flag.value] then
+				tinsert(labels, flag.text)
+			end
+		end
+		return #labels > 0 and table.concat(labels, ", ") or L.None
+	end
+	local dropdown
+	local function UpdateDisplayText()
+		local displayText = GetDisplayText()
+		dropdown.text = displayText
+		if dropdown.OverrideText then
+			dropdown:OverrideText(displayText)
+		end
+	end
+	dropdown = self:CreateDropdown(title, fontFlags, nil, nil, function(value)
+		local selected = GetSelectedFlags()
+		selected[value] = not selected[value]
+		if value == "OUTLINE" and selected.OUTLINE then
+			selected.THICKOUTLINE = nil
+		elseif value == "THICKOUTLINE" and selected.THICKOUTLINE then
+			selected.OUTLINE = nil
+		end
+		local newValue = SerializeSelectedFlags(selected)
+		if CallbackFn then
+			CallbackFn(newValue)
+		end
+		UpdateDisplayText()
+	end, width, height, parent, overrideText, "checkbox")
+	dropdown:IsSelectedCallback(function(_, v)
+		return GetSelectedFlags()[v.value] or false
+	end)
+	dropdown:SetScript("OnShow", UpdateDisplayText)
+	---@diagnostic disable-next-line: undefined-field
+	dropdown:GenerateMenu()
+	UpdateDisplayText()
+	return dropdown
 end
 
 function PanelPrototype:CreateScrollingMessageFrame(width, height, _, fading, fontobject)
