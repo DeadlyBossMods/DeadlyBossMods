@@ -16,7 +16,7 @@ function module:OnModuleLoad()
 	self:OnDebugToggle()
 end
 
-local mfloor, mmax, mceil = math.floor, math.max, math.ceil
+local mfloor, mmax = math.floor, math.max
 local sformat = string.format
 
 do
@@ -26,6 +26,7 @@ do
 	local maxDebugLogEntries = 1500
 	local debugLogSoftClosed = true
 	local lineHeight = 14
+	local bottomSafetyLines = 1
 	local debugLogLineCount = 0
 	local debugLogStartIndex = 1
 	local debugLogTopVisibleLine = 1
@@ -34,7 +35,9 @@ do
 
 	local function getVisibleLineCount()
 		if not debugLogViewport then return 1 end
-		return mmax(1, mceil(debugLogViewport:GetHeight() / lineHeight))
+		-- Only count fully visible rows and reserve one blank row at the bottom so
+		-- sequential screenshots cannot lose their final line to clipping or cropping.
+		return mmax(1, mfloor(debugLogViewport:GetHeight() / lineHeight) - bottomSafetyLines)
 	end
 
 	local function getMaxTopVisibleLine()
@@ -93,6 +96,7 @@ do
 	end
 
 	local function scrollDebugLogByPage(pageDelta)
+		-- Pages are contiguous: no repeated lines to trim from sequential screenshots.
 		scrollDebugLogByLines(getVisibleLineCount() * pageDelta)
 	end
 
