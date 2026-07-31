@@ -53,7 +53,16 @@ L.ButtonImportMod					= "匯入模組"
 L.ModImportSuccess					= "已為%s匯入設定。"
 L.ModImportFailed				    = "無法匯入%s的設定。資料可能無效/損壞或來自不支援的格式。"
 L.ImportProfileFailed				= "無法匯入設定檔字串。資料可能無效/損壞或來自不支援的格式。"
+L.ImportProfileWrongType			= "此匯入字串屬於其他設定檔類型。"
+L.ImportProfileWrongTypeCore		= "這是核心設定檔。請前往DBM選項 > %s > %s進行匯入。"
+L.ImportProfileWrongTypeInstance	= "這是副本設定檔。請前往對應副本的統計頁面，在%s中匯入。"
+L.ImportProfileWrongTypeBoss		= "這是首領模組設定檔。請前往對應首領的模組選項面板匯入。"
+L.ImportProfileUnsupportedVersion	= "此匯入字串使用了不支援的設定檔版本。"
+L.ImportInstanceProfilePrompt		= "此字串包含整個副本的設定。要匯入全部副本設定，還是只匯入%s的設定？"
+L.ImportInstanceProfileAll			= "全部匯入"
+L.ImportInstanceProfileBoss			= "僅此首領"
 L.ProfileImported					= "已匯入設定檔。"
+L.PartialProfileImported			= "已匯入%d/%d個模組的設定檔；缺少的模組維持不變。"
 
 L.Enable							= ENABLE
 L.Disable							= DISABLE

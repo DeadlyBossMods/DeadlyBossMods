@@ -65,7 +65,16 @@ L.ButtonImportMod					= "Import mod"
 L.ModImportSuccess					= "Settings imported for %s."
 L.ModImportFailed				    = "Failed to import settings for %s. The data may be invalid/corrupted or from an unsupported format."
 L.ImportProfileFailed				= "Failed to import profile string. The data may be invalid/corrupted or from an unsupported format."
+L.ImportProfileWrongType			= "This import string is for a different profile type."
+L.ImportProfileWrongTypeCore		= "This is a core settings profile. Import it from DBM Options > %s > %s."
+L.ImportProfileWrongTypeInstance	= "This is an instance profile. Import it from that instance's Statistics page under %s."
+L.ImportProfileWrongTypeBoss		= "This is a boss module profile. Import it from that boss's module options panel."
+L.ImportProfileUnsupportedVersion	= "This import string uses an unsupported profile version."
+L.ImportInstanceProfilePrompt		= "This string contains settings for the entire instance. Import all instance settings or only settings for %s?"
+L.ImportInstanceProfileAll			= "Import all"
+L.ImportInstanceProfileBoss			= "This boss only"
 L.ProfileImported					= "Profile imported."
+L.PartialProfileImported			= "Profile imported for %d of %d modules; missing modules were left unchanged."
 
 L.Enable							= ENABLE
 L.Disable							= DISABLE
