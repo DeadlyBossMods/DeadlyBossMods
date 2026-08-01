@@ -6,11 +6,6 @@ local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 ---@class DBMGUI
 local DBM_GUI = DBM_GUI
 
-local DDM
-if isWrath then
-	DDM = LibStub:GetLibrary("LibDropDownMenu")
-end
-
 local select, ipairs, mfloor, mmax, mmin = select, ipairs, math.floor, math.max, math.min
 local strlower, strgsub, tsort, tconcat = string.lower, string.gsub, table.sort, table.concat
 local CreateFrame, GameFontNormal, C_Timer = CreateFrame, GameFontNormal, C_Timer
