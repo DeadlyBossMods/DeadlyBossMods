@@ -297,8 +297,13 @@ L.SLASHCMD_HELP2						= {
 	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",
 	"/hudar <number>: Shows HUD based range finder.",
 	"/dbm arrow: Shows the " .. L.DBM .. " arrow, see '/dbm arrow help' for details.",
-	"/dbm hud: Shows the " .. L.DBM .. " hud, see '/dbm hud' for details."
+	"/dbm hud: Shows the " .. L.DBM .. " hud, see '/dbm hud' for details.",
+	"/dbm dbtdebug: Shows sanitized status bar timer diagnostics for bug reports."
 }
+L.DBT_DEBUG_HEADER						= "DBT diagnostics (sanitized; no encounter or secret text)"
+L.DBT_DEBUG_EMPTY						= "No DBT style refreshes have been captured since this UI reload."
+L.DBT_DEBUG_DISABLED					= "Capture is disabled. Enable DBM Debug Mode before reproducing the problem."
+L.DBT_DEBUG_NOTICE						= "Please include this chat output with your bug report."
 L.TIMER_USAGE							= {
 	L.DBM .. " timer commands:",
 	"-----------------",

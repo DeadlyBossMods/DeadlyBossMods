@@ -277,9 +277,14 @@ L.SLASHCMD_HELP2				= {
 	"/range <number> oder /distance <number>: Zeige Abstandsfenster. /rrange oder /rdistance um die Farben zu invertieren.",
 	"/hudar <number>: Zeige HudMap-basierenden Abstandssucher.",
 	"/dbm arrow: Zeigt den DBM-Pfeil, siehe '/dbm arrow help' für Details.",
-	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details."
+	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details.",
+	"/dbm dbtdebug: Zeigt bereinigte Statusleisten-Diagnosen für Fehlerberichte."
 
 }
+L.DBT_DEBUG_HEADER			= "DBT-Diagnosen (bereinigt; keine Begegnungs- oder Geheimtexte)"
+L.DBT_DEBUG_EMPTY			= "Seit dem Neuladen des Interfaces wurden keine DBT-Stilaktualisierungen erfasst."
+L.DBT_DEBUG_DISABLED			= "Die Erfassung ist deaktiviert. Aktiviere den DBM-Debug-Modus, bevor du das Problem reproduzierst."
+L.DBT_DEBUG_NOTICE			= "Bitte füge diese Chat-Ausgabe deinem Fehlerbericht bei."
 L.TIMER_USAGE	= {
 	L.DBM .. "-Timer Kommandos:",
 	"-----------------",

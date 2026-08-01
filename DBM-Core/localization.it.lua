@@ -279,8 +279,13 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/range <numero> o /distance <numero>: Mostra il riquadro di distanza. /rrange o /rdistance per invertire i colori.",
 	"/hudar <numero>: Mostra il rilevatore di distanza HUD.",
 	"/dbm arrow: Mostra la freccia " .. L.DBM .. ", vedere '/dbm arrow help' per dettagli.",
-	"/dbm hud: Mostra l'HUD " .. L.DBM .. ", vedere '/dbm hud' per dettagli."
+	"/dbm hud: Mostra l'HUD " .. L.DBM .. ", vedere '/dbm hud' per dettagli.",
+	"/dbm dbtdebug: Mostra diagnostica delle barre del tempo ripulita per le segnalazioni di errore."
 }
+L.DBT_DEBUG_HEADER			= "Diagnostica DBT (ripulita; nessun testo di incontro o segreto)"
+L.DBT_DEBUG_EMPTY			= "Nessun aggiornamento di stile DBT è stato acquisito dal ricaricamento dell'interfaccia."
+L.DBT_DEBUG_DISABLED			= "L'acquisizione è disattivata. Abilita la modalità di debug di DBM prima di riprodurre il problema."
+L.DBT_DEBUG_NOTICE			= "Includi questo output della chat nella segnalazione di errore."
 L.TIMER_USAGE	= {
 	"Comandi Temporizzatore "..L.DBM..":",
 	"-----------------",
