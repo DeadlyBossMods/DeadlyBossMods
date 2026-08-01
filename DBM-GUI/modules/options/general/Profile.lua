@@ -50,9 +50,6 @@ end
 copyProfile:SetScript("OnShow", function()
 	copyProfile.value = nil
 	copyProfile.text = nil
-	if copyProfile.mytype == "dropdown" then
-		_G[copyProfile:GetName() .. "Text"]:SetText("")
-	end
 end)
 
 local deleteProfileArea		= profilePanel:CreateArea(L.Area_DeleteProfile)
@@ -67,9 +64,6 @@ end
 deleteProfile:SetScript("OnShow", function()
 	deleteProfile.value = nil
 	deleteProfile.text = nil
-	if copyProfile.mytype == "dropdown" then
-		_G[deleteProfile:GetName() .. "Text"]:SetText("")
-	end
 end)
 
 local dualProfileArea		= profilePanel:CreateArea(L.Area_DualProfile)

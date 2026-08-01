@@ -618,20 +618,6 @@ local function resize(targetFrame, hasScroll)
 								child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
 							end
 							lastObject = child2
-						elseif child2.mytype == "dropdown" then
-							if not child2.width and child2Name then
-								local ddWidth = 120
-								local dropdownText = _G[child2Name .. "Text"]
-								local titleText = _G[child2Name .. "TitleText"]:GetText()
-								if titleText ~= L.FontType and titleText ~= L.FontStyle and titleText ~= L.FontShadow then
-									for _, v in ipairs(child2.values) do
-										dropdownText:SetText(v.text)
-										ddWidth = mmax(ddWidth, dropdownText:GetStringWidth() + 30)
-									end
-								end
-								dropdownText:SetText(child2.text)
-								DDM.UIDropDownMenu_SetWidth(child2, mmin(width - 55, ddWidth))
-							end
 						end
 						neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
 					elseif child2.myheight and child2:IsVisible() then

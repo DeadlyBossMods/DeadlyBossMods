@@ -9,10 +9,10 @@ local CL	= DBM_COMMON_L
 ---@class DBMGUI
 local DBM_GUI = DBM_GUI
 
-local setmetatable, select, type, tonumber, strsplit, mmax, tinsert = setmetatable, select, type, tonumber, strsplit, math.max, table.insert
+local setmetatable, select, type, tonumber, strsplit, mfloor, mmax, mmin, tinsert = setmetatable, select, type, tonumber, strsplit, math.floor, math.max, math.min, table.insert
 local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
 local DBM = DBM
-local CreateTextureMarkup, ColorPickerFrame = CreateTextureMarkup, ColorPickerFrame
+local CreateTextureMarkup, ColorPickerFrame, PlaySound = CreateTextureMarkup, ColorPickerFrame, PlaySound
 
 local GetSpellDescription = C_Spell.GetSpellDescription
 
@@ -281,20 +281,86 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	return colorSelect
 end
 
-function PanelPrototype:CreateSlider(text, low, high, step, width)
+function PanelPrototype:CreateSlider(text, low, high, step, width, value, callbackFn)
+	value = value or 0
+
+	local function UpdateSliderText(self)
+		self.editbox:SetText(mfloor((self.value or 0) * 100 + 0.5) / 100)
+	end
+
 	---@class DBMPanelSlider: Slider
-	local slider = CreateFrame("Slider", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "DBMPolyfill_OptionsSliderTemplate")
+	local slider = CreateFrame("Slider", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate")
 	slider.mytype = "slider"
 	slider.myheight = 60
+	slider:SetOrientation("HORIZONTAL")
+	slider:SetHeight(15)
+	slider:SetWidth(width or 180)
+	slider:SetHitRectInsets(0, 0, -10, 0)
+	slider:SetBackdrop({
+		bgFile = "Interface\\Buttons\\UI-SliderBar-Background",
+		edgeFile = "Interface\\Buttons\\UI-SliderBar-Border",
+		tile = true,
+		tileSize = 8,
+		edgeSize = 8,
+		insets = { left = 3, right = 3, top = 6, bottom = 6 }
+	})
+	slider:SetThumbTexture("Interface\\Buttons\\UI-SliderBar-Button-Horizontal")
 	slider:SetMinMaxValues(low, high)
 	slider:SetValueStep(step)
-	slider:SetWidth(width or 180)
-	local sliderText = _G[slider:GetName() .. "Text"]
-	sliderText:SetText(parseDescription(text, true))
-	slider:SetScript("OnValueChanged", function(_, value)
-		sliderText:SetFormattedText(text, value)
+	slider:SetScript("OnValueChanged", function(self, newValue)
+		if not self.isSetup then
+			return
+		end
+
+		if step and step > 0 then
+			newValue = mfloor((newValue - low) / step + 0.5) * step + low
+		end
+		newValue = mmin(mmax(newValue, low), high)
+		if newValue ~= self.value then
+			self.value = newValue
+			self:SetValue(newValue)
+			callbackFn(newValue)
+		end
+		if self.value then
+			UpdateSliderText(self)
+		end
 	end)
+
+	local sliderText = slider:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+	sliderText:SetPoint("BOTTOM", slider, "TOP")
+	sliderText:SetText(parseDescription(text, true))
 	slider.textFrame = sliderText
+
+	local lowText = slider:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+	lowText:SetPoint("TOPLEFT", slider, "BOTTOMLEFT", 2, 3)
+	lowText:SetText(low)
+
+	local highText = slider:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+	highText:SetPoint("TOPRIGHT", slider, "BOTTOMRIGHT", -2, 3)
+	highText:SetText(high)
+
+	editbox = CreateFrame("EditBox", nil, slider, "InputBoxVisualTemplate")
+	editbox:SetAutoFocus(false)
+	editbox:SetPoint("TOP", slider, "BOTTOM", 0, -1)
+	editbox:SetHeight(14)
+	editbox:SetWidth(40)
+	editbox:SetScript("OnEscapePressed", function(self)
+		self:ClearFocus()
+	end)
+	editbox:SetScript("OnEnterPressed", function(self)
+		local value = tonumber(self:GetText())
+		if value then
+			slider:SetValue(value)
+			self:ClearFocus()
+		end
+	end)
+	slider.editbox = editbox
+
+	slider:SetValue(value)
+	slider.value = value
+	UpdateSliderText(slider)
+	slider.isSetup = true
+
 	self:SetLastObj(slider)
 	return slider
 end
@@ -1020,7 +1086,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate, renam
 	button:SetPoint("LEFT", title, -15, 0)
 	button:Show()
 	button:SetSize(18, 18)
-	button:SetScript('OnClick', function () end)
+	button:SetScript('OnClick', function() end)
 	button.toggle:SetNormalTexture(area.hidden and 130838 or 130821) -- "Interface\\Buttons\\UI-PlusButton-UP", "Interface\\Buttons\\UI-MinusButton-UP"
 	button.toggle:SetPushedTexture(area.hidden and 130836 or 130820) -- "Interface\\Buttons\\UI-PlusButton-DOWN", "Interface\\Buttons\\UI-MinusButton-DOWN"
 	button.toggle:Show()
