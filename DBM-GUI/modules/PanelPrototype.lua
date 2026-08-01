@@ -288,7 +288,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width, value, callba
 		self.editbox:SetText(mfloor((self.value or 0) * 100 + 0.5) / 100)
 	end
 
-	---@class DBMPanelSlider: Slider
+	---@class DBMPanelSlider: Slider, BackdropTemplate
 	local slider = CreateFrame("Slider", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate")
 	slider.mytype = "slider"
 	slider.myheight = 60
@@ -339,7 +339,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width, value, callba
 	highText:SetPoint("TOPRIGHT", slider, "BOTTOMRIGHT", -2, 3)
 	highText:SetText(high)
 
-	editbox = CreateFrame("EditBox", nil, slider, "InputBoxVisualTemplate")
+	local editbox = CreateFrame("EditBox", nil, slider, "InputBoxVisualTemplate")
 	editbox:SetAutoFocus(false)
 	editbox:SetPoint("TOP", slider, "BOTTOM", 0, -1)
 	editbox:SetHeight(14)
