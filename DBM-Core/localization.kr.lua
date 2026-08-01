@@ -264,28 +264,28 @@ L.INFOFRAME_ALT				= "보조 자원:"--Alternate Power
 L.LFG_INVITE						= "파티찾기 입장"
 
 --Common slash commands
-L.SLASHCMD_HELP							= {
+L.SLASHCMD_HELP							= {--AI translated (check me)
 	"사용 가능한 슬래시 명령어:",
 	"-----------------",
-	"/dbm unlock: 위치를 옮길 수 있는 상태 바 타이머를 표시합니다. (다른 명령어: move)",
-	"/dbm pull <초>: <초> 만큼의 풀링 타이머를 공격대에 전송합니다. (승급 권한이 필요함. 다른 명령어: pull)",
-	"/dbm break <분>: <분> 만큼의 휴식 타이머를 공격대에 전송합니다. (승급 권한이 필요함. 다른 명령어: break)",
+	"/dbm unlock: 이동 가능한 상태 바 타이머를 표시합니다 (별칭: move).",
+	"/dbm pull <sec>: <sec> 초 동안의 풀링 타이머를 공격대에 전송합니다. (승급자 필요. 별칭: pull)",
+	"/dbm break <min>: <min> 분 동안의 쉬는 타이머를 공격대에 전송합니다. (승급자 필요. 별칭: break)",
 	"/dbm midwizard: 한밤용 설정 마법사를 다시 표시합니다. (본섭 전용)",
 	"/dbm timer: 사용자 정의 " .. L.DBM .. " 타이머를 시작합니다. 자세한 내용은 '/dbm timer'를 참조하세요.",
-	"/dbm key: 파티/길드의 신화+ 쐐기돌 및 평점 확인과 던전 순간이동 스킬 모음 창을 엽니다. (다른 명령어: key, keys, keystone)",
-	"/dbm lag: 공격대 전원의 지연 시간을 확인합니다.",
-	"/dbm durability: 공격대 전원의 내구도를 확인합니다.",
+	"/dbm key: 파티/길드의 신화+ 쐐기돌 및 평점 확인과 던전 순간이동 스킬 모음을 사용합니다. (별칭: key, keys, keystone)",
+	"/dbm lag: 공격대 전체의 지연 시간을 확인합니다.",
+	"/dbm durability: 공격대 전체의 내구도를 확인합니다.",
 	"/dbm brez: 전투 부활 타이머 창을 표시해서 위치를 조정합니다.",
 	"/dbm help2: 추가 슬래시 명령어를 표시합니다"
 }
---Less used slash commands
-L.SLASHCMD_HELP2						= {
+--덜 사용되는 슬래시 명령어
+L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"사용 가능한 슬래시 명령어:",
 	"-----------------",
-	"/dbm version: 보스 모드 버전을 확인합니다 (다른 명령어: ver).",
-	"/dbm version2: 보스 모드 버전 확인하고 구버전 사용자에게 귓속말을 보냅니다 (다른 명령어: ver2).",
-	"/range <숫자> 또는 /distance <숫자>: 거리 창을 표시합니다. /rrange 또는 /rdistance로 색상을 반전시킵니다.",
-	"/hudar <숫자>: HUD 기반 거리 탐지기를 표시합니다.",
+	"/dbm version: 보스 모드 버전 확인을 수행합니다 (별칭: ver).",
+	"/dbm version2: 보스 모드 버전 확인을 수행하며 구버전 사용자에게 귓속말을 보냅니다 (별칭: ver2).",
+	"/range <number> 또는 /distance <number>: 범위 프레임을 표시합니다. /rrange 또는 /rdistance로 색상을 반전시킵니다.",
+	"/hudar <number>: HUD 기반 범위 탐지기를 표시합니다.",
 	"/dbm arrow: " .. L.DBM .. " 화살표를 표시합니다. 자세한 내용은 '/dbm arrow help'를 참조하세요.",
 	"/dbm hud: " .. L.DBM .. " HUD를 표시합니다. 자세한 내용은 '/dbm hud'를 참조하세요."
 }
@@ -483,8 +483,16 @@ L.AUTO_TIMER_TEXTS.active				= "%s 종료"--Buff/Debuff/event on boss
 L.AUTO_TIMER_TEXTS.fades				= "%s 사라짐"--Buff/Debuff on players
 L.AUTO_TIMER_TEXTS.ai					= "%s AI 예상"
 
+L.AUTO_TIMER_TEXTS.cd					= "%s"
+L.AUTO_TIMER_TEXTS.cdcount				= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.cdsource				= "%s: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial			= "특수 스킬"
+
+L.AUTO_TIMER_TEXTS.next					= "%s"
+L.AUTO_TIMER_TEXTS.nextcount			= "%s (%%s)"
+L.AUTO_TIMER_TEXTS.nextsource			= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial			= "특수 스킬"
+
 L.AUTO_TIMER_TEXTS.varspecial			= "특수 스킬"--Now same as next, as the ~ was moved to timer number
 
 L.AUTO_TIMER_TEXTS.stage				= "단계"
