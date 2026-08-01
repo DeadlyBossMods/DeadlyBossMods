@@ -7,8 +7,6 @@ local DBM_GUI = {
 }
 _G.DBM_GUI = DBM_GUI
 
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-
 local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, mfloor, slower = next, type, pairs, strsplit, tonumber, tostring, ipairs, table.insert, table.sort, math.floor, string.lower
 local CreateFrame, C_Timer, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent = CreateFrame, C_Timer, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent
 local RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION = RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION
@@ -20,6 +18,24 @@ StaticPopupDialogs["IMPORTPROFILE_ERROR"] = {
 	button2 = "No",
 	OnAccept = function(self)
 		self.importFunc()
+	end,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	preferredIndex = 3,
+}
+
+StaticPopupDialogs["DBM_IMPORT_INSTANCE_FROM_MOD"] = {
+	text = L.ImportInstanceProfilePrompt,
+	button1 = L.ImportInstanceProfileAll,
+	button2 = L.ImportInstanceProfileBoss,
+	OnAccept = function(self)
+		self.importAllFunc()
+	end,
+	OnCancel = function(self, _, reason)
+		if reason == "clicked" then
+			self.importModFunc()
+		end
 	end,
 	timeout = 0,
 	whileDead = true,
@@ -234,6 +250,37 @@ do
 	local compressionMethod = 0
 	local compressionLevel = 2
 	local popupFrame
+	local function detectLegacyProfileType(profile)
+		if type(profile.payloadType) == "string" then
+			return profile.payloadType
+		end
+		if type(profile.DBM) == "table" and type(profile.DBT) == "table" and type(profile.minimap) == "table" then
+			return "Profile"
+		end
+		local moduleCount = 0
+		for _, value in pairs(profile) do
+			if type(value) == "table" then
+				moduleCount = moduleCount + 1
+			end
+		end
+		if moduleCount == 1 then
+			return "ModProfile"
+		elseif moduleCount > 1 then
+			return "AddonProfile"
+		end
+	end
+
+	local profileTypeMismatchMessages = {
+		Profile = function()
+			return L.ImportProfileWrongTypeCore:format(L.Panel_Profile, L.Area_ImportExportProfile)
+		end,
+		AddonProfile = function()
+			return L.ImportProfileWrongTypeInstance:format(L.Area_ImportExportProfile)
+		end,
+		ModProfile = function()
+			return L.ImportProfileWrongTypeBoss
+		end
+	}
 
 	local function encodeProfile(profileData)
 		local serialized = C_EncodingUtil.SerializeCBOR(profileData)
@@ -322,6 +369,14 @@ do
 		scrollFrame:SetPoint("TOPLEFT", 15, -22)
 		scrollFrame:SetPoint("BOTTOMRIGHT", -40, 45)
 
+		local footer = popupFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+		footer:SetPoint("BOTTOMLEFT", 25, 38)
+		footer:SetPoint("BOTTOMRIGHT", -50, 38)
+		footer:SetHeight(30)
+		footer:SetJustifyH("CENTER")
+		footer:SetJustifyV("MIDDLE")
+		footer:Hide()
+
 		local input = CreateFrame("EditBox", nil, scrollFrame)
 		input:SetTextInsets(7, 7, 3, 3)
 		input:SetFontObject(ChatFontNormal)
@@ -378,9 +433,22 @@ do
 			input:SetText(text)
 			self.text = text
 		end
+
+		function popupFrame:SetFooterText(text)
+			if text then
+				footer:SetText(text)
+				footer:Show()
+				scrollFrame:SetPoint("BOTTOMRIGHT", -40, 73)
+				backdrop:SetPoint("BOTTOMRIGHT", -40, 68)
+			else
+				footer:Hide()
+				scrollFrame:SetPoint("BOTTOMRIGHT", -40, 45)
+				backdrop:SetPoint("BOTTOMRIGHT", -40, 40)
+			end
+		end
 	end
 
-	function DBM_GUI:CreateExportProfile(export, exportFailureMessage)
+	function DBM_GUI:CreateExportProfile(export, exportFailureMessage, footerText)
 		if not popupFrame then
 			createPopupFrame()
 		end
@@ -391,10 +459,11 @@ do
 			return
 		end
 		popupFrame:SetText(encoded)
+		popupFrame:SetFooterText(footerText)
 		popupFrame:Show()
 	end
 
-	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage, payloadTypeFailureMessage, payloadVersionFailureMessage)
+	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage, payloadTypeFailureMessage, payloadVersionFailureMessage, allowUnversionedPayload, footerText)
 		if not popupFrame then
 			createPopupFrame()
 		end
@@ -410,18 +479,27 @@ do
 				reportImportFailure()
 				return false
 			end
-			if expectedPayloadType and not isLegacy then
-				if deserialized.payloadType ~= expectedPayloadType then
-					DBM:AddMsg(typeMismatchMessage)
+			local payloadType = isLegacy and detectLegacyProfileType(deserialized) or deserialized.payloadType
+			if expectedPayloadType and (not isLegacy or payloadType) then
+				local payloadTypeMatches = payloadType == expectedPayloadType
+				if type(expectedPayloadType) == "table" then
+					payloadTypeMatches = expectedPayloadType[payloadType] == true
+				elseif isLegacy and expectedPayloadType == "AddonProfile" and payloadType == "ModProfile" then
+					-- A one-module legacy table can also be a partial instance profile.
+					payloadTypeMatches = true
+				end
+				if not payloadTypeMatches then
+					local profileTypeMismatchMessage = profileTypeMismatchMessages[payloadType]
+					DBM:AddMsg(profileTypeMismatchMessage and profileTypeMismatchMessage() or typeMismatchMessage)
 					return false
 				end
-				if expectedPayloadVersion and deserialized.payloadVersion ~= expectedPayloadVersion then
+				if not isLegacy and expectedPayloadVersion and deserialized.payloadVersion ~= expectedPayloadVersion and not (allowUnversionedPayload and deserialized.payloadVersion == nil) then
 					DBM:AddMsg(versionMismatchMessage)
 					return false
 				end
 			end
 			local ok, accepted = xpcall(function()
-				return importFunc(deserialized)
+				return importFunc(deserialized, isLegacy)
 			end, function(err)
 				return tostring(err)
 			end)
@@ -440,6 +518,7 @@ do
 		end
 		popupFrame.import:Show()
 		popupFrame:SetText("")
+		popupFrame:SetFooterText(footerText)
 		popupFrame:Show()
 	end
 
@@ -605,6 +684,159 @@ local function getGTFOAbilityIcon(options, groupedSpellId)
 	return nil
 end
 
+local modProfileVersion = 1
+
+local function normalizeModOptions(mod, importedOptions)
+	if type(importedOptions) ~= "table" or type(mod.DefaultOptions) ~= "table" then
+		return nil
+	end
+	local normalizedOptions = {}
+	local importedOptionCount = 0
+	for optionName, defaultValue in pairs(mod.DefaultOptions) do
+		if type(defaultValue) == "table" then
+			defaultValue = defaultValue.value
+		elseif type(defaultValue) == "string" then
+			defaultValue = mod:GetRoleFlagValue(defaultValue)
+		end
+		local importedValue = importedOptions[optionName]
+		if importedValue == nil then
+			normalizedOptions[optionName] = defaultValue
+		else
+			local ending = type(optionName) == "string" and optionName:sub(-6):lower()
+			local isSoundOption = ending == "cvoice" or ending == "wsound"
+			if (isSoundOption and type(importedValue) ~= "string" and type(importedValue) ~= "number") or (not isSoundOption and type(importedValue) ~= type(defaultValue)) then
+				return nil
+			end
+			normalizedOptions[optionName] = importedValue
+			importedOptionCount = importedOptionCount + 1
+		end
+	end
+	for optionName, importedValue in pairs(importedOptions) do
+		if type(optionName) == "string" and mod.DefaultOptions[optionName] == nil and (optionName:find("talent") or optionName:find("FastestClear") or optionName:find("CVAR") or optionName:find("RestoreSetting") or optionName:find("MoviesSeen")) then
+			local currentValue = mod.Options[optionName]
+			if currentValue ~= nil and type(importedValue) == type(currentValue) then
+				normalizedOptions[optionName] = importedValue
+			end
+		end
+	end
+	if importedOptionCount == 0 then
+		return nil
+	end
+	return normalizedOptions
+end
+
+local function collectMissingModSounds(importTable, modIds)
+	local errors = {}
+	for _, id in ipairs(modIds) do
+		local modOptions = importTable[id]
+		if type(modOptions) == "table" then
+			for settingName, settingValue in pairs(modOptions) do
+				if type(settingName) == "string" then
+					local ending = settingName:sub(-6):lower()
+					if (ending == "cvoice" or ending == "wsound") and type(settingValue) == "string" and not DBM:IsNoneValue(settingValue) and not DBM:ValidateSound(settingValue, true, true) then
+						local mod = DBM:GetModByName(id)
+						DBM:AddMsg(L.ImportErrorOn:format((mod and mod.localization.options[settingName]) or settingName))
+						tinsert(errors, {
+							modId = id,
+							modOptions = modOptions,
+							settingName = settingName
+						})
+					end
+				end
+			end
+		end
+	end
+	return errors
+end
+
+local function importAfterSoundValidation(importTable, modIds, importFunc)
+	local errors = collectMissingModSounds(importTable, modIds)
+	if #errors == 0 then
+		return importFunc()
+	end
+	local popup = StaticPopup_Show("IMPORTPROFILE_ERROR")
+	if not popup then
+		return false
+	end
+	popup.importFunc = function()
+		for _, importError in ipairs(errors) do
+			local mod = DBM:GetModByName(importError.modId)
+			if mod and mod.DefaultOptions then
+				importError.modOptions[importError.settingName] = mod.DefaultOptions[importError.settingName]
+			end
+		end
+		importFunc()
+	end
+	return true
+end
+
+local function importSingleModProfile(mod, importTable)
+	local normalizedOptions = normalizeModOptions(mod, importTable[mod.id])
+	if not normalizedOptions then
+		DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
+		return false
+	end
+	importTable[mod.id] = normalizedOptions
+	return importAfterSoundValidation(importTable, {mod.id}, function()
+		local fullname, profileNum = DBM:GetProfileID()
+		local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
+		if type(savedVars) ~= "table" or type(savedVars[fullname]) ~= "table" or type(savedVars[fullname][mod.id]) ~= "table" then
+			DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
+			return false
+		end
+		savedVars[fullname][mod.id][profileNum] = importTable[mod.id]
+		mod.Options = importTable[mod.id]
+		DBM:AddMsg(L.ModImportSuccess:format(mod.localization.general.name))
+		return true
+	end)
+end
+
+local function importAddonProfile(addon, importTable)
+	local importedModIds = {}
+	local expectedCount = #DBM.ModLists[addon.modId]
+	for _, id in ipairs(DBM.ModLists[addon.modId]) do
+		if importTable[id] ~= nil then
+			local mod = DBM:GetModByName(id)
+			local normalizedOptions = mod and normalizeModOptions(mod, importTable[id])
+			if not normalizedOptions then
+				DBM:AddMsg(L.ImportProfileFailed)
+				return false
+			end
+			importTable[id] = normalizedOptions
+			tinsert(importedModIds, id)
+		end
+	end
+	if #importedModIds == 0 then
+		DBM:AddMsg(L.ImportProfileFailed)
+		return false
+	end
+	return importAfterSoundValidation(importTable, importedModIds, function()
+		local fullname, profileNum = DBM:GetProfileID()
+		local savedVars = _G[addon.modId:gsub("-", "") .. "_AllSavedVars"]
+		if type(savedVars) ~= "table" or type(savedVars[fullname]) ~= "table" then
+			DBM:AddMsg(L.ImportProfileFailed)
+			return false
+		end
+		for _, id in ipairs(importedModIds) do
+			if type(savedVars[fullname][id]) ~= "table" then
+				DBM:AddMsg(L.ImportProfileFailed)
+				return false
+			end
+		end
+		for _, id in ipairs(importedModIds) do
+			savedVars[fullname][id][profileNum] = importTable[id]
+			---@diagnostic disable-next-line: inject-field
+			DBM:GetModByName(id).Options = importTable[id]
+		end
+		if #importedModIds < expectedCount then
+			DBM:AddMsg(L.PartialProfileImported:format(#importedModIds, expectedCount))
+		else
+			DBM:AddMsg(L.ProfileImported)
+		end
+		return true
+	end)
+end
+
 ---@param mod DBMMod
 function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	local panel = isTestView and mod.testPanel or mod.panel
@@ -674,29 +906,41 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 		local fullname, profileNum = DBM:GetProfileID()
 		local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
 		if savedVars then
-			local exportData = {payloadType = "ModProfile"}
+			local exportData = {payloadType = "ModProfile", payloadVersion = modProfileVersion}
 			exportData[mod.id] = savedVars[fullname][mod.id][profileNum]
-			DBM_GUI:CreateExportProfile(exportData)
+			DBM_GUI:CreateExportProfile(exportData, nil, L.ModProfileExportFooter)
 		end
 	end)
 	local importMod = panel:CreateButton(L.ButtonImportMod, 120, 20, nil, GameFontNormalSmall)
 	importMod.myheight = 0
 	importMod:SetPoint("LEFT", exportMod, "RIGHT", 4, 0)
 	importMod:SetScript("OnClick", function()
-		DBM_GUI:CreateImportProfile(function(importTable)
-			if (importTable.payloadType and importTable.payloadType ~= "ModProfile") or not importTable[mod.id] then
-				DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
-				return false
+		DBM_GUI:CreateImportProfile(function(importTable, isLegacy)
+			local isAddonProfile = importTable.payloadType == "AddonProfile"
+			if isLegacy then
+				for _, id in ipairs(DBM.ModLists[mod.addon.modId]) do
+					if id ~= mod.id and importTable[id] ~= nil then
+						isAddonProfile = true
+						break
+					end
+				end
 			end
-			local fullname, profileNum = DBM:GetProfileID()
-			local savedVars = _G[mod.addon.modId:gsub("-", "") .. "_AllSavedVars"]
-			if savedVars then
-				savedVars[fullname][mod.id][profileNum] = importTable[mod.id]
-				mod.Options = importTable[mod.id]
-				DBM:AddMsg(L.ModImportSuccess:format(mod.localization.general.name))
+			if isAddonProfile then
+				local popup = StaticPopup_Show("DBM_IMPORT_INSTANCE_FROM_MOD", mod.localization.general.name)
+				if not popup then
+					DBM:AddMsg(L.ModImportFailed:format(mod.localization.general.name))
+					return false
+				end
+				popup.importAllFunc = function()
+					importAddonProfile(mod.addon, importTable)
+				end
+				popup.importModFunc = function()
+					importSingleModProfile(mod, importTable)
+				end
+				return true
 			end
-			return true
-		end, nil, nil, L.ModImportFailed:format(mod.localization.general.name))
+			return importSingleModProfile(mod, importTable)
+		end, {ModProfile = true, AddonProfile = true}, modProfileVersion, L.ModImportFailed:format(mod.localization.general.name), L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, true, L.ModProfileImportFooter)
 	end)
 	local modNameForHTML = mod.localization.general.name:gsub("&", "&amp;")
 	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. modNameForHTML), true)
@@ -804,7 +1048,6 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 
 	local modProfileArea
 	if not subtab then
-		local modProfileDropdown = {}
 		modProfileArea = panel:CreateArea(L.Area_ModProfile)
 		modProfileArea.frame:SetPoint("TOPLEFT", 10, -25)
 		local resetButton = modProfileArea:CreateButton(L.ModAllReset, 200, 20)
@@ -826,20 +1069,24 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		resetButton:SetScript("OnClick", function()
 			StaticPopup_Show("DBM_CONFIRM_RESET_SETTINGS", addon.name, nil, addon.modId)
 		end)
-		for charname, charTable in pairs(_G[addon.modId:gsub("-", "") .. "_AllSavedVars"] or {}) do
-			for _, optionTable in pairs(charTable) do
-				if type(optionTable) == "table" then
-					for i = 0, 4 do
-						if optionTable[i] then
-							tinsert(modProfileDropdown, {
-								text	= (i == 0 and charname .. " (" .. ALL.. ")") or charname .. " (" .. SPECIALIZATION .. i .. "-" .. (charTable["talent" .. i] or "") .. ")",
-								value	= charname .. "|" .. tostring(i)
-							})
+		local function getModProfileDropdown()
+			local values = {}
+			for charname, charTable in pairs(_G[addon.modId:gsub("-", "") .. "_AllSavedVars"] or {}) do
+				for _, optionTable in pairs(charTable) do
+					if type(optionTable) == "table" then
+						for i = 0, 4 do
+							if optionTable[i] then
+								tinsert(values, {
+									text	= (i == 0 and charname .. " (" .. ALL.. ")") or charname .. " (" .. SPECIALIZATION .. i .. "-" .. (charTable["talent" .. i] or "") .. ")",
+									value	= charname .. "|" .. tostring(i)
+								})
+							end
 						end
+						break
 					end
-					break
 				end
 			end
+			return values
 		end
 
 		local resetStatButton = modProfileArea:CreateButton(L.ModAllStatReset, 200, 20)
@@ -865,7 +1112,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 
 		local refresh
 
-		local copyModProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopy, modProfileDropdown, nil, nil, function(value)
+		local copyModProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopy, getModProfileDropdown, nil, nil, function(value)
 			local name, profile = strsplit("|", value)
 			DBM:CopyAllModOption(addon.modId, name, tonumber(profile))
 			C_Timer.After(0.05, refresh)
@@ -880,7 +1127,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			end
 		end)
 
-		local copyModSoundProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopySound, modProfileDropdown, nil, nil, function(value)
+		local copyModSoundProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopySound, getModProfileDropdown, nil, nil, function(value)
 			local name, profile = strsplit("|", value)
 			DBM:CopyAllModTypeOption(addon.modId, name, tonumber(profile), "SWSound")
 			C_Timer.After(0.05, refresh)
@@ -895,7 +1142,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			end
 		end)
 
-		local copyModNoteProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopyNote, modProfileDropdown, nil, nil, function(value)
+		local copyModNoteProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopyNote, getModProfileDropdown, nil, nil, function(value)
 			local name, profile = strsplit("|", value)
 			DBM:CopyAllModTypeOption(addon.modId, name, tonumber(profile), "SWNote")
 			C_Timer.After(0.05, refresh)
@@ -910,10 +1157,22 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			end
 		end)
 
-		local deleteModProfile = modProfileArea:CreateDropdown(L.SelectModProfileDelete, modProfileDropdown, nil, nil, function(value)
-			local name, profile = strsplit("|", value)
-			DBM:DeleteAllModOption(addon.modId, name, tonumber(profile))
-			C_Timer.After(0.05, refresh)
+		local deleteModProfile = modProfileArea:CreateDropdown(L.SelectModProfileDelete, getModProfileDropdown, nil, nil, function(value)
+			local profileText = value
+			for _, entry in ipairs(getModProfileDropdown()) do
+				if entry.value == value then
+					profileText = entry.text
+					break
+				end
+			end
+			local popupData = {
+				modId = addon.modId,
+				value = value,
+				refreshFunc = refresh
+			}
+			if not StaticPopup_Show("DBM_CONFIRM_DELETE_MOD_PROFILE", profileText, nil, popupData) then
+				refresh()
+			end
 		end, 100)
 		deleteModProfile.myheight = 60
 		deleteModProfile:SetPoint("TOPLEFT", copyModSoundProfile, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
@@ -926,87 +1185,50 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		end)
 
 		function refresh()
-			copyModProfile:GetScript("OnShow")()
-			copyModSoundProfile:GetScript("OnShow")()
-			copyModNoteProfile:GetScript("OnShow")()
-			deleteModProfile:GetScript("OnShow")()
+			for _, dropdown in ipairs({copyModProfile, copyModSoundProfile, copyModNoteProfile, deleteModProfile}) do
+				dropdown.value = nil
+				dropdown.text = nil
+				dropdown:RefreshLazyValues()
+				dropdown:GenerateMenu()
+			end
+		end
+
+		if not StaticPopupDialogs["DBM_CONFIRM_DELETE_MOD_PROFILE"] then
+			StaticPopupDialogs["DBM_CONFIRM_DELETE_MOD_PROFILE"] = {
+				text = L.ModProfileDeleteConfirm,
+				button1 = YES,
+				button2 = NO,
+				OnAccept = function(_, data)
+					local name, profile = strsplit("|", data.value)
+					DBM:DeleteAllModOption(data.modId, name, tonumber(profile))
+					data.refreshFunc()
+				end,
+				OnCancel = function(_, data)
+					data.refreshFunc()
+				end,
+				timeout = 0,
+				whileDead = true,
+				hideOnEscape = true,
+				preferredIndex = 3,
+			}
 		end
 
 		-- Start import/export
-		local function actuallyImport(importTable)
-			local fullname, profileNum = DBM:GetProfileID()
-			for _, id in ipairs(DBM.ModLists[addon.modId]) do
-				if importTable[id] then
-					_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][fullname][id][profileNum] = importTable[id]
-					---@diagnostic disable-next-line: inject-field
-					DBM:GetModByName(id).Options = importTable[id]
-				end
-			end
-			DBM:AddMsg(L.ProfileImported)
-		end
-
 		local importExportProfilesArea = panel:CreateArea(L.Area_ImportExportProfile)
 		local importExportText = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 		local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
-			local exportProfile = {payloadType = "AddonProfile"}
+			local exportProfile = {payloadType = "AddonProfile", payloadVersion = modProfileVersion}
 			local fullname, profileNum = DBM:GetProfileID()
 			for _, id in ipairs(DBM.ModLists[addon.modId]) do
 				exportProfile[id] = _G[addon.modId:gsub("-", "") .. "_AllSavedVars"][fullname][id][profileNum]
 			end
-			DBM_GUI:CreateExportProfile(exportProfile)
+			DBM_GUI:CreateExportProfile(exportProfile, nil, L.AddonProfileExportFooter)
 		end)
 		exportProfile:SetPoint("TOPLEFT", importExportText, "BOTTOMLEFT", 0, -12)
 		local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 			DBM_GUI:CreateImportProfile(function(importTable)
-				if importTable.payloadType and importTable.payloadType ~= "AddonProfile" then
-					DBM:AddMsg(L.ImportProfileFailed)
-					return false
-				end
-				local hasValidMod = false
-				for _, id in ipairs(DBM.ModLists[addon.modId]) do
-					if importTable[id] then
-						hasValidMod = true
-						break
-					end
-				end
-				if not hasValidMod then
-					DBM:AddMsg(L.ImportProfileFailed)
-					return false
-				end
-				local errors = {}
-				for id, imprtTable in pairs(importTable) do
-					if type(imprtTable) == "table" then
-						-- Check if sound packs are missing
-						for settingName, settingValue in pairs(imprtTable) do
-							local ending = settingName:sub(-6):lower()
-							if ending == "cvoice" or ending == "wsound" then -- CVoice or SWSound (s is ignored so we only have to sub once)
-								if type(settingValue) == "string" and not DBM:IsNoneValue(settingValue) and not DBM:ValidateSound(settingValue, true, true) then
-									tinsert(errors, id .. "-" .. settingName)
-								end
-							end
-						end
-					end
-				end
-				-- Create popup confirming if they wish to continue (and therefor resetting to default)
-				if #errors > 0 then
-					local popup = StaticPopup_Show("IMPORTPROFILE_ERROR")
-					if popup then
-						popup.importFunc = function()
-							local modOptions = {}
-							for _, soundSetting in ipairs(errors) do
-								local modID, settingName = soundSetting:match("([^-]+)-([^-]+)")
-								if not modOptions[modID] then
-									modOptions[modID] = DBM:GetModByName(modID).DefaultOptions
-								end
-								importTable[modID][settingName] = modOptions[modID][settingName]
-							end
-							actuallyImport(importTable)
-						end
-					end
-				else
-					actuallyImport(importTable)
-				end
-			end)
+				return importAddonProfile(addon, importTable)
+			end, {AddonProfile = true, ModProfile = true}, modProfileVersion, L.ImportProfileFailed, L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, true, L.AddonProfileImportFooter)
 		end)
 		importProfile.myheight = 12
 		importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)

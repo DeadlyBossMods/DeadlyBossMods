@@ -10,12 +10,13 @@ local module = private:NewModule("DevToolsModule")
 local DBM = private:GetPrototype("DBM")
 
 local appendToDebugLog, showDebugLog, hideDebugLog
+local debugLogFightStartTime
 
 function module:OnModuleLoad()
 	self:OnDebugToggle()
 end
 
-local mfloor, mmax, mceil = math.floor, math.max, math.ceil
+local mfloor, mmax = math.floor, math.max
 local sformat = string.format
 
 do
@@ -25,6 +26,7 @@ do
 	local maxDebugLogEntries = 1500
 	local debugLogSoftClosed = true
 	local lineHeight = 14
+	local bottomSafetyLines = 1
 	local debugLogLineCount = 0
 	local debugLogStartIndex = 1
 	local debugLogTopVisibleLine = 1
@@ -33,7 +35,9 @@ do
 
 	local function getVisibleLineCount()
 		if not debugLogViewport then return 1 end
-		return mmax(1, mceil(debugLogViewport:GetHeight() / lineHeight))
+		-- Only count fully visible rows and reserve one blank row at the bottom so
+		-- sequential screenshots cannot lose their final line to clipping or cropping.
+		return mmax(1, mfloor(debugLogViewport:GetHeight() / lineHeight) - bottomSafetyLines)
 	end
 
 	local function getMaxTopVisibleLine()
@@ -92,6 +96,7 @@ do
 	end
 
 	local function scrollDebugLogByPage(pageDelta)
+		-- Pages are contiguous: no repeated lines to trim from sequential screenshots.
 		scrollDebugLogByLines(getVisibleLineCount() * pageDelta)
 	end
 
@@ -243,17 +248,16 @@ do
 
 	--Debug Mode
 	local function getFightTime()
-		local inCombat = private.getInCombat()
-		if #inCombat > 0 then--At least one boss is engaged
-			for i = #inCombat, 1, -1 do
-				local mod = inCombat[i]
-				if mod and mod.combatInfo then
-					return mfloor((GetTime() - (mod.combatInfo.pull or 0)) * 100 + 0.5) / 100
-				end
-			end
-		else
-			return nil
-		end
+		if not debugLogFightStartTime then return nil end
+		return mfloor((GetTime() - debugLogFightStartTime) * 100 + 0.5) / 100
+	end
+
+	function private:StartDebugLogFight()
+		debugLogFightStartTime = GetTime()
+	end
+
+	function private:EndDebugLogFight()
+		debugLogFightStartTime = nil
 	end
 
 	function appendToDebugLog(text)
