@@ -72,6 +72,7 @@ end)
 frame.tabs = {}
 
 local frameCloseButton = CreateFrame("Button", "$parentClosePanelButton", frame, "UIPanelCloseButtonDefaultAnchors")
+frameCloseButton:SetFrameLevel(frame:GetFrameLevel() + 1)
 
 if not isRetail then
 	local titleBg = frame:CreateTexture("$parentTitleBga", "BACKGROUND", "_UI-Frame-TitleTileBg")
