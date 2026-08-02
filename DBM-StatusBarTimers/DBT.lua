@@ -960,10 +960,9 @@ function DBT:UpdateBar(id, elapsed, totalTime)
 		return true
 	end
 	if styleChanged or layoutChanged then
-		bar:ApplyStyle()
-	else
-		bar:Update(0)
+		bar:ApplyStyle(true)
 	end
+	bar:Update(0)
 	if not bar.dead then
 		DBT:UpdateBars(true)
 	end
@@ -1473,7 +1472,7 @@ function barPrototype:Cancel()
 	DBT:UpdateBars(true)
 end
 
-function barPrototype:ApplyStyle()
+function barPrototype:ApplyStyle(deferUpdate)
 	local frame = self.frame
 	local frame_name = frame:GetName()
 	local isSecret = self.isSecret
@@ -1698,6 +1697,9 @@ function barPrototype:ApplyStyle()
 	else
 		name:SetShadowOffset(0, 0)
 		timer:SetShadowOffset(0, 0)
+	end
+	if deferUpdate then
+		return
 	end
 	if self.styleRefreshInProgress then
 		--We can ask a user to enable debug mode for this to work
