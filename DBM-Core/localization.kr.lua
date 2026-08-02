@@ -287,8 +287,13 @@ L.SLASHCMD_HELP2						= {
 	"/range <숫자> 또는 /distance <숫자>: 거리 창을 표시합니다. /rrange 또는 /rdistance로 색상을 반전시킵니다.",
 	"/hudar <숫자>: HUD 기반 거리 탐지기를 표시합니다.",
 	"/dbm arrow: " .. L.DBM .. " 화살표를 표시합니다. 자세한 내용은 '/dbm arrow help'를 참조하세요.",
-	"/dbm hud: " .. L.DBM .. " HUD를 표시합니다. 자세한 내용은 '/dbm hud'를 참조하세요."
+	"/dbm hud: " .. L.DBM .. " HUD를 표시합니다. 자세한 내용은 '/dbm hud'를 참조하세요.",
+	"/dbm dbtdebug: 오류 보고용으로 정리된 상태 바 타이머 진단 정보를 표시합니다."
 }
+L.DBT_DEBUG_HEADER			= "DBT 진단 정보(정리됨; 우두머리 전투 또는 비밀 텍스트 없음)"
+L.DBT_DEBUG_EMPTY			= "인터페이스를 다시 불러온 후 DBT 스타일 새로 고침이 캡처되지 않았습니다."
+L.DBT_DEBUG_DISABLED			= "캡처가 비활성화되어 있습니다. 문제를 재현하기 전에 DBM 디버그 모드를 활성화하세요."
+L.DBT_DEBUG_NOTICE			= "오류 보고에 이 대화창 출력을 포함해 주세요."
 L.TIMER_USAGE	= {
 	L.DBM .. " 타이머 명령어:",
 	"--------------",

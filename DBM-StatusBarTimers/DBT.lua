@@ -201,6 +201,8 @@ DBT.DefaultOptions = {
 local barPrototype = {}
 local unusedBarObjects, barIsAnimating = {}, false
 local smallBars, largeBars, hiddenBars = {}, {}, {}
+local debugHistory, debugHistoryIndex, debugHistoryCount = {}, 0, 0
+local debugHistorySize = 10
 
 local dbtFontResetNotified = false
 
@@ -850,6 +852,52 @@ function DBT:GetBarIterator()
 		return
 	end
 	return pairs(self.bars)
+end
+
+function DBT:RecordDebugState(bar, operation)
+	if not DBM.Options.DebugMode then
+		return
+	end
+	debugHistoryIndex = debugHistoryIndex % debugHistorySize + 1
+	debugHistoryCount = math.min(debugHistoryCount + 1, debugHistorySize)
+	debugHistory[debugHistoryIndex] = {
+		time = GetTime(),
+		operation = operation,
+		frame = tonumber(bar.frame:GetName():match("_(%d+)$")) or 0,
+		secret = bar.isSecret and true or false,
+		timer = bar.timer or 0,
+		totalTime = bar.totalTime or 0,
+		enlarged = bar.enlarged and true or false,
+		hidden = bar.isHidden and true or false,
+		paused = bar.paused and true or false,
+		moving = bar.moving or "none",
+		bars = self.numBars
+	}
+end
+
+function DBT:ShowDebugReport()
+	local options = self.Options
+	DBM:AddMsg(DBM_CORE_L.DBT_DEBUG_HEADER)
+	DBM:AddMsg(("style=%s texture=%s font=%s/%s/%s spark=%s icons=%s huge=%s dynamicColor=%s"):format(
+		tostring(options.BarStyle), tostring(options.Texture), tostring(options.Font), tostring(options.FontSize), tostring(options.FontFlag),
+		tostring(options.Spark), tostring(options.JournalIcons), tostring(options.HugeBarsEnabled), tostring(options.DynamicColor)
+	), false)
+	if debugHistoryCount == 0 then
+		DBM:AddMsg(DBM_CORE_L.DBT_DEBUG_EMPTY)
+	else
+		for i = 1, debugHistoryCount do
+			local index = (debugHistoryIndex - debugHistoryCount + i - 1) % debugHistorySize + 1
+			local entry = debugHistory[index]
+			DBM:AddMsg(("%s t=%.2f frame=%d secret=%s timer=%.2f/%.2f large=%s hidden=%s paused=%s moving=%s bars=%d"):format(
+				entry.operation, entry.time, entry.frame, tostring(entry.secret), entry.timer, entry.totalTime,
+				tostring(entry.enlarged), tostring(entry.hidden), tostring(entry.paused), entry.moving, entry.bars
+			), false)
+		end
+	end
+	if not DBM.Options.DebugMode then
+		DBM:AddMsg(DBM_CORE_L.DBT_DEBUG_DISABLED)
+	end
+	DBM:AddMsg(DBM_CORE_L.DBT_DEBUG_NOTICE)
 end
 
 ---@return DBTBar?
@@ -1625,7 +1673,20 @@ function barPrototype:ApplyStyle()
 		name:SetShadowOffset(0, 0)
 		timer:SetShadowOffset(0, 0)
 	end
+	if self.styleRefreshInProgress then
+		--We can ask a user to enable debug mode for this to work
+		--Don't want this runing for everyone since debug in a hot path is not ideal
+		if DBM.Options.DebugMode then
+			DBT:RecordDebugState(self, "NestedStyleRefreshSkipped")
+		end
+		return
+	end
+	if DBM.Options.DebugMode then
+		DBT:RecordDebugState(self, "StyleRefresh")
+	end
+	self.styleRefreshInProgress = true
 	self:Update(0)
+	self.styleRefreshInProgress = nil
 end
 
 do

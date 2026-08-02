@@ -290,7 +290,12 @@ L.SLASHCMD_HELP2					= {
 	"/hudar <número>: Mostra o buscador de distância baseado em HUD.",
 	"/dbm arrow: Mostra a seta do " .. L.DBM .. ", veja /dbm arrow help para detalhes.",
 	"/dbm hud: Mostra o HUD do " .. L.DBM .. ", veja '/dbm hud' para detalhes.",
+	"/dbm dbtdebug: Mostra diagnósticos sanitizados de barras de tempo para relatórios de erro."
 }
+L.DBT_DEBUG_HEADER					= "Diagnósticos DBT (sanitizados; sem texto de encontro ou secreto)"
+L.DBT_DEBUG_EMPTY					= "Nenhuma atualização de estilo do DBT foi capturada desde que a interface foi recarregada."
+L.DBT_DEBUG_DISABLED					= "A captura está desativada. Ative o Modo de Depuração do DBM antes de reproduzir o problema."
+L.DBT_DEBUG_NOTICE					= "Inclua esta saída do chat no seu relatório de erro."
 --Translate all of these
 L.TIMER_USAGE						= {
 	"Comandos de cronômetro do DBM:",

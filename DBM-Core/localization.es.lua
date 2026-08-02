@@ -291,8 +291,13 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/range <número> o /distance <número>: Muestra el marco de rango. /rrange o /rdistance para invertir colores.",
 	"/hudar <número>: Muestra un buscador de rango basado en HUD.",
 	"/dbm arrow: Muestra la flecha de " .. L.DBM .. ", consulta '/dbm arrow help' para más detalles.",
-	"/dbm hud: Muestra el HUD de " .. L.DBM .. ", consulta '/dbm hud' para más detalles."
+	"/dbm hud: Muestra el HUD de " .. L.DBM .. ", consulta '/dbm hud' para más detalles.",
+	"/dbm dbtdebug: Muestra diagnósticos de barras de tiempo depurados para informes de errores."
 }
+L.DBT_DEBUG_HEADER			= "Diagnósticos de DBT (depurados; sin texto de encuentro ni secreto)"
+L.DBT_DEBUG_EMPTY			= "No se han capturado actualizaciones de estilo de DBT desde que se recargó la interfaz."
+L.DBT_DEBUG_DISABLED			= "La captura está desactivada. Activa el modo de depuración de DBM antes de reproducir el problema."
+L.DBT_DEBUG_NOTICE			= "Incluye esta salida del chat en tu informe de error."
 L.TIMER_USAGE	= {
 	L.DBM .. " Comandos de temporizador:",
 	"-----------------",

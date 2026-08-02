@@ -293,8 +293,13 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/range <number> 或 /distance <number>: 顯示範圍框架。/rrange 或 /rdistance 反轉顏色。",
 	"/hudar <number>: 顯示基於 HUD 的範圍查找器。",
 	"/dbm arrow: 顯示 " .. L.DBM .. " 箭頭，詳情請參見 '/dbm arrow help'。",
-	"/dbm hud: 顯示 " .. L.DBM .. " hud，詳情請參見 '/dbm hud'。"
+	"/dbm hud: 顯示 " .. L.DBM .. " hud，詳情請參見 '/dbm hud'。",
+	"/dbm dbtdebug: 顯示已清理的狀態條計時器診斷資訊以供錯誤回報。"
 }
+L.DBT_DEBUG_HEADER			= "DBT 診斷資訊（已清理；不含首領戰或保密文字）"
+L.DBT_DEBUG_EMPTY			= "自重新載入介面後，未擷取到 DBT 樣式更新。"
+L.DBT_DEBUG_DISABLED			= "擷取已停用。請在重現問題前啟用 DBM 偵錯模式。"
+L.DBT_DEBUG_NOTICE			= "請將此聊天輸出附在錯誤回報中。"
 L.TIMER_USAGE	= {
 	L.DBM .. "計時器指令：",
 	"-----------------",

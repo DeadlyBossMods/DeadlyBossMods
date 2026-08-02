@@ -790,7 +790,7 @@ do
 	end
 
 	--test stop
-	local testEndCallback = function (event, id)
+	local testEndCallback = function(event, id)
 		if event ~= "DBM_TimerStop" then return end
 
 		-- Supported by nameplate mod, passing to their handler
@@ -947,7 +947,7 @@ do
 	DBM:RegisterCallback("DBM_NameplateResume", timerResumeCallback)
 
 	--timer stop
-	local timerEndCallback = function (event, id)
+	local timerEndCallback = function(event, id)
 		if event ~= "DBM_NameplateStop" then return end
 
 		-- Supported by nameplate mod, passing to their handler
@@ -969,7 +969,7 @@ do
 	DBM:RegisterCallback("DBM_NameplateStop", timerEndCallback)
 
 	--timer stop all
-	local timerEndAllCallback = function (event, id)
+	local timerEndAllCallback = function(event, id)
 		if event ~= "DBM_NameplateStopAll" then return end
 
 		-- Supported by nameplate mod, passing to their handler

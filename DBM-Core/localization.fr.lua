@@ -289,8 +289,13 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/range <nombre> ou /distance <nombre> : Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
 	"/hudar <nombre> : Affiche le détecteur de portée HUD.",
 	"/dbm arrow : Affiche la flèche " .. L.DBM .. ", voir '/dbm arrow help' pour plus de détails.",
-	"/dbm hud : Affiche le HUD " .. L.DBM .. ", voir '/dbm hud' pour plus de détails."
+	"/dbm hud : Affiche le HUD " .. L.DBM .. ", voir '/dbm hud' pour plus de détails.",
+	"/dbm dbtdebug : Affiche des diagnostics de barres de temps nettoyés pour les rapports d'erreur."
 }
+L.DBT_DEBUG_HEADER			= "Diagnostics DBT (nettoyés ; aucun texte de rencontre ou secret)"
+L.DBT_DEBUG_EMPTY			= "Aucune actualisation de style DBT n'a été capturée depuis le rechargement de l'interface."
+L.DBT_DEBUG_DISABLED			= "La capture est désactivée. Activez le mode débogage de DBM avant de reproduire le problème."
+L.DBT_DEBUG_NOTICE			= "Veuillez inclure cette sortie de discussion dans votre rapport d'erreur."
 L.TIMER_USAGE	= {
 	"Commandes " .. L.DBM .. " des chronomètres:",
 	"-----------------",
