@@ -297,8 +297,13 @@ L.SLASHCMD_HELP2						= {
 	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",
 	"/hudar <number>: Shows HUD based range finder.",
 	"/dbm arrow: Shows the " .. L.DBM .. " arrow, see '/dbm arrow help' for details.",
-	"/dbm hud: Shows the " .. L.DBM .. " hud, see '/dbm hud' for details."
+	"/dbm hud: Shows the " .. L.DBM .. " hud, see '/dbm hud' for details.",
+	"/dbm dbtdebug: Shows sanitized status bar timer diagnostics for bug reports."
 }
+L.DBT_DEBUG_HEADER						= "DBT diagnostics (sanitized; no encounter or secret text)"
+L.DBT_DEBUG_EMPTY						= "No DBT style refreshes have been captured since this UI reload."
+L.DBT_DEBUG_DISABLED					= "Capture is disabled. Enable DBM Debug Mode before reproducing the problem."
+L.DBT_DEBUG_NOTICE						= "Please include this chat output with your bug report."
 L.TIMER_USAGE							= {
 	L.DBM .. " timer commands:",
 	"-----------------",
@@ -345,6 +350,7 @@ L.AUTO_ANNOUNCE_TEXTS = {
 	ends 								= "%s ended",
 	endtarget							= "%s ended: >%%s<",
 	fades								= "%s faded",
+	fadesoon							= "%s fading soon",
 	addsleft							= "%s remaining: %%d",
 	cast								= "Casting %s: %.1f sec",
 	soon								= "%s soon",
@@ -374,6 +380,7 @@ L.AUTO_ANNOUNCE_OPTIONS = {
 	ends								= "Announce when $spell:%s has ended",
 	endtarget							= "Announce when $spell:%s has ended (with target)",
 	fades								= "Announce when $spell:%s has faded",
+	fadesoon							= "Announce when $spell:%s is fading soon",
 	addsleft							= "Announce how many $spell:%s remain",
 	cast								= "Announce when $spell:%s begins casting",
 	soon								= prewarnOption,

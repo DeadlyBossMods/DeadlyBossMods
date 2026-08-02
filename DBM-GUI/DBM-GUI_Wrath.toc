@@ -1,4 +1,4 @@
-## Interface: 30405, 38001
+## Interface: 30405, 38002
 ## Category: DBM
 ## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Options GUI|r
@@ -30,8 +30,6 @@
 ## Author: MysticalOS, QartemisT
 ## Version: @project-version@
 ## X-Website: https://deadlybossmods.com
-
-Polyfills.xml
 
 localization.en.lua
 localization.de.lua

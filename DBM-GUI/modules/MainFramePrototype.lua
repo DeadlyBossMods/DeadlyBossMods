@@ -6,11 +6,6 @@ local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 ---@class DBMGUI
 local DBM_GUI = DBM_GUI
 
-local DDM
-if isWrath then
-	DDM = LibStub:GetLibrary("LibDropDownMenu")
-end
-
 local select, ipairs, mfloor, mmax, mmin = select, ipairs, math.floor, math.max, math.min
 local strlower, strgsub, tsort, tconcat = string.lower, string.gsub, table.sort, table.concat
 local CreateFrame, GameFontNormal, C_Timer = CreateFrame, GameFontNormal, C_Timer
@@ -592,9 +587,11 @@ local function resize(targetFrame, hasScroll)
 							lastObject = child2
 						elseif child2.mytype == "checkbutton" then
 							local buttonText = child2.textObj
+							buttonText:SetText(child2.text)
 							local height = buttonText:GetContentHeight()
 							buttonText:SetSize(buttonText:GetWidth(), height)
 							buttonText:SetText(child2.text)
+							height = buttonText:GetContentHeight()
 							if not child2.customPoint then
 								if lastObject then
 									child2:SetPointOld("TOPLEFT", lastObject, "BOTTOMLEFT", 0, -mmax((lastObject.textObj and lastObject.textObj:GetContentHeight() or 0) - lastObject:GetHeight() + 6, 5))
@@ -616,20 +613,6 @@ local function resize(targetFrame, hasScroll)
 								child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
 							end
 							lastObject = child2
-						elseif child2.mytype == "dropdown" then
-							if not child2.width and child2Name then
-								local ddWidth = 120
-								local dropdownText = _G[child2Name .. "Text"]
-								local titleText = _G[child2Name .. "TitleText"]:GetText()
-								if titleText ~= L.FontType and titleText ~= L.FontStyle and titleText ~= L.FontShadow then
-									for _, v in ipairs(child2.values) do
-										dropdownText:SetText(v.text)
-										ddWidth = mmax(ddWidth, dropdownText:GetStringWidth() + 30)
-									end
-								end
-								dropdownText:SetText(child2.text)
-								DDM.UIDropDownMenu_SetWidth(child2, mmin(width - 55, ddWidth))
-							end
 						end
 						neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
 					elseif child2.myheight and child2:IsVisible() then

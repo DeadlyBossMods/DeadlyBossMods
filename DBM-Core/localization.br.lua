@@ -290,7 +290,12 @@ L.SLASHCMD_HELP2					= {
 	"/hudar <número>: Mostra o buscador de distância baseado em HUD.",
 	"/dbm arrow: Mostra a seta do " .. L.DBM .. ", veja /dbm arrow help para detalhes.",
 	"/dbm hud: Mostra o HUD do " .. L.DBM .. ", veja '/dbm hud' para detalhes.",
+	"/dbm dbtdebug: Mostra diagnósticos sanitizados de barras de tempo para relatórios de erro."
 }
+L.DBT_DEBUG_HEADER					= "Diagnósticos DBT (sanitizados; sem texto de encontro ou secreto)"
+L.DBT_DEBUG_EMPTY					= "Nenhuma atualização de estilo do DBT foi capturada desde que a interface foi recarregada."
+L.DBT_DEBUG_DISABLED					= "A captura está desativada. Ative o Modo de Depuração do DBM antes de reproduzir o problema."
+L.DBT_DEBUG_NOTICE					= "Inclua esta saída do chat no seu relatório de erro."
 --Translate all of these
 L.TIMER_USAGE						= {
 	"Comandos de cronômetro do DBM:",
@@ -336,6 +341,7 @@ L.AUTO_ANNOUNCE_TEXTS.incomingcount 	= "Penalidade %s se aproximando (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends 				= "%s terminado"
 L.AUTO_ANNOUNCE_TEXTS.endtarget 		= "%s terminado: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.fades 			= "%s desvaneceu-se"
+L.AUTO_ANNOUNCE_TEXTS.fadesoon			= "%s desvanece em breve"
 L.AUTO_ANNOUNCE_TEXTS.addsleft			= "%s restantes: %%d"
 L.AUTO_ANNOUNCE_TEXTS.cast				= "Lançando %s: %.1f seg"
 L.AUTO_ANNOUNCE_TEXTS.soon				= "%s em breve"
@@ -365,6 +371,7 @@ L.AUTO_ANNOUNCE_OPTIONS.incomingcount 	= "Exibir anúncio quando $spell:%s tiver
 L.AUTO_ANNOUNCE_OPTIONS.ends 			= "Exibir anúncio quando $spell:%s tiver terminado"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget 		= "Exibir anúncio quando $spell:%s tiver terminado (com alvo)"
 L.AUTO_ANNOUNCE_OPTIONS.fades 			= "Exibir anúncio quando $spell:%s tiver desvanecido"
+L.AUTO_ANNOUNCE_OPTIONS.fadesoon		= "Exibir anúncio antecipado quando $spell:%s se desvanece"
 L.AUTO_ANNOUNCE_OPTIONS.addsleft 		= "Exibir anúncio para quantos $spell:%s ainda restam"
 L.AUTO_ANNOUNCE_OPTIONS.cast			= "Exibir anúncio quando $spell:%s está sendo lançado"
 L.AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption

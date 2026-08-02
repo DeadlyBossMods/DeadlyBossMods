@@ -45,7 +45,8 @@ end)
 frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
 frame.Bg:SetColorTexture(0, 0, 0, 0.8)
 
-CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
+local closeBtn = CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
+closeBtn:SetFrameLevel(frame.NineSlice:GetFrameLevel() + 10)
 
 local scroll = CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
 scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)

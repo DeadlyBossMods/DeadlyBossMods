@@ -64,37 +64,10 @@ local FontDropDown = specArea:CreateDropdown(L.FontType, Fonts, "DBM", "SpecialW
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1, nil, true)
 end)
-FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 115, DBM:IsPostMidnight() and -90 or -220)
+FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 115, DBM:IsPostMidnight() and -110 or -220)
 FontDropDown.myheight = 0
 
-local FontStyles = {
-	{
-		text	= L.None,
-		value	= "None"
-	},
-	{
-		text	= L.Outline,
-		value	= "OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.ThickOutline,
-		value	= "THICKOUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE",
-		flag	= true
-	}
-}
-
-local FontStyleDropDown = specArea:CreateDropdown(L.FontStyle, FontStyles, "DBM", "SpecialWarningFontStyle", function(value)
+local FontStyleDropDown = specArea:CreateFontDropdown(L.FontStyle, "DBM", "SpecialWarningFontStyle", function(value)
 	DBM.Options.SpecialWarningFontStyle = value
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1)
@@ -110,22 +83,18 @@ FontShadow:SetScript("OnClick", function()
 end)
 FontShadow:SetPoint("TOPLEFT", color0, "BOTTOMLEFT", -10, -20)
 
-local fontSizeSlider = specArea:CreateSlider(L.FontSize, 8, 60, 1, 150)
-fontSizeSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", 20, -45)
-fontSizeSlider:SetValue(DBM.Options.SpecialWarningFontSize2)
-fontSizeSlider:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFontSize2 = self:GetValue()
+local fontSizeSlider = specArea:CreateSlider(L.FontSize, 8, 60, 1, 150, DBM.Options.SpecialWarningFontSize2, function(value)
+	DBM.Options.SpecialWarningFontSize2 = value
 	DBM:UpdateSpecialWarningOptions()
 end)
+fontSizeSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", 20, -45)
 fontSizeSlider.myheight = 0
 
-local durationSlider = specArea:CreateSlider(L.Warn_Duration, 1, 10, 0.5, 150)
-durationSlider:SetPoint("LEFT", fontSizeSlider, "RIGHT", 20, 0)
-durationSlider:SetValue(DBM.Options.SpecialWarningDuration2)
-durationSlider:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningDuration2 = self:GetValue()
+local durationSlider = specArea:CreateSlider(L.Warn_Duration, 1, 10, 0.5, 150, DBM.Options.SpecialWarningDuration2, function(value)
+	DBM.Options.SpecialWarningDuration2 = value
 	DBM:UpdateSpecialWarningOptions()
 end)
+durationSlider:SetPoint("LEFT", fontSizeSlider, "RIGHT", 20, 0)
 durationSlider.myheight = 0
 
 local sounds
@@ -212,27 +181,21 @@ flashCheck1 = specWarnOne:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "Special
 flashCheck1:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown, "BOTTOMLEFT", 220, 20)
 vibrateCheck1 = specWarnOne:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate1")
 vibrateCheck1:SetPoint("TOPLEFT", flashCheck1, "TOPLEFT", 0, -20)
-flashdurSlider1 = specWarnOne:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
+flashdurSlider1 = specWarnOne:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120, DBM.Options.SpecialWarningFlashDura1, function(value)
+	DBM.Options.SpecialWarningFlashDura1 = value
+end)
 flashdurSlider1:SetPoint("TOPLEFT", SpecialWarnSoundDropDown, "TOPLEFT", 20, -45)
-flashdurSlider1:SetValue(DBM.Options.SpecialWarningFlashDura1)
-flashdurSlider1:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashDura1 = self:GetValue()
-end)
 flashdurSlider1.myheight = 0
-flashdalphaSlider = specWarnOne:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120)
+flashdalphaSlider = specWarnOne:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120, DBM.Options.SpecialWarningFlashAlph1, function(value)
+	DBM.Options.SpecialWarningFlashAlph1 = value
+end)
 flashdalphaSlider:SetPoint("BOTTOMLEFT", flashdurSlider1, "BOTTOMLEFT", 180, 0)
-flashdalphaSlider:SetValue(DBM.Options.SpecialWarningFlashAlph1)
-flashdalphaSlider:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashAlph1 = self:GetValue()
-end)
 flashdalphaSlider.myheight = 0
-flashRepSlider = specWarnOne:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120)
-flashRepSlider:SetPoint("TOPLEFT", flashdurSlider1, "TOPLEFT", 95, -45)
-flashRepSlider:SetValue(math.floor(DBM.Options.SpecialWarningFlashCount1))
-flashRepSlider:HookScript("OnValueChanged", function(self)
-DBM.Options.SpecialWarningFlashCount1 = math.floor(self:GetValue())
+flashRepSlider = specWarnOne:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120, math.floor(DBM.Options.SpecialWarningFlashCount1), function(value)
+	DBM.Options.SpecialWarningFlashCount1 = math.floor(value)
 end)
-flashRepSlider.myheight = 10
+flashRepSlider:SetPoint("TOPLEFT", flashdurSlider1, "TOPLEFT", 95, -45)
+flashRepSlider.myheight = 20
 
 --Special Warning Area 2
 local specWarnTwo = specPanel:CreateArea(DBM:IsPostMidnight() and L.SpecialWarnHeaderCritical or L.SpecialWarnHeader2)
@@ -269,30 +232,24 @@ flashCheck2:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown2, "BOTTOMLEFT", 220,
 local vibrateCheck2 = specWarnTwo:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate2")
 vibrateCheck2:SetPoint("TOPLEFT", flashCheck2, "TOPLEFT", 0, -20)
 
-local flashdurSlider2 = specWarnTwo:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
-flashdurSlider2:SetPoint("TOPLEFT", SpecialWarnSoundDropDown2, "TOPLEFT", 20, -45)
-flashdurSlider2:SetValue(DBM.Options.SpecialWarningFlashDura2)
-flashdurSlider2:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashDura2 = self:GetValue()
+local flashdurSlider2 = specWarnTwo:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120, DBM.Options.SpecialWarningFlashDura2, function(value)
+	DBM.Options.SpecialWarningFlashDura2 = value
 end)
+flashdurSlider2:SetPoint("TOPLEFT", SpecialWarnSoundDropDown2, "TOPLEFT", 20, -45)
 flashdurSlider2.myheight = 0
 
-local flashdalphaSlider2 = specWarnTwo:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120)
-flashdalphaSlider2:SetPoint("BOTTOMLEFT", flashdurSlider2, "BOTTOMLEFT", 180, 0)
-flashdalphaSlider2:SetValue(DBM.Options.SpecialWarningFlashAlph2)
-flashdalphaSlider2:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashAlph2 = self:GetValue()
+local flashdalphaSlider2 = specWarnTwo:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120, DBM.Options.SpecialWarningFlashAlph2, function(value)
+	DBM.Options.SpecialWarningFlashAlph2 = value
 end)
+flashdalphaSlider2:SetPoint("BOTTOMLEFT", flashdurSlider2, "BOTTOMLEFT", 180, 0)
 flashdalphaSlider2.myheight = 0
 
-local flashRepSlider2 = specWarnTwo:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120)
-flashRepSlider2:SetPoint("TOPLEFT", flashdurSlider2, "TOPLEFT", 95, -45)
-flashRepSlider2:SetValue(math.floor(DBM.Options.SpecialWarningFlashCount2))
-flashRepSlider2:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashCount2 = math.floor(self:GetValue())
+local flashRepSlider2 = specWarnTwo:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120, math.floor(DBM.Options.SpecialWarningFlashCount2), function(value)
+	DBM.Options.SpecialWarningFlashCount2 = math.floor(value)
 	DBM:UpdateSpecialWarningOptions()
 end)
-flashRepSlider2.myheight = 10
+flashRepSlider2:SetPoint("TOPLEFT", flashdurSlider2, "TOPLEFT", 95, -45)
+flashRepSlider2.myheight = 20
 
 --Special Warning Area 3
 local specWarnThree = specPanel:CreateArea(L.SpecialWarnHeader3)
@@ -330,30 +287,24 @@ flashCheck3:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown3, "BOTTOMLEFT", 220,
 local vibrateCheck3 = specWarnThree:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate3")
 vibrateCheck3:SetPoint("TOPLEFT", flashCheck3, "TOPLEFT", 0, -20)
 
-local flashdurSlider3 = specWarnThree:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
-flashdurSlider3:SetPoint("TOPLEFT", SpecialWarnSoundDropDown3, "TOPLEFT", 20, -45)
-flashdurSlider3:SetValue(DBM.Options.SpecialWarningFlashDura3)
-flashdurSlider3:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashDura3 = self:GetValue()
+local flashdurSlider3 = specWarnThree:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120, DBM.Options.SpecialWarningFlashDura3, function(value)
+	DBM.Options.SpecialWarningFlashDura3 = value
 end)
+flashdurSlider3:SetPoint("TOPLEFT", SpecialWarnSoundDropDown3, "TOPLEFT", 20, -45)
 flashdurSlider3.myheight = 0
 
-local flashdalphaSlider3 = specWarnThree:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120)
-flashdalphaSlider3:SetPoint("BOTTOMLEFT", flashdurSlider3, "BOTTOMLEFT", 180, 0)
-flashdalphaSlider3:SetValue(DBM.Options.SpecialWarningFlashAlph3)
-flashdalphaSlider3:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashAlph3 = self:GetValue()
+local flashdalphaSlider3 = specWarnThree:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120, DBM.Options.SpecialWarningFlashAlph3, function(value)
+	DBM.Options.SpecialWarningFlashAlph3 = value
 end)
+flashdalphaSlider3:SetPoint("BOTTOMLEFT", flashdurSlider3, "BOTTOMLEFT", 180, 0)
 flashdalphaSlider3.myheight = 0
 
-local flashRepSlider3 = specWarnThree:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120)
-flashRepSlider3:SetPoint("TOPLEFT", flashdurSlider3, "TOPLEFT", 95, -45)
-flashRepSlider3:SetValue(math.floor(DBM.Options.SpecialWarningFlashCount3))
-flashRepSlider3:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashCount3 = math.floor(self:GetValue())
+local flashRepSlider3 = specWarnThree:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120, math.floor(DBM.Options.SpecialWarningFlashCount3), function(value)
+	DBM.Options.SpecialWarningFlashCount3 = math.floor(value)
 	DBM:UpdateSpecialWarningOptions()
 end)
-flashRepSlider3.myheight = 10
+flashRepSlider3:SetPoint("TOPLEFT", flashdurSlider3, "TOPLEFT", 95, -45)
+flashRepSlider3.myheight = 20
 
 local color4, SpecialWarnSoundDropDown4, flashCheck4, vibrateCheck4, flashdurSlider4, flashdalphaSlider4, flashRepSlider4
 local color5, SpecialWarnSoundDropDown5, flashCheck5, vibrateCheck5, flashdurSlider5, flashdalphaSlider5, flashRepSlider5
@@ -387,27 +338,21 @@ flashCheck4 = specWarnFour:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "Specia
 flashCheck4:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown4, "BOTTOMLEFT", 220, 20)
 vibrateCheck4 = specWarnFour:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate4")
 vibrateCheck4:SetPoint("TOPLEFT", flashCheck4, "TOPLEFT", 0, -20)
-flashdurSlider4 = specWarnFour:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
+flashdurSlider4 = specWarnFour:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120, DBM.Options.SpecialWarningFlashDura4, function(value)
+	DBM.Options.SpecialWarningFlashDura4 = value
+end)
 flashdurSlider4:SetPoint("TOPLEFT", SpecialWarnSoundDropDown4, "TOPLEFT", 20, -45)
-flashdurSlider4:SetValue(DBM.Options.SpecialWarningFlashDura4)
-flashdurSlider4:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashDura4 = self:GetValue()
-end)
 flashdurSlider4.myheight = 0
-flashdalphaSlider4 = specWarnFour:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120)
-flashdalphaSlider4:SetPoint("BOTTOMLEFT", flashdurSlider4, "BOTTOMLEFT", 180, 0)
-flashdalphaSlider4:SetValue(DBM.Options.SpecialWarningFlashAlph4)
-flashdalphaSlider4:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashAlph4 = self:GetValue()
+flashdalphaSlider4 = specWarnFour:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120, DBM.Options.SpecialWarningFlashAlph4, function(value)
+	DBM.Options.SpecialWarningFlashAlph4 = value
 end)
+flashdalphaSlider4:SetPoint("BOTTOMLEFT", flashdurSlider4, "BOTTOMLEFT", 180, 0)
 flashdalphaSlider4.myheight = 0
-flashRepSlider4 = specWarnFour:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120)
-flashRepSlider4:SetPoint("TOPLEFT", flashdurSlider4, "TOPLEFT", 95, -45)
-flashRepSlider4:SetValue(math.floor(DBM.Options.SpecialWarningFlashCount4))
-flashRepSlider4:HookScript("OnValueChanged", function(self)
-	DBM.Options.SpecialWarningFlashCount4 = math.floor(self:GetValue())
+flashRepSlider4 = specWarnFour:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120, math.floor(DBM.Options.SpecialWarningFlashCount4), function(value)
+	DBM.Options.SpecialWarningFlashCount4 = math.floor(value)
 	DBM:UpdateSpecialWarningOptions()
 end)
+flashRepSlider4:SetPoint("TOPLEFT", flashdurSlider4, "TOPLEFT", 95, -45)
 flashRepSlider4.myheight = 10
 
 if not DBM:IsPostMidnight() then
@@ -443,29 +388,23 @@ if not DBM:IsPostMidnight() then
 	vibrateCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate5")
 	vibrateCheck5:SetPoint("TOPLEFT", flashCheck5, "TOPLEFT", 0, -20)
 
-	flashdurSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)
-	flashdurSlider5:SetPoint("TOPLEFT", SpecialWarnSoundDropDown5, "TOPLEFT", 20, -45)
-	flashdurSlider5:SetValue(DBM.Options.SpecialWarningFlashDura5)
-	flashdurSlider5:HookScript("OnValueChanged", function(self)
-		DBM.Options.SpecialWarningFlashDura5 = self:GetValue()
+	flashdurSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120, DBM.Options.SpecialWarningFlashDura5, function(value)
+		DBM.Options.SpecialWarningFlashDura5 = value
 	end)
+	flashdurSlider5:SetPoint("TOPLEFT", SpecialWarnSoundDropDown5, "TOPLEFT", 20, -45)
 	flashdurSlider5.myheight = 0
 
-	flashdalphaSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120)
-	flashdalphaSlider5:SetPoint("BOTTOMLEFT", flashdurSlider5, "BOTTOMLEFT", 180, 0)
-	flashdalphaSlider5:SetValue(DBM.Options.SpecialWarningFlashAlph5)
-	flashdalphaSlider5:HookScript("OnValueChanged", function(self)
-		DBM.Options.SpecialWarningFlashAlph5 = self:GetValue()
+	flashdalphaSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120, DBM.Options.SpecialWarningFlashAlph5, function(value)
+		DBM.Options.SpecialWarningFlashAlph5 = value
 	end)
+	flashdalphaSlider5:SetPoint("BOTTOMLEFT", flashdurSlider5, "BOTTOMLEFT", 180, 0)
 	flashdalphaSlider5.myheight = 0
 
-	flashRepSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120)
-	flashRepSlider5:SetPoint("TOPLEFT", flashdurSlider5, "TOPLEFT", 95, -45)
-	flashRepSlider5:SetValue(math.floor(DBM.Options.SpecialWarningFlashCount5))
-	flashRepSlider5:HookScript("OnValueChanged", function(self)
-		DBM.Options.SpecialWarningFlashCount5 = math.floor(self:GetValue())
+	flashRepSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120, math.floor(DBM.Options.SpecialWarningFlashCount5), function(value)
+		DBM.Options.SpecialWarningFlashCount5 = math.floor(value)
 		DBM:UpdateSpecialWarningOptions()
 	end)
+	flashRepSlider5:SetPoint("TOPLEFT", flashdurSlider5, "TOPLEFT", 95, -45)
 	flashRepSlider5.myheight = 10
 end
 

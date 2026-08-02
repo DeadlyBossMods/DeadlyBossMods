@@ -31,8 +31,6 @@
 ## Version: @project-version@
 ## X-Website: https://deadlybossmods.com
 
-Polyfills.xml
-
 localization.en.lua
 localization.de.lua
 localization.cn.lua

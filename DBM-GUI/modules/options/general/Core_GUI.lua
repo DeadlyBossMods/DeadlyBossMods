@@ -86,12 +86,10 @@ moveme:SetScript("OnClick", function()
 	DBM_GUI:CollapseForPreview(DBT:ShowMovableBar())
 end)
 
-local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210)
-latencySlider:SetPoint("TOPLEFT", bminfo, "BOTTOMLEFT", 4, -20)
-latencySlider:SetValue(DBM.Options.LatencyThreshold)
-latencySlider:HookScript("OnValueChanged", function(self)
-	DBM.Options.LatencyThreshold = self:GetValue()
+local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210, DBM.Options.LatencyThreshold, function(value)
+	DBM.Options.LatencyThreshold = value
 end)
+latencySlider:SetPoint("TOPLEFT", bminfo, "BOTTOMLEFT", 4, -20)
 
 local resetbutton = generaloptions:CreateButton(L.Button_ResetInfoRange, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", generaloptions.frame, "BOTTOMRIGHT", -5, 5)

@@ -289,8 +289,13 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/range <nombre> ou /distance <nombre> : Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
 	"/hudar <nombre> : Affiche le détecteur de portée HUD.",
 	"/dbm arrow : Affiche la flèche " .. L.DBM .. ", voir '/dbm arrow help' pour plus de détails.",
-	"/dbm hud : Affiche le HUD " .. L.DBM .. ", voir '/dbm hud' pour plus de détails."
+	"/dbm hud : Affiche le HUD " .. L.DBM .. ", voir '/dbm hud' pour plus de détails.",
+	"/dbm dbtdebug : Affiche des diagnostics de barres de temps nettoyés pour les rapports d'erreur."
 }
+L.DBT_DEBUG_HEADER			= "Diagnostics DBT (nettoyés ; aucun texte de rencontre ou secret)"
+L.DBT_DEBUG_EMPTY			= "Aucune actualisation de style DBT n'a été capturée depuis le rechargement de l'interface."
+L.DBT_DEBUG_DISABLED			= "La capture est désactivée. Activez le mode débogage de DBM avant de reproduire le problème."
+L.DBT_DEBUG_NOTICE			= "Veuillez inclure cette sortie de discussion dans votre rapport d'erreur."
 L.TIMER_USAGE	= {
 	"Commandes " .. L.DBM .. " des chronomètres:",
 	"-----------------",
@@ -335,6 +340,7 @@ L.AUTO_ANNOUNCE_TEXTS.incomingcount		= "Affaiblissement de %s imminent (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends				= "%s s'est terminé"
 L.AUTO_ANNOUNCE_TEXTS.endtarget			= "%s s'est terminé : >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.fades				= "%s s'est dissipé"
+L.AUTO_ANNOUNCE_TEXTS.fadesoon			= "%s se dissipe bientôt"
 L.AUTO_ANNOUNCE_TEXTS.addsleft			= "%s restant: %%d"
 L.AUTO_ANNOUNCE_TEXTS.cast				= "Incantation %s: %.1f sec"
 L.AUTO_ANNOUNCE_TEXTS.soon				= "%s imminent"
@@ -362,6 +368,7 @@ L.AUTO_ANNOUNCE_OPTIONS.incomingcount 	= "Afficher une annonce lorsque $spell:%s
 L.AUTO_ANNOUNCE_OPTIONS.ends			= "Afficher une annonce pour lorsque $spell:%s se termine"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget   	= "Afficher une annonce pour lorsque $spell:%s se termine (avec cible)"
 L.AUTO_ANNOUNCE_OPTIONS.fades			= "Afficher une annonce pour lorsque $spell:%s se dissipe"
+L.AUTO_ANNOUNCE_OPTIONS.fadesoon		= "Afficher une pré-annonce lorsque $spell:%s se dissipe"
 L.AUTO_ANNOUNCE_OPTIONS.addsleft		= "Afficher une annonce pour le nombre restant de : $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.cast			= "Afficher une annonce pour lorsque $spell:%s est incanté"
 L.AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption

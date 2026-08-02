@@ -1,3 +1,5 @@
+---@diagnostic disable: global-element
+-- Standalone CLI test environment; this file is not loaded by any addon TOC.
 package.path = package.path .. ";./CLI/?.lua;./Shared/?.lua;../../DBM-Core/Libs/?/?.lua"
 
 -- No-op/pass-through on CLI

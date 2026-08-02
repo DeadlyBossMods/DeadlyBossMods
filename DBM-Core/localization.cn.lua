@@ -294,8 +294,13 @@ L.SLASHCMD_HELP2				= {
 	"/range <码> 或者 /distance <码>: 显示距离雷达窗体。使用 /rrange 或者 /rdistance 翻转颜色。",
 	"/hudar <码>: 显示基于HUD的距离显示器提示器。",
 	"/dbm arrow: 显示" .. L.DBM .. "箭头，输入'/dbm arrow'查询更多信息。",
-	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。"
+	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。",
+	"/dbm dbtdebug: 显示用于错误报告的已净化计时条诊断信息。"
 }
+L.DBT_DEBUG_HEADER			= "DBT 诊断信息（已净化；不含首领战或保密文本）"
+L.DBT_DEBUG_EMPTY			= "自界面重载后，未捕获到 DBT 样式刷新。"
+L.DBT_DEBUG_DISABLED			= "捕获已禁用。请在重现问题前启用 DBM 调试模式。"
+L.DBT_DEBUG_NOTICE			= "请在错误报告中附上此聊天输出。"
 L.TIMER_USAGE	= {
 	L.DBM .. "计时器可用命令:",
 	"-----------------",
@@ -341,6 +346,7 @@ L.AUTO_ANNOUNCE_TEXTS.incomingcount		= "Debuff %s 即将到来(%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends 				= "%s 结束"
 L.AUTO_ANNOUNCE_TEXTS.endtarget			= "%s 结束: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.fades				= "%s 消失"
+L.AUTO_ANNOUNCE_TEXTS.fadesoon			= "%s 即将消失"
 L.AUTO_ANNOUNCE_TEXTS.addsleft			= "%s剩余：%%d"
 L.AUTO_ANNOUNCE_TEXTS.cast				= "正在施放 %s：%.1f秒"
 L.AUTO_ANNOUNCE_TEXTS.soon				= "即将 %s"
@@ -367,6 +373,7 @@ L.AUTO_ANNOUNCE_OPTIONS.incomingcount	= "警告：当debuffs $spell:%s 即将到
 L.AUTO_ANNOUNCE_OPTIONS.ends			= "警告：$spell:%s结束"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget		= "警告：$spell:%s结束（带目标）"
 L.AUTO_ANNOUNCE_OPTIONS.fades			= "警告：$spell:%s消失"
+L.AUTO_ANNOUNCE_OPTIONS.fadesoon		= "警告：$spell:%s即将消失"
 L.AUTO_ANNOUNCE_OPTIONS.addsleft		= "警告：$spell:%s剩余数量"
 L.AUTO_ANNOUNCE_OPTIONS.cast			= "警告：$spell:%s在施放"
 L.AUTO_ANNOUNCE_OPTIONS.soon			= "预警：$spell:%s"

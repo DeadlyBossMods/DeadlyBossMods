@@ -120,6 +120,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:ShowVersions(true)
 	elseif cmd == "unlock" or cmd == "move" then
 		DBT:ShowMovableBar()
+	elseif cmd == "dbtdebug" then
+		DBT:ShowDebugReport()
 	elseif cmd == "help2" then
 		for _, v in ipairs(L.SLASHCMD_HELP2) do
 			DBM:AddMsg(v)

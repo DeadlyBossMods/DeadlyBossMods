@@ -50,9 +50,6 @@ end
 copyProfile:SetScript("OnShow", function()
 	copyProfile.value = nil
 	copyProfile.text = nil
-	if copyProfile.mytype == "dropdown" then
-		_G[copyProfile:GetName() .. "Text"]:SetText("")
-	end
 end)
 
 local deleteProfileArea		= profilePanel:CreateArea(L.Area_DeleteProfile)
@@ -67,9 +64,6 @@ end
 deleteProfile:SetScript("OnShow", function()
 	deleteProfile.value = nil
 	deleteProfile.text = nil
-	if copyProfile.mytype == "dropdown" then
-		_G[deleteProfile:GetName() .. "Text"]:SetText("")
-	end
 end)
 
 local dualProfileArea		= profilePanel:CreateArea(L.Area_DualProfile)
@@ -91,7 +85,7 @@ local function actuallyImport(importTable)
 		LibStub("LibDBIcon-1.0"):Show("DBM")
 	end
 	DBT:SetOption("Skin", DBT.Options.Skin) -- Forces a hard update on bars.
-	DBM:AddMsg("Profile imported.")
+	DBM:AddMsg(L.ProfileImported)
 end
 
 local importExportProfilesArea = profilePanel:CreateArea(L.Area_ImportExportProfile)
@@ -123,7 +117,7 @@ local localeTable = {
 local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 	DBM_GUI:CreateImportProfile(function(importTable)
 		if type(importTable.DBM) ~= "table" or type(importTable.DBT) ~= "table" or type(importTable.minimap) ~= "table" then
-			DBM:AddMsg("Failed to import profile string. The data may be invalid/corrupted or from an unsupported format.")
+			DBM:AddMsg(L.ImportProfileFailed)
 			return false
 		end
 		local errors = {}

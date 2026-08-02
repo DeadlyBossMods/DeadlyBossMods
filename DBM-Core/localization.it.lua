@@ -279,8 +279,13 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/range <numero> o /distance <numero>: Mostra il riquadro di distanza. /rrange o /rdistance per invertire i colori.",
 	"/hudar <numero>: Mostra il rilevatore di distanza HUD.",
 	"/dbm arrow: Mostra la freccia " .. L.DBM .. ", vedere '/dbm arrow help' per dettagli.",
-	"/dbm hud: Mostra l'HUD " .. L.DBM .. ", vedere '/dbm hud' per dettagli."
+	"/dbm hud: Mostra l'HUD " .. L.DBM .. ", vedere '/dbm hud' per dettagli.",
+	"/dbm dbtdebug: Mostra diagnostica delle barre del tempo ripulita per le segnalazioni di errore."
 }
+L.DBT_DEBUG_HEADER			= "Diagnostica DBT (ripulita; nessun testo di incontro o segreto)"
+L.DBT_DEBUG_EMPTY			= "Nessun aggiornamento di stile DBT è stato acquisito dal ricaricamento dell'interfaccia."
+L.DBT_DEBUG_DISABLED			= "L'acquisizione è disattivata. Abilita la modalità di debug di DBM prima di riprodurre il problema."
+L.DBT_DEBUG_NOTICE			= "Includi questo output della chat nella segnalazione di errore."
 L.TIMER_USAGE	= {
 	"Comandi Temporizzatore "..L.DBM..":",
 	"-----------------",
@@ -324,6 +329,7 @@ L.AUTO_ANNOUNCE_TEXTS.spell			= "%s"
 L.AUTO_ANNOUNCE_TEXTS.ends 			= "%s terminato"
 L.AUTO_ANNOUNCE_TEXTS.endtarget		= "%s terminato: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.fades			= "%s svanito"
+L.AUTO_ANNOUNCE_TEXTS.fadesoon		= "%s sta per svanire"
 L.AUTO_ANNOUNCE_TEXTS.addsleft		= "%s rimanenti: %%d"
 L.AUTO_ANNOUNCE_TEXTS.cast			= "Castando %s: %.1f s"
 L.AUTO_ANNOUNCE_TEXTS.soon			= "%s a breve"
@@ -350,6 +356,7 @@ L.AUTO_ANNOUNCE_OPTIONS.spell		= "Mostra avvisi per $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.ends			= "Mostra avviso al termine di $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget	= "Mostra avviso al termine di $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.fades		= "Mostra avviso allo svanire di $spell:%s"
+L.AUTO_ANNOUNCE_OPTIONS.fadesoon		= "Mostra avviso quando $spell:%s sta per svanire"
 L.AUTO_ANNOUNCE_OPTIONS.addsleft		= "Annuncia la quantità di $spell:%s rimanenti"
 L.AUTO_ANNOUNCE_OPTIONS.cast			= "Mostra avviso al cast di $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption

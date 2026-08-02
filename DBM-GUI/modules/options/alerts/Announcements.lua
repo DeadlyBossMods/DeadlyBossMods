@@ -43,35 +43,7 @@ end)
 local isNewDropdown = FontDropDown.mytype == "dropdown2"
 FontDropDown:SetPoint("TOPLEFT", check6, "BOTTOMLEFT", isNewDropdown and 5 or 0, isNewDropdown and -15 or -10)
 
--- RaidWarn Font Style
-local FontStyles = {
-	{
-		text	= L.None,
-		value	= "None"
-	},
-	{
-		text	= L.Outline,
-		value	= "OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.ThickOutline,
-		value	= "THICKOUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE",
-		flag	= true
-	}
-}
-
-local FontStyleDropDown = raidwarnoptions:CreateDropdown(L.FontStyle, FontStyles, "DBM", "WarningFontStyle", function(value)
+local FontStyleDropDown = raidwarnoptions:CreateFontDropdown(L.FontStyle, "DBM", "WarningFontStyle", function(value)
 	DBM.Options.WarningFontStyle = value
 	DBM:UpdateWarningOptions()
 	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
@@ -113,24 +85,20 @@ end)
 RaidWarnSoundDropDown:SetPoint("TOPLEFT", FontStyleDropDown, "BOTTOMLEFT", 0, isNewDropdown and -15 or -10)
 
 -- RaidWarn Font Size
-local fontSizeSlider = raidwarnoptions:CreateSlider(L.FontSize, 8, 60, 1, 200)
-fontSizeSlider:SetPoint("TOPLEFT", RaidWarnSoundDropDown, "BOTTOMLEFT", isNewDropdown and 5 or 20, -20)
-fontSizeSlider:SetValue(DBM.Options.WarningFontSize)
-fontSizeSlider:HookScript("OnValueChanged", function(self)
-	DBM.Options.WarningFontSize = self:GetValue()
+local fontSizeSlider = raidwarnoptions:CreateSlider(L.FontSize, 8, 60, 1, 200, DBM.Options.WarningFontSize, function(value)
+	DBM.Options.WarningFontSize = value
 	DBM:UpdateWarningOptions()
 	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
+fontSizeSlider:SetPoint("TOPLEFT", RaidWarnSoundDropDown, "BOTTOMLEFT", isNewDropdown and 5 or 20, -20)
 
 -- RaidWarn Duration
-local durationSlider = raidwarnoptions:CreateSlider(L.Warn_Duration, 1, 10, 0.5, 200)
-durationSlider:SetPoint("TOPLEFT", fontSizeSlider, "BOTTOMLEFT", 0, -30)
-durationSlider:SetValue(DBM.Options.WarningDuration2)
-durationSlider:HookScript("OnValueChanged", function(self)
-	DBM.Options.WarningDuration2 = self:GetValue()
+local durationSlider = raidwarnoptions:CreateSlider(L.Warn_Duration, 1, 10, 0.5, 200, DBM.Options.WarningDuration2, function(value)
+	DBM.Options.WarningDuration2 = value
 	DBM:UpdateWarningOptions()
 	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
+durationSlider:SetPoint("TOPLEFT", fontSizeSlider, "BOTTOMLEFT", 0, -35)
 
 local movemebutton = raidwarnoptions:CreateButton(L.MoveMe, 100, 16)
 movemebutton:SetPoint("TOPRIGHT", raidwarnoptions.frame, "TOPRIGHT", -2, -4)
@@ -153,7 +121,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.WarningAlphabetical = DBM.DefaultOptions.WarningAlphabetical
 	DBM.Options.WarningShortText = DBM.DefaultOptions.WarningShortText
 	DBM.Options.WarningFont = DBM.DefaultOptions.WarningFont
-	DBM.Options.FontStyles = DBM.DefaultOptions.FontStyles
+	DBM.Options.WarningFontStyle = DBM.DefaultOptions.WarningFontStyle
 	DBM.Options.WarningFontSize = DBM.DefaultOptions.WarningFontSize
 	DBM.Options.WarningDuration2 = DBM.DefaultOptions.WarningDuration2
 	DBM.Options.WarningFontShadow = DBM.DefaultOptions.WarningFontShadow
@@ -171,7 +139,7 @@ resetbutton:SetScript("OnClick", function()
 		check6:SetChecked(DBM.Options.WarningShortText)
 	end
 	FontDropDown:SetSelectedValue(DBM.Options.WarningFont)
-	FontStyleDropDown:SetSelectedValue(DBM.Options.FontStyles)
+	FontStyleDropDown:SetSelectedValue(DBM.Options.WarningFontStyle)
 	fontSizeSlider:SetValue(DBM.DefaultOptions.WarningFontSize)
 	durationSlider:SetValue(DBM.DefaultOptions.WarningDuration2)
 	FontShadow:SetChecked(DBM.Options.WarningFontShadow)

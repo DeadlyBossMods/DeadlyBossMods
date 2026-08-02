@@ -70,33 +70,6 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	}
 })
 
-local FontStyles = {
-	{
-		text	= L.None,
-		value	= "None"
-	},
-	{
-		text	= L.Outline,
-		value	= "OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.ThickOutline,
-		value	= "THICKOUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE",
-		flag	= true
-	},
-	{
-		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE",
-		flag	= true
-	}
-}
-
 -----------------------------------
 --  Personal Aura Frame  --
 -----------------------------------
@@ -141,43 +114,35 @@ end)
 personalAuraGrowDir:SetPoint("TOPLEFT", personalAuraBorder, "BOTTOMLEFT", 0, -20)
 personalAuraGrowDir.myheight = 30
 
-local personalSpacing = personalAuraArea:CreateSlider(L.SetPAIconSpacing, -2, 5, 1, 150)
-personalSpacing:SetPoint("TOPLEFT", personalAuraGrowDir, "TOPLEFT", 180, 0)
-personalSpacing:SetValue(DBM.Options.PrivateAurasPlayerSpacing2)
-personalSpacing:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasPlayerSpacing2 = self:GetValue()
+local personalSpacing = personalAuraArea:CreateSlider(L.SetPAIconSpacing, -2, 5, 1, 150, DBM.Options.PrivateAurasPlayerSpacing2, function(value)
+	DBM.Options.PrivateAurasPlayerSpacing2 = value
 	OnAuraSettingsChange(true)
 end)
+personalSpacing:SetPoint("TOPLEFT", personalAuraGrowDir, "TOPLEFT", 180, 0)
 personalSpacing.myheight = 0
 
-local personalAuraIconScale = personalAuraArea:CreateSlider(L.SetPAIconScale, 25, 150, 1, 150)
-personalAuraIconScale:SetPoint("TOPLEFT", personalAuraGrowDir, "TOPLEFT", 0, -50)
-personalAuraIconScale:SetValue(DBM.Options.PrivateAurasPlayerWidth)
-personalAuraIconScale:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasPlayerWidth = self:GetValue()
-	DBM.Options.PrivateAurasPlayerHeight = self:GetValue()
+local personalAuraIconScale = personalAuraArea:CreateSlider(L.SetPAIconScale, 25, 150, 1, 150, DBM.Options.PrivateAurasPlayerWidth, function(value)
+	DBM.Options.PrivateAurasPlayerWidth = value
+	DBM.Options.PrivateAurasPlayerHeight = value
 	OnAuraSettingsChange(true)
 end)
+personalAuraIconScale:SetPoint("TOPLEFT", personalAuraGrowDir, "TOPLEFT", 0, -50)
 personalAuraIconScale.myheight = 50
 
-local personalAuraMaxIcons = personalAuraArea:CreateSlider(L.SetPAMaxIcons, 1, 10, 1, 150)
-personalAuraMaxIcons:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 180, 0)
-personalAuraMaxIcons:SetValue(DBM.Options.PrivateAurasPlayerLimit)
-personalAuraMaxIcons:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasPlayerLimit = self:GetValue()
+local personalAuraMaxIcons = personalAuraArea:CreateSlider(L.SetPAMaxIcons, 1, 10, 1, 150, DBM.Options.PrivateAurasPlayerLimit, function(value)
+	DBM.Options.PrivateAurasPlayerLimit = value
 	OnAuraSettingsChange(true)
 end)
+personalAuraMaxIcons:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 180, 0)
 personalAuraMaxIcons.myheight = 0
 
 local personalAuraStackScale
 if not isAuraTracking121 then
-	personalAuraStackScale = personalAuraArea:CreateSlider(L.SetPAStackScale, 1, 10, 1, 150)
-	personalAuraStackScale:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 0, -50)
-	personalAuraStackScale:SetValue(DBM.Options.PrivateAurasPlayerScale)
-	personalAuraStackScale:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasPlayerScale = self:GetValue()
+	personalAuraStackScale = personalAuraArea:CreateSlider(L.SetPAStackScale, 1, 10, 1, 150, DBM.Options.PrivateAurasPlayerScale, function(value)
+		DBM.Options.PrivateAurasPlayerScale = value
 		OnAuraSettingsChange(true)
 	end)
+	personalAuraStackScale:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 0, -50)
 	personalAuraStackScale.myheight = 50
 end
 
@@ -205,28 +170,24 @@ if isAuraTracking121 then
 	end)
 	personalAuraFontDropDown:SetPoint("TOPLEFT", personalAuraIconScale, "TOPLEFT", 0, -50)
 
-	personalAuraFontStyleDropDown = personalAuraArea:CreateDropdown(L.FontStyle, FontStyles, "DBM", "PrivateAurasPlayerTextFontStyle", function(value)
+	personalAuraFontStyleDropDown = personalAuraArea:CreateFontDropdown(L.FontStyle, "DBM", "PrivateAurasPlayerTextFontStyle", function(value)
 		DBM.Options.PrivateAurasPlayerTextFontStyle = value
 		OnAuraSettingsChange(true)
 	end)
 	personalAuraFontStyleDropDown:SetPoint("LEFT", personalAuraFontDropDown, "RIGHT", 25, 0)
 	personalAuraFontStyleDropDown.myheight = 0
 
-	personalAuraDurationFontSize = personalAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150)
+	personalAuraDurationFontSize = personalAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasPlayerDurationFontSize, function(value)
+		DBM.Options.PrivateAurasPlayerDurationFontSize = value
+		OnAuraSettingsChange(true)
+	end)
 	personalAuraDurationFontSize:SetPoint("TOPLEFT", personalAuraFontDropDown, "TOPLEFT", 20, -50)
-	personalAuraDurationFontSize:SetValue(DBM.Options.PrivateAurasPlayerDurationFontSize)
-	personalAuraDurationFontSize:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasPlayerDurationFontSize = self:GetValue()
-		OnAuraSettingsChange(true)
-	end)
 
-	personalAuraStackFontSize = personalAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150)
-	personalAuraStackFontSize:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", 180, 0)
-	personalAuraStackFontSize:SetValue(DBM.Options.PrivateAurasPlayerStackFontSize)
-	personalAuraStackFontSize:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasPlayerStackFontSize = self:GetValue()
+	personalAuraStackFontSize = personalAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasPlayerStackFontSize, function(value)
+		DBM.Options.PrivateAurasPlayerStackFontSize = value
 		OnAuraSettingsChange(true)
 	end)
+	personalAuraStackFontSize:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", 180, 0)
 	personalAuraStackFontSize.myheight = 0
 
 	personalAuraShowStacks = personalAuraArea:CreateCheckButton(L.AuraShowStacks, true, nil, "PrivateAurasPlayerShowStacks")
@@ -256,34 +217,28 @@ if isAuraTracking121 then
 	personalAuraStackColor:SetPoint("TOPLEFT", personalAuraShowStacks, "TOPLEFT", 0, -45)
 	personalAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasPlayerStackColor.r, DBM.Options.PrivateAurasPlayerStackColor.g, DBM.Options.PrivateAurasPlayerStackColor.b)
 
-	personalAuraStackXOffset = personalAuraArea:CreateSlider(L.Slider_TextOffSetX, -20, 20, 1, 150)
+	personalAuraStackXOffset = personalAuraArea:CreateSlider(L.Slider_TextOffSetX, -20, 20, 1, 150, DBM.Options.PrivateAurasPlayerStackXOffset, function(value)
+		DBM.Options.PrivateAurasPlayerStackXOffset = value
+		OnAuraSettingsChange(true)
+	end)
 	personalAuraStackXOffset:SetPoint("TOPLEFT", personalAuraStackColor, "TOPLEFT", 130, 0)
-	personalAuraStackXOffset:SetValue(DBM.Options.PrivateAurasPlayerStackXOffset)
-	personalAuraStackXOffset:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasPlayerStackXOffset = self:GetValue()
-		OnAuraSettingsChange(true)
-	end)
 
-	personalAuraStackYOffset = personalAuraArea:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 150)
-	personalAuraStackYOffset:SetPoint("TOPLEFT", personalAuraStackXOffset, "TOPLEFT", 180, 0)
-	personalAuraStackYOffset:SetValue(DBM.Options.PrivateAurasPlayerStackYOffset)
-	personalAuraStackYOffset:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasPlayerStackYOffset = self:GetValue()
+	personalAuraStackYOffset = personalAuraArea:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 150, DBM.Options.PrivateAurasPlayerStackYOffset, function(value)
+		DBM.Options.PrivateAurasPlayerStackYOffset = value
 		OnAuraSettingsChange(true)
 	end)
+	personalAuraStackYOffset:SetPoint("TOPLEFT", personalAuraStackXOffset, "TOPLEFT", 180, 0)
 	personalAuraStackYOffset.myheight = 0
 	personalAuraStackColor.myheight = 50
 end
 
 local personalAuraTextMesssageScale
 if not isAuraTracking121 then
-	personalAuraTextMesssageScale = personalAuraArea:CreateSlider(L.SetPATextScale, 0.5, 5, 0.1, 150)
-	personalAuraTextMesssageScale:SetPoint("TOPLEFT", personalAuraStackScale, "TOPLEFT", 180, 0)
-	personalAuraTextMesssageScale:SetValue(DBM.Options.PrivateAurasTextAnchorScale)
-	personalAuraTextMesssageScale:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasTextAnchorScale = self:GetValue()
+	personalAuraTextMesssageScale = personalAuraArea:CreateSlider(L.SetPATextScale, 0.5, 5, 0.1, 150, DBM.Options.PrivateAurasTextAnchorScale, function(value)
+		DBM.Options.PrivateAurasTextAnchorScale = value
 		OnAuraSettingsChange(true)
 	end)
+	personalAuraTextMesssageScale:SetPoint("TOPLEFT", personalAuraStackScale, "TOPLEFT", 180, 0)
 	personalAuraTextMesssageScale.myheight = 0
 end
 
@@ -418,43 +373,35 @@ end)
 coTankGrowDir:SetPoint("TOPLEFT", coTankAuraBorder, "BOTTOMLEFT", 0, -20)
 coTankGrowDir.myheight = 30
 
-local coTankSpacing = coTankAuraArea:CreateSlider(L.SetPAIconSpacing, -2, 5, 1, 150)
-coTankSpacing:SetPoint("TOPLEFT", coTankGrowDir, "TOPLEFT", 180, 0)
-coTankSpacing:SetValue(DBM.Options.PrivateAurasCoTankSpacing2)
-coTankSpacing:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasCoTankSpacing2 = self:GetValue()
+local coTankSpacing = coTankAuraArea:CreateSlider(L.SetPAIconSpacing, -2, 5, 1, 150, DBM.Options.PrivateAurasCoTankSpacing2, function(value)
+	DBM.Options.PrivateAurasCoTankSpacing2 = value
 	OnAuraSettingsChange(false)
 end)
+coTankSpacing:SetPoint("TOPLEFT", coTankGrowDir, "TOPLEFT", 180, 0)
 coTankSpacing.myheight = 0
 
-local coTankIconScale = coTankAuraArea:CreateSlider(L.SetPAIconScale, 50, 150, 1, 150)
-coTankIconScale:SetPoint("TOPLEFT", coTankGrowDir, "TOPLEFT", 0, -50)
-coTankIconScale:SetValue(DBM.Options.PrivateAurasCoTankWidth)
-coTankIconScale:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasCoTankWidth = self:GetValue()
-	DBM.Options.PrivateAurasCoTankHeight = self:GetValue()
+local coTankIconScale = coTankAuraArea:CreateSlider(L.SetPAIconScale, 50, 150, 1, 150, DBM.Options.PrivateAurasCoTankWidth, function(value)
+	DBM.Options.PrivateAurasCoTankWidth = value
+	DBM.Options.PrivateAurasCoTankHeight = value
 	OnAuraSettingsChange(false)
 end)
+coTankIconScale:SetPoint("TOPLEFT", coTankGrowDir, "TOPLEFT", 0, -50)
 coTankIconScale.myheight = 50
 
-local coTankAuraMaxIcons = coTankAuraArea:CreateSlider(L.SetPAMaxIcons, 1, 10, 1, 150)
-coTankAuraMaxIcons:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 180, 0)
-coTankAuraMaxIcons:SetValue(DBM.Options.PrivateAurasCoTankLimit)
-coTankAuraMaxIcons:HookScript("OnValueChanged", function(self)
-	DBM.Options.PrivateAurasCoTankLimit = self:GetValue()
+local coTankAuraMaxIcons = coTankAuraArea:CreateSlider(L.SetPAMaxIcons, 1, 10, 1, 150, DBM.Options.PrivateAurasCoTankLimit, function(value)
+	DBM.Options.PrivateAurasCoTankLimit = value
 	OnAuraSettingsChange(false)
 end)
+coTankAuraMaxIcons:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 180, 0)
 coTankAuraMaxIcons.myheight = 0
 
 local coTankStackScale
 if not isAuraTracking121 then
-	coTankStackScale = coTankAuraArea:CreateSlider(L.SetPAStackScale, 1, 10, 1, 150)
-	coTankStackScale:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 0, -50)
-	coTankStackScale:SetValue(DBM.Options.PrivateAurasCoTankScale)
-	coTankStackScale:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasCoTankScale = self:GetValue()
+	coTankStackScale = coTankAuraArea:CreateSlider(L.SetPAStackScale, 1, 10, 1, 150, DBM.Options.PrivateAurasCoTankScale, function(value)
+		DBM.Options.PrivateAurasCoTankScale = value
 		OnAuraSettingsChange(false)
 	end)
+	coTankStackScale:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 0, -50)
 end
 
 local coTankAuraFontDropDown
@@ -481,28 +428,24 @@ if isAuraTracking121 then
 	end)
 	coTankAuraFontDropDown:SetPoint("TOPLEFT", coTankIconScale, "TOPLEFT", 0, -50)
 
-	coTankAuraFontStyleDropDown = coTankAuraArea:CreateDropdown(L.FontStyle, FontStyles, "DBM", "PrivateAurasCoTankTextFontStyle", function(value)
+	coTankAuraFontStyleDropDown = coTankAuraArea:CreateFontDropdown(L.FontStyle, "DBM", "PrivateAurasCoTankTextFontStyle", function(value)
 		DBM.Options.PrivateAurasCoTankTextFontStyle = value
 		OnAuraSettingsChange(false)
 	end)
 	coTankAuraFontStyleDropDown:SetPoint("LEFT", coTankAuraFontDropDown, "RIGHT", 25, 0)
 	coTankAuraFontStyleDropDown.myheight = 0
 
-	coTankAuraDurationFontSize = coTankAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150)
+	coTankAuraDurationFontSize = coTankAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankDurationFontSize, function(value)
+		DBM.Options.PrivateAurasCoTankDurationFontSize = value
+		OnAuraSettingsChange(false)
+	end)
 	coTankAuraDurationFontSize:SetPoint("TOPLEFT", coTankAuraFontDropDown, "TOPLEFT", 20, -50)
-	coTankAuraDurationFontSize:SetValue(DBM.Options.PrivateAurasCoTankDurationFontSize)
-	coTankAuraDurationFontSize:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasCoTankDurationFontSize = self:GetValue()
-		OnAuraSettingsChange(false)
-	end)
 
-	coTankAuraStackFontSize = coTankAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150)
-	coTankAuraStackFontSize:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", 180, 0)
-	coTankAuraStackFontSize:SetValue(DBM.Options.PrivateAurasCoTankStackFontSize)
-	coTankAuraStackFontSize:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasCoTankStackFontSize = self:GetValue()
+	coTankAuraStackFontSize = coTankAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankStackFontSize, function(value)
+		DBM.Options.PrivateAurasCoTankStackFontSize = value
 		OnAuraSettingsChange(false)
 	end)
+	coTankAuraStackFontSize:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", 180, 0)
 	coTankAuraStackFontSize.myheight = 0
 
 	coTankAuraShowStacks = coTankAuraArea:CreateCheckButton(L.AuraShowStacks, true, nil, "PrivateAurasCoTankShowStacks")
@@ -532,21 +475,17 @@ if isAuraTracking121 then
 	coTankAuraStackColor:SetPoint("TOPLEFT", coTankAuraShowStacks, "TOPLEFT", 0, -45)
 	coTankAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasCoTankStackColor.r, DBM.Options.PrivateAurasCoTankStackColor.g, DBM.Options.PrivateAurasCoTankStackColor.b)
 
-	coTankAuraStackXOffset = coTankAuraArea:CreateSlider(L.Slider_TextOffSetX, -20, 20, 1, 150)
+	coTankAuraStackXOffset = coTankAuraArea:CreateSlider(L.Slider_TextOffSetX, -20, 20, 1, 150, DBM.Options.PrivateAurasCoTankStackXOffset, function(value)
+		DBM.Options.PrivateAurasCoTankStackXOffset = value
+		OnAuraSettingsChange(false)
+	end)
 	coTankAuraStackXOffset:SetPoint("TOPLEFT", coTankAuraStackColor, "TOPLEFT", 130, 0)
-	coTankAuraStackXOffset:SetValue(DBM.Options.PrivateAurasCoTankStackXOffset)
-	coTankAuraStackXOffset:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasCoTankStackXOffset = self:GetValue()
-		OnAuraSettingsChange(false)
-	end)
 
-	coTankAuraStackYOffset = coTankAuraArea:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 150)
-	coTankAuraStackYOffset:SetPoint("TOPLEFT", coTankAuraStackXOffset, "TOPLEFT", 180, 0)
-	coTankAuraStackYOffset:SetValue(DBM.Options.PrivateAurasCoTankStackYOffset)
-	coTankAuraStackYOffset:HookScript("OnValueChanged", function(self)
-		DBM.Options.PrivateAurasCoTankStackYOffset = self:GetValue()
+	coTankAuraStackYOffset = coTankAuraArea:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 150, DBM.Options.PrivateAurasCoTankStackYOffset, function(value)
+		DBM.Options.PrivateAurasCoTankStackYOffset = value
 		OnAuraSettingsChange(false)
 	end)
+	coTankAuraStackYOffset:SetPoint("TOPLEFT", coTankAuraStackXOffset, "TOPLEFT", 180, 0)
 	coTankAuraStackYOffset.myheight = 0
 	coTankAuraStackColor.myheight = 50
 end

@@ -21,27 +21,20 @@ end)
 
 -- Functions for bar setup
 local function createDBTOnValueChangedHandler(option)
-	return function(self)
-		DBT:SetOption(option, self:GetValue())
-		self:SetValue(DBT.Options[option])
+	return function(value)
+		DBT:SetOption(option, value)
 	end
 end
 
-local DecimalSlider = BarBehaviors:CreateSlider(L.Bar_Decimal, 1, 60, 1)
+local DecimalSlider = BarBehaviors:CreateSlider(L.Bar_Decimal, 1, 60, 1, nil, DBT.Options.TDecimal, createDBTOnValueChangedHandler("TDecimal"))
 DecimalSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -25)
-DecimalSlider:SetValue(DBT.Options.TDecimal)
-DecimalSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("TDecimal"))
 
-local EnlargeTimeSlider = BarBehaviors:CreateSlider(L.Bar_EnlargeTime, 6, 30, 1)
+local EnlargeTimeSlider = BarBehaviors:CreateSlider(L.Bar_EnlargeTime, 6, 30, 1, nil, DBT.Options.EnlargeBarTime, createDBTOnValueChangedHandler("EnlargeBarTime"))
 EnlargeTimeSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 230, -25)
-EnlargeTimeSlider:SetValue(DBT.Options.EnlargeBarTime)
-EnlargeTimeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarTime"))
 EnlargeTimeSlider.myheight = 0
 
-local BarsHiddenSlider = BarBehaviors:CreateSlider(L.Bar_AppearTime, 30, 300, 1)
+local BarsHiddenSlider = BarBehaviors:CreateSlider(L.Bar_AppearTime, 30, 300, 1, nil, DBT.Options.HiddenBarTime, createDBTOnValueChangedHandler("HiddenBarTime"))
 BarsHiddenSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -75)
-BarsHiddenSlider:SetValue(DBT.Options.HiddenBarTime)
-BarsHiddenSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HiddenBarTime"))
 
 local HiddenBarsToggle = BarBehaviors:CreateCheckButton(L.Bar_HideLongBars, true, nil, nil, "HideLongBars")
 HiddenBarsToggle:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -65)

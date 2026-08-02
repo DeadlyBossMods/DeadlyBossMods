@@ -296,8 +296,13 @@ L.SLASHCMD_HELP2						= {--AI translated (it's fine)
 	"/range <number> или /distance <number>: Показывает фрейм диапазона. /rrange или /rdistance для изменения цветов.",
 	"/hudar <number>: Показывает HUD для определения расстояния.",
 	"/dbm arrow: Показывает стрелку " .. L.DBM .. ", подробности в разделе '/dbm arrow help'.",
-	"/dbm hud: Показывает HUD " .. L.DBM .. ", подробности в разделе '/dbm hud'."
+	"/dbm hud: Показывает HUD " .. L.DBM .. ", подробности в разделе '/dbm hud'.",
+	"/dbm dbtdebug: Показывает очищенную диагностику таймеров строк состояния для отчётов об ошибках."
 }
+L.DBT_DEBUG_HEADER					= "Диагностика DBT (очищено; без текста боя или секретного текста)"
+L.DBT_DEBUG_EMPTY					= "С момента перезагрузки интерфейса не было зафиксировано обновлений стиля DBT."
+L.DBT_DEBUG_DISABLED					= "Сбор данных отключён. Включите режим отладки DBM перед воспроизведением проблемы."
+L.DBT_DEBUG_NOTICE					= "Пожалуйста, приложите этот вывод чата к отчёту об ошибке."
 L.TIMER_USAGE = {
 	L.DBM .. " команды таймера:",
 	"-----------------",
@@ -343,6 +348,7 @@ L.AUTO_ANNOUNCE_TEXTS.incomingcount	= "%s получает дебафф (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends			= "%s заканчивается"
 L.AUTO_ANNOUNCE_TEXTS.endtarget		= "%s заканчивается: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.fades			= "%s спадает"
+L.AUTO_ANNOUNCE_TEXTS.fadesoon		= "%s скоро спадёт"
 L.AUTO_ANNOUNCE_TEXTS.addsleft		= "Осталось %s: %%d"
 L.AUTO_ANNOUNCE_TEXTS.cast 			= "Применение заклинания %s: %.1f сек."
 L.AUTO_ANNOUNCE_TEXTS.soon 			= "Скоро %s"
@@ -370,6 +376,7 @@ L.AUTO_ANNOUNCE_OPTIONS.incomingcount	= "Объявлять (со счётчик
 L.AUTO_ANNOUNCE_OPTIONS.ends			= "Предупреждать об окончании $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget		= "Предупреждать об окончании $spell:%s (с целью)"
 L.AUTO_ANNOUNCE_OPTIONS.fades			= "Предупреждать о спадении $spell:%s"
+L.AUTO_ANNOUNCE_OPTIONS.fadesoon		= "Заранее предупреждать, когда $spell:%s исчезнет"
 L.AUTO_ANNOUNCE_OPTIONS.addsleft		= "Объявлять, сколько осталось $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.cast 			= "Предупреждать о применении заклинания $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.soon 			= prewarnOption

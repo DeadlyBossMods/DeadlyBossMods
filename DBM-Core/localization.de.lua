@@ -277,9 +277,14 @@ L.SLASHCMD_HELP2				= {
 	"/range <number> oder /distance <number>: Zeige Abstandsfenster. /rrange oder /rdistance um die Farben zu invertieren.",
 	"/hudar <number>: Zeige HudMap-basierenden Abstandssucher.",
 	"/dbm arrow: Zeigt den DBM-Pfeil, siehe '/dbm arrow help' für Details.",
-	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details."
+	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details.",
+	"/dbm dbtdebug: Zeigt bereinigte Statusleisten-Diagnosen für Fehlerberichte."
 
 }
+L.DBT_DEBUG_HEADER			= "DBT-Diagnosen (bereinigt; keine Begegnungs- oder Geheimtexte)"
+L.DBT_DEBUG_EMPTY			= "Seit dem Neuladen des Interfaces wurden keine DBT-Stilaktualisierungen erfasst."
+L.DBT_DEBUG_DISABLED			= "Die Erfassung ist deaktiviert. Aktiviere den DBM-Debug-Modus, bevor du das Problem reproduzierst."
+L.DBT_DEBUG_NOTICE			= "Bitte füge diese Chat-Ausgabe deinem Fehlerbericht bei."
 L.TIMER_USAGE	= {
 	L.DBM .. "-Timer Kommandos:",
 	"-----------------",
@@ -323,6 +328,7 @@ L.AUTO_ANNOUNCE_TEXTS.incomingcount	= "%s eingehender Debuff (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends 			= "%s ist beendet"
 L.AUTO_ANNOUNCE_TEXTS.endtarget		= "%s ist beendet: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.fades			= "%s ist beendet"
+L.AUTO_ANNOUNCE_TEXTS.fadesoon		= "%s endet in Kürze"
 L.AUTO_ANNOUNCE_TEXTS.addsleft		= "%s verbleibend: %%d"
 L.AUTO_ANNOUNCE_TEXTS.cast			= "Wirkt %s: %.1f Sek"
 L.AUTO_ANNOUNCE_TEXTS.soon			= "%s bald"
@@ -349,6 +355,7 @@ L.AUTO_ANNOUNCE_OPTIONS.incomingcount	= "Zeige Warnung (mit Zähler), wenn $spel
 L.AUTO_ANNOUNCE_OPTIONS.ends			= "Zeige Warnung, wenn $spell:%s beendet ist"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget		= "Zeige Warnung, wenn $spell:%s beendet ist"
 L.AUTO_ANNOUNCE_OPTIONS.fades			= "Zeige Warnung, wenn $spell:%s beendet ist"
+L.AUTO_ANNOUNCE_OPTIONS.fadesoon		= "Zeige Vorwarnung für das Ende von $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.addsleft		= "Verkünde die Anzahl der verbleibenden $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.cast			= "Zeige Warnung, wenn $spell:%s gewirkt wird"
 L.AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption

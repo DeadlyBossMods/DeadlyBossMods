@@ -162,7 +162,7 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 		self:GroupSpellsPA(groupSpellId or optionId, "PrivateAuraSound" .. optionId)
 --	end
 	self:SetOptionCategory("PrivateAuraSound" .. optionId, "paura", nil, nil, true)
-	-- Store for zone-based registration in SecondaryLoadCheck, keyed by exact zone IDs captured from SetZone at option registration time.
+	-- Store for zone-based registration in Loading's SecondaryLoadCheck, keyed by exact zone IDs captured from SetZone at option registration time.
 	if voice then
 		if self.zones then
 			-- C_UnitAuras accepts one voice/trigger combination per registration. To support sounds on
