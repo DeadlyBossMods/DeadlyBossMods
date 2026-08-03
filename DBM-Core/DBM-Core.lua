@@ -146,7 +146,6 @@ local loadcIds, oocBWComms, raid, queuedBattlefield = {}, {}, {}, {}
 private.loadcIds = loadcIds
 local bossIds, autoRespondSpam, bossHealth, bossHealthuIdCache = private.combatDetectionState.bossIds, private.combatDetectionState.autoRespondSpam, private.combatDetectionState.bossHealth, private.combatDetectionState.bossHealthuIdCache
 local inCombat = private.combatDetectionState.inCombat ---@type DBMMod[]
-local combatInfo = private.combatDetectionState.combatInfo ---@type table<integer, CombatInfo[]>
 local inCombatTrash = {}
 -- False variables
 local timerRequestInProgress = false
