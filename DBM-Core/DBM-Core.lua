@@ -146,7 +146,6 @@ local loadcIds, oocBWComms, raid, queuedBattlefield = {}, {}, {}, {}
 private.loadcIds = loadcIds
 local bossIds, autoRespondSpam, bossHealth, bossHealthuIdCache = private.combatDetectionState.bossIds, private.combatDetectionState.autoRespondSpam, private.combatDetectionState.bossHealth, private.combatDetectionState.bossHealthuIdCache
 local inCombat = private.combatDetectionState.inCombat ---@type DBMMod[]
-local combatInfo = private.combatDetectionState.combatInfo ---@type table<integer, CombatInfo[]>
 local inCombatTrash = {}
 -- False variables
 local timerRequestInProgress = false
@@ -4382,16 +4381,18 @@ end
 AddMsg = DBM.AddMsg
 
 do
-	local demoDuration = 62
+	local demoDuration
 	local testMod
 	local testWarning1, testWarning2, testWarning3
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
 	local testSpecialWarning1, testSpecialWarning2, testSpecialWarning3
 	function DBM:DemoMode(forceOld)
 		if self:IsPostMidnight() and not forceOld then
+			demoDuration = 26
 			--Run the encounter timeline demo mode instead of DBM test Bars
 			C_EncounterTimeline.AddEditModeEvents()
 		else
+			demoDuration = 62
 			fireEvent("DBM_TestModStarted")
 			if not testMod then
 				---@class DBMModTestMod: DBMMod
