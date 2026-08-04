@@ -341,9 +341,11 @@ function PanelPrototype:CreateSlider(text, low, high, step, width, value, callba
 
 	local editbox = CreateFrame("EditBox", nil, slider, "InputBoxVisualTemplate")
 	editbox:SetAutoFocus(false)
+	editbox:SetJustifyH("CENTER")
 	editbox:SetPoint("TOP", slider, "BOTTOM", 0, -1)
 	editbox:SetHeight(14)
 	editbox:SetWidth(40)
+	editbox:SetTextInsets(0, 3, 0, 0)
 	editbox:SetScript("OnEscapePressed", function(self)
 		self:ClearFocus()
 	end)
