@@ -170,7 +170,7 @@ end)
 
 local resizeHeight = resizeOptions:CreateEditBox(L.Editbox_WindowHeight, math.floor(DBM.Options.GUIHeight * 10 ^ 2 + 0.5) / 10 ^ 2)
 resizeHeight.myheight = 10
-resizeHeight:SetPoint("LEFT", resizeWidth, "RIGHT", 40, 0)
+resizeHeight:SetPoint("LEFT", resizeWidth, "RIGHT", 60, 0)
 resizeHeight:SetScript("OnChar", function(self)
 	self:SetText(self:GetText():gsub("[^%.%d]", ""))
 end)
