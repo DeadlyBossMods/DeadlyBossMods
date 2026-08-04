@@ -96,7 +96,7 @@ local Styles = {
 
 local StyleDropDown = BarSetup:CreateDropdown(L.BarStyle, Styles, "DBT", "BarStyle", function(value)
 	DBT:SetOption("BarStyle", value)
-end, 210)
+end, 140)
 StyleDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 280, -25)
 StyleDropDown.myheight = 0
 
@@ -125,7 +125,7 @@ local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
 
 local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, "DBT", "Texture", function(value)
 	DBT:SetOption("Texture", value)
-end)
+end, 140)
 TextureDropDown:SetPoint("TOPLEFT", StyleDropDown, "BOTTOMLEFT", 0, -15)
 TextureDropDown.myheight = 0
 
@@ -150,7 +150,7 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 
 local FontDropDown = BarSetup:CreateDropdown(L.FontType, Fonts, "DBT", "Font", function(value)
 	DBT:SetOption("Font", value)
-end)
+end, 140)
 FontDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -15)
 FontDropDown.myheight = 0
 
@@ -172,7 +172,7 @@ FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -140)
 
 local FontFlagDropDown = BarSetup:CreateFontDropdown(L.FontStyle, "DBT", "FontFlag", function(value)
 	DBT:SetOption("FontFlag", value)
-end)
+end, 140)
 FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, -15)
 FontFlagDropDown.myheight = 0
 
@@ -190,7 +190,7 @@ local iconPositions = {
 	{ text = CL.LEFT, value = 'LEFT' },
 	{ text = CL.RIGHT, value = 'RIGHT' }
 }
-local iconDropdown = BarSetup:CreateDropdown(L.BarIconPosition, iconPositions, nil, nil, onIconDropdownSelected, nil, nil, nil, nil, 'checkbox')
+local iconDropdown = BarSetup:CreateDropdown(L.BarIconPosition, iconPositions, nil, nil, onIconDropdownSelected, 140, nil, nil, nil, 'checkbox')
 iconDropdown:IsSelectedCallback(function(_, v)
 	if v.value == 'LEFT' then
 		return DBT.Options.IconLeft
@@ -213,7 +213,7 @@ local inlineIconOptions = {
 }
 local inlineIconsDropdown = BarSetup:CreateDropdown(L.InlineIconsDropdown, inlineIconOptions, "DBT", "JournalIcons", function(value)
 	DBT:SetOption("JournalIcons", value)
-end)
+end, 140)
 inlineIconsDropdown:SetPoint("TOPLEFT", iconDropdown, "BOTTOMLEFT", 0, -15)
 inlineIconsDropdown.myheight = 0
 
@@ -241,7 +241,7 @@ end
 if #skins > 1 then
 	local BarSkin = BarSetup:CreateDropdown(L.BarSkin, skins, "DBT", "Skin", function(value)
 		DBT:SetSkin(value)
-	end, 210)
+	end, 140)
 	BarSkin:SetPoint("TOPLEFT", DisableBarFade, "BOTTOMLEFT", 0, -10)
 	BarSkin.myheight = 45
 end
