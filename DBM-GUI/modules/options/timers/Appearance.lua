@@ -97,7 +97,7 @@ local Styles = {
 local StyleDropDown = BarSetup:CreateDropdown(L.BarStyle, Styles, "DBT", "BarStyle", function(value)
 	DBT:SetOption("BarStyle", value)
 end, 210)
-StyleDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 230, -25)
+StyleDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 280, -25)
 StyleDropDown.myheight = 0
 
 local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
