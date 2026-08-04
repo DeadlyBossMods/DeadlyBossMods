@@ -284,8 +284,14 @@ end
 function PanelPrototype:CreateSlider(text, low, high, step, width, value, callbackFn)
 	value = value or 0
 
+	local editboxText
 	local function UpdateSliderText(self)
-		self.editbox:SetText(mfloor((self.value or 0) * 100 + 0.5) / 100)
+		local value = mfloor((self.value or 0) * 100 + 0.5) / 100
+		self.editbox:SetText(value)
+		local textWidth = editboxText and editboxText:GetStringWidth() or 0
+		textWidth = mmax(textWidth, #tostring(value) * 7)
+		local leftInset, rightInset = self.editbox:GetTextInsets()
+		self.editbox:SetWidth(mmax(16, mmin(textWidth + (leftInset or 0) + (rightInset or 0) + 2, 45)))
 	end
 
 	---@class DBMPanelSlider: Slider, BackdropTemplate
@@ -355,6 +361,13 @@ function PanelPrototype:CreateSlider(text, low, high, step, width, value, callba
 		end
 	end)
 	slider.editbox = editbox
+	for i = 1, editbox:GetNumRegions() do
+		local region = select(i, editbox:GetRegions())
+		if region and region:GetObjectType() == "FontString" then
+			editboxText = region
+			break
+		end
+	end
 
 	slider:SetValue(value)
 	slider.value = value
