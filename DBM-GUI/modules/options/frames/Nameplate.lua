@@ -142,7 +142,7 @@ local iconAnchorPoint = style:CreateDropdown(L.NPIconAnchorPoint, anchors, "DBM"
 	DBM.Options.NPIconAnchorPoint = value
 	DBM.Nameplate:UpdateIconOptions()
 end)
-iconAnchorPoint:SetPoint("LEFT", iconGrowthDirection, "RIGHT", 110, 0)
+iconAnchorPoint:SetPoint("LEFT", iconGrowthDirection, "RIGHT", 25, 0)
 iconAnchorPoint.myheight = 0
 
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
