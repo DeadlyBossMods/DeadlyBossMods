@@ -4644,9 +4644,10 @@ do
 
 	--to check flag is correct, remove comment block specFlags table and GetRoleFlagValue function, change this to GetRoleFlagValue2
 	--disable flag check normally because double flag check comsumes more cpu on mod load.
+	---@param self DBMModOrDBM
 	---@param flag SpecFlags
 	---@return boolean
-	function bossModPrototype:GetRoleFlagValue(flag)
+	function DBM.GetRoleFlagValue(self, flag)
 		if not flag then return false end
 		if (not currentSpecID or currentSpecID == 0) then
 			DBM:SetCurrentSpecInfo()
@@ -4665,6 +4666,7 @@ do
 		end
 		return false
 	end
+	bossModPrototype.GetRoleFlagValue = DBM.GetRoleFlagValue
 
 	---@param uId playerUUIDs?
 	function bossModPrototype:IsMeleeDps(uId)
