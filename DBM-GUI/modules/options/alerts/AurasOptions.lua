@@ -157,13 +157,6 @@ local personalAuraShowStacks
 local personalAuraShowDispelBorder
 local personalAuraSort
 if isAuraTracking121 then
-	personalAuraSort = personalAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasPlayerSortMode", function(value)
-		DBM.Options.PrivateAurasPlayerSortMode = value
-		OnAuraSettingsChange(true)
-	end)
-	personalAuraSort:SetPoint("TOPLEFT", personalAuraMaxIcons, "TOPLEFT", 0, -50)
-	personalAuraSort.myheight = 0
-
 	personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "DBM", "PrivateAurasPlayerTextFont", function(value)
 		DBM.Options.PrivateAurasPlayerTextFont = value
 		OnAuraSettingsChange(true)
@@ -177,11 +170,18 @@ if isAuraTracking121 then
 	personalAuraFontStyleDropDown:SetPoint("LEFT", personalAuraFontDropDown, "RIGHT", 25, 0)
 	personalAuraFontStyleDropDown.myheight = 0
 
+	personalAuraSort = personalAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasPlayerSortMode", function(value)
+		DBM.Options.PrivateAurasPlayerSortMode = value
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraSort:SetPoint("TOPLEFT", personalAuraFontDropDown, "TOPLEFT", 0, -50)
+	personalAuraSort.myheight = 50
+
 	personalAuraDurationFontSize = personalAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasPlayerDurationFontSize, function(value)
 		DBM.Options.PrivateAurasPlayerDurationFontSize = value
 		OnAuraSettingsChange(true)
 	end)
-	personalAuraDurationFontSize:SetPoint("TOPLEFT", personalAuraFontDropDown, "TOPLEFT", 20, -50)
+	personalAuraDurationFontSize:SetPoint("TOPLEFT", personalAuraSort, "TOPLEFT", 20, -50)
 
 	personalAuraStackFontSize = personalAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasPlayerStackFontSize, function(value)
 		DBM.Options.PrivateAurasPlayerStackFontSize = value
@@ -415,13 +415,6 @@ local coTankAuraShowStacks
 local coTankAuraShowDispelBorder
 local coTankAuraSort
 if isAuraTracking121 then
-	coTankAuraSort = coTankAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasCoTankSortMode", function(value)
-		DBM.Options.PrivateAurasCoTankSortMode = value
-		OnAuraSettingsChange(false)
-	end)
-	coTankAuraSort:SetPoint("TOPLEFT", coTankAuraMaxIcons, "TOPLEFT", 0, -50)
-	coTankAuraSort.myheight = 0
-
 	coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM", "PrivateAurasCoTankTextFont", function(value)
 		DBM.Options.PrivateAurasCoTankTextFont = value
 		OnAuraSettingsChange(false)
@@ -435,11 +428,18 @@ if isAuraTracking121 then
 	coTankAuraFontStyleDropDown:SetPoint("LEFT", coTankAuraFontDropDown, "RIGHT", 25, 0)
 	coTankAuraFontStyleDropDown.myheight = 0
 
+	coTankAuraSort = coTankAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasCoTankSortMode", function(value)
+		DBM.Options.PrivateAurasCoTankSortMode = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraSort:SetPoint("TOPLEFT", coTankAuraFontDropDown, "TOPLEFT", 0, -50)
+	coTankAuraSort.myheight = 50
+
 	coTankAuraDurationFontSize = coTankAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankDurationFontSize, function(value)
 		DBM.Options.PrivateAurasCoTankDurationFontSize = value
 		OnAuraSettingsChange(false)
 	end)
-	coTankAuraDurationFontSize:SetPoint("TOPLEFT", coTankAuraFontDropDown, "TOPLEFT", 20, -50)
+	coTankAuraDurationFontSize:SetPoint("TOPLEFT", coTankAuraSort, "TOPLEFT", 20, -50)
 
 	coTankAuraStackFontSize = coTankAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankStackFontSize, function(value)
 		DBM.Options.PrivateAurasCoTankStackFontSize = value
