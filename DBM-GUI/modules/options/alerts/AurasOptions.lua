@@ -579,8 +579,9 @@ if isAuraTracking121 then
 				value = "",
 			},
 		}
+		local allowSelf = IsAltKeyDown()
 		for unit in DBM:GetGroupMembers() do
-			if not UnitIsUnit("player", unit) then
+			if allowSelf or not UnitIsUnit("player", unit) then
 				local name = DBM:GetUnitFullName(unit)
 				if name and name ~= excludedName then
 					table.insert(values, {
@@ -639,8 +640,8 @@ if isAuraTracking121 then
 	coTankSlot1Player:IsSelectedCallback(function(_, value)
 		return value.value == DBM.Options.PrivateAurasCoTankSlot1Player
 	end)
-	coTankSlot1Player:SetPoint("TOPLEFT", coTankNameYOffset, "BOTTOMLEFT", 0, -20)
-	coTankSlot1Player.myheight = 30
+	coTankSlot1Player:SetPoint("TOPLEFT", coTankNameYOffset, "BOTTOMLEFT", 0, -35)
+	coTankSlot1Player.myheight = 45
 
 	local coTankSlot2Player = coTankAdvancedArea:CreateDropdown(L.CoTankSlot2Player, function()
 		return GetCoTankRosterValues(DBM.Options.PrivateAurasCoTankSlot1Player)

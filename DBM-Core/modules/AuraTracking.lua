@@ -246,6 +246,16 @@ local function GetRowWidth(settings)
 	return math.max(width, (width * limit) + (spacing * math.max(limit - 1, 0)))
 end
 
+---@param settings DBMAuraSettings
+---@return number, number
+local function GetNameLabelOffsets(settings)
+	local xOffset = settings.NameXOffset
+	if settings.GrowDirection == "RIGHT" then
+		xOffset = xOffset + GetRowWidth(settings) - settings.Width
+	end
+	return xOffset, settings.NameYOffset
+end
+
 ---@param frame Frame
 ---@param settings table
 ---@param index integer
@@ -460,8 +470,9 @@ local function UpdateContainerNameLabel(state, settings, unit)
 		state.nameLabel = state.anchor:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	end
 	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
+	local xOffset, yOffset = GetNameLabelOffsets(settings)
 	state.nameLabel:ClearAllPoints()
-	state.nameLabel:SetPoint("BOTTOM", state.anchor, "TOP", settings.NameXOffset, settings.NameYOffset)
+	state.nameLabel:SetPoint("LEFT", state.anchor, "RIGHT", xOffset, yOffset)
 	state.nameLabel:SetFont(fontPath, settings.NameFontSize, fontFlags)
 	state.nameLabel:SetText(DBM:GetShortServerName(name))
 	state.nameLabel:Show()
@@ -641,8 +652,9 @@ local function UpdatePreviewFrame(frame, settings, texture, name)
 			frame.NameLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 		end
 		local fontPath, fontFlags = GetAuraTextFontSettings(settings)
+		local xOffset, yOffset = GetNameLabelOffsets(settings)
 		frame.NameLabel:ClearAllPoints()
-		frame.NameLabel:SetPoint("BOTTOM", frame, "TOP", settings.NameXOffset, settings.NameYOffset)
+		frame.NameLabel:SetPoint("LEFT", frame, "RIGHT", xOffset, yOffset)
 		frame.NameLabel:SetFont(fontPath, settings.NameFontSize, fontFlags)
 		frame.NameLabel:SetText(name)
 		frame.NameLabel:Show()
@@ -668,9 +680,10 @@ local fiveManDifficulties = {
 
 ---@param unit playerUUIDs
 ---@param selectedUnits playerUUIDs[]
+---@param allowSelf boolean?
 ---@return boolean
-local function IsAvailableCoTankUnit(unit, selectedUnits)
-	if not unit or UnitIsUnit("player", unit) then
+local function IsAvailableCoTankUnit(unit, selectedUnits, allowSelf)
+	if not unit or (not allowSelf and UnitIsUnit("player", unit)) then
 		return false
 	end
 	for _, selectedUnit in ipairs(selectedUnits) do
@@ -687,7 +700,8 @@ end
 local function GetConfiguredCoTankUnit(name, selectedUnits)
 	if type(name) ~= "string" or name == "" then return end
 	for groupUnit in DBM:GetGroupMembers() do
-		if DBM:GetUnitFullName(groupUnit) == name and IsAvailableCoTankUnit(groupUnit, selectedUnits) then
+		-- The player can only be selected through the Alt-gated developer test menu option.
+		if DBM:GetUnitFullName(groupUnit) == name and IsAvailableCoTankUnit(groupUnit, selectedUnits, UnitIsUnit("player", groupUnit)) then
 			return groupUnit
 		end
 	end
