@@ -464,7 +464,7 @@ function DBM:CreateProfile(name)
 		return
 	end
 	if DBM_AllSavedOptions[name] then
-		self:AddMsg(L.PROFILE_CREATE_ERROR_D:format(name))
+		self:AddMsg(L.PROFILE_CREATE_ERROR_D:format(self:GetLocalizedProfileName(name)))
 		return
 	end
 	-- create profile
@@ -480,12 +480,12 @@ function DBM:CreateProfile(name)
 	-- rearrange position
 	DBT:CreateProfile("DBM")
 	self:RepositionFrames()
-	self:AddMsg(L.PROFILE_CREATED:format(name))
+	self:AddMsg(L.PROFILE_CREATED:format(self:GetLocalizedProfileName(name)))
 end
 
 function DBM:ApplyProfile(name)
 	if not name or not DBM_AllSavedOptions[name] then
-		self:AddMsg(L.PROFILE_APPLY_ERROR:format(name or CL.UNKNOWN))
+		self:AddMsg(L.PROFILE_APPLY_ERROR:format(self:GetLocalizedProfileName(name) or CL.UNKNOWN))
 		return
 	end
 	usedProfile = name
@@ -497,14 +497,14 @@ function DBM:ApplyProfile(name)
 	end
 	self:RefreshSpellRenames()
 	-- rearrange position
-	DBT:ApplyProfile("DBM")
+	DBT:ApplyProfile("DBM", true)
 	self:RepositionFrames()
-	self:AddMsg(L.PROFILE_APPLIED:format(name))
+	self:AddMsg(L.PROFILE_APPLIED:format(self:GetLocalizedProfileName(name)))
 end
 
 function DBM:CopyProfile(name)
 	if not name or not DBM_AllSavedOptions[name] then
-		self:AddMsg(L.PROFILE_COPY_ERROR:format(name or CL.UNKNOWN))
+		self:AddMsg(L.PROFILE_COPY_ERROR:format(self:GetLocalizedProfileName(name) or CL.UNKNOWN))
 		return
 	elseif name == usedProfile then
 		self:AddMsg(L.PROFILE_COPY_ERROR_SELF)
@@ -520,15 +520,15 @@ function DBM:CopyProfile(name)
 	-- rearrange position
 	DBT:CopyProfile(name, "DBM", true)
 	self:RepositionFrames()
-	self:AddMsg(L.PROFILE_COPIED:format(name))
+	self:AddMsg(L.PROFILE_COPIED:format(self:GetLocalizedProfileName(name)))
 end
 
 function DBM:DeleteProfile(name)
 	if not name or not DBM_AllSavedOptions[name] then
-		self:AddMsg(L.PROFILE_DELETE_ERROR:format(name or CL.UNKNOWN))
+		self:AddMsg(L.PROFILE_DELETE_ERROR:format(self:GetLocalizedProfileName(name) or CL.UNKNOWN))
 		return
 	elseif name == "Default" then-- Default profile cannot be deleted.
-		self:AddMsg(L.PROFILE_CANNOT_DELETE:format(DEFAULT))
+		self:AddMsg(L.PROFILE_CANNOT_DELETE)
 		return
 	end
 	--Delete
@@ -548,7 +548,7 @@ function DBM:DeleteProfile(name)
 	-- rearrange position
 	DBT:DeleteProfile(name, "DBM")
 	self:RepositionFrames()
-	self:AddMsg(L.PROFILE_DELETED:format(name, DEFAULT))
+	self:AddMsg(L.PROFILE_DELETED:format(self:GetLocalizedProfileName(name)))
 end
 
 function DBM:RepositionFrames()
@@ -1066,7 +1066,7 @@ do
 		usedProfile = DBM_UsedProfile or usedProfile
 		if not usedProfile or (usedProfile ~= "Default" and not DBM_AllSavedOptions[usedProfile]) then
 			-- DBM.Option is not loaded. so use print function
-			print(L.PROFILE_NOT_FOUND:format(DEFAULT))
+			print(L.PROFILE_NOT_FOUND)
 			usedProfile = "Default"
 		end
 		DBM_UsedProfile = usedProfile
