@@ -661,6 +661,9 @@ local fiveManDifficulties = {
 	mythic5 = true,
 	challenge5 = true,
 	follower = true,
+	delves = true,
+	normalscenario = true,
+	heroicscenario = true,
 }
 
 ---@param unit playerUUIDs
