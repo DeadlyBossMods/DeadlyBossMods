@@ -415,6 +415,13 @@ resetbutton:SetHighlightFontObject(GameFontNormalSmall)
 resetbutton:SetScript("OnClick", function()
 	-- Set Default Options
 	DBM.Options.SWarnNameInNote = DBM.DefaultOptions.SWarnNameInNote
+	DBM.Options.ShowSWarningsInChat = DBM.DefaultOptions.ShowSWarningsInChat
+	DBM.Options.SpecialWarningIcon = DBM.DefaultOptions.SpecialWarningIcon
+	DBM.Options.SWarnClassColor = DBM.DefaultOptions.SWarnClassColor
+	DBM.Options.SWarningAlphabetical = DBM.DefaultOptions.SWarningAlphabetical
+	DBM.Options.SpecialWarningShortText = DBM.DefaultOptions.SpecialWarningShortText
+	DBM.Options.SpecialWarningFontStyle = DBM.DefaultOptions.SpecialWarningFontStyle
+	DBM.Options.SpecialWarningFontShadow = DBM.DefaultOptions.SpecialWarningFontShadow
 	DBM.Options.SpecialWarningFont = DBM.DefaultOptions.SpecialWarningFont
 	DBM.Options.SpecialWarningSound = DBM.DefaultOptions.SpecialWarningSound
 	DBM.Options.SpecialWarningSound2 = DBM.DefaultOptions.SpecialWarningSound2
@@ -432,6 +439,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningFlashCount4 = DBM.DefaultOptions.SpecialWarningFlashCount4
 	DBM.Options.SpecialWarningFlashCount5 = DBM.DefaultOptions.SpecialWarningFlashCount5
 	DBM.Options.SpecialWarningFontSize2 = DBM.DefaultOptions.SpecialWarningFontSize2
+	DBM.Options.SpecialWarningDuration2 = DBM.DefaultOptions.SpecialWarningDuration2
 	DBM.Options.SpecialWarningFlashCol1[1] = DBM.DefaultOptions.SpecialWarningFlashCol1[1]
 	DBM.Options.SpecialWarningFlashCol1[2] = DBM.DefaultOptions.SpecialWarningFlashCol1[2]
 	DBM.Options.SpecialWarningFlashCol1[3] = DBM.DefaultOptions.SpecialWarningFlashCol1[3]
@@ -457,6 +465,11 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningFlashAlph3 = DBM.DefaultOptions.SpecialWarningFlashAlph3
 	DBM.Options.SpecialWarningFlashAlph4 = DBM.DefaultOptions.SpecialWarningFlashAlph4
 	DBM.Options.SpecialWarningFlashAlph5 = DBM.DefaultOptions.SpecialWarningFlashAlph5
+	DBM.Options.SpecialWarningVibrate1 = DBM.DefaultOptions.SpecialWarningVibrate1
+	DBM.Options.SpecialWarningVibrate2 = DBM.DefaultOptions.SpecialWarningVibrate2
+	DBM.Options.SpecialWarningVibrate3 = DBM.DefaultOptions.SpecialWarningVibrate3
+	DBM.Options.SpecialWarningVibrate4 = DBM.DefaultOptions.SpecialWarningVibrate4
+	DBM.Options.SpecialWarningVibrate5 = DBM.DefaultOptions.SpecialWarningVibrate5
 	DBM.Options.SpecialWarningPoint = DBM.DefaultOptions.SpecialWarningPoint
 	DBM.Options.SpecialWarningX = DBM.DefaultOptions.SpecialWarningX
 	DBM.Options.SpecialWarningY = DBM.DefaultOptions.SpecialWarningY
@@ -464,9 +477,13 @@ resetbutton:SetScript("OnClick", function()
 	check1:SetChecked(DBM.Options.ShowSWarningsInChat)
 	check2:SetChecked(DBM.Options.SpecialWarningIcon)
 	FontDropDown:SetSelectedValue(DBM.Options.SpecialWarningFont)
+	FontStyleDropDown:SetSelectedValue(DBM.Options.SpecialWarningFontStyle)
+	FontShadow:SetChecked(DBM.Options.SpecialWarningFontShadow)
+	SpecialWarnSoundDropDown:SetSelectedValue(DBM.Options.SpecialWarningSound)
 	SpecialWarnSoundDropDown2:SetSelectedValue(DBM.Options.SpecialWarningSound2)
 	SpecialWarnSoundDropDown3:SetSelectedValue(DBM.Options.SpecialWarningSound3)
 	fontSizeSlider:SetValue(DBM.Options.SpecialWarningFontSize2)
+	durationSlider:SetValue(DBM.Options.SpecialWarningDuration2)
 	color0:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
 	color2:SetColorRGB(DBM.Options.SpecialWarningFlashCol2[1], DBM.Options.SpecialWarningFlashCol2[2], DBM.Options.SpecialWarningFlashCol2[3])
 	color3:SetColorRGB(DBM.Options.SpecialWarningFlashCol3[1], DBM.Options.SpecialWarningFlashCol3[2], DBM.Options.SpecialWarningFlashCol3[3])
@@ -480,6 +497,17 @@ resetbutton:SetScript("OnClick", function()
 	flashdalphaSlider3:SetValue(DBM.Options.SpecialWarningFlashAlph3)
 	flashRepSlider2:SetValue(DBM.Options.SpecialWarningFlashCount2)
 	flashRepSlider3:SetValue(DBM.Options.SpecialWarningFlashCount3)
+	SpecialWarnSoundDropDown4:SetSelectedValue(DBM.Options.SpecialWarningSound4)
+	flashCheck1:SetChecked(DBM.Options.SpecialWarningFlash1)
+	flashCheck4:SetChecked(DBM.Options.SpecialWarningFlash4)
+	vibrateCheck1:SetChecked(DBM.Options.SpecialWarningVibrate1)
+	vibrateCheck4:SetChecked(DBM.Options.SpecialWarningVibrate4)
+	flashdurSlider1:SetValue(DBM.Options.SpecialWarningFlashDura1)
+	flashdurSlider4:SetValue(DBM.Options.SpecialWarningFlashDura4)
+	flashdalphaSlider:SetValue(DBM.Options.SpecialWarningFlashAlph1)
+	flashdalphaSlider4:SetValue(DBM.Options.SpecialWarningFlashAlph4)
+	flashRepSlider:SetValue(DBM.Options.SpecialWarningFlashCount1)
+	flashRepSlider4:SetValue(DBM.Options.SpecialWarningFlashCount4)
 	if not DBM:IsPostMidnight() then
 		SpecialWarnSoundDropDown5:SetSelectedValue(DBM.Options.SpecialWarningSound5)
 		check3:SetChecked(DBM.Options.SWarnClassColor)
