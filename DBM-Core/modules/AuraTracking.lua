@@ -4,6 +4,7 @@ local DBM = DBM
 
 ---@class DBMCoreNamespace
 local private = select(2, ...)
+local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 
 ---@class DBMAuraButton: Frame
 ---@field SetIcon fun(self: DBMAuraButton, icon: Texture)
@@ -475,6 +476,13 @@ local function UpdateContainerNameLabel(state, settings, unit)
 	state.nameLabel:SetPoint("LEFT", state.anchor, "RIGHT", xOffset, yOffset)
 	state.nameLabel:SetFont(fontPath, settings.NameFontSize, fontFlags)
 	state.nameLabel:SetText(DBM:GetShortServerName(name))
+	local _, class = UnitClass(unit)
+	local classColor = class and RAID_CLASS_COLORS[class]
+	if classColor then
+		state.nameLabel:SetTextColor(classColor.r, classColor.g, classColor.b)
+	else
+		state.nameLabel:SetTextColor(1, 1, 1)
+	end
 	state.nameLabel:Show()
 end
 
