@@ -654,6 +654,10 @@ if isAuraTracking121 then
 	end)
 	coTankSlot2Player:SetPoint("TOPLEFT", coTankSlot1Player, "TOPLEFT", 180, 0)
 	coTankSlot2Player.myheight = 0
+	coTankSlot1Player:RefreshLazyValues()
+	coTankSlot1Player:SetSelectedValue(DBM.Options.PrivateAurasCoTankSlot1Player)
+	coTankSlot2Player:RefreshLazyValues()
+	coTankSlot2Player:SetSelectedValue(DBM.Options.PrivateAurasCoTankSlot2Player)
 
 	local coTankAdvancedReset = coTankAdvancedArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 	coTankAdvancedReset:SetPoint("BOTTOMRIGHT", coTankAdvancedArea.frame, "BOTTOMRIGHT", -2, 4)
