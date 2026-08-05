@@ -537,10 +537,7 @@ coTankAuraReset:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasCoTankUpscaleDuration = DBM.DefaultOptions.PrivateAurasCoTankUpscaleDuration
 	end
 	DBM.Options.PrivateAurasCoTankShowSecond = DBM.DefaultOptions.PrivateAurasCoTankShowSecond
-	DBM.Options.PrivateAurasCoTankShowName = DBM.DefaultOptions.PrivateAurasCoTankShowName
-	DBM.Options.PrivateAurasCoTankNameFontSize = DBM.DefaultOptions.PrivateAurasCoTankNameFontSize
-	DBM.Options.PrivateAurasCoTankNameXOffset = DBM.DefaultOptions.PrivateAurasCoTankNameXOffset
-	DBM.Options.PrivateAurasCoTankNameYOffset = DBM.DefaultOptions.PrivateAurasCoTankNameYOffset
+	-- Advanced options are reset via the Advanced reset button below
 	-- Set UI visuals
 	coTankAuraIcon:SetChecked(DBM.Options.PrivateAurasCoTankEnabled)
 	coTankAuraSecond:SetChecked(DBM.Options.PrivateAurasCoTankShowSecond)
@@ -566,12 +563,6 @@ coTankAuraReset:SetScript("OnClick", function()
 		coTankAuraStackYOffset:SetValue(DBM.Options.PrivateAurasCoTankStackYOffset)
 		coTankAuraShowStacks:SetChecked(DBM.Options.PrivateAurasCoTankShowStacks)
 		coTankAuraShowDispelBorder:SetChecked(DBM.Options.PrivateAurasCoTankShowDispelBorder)
-		if coTankShowName then
-			coTankShowName:SetChecked(DBM.Options.PrivateAurasCoTankShowName)
-			coTankNameFontSize:SetValue(DBM.Options.PrivateAurasCoTankNameFontSize)
-			coTankNameXOffset:SetValue(DBM.Options.PrivateAurasCoTankNameXOffset)
-			coTankNameYOffset:SetValue(DBM.Options.PrivateAurasCoTankNameYOffset)
-		end
 	end
 	--TODO, PrivateAurasCoTankXOffset and PrivateAurasCoTankYOffset are not yet implemented, need to add those to the UI and then set them here as well
 	if coTankUpscaleDText then

@@ -661,7 +661,6 @@ local fiveManDifficulties = {
 	mythic5 = true,
 	challenge5 = true,
 	follower = true,
-	timewalker = true,
 }
 
 ---@param unit playerUUIDs
@@ -707,7 +706,9 @@ end
 ---@return playerUUIDs?
 local function GetAutomaticCoTankSlot(slot, selectedUnits)
 	local difficulty = DBM:GetCurrentInstanceDifficulty()
-	if DBM.Options.PrivateAurasCoTankUseHealerInFiveMan and fiveManDifficulties[difficulty] then
+	local _, instanceType = IsInInstance()
+	local isFiveMan = fiveManDifficulties[difficulty] or (difficulty == "timewalker" and instanceType == "party")
+	if DBM.Options.PrivateAurasCoTankUseHealerInFiveMan and isFiveMan then
 		if DBM:GetRoleFlagValue("Tank") then
 			if slot == 1 then
 				return GetAutomaticCoTankUnit(function(unit)
