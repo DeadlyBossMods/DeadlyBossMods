@@ -645,7 +645,7 @@ if isAuraTracking121 then
 		DBM.Options.PrivateAurasCoTankSlot1Player = value
 		OnAuraSettingsChange(false)
 	end)
-	coTankSlot1Player:IsSelectedCallback(function(value)
+	coTankSlot1Player:IsSelectedCallback(function(_, value)
 		return value.value == DBM.Options.PrivateAurasCoTankSlot1Player
 	end)
 	coTankSlot1Player:SetPoint("TOPLEFT", coTankNameYOffset, "BOTTOMLEFT", 0, -20)
@@ -657,7 +657,7 @@ if isAuraTracking121 then
 		DBM.Options.PrivateAurasCoTankSlot2Player = value
 		OnAuraSettingsChange(false)
 	end)
-	coTankSlot2Player:IsSelectedCallback(function(value)
+	coTankSlot2Player:IsSelectedCallback(function(_, value)
 		return value.value == DBM.Options.PrivateAurasCoTankSlot2Player
 	end)
 	coTankSlot2Player:SetPoint("TOPLEFT", coTankSlot1Player, "TOPLEFT", 180, 0)

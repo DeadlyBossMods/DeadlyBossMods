@@ -554,7 +554,7 @@ end
 
 ---@param self DBMAuraTracking
 ---@param key string
----@param unit playerUUIDs
+---@param unit playerUUIDs?
 ---@param settings table
 local function RegisterAuraContainer(self, key, unit, settings)
 	if not unit or not settings or not settings.enabled then
@@ -684,11 +684,6 @@ end
 ---@return playerUUIDs?
 local function GetConfiguredCoTankUnit(name, selectedUnits)
 	if type(name) ~= "string" or name == "" then return end
-	local unit = DBM:GetRaidUnitId(name, true)
-	if DBM:GetUnitFullName(unit) == name and IsAvailableCoTankUnit(unit, selectedUnits) then
-		return unit
-	end
-	-- Follower dungeon NPCs may not have an entry in the player-name cache.
 	for groupUnit in DBM:GetGroupMembers() do
 		if DBM:GetUnitFullName(groupUnit) == name and IsAvailableCoTankUnit(groupUnit, selectedUnits) then
 			return groupUnit
