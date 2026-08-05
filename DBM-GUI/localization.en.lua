@@ -718,7 +718,7 @@ L.AuraStackFontSize					= "Aura stack font size"
 L.AuraShowStacks					= "Show stack text"
 L.AuraShowDispelBorder				= "Show dispel border"
 L.AuraSortOrder					= "Aura sort order"
-L.AuraSortDefault					= "Default"
+L.AuraSortDefault					= "Default Blizzard sorting"
 L.AuraSortShortDurationFirst		= "Short duration first"
 L.AuraSortLongDurationFirst		= "Long duration first"
 

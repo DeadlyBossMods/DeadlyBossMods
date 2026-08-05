@@ -705,7 +705,7 @@ L.AuraStackFontSize					= "오라 중첩 글꼴 크기"
 L.AuraShowStacks						= "중첩 텍스트 표시"
 L.AuraShowDispelBorder				= "해제 속성 테두리 표시"
 L.AuraSortOrder						= "오라 정렬 순서"
-L.AuraSortDefault						= "기본값"
+L.AuraSortDefault						= "블리자드 기본 정렬"
 L.AuraSortShortDurationFirst		= "짧은 지속 시간 우선"
 L.AuraSortLongDurationFirst		= "긴 지속 시간 우선"
 
