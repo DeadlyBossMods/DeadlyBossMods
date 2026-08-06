@@ -353,8 +353,6 @@ do
 end
 dummybarcolor8:ApplyStyle()
 
-if DBM:IsPostMidnight() then return end
-
 --Important Bar Options
 local bar7OptionsText = ImpBarColors:CreateText(L.Bar7Header, 405)
 bar7OptionsText:SetPoint("TOPLEFT", color1Type7, "BOTTOMLEFT", 0, -30)
