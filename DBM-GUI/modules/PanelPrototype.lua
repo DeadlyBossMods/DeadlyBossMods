@@ -341,9 +341,11 @@ function PanelPrototype:CreateSlider(text, low, high, step, width, value, callba
 
 	local editbox = CreateFrame("EditBox", nil, slider, "InputBoxVisualTemplate")
 	editbox:SetAutoFocus(false)
+	editbox:SetJustifyH("CENTER")
 	editbox:SetPoint("TOP", slider, "BOTTOM", 0, -1)
 	editbox:SetHeight(14)
 	editbox:SetWidth(40)
+	editbox:SetTextInsets(0, 3, 0, 0)
 	editbox:SetScript("OnEscapePressed", function(self)
 		self:ClearFocus()
 	end)
@@ -477,7 +479,7 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	---@field myheight number
 	local textbox = CreateFrame("EditBox", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate,InputBoxTemplate")
 	textbox.mytype = "textbox"
-	textbox:SetSize(width or 100, height or 20)
+	textbox:SetSize(width or 60, height or 20)
 	textbox:SetAutoFocus(false)
 	textbox:SetScript("OnEscapePressed", function(self)
 		self:ClearFocus()

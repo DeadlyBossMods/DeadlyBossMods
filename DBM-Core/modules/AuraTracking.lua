@@ -4,6 +4,7 @@ local DBM = DBM
 
 ---@class DBMCoreNamespace
 local private = select(2, ...)
+local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 
 ---@class DBMAuraButton: Frame
 ---@field SetIcon fun(self: DBMAuraButton, icon: Texture)
@@ -38,6 +39,7 @@ local private = select(2, ...)
 ---@field initialized boolean?
 ---@field unit playerUUIDs?
 ---@field settings DBMAuraSettings?
+---@field nameLabel FontString?
 ---@field width number?
 ---@field height number?
 
@@ -66,6 +68,9 @@ local private = select(2, ...)
 ---@field StackYOffset number
 ---@field ShowStacks boolean
 ---@field ShowDispelBorder boolean
+---@field NameFontSize number
+---@field NameXOffset number
+---@field NameYOffset number
 
 ---@class DBMAuraTracking
 ---@field AuraTrackingState table<string, DBMAuraContainerState>?
@@ -79,6 +84,7 @@ DBM.Auras = AuraTracking
 ---@field DurationTexts table<integer, FontString>
 ---@field StackTexts table<integer, FontString>
 ---@field Border Frame?
+---@field NameLabel FontString?
 
 local AuraTrackingFilters = {
 	"HARMFUL|!PLAYER",
@@ -144,6 +150,9 @@ local function GetAuraSettings(prefix)
 		StackYOffset = DBM.Options[prefix .. "StackYOffset"] or DBM.DefaultOptions[prefix .. "StackYOffset"],
 		ShowStacks = DBM.Options[prefix .. "ShowStacks"],
 		ShowDispelBorder = DBM.Options[prefix .. "ShowDispelBorder"],
+		NameFontSize = DBM.Options[prefix .. "NameFontSize"] or DBM.DefaultOptions[prefix .. "NameFontSize"],
+		NameXOffset = DBM.Options[prefix .. "NameXOffset"] or DBM.DefaultOptions[prefix .. "NameXOffset"],
+		NameYOffset = DBM.Options[prefix .. "NameYOffset"] or DBM.DefaultOptions[prefix .. "NameYOffset"],
 	}
 end
 
@@ -236,6 +245,16 @@ local function GetRowWidth(settings)
 	local limit = settings.Limit or 1
 	local spacing = settings.Spacing or 0
 	return math.max(width, (width * limit) + (spacing * math.max(limit - 1, 0)))
+end
+
+---@param settings DBMAuraSettings
+---@return number, number
+local function GetNameLabelOffsets(settings)
+	local xOffset = settings.NameXOffset
+	if settings.GrowDirection == "RIGHT" then
+		xOffset = xOffset + GetRowWidth(settings) - settings.Width
+	end
+	return xOffset, settings.NameYOffset
 end
 
 ---@param frame Frame
@@ -435,6 +454,38 @@ local function AcquireContainerState(self, key)
 	return state
 end
 
+---@param state DBMAuraContainerState
+---@param settings DBMAuraSettings
+---@param unit playerUUIDs
+local function UpdateContainerNameLabel(state, settings, unit)
+	if state.key == "player" or not DBM.Options.PrivateAurasCoTankShowName then
+		if state.nameLabel then state.nameLabel:Hide() end
+		return
+	end
+	local name = DBM:GetUnitFullName(unit)
+	if not name then
+		if state.nameLabel then state.nameLabel:Hide() end
+		return
+	end
+	if not state.nameLabel then
+		state.nameLabel = state.anchor:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	end
+	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
+	local xOffset, yOffset = GetNameLabelOffsets(settings)
+	state.nameLabel:ClearAllPoints()
+	state.nameLabel:SetPoint("LEFT", state.anchor, "RIGHT", xOffset, yOffset)
+	state.nameLabel:SetFont(fontPath, settings.NameFontSize, fontFlags)
+	state.nameLabel:SetText(DBM:GetShortServerName(name))
+	local _, class = UnitClass(unit)
+	local classColor = class and RAID_CLASS_COLORS[class]
+	if classColor then
+		state.nameLabel:SetTextColor(classColor.r, classColor.g, classColor.b)
+	else
+		state.nameLabel:SetTextColor(1, 1, 1)
+	end
+	state.nameLabel:Show()
+end
+
 ---@param state table
 ---@param settings table
 ---@param unit playerUUIDs
@@ -453,6 +504,7 @@ local function InitContainerState(state, settings, unit)
 	anchor:SetPoint(settings.Anchor, UIParent, settings.relativeTo, settings.xOffset, settings.yOffset)
 	anchor:SetSize(settings.Width, settings.Height)
 	anchor:Show()
+	UpdateContainerNameLabel(state, settings, unit)
 
 	container:SetEnabled(false)
 	container:Hide()
@@ -513,12 +565,15 @@ local function HideContainerState(self, key)
 	if state.anchor then
 		state.anchor:Hide()
 	end
+	if state.nameLabel then
+		state.nameLabel:Hide()
+	end
 	state.initialized = false
 end
 
 ---@param self DBMAuraTracking
 ---@param key string
----@param unit playerUUIDs
+---@param unit playerUUIDs?
 ---@param settings table
 local function RegisterAuraContainer(self, key, unit, settings)
 	if not unit or not settings or not settings.enabled then
@@ -558,7 +613,8 @@ end
 ---@param frame Frame
 ---@param settings table
 ---@param texture number|string
-local function UpdatePreviewFrame(frame, settings, texture)
+---@param name string?
+local function UpdatePreviewFrame(frame, settings, texture, name)
 	---@cast frame DBMAuraPreviewFrame
 	frame.Textures = frame.Textures or {}
 	frame.BorderTextures = frame.BorderTextures or {}
@@ -599,10 +655,117 @@ local function UpdatePreviewFrame(frame, settings, texture)
 			if frame.StackTexts[i] then frame.StackTexts[i]:Hide() end
 		end
 	end
+	if name and DBM.Options.PrivateAurasCoTankShowName then
+		if not frame.NameLabel then
+			frame.NameLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+		end
+		local fontPath, fontFlags = GetAuraTextFontSettings(settings)
+		local xOffset, yOffset = GetNameLabelOffsets(settings)
+		frame.NameLabel:ClearAllPoints()
+		frame.NameLabel:SetPoint("LEFT", frame, "RIGHT", xOffset, yOffset)
+		frame.NameLabel:SetFont(fontPath, settings.NameFontSize, fontFlags)
+		frame.NameLabel:SetText(name)
+		frame.NameLabel:Show()
+	elseif frame.NameLabel then
+		frame.NameLabel:Hide()
+	end
 end
 
 function AuraTracking:IsRegistered()
 	return auraAnchorsRegistered
+end
+
+local fiveManDifficulties = {
+	normal5 = true,
+	heroic5 = true,
+	mythic5 = true,
+	challenge5 = true,
+	follower = true,
+	delves = true,
+	normalscenario = true,
+	heroicscenario = true,
+}
+
+---@param unit playerUUIDs
+---@param selectedUnits playerUUIDs[]
+---@param allowSelf boolean?
+---@return boolean
+local function IsAvailableCoTankUnit(unit, selectedUnits, allowSelf)
+	if not unit or (not allowSelf and UnitIsUnit("player", unit)) then
+		return false
+	end
+	for _, selectedUnit in ipairs(selectedUnits) do
+		if UnitIsUnit(unit, selectedUnit) then
+			return false
+		end
+	end
+	return true
+end
+
+---@param name string
+---@param selectedUnits playerUUIDs[]
+---@return playerUUIDs?
+local function GetConfiguredCoTankUnit(name, selectedUnits)
+	if type(name) ~= "string" or name == "" then return end
+	for groupUnit in DBM:GetGroupMembers() do
+		-- The player can only be selected through the Alt-gated developer test menu option.
+		if DBM:GetUnitFullName(groupUnit) == name and IsAvailableCoTankUnit(groupUnit, selectedUnits, UnitIsUnit("player", groupUnit)) then
+			return groupUnit
+		end
+	end
+end
+
+---@param predicate fun(unit: playerUUIDs): boolean
+---@param selectedUnits playerUUIDs[]
+---@return playerUUIDs?
+local function GetAutomaticCoTankUnit(predicate, selectedUnits)
+	for unit in DBM:GetGroupMembers() do
+		if IsAvailableCoTankUnit(unit, selectedUnits) and predicate(unit) then
+			return unit
+		end
+	end
+end
+
+---@param slot integer
+---@param selectedUnits playerUUIDs[]
+---@return playerUUIDs?
+local function GetAutomaticCoTankSlot(slot, selectedUnits)
+	local difficulty = DBM:GetCurrentInstanceDifficulty()
+	local _, instanceType = IsInInstance()
+	local isFiveMan = fiveManDifficulties[difficulty] or (difficulty == "timewalker" and instanceType == "party")
+	if DBM.Options.PrivateAurasCoTankUseHealerInFiveMan and isFiveMan then
+		if DBM:GetRoleFlagValue("Tank") then
+			if slot == 1 then
+				return GetAutomaticCoTankUnit(function(unit)
+					return DBM:IsHealer(unit)
+				end, selectedUnits)
+			end
+			return
+		elseif slot == 2 then
+			return GetAutomaticCoTankUnit(function(unit)
+				return DBM:IsHealer(unit)
+			end, selectedUnits)
+		end
+	end
+	return GetAutomaticCoTankUnit(function(unit)
+		return DBM:IsTanking(unit)
+	end, selectedUnits)
+end
+
+---@return playerUUIDs?, playerUUIDs?
+local function ResolveCoTankUnits()
+	local selectedUnits = {}
+	local slot1 = GetConfiguredCoTankUnit(DBM.Options.PrivateAurasCoTankSlot1Player, selectedUnits)
+		or GetAutomaticCoTankSlot(1, selectedUnits)
+	if slot1 then
+		table.insert(selectedUnits, slot1)
+	end
+	if not DBM.Options.PrivateAurasCoTankShowSecond then
+		return slot1
+	end
+	local slot2 = GetConfiguredCoTankUnit(DBM.Options.PrivateAurasCoTankSlot2Player, selectedUnits)
+		or GetAutomaticCoTankSlot(2, selectedUnits)
+	return slot1, slot2
 end
 
 ---Register auras for player and up to two co-tanks found in raid
@@ -618,19 +781,10 @@ function AuraTracking:RegisterAllUnits()
 	HideContainerState(self, "cotank1")
 	HideContainerState(self, "cotank2")
 	if not IsInGroup() then return end
-	if UnitGroupRolesAssigned("player") ~= "TANK" then return end
 
-	local maxCoTanks = DBM.Options.PrivateAurasCoTankShowSecond and 2 or 1
-	local registeredCoTanks = 0
-	for unit in DBM:GetGroupMembers() do
-		if not UnitIsUnit("player", unit) and DBM:IsTanking(unit) then
-			registeredCoTanks = registeredCoTanks + 1
-			RegisterAuraContainer(self, "cotank" .. registeredCoTanks, unit, GetCoTankSettings(registeredCoTanks))
-			if registeredCoTanks >= maxCoTanks then
-				break
-			end
-		end
-	end
+	local slot1, slot2 = ResolveCoTankUnits()
+	RegisterAuraContainer(self, "cotank1", slot1, GetCoTankSettings(1))
+	RegisterAuraContainer(self, "cotank2", slot2, GetCoTankSettings(2))
 end
 
 ---@param unit string? if nil, will unregister all units.
@@ -689,10 +843,10 @@ function AuraTracking:OnSettingsChange(player)
 		end
 	elseif self.CoTankPreview then
 		local CoTankSettings = GetCoTankSettings(1)
-		UpdatePreviewFrame(self.CoTankPreview, CoTankSettings, 236318)
+		UpdatePreviewFrame(self.CoTankPreview, CoTankSettings, 236318, "Co-Tank")
 		if DBM.Options.PrivateAurasCoTankShowSecond then
 			self.CoTankPreview2 = self.CoTankPreview2 or CreateFrame("Frame", nil, UIParent)
-			UpdatePreviewFrame(self.CoTankPreview2, GetCoTankSettings(2), 236318)
+			UpdatePreviewFrame(self.CoTankPreview2, GetCoTankSettings(2), 236318, "Co-Tank 2")
 			self.CoTankPreview2:Show()
 		elseif self.CoTankPreview2 then
 			self.CoTankPreview2:Hide()
@@ -776,7 +930,7 @@ function AuraTracking:PreviewToggle()
 					DBM.Options.PrivateAurasCoTankRelativeTo = relativeTo
 				end)
 			end
-			UpdatePreviewFrame(self.CoTankPreview, CoTankSettings, 236318)
+			UpdatePreviewFrame(self.CoTankPreview, CoTankSettings, 236318, "Co-Tank")
 			self.CoTankPreview:Show()
 			self.CoTankPreview:SetMovable(true)
 			self.CoTankPreview:EnableMouse(true)
@@ -789,7 +943,7 @@ function AuraTracking:PreviewToggle()
 					self.CoTankPreview2.DurationTexts = {}
 					self.CoTankPreview2.StackTexts = {}
 				end
-				UpdatePreviewFrame(self.CoTankPreview2, CoTankSettings2, 236318)
+				UpdatePreviewFrame(self.CoTankPreview2, CoTankSettings2, 236318, "Co-Tank 2")
 				self.CoTankPreview2:Show()
 			elseif self.CoTankPreview2 then
 				self.CoTankPreview2:Hide()
