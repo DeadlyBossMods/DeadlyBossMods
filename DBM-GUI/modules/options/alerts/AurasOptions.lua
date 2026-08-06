@@ -157,13 +157,6 @@ local personalAuraShowStacks
 local personalAuraShowDispelBorder
 local personalAuraSort
 if isAuraTracking121 then
-	personalAuraSort = personalAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasPlayerSortMode", function(value)
-		DBM.Options.PrivateAurasPlayerSortMode = value
-		OnAuraSettingsChange(true)
-	end)
-	personalAuraSort:SetPoint("TOPLEFT", personalAuraMaxIcons, "TOPLEFT", 0, -50)
-	personalAuraSort.myheight = 0
-
 	personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "DBM", "PrivateAurasPlayerTextFont", function(value)
 		DBM.Options.PrivateAurasPlayerTextFont = value
 		OnAuraSettingsChange(true)
@@ -177,11 +170,18 @@ if isAuraTracking121 then
 	personalAuraFontStyleDropDown:SetPoint("LEFT", personalAuraFontDropDown, "RIGHT", 25, 0)
 	personalAuraFontStyleDropDown.myheight = 0
 
+	personalAuraSort = personalAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasPlayerSortMode", function(value)
+		DBM.Options.PrivateAurasPlayerSortMode = value
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraSort:SetPoint("TOPLEFT", personalAuraFontDropDown, "TOPLEFT", 0, -50)
+	personalAuraSort.myheight = 50
+
 	personalAuraDurationFontSize = personalAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasPlayerDurationFontSize, function(value)
 		DBM.Options.PrivateAurasPlayerDurationFontSize = value
 		OnAuraSettingsChange(true)
 	end)
-	personalAuraDurationFontSize:SetPoint("TOPLEFT", personalAuraFontDropDown, "TOPLEFT", 20, -50)
+	personalAuraDurationFontSize:SetPoint("TOPLEFT", personalAuraSort, "TOPLEFT", 20, -50)
 
 	personalAuraStackFontSize = personalAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasPlayerStackFontSize, function(value)
 		DBM.Options.PrivateAurasPlayerStackFontSize = value
@@ -414,14 +414,11 @@ local coTankAuraStackYOffset
 local coTankAuraShowStacks
 local coTankAuraShowDispelBorder
 local coTankAuraSort
+local coTankShowName
+local coTankNameFontSize
+local coTankNameXOffset
+local coTankNameYOffset
 if isAuraTracking121 then
-	coTankAuraSort = coTankAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasCoTankSortMode", function(value)
-		DBM.Options.PrivateAurasCoTankSortMode = value
-		OnAuraSettingsChange(false)
-	end)
-	coTankAuraSort:SetPoint("TOPLEFT", coTankAuraMaxIcons, "TOPLEFT", 0, -50)
-	coTankAuraSort.myheight = 0
-
 	coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM", "PrivateAurasCoTankTextFont", function(value)
 		DBM.Options.PrivateAurasCoTankTextFont = value
 		OnAuraSettingsChange(false)
@@ -435,11 +432,18 @@ if isAuraTracking121 then
 	coTankAuraFontStyleDropDown:SetPoint("LEFT", coTankAuraFontDropDown, "RIGHT", 25, 0)
 	coTankAuraFontStyleDropDown.myheight = 0
 
+	coTankAuraSort = coTankAuraArea:CreateDropdown(L.AuraSortOrder, auraSortModes, "DBM", "PrivateAurasCoTankSortMode", function(value)
+		DBM.Options.PrivateAurasCoTankSortMode = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraSort:SetPoint("TOPLEFT", coTankAuraFontDropDown, "TOPLEFT", 0, -50)
+	coTankAuraSort.myheight = 50
+
 	coTankAuraDurationFontSize = coTankAuraArea:CreateSlider(L.AuraDurationFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankDurationFontSize, function(value)
 		DBM.Options.PrivateAurasCoTankDurationFontSize = value
 		OnAuraSettingsChange(false)
 	end)
-	coTankAuraDurationFontSize:SetPoint("TOPLEFT", coTankAuraFontDropDown, "TOPLEFT", 20, -50)
+	coTankAuraDurationFontSize:SetPoint("TOPLEFT", coTankAuraSort, "TOPLEFT", 20, -50)
 
 	coTankAuraStackFontSize = coTankAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankStackFontSize, function(value)
 		DBM.Options.PrivateAurasCoTankStackFontSize = value
@@ -533,6 +537,7 @@ coTankAuraReset:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasCoTankUpscaleDuration = DBM.DefaultOptions.PrivateAurasCoTankUpscaleDuration
 	end
 	DBM.Options.PrivateAurasCoTankShowSecond = DBM.DefaultOptions.PrivateAurasCoTankShowSecond
+	-- Advanced options are reset via the Advanced reset button below
 	-- Set UI visuals
 	coTankAuraIcon:SetChecked(DBM.Options.PrivateAurasCoTankEnabled)
 	coTankAuraSecond:SetChecked(DBM.Options.PrivateAurasCoTankShowSecond)
@@ -565,3 +570,116 @@ coTankAuraReset:SetScript("OnClick", function()
 	end
 	OnAuraSettingsChange(false)
 end)
+
+if isAuraTracking121 then
+	local function GetCoTankRosterValues(excludedName)
+		local values = {
+			{
+				text = L.CoTankAutomatic,
+				value = "",
+			},
+		}
+		local allowSelf = IsAltKeyDown()
+		for unit in DBM:GetGroupMembers() do
+			if allowSelf or not UnitIsUnit("player", unit) then
+				local name = DBM:GetUnitFullName(unit)
+				if name and name ~= excludedName then
+					table.insert(values, {
+						text = name,
+						value = name,
+					})
+				end
+			end
+		end
+		return values
+	end
+
+	----------------------------------
+	--  Co-Tank Advanced Options  --
+	----------------------------------
+	local coTankAdvancedArea = auraPanel:CreateArea(L.Area_Advanced)
+	local coTankUseHealerInFiveMan = coTankAdvancedArea:CreateCheckButton(L.CoTankUseHealerInFiveMan, true, nil, "PrivateAurasCoTankUseHealerInFiveMan")
+	coTankUseHealerInFiveMan:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasCoTankUseHealerInFiveMan = not DBM.Options.PrivateAurasCoTankUseHealerInFiveMan
+		OnAuraSettingsChange(false)
+	end)
+	coTankShowName = coTankAdvancedArea:CreateCheckButton(L.CoTankShowPlayerName, true, nil, "PrivateAurasCoTankShowName")
+	coTankShowName:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasCoTankShowName = not DBM.Options.PrivateAurasCoTankShowName
+		OnAuraSettingsChange(false)
+	end)
+	coTankShowName:SetPoint("TOPLEFT", coTankUseHealerInFiveMan, "BOTTOMLEFT", 0, -5)
+	coTankShowName.myheight = 0
+	coTankNameFontSize = coTankAdvancedArea:CreateSlider(L.CoTankNameFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankNameFontSize, function(value)
+		DBM.Options.PrivateAurasCoTankNameFontSize = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankNameFontSize:SetPoint("TOPLEFT", coTankShowName, "BOTTOMLEFT", 20, -20)
+	coTankNameFontSize.myheight = 50
+
+	coTankNameXOffset = coTankAdvancedArea:CreateSlider(L.CoTankNameXOffset, -100, 100, 1, 150, DBM.Options.PrivateAurasCoTankNameXOffset, function(value)
+		DBM.Options.PrivateAurasCoTankNameXOffset = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankNameXOffset:SetPoint("TOPLEFT", coTankNameFontSize, "TOPLEFT", 180, 0)
+	coTankNameXOffset.myheight = 0
+
+	coTankNameYOffset = coTankAdvancedArea:CreateSlider(L.CoTankNameYOffset, -100, 100, 1, 150, DBM.Options.PrivateAurasCoTankNameYOffset, function(value)
+		DBM.Options.PrivateAurasCoTankNameYOffset = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankNameYOffset:SetPoint("TOPLEFT", coTankNameFontSize, "TOPLEFT", 0, -50)
+	coTankNameYOffset.myheight = 50
+
+	local coTankSlot1Player = coTankAdvancedArea:CreateDropdown(L.CoTankSlot1Player, function()
+		return GetCoTankRosterValues()
+	end, "DBM", "PrivateAurasCoTankSlot1Player", function(value)
+		DBM.Options.PrivateAurasCoTankSlot1Player = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankSlot1Player:IsSelectedCallback(function(_, value)
+		return value.value == DBM.Options.PrivateAurasCoTankSlot1Player
+	end)
+	coTankSlot1Player:SetPoint("TOPLEFT", coTankNameYOffset, "BOTTOMLEFT", 0, -35)
+	coTankSlot1Player.myheight = 45
+
+	local coTankSlot2Player = coTankAdvancedArea:CreateDropdown(L.CoTankSlot2Player, function()
+		return GetCoTankRosterValues(DBM.Options.PrivateAurasCoTankSlot1Player)
+	end, "DBM", "PrivateAurasCoTankSlot2Player", function(value)
+		DBM.Options.PrivateAurasCoTankSlot2Player = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankSlot2Player:IsSelectedCallback(function(_, value)
+		return value.value == DBM.Options.PrivateAurasCoTankSlot2Player
+	end)
+	coTankSlot2Player:SetPoint("TOPLEFT", coTankSlot1Player, "TOPLEFT", 180, 0)
+	coTankSlot2Player.myheight = 0
+	coTankSlot1Player:RefreshLazyValues()
+	coTankSlot1Player:SetSelectedValue(DBM.Options.PrivateAurasCoTankSlot1Player)
+	coTankSlot2Player:RefreshLazyValues()
+	coTankSlot2Player:SetSelectedValue(DBM.Options.PrivateAurasCoTankSlot2Player)
+
+	local coTankAdvancedReset = coTankAdvancedArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+	coTankAdvancedReset:SetPoint("BOTTOMRIGHT", coTankAdvancedArea.frame, "BOTTOMRIGHT", -2, 4)
+	coTankAdvancedReset:SetNormalFontObject(GameFontNormalSmall)
+	coTankAdvancedReset:SetHighlightFontObject(GameFontNormalSmall)
+	coTankAdvancedReset:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasCoTankUseHealerInFiveMan = DBM.DefaultOptions.PrivateAurasCoTankUseHealerInFiveMan
+		DBM.Options.PrivateAurasCoTankShowName = DBM.DefaultOptions.PrivateAurasCoTankShowName
+		DBM.Options.PrivateAurasCoTankNameFontSize = DBM.DefaultOptions.PrivateAurasCoTankNameFontSize
+		DBM.Options.PrivateAurasCoTankNameXOffset = DBM.DefaultOptions.PrivateAurasCoTankNameXOffset
+		DBM.Options.PrivateAurasCoTankNameYOffset = DBM.DefaultOptions.PrivateAurasCoTankNameYOffset
+		DBM.Options.PrivateAurasCoTankSlot1Player = DBM.DefaultOptions.PrivateAurasCoTankSlot1Player
+		DBM.Options.PrivateAurasCoTankSlot2Player = DBM.DefaultOptions.PrivateAurasCoTankSlot2Player
+		coTankUseHealerInFiveMan:SetChecked(DBM.Options.PrivateAurasCoTankUseHealerInFiveMan)
+		coTankShowName:SetChecked(DBM.Options.PrivateAurasCoTankShowName)
+		coTankNameFontSize:SetValue(DBM.Options.PrivateAurasCoTankNameFontSize)
+		coTankNameXOffset:SetValue(DBM.Options.PrivateAurasCoTankNameXOffset)
+		coTankNameYOffset:SetValue(DBM.Options.PrivateAurasCoTankNameYOffset)
+		coTankSlot1Player:RefreshLazyValues()
+		coTankSlot1Player:SetSelectedValue(DBM.Options.PrivateAurasCoTankSlot1Player)
+		coTankSlot2Player:RefreshLazyValues()
+		coTankSlot2Player:SetSelectedValue(DBM.Options.PrivateAurasCoTankSlot2Player)
+		OnAuraSettingsChange(false)
+	end)
+end

@@ -1226,7 +1226,6 @@ do
 			end
 			for i = #registeredEvents[event], 1, -1 do
 				if registeredEvents[event][i] == mod then
-					---@diagnostic disable-next-line: missing-fields
 					registeredEvents[event][i] = {}
 					break
 				end
@@ -2925,7 +2924,6 @@ do
 	function DBM:GetShortServerName(name)
         if not self.Options.StripServerName then return name end--If strip is disabled, just return name
         if CustomNames then
-			---@diagnostic disable-next-line: undefined-field
             name = CustomNames.Get(name)
         end
         local shortName, serverName = string.split("-", name)
@@ -3666,9 +3664,9 @@ do
 		--Blizzard forgot to sync GetSpellCooldown to C Space with other spells in all classic versions (cata and vanilla and wrath alike)
 		--DoesSpellExist likely has same probelm with titan wrath client but any apis using it won't be used there so safe to exclude, maybe
 		if not C_Spell.GetSpellCooldown then
-			---@diagnostic disable-next-line: undefined-field
 			GetSpellCooldown = _G.GetSpellCooldown
 			halfAssedClassicPath = true--Need to set variable so the wrapper knows it's arg return and not table return
+			error("Report this error to DBM authors if you see it")
 		else
 			GetSpellCooldown = C_Spell.GetSpellCooldown
 		end
@@ -3692,16 +3690,7 @@ do
 	---@param spellId string|number --Should be number, but accepts string too since Blizzards api converts strings to number.
 	function DBM:GetSpellTexture(spellId)
 		if not spellId then return end--Unlike 10.x and older, 11.x now errors if called without a spellId
-		--Doesn't need a table at this time
-		local texture
-		--if newPath then
-		--	local spellTable = GetSpellTexture(spellId)
-		--	if spellTable then
-		--		texture = spellTable.texture
-		--	end
-		--else
-			texture = GetSpellTexture(spellId)
-		--end
+		local texture = GetSpellTexture(spellId)
 		return texture
 	end
 
@@ -3728,7 +3717,6 @@ do
 			if not halfAssedClassicPath then
 				local spellTable = GetSpellCooldown(spellId)
 				if spellTable then
-					---@diagnostic disable-next-line: undefined-field
 					start, duration, enable = spellTable.startTime, spellTable.duration, spellTable.isEnabled
 				end
 			else
@@ -3760,14 +3748,12 @@ do
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
 				--Work around new bug in wow api extention
-				---@diagnostic disable-next-line: param-type-mismatch
 				local spellTable = GetAuraDataBySpellName(uId, spellInput)
 				if not spellTable or self:issecretvalue(spellTable.name) then return end
 				return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 			else--Either a multi spell check, or a single spell id check on non player unit (C_UnitAuras.GetPlayerAuraBySpellID is unavailable)
 				for i = 1, 60 do
 					--Work around new bug in wow api extention
-					---@diagnostic disable-next-line: param-type-mismatch
 					local spellTable = UnitAura(uId, i)
 					if not spellTable or self:issecretvalue(spellTable.name) then return end
 					if spellInput == spellTable.name or spellInput == spellTable.spellId or spellInput2 == spellTable.name or spellInput2 == spellTable.spellId or spellInput3 == spellTable.name or spellInput3 == spellTable.spellId or spellInput4 == spellTable.name or spellInput4 == spellTable.spellId or spellInput5 == spellTable.name or spellInput5 == spellTable.spellId then
@@ -3793,13 +3779,11 @@ do
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
-				---@diagnostic disable-next-line: param-type-mismatch
 				local spellTable = GetAuraDataBySpellName(uId, spellInput, "HARMFUL")
 				if not spellTable or self:issecretvalue(spellTable.name) then return end
 				return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 			else--Either a multi spell check, or a single spell id check on non player unit (C_UnitAuras.GetPlayerAuraBySpellID is unavailable)
 				for i = 1, 60 do
-					---@diagnostic disable-next-line: param-type-mismatch
 					local spellTable = UnitAura(uId, i, "HARMFUL")
 					if not spellTable or self:issecretvalue(spellTable.name) then return end
 					if spellInput == spellTable.name or spellInput == spellTable.spellId or spellInput2 == spellTable.name or spellInput2 == spellTable.spellId or spellInput3 == spellTable.name or spellInput3 == spellTable.spellId or spellInput4 == spellTable.name or spellInput4 == spellTable.spellId or spellInput5 == spellTable.name or spellInput5 == spellTable.spellId then
@@ -3825,13 +3809,11 @@ do
 			return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
-				---@diagnostic disable-next-line: param-type-mismatch
 				local spellTable = GetAuraDataBySpellName(uId, spellInput, "HELPFUL")
 				if not spellTable or self:issecretvalue(spellTable.name) then return end
 				return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 			else--Either a multi spell check, or a single spell id check on non player unit (C_UnitAuras.GetPlayerAuraBySpellID is unavailable)
 				for i = 1, 60 do
-					---@diagnostic disable-next-line: param-type-mismatch
 					local spellTable = UnitAura(uId, i, "HELPFUL")
 					if not spellTable or self:issecretvalue(spellTable.name) then return end
 					if spellInput == spellTable.name or spellInput == spellTable.spellId or spellInput2 == spellTable.name or spellInput2 == spellTable.spellId or spellInput3 == spellTable.name or spellInput3 == spellTable.spellId or spellInput4 == spellTable.name or spellInput4 == spellTable.spellId or spellInput5 == spellTable.name or spellInput5 == spellTable.spellId then
@@ -4294,11 +4276,8 @@ do
 			end
 		end
 		for _, mod in ipairs(DBM.Mods) do
-			---@diagnostic disable-next-line: inject-field
 			mod.lastKillTime = nil
-			---@diagnostic disable-next-line: inject-field
 			mod.lastWipeTime = nil
-			---@diagnostic disable-next-line: inject-field
 			if mod.combatInfo then
 				mod.combatInfo.pull = nil
 			end
@@ -4354,7 +4333,6 @@ end
 ---@param isDebug boolean? Used to play debug sounds on timer refresh warnings
 ---@param customColor number? Custom color index from WarningColors table
 function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug, customColor)
-	---@diagnostic disable-next-line: undefined-field
 	local tag = prefix or (self.localization and self.localization.general.name) or L.DBM
 	local frame = DBM.Options.ChatFrame and _G[tostring(DBM.Options.ChatFrame)] or DEFAULT_CHAT_FRAME
 	if not frame or not frame:IsShown() and not allowHiddenChatFrame then
@@ -4644,9 +4622,10 @@ do
 
 	--to check flag is correct, remove comment block specFlags table and GetRoleFlagValue function, change this to GetRoleFlagValue2
 	--disable flag check normally because double flag check comsumes more cpu on mod load.
+	---@param self DBMModOrDBM
 	---@param flag SpecFlags
 	---@return boolean
-	function bossModPrototype:GetRoleFlagValue(flag)
+	function DBM.GetRoleFlagValue(self, flag)
 		if not flag then return false end
 		if (not currentSpecID or currentSpecID == 0) then
 			DBM:SetCurrentSpecInfo()
@@ -4665,6 +4644,7 @@ do
 		end
 		return false
 	end
+	bossModPrototype.GetRoleFlagValue = DBM.GetRoleFlagValue
 
 	---@param uId playerUUIDs?
 	function bossModPrototype:IsMeleeDps(uId)
