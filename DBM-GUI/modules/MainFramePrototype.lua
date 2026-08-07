@@ -686,7 +686,21 @@ function frame:DisplayFrame(targetFrame, secondResize)
 		-- (notably SimpleHTML checkbox labels) use the same settled geometry as when a panel is revisited.
 		C_Timer.After(0, function()
 			if DBM_GUI.currentViewing == targetFrame then
-				self:DisplayFrame(targetFrame, false)
+				local deferredScrollBar = GetContainerScrollBar()
+				local deferredFOV = GetContainerFOV()
+				local deferredPanelContainer = GetPanelContainer()
+				targetFrame:SetSize(deferredFOV:GetSize())
+				deferredScrollBar:Show()
+				local deferredMax = resize(targetFrame, true) - deferredPanelContainer:GetHeight()
+				if deferredMax > 0 then
+					deferredScrollBar:SetMinMaxValues(0, deferredMax)
+					resize(targetFrame, true)
+				else
+					deferredScrollBar:Hide()
+					deferredScrollBar:SetValue(0)
+					deferredScrollBar:SetMinMaxValues(0, 0)
+					resize(targetFrame, false)
+				end
 			end
 		end)
 	end
