@@ -35,6 +35,7 @@
 localization.en.lua
 localization.kr.lua
 localization.ru.lua
+localization.cn.lua
 
 TheVenomousAbyss\NekzalitheSoulcoiler.lua
 TheVenomousAbyss\EntombedSentinels.lua
