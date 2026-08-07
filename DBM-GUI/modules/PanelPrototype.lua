@@ -745,24 +745,6 @@ do
 		buttonText:SetSize(buttonText:GetWidth(), buttonText:GetContentHeight())
 		buttonText:SetText(button.text) -- SetText is called again, because SimpleHTML needs a refresh after sizing
 		button.myheight = mmax(buttonText:GetContentHeight() + 12, 30)
-		button:HookScript("OnShow", function(self)
-			-- The panel's final width is applied after children are shown, so refresh SimpleHTML labels once on the next frame.
-			if self.simpleHTMLLayoutReady or self.simpleHTMLLayoutQueued then
-				return
-			end
-			self.simpleHTMLLayoutQueued = true
-			C_Timer.After(0, function()
-				self.simpleHTMLLayoutQueued = nil
-				if not self:IsShown() then
-					return
-				end
-				local text = self.textObj
-				text:SetText(self.text)
-				text:SetSize(text:GetWidth(), text:GetContentHeight())
-				text:SetText(self.text)
-				self.simpleHTMLLayoutReady = true
-			end)
-		end)
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
 			button:SetScript("OnShow", function(self)
 				self:SetChecked(DBM.Options[dbmvar])
