@@ -245,7 +245,7 @@ function Refresh()
 	table.wipe(profileDropdown)
 	for name, _ in pairs(DBM_AllSavedOptions) do
 		table.insert(profileDropdown, {
-			text	= name,
+			text	= DBM:GetLocalizedProfileName(name),
 			value	= name
 		})
 	end
