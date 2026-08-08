@@ -2317,6 +2317,17 @@ end
 -----------------
 do
 	local callOnLoad = {}
+	local guiLoadPending = false
+
+	local function finishGuiLoad(firstLoad)
+		guiLoadPending = false
+		DBM_GUI:ShowHide()
+		if firstLoad then
+			tsort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
+			for _, v in ipairs(callOnLoad) do v[1]() end
+		end
+	end
+
 	function DBM:LoadGUI()
 		if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
 			self:AddMsg(L.VEM)
@@ -2354,6 +2365,9 @@ do
 			self:AddMsg(L.LOAD_GUI_COMBAT, nil, true)
 			return
 		end
+		if guiLoadPending then
+			return
+		end
 		if self.NewerVersion and private.showConstantReminder >= 1 then
 			AddMsg(self, L.UPDATEREMINDER_HEADER:format(self.NewerVersion, showRealDate(self.HighestRelease)))
 		end
@@ -2377,10 +2391,15 @@ do
 --			end
 			firstLoad = true
 		end
-		DBM_GUI:ShowHide()
 		if firstLoad then
-			tsort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
-			for _, v in ipairs(callOnLoad) do v[1]() end
+			-- Loading the GUI already creates every static options panel. Build the dynamic
+			-- mod list in a fresh execution slice to avoid Classic's stricter script limit.
+			guiLoadPending = true
+			C_TimerAfter(0, function()
+				finishGuiLoad(true)
+			end)
+		else
+			finishGuiLoad(false)
 		end
 	end
 
