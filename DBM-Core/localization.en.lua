@@ -419,6 +419,7 @@ L.AUTO_SPEC_WARN_TEXTS = {
 	link								= "%s linked with >%%s<",
 	defensive							= "%s - defensive",
 	taunt								= "%s on >%%s< - taunt now",
+	tauntsecret							= "%s on %%s - taunt now",
 	close								= "%s on >%%s< near you",
 	move								= "%s - move away",
 	keepmove							= "%s - keep moving",
