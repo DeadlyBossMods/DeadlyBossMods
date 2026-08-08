@@ -20,8 +20,9 @@ mod:RegisterCombat("combat")
 --TODO, verify if intermission abilities neeed counts or not (some might some might not)
 --DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
+local warnEssenceRend					= mod:NewCountAnnounce(1287426, 2)
 
-local specWarnEssenceRend				= mod:NewSpecialWarningCount(1287426, nil, nil, nil, 1, 2, nil, nil, "lineyou")
+--local specWarnEssenceRend				= mod:NewSpecialWarningCount(1287426, nil, nil, nil, 1, 2, nil, nil, "lineyou")
 local specWarnRestlessAmani				= mod:NewSpecialWarningCount(1297630, nil, nil, nil, 2, 2, nil, nil, "killmob")--Script uses 1295397 but it has no tooltip, so we use 1297630 on purpose
 local specWarnPossessionBarrage			= mod:NewSpecialWarningRunCount(1284103, nil, nil, nil, 4, 2, nil, nil, "justrun")--Script uses 1292036 but it has no tooltip, so we use 1284103 on purpose
 local specWarnPossessionBarrageTaunt	= mod:NewSpecialWarningTaunt(1284103, nil, nil, nil, 1, 2, nil, nil, "tauntboss")
@@ -38,6 +39,8 @@ local timerInvokeCD						= mod:NewCDCountTimer(20.5, 1299673, nil, nil, nil, 6)
 local timerHungeringPyreCD				= mod:NewCDCountTimer(20.5, 1290679, nil, nil, nil, 5)
 local timerResidualTollCD				= mod:NewCDCountTimer(20.5, 1298698, nil, nil, nil, 2)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
+
+mod:AddAuraSoundOption(1287427, true, 1287426, 1, 1, "lineyou", 17)--Essence Rend (iffy, not combat logged, so would aura sound even work?)
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local pendingResidualToll22 = false--Disambiguates 22s in P2 using preceding 3s observed in PTR logs
@@ -60,10 +63,8 @@ mod.vb.ResidualTollCount = 0
 local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	if not dontSetAlerts then
-		if self:IsTank() then
-			specWarnPossessionBarrage:SetAlert(710, "justrun", 2, 2)
-		end
-		specWarnEssenceRend:SetAlert(675, "runout", 2, 2, 0)
+		specWarnPossessionBarrage:SetAlert(710, "justrun", 2, 2, 0)--Doesn't need tank scope, gets a personal ENCOUNTER_WARNING
+--		specWarnEssenceRend:SetAlert(675, "runout", 2, 2, 0)
 		specWarnRestlessAmani:SetAlert(695, "killmob", 2, 2)
 --		warnPhase2:SetAlert(712, "ptwo", 2, 2, 0)
 		specWarnGraspingDepths:SetAlert(731, "pullin", 12, 2)
@@ -285,18 +286,22 @@ do
 			if not eventType then return end
 			if not eventCount then return end
 			if eventType == "essencerend" then
-				specWarnEssenceRend:Show(eventCount)
-				specWarnEssenceRend:Play("lineyou")
+				warnEssenceRend:Show(eventCount)
+--				specWarnEssenceRend:Show(eventCount)
+--				specWarnEssenceRend:Play("lineyou")
 			elseif eventType == "restlessamani" then
 				specWarnRestlessAmani:Show(eventCount)
 				specWarnRestlessAmani:Play("killmob")
 			elseif eventType == "possessionbarrage" then
+				--If threat check doesn't work, we can use ENCOUNTER_WARNING for personal alert at least
+				--But we use threat check for now so we can also warn the non target
 				if self:IsTanking("player", "boss1", nil, true) then
 					specWarnPossessionBarrage:Show(eventCount)
 					specWarnPossessionBarrage:Play("justrun")
 				else
+					local targetGUID = UnitGUID("boss1target")
 					local targetName = UnitName("boss1target")
-					specWarnPossessionBarrageTaunt:SecretShow(targetName)
+					specWarnPossessionBarrageTaunt:SecretShow(targetGUID, targetName)
 					specWarnPossessionBarrageTaunt:Play("tauntboss")
 				end
 			elseif eventType == "invoke" then

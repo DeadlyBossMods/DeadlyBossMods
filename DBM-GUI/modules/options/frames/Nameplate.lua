@@ -212,7 +212,7 @@ local iconTextMaxLenSlider = style:CreateSlider(L.NPIcon_MaxTextLen, 3, 40, 1, 1
 	DBM.Options.NPIconTextMaxLen = value
 	DBM.Nameplate:UpdateIconOptions()
 end)
-iconTextMaxLenSlider:SetPoint("TOPLEFT", textFontSizeSlider, "BOTTOMLEFT", 0, -30)
+iconTextMaxLenSlider:SetPoint("TOPLEFT", textFontSizeSlider, "BOTTOMLEFT", 0, -35)
 
 local styleResetbutton = style:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 styleResetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)

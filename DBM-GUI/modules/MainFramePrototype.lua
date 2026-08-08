@@ -681,6 +681,29 @@ function frame:DisplayFrame(targetFrame, secondResize)
 	if secondResize ~= false then
 		resize(targetFrame, scrollBar:IsVisible())
 	end
+	if changed then
+		-- Areas resolve their width during the first display frame. Re-layout on the next frame so controls
+		-- (notably SimpleHTML checkbox labels) use the same settled geometry as when a panel is revisited.
+		C_Timer.After(0, function()
+			if DBM_GUI.currentViewing == targetFrame then
+				local deferredScrollBar = GetContainerScrollBar()
+				local deferredFOV = GetContainerFOV()
+				local deferredPanelContainer = GetPanelContainer()
+				targetFrame:SetSize(deferredFOV:GetSize())
+				deferredScrollBar:Show()
+				local deferredMax = resize(targetFrame, true) - deferredPanelContainer:GetHeight()
+				if deferredMax > 0 then
+					deferredScrollBar:SetMinMaxValues(0, deferredMax)
+					resize(targetFrame, true)
+				else
+					deferredScrollBar:Hide()
+					deferredScrollBar:SetValue(0)
+					deferredScrollBar:SetMinMaxValues(0, 0)
+					resize(targetFrame, false)
+				end
+			end
+		end)
+	end
 	if targetFrame.searchMatchedControl then
 		self:RevealSearchMatch(targetFrame, targetFrame.searchMatchedControl)
 		targetFrame.searchMatchedControl = nil

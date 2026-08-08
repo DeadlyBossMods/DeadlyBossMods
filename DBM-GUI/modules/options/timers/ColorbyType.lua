@@ -353,8 +353,6 @@ do
 end
 dummybarcolor8:ApplyStyle()
 
-if DBM:IsPostMidnight() then return end
-
 --Important Bar Options
 local bar7OptionsText = ImpBarColors:CreateText(L.Bar7Header, 405)
 bar7OptionsText:SetPoint("TOPLEFT", color1Type7, "BOTTOMLEFT", 0, -30)
@@ -376,7 +374,12 @@ local customInline = ImpBarColors:CreateCheckButton(L.Bar7CustomInline, false, n
 customInline:SetPoint("LEFT", forceLarge, "LEFT", 200, 0)
 customInline:SetScript("OnClick", function()
 	DBT:SetOption("Bar7CustomInline", not DBT.Options.Bar7CustomInline)
+	--Update Bar 7
 	local ttext = _G[dummybarcolor7.frame:GetName().."BarName"]:GetText() or ""
 	ttext = ttext:gsub("|T.-|t", "")
 	dummybarcolor7:SetText(ttext)
+	--Update Bar 8
+	local ttext2 = _G[dummybarcolor8.frame:GetName().."BarName"]:GetText() or ""
+	ttext2 = ttext2:gsub("|T.-|t", "")
+	dummybarcolor8:SetText(ttext2)
 end)
