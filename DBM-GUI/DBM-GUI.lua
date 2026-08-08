@@ -1439,6 +1439,7 @@ do
 
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
+			local addonLoaded = C_AddOns.IsAddOnLoaded(addon.modId)
 			if not addon.panel then
 				local customName
 				--Auto truncate Raid, Dungeon, Lair, and World boss mods to only display expansion name in list
@@ -1448,7 +1449,7 @@ do
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)
 
-				if not C_AddOns.IsAddOnLoaded(addon.modId) then
+				if not addonLoaded then
 					local autoLoadFrame = CreateFrame("Frame", nil, addon.panel.frame)
 					autoLoadFrame:SetScript("OnShow", function()
 						if not addon.attemptedAutoLoad then
@@ -1473,7 +1474,7 @@ do
 				end
 			end
 
-			if addon.panel and addon.subTabs and C_AddOns.IsAddOnLoaded(addon.modId) then
+			if addon.panel and addon.subTabs and addonLoaded then
 				if not addon.subPanels then
 					addon.subPanels = {}
 				end
@@ -1487,11 +1488,12 @@ do
 				end
 			end
 
-			for _, v in ipairs(DBM.Mods) do
-				---@class DBMMod
-				local mod = v
-				if mod.modId == addon.modId then
-					if not addon.subTabs or (addon.subPanels and (addon.subPanels[mod.subTab] or mod.subTab == 0)) then
+			local modList = DBM.ModLists[addon.modId]
+			if modList then
+				for _, modId in ipairs(modList) do
+					---@class DBMMod
+					local mod = DBM:GetModByName(modId)
+					if mod and (not addon.subTabs or (addon.subPanels and (addon.subPanels[mod.subTab] or mod.subTab == 0))) then
 						if addon.subTabs and addon.subPanels[mod.subTab] then
 							mod.panel = mod.panel or addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
 							if mod.showTestUI then
