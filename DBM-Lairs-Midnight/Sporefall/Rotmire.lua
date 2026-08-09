@@ -186,8 +186,9 @@ do
 					specWarnPutridFist:Show()
 					specWarnPutridFist:Play("defensive")
 				elseif self:IsTank() then
+					local targetGUID = UnitGUID("boss1target")
 					local targetName = UnitName("boss1target")
-					specWarnPutridFistTaunt:SecretShow(targetName)
+					specWarnPutridFistTaunt:SecretShow(targetGUID, targetName)
 					specWarnPutridFistTaunt:Play("tauntboss")
 				end
 			elseif eventType == "vines" then

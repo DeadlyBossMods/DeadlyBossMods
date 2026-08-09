@@ -613,6 +613,13 @@ function specialWarningPrototype:Show(...)
 		local message
 		if argTable then
 			message = stringUtils.pformat(self.text, unpack(argTable))
+		elseif private.secretShowConsuming then
+			local secretTemplate = L.AUTO_SPEC_WARN_TEXTS[self.announceType .. "secret"]
+			if not secretTemplate then
+				error("SecretShow requires an announce-type-specific secret-safe template", 2)
+			end
+			local secretFormatText = secretTemplate:format(self.spellName)
+			message = string.format(secretFormatText, ...)--Use native format to avoid secret args surfacing in error handlers
 		else
 			message = string.format(self.text, ...)--Use native format to avoid secret args surfacing in error handlers
 		end
@@ -722,11 +729,23 @@ function specialWarningPrototype:Show(...)
 end
 
 ---Variant of Show for niche cases where the args contain secret data that must not be materialized into a Lua table.
----Behaves identically to Show but suppresses argTable creation, class coloring, and note text expansion on the secret args.
+---Uses an announce-type-specific secret template without name delimiters, then optionally class-colors the secret player name from its GUID.
+---The GUID may be literal false to explicitly skip the class lookup and color wrapping.
+---@param playerGUID WOWGUID|false|nil
 ---@param ... any
-function specialWarningPrototype:SecretShow(...)
+function specialWarningPrototype:SecretShow(playerGUID, ...)
+	local playerName = select(1, ...)
+	if playerGUID then
+		local _, className = GetPlayerInfoByGUID(playerGUID)
+		if className then
+			local classColor = C_ClassColor.GetClassColor(className)
+			if classColor then
+				playerName = classColor:WrapTextInColorCode(playerName)
+			end
+		end
+	end
 	private.secretShowConsuming = true
-	self:Show(...)
+	self:Show(playerName, select(2, ...))
 	private.secretShowConsuming = false
 end
 

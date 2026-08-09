@@ -38,6 +38,9 @@ local timerUnstableMiasmaCD				= mod:NewCDCountTimer(20.5, 1288232, nil, nil, ni
 local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Possibly unused
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
+mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "toxic", 2)--Helical Toxins (better audio?)
+mod:AddAuraSoundOption(1284471, false, 1284483, 1, 1, "debuffyou", 17)--Blighted Blood
+
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local firstBerserkIgnored = false
 local next22Event = "empoweringslam"
