@@ -1904,8 +1904,8 @@ do
 							})
 							if self.AddOns[#self.AddOns].subTabs then
 								local subTabs = self.AddOns[#self.AddOns].subTabs
-								-- Remove SoD-only raid subtabs on Classic Era
-								if private.isClassic and not private.currentSeason then
+								-- Remove SoD-only raid subtabs on Classic Era and Hardcore
+								if private.isClassic and (not private.currentSeason or private.isHardcoreServer) then
 									local sodOnlyRaids = {[48]=true, [90]=true, [109]=true, [2856]=true}
 									local sodOnlyDungeons = {[2784]=true, [2875]=true}
 									local filter = addonName == "DBM-Raids-Vanilla" and sodOnlyRaids or sodOnlyDungeons
