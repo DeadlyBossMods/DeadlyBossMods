@@ -118,7 +118,7 @@ if private.isRetail then
 		--Challenges (Mage tower, visions, torghast, proving grounds)
 		[2212] = {50, 5}, [2213] = {50, 5}, [2827] = {80, 5}, [2828] = {80, 5}, [2162]= {80, 5}, [1148] = {80, 5}, [1698] = {80, 5}, [1710] = {80, 5}, [1703] = {80, 5}, [1702] = {80, 5}, [1684] = {80, 5}, [1673] = {80, 5}, [1616] = {80, 5},
 	}
-	seasonalDungeons = {[658]=true, [1209]=true, [1753]=true, [2526]=true, [2811]=true, [2874]=true, [2915]=true, [2805]=true, [1762]=true, [1877]=true, [2521]=true, [2825]=true, [2813]=true, [2859]=true, [2923]=true, [2993]=true}--Midnight Season 1 and Season 2
+	seasonalDungeons = {[1762]=true, [1877]=true, [2521]=true, [2825]=true, [2813]=true, [2859]=true, [2923]=true, [2993]=true}--Midnight Season 1 and Season 2
 elseif private.isCata or private.isMop then
 	--Since 2 dungeons were changed from vanilla to cata dungeons, Cata and MoP need own table
 	--Still has to remain separate from retail due to level squishes retail has had
