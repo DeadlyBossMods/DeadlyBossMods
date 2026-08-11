@@ -248,18 +248,18 @@ L.RANGERADAR_IN_RANGE_TEXT	= "거리 내 %d명 (%0.1fm)"
 L.RANGECHECK_IN_RANGE_TEXT	= "거리 내 %d명"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
 
-L.INFOFRAME_TITLE			= "DBM 정보 창"
-L.INFOFRAME_SHOW_SELF		= "내 자원 항상 보기"		-- Always show your own power value even if you are below the threshold
-L.INFOFRAME_SETLINES			= "최대 줄 갯수 지정"
-L.INFOFRAME_SETCOLS		= "최대 열 갯수 지정"
-L.INFOFRAME_SETSTRATA		= "프레임 레이어 지정"
+L.INFOFRAME_TITLE				= "DBM 정보 창"
+L.INFOFRAME_SHOW_SELF			= "항상 내 자원 표시"		-- Always show your own power value even if you are below the threshold
+L.INFOFRAME_SETLINES			= "최대 줄 설정"
+L.INFOFRAME_SETCOLS				= "최대 열 설정"
+L.INFOFRAME_SETSTRATA			= "프레임 층 설정"
 L.INFOFRAME_LINESDEFAULT		= "보스 모듈이 자동 설정"
 L.INFOFRAME_LINES_TO			= "줄 %d개"
-L.INFOFRAME_COLS_TO			= "열 %d개"
-L.INFOFRAME_POWER			= "기력"
-L.INFOFRAME_AGGRO			= "어그로"
-L.INFOFRAME_MAIN			= "주 자원:"--Main power
-L.INFOFRAME_ALT				= "보조 자원:"--Alternate Power
+L.INFOFRAME_COLS_TO				= "열 %d개"
+L.INFOFRAME_POWER				= "자원"
+L.INFOFRAME_AGGRO				= "어그로"
+L.INFOFRAME_MAIN				= "주 자원:"--Main power
+L.INFOFRAME_ALT					= "보조 자원:"--Alternate Power
 
 L.LFG_INVITE						= "파티찾기 입장"
 
