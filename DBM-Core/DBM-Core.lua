@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 416, "1888a1e"--416.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.1 alpha"--Core version
+DBM.DisplayVersion = "12.1.2 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 7, 24) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 8, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -1904,8 +1904,8 @@ do
 							})
 							if self.AddOns[#self.AddOns].subTabs then
 								local subTabs = self.AddOns[#self.AddOns].subTabs
-								-- Remove SoD-only raid subtabs on Classic Era
-								if private.isClassic and not private.currentSeason then
+								-- Remove SoD-only raid subtabs on Classic Era and Hardcore
+								if private.isClassic and (not private.currentSeason or private.isHardcoreServer) then
 									local sodOnlyRaids = {[48]=true, [90]=true, [109]=true, [2856]=true}
 									local sodOnlyDungeons = {[2784]=true, [2875]=true}
 									local filter = addonName == "DBM-Raids-Vanilla" and sodOnlyRaids or sodOnlyDungeons
