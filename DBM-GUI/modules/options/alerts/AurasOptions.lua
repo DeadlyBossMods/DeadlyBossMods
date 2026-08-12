@@ -499,14 +499,18 @@ alwaysShowPlayerAuras:SetScript("OnClick", function()
 	DBM.Options.AlwaysShowPlayerAuras = not DBM.Options.AlwaysShowPlayerAuras
 	OnAuraSettingsChange(true)
 end)
+local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 1, 600, 1, 150, DBM.Options.PrivateAurasMaxDuration, function(value)
+	DBM.Options.PrivateAurasMaxDuration = value
+	OnAuraSettingsChange()
+end)
+
+auraMaxDuration:SetPoint("TOPLEFT", alwaysShowPlayerAuras, "BOTTOMLEFT", 20, -20)
 local coTankUseHealerInFiveMan = coTankAdvancedArea:CreateCheckButton(L.CoTankUseHealerInFiveMan, true, nil, "PrivateAurasCoTankUseHealerInFiveMan")
 
 coTankUseHealerInFiveMan:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasCoTankUseHealerInFiveMan = not DBM.Options.PrivateAurasCoTankUseHealerInFiveMan
 		OnAuraSettingsChange(false)
 	end)
-
-coTankUseHealerInFiveMan:SetPoint("TOPLEFT", alwaysShowPlayerAuras, "BOTTOMLEFT", 0, -5)
 
 coTankShowName = coTankAdvancedArea:CreateCheckButton(L.CoTankShowPlayerName, true, nil, "PrivateAurasCoTankShowName")
 
@@ -591,8 +595,10 @@ coTankAdvancedReset:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasCoTankNameYOffset = DBM.DefaultOptions.PrivateAurasCoTankNameYOffset
 		DBM.Options.PrivateAurasCoTankSlot1Player = DBM.DefaultOptions.PrivateAurasCoTankSlot1Player
 		DBM.Options.PrivateAurasCoTankSlot2Player = DBM.DefaultOptions.PrivateAurasCoTankSlot2Player
+		DBM.Options.PrivateAurasMaxDuration = DBM.DefaultOptions.PrivateAurasMaxDuration
 		DBM.Options.AlwaysShowPlayerAuras = DBM.DefaultOptions.AlwaysShowPlayerAuras
 		alwaysShowPlayerAuras:SetChecked(DBM.Options.AlwaysShowPlayerAuras)
+		auraMaxDuration:SetValue(DBM.Options.PrivateAurasMaxDuration)
 		coTankUseHealerInFiveMan:SetChecked(DBM.Options.PrivateAurasCoTankUseHealerInFiveMan)
 		coTankShowName:SetChecked(DBM.Options.PrivateAurasCoTankShowName)
 		coTankNameFontSize:SetValue(DBM.Options.PrivateAurasCoTankNameFontSize)

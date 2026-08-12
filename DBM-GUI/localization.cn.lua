@@ -262,6 +262,7 @@ L.Panel_PrivateAuras				= "私人光环"
 L.Area_PersonalPrivateAuras			= "个人私人光环选项"
 L.EnablePersonalPrivateAuraIcons	= "在屏幕上显示个人私人光环图标"--复选框
 L.AlwaysShowPlayerAuras				= "在副本外显示光环框体"
+L.AuraMaxDuration					= "追踪光环的最长持续时间"
 L.SetPAGrowDirection				= "扩展方向"
 L.SetPAIconScale					= "图标缩放比例"
 L.SetPAMaxIcons						= "最大图标数量"

@@ -253,6 +253,7 @@ L.Panel_PrivateAuras				= "Private Auren"
 L.Area_PersonalPrivateAuras			= "Optionen für persönliche private Auren"
 L.EnablePersonalPrivateAuraIcons	= "Zeige Icons für persönliche private Auren auf dem Bildschirm"--checkbox
 L.AlwaysShowPlayerAuras				= "Aura-Fenster außerhalb von Instanzen anzeigen"
+L.AuraMaxDuration					= "Maximale Dauer verfolgter Auren"
 L.SetPAGrowDirection				= "Wuchsrichtung"--Dropdown
 L.SetPAIconScale					= "Icon-Skalierung"--Slider, Reused for personal and tank
 L.SetPAMaxIcons						= "Maximale Icons"--Slider, Reused for personal and tank

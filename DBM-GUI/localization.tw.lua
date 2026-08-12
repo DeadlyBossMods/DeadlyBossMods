@@ -260,6 +260,7 @@ L.Panel_PrivateAuras				= "減益光環"
 L.Area_PersonalPrivateAuras			= "個人減益光環選項"
 L.EnablePersonalPrivateAuraIcons	= "在螢幕上顯示個人減益光環圖示"--checkbox
 L.AlwaysShowPlayerAuras				= "在副本外顯示光環框架"
+L.AuraMaxDuration					= "追蹤光環的最長持續時間"
 L.SetPAGrowDirection				= "增長方向"--Dropdown
 L.SetPAIconScale					= "圖示縮放"--Slider, Reused for personal and tank
 L.SetPAMaxIcons						= "最大圖示"--Slider, Reused for personal and tank
