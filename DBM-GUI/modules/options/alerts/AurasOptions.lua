@@ -499,12 +499,6 @@ alwaysShowPlayerAuras:SetScript("OnClick", function()
 	DBM.Options.AlwaysShowPlayerAuras = not DBM.Options.AlwaysShowPlayerAuras
 	OnAuraSettingsChange(true)
 end)
-local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 1, 600, 1, 150, DBM.Options.PrivateAurasMaxDuration, function(value)
-	DBM.Options.PrivateAurasMaxDuration = value
-	OnAuraSettingsChange()
-end)
-
-auraMaxDuration:SetPoint("TOPLEFT", alwaysShowPlayerAuras, "BOTTOMLEFT", 20, -20)
 local coTankUseHealerInFiveMan = coTankAdvancedArea:CreateCheckButton(L.CoTankUseHealerInFiveMan, true, nil, "PrivateAurasCoTankUseHealerInFiveMan")
 
 coTankUseHealerInFiveMan:SetScript("OnClick", function()
@@ -546,6 +540,13 @@ coTankNameYOffset = coTankAdvancedArea:CreateSlider(L.CoTankNameYOffset, -100, 1
 
 coTankNameYOffset:SetPoint("TOPLEFT", coTankNameFontSize, "TOPLEFT", 0, -50)
 coTankNameYOffset.myheight = 50
+
+local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 1, 600, 1, 150, DBM.Options.PrivateAurasMaxDuration, function(value)
+	DBM.Options.PrivateAurasMaxDuration = value
+	OnAuraSettingsChange()
+end)
+
+auraMaxDuration:SetPoint("TOPLEFT", coTankNameYOffset, "TOPRIGHT", 30, 0)
 
 
 local coTankSlot1Player = coTankAdvancedArea:CreateDropdown(L.CoTankSlot1Player, function()
