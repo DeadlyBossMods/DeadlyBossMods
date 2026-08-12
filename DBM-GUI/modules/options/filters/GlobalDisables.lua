@@ -21,7 +21,7 @@ if DBM:IsPostMidnight() then
 	disableAuraFrames:SetScript("OnClick", function()
 		DBM.Options.DontShowPrivateAuraFrame = not DBM.Options.DontShowPrivateAuraFrame
 		local auraHandler = DBM.Auras
-		local updateMethod = auraHandler and (auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors)
+		local updateMethod = auraHandler and auraHandler.UpdateAuraAnchors
 		if updateMethod and not updateMethod(auraHandler) then
 			DBM:QueueAuraAnchorUpdate()
 		end

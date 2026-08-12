@@ -122,6 +122,5 @@ modules\objects\Announce.lua
 modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
 modules\objects\Sorting.lua
-modules\PrivateAura.lua
 modules\AuraTracking.lua
 modules\EncounterEvents.lua

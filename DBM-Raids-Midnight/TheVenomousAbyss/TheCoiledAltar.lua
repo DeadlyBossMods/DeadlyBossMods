@@ -1,4 +1,3 @@
-if DBM:GetTOC() < 120100 then return end
 local mod	= DBM:NewMod(2883, "DBM-Raids-Midnight", 1, 1320)
 --local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
 
@@ -81,9 +80,6 @@ mod.vb.ToxicDelugeCount = 0
 local function setFallback(self, dontSetAlerts)
 	--Blizz API fallbacks
 	if not dontSetAlerts then
-		if self:IsTank() then
-
-		end
 		if self:CheckDispelFilter("poison") then
 			specWarnVenomfang:SetAlert(679, "helpdispel", 2, 2)
 		end

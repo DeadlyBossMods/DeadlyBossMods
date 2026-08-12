@@ -387,8 +387,6 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerEnabled = true,
 	PrivateAurasPlayerHideBorder = false,
 	PrivateAurasPlayerHideTooltip = false,
-	PrivateAurasPlayerUpscaleDuration = true,
-	PrivateAurasPlayerScale = 3,
 	PrivateAurasPlayerSpacing2 = 1,
 	PrivateAurasPlayerLimit = 5,
 	PrivateAurasPlayerGrowDirection = "RIGHT",
@@ -409,11 +407,9 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerXOffset = 185,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasPlayerYOffset = 154,--Partial (drag and drop only, no UI slider/editbox)
 	--Co-Tank
-	PrivateAurasCoTankEnabled = false,
+	AurasCoTankEnabled = false,
 	PrivateAurasCoTankHideBorder = false,
 	PrivateAurasCoTankHideTooltip = false,
-	PrivateAurasCoTankUpscaleDuration = true,
-	PrivateAurasCoTankScale = 3,
 	PrivateAurasCoTankSpacing2 = 1,
 	PrivateAurasCoTankLimit = 5,
 	PrivateAurasCoTankGrowDirection = "LEFT",
@@ -441,13 +437,7 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankUseHealerInFiveMan = true,
 	PrivateAurasCoTankSlot1Player = "",
 	PrivateAurasCoTankSlot2Player = "",
-	--Player Text Anchor
-	PrivateAurasTextAnchorScale = 1.8,
-	PrivateAurasTextAnchorXOffset = 0,--Partial (drag and drop only, no UI slider/editbox)
-	PrivateAurasTextAnchorYOffset = -200,--Partial (drag and drop only, no UI slider/editbox)
-	PrivateAurasTextAnchorEnabled = true,
-	PrivateAurasTextAnchorAnchor = "TOP",--NYI
-	PrivateAurasTextAnchorRelativeTo = "TOP",--NYI
+	AlwaysShowPlayerAuras = false,
 }
 
 
@@ -1080,7 +1070,7 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		local coTankDefault = self:GetRoleFlagValue("Tank")
-		self.DefaultOptions.PrivateAurasCoTankEnabled = coTankDefault
+		self.DefaultOptions.AurasCoTankEnabled = coTankDefault
 		self.DefaultOptions.PrivateAurasCoTankShowSecond = coTankDefault
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
 		if not self.Options.GUIResizeMigrated_1000x700 then
