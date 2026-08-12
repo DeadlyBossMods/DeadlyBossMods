@@ -47,7 +47,7 @@ function DBM:UpdateZoneAuraAnchors(priority)
 	end
 	local auraHandler = DBM.Auras
 	if auraHandler then
-		local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+		local updateMethod = auraHandler.UpdateAuraAnchors
 		local succeeded = updateMethod and updateMethod(auraHandler)
 		if not succeeded then
 			pendingPAAnchorCheck = priority or 1
@@ -471,7 +471,7 @@ do
 		if pendingPAAnchorCheck > 0 then
 			local auraHandler = DBM.Auras
 			if auraHandler then
-				local updateMethod = auraHandler.UpdateAuraAnchors or auraHandler.UpdatePrivateAuraAnchors
+				local updateMethod = auraHandler.UpdateAuraAnchors
 				local succeeded = updateMethod and updateMethod(auraHandler)
 				if succeeded then
 					pendingPAAnchorCheck = 0

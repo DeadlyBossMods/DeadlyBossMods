@@ -1,4 +1,3 @@
-if DBM:GetTOC() < 120100 then return end -- 12.1+ aura container implementation
 ---@class DBM
 local DBM = DBM
 
@@ -47,7 +46,6 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 ---@field optionPrefix string
 ---@field HideBorder boolean
 ---@field HideTooltip boolean
----@field Scale number
 ---@field Spacing number
 ---@field Limit number
 ---@field GrowDirection string
@@ -87,7 +85,7 @@ DBM.Auras = AuraTracking
 ---@field NameLabel FontString?
 
 local AuraTrackingFilters = {
-	"HARMFUL|!PLAYER",
+	"HARMFUL",
 }
 
 local AuraSortMethod = rawget(_G, "AuraContainerSortMethod") or { Default = 1, ExpirationOnly = 2 }
@@ -129,12 +127,11 @@ local function GetAuraSettings(prefix)
 		optionPrefix = prefix,
 		HideBorder = DBM.Options[prefix .. "HideBorder"],
 		HideTooltip = DBM.Options[prefix .. "HideTooltip"],
-		Scale = DBM.Options[prefix .. "Scale"],
 		Spacing = DBM.Options[prefix .. "Spacing2"],
 		Limit = DBM.Options[prefix .. "Limit"],
 		GrowDirection = DBM.Options[prefix .. "GrowDirection"],
 		SortMode = DBM.Options[prefix .. "SortMode"] or DBM.DefaultOptions[prefix .. "SortMode"],
-		enabled = DBM.Options[prefix .. "Enabled"],
+		enabled = DBM.Options[prefix .. "Enabled2"],
 		Width = DBM.Options[prefix .. "Width"],
 		Height = DBM.Options[prefix .. "Height"],
 		Anchor = DBM.Options[prefix .. "Anchor"],
@@ -524,7 +521,22 @@ local function InitContainerState(state, settings, unit)
 		initializeFrame = function(button)
 			ConfigureButton(state, button, state.settings, state.unit)
 		end,
-		candidateFilters = {},
+		candidateFilters = {
+			isFromPlayerOrPlayerPet = false,
+			maxDuration = DBM.Options.AurasMaxDuration,
+			excludeSpellIDs = {
+				[57723] = true,--Exhaustion
+				[80354] = true,--Temporal Displacement
+				[57724] = true,--Sated
+				[390435] = true,--Exhaustion
+				[264689] = true,--Fatigued
+				[160455] = true,--Fatigued
+				[95809] = true,--Insanity
+				[124255] = true,--Stagger
+				[71041] = true,--Dungeon Deserter
+				[206151] = true,--Challenger's Burden
+			}
+		},
 		layout = {
 			elementWidth = settings.Width,
 			elementHeight = settings.Height,
@@ -810,6 +822,9 @@ function AuraTracking:UnregisterAuras(unit)
 end
 
 local function IsInValidInstance()
+	if DBM.Options.AlwaysShowPlayerAuras then
+		return true
+	end
 	local inInstance, instanceType = IsInInstance()
 	return inInstance and instanceType ~= "pvp" and instanceType ~= "arena"
 end
