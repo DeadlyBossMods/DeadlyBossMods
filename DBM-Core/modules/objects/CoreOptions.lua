@@ -407,7 +407,7 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerXOffset = 185,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasPlayerYOffset = 154,--Partial (drag and drop only, no UI slider/editbox)
 	--Co-Tank
-	PrivateAurasCoTankEnabled = false,
+	AurasCoTankEnabled = false,
 	PrivateAurasCoTankHideBorder = false,
 	PrivateAurasCoTankHideTooltip = false,
 	PrivateAurasCoTankSpacing2 = 1,
@@ -1070,7 +1070,7 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		local coTankDefault = self:GetRoleFlagValue("Tank")
-		self.DefaultOptions.PrivateAurasCoTankEnabled = coTankDefault
+		self.DefaultOptions.AurasCoTankEnabled = coTankDefault
 		self.DefaultOptions.PrivateAurasCoTankShowSecond = coTankDefault
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
 		if not self.Options.GUIResizeMigrated_1000x700 then

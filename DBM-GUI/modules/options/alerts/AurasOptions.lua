@@ -266,9 +266,9 @@ end)
 --  Co-Tank Aura Frame  --
 ----------------------------------
 local coTankAuraArea		= auraPanel:CreateArea(L.Area_TankPrivateAuras)
-local coTankAuraIcon		= coTankAuraArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "PrivateAurasCoTankEnabled")
+local coTankAuraIcon		= coTankAuraArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "AurasCoTankEnabled")
 coTankAuraIcon:SetScript("OnClick", function()
-	DBM.Options.PrivateAurasCoTankEnabled = not DBM.Options.PrivateAurasCoTankEnabled
+	DBM.Options.AurasCoTankEnabled = not DBM.Options.AurasCoTankEnabled
 	OnAuraSettingsChange(false)
 end)
 local coTankAuraSecond	= coTankAuraArea:CreateCheckButton(L.ShowSecondCoTank, true, nil, "PrivateAurasCoTankShowSecond")
@@ -421,7 +421,7 @@ coTankAuraReset:SetNormalFontObject(GameFontNormalSmall)
 coTankAuraReset:SetHighlightFontObject(GameFontNormalSmall)
 coTankAuraReset:SetScript("OnClick", function()
 	-- Set Default Options
-	DBM.Options.PrivateAurasCoTankEnabled = DBM.DefaultOptions.PrivateAurasCoTankEnabled
+	DBM.Options.AurasCoTankEnabled = DBM.DefaultOptions.AurasCoTankEnabled
 	DBM.Options.PrivateAurasCoTankHideBorder = DBM.DefaultOptions.PrivateAurasCoTankHideBorder
 	DBM.Options.PrivateAurasCoTankHideTooltip = DBM.DefaultOptions.PrivateAurasCoTankHideTooltip
 	DBM.Options.PrivateAurasCoTankGrowDirection = DBM.DefaultOptions.PrivateAurasCoTankGrowDirection
@@ -446,7 +446,7 @@ coTankAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankShowSecond = DBM.DefaultOptions.PrivateAurasCoTankShowSecond
 	-- Advanced options are reset via the Advanced reset button below
 	-- Set UI visuals
-	coTankAuraIcon:SetChecked(DBM.Options.PrivateAurasCoTankEnabled)
+	coTankAuraIcon:SetChecked(DBM.Options.AurasCoTankEnabled)
 	coTankAuraSecond:SetChecked(DBM.Options.PrivateAurasCoTankShowSecond)
 	coTankAuraBorder:SetChecked(DBM.Options.PrivateAurasCoTankHideBorder)
 	coTankAuraTooltip:SetChecked(DBM.Options.PrivateAurasCoTankHideTooltip)
