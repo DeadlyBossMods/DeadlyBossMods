@@ -2095,11 +2095,9 @@ do
 					"ENCOUNTER_TIMELINE_EVENT_ADDED",
 					--"ENCOUNTER_TIMELINE_EVENT_REMOVED",
 					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+					"ENCOUNTER_TIMELINE_EVENT_COLOR_CHANGED",
 					"ENCOUNTER_WARNING"
 				)
-				if self:GetTOC() >= 120007 then
-					self:RegisterEvents("ENCOUNTER_TIMELINE_EVENT_COLOR_CHANGED")
-				end
 			end
 			if not private.isClassic then -- Retail, WoTLKC, and BCC
 				self:RegisterEvents(
@@ -3637,36 +3635,22 @@ function DBM:EJ_GetSectionInfo(sectionID)--Should be number, but accepts string 
 	return info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 end
 
-do
-	local _, _, _, wowTOC = GetBuildInfo()
-	local newAPI = wowTOC >= 120007
-	---Wrapper for C_EncounterEvents.SetEventColor to future proof against API changes and make it easier to update if needed.
-	function DBM:EE_SetEventColor(eventID, startRed, startGreen, startBlue, endRed, endGreen, endBlue)
-		if newAPI then
-			--Set standard color
-			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
-			C_EncounterEvents.SetEventColor(eventID, 1, {r = startRed, g = startGreen, b = startBlue, a = 1})
-			--Set highlight color
-			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
-			C_EncounterEvents.SetEventColor(eventID, 2, {r = endRed, g = endGreen, b = endBlue, a = 1})
-		else
-			--Pre 12.0.7 api that only accepts single RGB value that applies to all warnings and timers
-			C_EncounterEvents.SetEventColor(eventID, {r = startRed, g = startGreen, b = startBlue})
-		end
-	end
-
-	function DBM:EE_UnsetEventColor(eventID)
-		if newAPI then
-			--Unset standard color
-			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
-			C_EncounterEvents.SetEventColor(eventID, 1, nil)
-			--Unset highlight color
-			---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
-			C_EncounterEvents.SetEventColor(eventID, 2, nil)
-		else
-			C_EncounterEvents.SetEventColor(eventID, nil)
-		end
-	end
+---Wrapper for C_EncounterEvents.SetEventColor to future proof against API changes and make it easier to update if needed.
+function DBM:EE_SetEventColor(eventID, startRed, startGreen, startBlue, endRed, endGreen, endBlue)
+	--Set standard color
+	---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+	C_EncounterEvents.SetEventColor(eventID, 1, {r = startRed, g = startGreen, b = startBlue, a = 1})
+	--Set highlight color
+	---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+	C_EncounterEvents.SetEventColor(eventID, 2, {r = endRed, g = endGreen, b = endBlue, a = 1})
+end
+function DBM:EE_UnsetEventColor(eventID)
+	--Unset standard color
+	---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+	C_EncounterEvents.SetEventColor(eventID, 1, nil)
+	--Unset highlight color
+	---@diagnostic disable-next-line: redundant-parameter, param-type-mismatch
+	C_EncounterEvents.SetEventColor(eventID, 2, nil)
 end
 
 function DBM:GetDungeonInfo(id)
@@ -4554,7 +4538,8 @@ do
 		[2238] = 2519,--Fyrakk in Amirdrassil
 		[2529] = 3181,--Crown of the Cosmos
 		[1049] = 3181,--Crown of the Cosmos
-		[1050] = 3183--Midnight Falls
+		[1050] = 3183,--Midnight Falls
+		[2590] = 2880--Altar of Fangs
 	}
 	---@param self DBM
 	local function checkOptions(self, id, mapID)

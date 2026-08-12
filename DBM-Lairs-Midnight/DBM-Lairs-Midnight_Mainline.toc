@@ -19,7 +19,6 @@
 ## X-DBM-Mod-Category: MIDNIGHT
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
 ## X-DBM-Mod-SubCategoriesID: 2987, 1592
-## X-DBM-Mod-MapIDNameOverrides: 2987 = "The Tidebound Grotto"
 ## X-DBM-Mod-Name: Lairs (Midnight)
 ## X-DBM-Mod-Name-koKR: 소굴 (한밤)
 ## X-DBM-Mod-Name-ruRU: Логова (Полночь)
