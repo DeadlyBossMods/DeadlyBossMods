@@ -115,6 +115,27 @@ local AuraTrackingPreviewDurations = {
 	30,
 	5,
 }
+local AuraTrackingDurationFormatter = C_StringUtil.CreateNumericRuleFormatter()
+AuraTrackingDurationFormatter:SetBreakpoints({
+	{
+		threshold = 60,
+		rounding = Enum.NumericRuleFormatRounding.Down,
+		format = "%dm",
+		components = {
+			{
+				div = 60,
+				step = 1,
+				rounding = Enum.NumericRuleFormatRounding.Down,
+			},
+		},
+	},
+	{
+		threshold = 0,
+		step = 1,
+		rounding = Enum.NumericRuleFormatRounding.Up,
+		format = "%d",
+	},
+})
 
 local auraAnchorsRegistered = false
 local auraTextFontResetNotified = false
@@ -408,7 +429,9 @@ local function ConfigureButton(state, button, settings, unit)
 	regions.durationText:SetPoint("CENTER", button, "CENTER", 0, 0)
 	regions.durationText:SetFont(fontPath, durationFontSize, fontFlags)
 	regions.durationText:Show()
-	button:SetDurationText(regions.durationText, nil)
+	button:SetDurationText(regions.durationText, {
+		textFormatter = AuraTrackingDurationFormatter,
+	})
 
 	if not regions.countText then
 		regions.countText = regions.textOverlay:CreateFontString(nil, "OVERLAY", "GameFontNormal")
