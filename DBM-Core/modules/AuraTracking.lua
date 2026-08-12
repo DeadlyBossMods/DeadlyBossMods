@@ -131,7 +131,7 @@ local function GetAuraSettings(prefix)
 		Limit = DBM.Options[prefix .. "Limit"],
 		GrowDirection = DBM.Options[prefix .. "GrowDirection"],
 		SortMode = DBM.Options[prefix .. "SortMode"] or DBM.DefaultOptions[prefix .. "SortMode"],
-		enabled = DBM.Options[prefix .. "Enabled"],
+		enabled = DBM.Options[prefix .. "Enabled2"],
 		Width = DBM.Options[prefix .. "Width"],
 		Height = DBM.Options[prefix .. "Height"],
 		Anchor = DBM.Options[prefix .. "Anchor"],
@@ -523,7 +523,7 @@ local function InitContainerState(state, settings, unit)
 		end,
 		candidateFilters = {
 			isFromPlayerOrPlayerPet = false,
-			maxDuration = DBM.Options.PrivateAurasMaxDuration,
+			maxDuration = DBM.Options.AurasMaxDuration,
 			excludeSpellIDs = {
 				[57723] = true,--Exhaustion
 				[80354] = true,--Temporal Displacement

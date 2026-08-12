@@ -384,7 +384,7 @@ DBM.DefaultOptions = {
 	DisableSWSound = false,
 	--Aura Frame Options
 	--Player
-	PrivateAurasPlayerEnabled = true,
+	PrivateAurasPlayerEnabled2 = true,
 	PrivateAurasPlayerHideBorder = false,
 	PrivateAurasPlayerHideTooltip = false,
 	PrivateAurasPlayerSpacing2 = 1,
@@ -407,7 +407,7 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerXOffset = 185,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasPlayerYOffset = 154,--Partial (drag and drop only, no UI slider/editbox)
 	--Co-Tank
-	AurasCoTankEnabled = false,
+	PrivateAurasCoTankEnabled2 = false,
 	PrivateAurasCoTankHideBorder = false,
 	PrivateAurasCoTankHideTooltip = false,
 	PrivateAurasCoTankSpacing2 = 1,
@@ -437,7 +437,7 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankUseHealerInFiveMan = true,
 	PrivateAurasCoTankSlot1Player = "",
 	PrivateAurasCoTankSlot2Player = "",
-	PrivateAurasMaxDuration = 120,
+	AurasMaxDuration = 120,
 	AlwaysShowPlayerAuras = false,
 }
 
@@ -1071,7 +1071,7 @@ do
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
 		local coTankDefault = self:GetRoleFlagValue("Tank")
-		self.DefaultOptions.AurasCoTankEnabled = coTankDefault
+		self.DefaultOptions.PrivateAurasCoTankEnabled2 = coTankDefault
 		self.DefaultOptions.PrivateAurasCoTankShowSecond = coTankDefault
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
 		if not self.Options.GUIResizeMigrated_1000x700 then

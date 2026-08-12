@@ -73,9 +73,9 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 --  Personal Aura Frame  --
 -----------------------------------
 local personalAuraArea 	= auraPanel:CreateArea(L.Area_PersonalPrivateAuras)
-local personalAuraIcon	= personalAuraArea:CreateCheckButton(L.EnablePersonalPrivateAuraIcons, true, nil, "PrivateAurasPlayerEnabled")
+local personalAuraIcon	= personalAuraArea:CreateCheckButton(L.EnablePersonalPrivateAuraIcons, true, nil, "PrivateAurasPlayerEnabled2")
 personalAuraIcon:SetScript("OnClick", function()
-	DBM.Options.PrivateAurasPlayerEnabled = not DBM.Options.PrivateAurasPlayerEnabled
+	DBM.Options.PrivateAurasPlayerEnabled2 = not DBM.Options.PrivateAurasPlayerEnabled2
 	OnAuraSettingsChange(true)
 end)
 local personalAuraBorder 	= personalAuraArea:CreateCheckButton(L.HidePABorder, true, nil, "PrivateAurasPlayerHideBorder")
@@ -219,7 +219,7 @@ personalAuraReset:SetNormalFontObject(GameFontNormalSmall)
 personalAuraReset:SetHighlightFontObject(GameFontNormalSmall)
 personalAuraReset:SetScript("OnClick", function()
 	-- Set Default Options
-	DBM.Options.PrivateAurasPlayerEnabled = DBM.DefaultOptions.PrivateAurasPlayerEnabled
+	DBM.Options.PrivateAurasPlayerEnabled2 = DBM.DefaultOptions.PrivateAurasPlayerEnabled2
 	DBM.Options.PrivateAurasPlayerHideBorder = DBM.DefaultOptions.PrivateAurasPlayerHideBorder
 	DBM.Options.PrivateAurasPlayerHideTooltip = DBM.DefaultOptions.PrivateAurasPlayerHideTooltip
 	DBM.Options.PrivateAurasPlayerGrowDirection = DBM.DefaultOptions.PrivateAurasPlayerGrowDirection
@@ -242,7 +242,7 @@ personalAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerAnchor = DBM.DefaultOptions.PrivateAurasPlayerAnchor
 	DBM.Options.PrivateAurasPlayerRelativeTo = DBM.DefaultOptions.PrivateAurasPlayerRelativeTo
 	-- Set UI visuals
-	personalAuraIcon:SetChecked(DBM.Options.PrivateAurasPlayerEnabled)
+	personalAuraIcon:SetChecked(DBM.Options.PrivateAurasPlayerEnabled2)
 	personalAuraBorder:SetChecked(DBM.Options.PrivateAurasPlayerHideBorder)
 	personalAuraTooltip:SetChecked(DBM.Options.PrivateAurasPlayerHideTooltip)
 	personalAuraGrowDir:SetSelectedValue(DBM.Options.PrivateAurasPlayerGrowDirection)
@@ -266,9 +266,9 @@ end)
 --  Co-Tank Aura Frame  --
 ----------------------------------
 local coTankAuraArea		= auraPanel:CreateArea(L.Area_TankPrivateAuras)
-local coTankAuraIcon		= coTankAuraArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "AurasCoTankEnabled")
+local coTankAuraIcon		= coTankAuraArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "PrivateAurasCoTankEnabled2")
 coTankAuraIcon:SetScript("OnClick", function()
-	DBM.Options.AurasCoTankEnabled = not DBM.Options.AurasCoTankEnabled
+	DBM.Options.PrivateAurasCoTankEnabled2 = not DBM.Options.PrivateAurasCoTankEnabled2
 	OnAuraSettingsChange(false)
 end)
 local coTankAuraSecond	= coTankAuraArea:CreateCheckButton(L.ShowSecondCoTank, true, nil, "PrivateAurasCoTankShowSecond")
@@ -421,7 +421,7 @@ coTankAuraReset:SetNormalFontObject(GameFontNormalSmall)
 coTankAuraReset:SetHighlightFontObject(GameFontNormalSmall)
 coTankAuraReset:SetScript("OnClick", function()
 	-- Set Default Options
-	DBM.Options.AurasCoTankEnabled = DBM.DefaultOptions.AurasCoTankEnabled
+	DBM.Options.PrivateAurasCoTankEnabled2 = DBM.DefaultOptions.PrivateAurasCoTankEnabled2
 	DBM.Options.PrivateAurasCoTankHideBorder = DBM.DefaultOptions.PrivateAurasCoTankHideBorder
 	DBM.Options.PrivateAurasCoTankHideTooltip = DBM.DefaultOptions.PrivateAurasCoTankHideTooltip
 	DBM.Options.PrivateAurasCoTankGrowDirection = DBM.DefaultOptions.PrivateAurasCoTankGrowDirection
@@ -446,7 +446,7 @@ coTankAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankShowSecond = DBM.DefaultOptions.PrivateAurasCoTankShowSecond
 	-- Advanced options are reset via the Advanced reset button below
 	-- Set UI visuals
-	coTankAuraIcon:SetChecked(DBM.Options.AurasCoTankEnabled)
+	coTankAuraIcon:SetChecked(DBM.Options.PrivateAurasCoTankEnabled2)
 	coTankAuraSecond:SetChecked(DBM.Options.PrivateAurasCoTankShowSecond)
 	coTankAuraBorder:SetChecked(DBM.Options.PrivateAurasCoTankHideBorder)
 	coTankAuraTooltip:SetChecked(DBM.Options.PrivateAurasCoTankHideTooltip)
@@ -541,8 +541,8 @@ coTankNameYOffset = coTankAdvancedArea:CreateSlider(L.CoTankNameYOffset, -100, 1
 coTankNameYOffset:SetPoint("TOPLEFT", coTankNameFontSize, "TOPLEFT", 0, -50)
 coTankNameYOffset.myheight = 50
 
-local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 30, 600, 1, 150, DBM.Options.PrivateAurasMaxDuration, function(value)
-	DBM.Options.PrivateAurasMaxDuration = value
+local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 30, 600, 1, 150, DBM.Options.AurasMaxDuration, function(value)
+	DBM.Options.AurasMaxDuration = value
 	OnAuraSettingsChange()
 end)
 
@@ -596,10 +596,10 @@ coTankAdvancedReset:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasCoTankNameYOffset = DBM.DefaultOptions.PrivateAurasCoTankNameYOffset
 		DBM.Options.PrivateAurasCoTankSlot1Player = DBM.DefaultOptions.PrivateAurasCoTankSlot1Player
 		DBM.Options.PrivateAurasCoTankSlot2Player = DBM.DefaultOptions.PrivateAurasCoTankSlot2Player
-		DBM.Options.PrivateAurasMaxDuration = DBM.DefaultOptions.PrivateAurasMaxDuration
+		DBM.Options.AurasMaxDuration = DBM.DefaultOptions.AurasMaxDuration
 		DBM.Options.AlwaysShowPlayerAuras = DBM.DefaultOptions.AlwaysShowPlayerAuras
 		alwaysShowPlayerAuras:SetChecked(DBM.Options.AlwaysShowPlayerAuras)
-		auraMaxDuration:SetValue(DBM.Options.PrivateAurasMaxDuration)
+		auraMaxDuration:SetValue(DBM.Options.AurasMaxDuration)
 		coTankUseHealerInFiveMan:SetChecked(DBM.Options.PrivateAurasCoTankUseHealerInFiveMan)
 		coTankShowName:SetChecked(DBM.Options.PrivateAurasCoTankShowName)
 		coTankNameFontSize:SetValue(DBM.Options.PrivateAurasCoTankNameFontSize)
