@@ -529,7 +529,7 @@ coTankNameXOffset = coTankAdvancedArea:CreateSlider(L.CoTankNameXOffset, -100, 1
 		OnAuraSettingsChange(false)
 	end)
 
-coTankNameXOffset:SetPoint("TOPLEFT", coTankNameFontSize, "TOPLEFT", 180, 0)
+coTankNameXOffset:SetPoint("TOPLEFT", coTankNameFontSize, "TOPLEFT", 195, 0)
 coTankNameXOffset.myheight = 0
 
 
@@ -541,12 +541,12 @@ coTankNameYOffset = coTankAdvancedArea:CreateSlider(L.CoTankNameYOffset, -100, 1
 coTankNameYOffset:SetPoint("TOPLEFT", coTankNameFontSize, "TOPLEFT", 0, -50)
 coTankNameYOffset.myheight = 50
 
-local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 1, 600, 1, 150, DBM.Options.PrivateAurasMaxDuration, function(value)
+local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 30, 600, 1, 150, DBM.Options.PrivateAurasMaxDuration, function(value)
 	DBM.Options.PrivateAurasMaxDuration = value
 	OnAuraSettingsChange()
 end)
 
-auraMaxDuration:SetPoint("TOPLEFT", coTankNameYOffset, "TOPRIGHT", 30, 0)
+auraMaxDuration:SetPoint("TOPLEFT", coTankNameYOffset, "TOPRIGHT", 45, 0)
 
 
 local coTankSlot1Player = coTankAdvancedArea:CreateDropdown(L.CoTankSlot1Player, function()
@@ -575,7 +575,7 @@ coTankSlot2Player:IsSelectedCallback(function(_, value)
 		return value.value == DBM.Options.PrivateAurasCoTankSlot2Player
 	end)
 
-coTankSlot2Player:SetPoint("TOPLEFT", coTankSlot1Player, "TOPLEFT", 180, 0)
+coTankSlot2Player:SetPoint("TOPLEFT", coTankSlot1Player, "TOPLEFT", 195, 0)
 coTankSlot2Player.myheight = 0
 coTankSlot1Player:RefreshLazyValues()
 coTankSlot1Player:SetSelectedValue(DBM.Options.PrivateAurasCoTankSlot1Player)
