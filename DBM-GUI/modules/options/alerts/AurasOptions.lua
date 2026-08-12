@@ -505,15 +505,12 @@ local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 1, 60
 end)
 
 auraMaxDuration:SetPoint("TOPLEFT", alwaysShowPlayerAuras, "BOTTOMLEFT", 20, -20)
-auraMaxDuration.myheight = 50
 local coTankUseHealerInFiveMan = coTankAdvancedArea:CreateCheckButton(L.CoTankUseHealerInFiveMan, true, nil, "PrivateAurasCoTankUseHealerInFiveMan")
 
 coTankUseHealerInFiveMan:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasCoTankUseHealerInFiveMan = not DBM.Options.PrivateAurasCoTankUseHealerInFiveMan
 		OnAuraSettingsChange(false)
 	end)
-
-coTankUseHealerInFiveMan:SetPoint("TOPLEFT", auraMaxDuration, "BOTTOMLEFT", -20, -5)
 
 coTankShowName = coTankAdvancedArea:CreateCheckButton(L.CoTankShowPlayerName, true, nil, "PrivateAurasCoTankShowName")
 
