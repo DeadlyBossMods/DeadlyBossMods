@@ -521,7 +521,7 @@ local function InitContainerState(state, settings, unit)
 		initializeFrame = function(button)
 			ConfigureButton(state, button, state.settings, state.unit)
 		end,
-		candidateFilters = {isFromPlayerOrPlayerPet = false},
+		candidateFilters = {isFromPlayerOrPlayerPet = false, maxDuration = DBM.Options.PrivateAurasMaxDuration},
 		layout = {
 			elementWidth = settings.Width,
 			elementHeight = settings.Height,

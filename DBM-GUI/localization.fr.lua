@@ -258,6 +258,7 @@ L.Panel_PrivateAuras				= "Auras"
 L.Area_PersonalPrivateAuras			= "Options des auras personnelles"
 L.EnablePersonalPrivateAuraIcons	= "Afficher les icônes des auras personnelles à l’écran"
 L.AlwaysShowPlayerAuras				= "Afficher les cadres d’aura hors des instances"
+L.AuraMaxDuration					= "Durée maximale des auras suivies"
 L.SetPAGrowDirection				= "Direction d’expansion"
 L.SetPAIconScale					= "Échelle de l’icône"
 L.SetPAMaxIcons						= "Icônes max."--Slider, Reused for personal and tank

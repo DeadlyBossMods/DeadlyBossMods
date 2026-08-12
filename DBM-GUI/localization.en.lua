@@ -314,6 +314,7 @@ L.Panel_PrivateAuras				= "Debuff Auras"
 L.Area_PersonalPrivateAuras			= "Personal Debuff Aura Options"
 L.EnablePersonalPrivateAuraIcons	= "Show Personal Debuff Aura icons on screen"--checkbox
 L.AlwaysShowPlayerAuras				= "Show aura frames outside instances"--checkbox
+L.AuraMaxDuration					= "Maximum tracked aura duration"
 L.SetPAGrowDirection				= "Grow direction"--Dropdown
 L.SetPAIconScale					= "Icon scale"--Slider, Reused for personal and tank
 L.SetPAMaxIcons						= "Max icons"--Slider, Reused for personal and tank

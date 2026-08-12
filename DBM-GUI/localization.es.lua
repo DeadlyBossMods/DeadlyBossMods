@@ -259,6 +259,7 @@ L.Panel_PrivateAuras				= "Auras"
 L.Area_PersonalPrivateAuras			= "Opciones de auras personales"
 L.EnablePersonalPrivateAuraIcons	= "Mostrar iconos de auras personales en pantalla"
 L.AlwaysShowPlayerAuras				= "Mostrar marcos de aura fuera de instancias"
+L.AuraMaxDuration					= "Duración máxima de aura rastreada"
 L.SetPAGrowDirection				= "Dirección de crecimiento"
 L.SetPAIconScale					= "Escala del icono"
 L.SetPAMaxIcons						= "Máx. de iconos"--Slider, Reused for personal and tank

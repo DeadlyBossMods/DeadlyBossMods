@@ -312,6 +312,7 @@ L.Panel_PrivateAuras				= "디버프 오라"
 L.Area_PersonalPrivateAuras			= "내 디버프 오라 설정"
 L.EnablePersonalPrivateAuraIcons	= "화면에 내 디버프 오라 아이콘 표시"--checkbox
 L.AlwaysShowPlayerAuras				= "인스턴스 밖에서도 오라 창 표시"
+L.AuraMaxDuration					= "추적할 오라의 최대 지속시간"
 L.SetPAGrowDirection				= "확장 방향"--Dropdown
 L.SetPAIconScale					= "아이콘 크기"--Slider, Reused for personal and tank
 L.SetPAMaxIcons						= "최대 아이콘 수"--Slider, Reused for personal and tank
