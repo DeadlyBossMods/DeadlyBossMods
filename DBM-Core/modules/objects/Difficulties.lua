@@ -40,6 +40,7 @@ difficulties.statVarTable = {
 	["mythic"] = "mythic",
 	["mythic5"] = "mythic",
 	["worldboss"] = "normal",
+	["worldlair"] = "lfr",
 	["timewalker"] = "timewalker",
 	["progressivechallenges"] = "normal",
 	["delves"] = "normal",
@@ -402,8 +403,10 @@ difficulties.SOD_BWL_TRIAL_RED    = 16
 --TODO, not sure how to classify lairs yet. New category, world bosses, or main raid category since they are progression multi difficulty bosses
 function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, difficultyName, _, _, _, instanceID, instanceGroupSize = private.GetInstanceInfo()
-	if difficulty == 0 or difficulty == 172 or (difficulty == 1 and instanceType == "none") or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then--draenor field returns 1, causing world boss mod bug. 250 is an instanced world boss
+	if difficulty == 0 or difficulty == 172 or (difficulty == 1 and instanceType == "none") or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then--draenor field returns 1, causing world boss mod bug.
 		return "worldboss", RAID_INFO_WORLD_BOSS .. " - ", difficulty, instanceGroupSize, 0
+	elseif difficulty == 250 then--instanced world boss/lair
+		return "worldlair", RAID_INFO_WORLD_BOSS .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 1 or difficulty == 173 or difficulty == 184 or difficulty == 150 or difficulty == 201 then--5 man Normal Dungeon / 201 is SoD 5 man ID for a dungeon that's also a 10/20 man SoD Raid.
 		return "normal5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 2 or difficulty == 174 then--5 man Heroic Dungeon
@@ -515,7 +518,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroicscenario", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 12 or difficulty == 152 then--Normal Scenario (mostly Mists of pandaria and Visions of Nzoth scenarios)
 		return "normalscenario", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 14 or difficulty == 250 then--Flexible Normal Raid / Flexible Normal Lair (5-40 vs 10-30)
+	elseif difficulty == 14 then--Flexible Normal Raid
 		return "normal", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 15 then--Flexible Heroic Raid
 		return "heroic", difficultyName .. " - ", difficulty, instanceGroupSize, 0

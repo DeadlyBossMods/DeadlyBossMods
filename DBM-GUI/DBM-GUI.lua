@@ -1334,6 +1334,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			end
 
 			local statTypes = {
+				worldlair	= PLAYER_DIFFICULTY_WORLD_RAID,
 				follower	= DBM_CORE_L.FOLLOWER,--no PLAYER_DIFFICULTY entry yet
 				story		= DBM_CORE_L.STORY,--no PLAYER_DIFFICULTY entry yet
 				lfr25		= PLAYER_DIFFICULTY3,
