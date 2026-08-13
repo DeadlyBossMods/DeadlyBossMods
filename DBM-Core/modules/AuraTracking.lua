@@ -60,6 +60,8 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 ---@field TextFont string
 ---@field TextFontStyle string
 ---@field DurationFontSize number
+---@field ShowDecimalSeconds boolean
+---@field DecimalThreshold number
 ---@field StackFontSize number
 ---@field StackColor { r: number, g: number, b: number }
 ---@field StackXOffset number
@@ -113,29 +115,9 @@ local AuraTrackingPreviewDurations = {
 	55,
 	20,
 	30,
-	5,
+	2.7,
 }
-local AuraTrackingDurationFormatter = C_StringUtil.CreateNumericRuleFormatter()
-AuraTrackingDurationFormatter:SetBreakpoints({
-	{
-		threshold = 60,
-		rounding = Enum.NumericRuleFormatRounding.Down,
-		format = "%dm",
-		components = {
-			{
-				div = 60,
-				step = 1,
-				rounding = Enum.NumericRuleFormatRounding.Down,
-			},
-		},
-	},
-	{
-		threshold = 0,
-		step = 1,
-		rounding = Enum.NumericRuleFormatRounding.Up,
-		format = "%d",
-	},
-})
+local AuraTrackingDurationFormatterCache = {}
 
 local auraAnchorsRegistered = false
 local auraTextFontResetNotified = false
@@ -162,6 +144,8 @@ local function GetAuraSettings(prefix)
 		TextFont = DBM.Options[prefix .. "TextFont"],
 		TextFontStyle = DBM.Options[prefix .. "TextFontStyle"],
 		DurationFontSize = DBM.Options[prefix .. "DurationFontSize"],
+		ShowDecimalSeconds = DBM.Options[prefix .. "ShowDecimalSeconds"],
+		DecimalThreshold = DBM.Options[prefix .. "DecimalThreshold"] or DBM.DefaultOptions[prefix .. "DecimalThreshold"],
 		StackFontSize = DBM.Options[prefix .. "StackFontSize"],
 		StackColor = stackColor,
 		StackXOffset = DBM.Options[prefix .. "StackXOffset"] or DBM.DefaultOptions[prefix .. "StackXOffset"],
@@ -198,6 +182,85 @@ local function GetAuraTextFontSettings(settings)
 		fontStyle = ""
 	end
 	return font, fontStyle
+end
+
+---@param settings DBMAuraSettings
+local function GetAuraDurationFormatter(settings)
+	local decimalEnabled = settings.ShowDecimalSeconds == true
+	local decimalThreshold = decimalEnabled and math.min(math.max(tonumber(settings.DecimalThreshold) or 3, 0.1), 59.9) or 0
+	local cache = AuraTrackingDurationFormatterCache[settings.optionPrefix]
+	if cache and cache.decimalEnabled == decimalEnabled and cache.decimalThreshold == decimalThreshold then
+		return cache.formatter
+	end
+	local formatter = C_StringUtil.CreateNumericRuleFormatter()
+	if decimalEnabled then
+		formatter:SetBreakpoints({
+			{
+				threshold = 60,
+				rounding = Enum.NumericRuleFormatRounding.Down,
+				format = "%dm",
+				components = {
+					{
+						div = 60,
+						step = 1,
+						rounding = Enum.NumericRuleFormatRounding.Down,
+					},
+				},
+			},
+			{
+				threshold = decimalThreshold,
+				step = 1,
+				rounding = Enum.NumericRuleFormatRounding.Up,
+				format = "%d",
+			},
+			{
+				threshold = 0,
+				step = 0.1,
+				rounding = Enum.NumericRuleFormatRounding.Up,
+				format = "%.1f",
+			},
+		})
+	else
+		formatter:SetBreakpoints({
+			{
+				threshold = 60,
+				rounding = Enum.NumericRuleFormatRounding.Down,
+				format = "%dm",
+				components = {
+					{
+						div = 60,
+						step = 1,
+						rounding = Enum.NumericRuleFormatRounding.Down,
+					},
+				},
+			},
+			{
+				threshold = 0,
+				step = 1,
+				rounding = Enum.NumericRuleFormatRounding.Up,
+				format = "%d",
+			},
+		})
+	end
+	AuraTrackingDurationFormatterCache[settings.optionPrefix] = {
+		decimalEnabled = decimalEnabled,
+		decimalThreshold = decimalThreshold,
+		formatter = formatter,
+	}
+	return formatter
+end
+
+---@param duration number
+---@param settings DBMAuraSettings
+---@return string
+local function FormatAuraPreviewDuration(duration, settings)
+	if duration >= 60 then
+		return math.floor(duration / 60) .. "m"
+	end
+	if settings.ShowDecimalSeconds and duration < (tonumber(settings.DecimalThreshold) or 3) then
+		return string.format("%.1f", math.ceil(duration * 10) / 10)
+	end
+	return tostring(math.ceil(duration))
 end
 
 ---@param settings table
@@ -339,7 +402,7 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	durationText:SetPoint("CENTER", icon, "CENTER", 0, 0)
 	durationText:SetFont(fontPath, settings.DurationFontSize, fontFlags)
 	local duration = AuraTrackingPreviewDurations[durationIndex]
-	durationText:SetText(duration >= 60 and math.floor(duration / 60) .. "m" or tostring(duration))
+	durationText:SetText(FormatAuraPreviewDuration(duration, settings))
 	durationText:Show()
 
 	if not frame.StackTexts[index] then
@@ -430,7 +493,7 @@ local function ConfigureButton(state, button, settings, unit)
 	regions.durationText:SetFont(fontPath, durationFontSize, fontFlags)
 	regions.durationText:Show()
 	button:SetDurationText(regions.durationText, {
-		textFormatter = AuraTrackingDurationFormatter,
+		textFormatter = GetAuraDurationFormatter(settings),
 	})
 
 	if not regions.countText then
