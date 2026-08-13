@@ -277,7 +277,7 @@ end
 ---@return table
 local function GetCoTankSettings(index)
 	local settings = GetAuraSettings("PrivateAurasCoTank")
-	local visibility = DBM.Options.PrivateAurasCoTankEnabled3 or DBM.DefaultOptions.PrivateAurasCoTankEnabled3
+	local visibility = DBM.Options.PrivateAurasCoTankEnabled3
 	---@diagnostic disable-next-line: undefined-field
 	settings.enabled = visibility == "Always" or (visibility == "Auto" and DBM:IsTank())
 	if index and index > 1 then

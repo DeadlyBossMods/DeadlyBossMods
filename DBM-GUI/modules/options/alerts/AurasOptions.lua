@@ -307,11 +307,14 @@ local coTankAuraVisibility = coTankAuraArea:CreateDropdown(L.CoTankVisibility, c
 	DBM.Options.PrivateAurasCoTankEnabled3 = value
 	OnAuraSettingsChange(false)
 end)
+coTankAuraVisibility:SetPoint("TOPLEFT", coTankAuraArea.frame, "TOPLEFT", 15, -35)
+coTankAuraVisibility.myheight = 90
 local coTankAuraSecond	= coTankAuraArea:CreateCheckButton(L.ShowSecondCoTank, true, nil, "PrivateAurasCoTankShowSecond")
 coTankAuraSecond:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankShowSecond = not DBM.Options.PrivateAurasCoTankShowSecond
 	OnAuraSettingsChange(false)
 end)
+coTankAuraSecond:SetPoint("TOPLEFT", coTankAuraVisibility, "BOTTOMLEFT", 0, -5)
 local coTankAuraBorder 	= coTankAuraArea:CreateCheckButton(L.HidePABorder, true, nil, "PrivateAurasCoTankHideBorder")
 coTankAuraBorder:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankHideBorder = not DBM.Options.PrivateAurasCoTankHideBorder
