@@ -323,7 +323,7 @@ end)
 coTankSpacing:SetPoint("TOPLEFT", coTankGrowDir, "TOPLEFT", 180, 0)
 coTankSpacing.myheight = 0
 
-local coTankIconScale = coTankAuraArea:CreateSlider(L.SetPAIconScale, 50, 150, 1, 150, DBM.Options.PrivateAurasCoTankWidth, function(value)
+local coTankIconScale = coTankAuraArea:CreateSlider(L.SetPAIconScale, 25, 150, 1, 150, DBM.Options.PrivateAurasCoTankWidth, function(value)
 	DBM.Options.PrivateAurasCoTankWidth = value
 	DBM.Options.PrivateAurasCoTankHeight = value
 	OnAuraSettingsChange(false)
