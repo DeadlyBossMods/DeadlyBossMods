@@ -123,6 +123,8 @@ personalAuraMaxIcons.myheight = 0
 local personalAuraFontDropDown
 local personalAuraFontStyleDropDown
 local personalAuraDurationFontSize
+local personalAuraShowDecimalSeconds
+local personalAuraDecimalThreshold
 local personalAuraStackFontSize
 local personalAuraStackColor
 local personalAuraStackXOffset
@@ -157,6 +159,20 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 	end)
 	personalAuraDurationFontSize:SetPoint("TOPLEFT", personalAuraSort, "TOPLEFT", 20, -50)
 
+	personalAuraShowDecimalSeconds = personalAuraArea:CreateCheckButton(L.AuraShowDecimalSeconds, true, nil, "PrivateAurasPlayerShowDecimalSeconds")
+	personalAuraShowDecimalSeconds:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasPlayerShowDecimalSeconds = not DBM.Options.PrivateAurasPlayerShowDecimalSeconds
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraShowDecimalSeconds:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", -20, -40)
+
+	personalAuraDecimalThreshold = personalAuraArea:CreateSlider(L.AuraDecimalThreshold, 0.1, 10, 0.1, 150, DBM.Options.PrivateAurasPlayerDecimalThreshold, function(value)
+		DBM.Options.PrivateAurasPlayerDecimalThreshold = value
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraDecimalThreshold:SetPoint("LEFT", personalAuraShowDecimalSeconds, "RIGHT", 20, 0)
+	personalAuraDecimalThreshold.myheight = 0
+
 	personalAuraStackFontSize = personalAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasPlayerStackFontSize, function(value)
 		DBM.Options.PrivateAurasPlayerStackFontSize = value
 		OnAuraSettingsChange(true)
@@ -169,7 +185,7 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 		DBM.Options.PrivateAurasPlayerShowStacks = not DBM.Options.PrivateAurasPlayerShowStacks
 		OnAuraSettingsChange(true)
 	end)
-	personalAuraShowStacks:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", 0, -40)
+	personalAuraShowStacks:SetPoint("TOPLEFT", personalAuraShowDecimalSeconds, "TOPLEFT", 0, -40)
 
 	personalAuraShowDispelBorder = personalAuraArea:CreateCheckButton(L.AuraShowDispelBorder, true, nil, "PrivateAurasPlayerShowDispelBorder")
 	personalAuraShowDispelBorder:SetScript("OnClick", function()
@@ -231,6 +247,8 @@ personalAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerTextFont = DBM.DefaultOptions.PrivateAurasPlayerTextFont
 	DBM.Options.PrivateAurasPlayerTextFontStyle = DBM.DefaultOptions.PrivateAurasPlayerTextFontStyle
 	DBM.Options.PrivateAurasPlayerDurationFontSize = DBM.DefaultOptions.PrivateAurasPlayerDurationFontSize
+	DBM.Options.PrivateAurasPlayerShowDecimalSeconds = DBM.DefaultOptions.PrivateAurasPlayerShowDecimalSeconds
+	DBM.Options.PrivateAurasPlayerDecimalThreshold = DBM.DefaultOptions.PrivateAurasPlayerDecimalThreshold
 	DBM.Options.PrivateAurasPlayerStackFontSize = DBM.DefaultOptions.PrivateAurasPlayerStackFontSize
 	DBM.Options.PrivateAurasPlayerStackColor = CopyTable(DBM.DefaultOptions.PrivateAurasPlayerStackColor)
 	DBM.Options.PrivateAurasPlayerStackXOffset = DBM.DefaultOptions.PrivateAurasPlayerStackXOffset
@@ -253,6 +271,8 @@ personalAuraReset:SetScript("OnClick", function()
 	personalAuraFontDropDown:SetSelectedValue(DBM.Options.PrivateAurasPlayerTextFont)
 	personalAuraFontStyleDropDown:SetSelectedValue(DBM.Options.PrivateAurasPlayerTextFontStyle)
 	personalAuraDurationFontSize:SetValue(DBM.Options.PrivateAurasPlayerDurationFontSize)
+	personalAuraShowDecimalSeconds:SetChecked(DBM.Options.PrivateAurasPlayerShowDecimalSeconds)
+	personalAuraDecimalThreshold:SetValue(DBM.Options.PrivateAurasPlayerDecimalThreshold)
 	personalAuraStackFontSize:SetValue(DBM.Options.PrivateAurasPlayerStackFontSize)
 	personalAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasPlayerStackColor.r, DBM.Options.PrivateAurasPlayerStackColor.g, DBM.Options.PrivateAurasPlayerStackColor.b)
 	personalAuraStackXOffset:SetValue(DBM.Options.PrivateAurasPlayerStackXOffset)
@@ -321,6 +341,8 @@ coTankAuraMaxIcons.myheight = 0
 local coTankAuraFontDropDown
 local coTankAuraFontStyleDropDown
 local coTankAuraDurationFontSize
+local coTankAuraShowDecimalSeconds
+local coTankAuraDecimalThreshold
 local coTankAuraStackFontSize
 local coTankAuraStackColor
 local coTankAuraStackXOffset
@@ -359,6 +381,20 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 	end)
 	coTankAuraDurationFontSize:SetPoint("TOPLEFT", coTankAuraSort, "TOPLEFT", 20, -50)
 
+	coTankAuraShowDecimalSeconds = coTankAuraArea:CreateCheckButton(L.AuraShowDecimalSeconds, true, nil, "PrivateAurasCoTankShowDecimalSeconds")
+	coTankAuraShowDecimalSeconds:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasCoTankShowDecimalSeconds = not DBM.Options.PrivateAurasCoTankShowDecimalSeconds
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraShowDecimalSeconds:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", -20, -40)
+
+	coTankAuraDecimalThreshold = coTankAuraArea:CreateSlider(L.AuraDecimalThreshold, 0.1, 10, 0.1, 150, DBM.Options.PrivateAurasCoTankDecimalThreshold, function(value)
+		DBM.Options.PrivateAurasCoTankDecimalThreshold = value
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraDecimalThreshold:SetPoint("LEFT", coTankAuraShowDecimalSeconds, "RIGHT", 20, 0)
+	coTankAuraDecimalThreshold.myheight = 0
+
 	coTankAuraStackFontSize = coTankAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankStackFontSize, function(value)
 		DBM.Options.PrivateAurasCoTankStackFontSize = value
 		OnAuraSettingsChange(false)
@@ -371,7 +407,7 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 		DBM.Options.PrivateAurasCoTankShowStacks = not DBM.Options.PrivateAurasCoTankShowStacks
 		OnAuraSettingsChange(false)
 	end)
-	coTankAuraShowStacks:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", 0, -40)
+	coTankAuraShowStacks:SetPoint("TOPLEFT", coTankAuraShowDecimalSeconds, "TOPLEFT", 0, -40)
 
 	coTankAuraShowDispelBorder = coTankAuraArea:CreateCheckButton(L.AuraShowDispelBorder, true, nil, "PrivateAurasCoTankShowDispelBorder")
 	coTankAuraShowDispelBorder:SetScript("OnClick", function()
@@ -433,6 +469,8 @@ coTankAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankTextFont = DBM.DefaultOptions.PrivateAurasCoTankTextFont
 	DBM.Options.PrivateAurasCoTankTextFontStyle = DBM.DefaultOptions.PrivateAurasCoTankTextFontStyle
 	DBM.Options.PrivateAurasCoTankDurationFontSize = DBM.DefaultOptions.PrivateAurasCoTankDurationFontSize
+	DBM.Options.PrivateAurasCoTankShowDecimalSeconds = DBM.DefaultOptions.PrivateAurasCoTankShowDecimalSeconds
+	DBM.Options.PrivateAurasCoTankDecimalThreshold = DBM.DefaultOptions.PrivateAurasCoTankDecimalThreshold
 	DBM.Options.PrivateAurasCoTankStackFontSize = DBM.DefaultOptions.PrivateAurasCoTankStackFontSize
 	DBM.Options.PrivateAurasCoTankStackColor = CopyTable(DBM.DefaultOptions.PrivateAurasCoTankStackColor)
 	DBM.Options.PrivateAurasCoTankStackXOffset = DBM.DefaultOptions.PrivateAurasCoTankStackXOffset
@@ -458,6 +496,8 @@ coTankAuraReset:SetScript("OnClick", function()
 	coTankAuraFontDropDown:SetSelectedValue(DBM.Options.PrivateAurasCoTankTextFont)
 	coTankAuraFontStyleDropDown:SetSelectedValue(DBM.Options.PrivateAurasCoTankTextFontStyle)
 	coTankAuraDurationFontSize:SetValue(DBM.Options.PrivateAurasCoTankDurationFontSize)
+	coTankAuraShowDecimalSeconds:SetChecked(DBM.Options.PrivateAurasCoTankShowDecimalSeconds)
+	coTankAuraDecimalThreshold:SetValue(DBM.Options.PrivateAurasCoTankDecimalThreshold)
 	coTankAuraStackFontSize:SetValue(DBM.Options.PrivateAurasCoTankStackFontSize)
 	coTankAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasCoTankStackColor.r, DBM.Options.PrivateAurasCoTankStackColor.g, DBM.Options.PrivateAurasCoTankStackColor.b)
 	coTankAuraStackXOffset:SetValue(DBM.Options.PrivateAurasCoTankStackXOffset)
