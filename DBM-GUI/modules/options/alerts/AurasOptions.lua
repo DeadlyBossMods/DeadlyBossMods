@@ -50,6 +50,21 @@ local auraSortModes = {
 	}
 }
 
+local coTankVisibilityModes = {
+	{
+		text	= L.CoTankVisibilityAuto,
+		value	= "Auto"
+	},
+	{
+		text	= L.CoTankVisibilityAlways,
+		value	= "Always"
+	},
+	{
+		text	= L.CoTankVisibilityNever,
+		value	= "Never"
+	}
+}
+
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
 		text	= DEFAULT,
@@ -287,9 +302,9 @@ end)
 --  Co-Tank Aura Frame  --
 ----------------------------------
 local coTankAuraArea		= auraPanel:CreateArea(L.Area_TankPrivateAuras)
-local coTankAuraIcon		= coTankAuraArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "PrivateAurasCoTankEnabled2")
-coTankAuraIcon:SetScript("OnClick", function()
-	DBM.Options.PrivateAurasCoTankEnabled2 = not DBM.Options.PrivateAurasCoTankEnabled2
+
+local coTankAuraVisibility = coTankAuraArea:CreateDropdown(L.CoTankVisibility, coTankVisibilityModes, "DBM", "PrivateAurasCoTankEnabled3", function(value)
+	DBM.Options.PrivateAurasCoTankEnabled3 = value
 	OnAuraSettingsChange(false)
 end)
 local coTankAuraSecond	= coTankAuraArea:CreateCheckButton(L.ShowSecondCoTank, true, nil, "PrivateAurasCoTankShowSecond")
@@ -459,7 +474,7 @@ coTankAuraReset:SetNormalFontObject(GameFontNormalSmall)
 coTankAuraReset:SetHighlightFontObject(GameFontNormalSmall)
 coTankAuraReset:SetScript("OnClick", function()
 	-- Set Default Options
-	DBM.Options.PrivateAurasCoTankEnabled2 = DBM.DefaultOptions.PrivateAurasCoTankEnabled2
+	DBM.Options.PrivateAurasCoTankEnabled3 = DBM.DefaultOptions.PrivateAurasCoTankEnabled3
 	DBM.Options.PrivateAurasCoTankHideBorder = DBM.DefaultOptions.PrivateAurasCoTankHideBorder
 	DBM.Options.PrivateAurasCoTankHideTooltip = DBM.DefaultOptions.PrivateAurasCoTankHideTooltip
 	DBM.Options.PrivateAurasCoTankGrowDirection = DBM.DefaultOptions.PrivateAurasCoTankGrowDirection
@@ -486,7 +501,7 @@ coTankAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankShowSecond = DBM.DefaultOptions.PrivateAurasCoTankShowSecond
 	-- Advanced options are reset via the Advanced reset button below
 	-- Set UI visuals
-	coTankAuraIcon:SetChecked(DBM.Options.PrivateAurasCoTankEnabled2)
+	coTankAuraVisibility:SetSelectedValue(DBM.Options.PrivateAurasCoTankEnabled3)
 	coTankAuraSecond:SetChecked(DBM.Options.PrivateAurasCoTankShowSecond)
 	coTankAuraBorder:SetChecked(DBM.Options.PrivateAurasCoTankHideBorder)
 	coTankAuraTooltip:SetChecked(DBM.Options.PrivateAurasCoTankHideTooltip)

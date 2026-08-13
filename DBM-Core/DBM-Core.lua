@@ -4816,7 +4816,8 @@ do
 	-- if we catch someone in a tank stance keep sending them warnings, classic only
 	local playerIsTank = false
 
-	function bossModPrototype:IsTank()
+	---@param self DBMModOrDBM
+	function DBM:IsTank()
 		--IsTanking already handles external calls, no need here.
 		if (not currentSpecID or currentSpecID == 0) then
 			DBM:SetCurrentSpecInfo()
@@ -4839,6 +4840,7 @@ do
 		local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
 		return role == "TANK"
 	end
+	bossModPrototype.IsTank = DBM.IsTank
 end
 
 ---@param uId playerUUIDs? Used for querying external unit. If nil, queries "player"
