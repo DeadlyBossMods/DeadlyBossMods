@@ -116,7 +116,7 @@ do
 			timerAlluringBubbleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bubble", "alluringBubbleCount"))
 		elseif timer == 18 then--1257717 initial Alluring Bubble setup; it has no corresponding alert
 			handled = true
-			timerAlluringBubbleCD:TLStart(timerExact, eventID)
+			timerAlluringBubbleCD:TLStart(timerExact, eventID, 1)
 		elseif timer == 35 or timer == 17 then--Chilling Frost
 			handled = true
 			timerChillingFrostCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "frost", "ChillingFrostCount"))
