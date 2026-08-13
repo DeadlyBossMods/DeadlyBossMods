@@ -165,12 +165,12 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 		OnAuraSettingsChange(true)
 	end)
 	personalAuraShowDecimalSeconds:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", -20, -40)
+	personalAuraShowDecimalSeconds.myheight = 20
 
 	personalAuraDecimalThreshold = personalAuraArea:CreateSlider(L.AuraDecimalThreshold, 0.1, 10, 0.1, 150, DBM.Options.PrivateAurasPlayerDecimalThreshold, function(value)
 		DBM.Options.PrivateAurasPlayerDecimalThreshold = value
 		OnAuraSettingsChange(true)
 	end)
-	personalAuraDecimalThreshold:SetPoint("LEFT", personalAuraShowDecimalSeconds, "RIGHT", 20, 0)
 	personalAuraDecimalThreshold.myheight = 0
 
 	personalAuraStackFontSize = personalAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasPlayerStackFontSize, function(value)
@@ -179,6 +179,7 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 	end)
 	personalAuraStackFontSize:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", 180, 0)
 	personalAuraStackFontSize.myheight = 0
+	personalAuraDecimalThreshold:SetPoint("TOPLEFT", personalAuraStackFontSize, "TOPLEFT", 0, -45)
 
 	personalAuraShowStacks = personalAuraArea:CreateCheckButton(L.AuraShowStacks, true, nil, "PrivateAurasPlayerShowStacks")
 	personalAuraShowStacks:SetScript("OnClick", function()
@@ -387,12 +388,12 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 		OnAuraSettingsChange(false)
 	end)
 	coTankAuraShowDecimalSeconds:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", -20, -40)
+	coTankAuraShowDecimalSeconds.myheight = 20
 
 	coTankAuraDecimalThreshold = coTankAuraArea:CreateSlider(L.AuraDecimalThreshold, 0.1, 10, 0.1, 150, DBM.Options.PrivateAurasCoTankDecimalThreshold, function(value)
 		DBM.Options.PrivateAurasCoTankDecimalThreshold = value
 		OnAuraSettingsChange(false)
 	end)
-	coTankAuraDecimalThreshold:SetPoint("LEFT", coTankAuraShowDecimalSeconds, "RIGHT", 20, 0)
 	coTankAuraDecimalThreshold.myheight = 0
 
 	coTankAuraStackFontSize = coTankAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankStackFontSize, function(value)
@@ -401,6 +402,7 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 	end)
 	coTankAuraStackFontSize:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", 180, 0)
 	coTankAuraStackFontSize.myheight = 0
+	coTankAuraDecimalThreshold:SetPoint("TOPLEFT", coTankAuraStackFontSize, "TOPLEFT", 0, -45)
 
 	coTankAuraShowStacks = coTankAuraArea:CreateCheckButton(L.AuraShowStacks, true, nil, "PrivateAurasCoTankShowStacks")
 	coTankAuraShowStacks:SetScript("OnClick", function()
