@@ -51,7 +51,7 @@ local function setFallback(self, dontSetAlerts)
 			specWarnWaterJet:SetAlert(366, "lineyou", 17, 3, 0)--TODO, verify it's actually personal
 			specWarnWaterFlurry:SetAlert(654, "lineyou", 17, 3, 0)--TODO, verify it's actually personal
 		end
-		specWarnAlluringBubble:SetAlert({367, 372}, "killmob", 2, 2)
+		specWarnAlluringBubble:SetAlert({367, 372}, "killmob", 2, 2, 0)
 		specWarnChillingFrost:SetAlert(976, "orbrun", 2, 3, 0)--TODO, verify it's actually personal
 		specWarnTidepiercersRush:SetAlert(369, "watchstep", 2, 2)
 		specWarnAbyssalRain:SetAlert(370, "aesoon", 2, 2)
