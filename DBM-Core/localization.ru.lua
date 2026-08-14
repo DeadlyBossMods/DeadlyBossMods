@@ -413,7 +413,7 @@ L.AUTO_SPEC_WARN_TEXTS.blizzyou			= "%s (%%s) на Вас"
 L.AUTO_SPEC_WARN_TEXTS.link				= "%s связан с >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.defensive		= "%s - защититесь"
 L.AUTO_SPEC_WARN_TEXTS.taunt			= "%s на >%%s< - затаунти"
-L.AUTO_SPEC_WARN_TEXTS.tauntsecret	= "%s на %%s - затаунти"
+L.AUTO_SPEC_WARN_TEXTS.tauntsecret		= "%s на %%s - затаунти"
 L.AUTO_SPEC_WARN_TEXTS.close 			= "%s на >%%s< около Вас"
 L.AUTO_SPEC_WARN_TEXTS.move 			= "%s - отбегите"
 L.AUTO_SPEC_WARN_TEXTS.keepmove			= "%s - продолжайте двигаться"
@@ -710,10 +710,10 @@ L.LAG_HEADER						= L.DBM.. " - результаты проверки задер
 L.DUR_HEADER						= L.DBM.. " - результаты проверки прочности"
 L.KEYSTONES_HEADER					= L.DBM.. " - ключи М+"
 L.GEAR_HEADER						= L.DBM.. " - результаты проверки экипировки"
-L.GEAR_MISSING_GEMS				= "Отсутствуют самоцветы"
-L.GEAR_MISSING_ENCHANTS			= "Отсутствуют чары"
+L.GEAR_MISSING_GEMS					= "Отсутствуют самоцветы"
+L.GEAR_MISSING_ENCHANTS				= "Отсутствуют чары"
 
-L.OVERRIDE_ACTIVATED					= "Для этого сражения лидер рейда активировал перезапись конфигурации."
+L.OVERRIDE_ACTIVATED				= "Для этого сражения лидер рейда активировал перезапись конфигурации."
 
 --LDB
 L.LDB_TOOLTIP_HELP1					= "[ЛКМ] - открыть " .. L.DBM
@@ -806,6 +806,6 @@ L.KEYSTONE_NAMES[588] = 'АК' -- Altar of Fangs
 L.MN_TIMELINE_HEADER	= "Вы хотите использовать временную шкалу Blizzard или полосы DBM?"
 L.MN_BLIZZARD_TIMELINE	= "Временная шкала Blizzard"
 L.MN_DBM_TIMELINE		= "Полосы DBM"
-L.MN_WARNIGS_HEADER		= "Вы хотите использовать боевые предупреждения Blizzard или боевые предупреждения DBM?"
+L.MN_WARNIGS_HEADER		= "Вы хотите использовать боевые предупреждения Blizzard или предупреждения DBM?"
 L.MN_BLIZZARD_WARNINGS	= "Предупреждения Blizzard"
 L.MN_DBM_WARNINGS		= "Предупреждения DBM"
