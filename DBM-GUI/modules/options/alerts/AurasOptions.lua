@@ -50,6 +50,21 @@ local auraSortModes = {
 	}
 }
 
+local coTankVisibilityModes = {
+	{
+		text	= L.CoTankVisibilityAuto,
+		value	= "Auto"
+	},
+	{
+		text	= L.CoTankVisibilityAlways,
+		value	= "Always"
+	},
+	{
+		text	= L.CoTankVisibilityNever,
+		value	= "Never"
+	}
+}
+
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
 		text	= DEFAULT,
@@ -165,12 +180,12 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 		OnAuraSettingsChange(true)
 	end)
 	personalAuraShowDecimalSeconds:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", -20, -40)
+	personalAuraShowDecimalSeconds.myheight = 20
 
 	personalAuraDecimalThreshold = personalAuraArea:CreateSlider(L.AuraDecimalThreshold, 0.1, 10, 0.1, 150, DBM.Options.PrivateAurasPlayerDecimalThreshold, function(value)
 		DBM.Options.PrivateAurasPlayerDecimalThreshold = value
 		OnAuraSettingsChange(true)
 	end)
-	personalAuraDecimalThreshold:SetPoint("LEFT", personalAuraShowDecimalSeconds, "RIGHT", 20, 0)
 	personalAuraDecimalThreshold.myheight = 0
 
 	personalAuraStackFontSize = personalAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasPlayerStackFontSize, function(value)
@@ -179,6 +194,7 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 	end)
 	personalAuraStackFontSize:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", 180, 0)
 	personalAuraStackFontSize.myheight = 0
+	personalAuraDecimalThreshold:SetPoint("TOPLEFT", personalAuraStackFontSize, "TOPLEFT", 0, -45)
 
 	personalAuraShowStacks = personalAuraArea:CreateCheckButton(L.AuraShowStacks, true, nil, "PrivateAurasPlayerShowStacks")
 	personalAuraShowStacks:SetScript("OnClick", function()
@@ -286,16 +302,19 @@ end)
 --  Co-Tank Aura Frame  --
 ----------------------------------
 local coTankAuraArea		= auraPanel:CreateArea(L.Area_TankPrivateAuras)
-local coTankAuraIcon		= coTankAuraArea:CreateCheckButton(L.EnableTankPrivateAuraIcons, true, nil, "PrivateAurasCoTankEnabled2")
-coTankAuraIcon:SetScript("OnClick", function()
-	DBM.Options.PrivateAurasCoTankEnabled2 = not DBM.Options.PrivateAurasCoTankEnabled2
+
+local coTankAuraVisibility = coTankAuraArea:CreateDropdown(L.CoTankVisibility, coTankVisibilityModes, "DBM", "PrivateAurasCoTankEnabled3", function(value)
+	DBM.Options.PrivateAurasCoTankEnabled3 = value
 	OnAuraSettingsChange(false)
 end)
+coTankAuraVisibility:SetPoint("TOPLEFT", coTankAuraArea.frame, "TOPLEFT", 15, -35)
+coTankAuraVisibility.myheight = 90
 local coTankAuraSecond	= coTankAuraArea:CreateCheckButton(L.ShowSecondCoTank, true, nil, "PrivateAurasCoTankShowSecond")
 coTankAuraSecond:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankShowSecond = not DBM.Options.PrivateAurasCoTankShowSecond
 	OnAuraSettingsChange(false)
 end)
+coTankAuraSecond:SetPoint("TOPLEFT", coTankAuraVisibility, "BOTTOMLEFT", 0, -5)
 local coTankAuraBorder 	= coTankAuraArea:CreateCheckButton(L.HidePABorder, true, nil, "PrivateAurasCoTankHideBorder")
 coTankAuraBorder:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankHideBorder = not DBM.Options.PrivateAurasCoTankHideBorder
@@ -323,7 +342,7 @@ end)
 coTankSpacing:SetPoint("TOPLEFT", coTankGrowDir, "TOPLEFT", 180, 0)
 coTankSpacing.myheight = 0
 
-local coTankIconScale = coTankAuraArea:CreateSlider(L.SetPAIconScale, 50, 150, 1, 150, DBM.Options.PrivateAurasCoTankWidth, function(value)
+local coTankIconScale = coTankAuraArea:CreateSlider(L.SetPAIconScale, 25, 150, 1, 150, DBM.Options.PrivateAurasCoTankWidth, function(value)
 	DBM.Options.PrivateAurasCoTankWidth = value
 	DBM.Options.PrivateAurasCoTankHeight = value
 	OnAuraSettingsChange(false)
@@ -387,12 +406,12 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 		OnAuraSettingsChange(false)
 	end)
 	coTankAuraShowDecimalSeconds:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", -20, -40)
+	coTankAuraShowDecimalSeconds.myheight = 20
 
 	coTankAuraDecimalThreshold = coTankAuraArea:CreateSlider(L.AuraDecimalThreshold, 0.1, 10, 0.1, 150, DBM.Options.PrivateAurasCoTankDecimalThreshold, function(value)
 		DBM.Options.PrivateAurasCoTankDecimalThreshold = value
 		OnAuraSettingsChange(false)
 	end)
-	coTankAuraDecimalThreshold:SetPoint("LEFT", coTankAuraShowDecimalSeconds, "RIGHT", 20, 0)
 	coTankAuraDecimalThreshold.myheight = 0
 
 	coTankAuraStackFontSize = coTankAuraArea:CreateSlider(L.AuraStackFontSize, 8, 60, 1, 150, DBM.Options.PrivateAurasCoTankStackFontSize, function(value)
@@ -401,6 +420,7 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 	end)
 	coTankAuraStackFontSize:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", 180, 0)
 	coTankAuraStackFontSize.myheight = 0
+	coTankAuraDecimalThreshold:SetPoint("TOPLEFT", coTankAuraStackFontSize, "TOPLEFT", 0, -45)
 
 	coTankAuraShowStacks = coTankAuraArea:CreateCheckButton(L.AuraShowStacks, true, nil, "PrivateAurasCoTankShowStacks")
 	coTankAuraShowStacks:SetScript("OnClick", function()
@@ -457,7 +477,7 @@ coTankAuraReset:SetNormalFontObject(GameFontNormalSmall)
 coTankAuraReset:SetHighlightFontObject(GameFontNormalSmall)
 coTankAuraReset:SetScript("OnClick", function()
 	-- Set Default Options
-	DBM.Options.PrivateAurasCoTankEnabled2 = DBM.DefaultOptions.PrivateAurasCoTankEnabled2
+	DBM.Options.PrivateAurasCoTankEnabled3 = DBM.DefaultOptions.PrivateAurasCoTankEnabled3
 	DBM.Options.PrivateAurasCoTankHideBorder = DBM.DefaultOptions.PrivateAurasCoTankHideBorder
 	DBM.Options.PrivateAurasCoTankHideTooltip = DBM.DefaultOptions.PrivateAurasCoTankHideTooltip
 	DBM.Options.PrivateAurasCoTankGrowDirection = DBM.DefaultOptions.PrivateAurasCoTankGrowDirection
@@ -484,7 +504,7 @@ coTankAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankShowSecond = DBM.DefaultOptions.PrivateAurasCoTankShowSecond
 	-- Advanced options are reset via the Advanced reset button below
 	-- Set UI visuals
-	coTankAuraIcon:SetChecked(DBM.Options.PrivateAurasCoTankEnabled2)
+	coTankAuraVisibility:SetSelectedValue(DBM.Options.PrivateAurasCoTankEnabled3)
 	coTankAuraSecond:SetChecked(DBM.Options.PrivateAurasCoTankShowSecond)
 	coTankAuraBorder:SetChecked(DBM.Options.PrivateAurasCoTankHideBorder)
 	coTankAuraTooltip:SetChecked(DBM.Options.PrivateAurasCoTankHideTooltip)

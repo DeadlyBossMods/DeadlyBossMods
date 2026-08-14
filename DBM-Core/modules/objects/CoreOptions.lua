@@ -409,7 +409,7 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerXOffset = 185,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasPlayerYOffset = 154,--Partial (drag and drop only, no UI slider/editbox)
 	--Co-Tank
-	PrivateAurasCoTankEnabled2 = false,
+	PrivateAurasCoTankEnabled3 = "Auto",
 	PrivateAurasCoTankHideBorder = false,
 	PrivateAurasCoTankHideTooltip = false,
 	PrivateAurasCoTankSpacing2 = 1,
@@ -1074,10 +1074,10 @@ do
 		DBM_UsedProfile = usedProfile
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
-		local coTankDefault = self:GetRoleFlagValue("Tank")
-		self.DefaultOptions.PrivateAurasCoTankEnabled2 = coTankDefault
-		self.DefaultOptions.PrivateAurasCoTankShowSecond = coTankDefault
+		self:SetCurrentSpecInfo()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
+		-- Reset the old load-time role-derived setting so the new live Auto setting is used instead.
+		self.Options.PrivateAurasCoTankEnabled2 = nil
 		if not self.Options.GUIResizeMigrated_1000x700 then
 			if self.Options.GUIWidth == 800 and self.Options.GUIHeight == 600 then
 				self.Options.GUIWidth = 1000
