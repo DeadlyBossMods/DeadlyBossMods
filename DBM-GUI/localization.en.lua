@@ -321,6 +321,7 @@ L.SetPAMaxIcons						= "Max icons"--Slider, Reused for personal and tank
 L.SetPAIconSpacing					= "Icon spacing"--Slider, Reused for personal and tank
 L.HidePATooltip						= "Disable on hover spell tooltip"--checkbox
 L.HidePABorder						= "Disable border"--checkbox
+L.OnlyBossOrRoleAuras				= "Show only Boss/Role Auras (Note Blizzard curated and does not show all important auras)"
 L.Area_TankPrivateAuras				= "Co-Tank Debuff Aura Options"
 L.EnableTankPrivateAuraIcons		= "Show aura icons for the first tank-role player that isn't you"--checkbox
 L.CoTankVisibility					= "Show co tank when:"

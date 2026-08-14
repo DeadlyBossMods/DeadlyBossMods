@@ -87,6 +87,9 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 -----------------------------------
 --  Personal Aura Frame  --
 -----------------------------------
+local personalAuraBossOrRoleOnly
+local coTankAuraBossOrRoleOnly
+
 local personalAuraArea 	= auraPanel:CreateArea(L.Area_PersonalPrivateAuras)
 local personalAuraIcon	= personalAuraArea:CreateCheckButton(L.EnablePersonalPrivateAuraIcons, true, nil, "PrivateAurasPlayerEnabled2")
 personalAuraIcon:SetScript("OnClick", function()
@@ -106,11 +109,21 @@ end)
 personalAuraTooltip:SetPoint("TOPLEFT", personalAuraBorder, "TOPLEFT", 150, 0)
 personalAuraTooltip.myheight = 0
 
+personalAuraBossOrRoleOnly = personalAuraArea:CreateCheckButton(L.OnlyBossOrRoleAuras, true, nil, "PrivateAurasBossOrRoleAurasOnly")
+personalAuraBossOrRoleOnly:SetScript("OnClick", function()
+	DBM.Options.PrivateAurasBossOrRoleAurasOnly = not DBM.Options.PrivateAurasBossOrRoleAurasOnly
+	if coTankAuraBossOrRoleOnly then
+		coTankAuraBossOrRoleOnly:SetChecked(DBM.Options.PrivateAurasBossOrRoleAurasOnly)
+	end
+	OnAuraSettingsChange(true)
+end)
+personalAuraBossOrRoleOnly:SetPoint("TOPLEFT", personalAuraBorder, "BOTTOMLEFT", 0, -5)
+
 local personalAuraGrowDir = personalAuraArea:CreateDropdown(L.SetPAGrowDirection, growDirections, "DBM", "PrivateAurasPlayerGrowDirection", function(value)
 	DBM.Options.PrivateAurasPlayerGrowDirection = value
 	OnAuraSettingsChange(true)
 end)
-personalAuraGrowDir:SetPoint("TOPLEFT", personalAuraBorder, "BOTTOMLEFT", 0, -20)
+personalAuraGrowDir:SetPoint("TOPLEFT", personalAuraBossOrRoleOnly, "BOTTOMLEFT", 0, -20)
 personalAuraGrowDir.myheight = 30
 
 local personalSpacing = personalAuraArea:CreateSlider(L.SetPAIconSpacing, -2, 5, 1, 150, DBM.Options.PrivateAurasPlayerSpacing2, function(value)
@@ -271,6 +284,7 @@ personalAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerStackYOffset = DBM.DefaultOptions.PrivateAurasPlayerStackYOffset
 	DBM.Options.PrivateAurasPlayerShowStacks = DBM.DefaultOptions.PrivateAurasPlayerShowStacks
 	DBM.Options.PrivateAurasPlayerShowDispelBorder = DBM.DefaultOptions.PrivateAurasPlayerShowDispelBorder
+	DBM.Options.PrivateAurasBossOrRoleAurasOnly = DBM.DefaultOptions.PrivateAurasBossOrRoleAurasOnly
 	DBM.Options.PrivateAurasPlayerXOffset = DBM.DefaultOptions.PrivateAurasPlayerXOffset
 	DBM.Options.PrivateAurasPlayerYOffset = DBM.DefaultOptions.PrivateAurasPlayerYOffset
 	DBM.Options.PrivateAurasPlayerAnchor = DBM.DefaultOptions.PrivateAurasPlayerAnchor
@@ -295,6 +309,10 @@ personalAuraReset:SetScript("OnClick", function()
 	personalAuraStackYOffset:SetValue(DBM.Options.PrivateAurasPlayerStackYOffset)
 	personalAuraShowStacks:SetChecked(DBM.Options.PrivateAurasPlayerShowStacks)
 	personalAuraShowDispelBorder:SetChecked(DBM.Options.PrivateAurasPlayerShowDispelBorder)
+	personalAuraBossOrRoleOnly:SetChecked(DBM.Options.PrivateAurasBossOrRoleAurasOnly)
+	if coTankAuraBossOrRoleOnly then
+		coTankAuraBossOrRoleOnly:SetChecked(DBM.Options.PrivateAurasBossOrRoleAurasOnly)
+	end
 	OnAuraSettingsChange(true)
 end)
 
@@ -328,11 +346,19 @@ end)
 coTankAuraTooltip:SetPoint("TOPLEFT", coTankAuraBorder, "TOPLEFT", 150, 0)
 coTankAuraTooltip.myheight = 0
 
+coTankAuraBossOrRoleOnly = coTankAuraArea:CreateCheckButton(L.OnlyBossOrRoleAuras, true, nil, "PrivateAurasBossOrRoleAurasOnly")
+coTankAuraBossOrRoleOnly:SetScript("OnClick", function()
+	DBM.Options.PrivateAurasBossOrRoleAurasOnly = not DBM.Options.PrivateAurasBossOrRoleAurasOnly
+	personalAuraBossOrRoleOnly:SetChecked(DBM.Options.PrivateAurasBossOrRoleAurasOnly)
+	OnAuraSettingsChange(false)
+end)
+coTankAuraBossOrRoleOnly:SetPoint("TOPLEFT", coTankAuraBorder, "BOTTOMLEFT", 0, -5)
+
 local coTankGrowDir = coTankAuraArea:CreateDropdown(L.SetPAGrowDirection, growDirections, "DBM", "PrivateAurasCoTankGrowDirection", function(value)
 	DBM.Options.PrivateAurasCoTankGrowDirection = value
 	OnAuraSettingsChange(false)
 end)
-coTankGrowDir:SetPoint("TOPLEFT", coTankAuraBorder, "BOTTOMLEFT", 0, -20)
+coTankGrowDir:SetPoint("TOPLEFT", coTankAuraBossOrRoleOnly, "BOTTOMLEFT", 0, -20)
 coTankGrowDir.myheight = 30
 
 local coTankSpacing = coTankAuraArea:CreateSlider(L.SetPAIconSpacing, -2, 5, 1, 150, DBM.Options.PrivateAurasCoTankSpacing2, function(value)
@@ -497,6 +523,7 @@ coTankAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankStackYOffset = DBM.DefaultOptions.PrivateAurasCoTankStackYOffset
 	DBM.Options.PrivateAurasCoTankShowStacks = DBM.DefaultOptions.PrivateAurasCoTankShowStacks
 	DBM.Options.PrivateAurasCoTankShowDispelBorder = DBM.DefaultOptions.PrivateAurasCoTankShowDispelBorder
+	DBM.Options.PrivateAurasBossOrRoleAurasOnly = DBM.DefaultOptions.PrivateAurasBossOrRoleAurasOnly
 	DBM.Options.PrivateAurasCoTankXOffset = DBM.DefaultOptions.PrivateAurasCoTankXOffset
 	DBM.Options.PrivateAurasCoTankYOffset = DBM.DefaultOptions.PrivateAurasCoTankYOffset
 	DBM.Options.PrivateAurasCoTankAnchor = DBM.DefaultOptions.PrivateAurasCoTankAnchor
@@ -524,6 +551,8 @@ coTankAuraReset:SetScript("OnClick", function()
 	coTankAuraStackYOffset:SetValue(DBM.Options.PrivateAurasCoTankStackYOffset)
 	coTankAuraShowStacks:SetChecked(DBM.Options.PrivateAurasCoTankShowStacks)
 	coTankAuraShowDispelBorder:SetChecked(DBM.Options.PrivateAurasCoTankShowDispelBorder)
+	coTankAuraBossOrRoleOnly:SetChecked(DBM.Options.PrivateAurasBossOrRoleAurasOnly)
+	personalAuraBossOrRoleOnly:SetChecked(DBM.Options.PrivateAurasBossOrRoleAurasOnly)
 	OnAuraSettingsChange(false)
 end)
 

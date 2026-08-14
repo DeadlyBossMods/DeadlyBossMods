@@ -267,6 +267,7 @@ L.SetPAMaxIcons						= "最大圖示"--Slider, Reused for personal and tank
 L.SetPAIconSpacing					= "圖示間距"--Slider, Reused for personal and tank
 L.HidePATooltip						= "停用滑鼠停留法術提示"--checkbox
 L.HidePABorder						= "停用邊框"--checkbox
+L.OnlyBossOrRoleAuras				= "僅顯示首領/職責光環（注意：由暴雪篩選，可能不會顯示所有重要光環）"
 L.Area_TankPrivateAuras				= "副坦克減益光環選項"
 L.EnableTankPrivateAuraIcons		= "顯示第一個非你自己的坦克職責玩家的光環圖示"--checkbox
 L.CoTankVisibility					= "顯示共同坦克的時機："

@@ -265,6 +265,7 @@ L.SetPAMaxIcons						= "Icônes max."--Slider, Reused for personal and tank
 L.SetPAIconSpacing					= "Espacement des icônes"
 L.HidePATooltip						= "Désactiver l’infobulle du sort au survol"
 L.HidePABorder						= "Désactiver la bordure"
+L.OnlyBossOrRoleAuras				= "Afficher uniquement les auras de boss/rôle (Remarque : sélectionnées par Blizzard, elles peuvent ne pas afficher toutes les auras importantes)"
 L.Area_TankPrivateAuras				= "Options des auras du co-tank"
 L.EnableTankPrivateAuraIcons		= "Afficher les icônes d’aura du premier joueur ayant le rôle de tank qui n’est pas vous"
 L.CoTankVisibility					= "Afficher le co-tank lorsque :"

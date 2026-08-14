@@ -404,6 +404,7 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerStackYOffset = 1,
 	PrivateAurasPlayerShowStacks = true,
 	PrivateAurasPlayerShowDispelBorder = true,
+	PrivateAurasBossOrRoleAurasOnly = false,
 	PrivateAurasPlayerAnchor = "CENTER",--NYI
 	PrivateAurasPlayerRelativeTo = "CENTER",--NYI
 	PrivateAurasPlayerXOffset = 185,--Partial (drag and drop only, no UI slider/editbox)

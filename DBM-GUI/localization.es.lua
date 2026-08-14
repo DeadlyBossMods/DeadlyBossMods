@@ -266,6 +266,7 @@ L.SetPAMaxIcons						= "Máx. de iconos"--Slider, Reused for personal and tank
 L.SetPAIconSpacing					= "Espaciado del icono"
 L.HidePATooltip						= "Desactivar tooltip del hechizo al pasar el cursor"
 L.HidePABorder						= "Desactivar borde"
+L.OnlyBossOrRoleAuras				= "Mostrar solo auras de jefe/rol (Nota: seleccionadas por Blizzard; puede que no muestre todas las auras importantes)"
 L.Area_TankPrivateAuras				= "Opciones de auras del co-tanque"
 L.EnableTankPrivateAuraIcons		= "Mostrar iconos de aura para el primer jugador con rol de tanque que no seas tú"
 L.CoTankVisibility					= "Mostrar co-tanque cuando:"

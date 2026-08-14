@@ -260,6 +260,7 @@ L.SetPAMaxIcons						= "Maximale Icons"--Slider, Reused for personal and tank
 L.SetPAIconSpacing					= "Icon-Abstand"--Slider, Reused for personal and tank
 L.HidePATooltip						= "Tooltip beim Überfahren deaktivieren"--checkbox
 L.HidePABorder						= "Rahmen deaktivieren"--checkbox
+L.OnlyBossOrRoleAuras				= "Nur Boss-/Rollen-Auren anzeigen (Hinweis: Von Blizzard ausgewählt; zeigt möglicherweise nicht alle wichtigen Auren)"
 L.Area_TankPrivateAuras				= "Optionen für private Auren von Mit-Tanks"
 L.EnableTankPrivateAuraIcons		= "Aura-Symbole für den ersten Spieler mit Tankrolle anzeigen, der nicht du bist"--checkbox
 L.CoTankVisibility					= "Mit-Tank anzeigen, wenn:"
