@@ -9,9 +9,9 @@ local L = DBM_CORE_L
 local DBM = private:GetPrototype("DBM")
 
 private.voiceSessionDisabled = false
-private.swFilterDisabled = 19
+private.swFilterDisabled = 20
 
-local minVoicePackVersion = 19
+local minVoicePackVersion = 20
 
 function DBM:CheckVoicePackVersion(value)
 	local activeVP = self.Options.ChosenVoicePack2
