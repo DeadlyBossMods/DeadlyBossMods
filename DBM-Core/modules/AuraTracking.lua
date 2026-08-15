@@ -331,10 +331,11 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 
 	local duration = AuraTrackingPreviewDurations[durationIndex]
 	if not frame.Cooldowns[index] then
-		frame.Cooldowns[index] = CreateFrame("Cooldown", nil, frame, "CooldownFrameTemplate")
+		local cooldown = CreateFrame("Cooldown", nil, frame, "CooldownFrameTemplate")
+		---@cast cooldown DBMAuraCooldown
+		frame.Cooldowns[index] = cooldown
 	end
 	local cooldown = frame.Cooldowns[index]
-	---@cast cooldown DBMAuraCooldown
 	cooldown:ClearAllPoints()
 	cooldown:SetAllPoints(icon)
 	cooldown:SetReverse(true)
