@@ -564,6 +564,12 @@ bossOrRoleAurasOnly:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasBossOrRoleAurasOnly = not DBM.Options.PrivateAurasBossOrRoleAurasOnly
 	OnAuraSettingsChange()
 end)
+---@diagnostic disable-next-line: undefined-field
+local auraCooldownSwipe = coTankAdvancedArea:CreateCheckButton(L.AuraShowCooldownSwipe, true, nil, "PrivateAurasShowCooldownSwipe")
+auraCooldownSwipe:SetScript("OnClick", function()
+	DBM.Options.PrivateAurasShowCooldownSwipe = not DBM.Options.PrivateAurasShowCooldownSwipe
+	OnAuraSettingsChange()
+end)
 local coTankUseHealerInFiveMan = coTankAdvancedArea:CreateCheckButton(L.CoTankUseHealerInFiveMan, true, nil, "PrivateAurasCoTankUseHealerInFiveMan")
 
 coTankUseHealerInFiveMan:SetScript("OnClick", function()
@@ -664,8 +670,10 @@ coTankAdvancedReset:SetScript("OnClick", function()
 		DBM.Options.AurasMaxDuration = DBM.DefaultOptions.AurasMaxDuration
 		DBM.Options.AlwaysShowPlayerAuras = DBM.DefaultOptions.AlwaysShowPlayerAuras
 		DBM.Options.PrivateAurasBossOrRoleAurasOnly = DBM.DefaultOptions.PrivateAurasBossOrRoleAurasOnly
+		DBM.Options.PrivateAurasShowCooldownSwipe = DBM.DefaultOptions.PrivateAurasShowCooldownSwipe
 		alwaysShowPlayerAuras:SetChecked(DBM.Options.AlwaysShowPlayerAuras)
 		bossOrRoleAurasOnly:SetChecked(DBM.Options.PrivateAurasBossOrRoleAurasOnly)
+		auraCooldownSwipe:SetChecked(DBM.Options.PrivateAurasShowCooldownSwipe)
 		auraMaxDuration:SetValue(DBM.Options.AurasMaxDuration)
 		coTankUseHealerInFiveMan:SetChecked(DBM.Options.PrivateAurasCoTankUseHealerInFiveMan)
 		coTankShowName:SetChecked(DBM.Options.PrivateAurasCoTankShowName)
