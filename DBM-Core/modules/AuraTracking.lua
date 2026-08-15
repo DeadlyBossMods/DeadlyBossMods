@@ -84,6 +84,7 @@ DBM.Auras = AuraTracking
 
 ---@class DBMAuraPreviewFrame: Frame
 ---@field Textures table<integer, Texture>
+---@field OverlayFrames table<integer, Frame>
 ---@field BorderTextures table<integer, Texture>
 ---@field Symbols table<integer, FontString>
 ---@field Cooldowns table<integer, DBMAuraCooldown>
@@ -283,6 +284,7 @@ end
 local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType, durationIndex)
 	---@cast frame DBMAuraPreviewFrame
 	frame.Textures = frame.Textures or {}
+	frame.OverlayFrames = frame.OverlayFrames or {}
 	frame.BorderTextures = frame.BorderTextures or {}
 	frame.Symbols = frame.Symbols or {}
 	frame.Cooldowns = frame.Cooldowns or {}
@@ -301,9 +303,17 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	icon:SetPoint("CENTER", frame, "CENTER", xOffset, yOffset)
 	icon:Show()
 
+	if not frame.OverlayFrames[index] then
+		frame.OverlayFrames[index] = CreateFrame("Frame", nil, frame)
+	end
+	local overlayFrame = frame.OverlayFrames[index]
+	overlayFrame:ClearAllPoints()
+	overlayFrame:SetAllPoints(icon)
+	overlayFrame:SetFrameLevel(frame:GetFrameLevel() + 3)
+
 	if settings.ShowDispelBorder and not settings.HideBorder then
 		if not frame.BorderTextures[index] then
-			frame.BorderTextures[index] = frame:CreateTexture(nil, "OVERLAY")
+			frame.BorderTextures[index] = overlayFrame:CreateTexture(nil, "OVERLAY")
 		end
 		local border = frame.BorderTextures[index]
 		border:ClearAllPoints()
@@ -313,7 +323,7 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 		border:Show()
 
 		if not frame.Symbols[index] then
-			frame.Symbols[index] = frame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
+			frame.Symbols[index] = overlayFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
 		end
 		local symbol = frame.Symbols[index]
 		symbol:ClearAllPoints()
@@ -350,7 +360,7 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	cooldown:Show()
 
 	if not frame.StackTexts[index] then
-		frame.StackTexts[index] = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+		frame.StackTexts[index] = overlayFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	end
 	local stackText = frame.StackTexts[index]
 	if settings.ShowStacks then
@@ -918,6 +928,7 @@ function AuraTracking:PreviewToggle()
 		return
 	end
 	local previewDuration = 30
+	DBM:SetCurrentSpecInfo()
 	local PlayerSettings = GetAuraSettings("PrivateAurasPlayer")
 	local CoTankSettings = GetCoTankSettings(1)
 	local CoTankSettings2 = GetCoTankSettings(2)
