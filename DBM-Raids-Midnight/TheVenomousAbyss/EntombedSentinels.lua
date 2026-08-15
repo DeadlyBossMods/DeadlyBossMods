@@ -16,29 +16,37 @@ mod:RegisterCombat("combat")
 --TODO, find encounter event Ids for warnings that will likely hook up to mythic venom types. they're probably assigned to Dungeon Ecounter 0
 DBM:RegisterAltSpellName(1284483, DBM_COMMON_L.DISPELS)--Blighted Blood --> Dispels
 local warnVitriolicStasis				= mod:NewCountAnnounce(1284588, 2)--Hardcode only
+local warnUnstableMiasma				= mod:NewCountAnnounce(1288232, 2)--Hardcode only
 
 local specWarnVenomCoagulation			= mod:NewSpecialWarningCount(1284251, nil, nil, nil, 2, 2, nil, nil, "bigmob")
 local specWarnToxicDroplets				= mod:NewSpecialWarningCount(1284434, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
 local specWarnEmpoweringSlam			= mod:NewSpecialWarningCount(1284458, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnBloodvenomInjection		= mod:NewSpecialWarningCount(1284487, nil, nil, nil, 1, 2, nil, nil, "defensive")
-local specWarnBlightedBlood				= mod:NewSpecialWarningCount(1284483, "Healer", nil, nil, 2, 2, nil, nil, "helpdispel")
-local specWarnDebilitatingMiasma		= mod:NewSpecialWarningCount(1284485, nil, nil, nil, 2, 2, nil, nil, "keepmove")--Possibly unused
-local specWarnUnstableMiasma			= mod:NewSpecialWarningSoakCount(1288232, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Possibly unused
-local specWarnShiftingProtovenom		= mod:NewSpecialWarningCount(1296878, nil, nil, nil, 3, 19, 4, nil, "colorchange")--Possibly unused
+--local specWarnBlightedBlood				= mod:NewSpecialWarningCount(1284483, "Healer", nil, nil, 2, 2, nil, nil, "helpdispel")--Verify we want to dispel right away first
+--local specWarnDebilitatingMiasma		= mod:NewSpecialWarningCount(1284485, nil, nil, nil, 2, 2, nil, nil, "keepmove")--Possibly unused
+--local specWarnUnstableMiasma			= mod:NewSpecialWarningSoakCount(1288232, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Aura used instead
+local specWarnShiftingProtovenom		= mod:NewSpecialWarningCount(1296878, nil, nil, nil, 3, 19, 4, nil, "colorchange")
 
 local timerVenomCoagulationCD			= mod:NewCDCountTimer(20.5, 1284251, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerToxicDropletsCD				= mod:NewCDCountTimer(20.5, 1284434, nil, nil, nil, 5)
 local timerEmpoweringSlamCD				= mod:NewCDCountTimer(20.5, 1284458, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBloodvenomInjectionCD		= mod:NewCDCountTimer(20.5, 1284487, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBlightedBloodCD				= mod:NewCDCountTimer(20.5, 1284483, nil, "Healer", nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-local timerDebilitatingMiasmaCD			= mod:NewCDCountTimer(20.5, 1284485, nil, nil, nil, 3)--Possibly unused
+--local timerDebilitatingMiasmaCD			= mod:NewCDCountTimer(20.5, 1284485, nil, nil, nil, 3)--Possibly unused
 local timerVitriolicStasisCD			= mod:NewCDCountTimer(20.5, 1284588, nil, nil, nil, 6)
-local timerUnstableMiasmaCD				= mod:NewCDCountTimer(20.5, 1288232, nil, nil, nil, 3)--Possibly unused
-local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)--Possibly unused
+local timerUnstableMiasmaCD				= mod:NewCDCountTimer(20.5, 1288232, nil, nil, nil, 3)
+local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
-mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "toxic", 2)--Helical Toxins (better audio?)
-mod:AddAuraSoundOption(1284471, false, 1284483, 1, 1, "debuffyou", 17)--Blighted Blood
+--Evidence Log https://www.warcraftlogs.com/reports/xdTc1fhtKWPrbCVv?fight=29&type=auras&spells=debuffs
+mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "toxic", 2, 0)--Helical Toxins (better audio?)
+mod:AddAuraSoundOption(1284471, true, 1284483, 1, 1, "poolyou", 18, 0)--Blighted Blood
+mod:AddAuraSoundOption(1284210, true, 1284210, 1, 2, "watchfeet", 8, 0)--Blood Venom (1284208 is target ID but not logged so probbably no aura either)
+mod:AddAuraSoundOption(1288260, true, 1288232, 1, 1, "gathershare", 2, 0)--Unstable Miasma
+mod:AddAuraSoundOption(1288297, true, 1288232, 1, 3, "poolyou", 18, 0)--Clinging Mark (stacks from soaking unstalbe Miasma)
+mod:AddAuraSoundOption(1284491, true, 1284491, 1, 1, "poolyou", 18, 1)--Bloodvenom Injection (stacks only, cause you swap at 2+ stacks)
+--Debuffs that do not appear in combat log but MIGHT still work with aura sounds?
+mod:AddAuraSoundOption(1296880, true, 1296878, 1, 1, "movetopartner", 20, 0)--Shifting Protovenom
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local firstBerserkIgnored = false
@@ -72,14 +80,12 @@ local function setFallback(self, dontSetAlerts)
 			specWarnEmpoweringSlam:SetAlert(639, "defensive", 2, 2)
 			specWarnBloodvenomInjection:SetAlert(640, "defensive", 2, 2)
 		end
-		if self:IsHealer() then
-			specWarnBlightedBlood:SetAlert(641, "helpdispel", 2, 2)
-		end
+		--if self:IsHealer() then
+		--	specWarnBlightedBlood:SetAlert(641, "helpdispel", 2, 2)
+		--end
 		specWarnVenomCoagulation:SetAlert(637, "bigmob", 2, 2)
 		specWarnToxicDroplets:SetAlert(638, "helpsoak", 2, 2)
-		specWarnDebilitatingMiasma:SetAlert(642, "keepmove", 2, 2)--Possibly unused
-		specWarnUnstableMiasma:SetAlert(673, "gathershare", 2, 2)--Possibly unused
-		specWarnShiftingProtovenom:SetAlert(788, "colorchange", 19, 3)--Possibly unused
+		specWarnShiftingProtovenom:SetAlert(788, "colorchange", 19, 3)
 	end
 	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
 	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
@@ -89,7 +95,6 @@ local function setFallback(self, dontSetAlerts)
 	timerEmpoweringSlamCD:SetTimeline(639, onlyColor)
 	timerBloodvenomInjectionCD:SetTimeline(640, onlyColor)
 	timerBlightedBloodCD:SetTimeline(641, onlyColor)
-	timerDebilitatingMiasmaCD:SetTimeline(642, onlyColor)--Possibly unused
 	timerVitriolicStasisCD:SetTimeline(643, onlyColor)
 	timerUnstableMiasmaCD:SetTimeline(673, onlyColor)
 	timerBerserkCD:SetTimeline(668, onlyColor)
@@ -257,11 +262,10 @@ do
 				specWarnBloodvenomInjection:Show(eventCount)
 				specWarnBloodvenomInjection:Play("defensive")
 			elseif eventType == "blightedblood" then
-				specWarnBlightedBlood:Show(eventCount)
-				specWarnBlightedBlood:Play("helpdispel")
+			--	specWarnBlightedBlood:Show(eventCount)
+			--	specWarnBlightedBlood:Play("helpdispel")
 			elseif eventType == "unstablemiasma" then
-				specWarnUnstableMiasma:Show(eventCount)
-				specWarnUnstableMiasma:Play("gathershare")
+				warnUnstableMiasma:Show(eventCount)
 			elseif eventType == "shiftingprotovenom" then
 				specWarnShiftingProtovenom:Show(eventCount)
 				specWarnShiftingProtovenom:Play("colorchange")
