@@ -77,7 +77,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.abyssalRainCount = 1
 	normal44Slot = 0
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and not badStateDetected then
+	if DBM.Options.HardcodedTimer and not badStateDetected and self:IsEasy() then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",

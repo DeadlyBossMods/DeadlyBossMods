@@ -330,7 +330,7 @@ end
 
 do
 	local eventsRegistered = false
-	local UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsUnit = UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsUnit
+	local UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit = UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit
 	local bossUnits = {
 		"boss1", "boss2", "boss3", "boss4", "boss5",
 		"boss6", "boss7", "boss8", "boss9", "boss10",
@@ -340,7 +340,14 @@ do
 		if DBM.Options.DebugLevel < 2 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
-		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 3, nil, nil, true, true)
+		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." IsFriend:"..tostring(UnitIsFriend("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 3, nil, nil, true, true)
+	end
+
+	function module:UNIT_FLAGS(uId)
+		if DBM.Options.DebugLevel < 2 then return end
+		local inCombat = private.getInCombat()
+		if #inCombat == 0 then return end
+		DBM:Debug("|c00D8B4FEUF|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." IsFriend:"..tostring(UnitIsFriend("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 3, nil, nil, true, true)
 	end
 
 	function module:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
@@ -352,7 +359,7 @@ do
 			local unit = bossUnits[i]
 			if UnitExists(unit) then
 				hasBossUnits = true
-				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 3, nil, nil, true, true)
+				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).." IsFriend:"..tostring(UnitIsFriend("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 3, nil, nil, true, true)
 			end
 		end
 		if not hasBossUnits then
@@ -414,7 +421,8 @@ do
 				elseif DBM.Options.DebugLevel >= 2 then
 					self:RegisterShortTermEvents(
 						"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-						"UNIT_TARGETABLE_CHANGED"
+						"UNIT_TARGETABLE_CHANGED",
+						"UNIT_FLAGS boss1 boss2 boss3 boss4 boss5"
 					)
 					eventsRegistered = true
 				end

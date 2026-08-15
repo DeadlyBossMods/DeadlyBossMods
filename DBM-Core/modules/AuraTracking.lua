@@ -5,13 +5,17 @@ local DBM = DBM
 local private = select(2, ...)
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 
+---@class DBMAuraCooldown: Cooldown
+---@field SetCountdownMillisecondsThreshold fun(self: DBMAuraCooldown, threshold: number)
+
 ---@class DBMAuraButton: Frame
 ---@field SetIcon fun(self: DBMAuraButton, icon: Texture)
 ---@field AddDispelTypeTexture fun(self: DBMAuraButton, region: Texture, options: table): integer
 ---@field ClearDispelTypeTextures fun(self: DBMAuraButton)
 ---@field SetDispelTypeText fun(self: DBMAuraButton, region: FontString, options: table)
 ---@field ClearDispelTypeText fun(self: DBMAuraButton)
----@field SetDurationText fun(self: DBMAuraButton, region: FontString, options: table?)
+---@field SetDurationCooldown fun(self: DBMAuraButton, cooldown: DBMAuraCooldown)
+---@field ClearDurationText fun(self: DBMAuraButton)
 ---@field SetApplicationCount fun(self: DBMAuraButton, region: FontString, options: table)
 ---@field ClearApplicationCount fun(self: DBMAuraButton)
 
@@ -62,6 +66,7 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 ---@field DurationFontSize number
 ---@field ShowDecimalSeconds boolean
 ---@field DecimalThreshold number
+---@field ShowCooldownSwipe boolean
 ---@field StackFontSize number
 ---@field StackColor { r: number, g: number, b: number }
 ---@field StackXOffset number
@@ -81,7 +86,7 @@ DBM.Auras = AuraTracking
 ---@field Textures table<integer, Texture>
 ---@field BorderTextures table<integer, Texture>
 ---@field Symbols table<integer, FontString>
----@field DurationTexts table<integer, FontString>
+---@field Cooldowns table<integer, DBMAuraCooldown>
 ---@field StackTexts table<integer, FontString>
 ---@field Border Frame?
 ---@field NameLabel FontString?
@@ -117,7 +122,6 @@ local AuraTrackingPreviewDurations = {
 	30,
 	2.7,
 }
-local AuraTrackingDurationFormatterCache = {}
 
 local auraAnchorsRegistered = false
 local auraTextFontResetNotified = false
@@ -146,6 +150,7 @@ local function GetAuraSettings(prefix)
 		DurationFontSize = DBM.Options[prefix .. "DurationFontSize"],
 		ShowDecimalSeconds = DBM.Options[prefix .. "ShowDecimalSeconds"],
 		DecimalThreshold = DBM.Options[prefix .. "DecimalThreshold"] or DBM.DefaultOptions[prefix .. "DecimalThreshold"],
+		ShowCooldownSwipe = DBM.Options.PrivateAurasShowCooldownSwipe,
 		StackFontSize = DBM.Options[prefix .. "StackFontSize"],
 		StackColor = stackColor,
 		StackXOffset = DBM.Options[prefix .. "StackXOffset"] or DBM.DefaultOptions[prefix .. "StackXOffset"],
@@ -185,82 +190,10 @@ local function GetAuraTextFontSettings(settings)
 end
 
 ---@param settings DBMAuraSettings
-local function GetAuraDurationFormatter(settings)
-	local decimalEnabled = settings.ShowDecimalSeconds == true
-	local decimalThreshold = decimalEnabled and math.min(math.max(tonumber(settings.DecimalThreshold) or 3, 0.1), 59.9) or 0
-	local cache = AuraTrackingDurationFormatterCache[settings.optionPrefix]
-	if cache and cache.decimalEnabled == decimalEnabled and cache.decimalThreshold == decimalThreshold then
-		return cache.formatter
-	end
-	local formatter = C_StringUtil.CreateNumericRuleFormatter()
-	if decimalEnabled then
-		formatter:SetBreakpoints({
-			{
-				threshold = 60,
-				rounding = Enum.NumericRuleFormatRounding.Down,
-				format = "%dm",
-				components = {
-					{
-						div = 60,
-						step = 1,
-						rounding = Enum.NumericRuleFormatRounding.Down,
-					},
-				},
-			},
-			{
-				threshold = decimalThreshold,
-				step = 1,
-				rounding = Enum.NumericRuleFormatRounding.Up,
-				format = "%d",
-			},
-			{
-				threshold = 0,
-				step = 0.1,
-				rounding = Enum.NumericRuleFormatRounding.Up,
-				format = "%.1f",
-			},
-		})
-	else
-		formatter:SetBreakpoints({
-			{
-				threshold = 60,
-				rounding = Enum.NumericRuleFormatRounding.Down,
-				format = "%dm",
-				components = {
-					{
-						div = 60,
-						step = 1,
-						rounding = Enum.NumericRuleFormatRounding.Down,
-					},
-				},
-			},
-			{
-				threshold = 0,
-				step = 1,
-				rounding = Enum.NumericRuleFormatRounding.Up,
-				format = "%d",
-			},
-		})
-	end
-	AuraTrackingDurationFormatterCache[settings.optionPrefix] = {
-		decimalEnabled = decimalEnabled,
-		decimalThreshold = decimalThreshold,
-		formatter = formatter,
-	}
-	return formatter
-end
-
----@param duration number
----@param settings DBMAuraSettings
----@return string
-local function FormatAuraPreviewDuration(duration, settings)
-	if duration >= 60 then
-		return math.floor(duration / 60) .. "m"
-	end
-	if settings.ShowDecimalSeconds and duration < (tonumber(settings.DecimalThreshold) or 3) then
-		return string.format("%.1f", math.ceil(duration * 10) / 10)
-	end
-	return tostring(math.ceil(duration))
+---@return number
+local function GetAuraDecimalThreshold(settings)
+	if not settings.ShowDecimalSeconds then return 0 end
+	return math.min(math.max(tonumber(settings.DecimalThreshold) or 3, 0.1), 59.9)
 end
 
 ---@param settings table
@@ -352,7 +285,7 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	frame.Textures = frame.Textures or {}
 	frame.BorderTextures = frame.BorderTextures or {}
 	frame.Symbols = frame.Symbols or {}
-	frame.DurationTexts = frame.DurationTexts or {}
+	frame.Cooldowns = frame.Cooldowns or {}
 	frame.StackTexts = frame.StackTexts or {}
 
 	local xOffset = (settings.GrowDirection == "RIGHT" and (index - 1) * (settings.Width + settings.Spacing)) or (settings.GrowDirection == "LEFT" and -(index - 1) * (settings.Width + settings.Spacing)) or 0
@@ -396,17 +329,25 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 		end
 	end
 
-	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
-	if not frame.DurationTexts[index] then
-		frame.DurationTexts[index] = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-	end
-	local durationText = frame.DurationTexts[index]
-	durationText:ClearAllPoints()
-	durationText:SetPoint("CENTER", icon, "CENTER", 0, 0)
-	durationText:SetFont(fontPath, settings.DurationFontSize, fontFlags)
 	local duration = AuraTrackingPreviewDurations[durationIndex]
-	durationText:SetText(FormatAuraPreviewDuration(duration, settings))
-	durationText:Show()
+	if not frame.Cooldowns[index] then
+		local cooldown = CreateFrame("Cooldown", nil, frame, "CooldownFrameTemplate")
+		---@cast cooldown DBMAuraCooldown
+		frame.Cooldowns[index] = cooldown
+	end
+	local cooldown = frame.Cooldowns[index]
+	cooldown:ClearAllPoints()
+	cooldown:SetAllPoints(icon)
+	cooldown:SetReverse(true)
+	cooldown:SetDrawEdge(false)
+	cooldown:SetDrawBling(false)
+	cooldown:SetDrawSwipe(settings.ShowCooldownSwipe)
+	cooldown:SetHideCountdownNumbers(false)
+	cooldown:SetCountdownMillisecondsThreshold(GetAuraDecimalThreshold(settings))
+	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
+	cooldown:GetCountdownFontString():SetFont(fontPath, settings.DurationFontSize, fontFlags)
+	cooldown:SetCooldownFromExpirationTime(GetTime() + duration, duration)
+	cooldown:Show()
 
 	if not frame.StackTexts[index] then
 		frame.StackTexts[index] = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -488,16 +429,23 @@ local function ConfigureButton(state, button, settings, unit)
 	end
 
 	button:SetMouseMotionEnabled(not settings.HideTooltip)
-	if not regions.durationText then
-		regions.durationText = regions.textOverlay:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	if not regions.durationCooldown then
+		regions.durationCooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+		regions.durationCooldown:SetAllPoints(button)
+		regions.durationCooldown:SetFrameLevel(button:GetFrameLevel() + 1)
+		regions.durationCooldown:SetReverse(true)
+		regions.durationCooldown:SetDrawEdge(false)
+		regions.durationCooldown:SetDrawBling(false)
 	end
-	regions.durationText:ClearAllPoints()
-	regions.durationText:SetPoint("CENTER", button, "CENTER", 0, 0)
-	regions.durationText:SetFont(fontPath, durationFontSize, fontFlags)
-	regions.durationText:Show()
-	button:SetDurationText(regions.durationText, {
-		textFormatter = GetAuraDurationFormatter(settings),
-	})
+	local durationCooldown = regions.durationCooldown
+	---@cast durationCooldown DBMAuraCooldown
+	durationCooldown:SetDrawSwipe(settings.ShowCooldownSwipe)
+	durationCooldown:SetHideCountdownNumbers(false)
+	durationCooldown:SetCountdownMillisecondsThreshold(GetAuraDecimalThreshold(settings))
+	durationCooldown:GetCountdownFontString():SetFont(fontPath, durationFontSize, fontFlags)
+	durationCooldown:Show()
+	button:ClearDurationText()
+	button:SetDurationCooldown(durationCooldown)
 
 	if not regions.countText then
 		regions.countText = regions.textOverlay:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -603,6 +551,27 @@ local function InitContainerState(state, settings, unit)
 	container:SetFlowLayoutGrowthDirection(GetFlowDirections(settings.GrowDirection))
 	container:SetFlowLayoutMaximumLineSize(GetRowWidth(settings))
 
+	local candidateFilters = {
+		maxDuration = DBM.Options.AurasMaxDuration,
+		excludeSpellIDs = {
+			[57723] = true,--Exhaustion
+			[80354] = true,--Temporal Displacement
+			[57724] = true,--Sated
+			[390435] = true,--Exhaustion
+			[264689] = true,--Fatigued
+			[160455] = true,--Fatigued
+			[95809] = true,--Insanity
+			[124255] = true,--Stagger
+			[71041] = true,--Dungeon Deserter
+			[206151] = true,--Challenger's Burden
+		}
+	}
+	if DBM.Options.PrivateAurasBossOrRoleAurasOnly then
+		candidateFilters.isBossOrRoleAura = true
+	else
+		candidateFilters.isFromPlayerOrPlayerPet = false
+	end
+
 	local options = {
 		maxFrameCount = settings.Limit,
 		sortMethod = GetAuraSortMode(settings).method,
@@ -610,22 +579,7 @@ local function InitContainerState(state, settings, unit)
 		initializeFrame = function(button)
 			ConfigureButton(state, button, state.settings, state.unit)
 		end,
-		candidateFilters = {
-			isFromPlayerOrPlayerPet = false,
-			maxDuration = DBM.Options.AurasMaxDuration,
-			excludeSpellIDs = {
-				[57723] = true,--Exhaustion
-				[80354] = true,--Temporal Displacement
-				[57724] = true,--Sated
-				[390435] = true,--Exhaustion
-				[264689] = true,--Fatigued
-				[160455] = true,--Fatigued
-				[95809] = true,--Insanity
-				[124255] = true,--Stagger
-				[71041] = true,--Dungeon Deserter
-				[206151] = true,--Challenger's Burden
-			}
-		},
+		candidateFilters = candidateFilters,
 		layout = {
 			elementWidth = settings.Width,
 			elementHeight = settings.Height,
@@ -720,7 +674,7 @@ local function UpdatePreviewFrame(frame, settings, texture, name)
 	frame.Textures = frame.Textures or {}
 	frame.BorderTextures = frame.BorderTextures or {}
 	frame.Symbols = frame.Symbols or {}
-	frame.DurationTexts = frame.DurationTexts or {}
+	frame.Cooldowns = frame.Cooldowns or {}
 	frame.StackTexts = frame.StackTexts or {}
 	frame:ClearAllPoints()
 	frame:SetPoint(settings.Anchor, UIParent, settings.relativeTo, settings.xOffset, settings.yOffset)
@@ -752,7 +706,7 @@ local function UpdatePreviewFrame(frame, settings, texture, name)
 			if frame.Symbols[i] then
 				frame.Symbols[i]:Hide()
 			end
-			if frame.DurationTexts[i] then frame.DurationTexts[i]:Hide() end
+			if frame.Cooldowns[i] then frame.Cooldowns[i]:Hide() end
 			if frame.StackTexts[i] then frame.StackTexts[i]:Hide() end
 		end
 	end
@@ -983,7 +937,7 @@ function AuraTracking:PreviewToggle()
 				self.PlayerPreview.Textures = {}
 				self.PlayerPreview.BorderTextures = {}
 				self.PlayerPreview.Symbols = {}
-				self.PlayerPreview.DurationTexts = {}
+				self.PlayerPreview.Cooldowns = {}
 				self.PlayerPreview.StackTexts = {}
 				self.PlayerPreview.Border = CreateFrame("Frame", nil, self.PlayerPreview, "BackdropTemplate")
 				self.PlayerPreview.Border:SetPoint("TOPLEFT", self.PlayerPreview, "TOPLEFT", -6, 6)
@@ -1015,7 +969,7 @@ function AuraTracking:PreviewToggle()
 				self.CoTankPreview.Textures = {}
 				self.CoTankPreview.BorderTextures = {}
 				self.CoTankPreview.Symbols = {}
-				self.CoTankPreview.DurationTexts = {}
+				self.CoTankPreview.Cooldowns = {}
 				self.CoTankPreview.StackTexts = {}
 				self.CoTankPreview.Border = CreateFrame("Frame", nil, self.CoTankPreview, "BackdropTemplate")
 				self.CoTankPreview.Border:SetPoint("TOPLEFT", self.CoTankPreview, "TOPLEFT", -6, 6)
@@ -1044,7 +998,7 @@ function AuraTracking:PreviewToggle()
 					self.CoTankPreview2.Textures = {}
 					self.CoTankPreview2.BorderTextures = {}
 					self.CoTankPreview2.Symbols = {}
-					self.CoTankPreview2.DurationTexts = {}
+					self.CoTankPreview2.Cooldowns = {}
 					self.CoTankPreview2.StackTexts = {}
 				end
 				UpdatePreviewFrame(self.CoTankPreview2, CoTankSettings2, 236318, "Co-Tank 2")

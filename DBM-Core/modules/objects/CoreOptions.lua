@@ -404,6 +404,8 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerStackYOffset = 1,
 	PrivateAurasPlayerShowStacks = true,
 	PrivateAurasPlayerShowDispelBorder = true,
+	PrivateAurasShowCooldownSwipe = true,
+	PrivateAurasBossOrRoleAurasOnly = false,
 	PrivateAurasPlayerAnchor = "CENTER",--NYI
 	PrivateAurasPlayerRelativeTo = "CENTER",--NYI
 	PrivateAurasPlayerXOffset = 185,--Partial (drag and drop only, no UI slider/editbox)
@@ -557,6 +559,9 @@ function DBM:RepositionFrames()
 	-- rearrange position
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
+	if private.isRetail then
+		self:UpdateZoneAuraAnchors(1)
+	end
 	self.Arrow:LoadPosition()
 	local rangeCheck = _G["DBMRangeCheck"]
 	if rangeCheck then
@@ -779,6 +784,11 @@ function DBM:LoadModOptions(modId, inCombat, first)
 end
 
 function DBM:SpecChanged(force)
+	-- Co-tank aura visibility in Auto mode depends on the live player specialization.
+	-- Refresh it even when dual profiles are disabled; combat-restricted updates defer to PLAYER_REGEN_ENABLED.
+	if private.isRetail then
+		self:UpdateZoneAuraAnchors(2)
+	end
 	if not force and not DBM_UseDualProfile then return end
 	--Load Options again.
 	self:Debug("SpecChanged fired", 2)
