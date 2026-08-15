@@ -289,7 +289,13 @@ end
 
 function bossModPrototype:IsLFR()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "lfr" or diff == "lfr25"
+	return diff == "lfr" or diff == "lfr25" or diff == "worldlair"
+end
+
+--Instanced replacement for world obss difficulty
+function bossModPrototype:IsWorldLair()
+	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
+	return diff == "worldlair"
 end
 
 ---Dungeons: follower, normal. (Raids excluded)
@@ -307,7 +313,7 @@ end
 ---Dungeons: follower, normal, heroic. Raids: LFR, normal (rescope this to exclude heroic now that heroic5 is the new mythic 0?)
 function bossModPrototype:IsEasy()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5" or diff == "follower" or diff == "quest" or diff == "lorewalking"
+	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5" or diff == "follower" or diff == "quest" or diff == "lorewalking" or diff == "worldlair"
 end
 
 ---Dungeons: mythic, mythic+. Raids: heroic, mythic
