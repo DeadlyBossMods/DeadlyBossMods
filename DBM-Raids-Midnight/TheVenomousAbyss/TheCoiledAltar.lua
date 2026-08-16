@@ -53,6 +53,9 @@ local timerToxicDelugeCD				= mod:NewCDCountTimer(20.5, 1299960, nil, nil, nil, 
 local timerBlightedSeveringCD			= mod:NewCDCountTimer(20.5, 1287227, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
+--Evidenced by https://www.warcraftlogs.com/reports/fgGFk1zvxV8QAwmW?fight=31&type=auras&spells=debuffs
+--and
+--https://www.warcraftlogs.com/reports/MyHmVwLj8ncbpxvW?fight=41&type=auras&spells=debuffs
 --Some debuffs might be missing. no public logs achieved stage 3
 mod:AddAuraSoundOption(1283485, true, 1283485, 1, 1, "gathershare", 2, 0)--Target of Guillotine
 mod:AddAuraSoundOption(1307425, true, 1283485, 1, 3, "debuffyou", 17, 0)--Soaked Guilotine
