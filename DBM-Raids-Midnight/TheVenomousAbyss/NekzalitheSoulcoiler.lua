@@ -10,7 +10,7 @@ mod:SetZone(3004)
 
 mod:RegisterCombat("combat")
 
---TODO, peresonal essence Rend alert if it has ENCOUNTER_WARNING, else auras api if there is one by 12.1 launch.
+--TODO, peresonal essence Rend alert if it has ENCOUNTER_WARNING, else auras api if that aura is public
 --TODO, Entwined step might be redundant, Invoke is parent ability and has own script/ID, mod has both for now since need to see which blizz links to timer
 --TODO, https://www.wowhead.com/ptr/spell=1289923/call-of-devotion has an ID of 694 but doesn't exist in journal
 --TODO, https://www.wowhead.com/ptr/spell=1290679/vengeful-hiss has an ID of 696 but doesn't exist in journal
@@ -39,7 +39,15 @@ local timerHungeringPyreCD				= mod:NewCDCountTimer(20.5, 1290679, nil, nil, nil
 local timerResidualTollCD				= mod:NewCDCountTimer(20.5, 1298698, nil, nil, nil, 2)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
-mod:AddAuraSoundOption(1287427, true, 1287426, 1, 1, "lineyou", 17)--Essence Rend (iffy, not combat logged, so would aura sound even work?)
+--Validation https://www.warcraftlogs.com/reports/MyHmVwLj8ncbpxvW?fight=10&type=auras&spells=debuffs
+mod:AddAuraSoundOption(1287427, true, 1287426, 1, 1, "lineyou", 17, 0)--Essence Rend (iffy, not combat logged, so would aura sound even work?)
+mod:AddAuraSoundOption(1287434, true, 1287426, 1, 3, "debuffyou", 17, 0)--Essence Rend after affect
+mod:AddAuraSoundOption(1297624, false, 1299673, 1, 3, "stackhigh", 6, 1)--Ritual Burn
+mod:AddAuraSoundOption(1300235, true, 1293212, 1, 3, "debuffyou", 17, 0)--Soul Exhaustion
+mod:AddAuraSoundOption({1300524, 1300521}, true, 1293212, 1, 3, "teleyou", 5, 0)--Immortal Coil (pulled into soulcoil well)
+mod:AddAuraSoundOption(1306666, true, 1290679, 1, 1, "gathershare", 2, 0)--Hungering Pyre
+mod:AddAuraSoundOption(1294933, true, 1290679, 1, 3, "dotyou", 19, 0)--Slithering Flame
+--mod:AddAuraSoundOption(1284103, true, 1284103, 4, 1, "justrun", 2, 0)--Possession Barrage (threat check used for now)
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local pendingResidualToll22 = false--Disambiguates 22s in P2 using preceding 3s observed in PTR logs

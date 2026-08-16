@@ -333,6 +333,7 @@ local VPSound = {
 	["silenceyou"] = 19,--Neuro Done
 	["slagelementalcoming"] = 12,
 	["slamincoming"] = 19,
+	["slowyou"] = 20,--Neuro Done
 	["soakbeam"] = 17,
 	["soakincoming"] = 19,--Neuro Done
 	["soulcleave"] = 12,
