@@ -283,6 +283,15 @@ end
 
 function PanelPrototype:CreateSlider(text, low, high, step, width, value, callbackFn)
 	value = value or 0
+	local function NormalizeSliderValue(newValue)
+		newValue = tonumber(newValue) or low
+		if step and step > 0 and step == mfloor(step) then
+			newValue = mfloor((newValue - low) / step + 0.5) * step + low
+		end
+		return mmin(mmax(newValue, low), high)
+	end
+
+	value = NormalizeSliderValue(value)
 
 	local function UpdateSliderText(self)
 		self.editbox:SetText(mfloor((self.value or 0) * 100 + 0.5) / 100)
@@ -312,10 +321,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width, value, callba
 			return
 		end
 
-		if step and step > 0 then
-			newValue = mfloor((newValue - low) / step + 0.5) * step + low
-		end
-		newValue = mmin(mmax(newValue, low), high)
+		newValue = NormalizeSliderValue(newValue)
 		if newValue ~= self.value then
 			self.value = newValue
 			self:SetValue(newValue)
