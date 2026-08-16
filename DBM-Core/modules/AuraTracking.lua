@@ -127,6 +127,20 @@ local AuraTrackingPreviewDurations = {
 local auraAnchorsRegistered = false
 local auraTextFontResetNotified = false
 
+---@param prefix string
+---@return integer
+local function GetAuraFrameLimit(prefix)
+	local optionKey = prefix .. "Limit"
+	local defaultLimit = DBM.DefaultOptions[optionKey] or 5
+	local limit = tonumber(DBM.Options[optionKey]) or defaultLimit
+	if limit ~= limit then -- NaN
+		limit = defaultLimit
+	end
+	limit = math.min(math.max(math.floor(limit + 0.5), 1), 10)
+	DBM.Options[optionKey] = limit
+	return limit
+end
+
 ---@param prefix string The prefix for the option keys (e.g., "PrivateAurasPlayer")
 ---@return DBMAuraSettings Settings table with all configuration properties
 local function GetAuraSettings(prefix)
@@ -136,7 +150,7 @@ local function GetAuraSettings(prefix)
 		HideBorder = DBM.Options[prefix .. "HideBorder"],
 		HideTooltip = DBM.Options[prefix .. "HideTooltip"],
 		Spacing = DBM.Options[prefix .. "Spacing2"],
-		Limit = DBM.Options[prefix .. "Limit"],
+		Limit = GetAuraFrameLimit(prefix),
 		GrowDirection = DBM.Options[prefix .. "GrowDirection"],
 		SortMode = DBM.Options[prefix .. "SortMode"] or DBM.DefaultOptions[prefix .. "SortMode"],
 		enabled = DBM.Options[prefix .. "Enabled2"],
