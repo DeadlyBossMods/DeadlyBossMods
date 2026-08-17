@@ -21,7 +21,7 @@ local specWarnStoneBreaker				= mod:NewSpecialWarningSoakCount(1288484, nil, nil
 local specWarnSurge						= mod:NewSpecialWarningDodgeCount(1294293, nil, nil, nil, 1, 15, nil, nil, "frontal")
 local specWarnFlood						= mod:NewSpecialWarningDodgeCount(1294921, nil, nil, nil, 1, 19, nil, nil, "beamincoming")--Likely unused
 local specWarnStirtheDepths				= mod:NewSpecialWarningCount(1290956, nil, nil, nil, 1, 2, nil, nil, "watchwave")--Likely flood's replacement
-local specWarnCoilingToxin				= mod:NewSpecialWarningDodgeCount(1290809, nil, nil, nil, 2, 2, nil, nil, "watchstep")
+local specWarnCoilingIchor				= mod:NewSpecialWarningDodgeCount(1290809, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnBeckonProgeny				= mod:NewSpecialWarningCount(1291404, "-Healer", nil, nil, 1, 2, nil, nil, "mobsoon")
 local specWarnRavenousFeast				= mod:NewSpecialWarningSoakCount(1290516, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
 local specWarnBloodTorrent				= mod:NewSpecialWarningCount(1303230, nil, nil, nil, 1, 2, 4, nil, "bigmob")--Mythic Only
@@ -34,13 +34,24 @@ local timerStoneBreakerCD				= mod:NewCDCountTimer(20.5, 1288484, nil, nil, nil,
 local timerSurgeCD						= mod:NewCDCountTimer(20.5, 1294293, nil, nil, nil, 3)
 local timerFloodCD						= mod:NewCDCountTimer(20.5, 1294921, nil, nil, nil, 3)--Likely unused
 local timerStirtheDepthsCD				= mod:NewCDCountTimer(20.5, 1290956, nil, nil, nil, 3)--Likely flood's replacement
-local timerCoilingToxinCD				= mod:NewCDCountTimer(20.5, 1290809, nil, nil, nil, 3)
+local timerCoilingIchorCD				= mod:NewCDCountTimer(20.5, 1290809, nil, nil, nil, 3)
 local timerBeckonProgenyCD				= mod:NewCDCountTimer(20.5, 1291404, nil, nil, nil, 1)
 local timerRavenousFeastCD				= mod:NewCDCountTimer(20.5, 1290516, nil, nil, nil, 2)
 local timerBloodTorrentCD				= mod:NewCDCountTimer(20.5, 1303230, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
 local timerBarrageCD					= mod:NewCDCountTimer(20.5, 1306872, nil, nil, nil, 3)
 local timerRousetheBroodCD				= mod:NewCDCountTimer(20.5, 1308356, nil, nil, nil, 1, nil, DBM_COMMON_L.MYTHIC_ICON)--Mythic Only
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
+
+--Evidence https://www.warcraftlogs.com/reports/8yDbgRFz9NnQktTx?fight=35&type=auras&spells=debuffs
+mod:AddAuraSoundOption(1310102, true, 1290516, 1, 3, "absorbyou", 19, 0)--Tainted Blood
+mod:AddAuraSoundOption(1310096, false, 1290516, 1, 3, "debuffyou", 2, 0)--Feasted
+mod:AddAuraSoundOption(1290814, true, 1290809, 1, 1, "poolyou", 18, 0)--Coiling Ichor
+mod:AddAuraSoundOption(1292552, true, 1290809, 1, 2, "watchfeet", 8, 0)--Congealed Gore
+--mod:AddAuraSoundOption(1293979, true, 1291478, 1, 1, "lineyou", 17, 0)--Corrosive Spit (use if BlizzYou doesn't work right)
+--mod:AddAuraSoundOption(1289192, true, 1289192, 1, 1, "defensive", 2, 0)--Caustic Deluge (use if BlizzYou doesn't work right)
+mod:AddAuraSoundOption(1303230, true, 1303230, 1, 1, "targetyou", 2, 0)--Blood Torrent (terrible sound, i need more context to create better one)
+mod:AddAuraSoundOption(1309471, true, 1308556, 1, 2, "watchfeet", 8, 0)--Noxious Slick
+mod:AddAuraSoundOption(1294605, true, 1294921, 1, 2, "watchfeet", 8, 0)--Vile Flood
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local next68Event = "caustic"
@@ -55,7 +66,7 @@ mod.vb.StoneBreakerCount = 0
 mod.vb.SurgeCount = 0
 mod.vb.FloodCount = 0
 mod.vb.StirtheDepthsCount = 0
-mod.vb.CoilingToxinCount = 0
+mod.vb.CoilingIchorCount = 0
 mod.vb.BeckonProgenyCount = 0
 mod.vb.RavenousFeastCount = 0
 mod.vb.BloodTorrentCount = 0
@@ -74,7 +85,7 @@ local function setFallback(self, dontSetAlerts)
 		specWarnSurge:SetAlert(740, "frontal", 15, 2)
 		specWarnFlood:SetAlert(741, "beamincoming", 19, 2)
 		specWarnStirtheDepths:SetAlert(742, "watchwave", 2, 2)
-		specWarnCoilingToxin:SetAlert(743, "watchstep", 2, 2)
+		specWarnCoilingIchor:SetAlert(743, "watchstep", 2, 2)
 		specWarnBeckonProgeny:SetAlert(744, "mobsoon", 2, 2)
 		specWarnRavenousFeast:SetAlert(751, "helpsoak", 2, 2)
 		specWarnBloodTorrent:SetAlert(896, "bigmob", 2, 2)
@@ -90,7 +101,7 @@ local function setFallback(self, dontSetAlerts)
 	timerSurgeCD:SetTimeline(740, onlyColor)
 	timerFloodCD:SetTimeline(741, onlyColor)
 	timerStirtheDepthsCD:SetTimeline(742, onlyColor)
-	timerCoilingToxinCD:SetTimeline(743, onlyColor)
+	timerCoilingIchorCD:SetTimeline(743, onlyColor)
 	timerBeckonProgenyCD:SetTimeline(744, onlyColor)
 	timerRavenousFeastCD:SetTimeline(751, onlyColor)
 	timerBloodTorrentCD:SetTimeline(896, onlyColor)
@@ -111,7 +122,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.SurgeCount = 1
 	self.vb.FloodCount = 1
 	self.vb.StirtheDepthsCount = 1
-	self.vb.CoilingToxinCount = 1
+	self.vb.CoilingIchorCount = 1
 	self.vb.BeckonProgenyCount = 1
 	self.vb.RavenousFeastCount = 1
 	self.vb.BloodTorrentCount = 1
@@ -161,7 +172,7 @@ do
 			timerBeckonProgenyCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "beckon", "BeckonProgenyCount"))
 		elseif timer == 44 then
 			handled = true
-			timerCoilingToxinCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingToxinCount"))
+			timerCoilingIchorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingIchorCount"))
 		elseif timer == 52 then
 			handled = true
 			timerStirtheDepthsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "stir", "StirtheDepthsCount"))
@@ -180,7 +191,7 @@ do
 				timerBeckonProgenyCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "beckon", "BeckonProgenyCount"))
 				next68Event = "coiling"
 			elseif next68Event == "coiling" then
-				timerCoilingToxinCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingToxinCount"))
+				timerCoilingIchorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingIchorCount"))
 				next68Event = "stir"
 			elseif next68Event == "stir" then
 				timerStirtheDepthsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "stir", "StirtheDepthsCount"))
@@ -238,7 +249,7 @@ do
 			end
 		elseif timer == 40 then
 			handled = true
-			timerCoilingToxinCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingToxinCount"))
+			timerCoilingIchorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingIchorCount"))
 		elseif timer == 47 then
 			handled = true
 			timerStirtheDepthsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "stir", "StirtheDepthsCount"))
@@ -263,7 +274,7 @@ do
 				timerRousetheBroodCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rouse", "RousetheBroodCount"))
 				nextMythic61Event = "coiling"
 			elseif nextMythic61Event == "coiling" then
-				timerCoilingToxinCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingToxinCount"))
+				timerCoilingIchorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "coiling", "CoilingIchorCount"))
 				nextMythic61Event = "stir"
 			elseif nextMythic61Event == "stir" then
 				timerStirtheDepthsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "stir", "StirtheDepthsCount"))
@@ -327,8 +338,8 @@ do
 				specWarnStirtheDepths:Show(eventCount)
 				specWarnStirtheDepths:Play("watchwave")
 			elseif eventType == "coiling" then
-				specWarnCoilingToxin:Show(eventCount)
-				specWarnCoilingToxin:Play("watchstep")
+				specWarnCoilingIchor:Show(eventCount)
+				specWarnCoilingIchor:Play("watchstep")
 			elseif eventType == "beckon" then
 				specWarnBeckonProgeny:Show(eventCount)
 				specWarnBeckonProgeny:Play("mobsoon")

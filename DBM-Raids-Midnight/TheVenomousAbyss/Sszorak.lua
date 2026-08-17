@@ -30,10 +30,10 @@ local timerBerserkCD					= mod:NewBerserkTimer(600)
 mod:AddAuraSoundOption(1277051, false, 1285430, 1, 3, "debuffyou", 17, 0)--Infected Gash from soaking
 mod:AddAuraSoundOption(1287083, true, 1285430, 1, 3, "slowyou", 20, 0)--Tempest
 mod:AddAuraSoundOption(1305963, true, 1305959, 1, 1, "runout", 2, 0)--Venomous Surge
-mod:AddAuraSoundOption(1285425, true, 1285425, 1, 1, "north", 2, 0)--Raging Crosswinds North (TODO, right now it announces knock direction, should it instead announce moveto direction?)
-mod:AddAuraSoundOption(1285453, true, 1285425, 1, 1, "south", 2, 0)--Raging Crosswinds South ^
-mod:AddAuraSoundOption(1297111, true, 1285425, 1, 1, "west", 2, 0)--Raging Crosswinds West ^
-mod:AddAuraSoundOption(1297096, true, 1285425, 1, 1, "east", 2, 0)--Raging Crosswinds East ^
+mod:AddAuraSoundOption(1285425, true, 1285425, 1, 1, "south", 2, 0)--Raging Crosswinds knocks North (Right now it announces where to go, NOT knock direction)
+mod:AddAuraSoundOption(1285453, true, 1285425, 1, 1, "north", 2, 0)--Raging Crosswinds knocks South ^
+mod:AddAuraSoundOption(1297111, true, 1285425, 1, 1, "east", 2, 0)--Raging Crosswinds knocks West ^
+mod:AddAuraSoundOption(1297096, true, 1285425, 1, 1, "west", 2, 0)--Raging Crosswinds knocks East ^
 mod:AddAuraSoundOption(1296667, true, 1305959, 1, 2, "watchfeet", 8, 0)--Caustic Residue
 mod:AddAuraSoundOption(1297707, true, 1305959, 1, 2, "watchstep", 8, 0)--Caustic Claws
 mod:AddAuraSoundOption(1305621, true, 1305621, 1, 1, "targetyou", 2, 0)--Serpent's Fury
