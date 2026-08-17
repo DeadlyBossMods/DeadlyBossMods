@@ -112,6 +112,7 @@ local VPSound = {
 	["droptorch"] = 18,
 	["dshigh"] = 0,
 	["east"] = 0,
+	["eggyou"] = 20,--Neuro Done
 	["end"] = 0,
 	["energyhigh"] = 0,
 	["enfeeblingroar"] = 12,
