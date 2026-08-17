@@ -10,9 +10,11 @@ mod:SetZone(3004)
 
 mod:RegisterCombat("combat")
 
---TODO, find way to improve personal alerts, might not be able to detect which choice player did to disabiguate WHICH BlizzYou warning to schedule
+--NOTE, adaptive infection is handled entirely by auras since it's cleanest way to disambiguate which infection was applied. Sucks for hearing impaired though since this means 0 text alerts
 --TODO, https://www.wowhead.com/ptr/spell=1280881/toxic-outpouring and https://www.wowhead.com/ptr/spell=1280871/toxic-outpouring exists with ID of 758/769 but isn't in journal
 --TODO, https://www.wowhead.com/ptr/spell=1296335/desquamating-venom exists with ID of 766 but isn't in journal
+--TODO, verify https://www.wowhead.com/ptr/spell=1291461/virulent-fumes . it does a lot of GTFO damage over course of fight yet has no mention in journal?
+--TODO, maybe use https://www.wowhead.com/ptr/spell=1281910/plague-froth instead to pre warn Plague Froth?
 DBM:RegisterAltSpellName(1281907, DBM_COMMON_L.DEBUFFS)--Plague Froth --> Debuffs
 local warnAdaptiveInfection				= mod:NewCountAnnounce(1282114, 2)--Hardcode only
 --local warnToxicOutpouring				= mod:NewCountAnnounce(1280881, 2)--Hardcode only, likely not used
@@ -21,9 +23,9 @@ local warnImbibeToxin					= mod:NewCountAnnounce(1283164, 2)--Hardcode only
 local specWarnDrippingFangs				= mod:NewSpecialWarningCount(1280935, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnMalignantCatalyst			= mod:NewSpecialWarningSoakCount(1282509, nil, nil, nil, 2, 2, 3, nil, "helpsoak")
 local specWarnPlagueFroth				= mod:NewSpecialWarningBlizzYou(1281907, nil, nil, nil, 2, 2, nil, nil, "runout")
-local specWarnStygianInfection			= mod:NewSpecialWarningCount(1294994, nil, nil, nil, 2, 2, nil, nil, "watchstep")--Sub ability to Adaptive Infection
-local specWarnSiphoningInfection		= mod:NewSpecialWarningBlizzYou(1295224, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Sub ability to Adaptive Infection
-local specWarnExplodingInfection		= mod:NewSpecialWarningBlizzYou(1295173, nil, nil, nil, 2, 2, nil, nil, "runout")--Sub ability to Adaptive Infection
+--local specWarnStygianInfection		= mod:NewSpecialWarningCount(1294994, nil, nil, nil, 2, 2, nil, nil, "watchstep")--Sub ability to Adaptive Infection
+--local specWarnSiphoningInfection		= mod:NewSpecialWarningCount(1295224, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Sub ability to Adaptive Infection
+--local specWarnExplodingInfection		= mod:NewSpecialWarningCount(1295173, nil, nil, nil, 2, 2, nil, nil, "runout")--Sub ability to Adaptive Infection
 local specWarnStygianBurst				= mod:NewSpecialWarningCount(1302489, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 
 local timerDrippingFangsCD				= mod:NewCDCountTimer(20.5, 1280935, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
@@ -35,6 +37,14 @@ local timerImbibeToxinCD				= mod:NewCDCountTimer(20.5, 1283164, nil, nil, nil, 
 --local timerDesquamatingVenomCD			= mod:NewCDCountTimer(20.5, 1296335, nil, nil, nil, 3)--likely not used
 local timerStygianBurstCD				= mod:NewCDCountTimer(20.5, 1302489, nil, nil, nil, 3)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
+
+--Evidence https://www.warcraftlogs.com/reports/MyHmVwLj8ncbpxvW?fight=23&type=auras&spells=debuffs
+mod:AddAuraSoundOption(1291461, true, 1291461, 1, 2, "watchfeet", 8, 0)--Virulent Fumes
+--mod:AddAuraSoundOption(1281913, true, 1281907, 1, 1, "runout", 2, 0)--Plague Froth (uncomment if BlizzYou doesn't work)
+mod:AddAuraSoundOption(1295173, true, 1282114, 1, 1, "runout", 2, 0)--Exploding Infection
+mod:AddAuraSoundOption(1295224, true, 1282114, 1, 1, "gathershare", 2, 0)--Siphoning Infection (maybe clearer audio depending on common strat of heal it off or lifesteal it off
+mod:AddAuraSoundOption(1294994, true, 1282114, 1, 1, "absorbyou", 19, 0)--Stygian Infection
+mod:AddAuraSoundOption(1295380, false, 1282114, 1, 3, "debuffyou", 17, 0)--Siphoning Infection (taking damage to heal main taget)
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local next30Event = "dripping"
@@ -58,9 +68,9 @@ local function setFallback(self, dontSetAlerts)
 		end
 		specWarnMalignantCatalyst:SetAlert(756, self:IsHard() and "helpsoak" or "aesoon", 2, 2)
 		specWarnPlagueFroth:SetAlert(757, "runout", 2, 2, 0)
-		specWarnStygianInfection:SetAlert({770, 774}, "watchstep", 2, 2, 0)
-		specWarnSiphoningInfection:SetAlert(771, "gathershare", 2, 2, 0)
-		specWarnExplodingInfection:SetAlert({772, 773}, "runout", 2, 2, 0)
+		--specWarnStygianInfection:SetAlert({770, 774}, "watchstep", 2, 2, 0)
+		--specWarnSiphoningInfection:SetAlert(771, "gathershare", 2, 2, 0)
+		--specWarnExplodingInfection:SetAlert({772, 773}, "runout", 2, 2, 0)
 		specWarnStygianBurst:SetAlert(775, "watchstep", 2, 2)
 	end
 	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
@@ -98,9 +108,9 @@ function mod:OnLimitedCombatStart()
 		setFallback(self, true)
 		--These 3 still need to use blizz api for now even in hardcode, we can't disambiguate which on to schedule on phase change yet
 		--TODO, possibly just change these 3 to non hardcoded api
-		specWarnStygianInfection:SetAlert({770, 774}, "watchstep", 2, 2, 0)
-		specWarnSiphoningInfection:SetAlert(771, "gathershare", 2, 2, 0)
-		specWarnExplodingInfection:SetAlert({772, 773}, "runout", 2, 2, 0)
+		--specWarnStygianInfection:SetAlert({770, 774}, "watchstep", 2, 2, 0)
+		--specWarnSiphoningInfection:SetAlert(771, "gathershare", 2, 2, 0)
+		--specWarnExplodingInfection:SetAlert({772, 773}, "runout", 2, 2, 0)
 	else
 		setFallback(self)
 	end
