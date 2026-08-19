@@ -594,19 +594,29 @@ do
 		end
 
 		for _, icon in pairs(ChallengesFrame.DungeonIcons) do
-			local data = teleportMap[icon.mapID]
-			if data then
-				if not iconButtons[icon] then
-					iconButtons[icon] = CreateChallengeIconButton(icon, data[2])
-				elseif iconButtons[icon].spellID ~= data[2] then
-					iconButtons[icon]:SetAttribute('spell', data[2])
-					iconButtons[icon].spellID = data[2]
+			if not DBM.Options.AddChallengeTeleports then
+				if iconButtons[icon] then
+					iconButtons[icon]:Hide()
+					iconButtons[icon]:ClearAttributes()
+					iconButtons[icon].spellID = nil
 				end
-			elseif icon.mapID then
-				DBM:Debug("Missing keystone info for challengeMapID: " .. icon.mapID)
+			else
+				local data = teleportMap[icon.mapID]
+				if data then
+					if not iconButtons[icon] then
+						iconButtons[icon] = CreateChallengeIconButton(icon, data[2])
+					elseif iconButtons[icon].spellID ~= data[2] then
+						iconButtons[icon]:SetAttribute('spell', data[2])
+						iconButtons[icon].spellID = data[2]
+					end
+					iconButtons[icon]:Show()
+				elseif icon.mapID then
+					DBM:Debug("Missing keystone info for challengeMapID: " .. icon.mapID)
+				end
 			end
 		end
 	end
+	Keystones.RefreshChallengesUI = RefreshChallengesUI
 
 	function RegisterChallengesUI()
 		if initializedChallengesUI then

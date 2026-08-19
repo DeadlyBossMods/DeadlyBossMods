@@ -345,6 +345,7 @@ DBM.DefaultOptions = {
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowBrezFrame = false,
 	ShowKeystoneOnComplete = true,
+	AddChallengeTeleports = true,
 	OverrideKeystoneSlash = false,
 	BrezFont = "standardFont",
 	BrezFontSize = 18,
