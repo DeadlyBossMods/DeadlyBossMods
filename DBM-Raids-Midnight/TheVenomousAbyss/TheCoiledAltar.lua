@@ -79,6 +79,7 @@ mod:AddAuraSoundOption(1307652, true, 1299266, 1, 3, "debuffyou", 17, 0)--Soaked
 mod:AddAuraSoundOption(1307403, "Tank", 1287227, 1, 3, "debuffyou", 17, 0)--Hit by Blighted Severing
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local stage1FortyTwoCount = 0
 local stage1FortyThreeCount = 0
 local stage2ThirtyFourCount = 0
 local stage3FiftyNineCount = 0
@@ -145,6 +146,7 @@ end
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self:SetStage(1)
+	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
 	stage3FiftyNineCount = 0
@@ -165,7 +167,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.SpiritcackleCount = 1
 	self.vb.ToxicDelugeCount = 1
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsNormal()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -181,6 +183,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
 	stage3FiftyNineCount = 0
@@ -360,6 +363,66 @@ do
 		end
 	end
 
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersNormal(self, timer, timerExact, eventID)
+		local handled
+		local stage = self:GetStage()
+
+		if stage == 1 then
+			--Normal stage 1: CoiledAltarWipe (Normal/Week1)
+			if timer == 2 then--Toxic Deluge
+				handled = true
+				timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
+			elseif timer == 12 then--Axegrinder
+				handled = true
+				timerAxegrinderCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "axegrinder", "AxegrinderCount"))
+			elseif timer == 16 or timer == 17 or timer == 20 or timer == 21 then--Sever
+				handled = true
+				timerSeverCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sever", "SeverCount"))
+			elseif timer == 28 or timer == 35 then--Venomfang
+				handled = true
+				timerVenomfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venomfang", "VenomfangCount"))
+			elseif timer == 85 then--Fangs of the Coiled Altar
+				handled = true
+				timerFangsoftheCoiledAlterCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "crucible", "CrucibleCount"))
+			elseif timer == 42 then--Ambiguous: Guillotine OR Toxic Deluge
+				handled = true
+				stage1FortyTwoCount = stage1FortyTwoCount + 1
+				if stage1FortyTwoCount % 2 == 1 then
+					timerGuilotineCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "guilotine", "GuilotineCount"))
+				else
+					timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
+				end
+			end
+		elseif stage == 2 then
+			--Normal stage 2 opening: CoiledAltarWipe (Normal/Week1). Unknown timers intentionally fall back to Blizzard API.
+			if timer == 6 or timer == 34 then--Dreadmarch
+				handled = true
+				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
+			elseif timer == 20 or timer == 40 then--Gloombomb
+				handled = true
+				timerGloombombCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloombomb", "GloombombCount"))
+			elseif timer == 32 or timer == 33 then--Soul Sever
+				handled = true
+				timerSoulSeveringCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "soulsevering", "SeverCount"))
+			elseif timer == 70 then--Eternal Nightfall
+				handled = true
+				timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
+			end
+		end
+
+		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+		end
+	end
+
 	--Note, bar state changing and canceling is handled by core
 
 	function mod:CHAT_MSG_MONSTER_YELL()
@@ -383,18 +446,22 @@ do
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if not self:IsHeroic() then return end
+		if not self:IsHeroic() and not self:IsNormal() then return end
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			timersHeroic(self, timer, timerExact, eventID)
+			if self:IsHeroic() then
+				timersHeroic(self, timer, timerExact, eventID)
+			else
+				timersNormal(self, timer, timerExact, eventID)
+			end
 		end
 		lastTLEvent = GetTime()
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
-		if not self:IsHeroic() then return end
+		if not self:IsHeroic() and not self:IsNormal() then return end
 		lastTLEvent = GetTime()
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
