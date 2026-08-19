@@ -210,7 +210,7 @@ do
 				timerRavenousFeastCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenous", "RavenousFeastCount"))
 				next76Event = "caustic"
 			end
-		elseif timer == 163 then
+		elseif self:IsRoundedTimer(timerExact, 162.5, 3) then--Observed Normal variation: 162-163 seconds
 			handled = true
 			submergeEventIDs[eventID] = true
 			timerSubmergeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "submerge", "SubmergeCount"))
@@ -280,7 +280,7 @@ do
 				timerRavenousFeastCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenous", "RavenousFeastCount"))
 				next68Event = "caustic"
 			end
-		elseif timer == 144 then--Normal 162.5s Submerge scaled by Heroic's 8/9 timer pace
+		elseif self:IsRoundedTimer(timerExact, 144.444, 3) then--Normal 162.5s Submerge scaled by Heroic's 8/9 timer pace
 			handled = true
 			submergeEventIDs[eventID] = true
 			timerSubmergeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "submerge", "SubmergeCount"))
@@ -367,7 +367,7 @@ do
 				timerRavenousFeastCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenous", "RavenousFeastCount"))
 				nextMythic61Event = "caustic"
 			end
-		elseif timer == 130 then--Normal 162.5s Submerge scaled by Mythic's 4/5 timer pace
+		elseif self:IsRoundedTimer(timerExact, 130, 3) then--Normal 162.5s Submerge scaled by Mythic's 4/5 timer pace
 			handled = true
 			submergeEventIDs[eventID] = true
 			timerSubmergeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "submerge", "SubmergeCount"))
