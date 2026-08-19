@@ -47,7 +47,14 @@ mod:AddAuraSoundOption(1294994, true, 1282114, 1, 1, "absorbyou", 19, 0)--Stygia
 mod:AddAuraSoundOption(1295380, false, 1282114, 1, 3, "debuffyou", 17, 0)--Siphoning Infection (taking damage to heal main taget)
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
-local next30Event = "dripping"
+local nextDAEvent = "dripping"
+local batchTimerValues = {
+	--Vashnik resends the opening Imbibe, Plague Froth, and Dripping Fangs timeline batch.
+	[8] = true,
+	[13] = true,
+	[16] = true,
+	[80] = true,
+}
 
 mod.vb.DrippingFangsCount = 0
 mod.vb.AdaptiveInfectionCount = 0
@@ -88,7 +95,8 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
-	next30Event = "dripping"
+	self:TLBatchReset()
+	nextDAEvent = "dripping"
 	self.vb.DrippingFangsCount = 1
 	self.vb.AdaptiveInfectionCount = 1
 	self.vb.MalignantCatalystCount = 1
@@ -119,7 +127,8 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
-	next30Event = "dripping"
+	self:TLBatchReset()
+	nextDAEvent = "dripping"
 	self:UnregisterShortTermEvents()
 end
 
@@ -128,6 +137,39 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
+	local function timersNormal(self, timer, timerExact, eventID)
+		local handled
+		if timer == 8 then
+			handled = true
+			if nextDAEvent == "dripping" then
+				timerDrippingFangsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dripping", "DrippingFangsCount"))
+				nextDAEvent = "adaptive"
+			else
+				timerAdaptiveInfectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "adaptive", "AdaptiveInfectionCount"))
+			end
+		elseif timer == 2 or timer == 30 or timer == 33 then
+			handled = true
+			timerDrippingFangsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dripping", "DrippingFangsCount"))
+		elseif timer == 13 or timer == 10 or timer == 26 or timer == 36 then
+			handled = true
+			timerPlagueFrothCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "plague", "PlagueFrothCount"))
+		elseif timer == 20 or timer == 80 then
+			handled = true
+			timerImbibeToxinCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "imbibe", "ImbibeToxinCount"))
+		elseif timer == 32 then
+			handled = true
+			timerAdaptiveInfectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "adaptive", "AdaptiveInfectionCount"))
+		end
+
+		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+		end
+	end
+
 	local function timersHeroic(self, timer, timerExact, eventID)
 		--Confirmed same on heroic and mythic so far
 		local handled
@@ -148,12 +190,12 @@ do
 			timerAdaptiveInfectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "adaptive", "AdaptiveInfectionCount"))
 		elseif timer == 30 then
 			handled = true
-			if next30Event == "dripping" then
+			if nextDAEvent == "dripping" then
 				timerDrippingFangsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dripping", "DrippingFangsCount"))
-				next30Event = "adaptive"
+				nextDAEvent = "adaptive"
 			else
 				timerAdaptiveInfectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "adaptive", "AdaptiveInfectionCount"))
-				next30Event = "dripping"
+				nextDAEvent = "dripping"
 			end
 		end
 
@@ -173,14 +215,20 @@ do
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
+		if self:TLBatchTrackLatest(timer, eventID, batchTimerValues) == eventID then return end
 		if not badStateDetected then
-			timersHeroic(self, timer, timerExact, eventID)
+			if self:IsNormal() then
+				timersNormal(self, timer, timerExact, eventID)
+			else
+				timersHeroic(self, timer, timerExact, eventID)
+			end
 		end
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
+		self:TLBatchUntrack(eventID)
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if eventType and eventCount then
