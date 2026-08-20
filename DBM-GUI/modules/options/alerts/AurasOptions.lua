@@ -175,7 +175,7 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 	end)
 	personalAuraDurationFontSize:SetPoint("TOPLEFT", personalAuraSort, "TOPLEFT", 20, -50)
 
-	personalAuraDurationColor = personalAuraArea:CreateColorSelect(L.FontColor, function(_, r, g, b)
+	personalAuraDurationColor = personalAuraArea:CreateColorSelect(L.AuraDurationFontColor, function(_, r, g, b)
 		DBM.Options.PrivateAurasPlayerDurationColor.r = r
 		DBM.Options.PrivateAurasPlayerDurationColor.g = g
 		DBM.Options.PrivateAurasPlayerDurationColor.b = b
@@ -184,7 +184,8 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 		local color = DBM.DefaultOptions.PrivateAurasPlayerDurationColor
 		self:SetColorRGB(color.r, color.g, color.b, true)
 	end)
-	personalAuraDurationColor:SetPoint("TOPLEFT", personalAuraDurationFontSize, "TOPLEFT", 180, 0)
+	personalAuraDurationColor:SetPoint("TOPLEFT", personalAuraSort, "TOPRIGHT", 50, 15)
+	personalAuraDurationColor:SetWidth(150)
 	personalAuraDurationColor:SetColorRGB(DBM.Options.PrivateAurasPlayerDurationColor.r, DBM.Options.PrivateAurasPlayerDurationColor.g, DBM.Options.PrivateAurasPlayerDurationColor.b)
 	personalAuraDurationColor.myheight = 0
 
@@ -225,7 +226,7 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 	personalAuraShowDispelBorder:SetPoint("TOPLEFT", personalAuraShowStacks, "TOPLEFT", 200, 0)
 	personalAuraShowDispelBorder.myheight = 0
 
-	personalAuraStackColor = personalAuraArea:CreateColorSelect(L.FontColor, function(_, r, g, b)
+	personalAuraStackColor = personalAuraArea:CreateColorSelect(L.AuraStackFontColor, function(_, r, g, b)
 		DBM.Options.PrivateAurasPlayerStackColor.r = r
 		DBM.Options.PrivateAurasPlayerStackColor.g = g
 		DBM.Options.PrivateAurasPlayerStackColor.b = b
@@ -234,14 +235,15 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 		local color = DBM.DefaultOptions.PrivateAurasPlayerStackColor
 		self:SetColorRGB(color.r, color.g, color.b, true)
 	end)
-	personalAuraStackColor:SetPoint("TOPLEFT", personalAuraShowStacks, "TOPLEFT", 0, -45)
+	personalAuraStackColor:SetPoint("TOPLEFT", personalAuraShowStacks, "TOPLEFT", 0, -30)
+	personalAuraStackColor:SetWidth(150)
 	personalAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasPlayerStackColor.r, DBM.Options.PrivateAurasPlayerStackColor.g, DBM.Options.PrivateAurasPlayerStackColor.b)
 
 	personalAuraStackXOffset = personalAuraArea:CreateSlider(L.Slider_TextOffSetX, -20, 20, 1, 150, DBM.Options.PrivateAurasPlayerStackXOffset, function(value)
 		DBM.Options.PrivateAurasPlayerStackXOffset = value
 		OnAuraSettingsChange(true)
 	end)
-	personalAuraStackXOffset:SetPoint("TOPLEFT", personalAuraStackColor, "TOPLEFT", 130, 0)
+	personalAuraStackXOffset:SetPoint("TOPLEFT", personalAuraStackColor, "TOPLEFT", 150, -15)
 
 	personalAuraStackYOffset = personalAuraArea:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 150, DBM.Options.PrivateAurasPlayerStackYOffset, function(value)
 		DBM.Options.PrivateAurasPlayerStackYOffset = value
@@ -417,7 +419,7 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 	end)
 	coTankAuraDurationFontSize:SetPoint("TOPLEFT", coTankAuraSort, "TOPLEFT", 20, -50)
 
-	coTankAuraDurationColor = coTankAuraArea:CreateColorSelect(L.FontColor, function(_, r, g, b)
+	coTankAuraDurationColor = coTankAuraArea:CreateColorSelect(L.AuraDurationFontColor, function(_, r, g, b)
 		DBM.Options.PrivateAurasCoTankDurationColor.r = r
 		DBM.Options.PrivateAurasCoTankDurationColor.g = g
 		DBM.Options.PrivateAurasCoTankDurationColor.b = b
@@ -426,7 +428,8 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 		local color = DBM.DefaultOptions.PrivateAurasCoTankDurationColor
 		self:SetColorRGB(color.r, color.g, color.b, true)
 	end)
-	coTankAuraDurationColor:SetPoint("TOPLEFT", coTankAuraDurationFontSize, "TOPLEFT", 180, 0)
+	coTankAuraDurationColor:SetPoint("TOPLEFT", coTankAuraSort, "TOPRIGHT", 50, 15)
+	coTankAuraDurationColor:SetWidth(150)
 	coTankAuraDurationColor:SetColorRGB(DBM.Options.PrivateAurasCoTankDurationColor.r, DBM.Options.PrivateAurasCoTankDurationColor.g, DBM.Options.PrivateAurasCoTankDurationColor.b)
 	coTankAuraDurationColor.myheight = 0
 
@@ -467,7 +470,7 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 	coTankAuraShowDispelBorder:SetPoint("TOPLEFT", coTankAuraShowStacks, "TOPLEFT", 200, 0)
 	coTankAuraShowDispelBorder.myheight = 0
 
-	coTankAuraStackColor = coTankAuraArea:CreateColorSelect(L.FontColor, function(_, r, g, b)
+	coTankAuraStackColor = coTankAuraArea:CreateColorSelect(L.AuraStackFontColor, function(_, r, g, b)
 		DBM.Options.PrivateAurasCoTankStackColor.r = r
 		DBM.Options.PrivateAurasCoTankStackColor.g = g
 		DBM.Options.PrivateAurasCoTankStackColor.b = b
@@ -476,14 +479,15 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 		local color = DBM.DefaultOptions.PrivateAurasCoTankStackColor
 		self:SetColorRGB(color.r, color.g, color.b, true)
 	end)
-	coTankAuraStackColor:SetPoint("TOPLEFT", coTankAuraShowStacks, "TOPLEFT", 0, -45)
+	coTankAuraStackColor:SetPoint("TOPLEFT", coTankAuraShowStacks, "TOPLEFT", 0, -30)
+	coTankAuraStackColor:SetWidth(150)
 	coTankAuraStackColor:SetColorRGB(DBM.Options.PrivateAurasCoTankStackColor.r, DBM.Options.PrivateAurasCoTankStackColor.g, DBM.Options.PrivateAurasCoTankStackColor.b)
 
 	coTankAuraStackXOffset = coTankAuraArea:CreateSlider(L.Slider_TextOffSetX, -20, 20, 1, 150, DBM.Options.PrivateAurasCoTankStackXOffset, function(value)
 		DBM.Options.PrivateAurasCoTankStackXOffset = value
 		OnAuraSettingsChange(false)
 	end)
-	coTankAuraStackXOffset:SetPoint("TOPLEFT", coTankAuraStackColor, "TOPLEFT", 130, 0)
+	coTankAuraStackXOffset:SetPoint("TOPLEFT", coTankAuraStackColor, "TOPLEFT", 150, -15)
 
 	coTankAuraStackYOffset = coTankAuraArea:CreateSlider(L.Slider_TextOffSetY, -20, 20, 1, 150, DBM.Options.PrivateAurasCoTankStackYOffset, function(value)
 		DBM.Options.PrivateAurasCoTankStackYOffset = value
