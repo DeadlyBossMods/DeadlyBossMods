@@ -581,7 +581,7 @@ local function InitContainerState(state, settings, unit)
 	container:SetFlowLayoutMaximumLineSize(GetRowWidth(settings))
 
 	local candidateFilters = {
-		maxDuration = DBM.Options.AurasMaxDuration,
+--		maxDuration = DBM.Options.AurasMaxDuration,
 		excludeSpellIDs = {
 			[57723] = true,--Exhaustion
 			[80354] = true,--Temporal Displacement

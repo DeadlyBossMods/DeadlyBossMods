@@ -446,7 +446,7 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankUseHealerInFiveMan = true,
 	PrivateAurasCoTankSlot1Player = "",
 	PrivateAurasCoTankSlot2Player = "",
-	AurasMaxDuration = 120,
+--	AurasMaxDuration = 120,
 	AlwaysShowPlayerAuras = false,
 }
 

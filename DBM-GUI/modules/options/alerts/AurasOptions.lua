@@ -648,12 +648,12 @@ coTankNameYOffset = coTankAdvancedArea:CreateSlider(L.CoTankNameYOffset, -100, 1
 coTankNameYOffset:SetPoint("TOPLEFT", coTankNameFontSize, "TOPLEFT", 0, -50)
 coTankNameYOffset.myheight = 50
 
-local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 30, 600, 1, 150, DBM.Options.AurasMaxDuration, function(value)
-	DBM.Options.AurasMaxDuration = value
-	OnAuraSettingsChange()
-end)
-
-auraMaxDuration:SetPoint("TOPLEFT", coTankNameYOffset, "TOPRIGHT", 45, 0)
+--local auraMaxDuration = coTankAdvancedArea:CreateSlider(L.AuraMaxDuration, 30, 600, 1, 150, DBM.Options.AurasMaxDuration, function(value)
+--	DBM.Options.AurasMaxDuration = value
+--	OnAuraSettingsChange()
+--end)
+--
+--auraMaxDuration:SetPoint("TOPLEFT", coTankNameYOffset, "TOPRIGHT", 45, 0)
 
 
 local coTankSlot1Player = coTankAdvancedArea:CreateDropdown(L.CoTankSlot1Player, function()
@@ -703,14 +703,14 @@ coTankAdvancedReset:SetScript("OnClick", function()
 		DBM.Options.PrivateAurasCoTankNameYOffset = DBM.DefaultOptions.PrivateAurasCoTankNameYOffset
 		DBM.Options.PrivateAurasCoTankSlot1Player = DBM.DefaultOptions.PrivateAurasCoTankSlot1Player
 		DBM.Options.PrivateAurasCoTankSlot2Player = DBM.DefaultOptions.PrivateAurasCoTankSlot2Player
-		DBM.Options.AurasMaxDuration = DBM.DefaultOptions.AurasMaxDuration
+--		DBM.Options.AurasMaxDuration = DBM.DefaultOptions.AurasMaxDuration
 		DBM.Options.AlwaysShowPlayerAuras = DBM.DefaultOptions.AlwaysShowPlayerAuras
 		DBM.Options.PrivateAurasBossOrRoleAurasOnly = DBM.DefaultOptions.PrivateAurasBossOrRoleAurasOnly
 		DBM.Options.PrivateAurasShowCooldownSwipe = DBM.DefaultOptions.PrivateAurasShowCooldownSwipe
 		alwaysShowPlayerAuras:SetChecked(DBM.Options.AlwaysShowPlayerAuras)
 		bossOrRoleAurasOnly:SetChecked(DBM.Options.PrivateAurasBossOrRoleAurasOnly)
 		auraCooldownSwipe:SetChecked(DBM.Options.PrivateAurasShowCooldownSwipe)
-		auraMaxDuration:SetValue(DBM.Options.AurasMaxDuration)
+--		auraMaxDuration:SetValue(DBM.Options.AurasMaxDuration)
 		coTankUseHealerInFiveMan:SetChecked(DBM.Options.PrivateAurasCoTankUseHealerInFiveMan)
 		coTankShowName:SetChecked(DBM.Options.PrivateAurasCoTankShowName)
 		coTankNameFontSize:SetValue(DBM.Options.PrivateAurasCoTankNameFontSize)
