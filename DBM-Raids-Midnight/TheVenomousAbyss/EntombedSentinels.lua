@@ -56,6 +56,7 @@ local batchTimerValues = {
 	[4] = true,
 	[6] = true,
 	[8] = true,
+	[10] = true,
 	[12] = true,
 	[16] = true,
 	[40] = true,
@@ -117,7 +118,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.UnstableMiasmaCount = 1
 	self.vb.ShiftingProtovenomCount = 1
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsMythic()) and not badStateDetected then
+	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -162,6 +163,10 @@ do
 			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
 			timerBloodvenomInjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bloodvenominjection", "BloodvenomInjectionCount"))
 		elseif timer == 8 then
+			handled = true
+			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
+			timerVenomCoagulationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venomcoagulation", "VenomCoagulationCount"))
+		elseif timer == 10 then
 			handled = true
 			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
 			timerVenomCoagulationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venomcoagulation", "VenomCoagulationCount"))
@@ -233,7 +238,6 @@ do
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if not (self:IsHeroic() or self:IsMythic()) then return end
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)

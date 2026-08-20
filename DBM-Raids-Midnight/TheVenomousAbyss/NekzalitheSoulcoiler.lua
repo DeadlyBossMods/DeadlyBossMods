@@ -303,6 +303,7 @@ do
 			end
 		elseif stage == 2 then
 			--Stage 2: Restless Amani (20/30), Barrage/Amani alternate on 40, Possession Barrage (28), Essence Rend (50), Invoke (8/48), Hungering Pyre (11)
+			--Note: a 40s Possession Barrage state-2 arrived ~10s late in Normal NekzaliKill2, but completed on time in NekzaliKill; use Blizzard's raw duration without correction.
 			if timer == 40 then
 				normalStage2FortyCount = normalStage2FortyCount + 1
 				handled = true

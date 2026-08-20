@@ -41,7 +41,7 @@ mod:AddAuraSoundOption({1297707, 1299899}, true, 1305621, 1, 1, "scatter", 2, 0)
 --mod:AddAuraSoundOption(1299899, true, 1305621, 1, 1, "scatterright", 20, 0)--But I'll hold off on that for now cause they'll probably fix it if that's abused
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
-local next52Event = "apex"
+local nextVariableEvent = "apex"
 
 mod.vb.RagingCrosswindsCount = 0
 mod.vb.VenomousSurgeCount = 0
@@ -76,8 +76,8 @@ function mod:OnLimitedCombatStart()
 	self.vb.VenomousSurgeCount = 1
 	self.vb.ApexPedatorCount = 1
 	self.vb.HowlingMaelstromCount = 1
-	next52Event = "apex"
-	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+	nextVariableEvent = "apex"
+	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsNormal() or self:IsMythic()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -92,7 +92,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
-	next52Event = "apex"
+	nextVariableEvent = "apex"
 	self:UnregisterShortTermEvents()
 end
 
@@ -101,32 +101,32 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	local function timersHeroic(self, timer, timerExact, eventID)
+	local function timersAll(self, timer, timerExact, eventID)
 		local handled
-		--Logic confirmed against PTR Heroic SszorakKill
-		if timer == 111 then
+		--Normal and Heroic are confirmed by logs; Mythic tempo and sequence are extrapolated by 1, 8/9, and 4/5 rule evidenced by logs and fangs encounter
+		if timer == 125 or timer == 111 or timer == 100 then
 			handled = true
 			timerHowlingMaelstromCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maelstrom", "HowlingMaelstromCount"))
-		elseif timer == 6 then
+		elseif timer == 6 or timer == 5 then
 			handled = true
 			timerApexPedatorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "apex", "ApexPedatorCount"))
-		elseif timer == 43 then
+		elseif timer == 49 or timer == 43 or timer == 39 then
 			handled = true
 			timerRagingCrosswindsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "crosswinds", "RagingCrosswindsCount"))
-		elseif timer == 32 then
+		elseif timer == 36 or timer == 32 or timer == 29 then
 			handled = true
 			timerVenomousSurgeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venom", "VenomousSurgeCount"))
-		elseif timer == 52 then
+		elseif timer == 59 or timer == 52 or timer == 47 then
 			handled = true
-			if next52Event == "apex" then
+			if nextVariableEvent == "apex" then
 				timerApexPedatorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "apex", "ApexPedatorCount"))
-				next52Event = "venom"
-			elseif next52Event == "venom" then
+				nextVariableEvent = "venom"
+			elseif nextVariableEvent == "venom" then
 				timerVenomousSurgeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venom", "VenomousSurgeCount"))
-				next52Event = "crosswinds"
+				nextVariableEvent = "crosswinds"
 			else
 				timerRagingCrosswindsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "crosswinds", "RagingCrosswindsCount"))
-				next52Event = "apex"
+				nextVariableEvent = "apex"
 			end
 		end
 
@@ -146,7 +146,7 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			timersHeroic(self, timer, timerExact, eventID)
+			timersAll(self, timer, timerExact, eventID)
 		end
 	end
 

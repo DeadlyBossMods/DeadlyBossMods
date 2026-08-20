@@ -102,8 +102,16 @@ if DBM:IsRetail() then
 		end
 	end)
 
-	local area1c = DBM_GUI.CAT_TOOLS:CreateArea(L.Panel_ExtraFeatures)
+	local area1c = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_KeystoneArea)
 	area1c:CreateCheckButton(L.Tools_ShowKeystoneOnComplete, true, nil, "ShowKeystoneOnComplete")
+	local addChallengeTeleports = area1c:CreateCheckButton(L.Tools_AddChallengeTeleports or "Add teleports to Challenges UI", true, nil, "AddChallengeTeleports")
+	if addChallengeTeleports then
+		addChallengeTeleports:HookScript("OnClick", function()
+			if DBM.Keystones and DBM.Keystones.RefreshChallengesUI then
+				DBM.Keystones:RefreshChallengesUI()
+			end
+		end)
+	end
 	area1c:CreateCheckButton(L.Tools_OverrideKeystoneSlash, true, nil, "OverrideKeystoneSlash")
 end
 
