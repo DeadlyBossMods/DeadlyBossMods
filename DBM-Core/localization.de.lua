@@ -498,8 +498,8 @@ L.AUTO_TIMER_TEXTS.stagecontext			= "%s" -- OPTIONAL
 L.AUTO_TIMER_TEXTS.stagecontextcount	= "%s (%%s)" -- OPTIONAL
 L.AUTO_TIMER_TEXTS.intermission			= "Zwischenphase"
 L.AUTO_TIMER_TEXTS.intermissioncount	= "Zwischenphase %%s"
-L.AUTO_TIMER_TEXTS.adds					= "Nächste Adds"
-L.AUTO_TIMER_TEXTS.addscustom			= "Nächste Adds (%%s)"
+L.AUTO_TIMER_TEXTS.adds					= "Adds"
+L.AUTO_TIMER_TEXTS.addscustom			= "Adds (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay				= GUILD_INTEREST_RP or "Rollenspiel"--Used mid fight, pre fight, or even post fight. Boss does NOT auto engage upon completion
 L.AUTO_TIMER_TEXTS.combat				= "Kampfbeginn"
 --This basically clones np only bar option and display text from regular counterparts
