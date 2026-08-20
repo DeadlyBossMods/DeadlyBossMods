@@ -345,6 +345,7 @@ DBM.DefaultOptions = {
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowBrezFrame = false,
 	ShowKeystoneOnComplete = true,
+	AddChallengeTeleports = true,
 	OverrideKeystoneSlash = false,
 	BrezFont = "standardFont",
 	BrezFontSize = 18,
@@ -384,7 +385,7 @@ DBM.DefaultOptions = {
 	DisableSWSound = false,
 	--Aura Frame Options
 	--Player
-	PrivateAurasPlayerEnabled = true,
+	PrivateAurasPlayerEnabled2 = true,
 	PrivateAurasPlayerHideBorder = false,
 	PrivateAurasPlayerHideTooltip = false,
 	PrivateAurasPlayerSpacing2 = 1,
@@ -395,19 +396,23 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerHeight = 65,
 	PrivateAurasPlayerTextFont = "standardFont",
 	PrivateAurasPlayerTextFontStyle = "OUTLINE",
-	PrivateAurasPlayerDurationFontSize = 22,
+	PrivateAurasPlayerDurationFontSize = 32,
+	PrivateAurasPlayerShowDecimalSeconds = true,
+	PrivateAurasPlayerDecimalThreshold = 3,
 	PrivateAurasPlayerStackFontSize = 25,
 	PrivateAurasPlayerStackColor = {r = 1, g = 1, b = 1},
 	PrivateAurasPlayerStackXOffset = -1,
 	PrivateAurasPlayerStackYOffset = 1,
 	PrivateAurasPlayerShowStacks = true,
 	PrivateAurasPlayerShowDispelBorder = true,
+	PrivateAurasShowCooldownSwipe = true,
+	PrivateAurasBossOrRoleAurasOnly = false,
 	PrivateAurasPlayerAnchor = "CENTER",--NYI
 	PrivateAurasPlayerRelativeTo = "CENTER",--NYI
 	PrivateAurasPlayerXOffset = 185,--Partial (drag and drop only, no UI slider/editbox)
 	PrivateAurasPlayerYOffset = 154,--Partial (drag and drop only, no UI slider/editbox)
 	--Co-Tank
-	AurasCoTankEnabled = false,
+	PrivateAurasCoTankEnabled3 = "Auto",
 	PrivateAurasCoTankHideBorder = false,
 	PrivateAurasCoTankHideTooltip = false,
 	PrivateAurasCoTankSpacing2 = 1,
@@ -418,7 +423,9 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankHeight = 65,
 	PrivateAurasCoTankTextFont = "standardFont",
 	PrivateAurasCoTankTextFontStyle = "OUTLINE",
-	PrivateAurasCoTankDurationFontSize = 22,
+	PrivateAurasCoTankDurationFontSize = 32,
+	PrivateAurasCoTankShowDecimalSeconds = false,
+	PrivateAurasCoTankDecimalThreshold = 3,
 	PrivateAurasCoTankStackFontSize = 25,
 	PrivateAurasCoTankStackColor = {r = 1, g = 1, b = 1},
 	PrivateAurasCoTankStackXOffset = -1,
@@ -437,7 +444,7 @@ DBM.DefaultOptions = {
 	PrivateAurasCoTankUseHealerInFiveMan = true,
 	PrivateAurasCoTankSlot1Player = "",
 	PrivateAurasCoTankSlot2Player = "",
-	PrivateAurasMaxDuration = 60,
+	AurasMaxDuration = 120,
 	AlwaysShowPlayerAuras = false,
 }
 
@@ -553,6 +560,9 @@ function DBM:RepositionFrames()
 	-- rearrange position
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
+	if private.isRetail then
+		self:UpdateZoneAuraAnchors(1)
+	end
 	self.Arrow:LoadPosition()
 	local rangeCheck = _G["DBMRangeCheck"]
 	if rangeCheck then
@@ -775,6 +785,11 @@ function DBM:LoadModOptions(modId, inCombat, first)
 end
 
 function DBM:SpecChanged(force)
+	-- Co-tank aura visibility in Auto mode depends on the live player specialization.
+	-- Refresh it even when dual profiles are disabled; combat-restricted updates defer to PLAYER_REGEN_ENABLED.
+	if private.isRetail then
+		self:UpdateZoneAuraAnchors(2)
+	end
 	if not force and not DBM_UseDualProfile then return end
 	--Load Options again.
 	self:Debug("SpecChanged fired", 2)
@@ -1070,10 +1085,10 @@ do
 		DBM_UsedProfile = usedProfile
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
 		self:Enable()
-		local coTankDefault = self:GetRoleFlagValue("Tank")
-		self.DefaultOptions.AurasCoTankEnabled = coTankDefault
-		self.DefaultOptions.PrivateAurasCoTankShowSecond = coTankDefault
+		self:SetCurrentSpecInfo()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
+		-- Reset the old load-time role-derived setting so the new live Auto setting is used instead.
+		self.Options.PrivateAurasCoTankEnabled2 = nil
 		if not self.Options.GUIResizeMigrated_1000x700 then
 			if self.Options.GUIWidth == 800 and self.Options.GUIHeight == 600 then
 				self.Options.GUIWidth = 1000

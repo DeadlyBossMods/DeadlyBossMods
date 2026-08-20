@@ -50,6 +50,8 @@ local mt = {__index = bossModPrototype}
 ---@field soloChallenge boolean?
 ---@field disableHealthCombat boolean?
 ---@field isCustomMod boolean?
+---@field lastKillTime number? Timestamp of the most recent completed combat.
+---@field lastWipeTime number? Timestamp of the most recent wiped combat.
 ---@field sendMainBossGUID boolean? Used to force enable nameplate timers for main boss
 ---@field paSounds table<number, number[]>?
 ---@field pendingPASoundsByZone table<number, table<integer, table>>?
@@ -1214,6 +1216,7 @@ do
 	---Behavior:
 	--- - Optional filter via trackedTimers set (for example {[4]=true, [6]=true}).
 	--- - If an older event exists for this timer, calls TLCountCancel(oldEventID).
+	--- - If the active event is resent with the same eventID, returns that eventID without re-registering it.
 	--- - Marks eventID as latest for this timer and records reverse lookup for cleanup.
 	---
 	---Call this from ENCOUNTER_TIMELINE_EVENT_ADDED before TLStart/TLCountStart for buckets
@@ -1228,6 +1231,9 @@ do
 		end
 		local state = getTLBatchState(self)
 		local replacedEventID = state.latestByTimer[timer]
+		if replacedEventID == eventID then
+			return eventID
+		end
 		if replacedEventID and replacedEventID ~= eventID then
 			self:TLCountCancel(replacedEventID)
 			state.timerByEvent[replacedEventID] = nil

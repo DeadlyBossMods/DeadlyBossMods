@@ -11,8 +11,9 @@ mod:SetZone(3004)
 mod:RegisterCombat("combat")
 
 DBM:RegisterAltSpellName(1277025, DBM_COMMON_L.TANKCOMBO)--Apex Predator --> Tank Combo
+local warnVenomousSurge					= mod:NewCountAnnounce(1305959, 2)
+
 local specWarnRagingCrosswinds			= mod:NewSpecialWarningBlizzYou(1285425, nil, nil, nil, 1, 17, nil, nil, "debuffyou")
-local specWarnVenomousSurge				= mod:NewSpecialWarningDodgeCount(1305959, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnApexPedator				= mod:NewSpecialWarningCount(1285430, nil, nil, nil, 1, 19, nil, nil, "tankcombo")
 local specWarnHowlingMaelstrom			= mod:NewSpecialWarningCount(1285732, nil, nil, nil, 2, 13, nil, nil, "pushbackincoming")
 local specWarnCausticClaws				= mod:NewSpecialWarningCount(1285733, nil, nil, nil, 2, 2, nil, nil, "scatter")--Sub mechanic of Venomous Surge
@@ -23,8 +24,24 @@ local timerApexPedatorCD				= mod:NewCDCountTimer(20.5, 1285430, nil, nil, nil, 
 local timerHowlingMaelstromCD			= mod:NewCDCountTimer(20.5, 1285732, nil, nil, nil, 2, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
+--Evidenced by https://www.warcraftlogs.com/reports/nFX9MYTV26tpmCrk?fight=16&type=auras&spells=debuffs
+--and
+--https://www.warcraftlogs.com/reports/nFX9MYTV26tpmCrk?fight=16&pins=2%24Off%24%23244F4B%24expression%24ability.name+%3D+%22Raging+Crosswinds%22+and+not+type+%3D+%22damage%22&view=replay&position=8576
+mod:AddAuraSoundOption(1277051, false, 1285430, 1, 3, "debuffyou", 17, 0)--Infected Gash from soaking
+mod:AddAuraSoundOption(1287083, true, 1285430, 1, 3, "slowyou", 20, 0)--Tempest
+mod:AddAuraSoundOption(1305963, true, 1305959, 1, 1, "runout", 2, 0)--Venomous Surge
+mod:AddAuraSoundOption(1285425, true, 1285425, 1, 1, "south", 2, 0)--Raging Crosswinds knocks North (Right now it announces where to go, NOT knock direction)
+mod:AddAuraSoundOption(1285453, true, 1285425, 1, 1, "north", 2, 0)--Raging Crosswinds knocks South ^
+mod:AddAuraSoundOption(1297111, true, 1285425, 1, 1, "east", 2, 0)--Raging Crosswinds knocks West ^
+mod:AddAuraSoundOption(1297096, true, 1285425, 1, 1, "west", 2, 0)--Raging Crosswinds knocks East ^
+mod:AddAuraSoundOption(1296667, true, 1305959, 1, 2, "watchfeet", 8, 0)--Caustic Residue
+mod:AddAuraSoundOption(1297707, true, 1305959, 1, 2, "watchstep", 8, 0)--Caustic Claws
+mod:AddAuraSoundOption(1305621, true, 1305621, 1, 1, "targetyou", 2, 0)--Serpent's Fury
+mod:AddAuraSoundOption({1297707, 1299899}, true, 1305621, 1, 1, "scatter", 2, 0)--Virulence (since it has two spellids, we can abuse that to split the raid in 2 to automate scatter a little)
+--mod:AddAuraSoundOption(1299899, true, 1305621, 1, 1, "scatterright", 20, 0)--But I'll hold off on that for now cause they'll probably fix it if that's abused
+
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
-local next52Event = "apex"
+local nextVariableEvent = "apex"
 
 mod.vb.RagingCrosswindsCount = 0
 mod.vb.VenomousSurgeCount = 0
@@ -40,7 +57,6 @@ local function setFallback(self, dontSetAlerts)
 			specWarnApexPedator:SetAlert(664, "tankcombo", 19, 2)
 		end
 		specWarnRagingCrosswinds:SetAlert(652, "debuffyou", 17, 2, 0)
-		specWarnVenomousSurge:SetAlert(653, "watchstep", 2, 2)
 		specWarnHowlingMaelstrom:SetAlert(665, "pushbackincoming", 13, 2)
 		specWarnCausticClaws:SetAlert(851, "scatter", 2, 2)
 	end
@@ -60,8 +76,8 @@ function mod:OnLimitedCombatStart()
 	self.vb.VenomousSurgeCount = 1
 	self.vb.ApexPedatorCount = 1
 	self.vb.HowlingMaelstromCount = 1
-	next52Event = "apex"
-	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+	nextVariableEvent = "apex"
+	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsNormal() or self:IsMythic()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -76,7 +92,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
-	next52Event = "apex"
+	nextVariableEvent = "apex"
 	self:UnregisterShortTermEvents()
 end
 
@@ -85,32 +101,32 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	local function timersHeroic(self, timer, timerExact, eventID)
+	local function timersAll(self, timer, timerExact, eventID)
 		local handled
-		--Logic confirmed against PTR Heroic SszorakKill
-		if timer == 111 then
+		--Normal and Heroic are confirmed by logs; Mythic tempo and sequence are extrapolated by 1, 8/9, and 4/5 rule evidenced by logs and fangs encounter
+		if timer == 125 or timer == 111 or timer == 100 then
 			handled = true
 			timerHowlingMaelstromCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "maelstrom", "HowlingMaelstromCount"))
-		elseif timer == 6 then
+		elseif timer == 6 or timer == 5 then
 			handled = true
 			timerApexPedatorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "apex", "ApexPedatorCount"))
-		elseif timer == 43 then
+		elseif timer == 49 or timer == 43 or timer == 39 then
 			handled = true
 			timerRagingCrosswindsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "crosswinds", "RagingCrosswindsCount"))
-		elseif timer == 32 then
+		elseif timer == 36 or timer == 32 or timer == 29 then
 			handled = true
 			timerVenomousSurgeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venom", "VenomousSurgeCount"))
-		elseif timer == 52 then
+		elseif timer == 59 or timer == 52 or timer == 47 then
 			handled = true
-			if next52Event == "apex" then
+			if nextVariableEvent == "apex" then
 				timerApexPedatorCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "apex", "ApexPedatorCount"))
-				next52Event = "venom"
-			elseif next52Event == "venom" then
+				nextVariableEvent = "venom"
+			elseif nextVariableEvent == "venom" then
 				timerVenomousSurgeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venom", "VenomousSurgeCount"))
-				next52Event = "crosswinds"
+				nextVariableEvent = "crosswinds"
 			else
 				timerRagingCrosswindsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "crosswinds", "RagingCrosswindsCount"))
-				next52Event = "apex"
+				nextVariableEvent = "apex"
 			end
 		end
 
@@ -130,7 +146,7 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			timersHeroic(self, timer, timerExact, eventID)
+			timersAll(self, timer, timerExact, eventID)
 		end
 	end
 
@@ -147,8 +163,7 @@ do
 					specWarnApexPedator:Show(eventCount)
 					specWarnApexPedator:Play("tankcombo")
 				elseif eventType == "venom" then
-					specWarnVenomousSurge:Show(eventCount)
-					specWarnVenomousSurge:Play("watchstep")
+					warnVenomousSurge:Show(eventCount)
 				elseif eventType == "crosswinds" then
 					specWarnRagingCrosswinds:Show(eventCount, "debuffyou")
 				end

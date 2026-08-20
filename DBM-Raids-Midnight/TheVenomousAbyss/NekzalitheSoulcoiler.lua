@@ -10,7 +10,7 @@ mod:SetZone(3004)
 
 mod:RegisterCombat("combat")
 
---TODO, peresonal essence Rend alert if it has ENCOUNTER_WARNING, else auras api if there is one by 12.1 launch.
+--TODO, peresonal essence Rend alert if it has ENCOUNTER_WARNING, else auras api if that aura is public
 --TODO, Entwined step might be redundant, Invoke is parent ability and has own script/ID, mod has both for now since need to see which blizz links to timer
 --TODO, https://www.wowhead.com/ptr/spell=1289923/call-of-devotion has an ID of 694 but doesn't exist in journal
 --TODO, https://www.wowhead.com/ptr/spell=1290679/vengeful-hiss has an ID of 696 but doesn't exist in journal
@@ -39,13 +39,23 @@ local timerHungeringPyreCD				= mod:NewCDCountTimer(20.5, 1290679, nil, nil, nil
 local timerResidualTollCD				= mod:NewCDCountTimer(20.5, 1298698, nil, nil, nil, 2)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
-mod:AddAuraSoundOption(1287427, true, 1287426, 1, 1, "lineyou", 17)--Essence Rend (iffy, not combat logged, so would aura sound even work?)
+--Validation https://www.warcraftlogs.com/reports/MyHmVwLj8ncbpxvW?fight=10&type=auras&spells=debuffs
+mod:AddAuraSoundOption(1287427, true, 1287426, 1, 1, "lineyou", 17, 0)--Essence Rend (iffy, not combat logged, so would aura sound even work?)
+mod:AddAuraSoundOption(1287434, true, 1287426, 1, 3, "debuffyou", 17, 0)--Essence Rend after affect
+mod:AddAuraSoundOption(1297624, false, 1299673, 1, 3, "stackhigh", 6, 1)--Ritual Burn
+mod:AddAuraSoundOption(1300235, true, 1293212, 1, 3, "debuffyou", 17, 0)--Soul Exhaustion
+mod:AddAuraSoundOption({1300524, 1300521}, true, 1293212, 1, 3, "teleyou", 5, 0)--Immortal Coil (pulled into soulcoil well)
+mod:AddAuraSoundOption(1306666, true, 1290679, 1, 1, "gathershare", 2, 0)--Hungering Pyre
+mod:AddAuraSoundOption(1294933, true, 1290679, 1, 3, "dotyou", 19, 0)--Slithering Flame
+--mod:AddAuraSoundOption(1284103, true, 1284103, 4, 1, "justrun", 2, 0)--Possession Barrage (threat check used for now)
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local pendingResidualToll22 = false--Disambiguates 22s in P2 using preceding 3s observed in PTR logs
 local engageBatchWindow = 0.6--Current Blizzard bug can emit duplicate initial events; hold briefly so we can prefer second batch without breaking if bug is fixed
 local combatStartTime = 0
 local pendingEngageEvents = {}
+local normalStage1FortyCount = 0--Normal alternates Amani/Rend on 40s in stage 1
+local normalStage2FortyCount = 0--Normal alternates Barrage/Amani on 40s in stage 2
 mod.vb.RendCount = 0
 mod.vb.IgnitionCount = 0
 mod.vb.EntwinedStepCount = 0
@@ -89,6 +99,8 @@ function mod:OnLimitedCombatStart()
 	pendingResidualToll22 = false
 	combatStartTime = GetTime()
 	table.wipe(pendingEngageEvents)
+	normalStage1FortyCount = 0
+	normalStage2FortyCount = 0
 	self.vb.RendCount = 1
 	self.vb.IgnitionCount = 1
 	self.vb.EntwinedStepCount = 1
@@ -100,7 +112,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.HungeringPyreCount = 1
 	self.vb.ResidualTollCount = 1
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsEasy()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -117,6 +129,8 @@ function mod:OnCombatEnd()
 	self:TLCountReset()
 	pendingResidualToll22 = false
 	table.wipe(pendingEngageEvents)
+	normalStage1FortyCount = 0
+	normalStage2FortyCount = 0
 	self:UnregisterShortTermEvents()
 end
 
@@ -246,11 +260,91 @@ do
 		end
 	end
 
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersNormal(self, timer, timerExact, eventID)
+		local stage = self:GetStage()
+		local handled = false
+
+		if stage == 1 then
+			--Stage 1: Amani/Rend alternate on 40, Amani (30), Barrage (28/36), Rend (15), Pyre (11), Invoke (8)
+			if timer == 40 then
+				normalStage1FortyCount = normalStage1FortyCount + 1
+				handled = true
+				if normalStage1FortyCount % 2 == 1 then
+					timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
+				else
+					timerEssenceRendCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "essencerend", "RendCount"))
+				end
+			elseif timer == 28 or timer == 36 then
+				handled = true
+				timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
+			elseif timer == 15 then
+				handled = true
+				timerEssenceRendCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "essencerend", "RendCount"))
+			elseif timer == 30 then
+				handled = true
+				timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
+			elseif timer == 11 then
+				handled = true
+				timerHungeringPyreCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "hungeringpyre", "HungeringPyreCount"))
+			elseif timer == 8 then
+				handled = true
+				local invokeCount = self:TLCountStart(eventID, "invoke", "InvokeCount")
+				timerInvokeCD:TLStart(timerExact, eventID, invokeCount)
+				if invokeCount == 1 and self:GetStage(2, 1) then--Boss swaps pattern at 50%; detect stage 2 by first low-duration Invoke
+					self:SetStage(2)
+					normalStage2FortyCount = 0
+					warnPhase2:Show()
+					warnPhase2:Play("ptwo")
+				end
+			end
+		elseif stage == 2 then
+			--Stage 2: Restless Amani (20/30), Barrage/Amani alternate on 40, Possession Barrage (28), Essence Rend (50), Invoke (8/48), Hungering Pyre (11)
+			--Note: a 40s Possession Barrage state-2 arrived ~10s late in Normal NekzaliKill2, but completed on time in NekzaliKill; use Blizzard's raw duration without correction.
+			if timer == 40 then
+				normalStage2FortyCount = normalStage2FortyCount + 1
+				handled = true
+				if normalStage2FortyCount % 2 == 1 then
+					timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
+				else
+					timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
+				end
+			elseif timer == 20 or timer == 30 then
+				handled = true
+				timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
+			elseif timer == 28 then
+				handled = true
+				timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
+			elseif timer == 50 then
+				handled = true
+				timerEssenceRendCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "essencerend", "RendCount"))
+			elseif timer == 8 or timer == 48 then
+				handled = true
+				timerInvokeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "invoke", "InvokeCount"))
+			elseif timer == 11 then
+				handled = true
+				timerHungeringPyreCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "hungeringpyre", "HungeringPyreCount"))
+			end
+		end
+
+		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+		end
+	end
+
 	--Note, bar state changing and canceling is handled by core
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if not self:IsHeroic() then return end--Hardcoded routing currently Heroic-only
+		if not self:IsHeroic() and not self:IsEasy() then return end--Hardcoded routing currently Heroic/Normal-only
+		local timerRouter = self:IsHeroic() and timersHeroic or timersNormal
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
@@ -261,7 +355,7 @@ do
 				if pending then
 					--Duplicate engage timer observed: ignore first copy and route second copy.
 					pendingEngageEvents[timer] = nil
-					timersHeroic(self, timer, timerExact, eventID)
+					timerRouter(self, timer, timerExact, eventID)
 				else
 					--Hold first copy briefly; if duplicate never arrives (bug fixed), we flush this safely.
 					pendingEngageEvents[timer] = {
@@ -272,8 +366,8 @@ do
 				end
 				return
 			end
-			flushPendingEngage(self, timersHeroic)
-			timersHeroic(self, timer, timerExact, eventID)
+			flushPendingEngage(self, timerRouter)
+			timerRouter(self, timer, timerExact, eventID)
 		end
 	end
 

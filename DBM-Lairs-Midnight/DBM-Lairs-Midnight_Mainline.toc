@@ -17,7 +17,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: LAIR
 ## X-DBM-Mod-Category: MIDNIGHT
-## X-DBM-StatTypes: lfr,normal,heroic,mythic
+## X-DBM-StatTypes: worldlair,normal,heroic,mythic
 ## X-DBM-Mod-SubCategoriesID: 2987, 1592
 ## X-DBM-Mod-Name: Lairs (Midnight)
 ## X-DBM-Mod-Name-koKR: 소굴 (한밤)

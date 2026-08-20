@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 416, "1888a1e"--416.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.2 alpha"--Core version
+DBM.DisplayVersion = "12.1.4"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 8, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 8, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -4816,7 +4816,8 @@ do
 	-- if we catch someone in a tank stance keep sending them warnings, classic only
 	local playerIsTank = false
 
-	function bossModPrototype:IsTank()
+	---@param self DBMModOrDBM
+	function DBM:IsTank()
 		--IsTanking already handles external calls, no need here.
 		if (not currentSpecID or currentSpecID == 0) then
 			DBM:SetCurrentSpecInfo()
@@ -4839,6 +4840,7 @@ do
 		local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
 		return role == "TANK"
 	end
+	bossModPrototype.IsTank = DBM.IsTank
 end
 
 ---@param uId playerUUIDs? Used for querying external unit. If nil, queries "player"
