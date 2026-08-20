@@ -40,7 +40,7 @@ mod.vb.ChillingFrostCount = 0
 mod.vb.tidepiercersRushCount = 0
 mod.vb.abyssalRainCount = 0
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
-local normal44Slot = 0
+local repeating44Slot = 0
 
 ---@param self DBMMod
 ---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -75,9 +75,9 @@ function mod:OnLimitedCombatStart()
 	self.vb.ChillingFrostCount = 1
 	self.vb.tidepiercersRushCount = 1
 	self.vb.abyssalRainCount = 1
-	normal44Slot = 0
+	repeating44Slot = 0
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and not badStateDetected and self:IsEasy() then
+	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -93,7 +93,7 @@ end
 
 
 function mod:OnCombatEnd()
-	normal44Slot = 0
+	repeating44Slot = 0
 	self:TLCountReset()
 	self:UnregisterShortTermEvents()
 end
@@ -123,12 +123,12 @@ do
 		elseif timer == 107 or timer == 89 then--Swirling Whirlpools
 			handled = true
 			timerTidepiercersRushCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rush", "tidepiercersRushCount"))
-		elseif timer == 44 then--Normal Week0 repeats Bubble, Frost, Rain in this order
+		elseif timer == 44 then--All difficulties repeat Bubble, Frost, Rain in this order
 			handled = true
-			normal44Slot = (normal44Slot % 3) + 1
-			if normal44Slot == 1 then
+			repeating44Slot = (repeating44Slot % 3) + 1
+			if repeating44Slot == 1 then
 				timerAlluringBubbleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bubble", "alluringBubbleCount"))
-			elseif normal44Slot == 2 then
+			elseif repeating44Slot == 2 then
 				timerChillingFrostCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "frost", "ChillingFrostCount"))
 			else
 				timerAbyssalRainCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rain", "abyssalRainCount"))
