@@ -82,6 +82,7 @@ local badStateDetected = false--Used to track if hardcode features have failed a
 local stage1FortyTwoCount = 0
 local stage1FortyThreeCount = 0
 local stage2ThirtyFourCount = 0
+local stage3ThirtyFourCount = 0
 local stage3FiftyNineCount = 0
 local stage2YellFirstTime = 0
 local stage2YellPairTime = 0
@@ -149,6 +150,7 @@ function mod:OnLimitedCombatStart()
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
+	stage3ThirtyFourCount = 0
 	stage3FiftyNineCount = 0
 	stage2YellFirstTime = 0
 	stage2YellPairTime = 0
@@ -186,6 +188,7 @@ function mod:OnCombatEnd()
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
+	stage3ThirtyFourCount = 0
 	stage3FiftyNineCount = 0
 	stage2YellFirstTime = 0
 	stage2YellPairTime = 0
@@ -233,6 +236,7 @@ do
 		self.vb.DeathmarchCount = 1
 		self.vb.EternalNightfallCount = 1
 		self.vb.ToxicDelugeCount = 1
+		stage3ThirtyFourCount = 0
 		stage3FiftyNineCount = 0
 	end
 
@@ -246,6 +250,12 @@ do
 	---@return boolean
 	local function isStage3UniqueTimer(timer)
 		return timer == 15 or timer == 29 or timer == 42 or timer == 51 or timer == 59 or timer == 66 or timer == 88 or timer == 94
+	end
+
+	---@param timer number
+	---@return boolean
+	local function isNormalStage3Timer(timer)
+		return timer == 2 or timer == 28 or timer == 29 or timer == 30 or timer == 33 or timer == 34 or timer == 37 or timer == 38 or timer == 41 or timer == 49 or timer == 50 or timer == 54 or timer == 87 or timer == 88 or timer == 91 or timer == 92
 	end
 
 	---@param self DBMMod
@@ -398,8 +408,11 @@ do
 				end
 			end
 		elseif stage == 2 then
-			--Normal stage 2 opening: CoiledAltarWipe (Normal/Week1). Unknown timers intentionally fall back to Blizzard API.
-			if timer == 6 or timer == 34 then--Dreadmarch
+			--Normal stage 2: CoiledAltarMulti (Normal/Week1). Stage 3 begins after the cancellation burst and a long silence.
+			if isNormalStage3Timer(timer) and (GetTime() - lastTLEvent) > 20 then
+				enterStage3(self)
+				return timersNormal(self, timer, timerExact, eventID)
+			elseif timer == 6 or timer == 34 then--Dreadmarch
 				handled = true
 				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
 			elseif timer == 20 or timer == 40 then--Gloombomb
@@ -411,6 +424,35 @@ do
 			elseif timer == 70 then--Eternal Nightfall
 				handled = true
 				timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
+			end
+		elseif stage == 3 then
+			--Normal stage 3: CoiledAltarMulti (Normal/Week1)
+			if self:IsRoundedTimer(timerExact, 53.5, 0.1) then--Dreadmarch, rounded 54
+				handled = true
+				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
+			elseif timer == 2 or timer == 37 or timer == 41 or timer == 50 or timer == 54 then--Toxic Deluge
+				handled = true
+				timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
+			elseif timer == 28 or timer == 29 or timer == 30 or timer == 33 then--Blighted Sever
+				handled = true
+				timerBlightedSeveringCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blightedSevering", "SeverCount"))
+			elseif timer == 87 then--Eternal Nightfall
+				handled = true
+				timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
+			elseif timer == 88 or timer == 38 or timer == 49 then--Dreadmarch
+				handled = true
+				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
+			elseif timer == 91 or timer == 92 then--Defilement of the Coiled Altar
+				handled = true
+				timerDefilementoftheCrucibleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "defilement", "CrucibleCount"))
+			elseif timer == 34 then--Ambiguous: Eternal Nightfall OR Blighted Sever
+				handled = true
+				stage3ThirtyFourCount = stage3ThirtyFourCount + 1
+				if stage3ThirtyFourCount == 1 then
+					timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
+				else
+					timerBlightedSeveringCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blightedSevering", "SeverCount"))
+				end
 			end
 		end
 
@@ -522,7 +564,7 @@ do
 				else
 					stage1CancelBurstCount = stage1CancelBurstCount + 1
 				end
-				if stage1CancelBurstCount >= 6 then
+				if stage1CancelBurstCount >= 5 then
 					enterStage2(self)
 				end
 			end
