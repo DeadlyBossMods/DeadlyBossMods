@@ -50,7 +50,6 @@ mod:AddAuraSoundOption(1294933, true, 1290679, 1, 3, "dotyou", 19, 0)--Slitherin
 --mod:AddAuraSoundOption(1284103, true, 1284103, 4, 1, "justrun", 2, 0)--Possession Barrage (threat check used for now)
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
-local pendingResidualToll22 = false--Disambiguates 22s in P2 using preceding 3s observed in PTR logs
 local engageBatchWindow = 0.6--Current Blizzard bug can emit duplicate initial events; hold briefly so we can prefer second batch without breaking if bug is fixed
 local combatStartTime = 0
 local pendingEngageEvents = {}
@@ -127,7 +126,6 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
-	pendingResidualToll22 = false
 	table.wipe(pendingEngageEvents)
 	normalStage1FortyCount = 0
 	normalStage2FortyCount = 0
