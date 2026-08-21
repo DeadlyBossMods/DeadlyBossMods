@@ -1194,6 +1194,7 @@ do
 			self.tlBatchState = {
 				latestByTimer = {},
 				timerByEvent = {},
+				pendingStarts = {},
 				initialGate = {},
 			}
 		end
@@ -1201,9 +1202,23 @@ do
 	end
 
 	local function cleanupTLBatchState(self, state)
-		if not next(state.latestByTimer) and not next(state.timerByEvent) and not next(state.initialGate) then
+		if not next(state.latestByTimer) and not next(state.timerByEvent) and not next(state.pendingStarts) and not next(state.initialGate) then
 			self.tlBatchState = nil
 		end
+	end
+
+	local function startTLBatch(self, eventID)
+		local state = self.tlBatchState
+		if not state then return end
+		local entry = state.pendingStarts[eventID]
+		if not entry then return end
+		state.pendingStarts[eventID] = nil
+		if state.latestByTimer[entry.timer] ~= eventID then
+			cleanupTLBatchState(self, state)
+			return
+		end
+		entry.timerObj:TLStart(entry.timerExact, eventID, self:TLCountStart(eventID, entry.eventType, entry.countKey))
+		cleanupTLBatchState(self, state)
 	end
 
 	---Track a timeline event as the latest entry for its rounded timer bucket.
@@ -1219,8 +1234,7 @@ do
 	--- - If the active event is resent with the same eventID, returns that eventID without re-registering it.
 	--- - Marks eventID as latest for this timer and records reverse lookup for cleanup.
 	---
-	---Call this from ENCOUNTER_TIMELINE_EVENT_ADDED before TLStart/TLCountStart for buckets
-	---affected by the batch bug.
+	---Prefer TLBatchStart for timers; use this lower-level helper only when no timer start is needed.
 	---@param timer number Rounded timer bucket used by module routing.
 	---@param eventID number Encounter timeline runtime eventID.
 	---@param trackedTimers table<number, boolean>? Optional timer set to limit which buckets are deduped.
@@ -1235,12 +1249,47 @@ do
 			return eventID
 		end
 		if replacedEventID and replacedEventID ~= eventID then
+			state.pendingStarts[replacedEventID] = nil
 			self:TLCountCancel(replacedEventID)
 			state.timerByEvent[replacedEventID] = nil
 		end
 		state.latestByTimer[timer] = eventID
 		state.timerByEvent[eventID] = timer
 		return replacedEventID
+	end
+
+	---Queue a timeline timer start until the current event dispatch has completed.
+	---
+	---Use instead of TLBatchTrackLatest + timerObj:TLStart for timer buckets where
+	---Blizzard emits duplicate rows before immediately canceling all but the last row.
+	---The core tracks only the latest row per bucket, drops superseded queued starts,
+	---and reserves a TLCount only when the surviving timer actually starts.
+	---@param timer number Rounded timer bucket used by module routing.
+	---@param timerObj any Timer object to start for the surviving event.
+	---@param timerExact number Raw duration passed to TLStart.
+	---@param eventID number Encounter timeline runtime eventID.
+	---@param eventType string Module-local event type for TLCountFinish.
+	---@param countKey string? vb counter key for TLCount.
+	---@param trackedTimers table<number, boolean>? Optional timer set to limit which buckets are deduped.
+	---@return boolean queued False when this was a resend of an already queued event.
+	function bossModPrototype:TLBatchStart(timer, timerObj, timerExact, eventID, eventType, countKey, trackedTimers)
+		if trackedTimers and not trackedTimers[timer] then
+			timerObj:TLStart(timerExact, eventID, self:TLCountStart(eventID, eventType, countKey))
+			return true
+		end
+		if self:TLBatchTrackLatest(timer, eventID, trackedTimers) == eventID then
+			return false
+		end
+		local state = getTLBatchState(self)
+		state.pendingStarts[eventID] = {
+			timer = timer,
+			timerObj = timerObj,
+			timerExact = timerExact,
+			eventType = eventType,
+			countKey = countKey,
+		}
+		self:Schedule(0, startTLBatch, self, eventID)
+		return true
 	end
 
 	---Release one timeline event from batch-tracking state.
@@ -1257,6 +1306,7 @@ do
 		if state.latestByTimer[timer] == eventID then
 			state.latestByTimer[timer] = nil
 		end
+		state.pendingStarts[eventID] = nil
 		state.timerByEvent[eventID] = nil
 		cleanupTLBatchState(self, state)
 		return timer
@@ -1296,6 +1346,7 @@ do
 	---
 	---Call at encounter boundaries (combat start/end) alongside TLCountReset.
 	function bossModPrototype:TLBatchReset()
+		self:Unschedule(startTLBatch)
 		self.tlBatchState = nil
 	end
 end

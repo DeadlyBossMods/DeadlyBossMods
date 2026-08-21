@@ -64,6 +64,7 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 ---@field TextFont string
 ---@field TextFontStyle string
 ---@field DurationFontSize number
+---@field DurationColor { r: number, g: number, b: number }
 ---@field ShowDecimalSeconds boolean
 ---@field DecimalThreshold number
 ---@field ShowCooldownSwipe boolean
@@ -145,6 +146,7 @@ end
 ---@return DBMAuraSettings Settings table with all configuration properties
 local function GetAuraSettings(prefix)
 	local stackColor = DBM.Options[prefix .. "StackColor"] or DBM.DefaultOptions[prefix .. "StackColor"]
+	local durationColor = DBM.Options[prefix .. "DurationColor"] or DBM.DefaultOptions[prefix .. "DurationColor"]
 	return {
 		optionPrefix = prefix,
 		HideBorder = DBM.Options[prefix .. "HideBorder"],
@@ -163,6 +165,7 @@ local function GetAuraSettings(prefix)
 		TextFont = DBM.Options[prefix .. "TextFont"],
 		TextFontStyle = DBM.Options[prefix .. "TextFontStyle"],
 		DurationFontSize = DBM.Options[prefix .. "DurationFontSize"],
+		DurationColor = durationColor,
 		ShowDecimalSeconds = DBM.Options[prefix .. "ShowDecimalSeconds"],
 		DecimalThreshold = DBM.Options[prefix .. "DecimalThreshold"] or DBM.DefaultOptions[prefix .. "DecimalThreshold"],
 		ShowCooldownSwipe = DBM.Options.PrivateAurasShowCooldownSwipe,
@@ -370,6 +373,7 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	cooldown:SetCountdownMillisecondsThreshold(GetAuraDecimalThreshold(settings))
 	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
 	cooldown:GetCountdownFontString():SetFont(fontPath, settings.DurationFontSize, fontFlags)
+	cooldown:GetCountdownFontString():SetTextColor(settings.DurationColor.r, settings.DurationColor.g, settings.DurationColor.b)
 	cooldown:SetCooldownFromExpirationTime(GetTime() + duration, duration)
 	cooldown:Show()
 
@@ -467,6 +471,7 @@ local function ConfigureButton(state, button, settings, unit)
 	durationCooldown:SetHideCountdownNumbers(false)
 	durationCooldown:SetCountdownMillisecondsThreshold(GetAuraDecimalThreshold(settings))
 	durationCooldown:GetCountdownFontString():SetFont(fontPath, durationFontSize, fontFlags)
+	durationCooldown:GetCountdownFontString():SetTextColor(settings.DurationColor.r, settings.DurationColor.g, settings.DurationColor.b)
 	durationCooldown:Show()
 	button:ClearDurationText()
 	button:SetDurationCooldown(durationCooldown)
@@ -576,7 +581,7 @@ local function InitContainerState(state, settings, unit)
 	container:SetFlowLayoutMaximumLineSize(GetRowWidth(settings))
 
 	local candidateFilters = {
-		maxDuration = DBM.Options.AurasMaxDuration,
+--		maxDuration = DBM.Options.AurasMaxDuration,
 		excludeSpellIDs = {
 			[57723] = true,--Exhaustion
 			[80354] = true,--Temporal Displacement

@@ -11,7 +11,7 @@ mod:SetEncounterID(3497)
 mod:SetZone(3004)
 
 mod:RegisterCombat("combat")
-mod:RegisterSafeEvents("UNIT_FLAGS boss1 boss3 boss4")
+mod:RegisterSafeEventsInCombat("UNIT_FLAGS boss1 boss3 boss4")
 
 --DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
 --TODO: Toss targets for toss mechanics?
