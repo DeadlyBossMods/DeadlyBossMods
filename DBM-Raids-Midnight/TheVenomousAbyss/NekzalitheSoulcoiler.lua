@@ -95,7 +95,6 @@ end
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self:SetStage(1)
-	pendingResidualToll22 = false
 	combatStartTime = GetTime()
 	table.wipe(pendingEngageEvents)
 	normalStage1FortyCount = 0
