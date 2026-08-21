@@ -1217,7 +1217,17 @@ do
 			cleanupTLBatchState(self, state)
 			return
 		end
-		entry.timerObj:TLStart(entry.timerExact, eventID, self:TLCountStart(eventID, entry.eventType, entry.countKey))
+		--The batch window is only the current event dispatch. Releasing it here prevents
+		--a later, legitimate overlapping timer with the same rounded duration from replacing this one.
+		state.latestByTimer[entry.timer] = nil
+		state.timerByEvent[eventID] = nil
+		local timerObj, eventType, countKey = entry.timerObj, entry.eventType, entry.countKey
+		if type(timerObj) == "function" then
+			timerObj, eventType, countKey = timerObj(self, eventID)
+		end
+		if timerObj and eventType then
+			timerObj:TLStart(entry.timerExact, eventID, self:TLCountStart(eventID, eventType, countKey))
+		end
 		cleanupTLBatchState(self, state)
 	end
 
@@ -1265,15 +1275,19 @@ do
 	---The core tracks only the latest row per bucket, drops superseded queued starts,
 	---and reserves a TLCount only when the surviving timer actually starts.
 	---@param timer number Rounded timer bucket used by module routing.
-	---@param timerObj any Timer object to start for the surviving event.
+	---@param timerObj any|fun(self: DBMMod, eventID: number): any, string, string? Timer object, or resolver returning timer object/event type/count key for the surviving event.
 	---@param timerExact number Raw duration passed to TLStart.
 	---@param eventID number Encounter timeline runtime eventID.
-	---@param eventType string Module-local event type for TLCountFinish.
+	---@param eventType string? Module-local event type for TLCountFinish, supplied by timerObj when it is a resolver.
 	---@param countKey string? vb counter key for TLCount.
 	---@param trackedTimers table<number, boolean>? Optional timer set to limit which buckets are deduped.
 	---@return boolean queued False when this was a resend of an already queued event.
 	function bossModPrototype:TLBatchStart(timer, timerObj, timerExact, eventID, eventType, countKey, trackedTimers)
 		if trackedTimers and not trackedTimers[timer] then
+			if type(timerObj) == "function" then
+				timerObj, eventType, countKey = timerObj(self, eventID)
+			end
+			if not timerObj or not eventType then return false end
 			timerObj:TLStart(timerExact, eventID, self:TLCountStart(eventID, eventType, countKey))
 			return true
 		end
