@@ -499,8 +499,8 @@ L.AUTO_TIMER_TEXTS.stage		= "Prossima Fase"
 --L.AUTO_TIMER_TEXTS.stagecontextcount					= "%s (%%s)" -- OPTIONAL
 --L.AUTO_TIMER_TEXTS.intermission						= "Intermission"
 --L.AUTO_TIMER_TEXTS.intermissioncount					= "Intermission %%s"
-L.AUTO_TIMER_TEXTS.adds			= "Add in Arrivo"
-L.AUTO_TIMER_TEXTS.addscustom	= "Add in Arrivo (%%s)"
+L.AUTO_TIMER_TEXTS.adds			= "Adds"
+L.AUTO_TIMER_TEXTS.addscustom	= "Adds (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay		= GUILD_INTEREST_RP
 L.AUTO_TIMER_TEXTS.combat		= "Inizio combattimento"
 --This basically clones np only bar option and display text from regular counterparts
