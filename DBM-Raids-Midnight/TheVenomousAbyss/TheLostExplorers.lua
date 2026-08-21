@@ -4,11 +4,12 @@ local mod	= DBM:NewMod(2894, "DBM-Raids-Midnight", 1, 1320)
 local UnitIsFriend = UnitIsFriend
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(238693)
+mod:SetCreatureID(261835, 261843, 261848)--261584 is Mor'zahi
 mod:SetEncounterID(3497)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
 mod:SetZone(3004)
+mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 mod:RegisterSafeEventsInCombat("UNIT_FLAGS boss1 boss3 boss4")
