@@ -736,15 +736,15 @@ do
 			if thisTime then--End combat event
 				if isWipe then
 					if wipeHP then
-						private.sendGuildSync(11, "GCE", modId .. "\t1\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. private.lastGroupLeader .. "\t" .. wipeHP)
+						private.sendGuildSync(12, "GCE", modId .. "\t1\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. private.lastGroupLeader .. "\t" .. wipeHP)
 					else
-						private.sendGuildSync(11, "GCE", modId .. "\t1\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. private.lastGroupLeader)
+						private.sendGuildSync(12, "GCE", modId .. "\t1\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. private.lastGroupLeader)
 					end
 				else
-					private.sendGuildSync(11, "GCE", modId .. "\t0\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. private.lastGroupLeader)
+					private.sendGuildSync(12, "GCE", modId .. "\t0\t" .. thisTime .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. private.lastGroupLeader)
 				end
 			else
-				private.sendGuildSync(4, "GCB", modId .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. private.lastGroupLeader)
+				private.sendGuildSync(5, "GCB", modId .. "\t" .. difficultyIndex .. "\t" .. difficultyModifier .. "\t" .. name .. "\t" .. private.lastGroupLeader)
 			end
 		end
 	end
@@ -810,7 +810,7 @@ do
 			--set mod default info
 			difficulties:RefreshCache(true)
 			local name = mod.combatInfo.name
-			local modId = mod.id
+			local modId = mod.combatInfo.eId or mod.id
 			if private.isRetail then
 				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
 					mod.inScenario = true
@@ -1181,7 +1181,7 @@ do
 			local usedDifficultyIndex = mod.engagedDiffIndex or difficulties.difficultyIndex
 			local usedDifficultyModifier = mod.engagedDiffModifier or difficulties.difficultyModifier or 0
 			local name = mod.combatInfo.name
-			local modId = mod.id
+			local modId = mod.combatInfo.eId or mod.id
 			if wipe and mod.stats and not mod.noStatistics then
 				mod.lastWipeTime = GetTime()
 				--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
@@ -1234,7 +1234,7 @@ do
 								usedDifficultyIndex ~= 1 and self:GetNumGuildPlayersInZone() >= 10 -- Classic
 							if check and not self.Options.DisableGuildStatus then
 								self:Unschedule(delayedGCSync, modId)
-								self:Schedule(private.isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, difficulties.difficultyModifier, name, stringUtils.strFromTime(thisTime), true, wipeHP)
+								self:Schedule(private.isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, difficulties.difficultyModifier, name, thisTime, true, wipeHP)
 							end
 						end
 					end
@@ -1340,7 +1340,7 @@ do
 					local check = not private.statusGuildDisabled and (private.isRetail and ((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or usedDifficultyIndex ~= 1 and self:GetNumGuildPlayersInZone() >= 10) -- Classic
 					if not scenario and thisTimeString and check and not self.Options.DisableGuildStatus and private.updateNotificationDisplayed == 0 then
 						self:Unschedule(delayedGCSync, modId)
-						self:Schedule(private.isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, usedDifficultyModifier, name, thisTimeString)
+						self:Schedule(private.isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, usedDifficultyModifier, name, thisTime)
 					end
 					self:Schedule(1, self.AddMsg, self, msg)
 				end
