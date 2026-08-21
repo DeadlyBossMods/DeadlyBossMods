@@ -156,120 +156,12 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	local function timersHeroic(self, timer, timerExact, eventID)
+	local function timersLive(self, timer, timerExact, eventID)
 		local stage = self:GetStage()
 		local handled = false
 
 		if stage == 1 then
-			--Stage 1 shared buckets:
-			--Restless Amani: 44/34/30/24/20/8
-			--Possession Barrage: 29/45
-			--Essence Rend: 13/58
-			--Invoke: 12/28 (Invoke #1 marks stage 2)
-			if timer == 44 or timer == 34 or timer == 24 or timer == 20 or timer == 8 or timer == 30 then
-				handled = true
-				timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
-			elseif timer == 29 or timer == 45 then
-				handled = true
-				timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
-			elseif timer == 13 or timer == 58 then
-				handled = true
-				timerEssenceRendCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "essencerend", "RendCount"))
-			elseif timer == 12 or timer == 28 then
-				handled = true
-				local invokeCount = self:TLCountStart(eventID, "invoke", "InvokeCount")
-				timerInvokeCD:TLStart(timerExact, eventID, invokeCount)
-				if invokeCount == 1 and self:GetStage(2, 1) then--Boss swaps pattern at 50%; detect stage 2 by first Invoke
-					self:SetStage(2)
-					pendingResidualToll22 = false
-					warnPhase2:Show()
-					warnPhase2:Play("ptwo")
-				end
-			end
-		elseif stage == 2 then
-			--Stage 2 shared + stage-2-only buckets:
-			--Shared: Restless Amani (44/34/30/24/20/8), Possession Barrage (29/45), Essence Rend (13/58), Invoke (12/28)
-			--Stage-2-only: Hungering Pyre (19/22) and Residual Toll (3/10/35/22)
-			if timer == 44 or timer == 34 or timer == 24 or timer == 20 or timer == 8 or timer == 30 then
-				handled = true
-				timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
-			elseif timer == 29 or timer == 45 then
-				handled = true
-				timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
-			elseif timer == 13 or timer == 58 then
-				handled = true
-				timerEssenceRendCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "essencerend", "RendCount"))
-			elseif timer == 12 or timer == 28 then
-				handled = true
-				local invokeCount = self:TLCountStart(eventID, "invoke", "InvokeCount")
-				timerInvokeCD:TLStart(timerExact, eventID, invokeCount)
-				if invokeCount == 1 and self:GetStage(2, 1) then--Boss swaps pattern at 50%; detect stage 2 by first Invoke
-					self:SetStage(2)
-					pendingResidualToll22 = false
-					warnPhase2:Show()
-					warnPhase2:Play("ptwo")
-				end
-			elseif timer == 19 then
-				handled = true
-				timerHungeringPyreCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "hungeringpyre", "HungeringPyreCount"))
-			elseif timer == 3 or timer == 10 or timer == 35 then
-				handled = true
-				timerResidualTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "residualtoll", "ResidualTollCount"))
-				if timer == 3 then
-					pendingResidualToll22 = true
-				end
-			elseif timer == 22 then--Ambiguous between Hungering Pyre and Residual Toll in stage 2
-				handled = true
-				if pendingResidualToll22 then
-					pendingResidualToll22 = false
-					timerResidualTollCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "residualtoll", "ResidualTollCount"))
-				else
-					timerHungeringPyreCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "hungeringpyre", "HungeringPyreCount"))
-				end
-			end
-		else
-			--Unexpected stage: try shared buckets instead of hard failing immediately.
-			if timer == 44 or timer == 34 or timer == 24 or timer == 20 or timer == 8 or timer == 30 then
-				handled = true
-				timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
-			elseif timer == 29 or timer == 45 then
-				handled = true
-				timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
-			elseif timer == 13 or timer == 58 then
-				handled = true
-				timerEssenceRendCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "essencerend", "RendCount"))
-			elseif timer == 12 or timer == 28 then
-				handled = true
-				local invokeCount = self:TLCountStart(eventID, "invoke", "InvokeCount")
-				timerInvokeCD:TLStart(timerExact, eventID, invokeCount)
-				if invokeCount == 1 and self:GetStage(2, 1) then--Boss swaps pattern at 50%; detect stage 2 by first Invoke
-					self:SetStage(2)
-					pendingResidualToll22 = false
-					warnPhase2:Show()
-					warnPhase2:Play("ptwo")
-				end
-			end
-		end
-
-		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
-			badStateDetected = true
-			self:ResumeBlizzardAPI()
-			self:UnregisterShortTermEvents()
-			setFallback(self)
-			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
-		end
-	end
-
-	---@param self DBMMod
-	---@param timer number
-	---@param timerExact number
-	---@param eventID number
-	local function timersNormal(self, timer, timerExact, eventID)
-		local stage = self:GetStage()
-		local handled = false
-
-		if stage == 1 then
-			--Stage 1: Amani/Rend alternate on 40, Amani (30), Barrage (28/36), Rend (15), Pyre (11), Invoke (8)
+			--Live Heroic/Normal stage 1: Amani/Rend alternate on 40, Amani (30), Barrage (28/36), Rend (15), Pyre (11), Invoke (8)
 			if timer == 40 then
 				normalStage1FortyCount = normalStage1FortyCount + 1
 				handled = true
@@ -302,7 +194,7 @@ do
 				end
 			end
 		elseif stage == 2 then
-			--Stage 2: Restless Amani (20/30), Barrage/Amani alternate on 40, Possession Barrage (28), Essence Rend (50), Invoke (8/48), Hungering Pyre (11)
+			--Live Heroic/Normal stage 2: Restless Amani (20/30), Barrage/Amani alternate on 40, Possession Barrage (28), Essence Rend (50), Invoke (8/48), Hungering Pyre (11)
 			--Note: a 40s Possession Barrage state-2 arrived ~10s late in Normal NekzaliKill2, but completed on time in NekzaliKill; use Blizzard's raw duration without correction.
 			if timer == 40 then
 				normalStage2FortyCount = normalStage2FortyCount + 1
@@ -344,7 +236,7 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		if not self:IsHeroic() and not self:IsEasy() then return end--Hardcoded routing currently Heroic/Normal-only
-		local timerRouter = self:IsHeroic() and timersHeroic or timersNormal
+		local timerRouter = timersLive
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
