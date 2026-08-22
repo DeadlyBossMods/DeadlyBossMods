@@ -47,8 +47,6 @@ local timerSubmergeCD					= mod:NewCDCountTimer(20.5, 1292999, nil, nil, nil, 6)
 
 --local timerBerserkCD					= mod:NewBerserkTimer(600)
 
-local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
-
 mod:AddAuraSoundOption(1300938, true, 1298367, 1, 3, "slowyou", 20, 0)--Hobbled
 mod:AddAuraSoundOption(1292403, true, 1292188, 1, 3, "dotyou", 19, 0)--Caustic Wave Dot
 mod:AddAuraSoundOption(1300685, true, 1300530, 1, 3, "debuffyou", 17, 0)--Soul Constrictor (can't soak Spectral Coils)
@@ -70,6 +68,18 @@ mod:AddAuraSoundOption(1305650, true, -37007, 1, 3, "stunyou", 19, 0)--Agnuished
 mod:AddAuraSoundOption(1301118, true, -36292, 1, 1, "targetyou", 2, 0)--Grasping Fangs (targeted)
 mod:AddAuraSoundOption(1311611, true, -36292, 1, 3, "slowyou", 20, 0)--Grasping Fangs (got hit by it) (maybe change to "break chain" or something?
 mod:AddAuraSoundOption(1311602, true, -36292, 1, 3, "dotyou", 19, 0)--Blight Vein (broke Grasping Fangs)
+
+local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local stage1SixtyTwoCount = 0--Normal: Call of the Serpent then Mother's Wrath share the exact 62s opening slot
+
+mod.vb.mothersWrathCount = 1
+mod.vb.rageCount = 1
+mod.vb.causticWavesCount = 1
+mod.vb.goreRattleCount = 1
+mod.vb.spectralCoilsCount = 1
+mod.vb.callCount = 1
+mod.vb.mephiticThrashCount = 1
+mod.vb.virulentSpitCount = 1
 
 ---@param self DBMMod
 ---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -111,39 +121,85 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
+	self:SetStage(1)
+	stage1SixtyTwoCount = 0
+	self.vb.mothersWrathCount = 1
+	self.vb.rageCount = 1
+	self.vb.causticWavesCount = 1
+	self.vb.goreRattleCount = 1
+	self.vb.spectralCoilsCount = 1
+	self.vb.callCount = 1
+	self.vb.mephiticThrashCount = 1
+	self.vb.virulentSpitCount = 1
 	--Hardcode features first
-	--if DBM.Options.HardcodedTimer and not badStateDetected then
-	--	--self:SetStage(1)
-	--	self:IgnoreBlizzardAPI()
-	--	self:RegisterShortTermEvents(
-	--		"ENCOUNTER_TIMELINE_EVENT_ADDED",
-	--		"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
-	--	)
-	--	if DBM.Options.HideDBMBars then
-	--		setFallback(self, true)
-	--	end
-	--else
+	if DBM.Options.HardcodedTimer and self:IsNormal() and not badStateDetected then
+		self:IgnoreBlizzardAPI()
+		self:RegisterShortTermEvents(
+			"ENCOUNTER_TIMELINE_EVENT_ADDED",
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+		)
+		setFallback(self, true)
+	else
 		setFallback(self)
-	--end
+	end
 end
 
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	stage1SixtyTwoCount = 0
 	self:UnregisterShortTermEvents()
+	badStateDetected = false--TEMP, we want to allow partial hardcode to work each pull til it's finished
 end
 
---[[
 do
 	---@param self DBMMod
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
+	--TODO: Stage 2 routing is incomplete, and stage 3 is unimplemented; the available Normal kill ended early before any stage 3 abilities. More log evidence is needed.
 	local function timersAll(self, timer, timerExact, eventID)
-		local handled
-		if timer == 114 then
+		local handled = false
+		local stage = self:GetStage()
+		if stage == 1 and timer == 118 then--Stage 2 starts with the new 118s Rage of the Shackled timer
+			self:SetStage(2)
+			timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
 			handled = true
-			timerWaterJetCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "waterjet", "tankWaterCount"))
+		elseif stage == 1 then
+			if timer == 42 then
+				timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
+			elseif timer == 10 then
+				timerMothersWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mothersWrath", "mothersWrathCount"))
+			elseif timer == 20 or timer == 84 then
+				timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
+			elseif timer == 130 then
+				timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
+			elseif timer == 5 then
+				timerGoreRattleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "goreRattle", "goreRattleCount"))
+			elseif timer == 35 or timer == 41 then
+				timerMephiticThrashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mephiticThrash", "mephiticThrashCount"))
+			elseif timer == 62 then
+				stage1SixtyTwoCount = stage1SixtyTwoCount + 1
+				if stage1SixtyTwoCount == 1 then--Complete Normal corpus: opener Call, then Mother's Wrath
+					timerCalloftheSerpentCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "call", "callCount"))
+				elseif stage1SixtyTwoCount == 2 then
+					timerMothersWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mothersWrath", "mothersWrathCount"))
+				else
+					return false
+				end
+			else
+				return false
+			end
+			handled = true
+		elseif stage == 2 then
+			if timer == 118 then
+				timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
+			elseif timer == 30 or timer == 40 then
+				timerVirulentSpitCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "virulentSpit", "virulentSpitCount"))
+			else
+				return false
+			end
+			handled = true
 		end
 
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
@@ -156,7 +212,6 @@ do
 	end
 
 	--Note, bar state changing and canceling is handled by core
-
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
@@ -172,14 +227,37 @@ do
 		if not eventID or not eventState then return end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
-			if not eventType then return end
-			if not eventCount then return end
-			if eventType == "waterjet" then
-				--specWarnWaterJet:Show(eventCount, "lineyou")
+			if eventType and eventCount then
+				if eventType == "mothersWrath" then
+					if self:IsTanking("player", "boss1", nil, true) then
+						specWarnMothersWrath:Show()
+						specWarnMothersWrath:Play("defensive")
+					end
+				elseif eventType == "rage" then
+					specWarnRageoftheShackled:Show(eventCount)
+					specWarnRageoftheShackled:Play("aesoon")
+				elseif eventType == "causticWaves" then
+					specWarnCausticWaves:Show(eventCount)
+					specWarnCausticWaves:Play("watchwave")
+				elseif eventType == "goreRattle" then
+					specWarnGoreRattle:Show(eventCount)
+					specWarnGoreRattle:Play("bigmob")
+				elseif eventType == "spectralCoils" then
+					specWarnSpectralCoils:Show(eventCount)
+					specWarnSpectralCoils:Play("helpsoak")
+				elseif eventType == "call" then
+					specWarnCalloftheSerpent:Show(eventCount)
+					specWarnCalloftheSerpent:Play("mobsoon")
+				elseif eventType == "mephiticThrash" then
+					specWarnMephiticThrash:Show(eventCount)
+					specWarnMephiticThrash:Play("aesoon")
+				elseif eventType == "virulentSpit" then
+					specWarnVirulentSpit:Show(eventCount)
+					specWarnVirulentSpit:Play("watchstep")
+				end
 			end
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)
 		end
 	end
 end
---]]
