@@ -15,7 +15,8 @@ mod:RegisterCombat("combat")
 --TODO, https://www.wowhead.com/ptr/spell=1296335/desquamating-venom exists with ID of 766 but isn't in journal
 --TODO, verify https://www.wowhead.com/ptr/spell=1291461/virulent-fumes . it does a lot of GTFO damage over course of fight yet has no mention in journal?
 --TODO, maybe use https://www.wowhead.com/ptr/spell=1281910/plague-froth instead to pre warn Plague Froth?
-DBM:RegisterAltSpellName(1281907, DBM_COMMON_L.DEBUFFS)--Plague Froth --> Debuffs
+DBM:RegisterAltSpellName(1281907, DBM_COMMON_L.WAVES)--Plague Froth --> Waves
+DBM:RegisterAltSpellName(1282114, DBM_COMMON_L.DEBUFFS)--Adaptive Infection --> Debuffs
 local warnAdaptiveInfection				= mod:NewCountAnnounce(1282114, 2)--Hardcode only
 --local warnToxicOutpouring				= mod:NewCountAnnounce(1280881, 2)--Hardcode only, likely not used
 local warnImbibeToxin					= mod:NewCountAnnounce(1283164, 2)--Hardcode only

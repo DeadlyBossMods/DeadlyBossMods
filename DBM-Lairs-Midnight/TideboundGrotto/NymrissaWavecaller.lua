@@ -17,15 +17,16 @@ mod:RegisterCombat("combat")
 --TODO, verify which alerts are actually personal and what aren't in world without private auras
 --TODO, is rush an aoe or something you dodge or both?
 DBM:RegisterAltSpellName(1276710, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
+DBM:RegisterAltSpellName(1282937, DBM_COMMON_L.TANKBUSTER)
 local specWarnWaterJet					= mod:NewSpecialWarningBlizzYou(1268562, nil, nil, nil, 1, 17, 4, nil, "lineyou")--Mythic version
-local specWarnWaterFlurry				= mod:NewSpecialWarningBlizzYou(1282937, nil, nil, nil, 1, 17, 4, nil, "lineyou")--Non Mythic version
+local specWarnIcebladeFlurry			= mod:NewSpecialWarningDefensive(1282937, nil, nil, nil, 1, 2, 4, nil, "defensive")--Non Mythic version
 local specWarnAlluringBubble			= mod:NewSpecialWarningCount(1276710, nil, nil, nil, 2, 2, nil, nil, "killmob")
 local specWarnChillingFrost				= mod:NewSpecialWarningBlizzYou(1313393, nil, nil, nil, 1, 2, 3, nil, "orbrun")
 local specWarnTidepiercersRush			= mod:NewSpecialWarningCount(1258668, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnAbyssalRain				= mod:NewSpecialWarningCount(1260837, nil, nil, nil, 2, 2, nil, nil, "aesoon")
 
 local timerWaterJetCD					= mod:NewCDCountTimer(20.5, 1268562, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Mythic version
-local timerWaterFlurryCD				= mod:NewCDCountTimer(20.5, 1282937, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Non Mythic version
+local timerIcebladeFlurryCD				= mod:NewCDCountTimer(20.5, 1282937, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Non Mythic version
 local timerAlluringBubbleCD				= mod:NewCDCountTimer("d20.5", 1276710, nil, nil, nil, 1)--1276710 is used for repeat event, 1257717 for initial
 local timerChillingFrostCD				= mod:NewCDCountTimer(20.5, 1313393, nil, nil, nil, 3)
 local timerTidepiercersRushCD			= mod:NewCDCountTimer(20.5, 1258668, nil, nil, nil, 3)
@@ -49,7 +50,7 @@ local function setFallback(self, dontSetAlerts)
 	if not dontSetAlerts then
 		if self:IsTank() then
 			specWarnWaterJet:SetAlert(366, "lineyou", 17, 3, 0)--TODO, verify it's actually personal
-			specWarnWaterFlurry:SetAlert(654, "lineyou", 17, 3, 0)--TODO, verify it's actually personal
+			specWarnIcebladeFlurry:SetAlert(654, "defensive", 17, 3)--TODO, verify it's actually personal
 		end
 		specWarnAlluringBubble:SetAlert({367, 372}, "killmob", 2, 2, 0)
 		specWarnChillingFrost:SetAlert(976, "orbrun", 2, 3, 0)--TODO, verify it's actually personal
@@ -64,7 +65,7 @@ local function setFallback(self, dontSetAlerts)
 	timerChillingFrostCD:SetTimeline(976, onlyColor)
 	timerTidepiercersRushCD:SetTimeline(369, onlyColor)
 	timerAbyssalRainCD:SetTimeline(370, onlyColor)
-	timerWaterFlurryCD:SetTimeline(654, onlyColor)
+	timerIcebladeFlurryCD:SetTimeline(654, onlyColor)
 	timerBerserkCD:SetTimeline(745, onlyColor)--Berserk
 end
 
@@ -115,7 +116,7 @@ do
 		local handled
 		if timer == 27 or timer == 22 or timer == 9 then--Iceblade Flurry
 			handled = true
-			timerWaterFlurryCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "waterflurry", "tankWaterCount"))
+			timerIcebladeFlurryCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "IcebladeFlurry", "tankWaterCount"))
 		elseif timer == 8 or timer == 33 or timer == 23 then--Abyssal Rain
 			handled = true
 			timerAbyssalRainCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rain", "abyssalRainCount"))
@@ -177,8 +178,11 @@ do
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end
 			if not eventCount then return end
-			if eventType == "waterflurry" then
-				specWarnWaterFlurry:Show(eventCount, "lineyou")
+			if eventType == "IcebladeFlurry" then
+				if self:IsTanking("boss1", nil, nil, true) then
+					specWarnIcebladeFlurry:Show()
+					specWarnIcebladeFlurry:Play("defensive")
+				end
 			elseif eventType == "bubble" then
 				self:Unschedule(AlluringBubbleCheck, self, eventID)
 				specWarnAlluringBubble:Show(eventCount)

@@ -89,6 +89,7 @@ CL.HEALABSORB						= "Heal Absorb"
 CL.HEALABSORBS						= "Heal Absorbs"
 CL.INTERRUPT						= "Interrupt"
 CL.INTERRUPTS						= "Interrupts"
+CL.KNOCK							= "Knock"
 CL.KNOCKUP							= "Knock up"
 CL.LASER							= "Laser"
 CL.LASERS							= "Lasers"
@@ -96,6 +97,7 @@ CL.LINE								= "Line"
 CL.LINES							= "Lines"
 CL.MARK								= "Mark"--As in short text for all the encounter mechanics that start or end in "Mark"
 CL.MARKS							= "Marks"--Plural of above
+CL.MATHPUZZLE						= "Math Puzzle"
 CL.MINDCONTROL						= "Mind Control"
 CL.NEGATIVE							= "Negative"
 CL.ORB								= "Orb"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
@@ -121,6 +123,7 @@ CL.TANKBUSTER						= "Tank Buster"
 CL.TANKCOMBO						= "Tank Combo"
 CL.TANKDEBUFF						= "Tank Debuff"
 CL.TRAPS							= "Traps"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
+CL.WAVES							= "Waves"
 --NOTE, many common locals are auto localized:
 --Bomb (37859), Bombs (167180), Scream (31295), Breath (17088), Beam (173303), Beams (207544), Charge (100), Knockback (28405), Portal (161722), Portals (109400)
 --Fixate (12021), Trap (181341), Meteor (28884), Shield (151702), Teleport (4801), Fear (5782), Roar (140459), Leap (47482), Orb (265315), Tornados (86189)

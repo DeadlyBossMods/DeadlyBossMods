@@ -15,7 +15,12 @@ mod:RegisterCombat("combat")
 --TODO, personal alerts for blighted Blood? or just generic warning fine?
 --TODO, https://www.wowhead.com/ptr/spell=1284485/debilitating-miasma isn't in journal but https://www.wowhead.com/ptr/spell=1288232/unstable-miasma is. I suspect only one of them exists (ID 642)
 --TODO, find encounter event Ids for warnings that will likely hook up to mythic venom types. they're probably assigned to Dungeon Ecounter 0
-DBM:RegisterAltSpellName(1284483, DBM_COMMON_L.DISPELS)--Blighted Blood --> Dispels
+DBM:RegisterAltSpellName(1288232, DBM_COMMON_L.GROUPSOAK)--Unstable Miasma --> Group Soak
+DBM:RegisterAltSpellName(1284251, DBM_COMMON_L.BIG_ADDS)--Venom Coagulation --> Big Adds
+DBM:RegisterAltSpellName(1284434, DBM_COMMON_L.GROUPSOAK.. " ".. DBM_COMMON_L.ORBS)--Toxic Droplets --> Soak Orbs
+DBM:RegisterAltSpellName(1284483, DBM_COMMON_L.POOL.. " ".. DBM_COMMON_L.DEBUFFS)--Blighted Blood --> Pool Debuffs
+DBM:RegisterAltSpellName(1284588, DBM_COMMON_L.MATHPUZZLE)--Vitriolic Stasis --> Math Puzzle
+--DBM:RegisterAltSpellName(1296878, DBM_COMMON_L.MATHPUZZLE)--Not sure what to give it yet
 local warnVitriolicStasis				= mod:NewCountAnnounce(1284588, 2)--Hardcode only
 local warnUnstableMiasma				= mod:NewCountAnnounce(1288232, 2)--Hardcode only
 
@@ -23,7 +28,7 @@ local specWarnVenomCoagulation			= mod:NewSpecialWarningCount(1284251, nil, nil,
 local specWarnToxicDroplets				= mod:NewSpecialWarningCount(1284434, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
 local specWarnEmpoweringSlam			= mod:NewSpecialWarningCount(1284458, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnBloodvenomInjection		= mod:NewSpecialWarningCount(1284487, nil, nil, nil, 1, 2, nil, nil, "defensive")
---local specWarnBlightedBlood				= mod:NewSpecialWarningCount(1284483, "Healer", nil, nil, 2, 2, nil, nil, "helpdispel")--Verify we want to dispel right away first
+--local specWarnBlightedBlood			= mod:NewSpecialWarningCount(1284483, "Healer", nil, nil, 2, 2, nil, nil, "helpdispel")--Verify we want to dispel right away first
 --local specWarnDebilitatingMiasma		= mod:NewSpecialWarningCount(1284485, nil, nil, nil, 2, 2, nil, nil, "keepmove")--Possibly unused
 --local specWarnUnstableMiasma			= mod:NewSpecialWarningSoakCount(1288232, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Aura used instead
 local specWarnShiftingProtovenom		= mod:NewSpecialWarningCount(1296878, nil, nil, nil, 3, 19, 4, nil, "colorchange")
@@ -33,12 +38,14 @@ local timerToxicDropletsCD				= mod:NewCDCountTimer(20.5, 1284434, nil, nil, nil
 local timerEmpoweringSlamCD				= mod:NewCDCountTimer(20.5, 1284458, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBloodvenomInjectionCD		= mod:NewCDCountTimer(20.5, 1284487, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBlightedBloodCD				= mod:NewCDCountTimer(20.5, 1284483, nil, "Healer", nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
---local timerDebilitatingMiasmaCD			= mod:NewCDCountTimer(20.5, 1284485, nil, nil, nil, 3)--Possibly unused
+--local timerDebilitatingMiasmaCD		= mod:NewCDCountTimer(20.5, 1284485, nil, nil, nil, 3)--Possibly unused
 local timerVitriolicStasisCD			= mod:NewCDCountTimer(20.5, 1284588, nil, nil, nil, 6)
 local timerUnstableMiasmaCD				= mod:NewCDCountTimer(20.5, 1288232, nil, nil, nil, 3)
 local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
+--Aura sounds cannot be change in combat, unfortunately mechanics differ on heroic/mythic vs normal/lfr. pools don't drop on easy difficulty
+--So right now the choice is give hard difficulties a weak warning or give easy difficulties an incorrect strong one. I chose later
 --Evidence Log https://www.warcraftlogs.com/reports/xdTc1fhtKWPrbCVv?fight=29&type=auras&spells=debuffs
 mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "toxic", 2, 0)--Helical Toxins (better audio?)
 mod:AddAuraSoundOption(1284471, true, 1284483, 1, 1, "poolyou", 18, 0)--Blighted Blood
