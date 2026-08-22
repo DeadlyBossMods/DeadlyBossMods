@@ -18,7 +18,14 @@ mod:RegisterCombat("combat")
 --TODO, threat check to see WHICH tank is aiming frontal (Soul Severing) and give them a different audio from everyone else who is just dodging it
 --TODO, refine audio for second step of Toxic Deluge?
 --TODO, most mythic stuff missing due to no PTR logs
---DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
+DBM:RegisterAltSpellName(1282487, DBM_COMMON_L.POOLS)--Fangs of the Coiled Altar --> Pools
+DBM:RegisterAltSpellName(1299960, DBM_COMMON_L.ORBS)--Toxic Deluge --> Orbs
+DBM:RegisterAltSpellName(1299680, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.FRONTAL)--Sever --> Tank Frontal
+DBM:RegisterAltSpellName(1286573, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.FRONTAL)--Soul Severing --> Tank Frontal
+DBM:RegisterAltSpellName(1287227, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.FRONTAL)--Blighted Severing --> Tank Frontal
+DBM:RegisterAltSpellName(1286441, DBM_COMMON_L.ADDS)--Spiritcackle --> Adds
+DBM:RegisterAltSpellName(1298381, DBM_COMMON_L.POOLS)--Defilement of the Crucible --> Pools
+DBM:RegisterAltSpellName(1289900, DBM_COMMON_L.MINDCONTROL)--Deathmarch --> Mind Control
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 
@@ -31,7 +38,7 @@ local specWarnEternalNightfall			= mod:NewSpecialWarningCount(1286918, nil, nil,
 local specWarnGloombomb					= mod:NewSpecialWarningYou(1286895, nil, nil, nil, 1, 2, nil, nil, "bombyou")
 local specWarnDeathmarch				= mod:NewSpecialWarningCount(1289900, nil, nil, nil, 2, 2, nil, nil, "findmc")
 local specWarnSoulSevering				= mod:NewSpecialWarningCount(1286573, nil, nil, nil, 2, 15, nil, nil, "frontal")--Stage 2 tank sever
-local specWarnSpiritcackle				= mod:NewSpecialWarningSwitchCount(1286441, nil, nil, nil, 1, 2, nil, nil, "killmob")
+local specWarnSpiritcackle				= mod:NewSpecialWarningCount(1286441, nil, nil, nil, 1, 2, nil, nil, "mobsoon")
 local specWarnDefilementoftheCrucible	= mod:NewSpecialWarningCount(1298381, nil, nil, nil, 2, 2, nil, nil, "specialsoon")--Stage 2 empowered version of Fang of the Crucible, same spellid but different encounter event ID
 local specWarnGrimGuillotine			= mod:NewSpecialWarningCount(1299266, nil, nil, nil, 2, 2, nil, nil, "helpsoak")--Stage 2 empowered version of Guillotine, same spellid but different encounter event ID
 local specWarnSever						= mod:NewSpecialWarningCount(1299680, nil, nil, nil, 2, 15, nil, nil, "frontal")--Stage 1 tank sever
@@ -119,7 +126,7 @@ local function setFallback(self, dontSetAlerts)
 		specWarnGloombomb:SetAlert(684, "bombyou", 2, 2, 0)
 		specWarnDeathmarch:SetAlert(685, "findmc", 2, 2)
 		specWarnSoulSevering:SetAlert(686, "frontal", 15, 2)
-		specWarnSpiritcackle:SetAlert(687, "killmob", 2, 2)
+		specWarnSpiritcackle:SetAlert(687, "mobsoon", 2, 2)
 		specWarnDefilementoftheCrucible:SetAlert(794, "specialsoon", 2, 2)
 		specWarnGrimGuillotine:SetAlert(803, "helpsoak", 2, 2)
 		specWarnSever:SetAlert(811, "frontal", 15, 2)
@@ -538,7 +545,7 @@ do
 				specWarnSoulSevering:Play("frontal")
 			elseif eventType == "spiritcackle" then
 				specWarnSpiritcackle:Show(eventCount)
-				specWarnSpiritcackle:Play("killmob")
+				specWarnSpiritcackle:Play("mobsoon")
 			elseif eventType == "defilement" then
 				specWarnDefilementoftheCrucible:Show(eventCount)
 				specWarnDefilementoftheCrucible:Play("specialsoon")

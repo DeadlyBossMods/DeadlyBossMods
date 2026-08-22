@@ -11,6 +11,8 @@ mod:SetZone(3004)
 mod:RegisterCombat("combat")
 
 DBM:RegisterAltSpellName(1277025, DBM_COMMON_L.TANKCOMBO)--Apex Predator --> Tank Combo
+DBM:RegisterAltSpellName(1305959, DBM_COMMON_L.CIRCLES)--Venomous Surge --> Circles
+DBM:RegisterAltSpellName(1285425, DBM_COMMON_L.KNOCK.. " " .. DBM_COMMON_L.DEBUFFS)--Raging Crosswinds --> Knock Debuffs
 local warnVenomousSurge					= mod:NewCountAnnounce(1305959, 2)
 
 local specWarnRagingCrosswinds			= mod:NewSpecialWarningBlizzYou(1285425, nil, nil, nil, 1, 17, nil, nil, "debuffyou")

@@ -17,7 +17,9 @@ mod:RegisterCombat("combat")
 --TODO, split posession barriage to a threat based run out warning for one tank and taunt warning for other
 --TODO, verify https://www.wowhead.com/ptr/spell=1290003/uncoiling is triggered by ID 712 as ENCOUNTER_WARNING (script uses 1290001 but it has no tooltip)
 --TODO, verify if intermission abilities neeed counts or not (some might some might not)
---DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
+DBM:RegisterAltSpellName(1284103, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.LINE)--Possession Barrage --> Tank Line
+DBM:RegisterAltSpellName(1297630, DBM_COMMON_L.ADDS)--Restless Amani --> Adds
+DBM:RegisterAltSpellName(1305421, DBM_COMMON_L.GROUPSOAK)--Hungering Pyre --> Group Soak
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnEssenceRend					= mod:NewCountAnnounce(1287426, 2)
 
@@ -27,7 +29,7 @@ local specWarnPossessionBarrage			= mod:NewSpecialWarningRunCount(1284103, nil, 
 local specWarnPossessionBarrageTaunt	= mod:NewSpecialWarningTaunt(1284103, nil, nil, nil, 1, 2, nil, nil, "tauntboss")
 local specWarnGraspingDepths			= mod:NewSpecialWarningCount(1293212, nil, nil, nil, 2, 12, 4, nil, "pullin")--Mythic Only
 local specWarnInvoke					= mod:NewSpecialWarningCount(1299673, nil, nil, nil, 2, 2, nil, nil, "specialsoon")
-local specWarnHungeringPyre				= mod:NewSpecialWarningCount(1290679, nil, nil, nil, 2, 2, nil, nil, "helpsoak")--Script uses 1305421 but it has no tooltip, so we use 1289855 on purpose
+local specWarnHungeringPyre				= mod:NewSpecialWarningCount(1305421, nil, nil, nil, 2, 2, nil, nil, "helpsoak")--Script uses 1305421 but it has no tooltip, so we use 1289855 on purpose
 local specWarnResidualToll				= mod:NewSpecialWarningCount(1298698, nil, nil, nil, 2, 2, nil, nil, "aesoon")--Script uses 1305993, but it has no tooltip, so we use 1298698 on purpose
 
 local timerEssenceRendCD				= mod:NewCDCountTimer(20.5, 1287426, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
@@ -35,7 +37,7 @@ local timerRestlessAmaniCD				= mod:NewCDCountTimer(20.5, 1297630, nil, nil, nil
 local timerPossessionBarrageCD			= mod:NewCDCountTimer(20.5, 1284103, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGraspingDepthsCD				= mod:NewCDCountTimer(20.5, 1293212, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerInvokeCD						= mod:NewCDCountTimer(20.5, 1299673, nil, nil, nil, 6)
-local timerHungeringPyreCD				= mod:NewCDCountTimer(20.5, 1290679, nil, nil, nil, 5)
+local timerHungeringPyreCD				= mod:NewCDCountTimer(20.5, 1305421, nil, nil, nil, 5)
 local timerResidualTollCD				= mod:NewCDCountTimer(20.5, 1298698, nil, nil, nil, 2)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
@@ -45,7 +47,7 @@ mod:AddAuraSoundOption(1287434, true, 1287426, 1, 3, "debuffyou", 17, 0)--Essenc
 mod:AddAuraSoundOption(1297624, false, 1299673, 1, 3, "stackhigh", 6, 1)--Ritual Burn
 mod:AddAuraSoundOption(1300235, true, 1293212, 1, 3, "debuffyou", 17, 0)--Soul Exhaustion
 mod:AddAuraSoundOption({1300524, 1300521}, true, 1293212, 1, 3, "teleyou", 5, 0)--Immortal Coil (pulled into soulcoil well)
-mod:AddAuraSoundOption(1306666, true, 1290679, 1, 1, "gathershare", 2, 0)--Hungering Pyre
+mod:AddAuraSoundOption(1306666, true, 1305421, 1, 1, "gathershare", 2, 0)--Hungering Pyre
 mod:AddAuraSoundOption(1294933, true, 1290679, 1, 3, "dotyou", 19, 0)--Slithering Flame
 --mod:AddAuraSoundOption(1284103, true, 1284103, 4, 1, "justrun", 2, 0)--Possession Barrage (threat check used for now)
 
