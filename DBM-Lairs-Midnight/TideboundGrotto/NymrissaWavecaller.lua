@@ -26,7 +26,7 @@ local specWarnAbyssalRain				= mod:NewSpecialWarningCount(1260837, nil, nil, nil
 
 local timerWaterJetCD					= mod:NewCDCountTimer(20.5, 1268562, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Mythic version
 local timerWaterFlurryCD				= mod:NewCDCountTimer(20.5, 1282937, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Non Mythic version
-local timerAlluringBubbleCD				= mod:NewCDCountTimer(20.5, 1276710, nil, nil, nil, 1)--1276710 is used for repeat event, 1257717 for initial
+local timerAlluringBubbleCD				= mod:NewCDCountTimer("d20.5", 1276710, nil, nil, nil, 1)--1276710 is used for repeat event, 1257717 for initial
 local timerChillingFrostCD				= mod:NewCDCountTimer(20.5, 1313393, nil, nil, nil, 3)
 local timerTidepiercersRushCD			= mod:NewCDCountTimer(20.5, 1258668, nil, nil, nil, 3)
 local timerAbyssalRainCD				= mod:NewCDCountTimer(20.5, 1260837, nil, nil, nil, 2, nil, DBM_COMMON_L.HEALER_ICON)
@@ -83,9 +83,7 @@ function mod:OnLimitedCombatStart()
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
 			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
 		)
-		if DBM.Options.HideDBMBars then
-			setFallback(self, true)
-		end
+		setFallback(self, true)
 	else
 		setFallback(self)
 	end
@@ -100,6 +98,16 @@ end
 
 do
 	---@param self DBMMod
+	---@param eventID number
+	local function AlluringBubbleCheck(self, eventID)
+		local eventType, eventCount = self:TLCountFinish(eventID)
+		if eventType == "bubble" and eventCount then
+			specWarnAlluringBubble:Show(eventCount)
+			specWarnAlluringBubble:Play("killmob")
+		end
+	end
+
+	---@param self DBMMod
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
@@ -113,7 +121,10 @@ do
 			timerAbyssalRainCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rain", "abyssalRainCount"))
 		elseif timer == 25 or timer == 7 then--Alluring Bubble, 1276710 initial/recast
 			handled = true
-			timerAlluringBubbleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bubble", "alluringBubbleCount"))
+			local eventCount = self:TLCountStart(eventID, "bubble", "alluringBubbleCount")
+			timerAlluringBubbleCD:TLStart(timerExact, eventID, eventCount)
+			--Bubble completes with a state 3 roughly five seconds late; finish its count and show its alert at the bar's natural expiry instead.
+			self:Schedule(timerExact, AlluringBubbleCheck, self, eventID)
 		elseif timer == 18 then--1257717 initial Alluring Bubble setup; it has no corresponding alert
 			handled = true
 			timerAlluringBubbleCD:TLStart(timerExact, eventID, 1)
@@ -127,7 +138,10 @@ do
 			handled = true
 			repeating44Slot = (repeating44Slot % 3) + 1
 			if repeating44Slot == 1 then
-				timerAlluringBubbleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bubble", "alluringBubbleCount"))
+				local eventCount = self:TLCountStart(eventID, "bubble", "alluringBubbleCount")
+				timerAlluringBubbleCD:TLStart(timerExact, eventID, eventCount)
+				--Bubble completes with a state 3 roughly five seconds late; finish its count and show its alert at the bar's natural expiry instead.
+				self:Schedule(timerExact, AlluringBubbleCheck, self, eventID)
 			elseif repeating44Slot == 2 then
 				timerChillingFrostCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "frost", "ChillingFrostCount"))
 			else
@@ -166,6 +180,7 @@ do
 			if eventType == "waterflurry" then
 				specWarnWaterFlurry:Show(eventCount, "lineyou")
 			elseif eventType == "bubble" then
+				self:Unschedule(AlluringBubbleCheck, self, eventID)
 				specWarnAlluringBubble:Show(eventCount)
 				specWarnAlluringBubble:Play("killmob")
 			elseif eventType == "frost" then
@@ -178,7 +193,10 @@ do
 				specWarnAbyssalRain:Play("aesoon")
 			end
 		elseif eventState == 3 then
-			self:TLCountCancel(eventID)
+			local eventType = self:TLCountCancel(eventID)
+			if eventType == "bubble" then
+				self:Unschedule(AlluringBubbleCheck, self, eventID)
+			end
 		end
 	end
 end
