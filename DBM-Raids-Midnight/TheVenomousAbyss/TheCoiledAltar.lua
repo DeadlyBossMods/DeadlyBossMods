@@ -2,11 +2,12 @@ local mod	= DBM:NewMod(2883, "DBM-Raids-Midnight", 1, 1320)
 --local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(238693)
+mod:SetCreatureID(259854, 257911)--Malacrass, Zul'jan
 mod:SetEncounterID(3429)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
 mod:SetZone(3004)
+mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
@@ -17,7 +18,14 @@ mod:RegisterCombat("combat")
 --TODO, threat check to see WHICH tank is aiming frontal (Soul Severing) and give them a different audio from everyone else who is just dodging it
 --TODO, refine audio for second step of Toxic Deluge?
 --TODO, most mythic stuff missing due to no PTR logs
---DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
+DBM:RegisterAltSpellName(1282487, DBM_COMMON_L.POOLS)--Fangs of the Coiled Altar --> Pools
+DBM:RegisterAltSpellName(1299960, DBM_COMMON_L.ORBS)--Toxic Deluge --> Orbs
+DBM:RegisterAltSpellName(1299680, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.FRONTAL)--Sever --> Tank Frontal
+DBM:RegisterAltSpellName(1286573, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.FRONTAL)--Soul Severing --> Tank Frontal
+DBM:RegisterAltSpellName(1287227, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.FRONTAL)--Blighted Severing --> Tank Frontal
+DBM:RegisterAltSpellName(1286441, DBM_COMMON_L.ADDS)--Spiritcackle --> Adds
+DBM:RegisterAltSpellName(1298381, DBM_COMMON_L.POOLS)--Defilement of the Crucible --> Pools
+DBM:RegisterAltSpellName(1289900, DBM_COMMON_L.MINDCONTROL)--Deathmarch --> Mind Control
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 
@@ -30,7 +38,7 @@ local specWarnEternalNightfall			= mod:NewSpecialWarningCount(1286918, nil, nil,
 local specWarnGloombomb					= mod:NewSpecialWarningYou(1286895, nil, nil, nil, 1, 2, nil, nil, "bombyou")
 local specWarnDeathmarch				= mod:NewSpecialWarningCount(1289900, nil, nil, nil, 2, 2, nil, nil, "findmc")
 local specWarnSoulSevering				= mod:NewSpecialWarningCount(1286573, nil, nil, nil, 2, 15, nil, nil, "frontal")--Stage 2 tank sever
-local specWarnSpiritcackle				= mod:NewSpecialWarningSwitchCount(1286441, nil, nil, nil, 1, 2, nil, nil, "killmob")
+local specWarnSpiritcackle				= mod:NewSpecialWarningCount(1286441, nil, nil, nil, 1, 2, nil, nil, "mobsoon")
 local specWarnDefilementoftheCrucible	= mod:NewSpecialWarningCount(1298381, nil, nil, nil, 2, 2, nil, nil, "specialsoon")--Stage 2 empowered version of Fang of the Crucible, same spellid but different encounter event ID
 local specWarnGrimGuillotine			= mod:NewSpecialWarningCount(1299266, nil, nil, nil, 2, 2, nil, nil, "helpsoak")--Stage 2 empowered version of Guillotine, same spellid but different encounter event ID
 local specWarnSever						= mod:NewSpecialWarningCount(1299680, nil, nil, nil, 2, 15, nil, nil, "frontal")--Stage 1 tank sever
@@ -82,6 +90,7 @@ local badStateDetected = false--Used to track if hardcode features have failed a
 local stage1FortyTwoCount = 0
 local stage1FortyThreeCount = 0
 local stage2ThirtyFourCount = 0
+local stage3ThirtyFourCount = 0
 local stage3FiftyNineCount = 0
 local stage2YellFirstTime = 0
 local stage2YellPairTime = 0
@@ -117,7 +126,7 @@ local function setFallback(self, dontSetAlerts)
 		specWarnGloombomb:SetAlert(684, "bombyou", 2, 2, 0)
 		specWarnDeathmarch:SetAlert(685, "findmc", 2, 2)
 		specWarnSoulSevering:SetAlert(686, "frontal", 15, 2)
-		specWarnSpiritcackle:SetAlert(687, "killmob", 2, 2)
+		specWarnSpiritcackle:SetAlert(687, "mobsoon", 2, 2)
 		specWarnDefilementoftheCrucible:SetAlert(794, "specialsoon", 2, 2)
 		specWarnGrimGuillotine:SetAlert(803, "helpsoak", 2, 2)
 		specWarnSever:SetAlert(811, "frontal", 15, 2)
@@ -149,6 +158,7 @@ function mod:OnLimitedCombatStart()
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
+	stage3ThirtyFourCount = 0
 	stage3FiftyNineCount = 0
 	stage2YellFirstTime = 0
 	stage2YellPairTime = 0
@@ -186,6 +196,7 @@ function mod:OnCombatEnd()
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
+	stage3ThirtyFourCount = 0
 	stage3FiftyNineCount = 0
 	stage2YellFirstTime = 0
 	stage2YellPairTime = 0
@@ -233,6 +244,7 @@ do
 		self.vb.DeathmarchCount = 1
 		self.vb.EternalNightfallCount = 1
 		self.vb.ToxicDelugeCount = 1
+		stage3ThirtyFourCount = 0
 		stage3FiftyNineCount = 0
 	end
 
@@ -246,6 +258,12 @@ do
 	---@return boolean
 	local function isStage3UniqueTimer(timer)
 		return timer == 15 or timer == 29 or timer == 42 or timer == 51 or timer == 59 or timer == 66 or timer == 88 or timer == 94
+	end
+
+	---@param timer number
+	---@return boolean
+	local function isNormalStage3Timer(timer)
+		return timer == 2 or timer == 28 or timer == 29 or timer == 30 or timer == 33 or timer == 34 or timer == 37 or timer == 38 or timer == 41 or timer == 49 or timer == 50 or timer == 54 or timer == 87 or timer == 88 or timer == 91 or timer == 92
 	end
 
 	---@param self DBMMod
@@ -398,8 +416,11 @@ do
 				end
 			end
 		elseif stage == 2 then
-			--Normal stage 2 opening: CoiledAltarWipe (Normal/Week1). Unknown timers intentionally fall back to Blizzard API.
-			if timer == 6 or timer == 34 then--Dreadmarch
+			--Normal stage 2: CoiledAltarMulti (Normal/Week1). Stage 3 begins after the cancellation burst and a long silence.
+			if isNormalStage3Timer(timer) and (GetTime() - lastTLEvent) > 20 then
+				enterStage3(self)
+				return timersNormal(self, timer, timerExact, eventID)
+			elseif timer == 6 or timer == 34 then--Dreadmarch
 				handled = true
 				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
 			elseif timer == 20 or timer == 40 then--Gloombomb
@@ -411,6 +432,35 @@ do
 			elseif timer == 70 then--Eternal Nightfall
 				handled = true
 				timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
+			end
+		elseif stage == 3 then
+			--Normal stage 3: CoiledAltarMulti (Normal/Week1)
+			if self:IsRoundedTimer(timerExact, 53.5, 0.1) then--Dreadmarch, rounded 54
+				handled = true
+				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
+			elseif timer == 2 or timer == 37 or timer == 41 or timer == 50 or timer == 54 then--Toxic Deluge
+				handled = true
+				timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
+			elseif timer == 28 or timer == 29 or timer == 30 or timer == 33 then--Blighted Sever
+				handled = true
+				timerBlightedSeveringCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blightedSevering", "SeverCount"))
+			elseif timer == 87 then--Eternal Nightfall
+				handled = true
+				timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
+			elseif timer == 88 or timer == 38 or timer == 49 then--Dreadmarch
+				handled = true
+				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
+			elseif timer == 91 or timer == 92 then--Defilement of the Coiled Altar
+				handled = true
+				timerDefilementoftheCrucibleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "defilement", "CrucibleCount"))
+			elseif timer == 34 then--Ambiguous: Eternal Nightfall OR Blighted Sever
+				handled = true
+				stage3ThirtyFourCount = stage3ThirtyFourCount + 1
+				if stage3ThirtyFourCount == 1 then
+					timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
+				else
+					timerBlightedSeveringCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blightedSevering", "SeverCount"))
+				end
 			end
 		end
 
@@ -495,7 +545,7 @@ do
 				specWarnSoulSevering:Play("frontal")
 			elseif eventType == "spiritcackle" then
 				specWarnSpiritcackle:Show(eventCount)
-				specWarnSpiritcackle:Play("killmob")
+				specWarnSpiritcackle:Play("mobsoon")
 			elseif eventType == "defilement" then
 				specWarnDefilementoftheCrucible:Show(eventCount)
 				specWarnDefilementoftheCrucible:Play("specialsoon")
@@ -522,7 +572,7 @@ do
 				else
 					stage1CancelBurstCount = stage1CancelBurstCount + 1
 				end
-				if stage1CancelBurstCount >= 6 then
+				if stage1CancelBurstCount >= 5 then
 					enterStage2(self)
 				end
 			end

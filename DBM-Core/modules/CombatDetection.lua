@@ -336,16 +336,16 @@ do
 		if mod.mainBoss then
 			for i = 1, #encounterUnitStatus do
 				local unitInfo = encounterUnitStatus[i]
-				if type(unitInfo) == "table" and unitInfo.creatureID == mod.mainBoss and type(unitInfo.remainingHealthPercent) == "number" then
+				if type(unitInfo) == "table" and unitInfo.creatureID == mod.mainBoss and type(unitInfo.remainingHealthPercent) == "number" and unitInfo.remainingHealthPercent > 0 then
 					return roundToHundredth(unitInfo.remainingHealthPercent)
 				end
 			end
 		end
-		if mod.onlyHighest then
+		if mod.highesthealth then
 			local highest
 			for i = 1, #encounterUnitStatus do
 				local unitInfo = encounterUnitStatus[i]
-				if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" then
+				if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" and unitInfo.remainingHealthPercent > 0 then
 					highest = highest and mmax(highest, unitInfo.remainingHealthPercent) or unitInfo.remainingHealthPercent
 				end
 			end
@@ -355,7 +355,7 @@ do
 		end
 		for i = 1, #encounterUnitStatus do
 			local unitInfo = encounterUnitStatus[i]
-			if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" then
+			if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" and unitInfo.remainingHealthPercent > 0 then
 				return roundToHundredth(unitInfo.remainingHealthPercent)
 			end
 		end

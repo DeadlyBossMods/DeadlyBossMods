@@ -2,11 +2,12 @@ local mod	= DBM:NewMod(2887, "DBM-Raids-Midnight", 1, 1320)
 --local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(238693)
+mod:SetCreatureID(257368, 257361)
 mod:SetEncounterID(3421)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
 mod:SetZone(3004)
+mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
@@ -16,10 +17,15 @@ mod:RegisterCombat("combat")
 --TODO, does blood torrent go on current tank or random target?
 --NOTE, https://www.wowhead.com/ptr/spell=1294921/flood has encounter event ID of 741 but doesn't exist in journal
 DBM:RegisterAltSpellName(1294293, DBM_COMMON_L.FRONTAL)--Surge --> Frontal
+DBM:RegisterAltSpellName(1289192, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.LASER)--Caustic Deluge --> Tank Laser
+DBM:RegisterAltSpellName(1288484, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.GROUPSOAK)--Stone Breaker --> Tank Soak
+DBM:RegisterAltSpellName(1290956, DBM_COMMON_L.WAVES)--Stir the Depths --> Waves
+DBM:RegisterAltSpellName(1290516, DBM_COMMON_L.GROUPSOAK)--Ravenous Feast --> Group Soak
+DBM:RegisterAltSpellName(1303230, DBM_COMMON_L.HEALABSORBS)--Blood Torrent --> Heal Absorbs
 local specWarnCausticDeluge				= mod:NewSpecialWarningBlizzYou(1289192, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnStoneBreaker				= mod:NewSpecialWarningSoakCount(1288484, nil, nil, nil, 1, 2, nil, nil, "helpsoak")
 local specWarnSurge						= mod:NewSpecialWarningDodgeCount(1294293, nil, nil, nil, 1, 15, nil, nil, "frontal")
-local specWarnFlood						= mod:NewSpecialWarningDodgeCount(1294921, nil, nil, nil, 1, 19, nil, nil, "beamincoming")--Likely unused
+--local specWarnFlood						= mod:NewSpecialWarningDodgeCount(1294921, nil, nil, nil, 1, 19, nil, nil, "beamincoming")--Likely unused
 local specWarnStirtheDepths				= mod:NewSpecialWarningCount(1290956, nil, nil, nil, 1, 2, nil, nil, "watchwave")--Likely flood's replacement
 local specWarnCoilingIchor				= mod:NewSpecialWarningDodgeCount(1290809, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnBeckonProgeny				= mod:NewSpecialWarningCount(1291404, "-Healer", nil, nil, 1, 2, nil, nil, "mobsoon")
@@ -32,7 +38,7 @@ local specWarnCorrosiveSpit				= mod:NewSpecialWarningBlizzYou(1291478, nil, nil
 local timerCausticDelugeCD				= mod:NewCDCountTimer(20.5, 1289192, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
 local timerStoneBreakerCD				= mod:NewCDCountTimer(20.5, 1288484, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
 local timerSurgeCD						= mod:NewCDCountTimer(20.5, 1294293, nil, nil, nil, 3)
-local timerFloodCD						= mod:NewCDCountTimer(20.5, 1294921, nil, nil, nil, 3)--Likely unused
+--local timerFloodCD						= mod:NewCDCountTimer(20.5, 1294921, nil, nil, nil, 3)--Likely unused
 local timerStirtheDepthsCD				= mod:NewCDCountTimer(20.5, 1290956, nil, nil, nil, 3)--Likely flood's replacement
 local timerCoilingIchorCD				= mod:NewCDCountTimer(20.5, 1290809, nil, nil, nil, 3)
 local timerBeckonProgenyCD				= mod:NewCDCountTimer(20.5, 1291404, nil, nil, nil, 1)
@@ -87,7 +93,7 @@ local function setFallback(self, dontSetAlerts)
 		end
 		specWarnCausticDeluge:SetAlert(711, "defensive", 2, 2, 0)
 		specWarnSurge:SetAlert(740, "frontal", 15, 2)
-		specWarnFlood:SetAlert(741, "beamincoming", 19, 2)
+	--	specWarnFlood:SetAlert(741, "beamincoming", 19, 2)
 		specWarnStirtheDepths:SetAlert(742, "watchwave", 2, 2)
 		specWarnCoilingIchor:SetAlert(743, "watchstep", 2, 2)
 		specWarnBeckonProgeny:SetAlert(744, "mobsoon", 2, 2)
@@ -103,7 +109,7 @@ local function setFallback(self, dontSetAlerts)
 	timerCausticDelugeCD:SetTimeline(711, onlyColor)
 	timerStoneBreakerCD:SetTimeline(739, onlyColor)
 	timerSurgeCD:SetTimeline(740, onlyColor)
-	timerFloodCD:SetTimeline(741, onlyColor)
+--	timerFloodCD:SetTimeline(741, onlyColor)
 	timerStirtheDepthsCD:SetTimeline(742, onlyColor)
 	timerCoilingIchorCD:SetTimeline(743, onlyColor)
 	timerBeckonProgenyCD:SetTimeline(744, onlyColor)
@@ -420,8 +426,10 @@ do
 			if eventType == "caustic" then
 				specWarnCausticDeluge:Show(eventCount, "defensive")
 			elseif eventType == "stone" then
-				specWarnStoneBreaker:Show(eventCount)
-				specWarnStoneBreaker:Play("helpsoak")
+				if self:IsTank() then--TODO: verify bosses stay at same UNITID and we can threat check right one
+					specWarnStoneBreaker:Show(eventCount)
+					specWarnStoneBreaker:Play("helpsoak")
+				end
 			elseif eventType == "surge" then
 				specWarnSurge:Show(eventCount)
 				specWarnSurge:Play("frontal")

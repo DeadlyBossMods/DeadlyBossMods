@@ -4,22 +4,23 @@ local mod	= DBM:NewMod(2894, "DBM-Raids-Midnight", 1, 1320)
 local UnitIsFriend = UnitIsFriend
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(238693)
+mod:SetCreatureID(261835, 261843, 261848)--261584 is Mor'zahi
 mod:SetEncounterID(3497)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
 mod:SetZone(3004)
+mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
-mod:RegisterSafeEvents("UNIT_FLAGS boss1 boss3 boss4")
+mod:RegisterSafeEventsInCombat("UNIT_FLAGS boss1 boss3 boss4")
 
---DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
 --TODO: Toss targets for toss mechanics?
 --TODO, Frostfire Volley patches need GTFOs, when it's possible (aura api?)
 --TODO, all of Mor'zahi mechanics are missing EncounterEvents (or assigned to invalid encounterIds)
 --NOTE: Blink Nova has two spellids and two encounter event IDs. TODO, identify if maybe diff IDs are diff teleport locations and further refine voice pack
 --NOTE: These 3 spells are not timeline based but activated on deaths that we cant detect so we'll use non hardcoded objects for them only. Cataclysmic Invocation, Relentless Escalation, and Smashing Shovel
 --TODO, maybe add a troll BOING sound to https://www.wowhead.com/ptr/spell=1299854/bounce ?
+DBM:RegisterAltSpellName(1295854, DBM_COMMON_L.TANKDEBUFF)--Shredding Shards --> Tank Debuff
 mod:AddCustomAlertSoundOption(1291390, true, 2)--Cataclysmic Invocation
 --mod:AddCustomAlertSoundOption(0, true, 2)--Relentless Escalation (no event ID?)
 --mod:AddCustomAlertSoundOption(0, true, 2)--Smashing Shovel (no event ID?)

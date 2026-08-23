@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2871, "DBM-Raids-Midnight", 1, 1320)
 --local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(238693)
+mod:SetCreatureID(257347)
 mod:SetEncounterID(3420)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
@@ -11,6 +11,8 @@ mod:SetZone(3004)
 mod:RegisterCombat("combat")
 
 DBM:RegisterAltSpellName(1277025, DBM_COMMON_L.TANKCOMBO)--Apex Predator --> Tank Combo
+DBM:RegisterAltSpellName(1305959, DBM_COMMON_L.CIRCLES)--Venomous Surge --> Circles
+DBM:RegisterAltSpellName(1285425, DBM_COMMON_L.KNOCK.. " " .. DBM_COMMON_L.DEBUFFS)--Raging Crosswinds --> Knock Debuffs
 local warnVenomousSurge					= mod:NewCountAnnounce(1305959, 2)
 
 local specWarnRagingCrosswinds			= mod:NewSpecialWarningBlizzYou(1285425, nil, nil, nil, 1, 17, nil, nil, "debuffyou")

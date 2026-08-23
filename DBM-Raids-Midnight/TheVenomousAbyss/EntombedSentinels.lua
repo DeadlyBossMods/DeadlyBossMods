@@ -2,11 +2,12 @@ local mod	= DBM:NewMod(2874, "DBM-Raids-Midnight", 1, 1320)
 --local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(238693)
+mod:SetCreatureID(258558, 258557)
 mod:SetEncounterID(3445)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
 mod:SetZone(3004)
+mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
@@ -14,7 +15,12 @@ mod:RegisterCombat("combat")
 --TODO, personal alerts for blighted Blood? or just generic warning fine?
 --TODO, https://www.wowhead.com/ptr/spell=1284485/debilitating-miasma isn't in journal but https://www.wowhead.com/ptr/spell=1288232/unstable-miasma is. I suspect only one of them exists (ID 642)
 --TODO, find encounter event Ids for warnings that will likely hook up to mythic venom types. they're probably assigned to Dungeon Ecounter 0
-DBM:RegisterAltSpellName(1284483, DBM_COMMON_L.DISPELS)--Blighted Blood --> Dispels
+DBM:RegisterAltSpellName(1288232, DBM_COMMON_L.GROUPSOAK)--Unstable Miasma --> Group Soak
+DBM:RegisterAltSpellName(1284251, DBM_COMMON_L.BIG_ADDS)--Venom Coagulation --> Big Adds
+DBM:RegisterAltSpellName(1284434, DBM_COMMON_L.GROUPSOAK.. " ".. DBM_COMMON_L.ORBS)--Toxic Droplets --> Soak Orbs
+DBM:RegisterAltSpellName(1284483, DBM_COMMON_L.POOL.. " ".. DBM_COMMON_L.DEBUFFS)--Blighted Blood --> Pool Debuffs
+DBM:RegisterAltSpellName(1284588, DBM_COMMON_L.MATHPUZZLE)--Vitriolic Stasis --> Math Puzzle
+--DBM:RegisterAltSpellName(1296878, DBM_COMMON_L.MATHPUZZLE)--Not sure what to give it yet
 local warnVitriolicStasis				= mod:NewCountAnnounce(1284588, 2)--Hardcode only
 local warnUnstableMiasma				= mod:NewCountAnnounce(1288232, 2)--Hardcode only
 
@@ -22,7 +28,7 @@ local specWarnVenomCoagulation			= mod:NewSpecialWarningCount(1284251, nil, nil,
 local specWarnToxicDroplets				= mod:NewSpecialWarningCount(1284434, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
 local specWarnEmpoweringSlam			= mod:NewSpecialWarningCount(1284458, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnBloodvenomInjection		= mod:NewSpecialWarningCount(1284487, nil, nil, nil, 1, 2, nil, nil, "defensive")
---local specWarnBlightedBlood				= mod:NewSpecialWarningCount(1284483, "Healer", nil, nil, 2, 2, nil, nil, "helpdispel")--Verify we want to dispel right away first
+--local specWarnBlightedBlood			= mod:NewSpecialWarningCount(1284483, "Healer", nil, nil, 2, 2, nil, nil, "helpdispel")--Verify we want to dispel right away first
 --local specWarnDebilitatingMiasma		= mod:NewSpecialWarningCount(1284485, nil, nil, nil, 2, 2, nil, nil, "keepmove")--Possibly unused
 --local specWarnUnstableMiasma			= mod:NewSpecialWarningSoakCount(1288232, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Aura used instead
 local specWarnShiftingProtovenom		= mod:NewSpecialWarningCount(1296878, nil, nil, nil, 3, 19, 4, nil, "colorchange")
@@ -32,12 +38,14 @@ local timerToxicDropletsCD				= mod:NewCDCountTimer(20.5, 1284434, nil, nil, nil
 local timerEmpoweringSlamCD				= mod:NewCDCountTimer(20.5, 1284458, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBloodvenomInjectionCD		= mod:NewCDCountTimer(20.5, 1284487, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBlightedBloodCD				= mod:NewCDCountTimer(20.5, 1284483, nil, "Healer", nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
---local timerDebilitatingMiasmaCD			= mod:NewCDCountTimer(20.5, 1284485, nil, nil, nil, 3)--Possibly unused
+--local timerDebilitatingMiasmaCD		= mod:NewCDCountTimer(20.5, 1284485, nil, nil, nil, 3)--Possibly unused
 local timerVitriolicStasisCD			= mod:NewCDCountTimer(20.5, 1284588, nil, nil, nil, 6)
 local timerUnstableMiasmaCD				= mod:NewCDCountTimer(20.5, 1288232, nil, nil, nil, 3)
 local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
+--Aura sounds cannot be change in combat, unfortunately mechanics differ on heroic/mythic vs normal/lfr. pools don't drop on easy difficulty
+--So right now the choice is give hard difficulties a weak warning or give easy difficulties an incorrect strong one. I chose later
 --Evidence Log https://www.warcraftlogs.com/reports/xdTc1fhtKWPrbCVv?fight=29&type=auras&spells=debuffs
 mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "toxic", 2, 0)--Helical Toxins (better audio?)
 mod:AddAuraSoundOption(1284471, true, 1284483, 1, 1, "poolyou", 18, 0)--Blighted Blood
@@ -49,6 +57,10 @@ mod:AddAuraSoundOption(1284491, true, 1284491, 1, 1, "poolyou", 18, 1)--Bloodven
 mod:AddAuraSoundOption(1296880, true, 1296878, 1, 1, "movetopartner", 20, 0)--Shifting Protovenom
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+--Tracks wipe-time bulk timeline resends so the next pull can restore hardcoded routing.
+local badStateDetectedAt = nil
+local badStateDetectedDuringWipeResend = false
+local seenTimelineEventIDs = {}
 local firstBerserkIgnored = false
 local next22Event = "empoweringslam"
 local mythic20EventCycleIndex = 1
@@ -108,6 +120,9 @@ function mod:OnLimitedCombatStart()
 	firstBerserkIgnored = false
 	next22Event = "empoweringslam"
 	mythic20EventCycleIndex = 1
+	badStateDetectedAt = nil
+	badStateDetectedDuringWipeResend = false
+	seenTimelineEventIDs = {}
 	self.vb.VenomCoagulationCount = 1
 	self.vb.ToxicDropletsCount = 1
 	self.vb.EmpoweringSlamCount = 1
@@ -134,6 +149,14 @@ end
 function mod:OnCombatEnd()
 	self:TLCountReset()
 	self:TLBatchReset()
+	--A wipe can resend every remaining Blizzard timer, including rows that are not valid
+	--hardcoded routes. Preserve the current-pull fallback, but recover for the next pull.
+	if badStateDetected and (badStateDetectedDuringWipeResend or (badStateDetectedAt and (GetTime() - badStateDetectedAt) <= 5)) then
+		badStateDetected = false
+	end
+	badStateDetectedAt = nil
+	badStateDetectedDuringWipeResend = false
+	seenTimelineEventIDs = {}
 	firstBerserkIgnored = false
 	next22Event = "empoweringslam"
 	mythic20EventCycleIndex = 1
@@ -156,28 +179,22 @@ do
 			end
 		elseif timer == 4 then
 			handled = true
-			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
-			timerEmpoweringSlamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "empoweringslam", "EmpoweringSlamCount"))
+			self:TLBatchStart(timer, timerEmpoweringSlamCD, timerExact, eventID, "empoweringslam", "EmpoweringSlamCount", batchTimerValues)
 		elseif timer == 6 then
 			handled = true
-			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
-			timerBloodvenomInjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bloodvenominjection", "BloodvenomInjectionCount"))
+			self:TLBatchStart(timer, timerBloodvenomInjectionCD, timerExact, eventID, "bloodvenominjection", "BloodvenomInjectionCount", batchTimerValues)
 		elseif timer == 8 then
 			handled = true
-			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
-			timerVenomCoagulationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venomcoagulation", "VenomCoagulationCount"))
+			self:TLBatchStart(timer, timerVenomCoagulationCD, timerExact, eventID, "venomcoagulation", "VenomCoagulationCount", batchTimerValues)
 		elseif timer == 10 then
 			handled = true
-			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
-			timerVenomCoagulationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venomcoagulation", "VenomCoagulationCount"))
+			self:TLBatchStart(timer, timerVenomCoagulationCD, timerExact, eventID, "venomcoagulation", "VenomCoagulationCount", batchTimerValues)
 		elseif timer == 12 then
 			handled = true
-			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
-			timerToxicDropletsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicdroplets", "ToxicDropletsCount"))
+			self:TLBatchStart(timer, timerToxicDropletsCD, timerExact, eventID, "toxicdroplets", "ToxicDropletsCount", batchTimerValues)
 		elseif timer == 16 then
 			handled = true
-			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
-			timerUnstableMiasmaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "unstablemiasma", "UnstableMiasmaCount"))
+			self:TLBatchStart(timer, timerUnstableMiasmaCD, timerExact, eventID, "unstablemiasma", "UnstableMiasmaCount", batchTimerValues)
 		elseif timer == 20 then
 			handled = true
 			if self:IsMythic() then
@@ -208,8 +225,7 @@ do
 			timerToxicDropletsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicdroplets", "ToxicDropletsCount"))
 		elseif timer == 40 then
 			handled = true
-			self:TLBatchTrackLatest(timer, eventID, batchTimerValues)
-			timerBlightedBloodCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blightedblood", "BlightedBloodCount"))
+			self:TLBatchStart(timer, timerBlightedBloodCD, timerExact, eventID, "blightedblood", "BlightedBloodCount", batchTimerValues)
 		elseif timer == 41 then
 			handled = true
 			timerUnstableMiasmaCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "unstablemiasma", "UnstableMiasmaCount"))
@@ -228,6 +244,7 @@ do
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			badStateDetected = true
 			self:ResumeBlizzardAPI()
+			self:TLBatchReset()
 			self:UnregisterShortTermEvents()
 			setFallback(self)
 			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
@@ -239,10 +256,17 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
+		local isResend = seenTimelineEventIDs[eventID]
+		seenTimelineEventIDs[eventID] = true
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
+			local wasBadStateDetected = badStateDetected
 			timersHeroic(self, timer, timerExact, eventID)
+			if not wasBadStateDetected and badStateDetected then
+				badStateDetectedAt = GetTime()
+				badStateDetectedDuringWipeResend = isResend and DBM:NumRealAlivePlayers() < DBM:GetNumRealGroupMembers() / 2
+			end
 		end
 	end
 
