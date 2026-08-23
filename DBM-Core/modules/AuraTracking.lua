@@ -575,10 +575,6 @@ local function InitContainerState(state, settings, unit)
 	container:SetSize(settings.Width, settings.Height)
 	container:SetPoint(layoutAnchorPoint, anchor, layoutAnchorPoint, 0, 0)
 	container:SetUnit(unit)
-	container:SetFlowLayoutAxis(GetFlowLayoutAxis(settings))
-	container:SetFlowLayoutAnchorPoint(layoutAnchorPoint)
-	container:SetFlowLayoutGrowthDirection(GetFlowDirections(settings.GrowDirection))
-	container:SetFlowLayoutMaximumLineSize(GetRowWidth(settings))
 
 	local candidateFilters = {
 --		maxDuration = DBM.Options.AurasMaxDuration,
@@ -625,6 +621,12 @@ local function InitContainerState(state, settings, unit)
 	else
 		container:AddAuraGroup(groupKey, AuraTrackingFilters[1], options)
 	end
+	-- Aura group registration refreshes the container immediately. Apply the flow
+	-- settings afterward so its deferred layout update uses the selected direction.
+	container:SetFlowLayoutAxis(GetFlowLayoutAxis(settings))
+	container:SetFlowLayoutAnchorPoint(layoutAnchorPoint)
+	container:SetFlowLayoutGrowthDirection(GetFlowDirections(settings.GrowDirection))
+	container:SetFlowLayoutMaximumLineSize(GetRowWidth(settings))
 	if not ShouldAurasBeSecret() then
 		for button in pairs(state.buttonRegions) do
 			ConfigureButton(state, button, settings, unit)
