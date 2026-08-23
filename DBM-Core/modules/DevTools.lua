@@ -330,7 +330,7 @@ end
 
 do
 	local eventsRegistered = false
-	local UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit = UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit
+	local UnitName, UnitGUID, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit = UnitName, UnitGUID, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit
 	local bossUnits = {
 		"boss1", "boss2", "boss3", "boss4", "boss5",
 		"boss6", "boss7", "boss8", "boss9", "boss10",
@@ -359,7 +359,7 @@ do
 			local unit = bossUnits[i]
 			if UnitExists(unit) then
 				hasBossUnits = true
-				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).." IsFriend:"..tostring(UnitIsFriend("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 3, nil, nil, true, true)
+				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." ("..(UnitGUID(unit) or "?")..") [CanAttack:"..tostring(UnitCanAttack("player", unit)).." IsFriend:"..tostring(UnitIsFriend("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 3, nil, nil, true, true)
 			end
 		end
 		if not hasBossUnits then
