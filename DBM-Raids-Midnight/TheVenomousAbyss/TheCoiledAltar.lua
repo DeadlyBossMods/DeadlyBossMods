@@ -98,7 +98,6 @@ local lastYellTime = 0
 local lastTLEvent = 0
 local stage1CancelBurstCount = 0
 local stage1CancelBurstStart = 0
-local addedTimelineEvents = {}
 
 mod.vb.CrucibleCount = 0--Used for fangs AND defilement. Reset on stage 2 start
 mod.vb.GuilotineCount = 0--Used for guillotine AND grim guillotine. Reset on stage 2 start
@@ -155,6 +154,7 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
+	self:TLBatchReset()
 	self:SetStage(1)
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
@@ -167,7 +167,6 @@ function mod:OnLimitedCombatStart()
 	lastTLEvent = GetTime()
 	stage1CancelBurstCount = 0
 	stage1CancelBurstStart = 0
-	wipe(addedTimelineEvents)
 	self.vb.CrucibleCount = 1
 	self.vb.GuilotineCount = 1
 	self.vb.VenomfangCount = 1
@@ -195,6 +194,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	self:TLBatchReset()
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
@@ -206,7 +206,6 @@ function mod:OnCombatEnd()
 	lastTLEvent = 0
 	stage1CancelBurstCount = 0
 	stage1CancelBurstStart = 0
-	wipe(addedTimelineEvents)
 	self:UnregisterShortTermEvents()
 end
 
@@ -511,8 +510,7 @@ do
 		if not self:IsHeroic() and not self:IsNormal() then return end
 		local eventID = eventInfo.id
 		if C_EncounterTimeline.GetEventState(eventID) ~= 0 then return end
-		if addedTimelineEvents[eventID] then return end
-		addedTimelineEvents[eventID] = true
+		if self:TLBatchTrackLatest(eventID, eventID) == eventID then return end
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
@@ -530,6 +528,7 @@ do
 		lastTLEvent = GetTime()
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
+		self:TLBatchUntrack(eventID)
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end
