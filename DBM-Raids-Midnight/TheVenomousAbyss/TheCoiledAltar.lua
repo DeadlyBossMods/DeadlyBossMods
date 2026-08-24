@@ -98,6 +98,7 @@ local lastYellTime = 0
 local lastTLEvent = 0
 local stage1CancelBurstCount = 0
 local stage1CancelBurstStart = 0
+local addedTimelineEvents = {}
 
 mod.vb.CrucibleCount = 0--Used for fangs AND defilement. Reset on stage 2 start
 mod.vb.GuilotineCount = 0--Used for guillotine AND grim guillotine. Reset on stage 2 start
@@ -166,6 +167,7 @@ function mod:OnLimitedCombatStart()
 	lastTLEvent = GetTime()
 	stage1CancelBurstCount = 0
 	stage1CancelBurstStart = 0
+	wipe(addedTimelineEvents)
 	self.vb.CrucibleCount = 1
 	self.vb.GuilotineCount = 1
 	self.vb.VenomfangCount = 1
@@ -204,6 +206,7 @@ function mod:OnCombatEnd()
 	lastTLEvent = 0
 	stage1CancelBurstCount = 0
 	stage1CancelBurstStart = 0
+	wipe(addedTimelineEvents)
 	self:UnregisterShortTermEvents()
 end
 
@@ -250,13 +253,19 @@ do
 
 	---@param timer number
 	---@return boolean
-	local function isStage2BucketTimer(timer)
+	local function isHeroicStage2BucketTimer(timer)
 		return timer == 6 or timer == 13 or timer == 22 or timer == 31 or timer == 33 or timer == 34 or timer == 38 or timer == 70
 	end
 
 	---@param timer number
 	---@return boolean
-	local function isStage3UniqueTimer(timer)
+	local function isNormalStage2BucketTimer(timer)
+		return timer == 6 or timer == 32 or timer == 33 or timer == 34 or timer == 40 or timer == 70
+	end
+
+	---@param timer number
+	---@return boolean
+	local function isHeroicStage3UniqueTimer(timer)
 		return timer == 15 or timer == 29 or timer == 42 or timer == 51 or timer == 59 or timer == 66 or timer == 88 or timer == 94
 	end
 
@@ -276,7 +285,7 @@ do
 
 		if stage == 1 then
 			--Stage 1
-			if isStage2BucketTimer(timer) then
+			if isHeroicStage2BucketTimer(timer) then
 				enterStage2(self)
 				return timersHeroic(self, timer, timerExact, eventID)
 			elseif timer == 2 then--Toxic Deluge
@@ -310,7 +319,7 @@ do
 				return timersHeroic(self, timer, timerExact, eventID)
 			end
 			--Fallback stage 3 transition: unique stage 3 timer after long silence.
-			if isStage3UniqueTimer(timer) and (GetTime() - lastTLEvent) > 20 then
+			if isHeroicStage3UniqueTimer(timer) and (GetTime() - lastTLEvent) > 20 then
 				enterStage3(self)
 				return timersHeroic(self, timer, timerExact, eventID)
 			end
@@ -391,7 +400,10 @@ do
 
 		if stage == 1 then
 			--Normal stage 1: CoiledAltarWipe (Normal/Week1)
-			if timer == 2 then--Toxic Deluge
+			if isNormalStage2BucketTimer(timer) then
+				enterStage2(self)
+				return timersNormal(self, timer, timerExact, eventID)
+			elseif timer == 2 then--Toxic Deluge
 				handled = true
 				timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
 			elseif timer == 12 then--Axegrinder
@@ -498,6 +510,9 @@ do
 		if eventInfo.source ~= 0 then return end
 		if not self:IsHeroic() and not self:IsNormal() then return end
 		local eventID = eventInfo.id
+		if C_EncounterTimeline.GetEventState(eventID) ~= 0 then return end
+		if addedTimelineEvents[eventID] then return end
+		addedTimelineEvents[eventID] = true
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
