@@ -88,6 +88,7 @@ function mod:OnLimitedCombatStart()
 	else
 		setFallback(self)
 	end
+	--timerBerserkCD:Start(468)
 end
 
 
@@ -117,6 +118,10 @@ do
 		if timer == 27 or timer == 22 or timer == 9 then--Iceblade Flurry
 			handled = true
 			timerIcebladeFlurryCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "IcebladeFlurry", "tankWaterCount"))
+		elseif timer == 10 then--Unending Tides
+			--Blizz resends berserk 10 seconds til
+			timerBerserkCD:Stop()
+			timerBerserkCD:Start(timerExact)
 		elseif timer == 8 or timer == 33 or timer == 23 then--Abyssal Rain
 			handled = true
 			timerAbyssalRainCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rain", "abyssalRainCount"))
