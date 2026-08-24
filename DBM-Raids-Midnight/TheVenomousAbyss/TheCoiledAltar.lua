@@ -154,7 +154,7 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
-	self:TLBatchReset()
+	self:TLActiveEventReset()
 	self:SetStage(1)
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
@@ -194,7 +194,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
-	self:TLBatchReset()
+	self:TLActiveEventReset()
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
@@ -510,7 +510,7 @@ do
 		if not self:IsHeroic() and not self:IsNormal() then return end
 		local eventID = eventInfo.id
 		if C_EncounterTimeline.GetEventState(eventID) ~= 0 then return end
-		if self:TLBatchTrackLatest(eventID, eventID) == eventID then return end
+		if not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
@@ -526,9 +526,12 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		if not self:IsHeroic() and not self:IsNormal() then return end
 		lastTLEvent = GetTime()
+		if not eventID then return end
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
-		if not eventID or not eventState then return end
-		self:TLBatchUntrack(eventID)
+		if not eventState then return end
+		if eventState >= 2 then
+			self:TLReleaseActiveEvent(eventID)
+		end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end

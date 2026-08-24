@@ -71,7 +71,7 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
-	self:TLBatchReset()
+	self:TLActiveEventReset()
 	self.vb.tankWaterCount = 1
 	self.vb.alluringBubbleCount = 2--1276710 is the combined initial/recast Bubble count 2
 	self.vb.ChillingFrostCount = 1
@@ -96,7 +96,7 @@ end
 function mod:OnCombatEnd()
 	repeating44Slot = 0
 	self:TLCountReset()
-	self:TLBatchReset()
+	self:TLActiveEventReset()
 	self:UnregisterShortTermEvents()
 end
 
@@ -173,7 +173,7 @@ do
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
 		if C_EncounterTimeline.GetEventState(eventID) ~= 0 then return end
-		if self:TLBatchTrackLatest(eventID, eventID) == eventID then return end
+		if not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
@@ -182,9 +182,12 @@ do
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		if not eventID then return end
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
-		if not eventID or not eventState then return end
-		self:TLBatchUntrack(eventID)
+		if not eventState then return end
+		if eventState >= 2 then
+			self:TLReleaseActiveEvent(eventID)
+		end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end

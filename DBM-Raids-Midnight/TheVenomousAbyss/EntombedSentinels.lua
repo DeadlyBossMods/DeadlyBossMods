@@ -284,11 +284,15 @@ do
 				specWarnToxicDroplets:Show(eventCount)
 				specWarnToxicDroplets:Play("helpsoak")
 			elseif eventType == "empoweringslam" then
-				specWarnEmpoweringSlam:Show(eventCount)
-				specWarnEmpoweringSlam:Play("defensive")
+				if self:IsTank() then--Change to IsTanking with boss unit id confirmation
+					specWarnEmpoweringSlam:Show(eventCount)
+					specWarnEmpoweringSlam:Play("defensive")
+				end
 			elseif eventType == "bloodvenominjection" then
-				specWarnBloodvenomInjection:Show(eventCount)
-				specWarnBloodvenomInjection:Play("defensive")
+				if self:IsTank() then--Change to IsTanking with boss unit id confirmation
+					specWarnBloodvenomInjection:Show(eventCount)
+					specWarnBloodvenomInjection:Play("defensive")
+				end
 			elseif eventType == "blightedblood" then
 			--	specWarnBlightedBlood:Show(eventCount)
 			--	specWarnBlightedBlood:Play("helpdispel")
