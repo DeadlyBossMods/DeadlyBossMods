@@ -29,13 +29,13 @@ DBM:RegisterAltSpellName(1289900, DBM_COMMON_L.MINDCONTROL)--Deathmarch --> Mind
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 
-local specWarnUnnervingFixation			= mod:NewSpecialWarningYou(1285911, nil, nil, nil, 1, 19, nil, nil, "fixateyou")
+--local specWarnUnnervingFixation			= mod:NewSpecialWarningYou(1285911, nil, nil, nil, 1, 19, nil, nil, "fixateyou")
 local specWarnFangsoftheCoiledAlter		= mod:NewSpecialWarningCount(1282487, nil, nil, nil, 2, 2, nil, nil, "specialsoon")
 local specWarnGuilotine					= mod:NewSpecialWarningCount(1283485, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
 local specWarnVenomfang					= mod:NewSpecialWarningCount(1282281, "RemovePoison", nil, nil, 2, 2, nil, nil, "helpdispel")
 local specWarnAxegrinder				= mod:NewSpecialWarningDodgeCount(1283832, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnEternalNightfall			= mod:NewSpecialWarningCount(1286918, nil, nil, nil, 3, 2, nil, nil, "attackshield")
-local specWarnGloombomb					= mod:NewSpecialWarningYou(1286895, nil, nil, nil, 1, 2, nil, nil, "bombyou")
+local specWarnGloombomb					= mod:NewSpecialWarningBlizzYou(1286895, nil, nil, nil, 1, 2, nil, nil, "bombyou")
 local specWarnDeathmarch				= mod:NewSpecialWarningCount(1289900, nil, nil, nil, 2, 2, nil, nil, "findmc")
 local specWarnSoulSevering				= mod:NewSpecialWarningCount(1286573, nil, nil, nil, 2, 15, nil, nil, "frontal")--Stage 2 tank sever
 local specWarnSpiritcackle				= mod:NewSpecialWarningCount(1286441, nil, nil, nil, 1, 2, nil, nil, "mobsoon")
@@ -72,7 +72,7 @@ mod:AddAuraSoundOption(1282419, true, 1299960, 1, 3, "holdingorb", 20, 0)--Volat
 mod:AddAuraSoundOption(1306906, "RemovePoison", 1282281, 1, 3, "poisonyou", 20, 0)--Venomfang
 mod:AddAuraSoundOption(1310498, true, 1299960, 3, 3, "holdingdeadlyorb", 20, 0)--Mutagenic Venom (Mutated version of Volatile Venom)
 mod:AddAuraSoundOption(1283290, true, 1282487, 1, 2, "watchfeet", 8, 0)--Noxious Ground
---mod:AddAuraSoundOption(1285911, true, 1285911, 1, 2, "fixateyou", 19, 0)--Unnerving Fixation (Uncomment if BlizzYou doesn't work correctly)
+mod:AddAuraSoundOption(1285911, true, 1285911, 1, 2, "fixateyou", 19, 0)--Unnerving Fixation (Uncomment if BlizzYou doesn't work correctly)
 mod:AddAuraSoundOption(1310744, true, 1285911, 1, 3, "defensive", 2, 0)--Malevolent Resonance (failed Unnerving Fixation mechanic)
 mod:AddAuraSoundOption(1297445, true, 1289900, 1, 1, "targetyou", 2, 0)--Dreadmarch
 mod:AddAuraSoundOption(1285017, true, 1283832, 1, 2, "watchfeet", 8, 0)--Axegrinder
@@ -118,7 +118,7 @@ local function setFallback(self, dontSetAlerts)
 		if self:CheckDispelFilter("poison") then
 			specWarnVenomfang:SetAlert(679, "helpdispel", 2, 2)
 		end
-		specWarnUnnervingFixation:SetAlert(667, "fixateyou", 19, 2, 0)
+		--specWarnUnnervingFixation:SetAlert(667, "fixateyou", 19, 2, 0)
 		specWarnFangsoftheCoiledAlter:SetAlert(677, "specialsoon", 2, 2)
 		specWarnGuilotine:SetAlert(678, "helpsoak", 2, 2)
 		specWarnAxegrinder:SetAlert(680, "watchstep", 2, 2)
@@ -549,8 +549,7 @@ do
 				specWarnEternalNightfall:Show(eventCount)
 				specWarnEternalNightfall:Play("attackshield")
 			elseif eventType == "gloombomb" then
-				specWarnGloombomb:Show()
-				specWarnGloombomb:Play("bombyou")
+				specWarnGloombomb:Show(eventCount, "bombyou")
 			elseif eventType == "deathmarch" then
 				specWarnDeathmarch:Show(eventCount)
 				specWarnDeathmarch:Play("findmc")
