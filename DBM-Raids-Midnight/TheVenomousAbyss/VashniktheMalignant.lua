@@ -49,13 +49,6 @@ mod:AddAuraSoundOption(1295380, false, 1282114, 1, 3, "debuffyou", 17, 0)--Sipho
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local nextDAEvent = "dripping"
-local batchTimerValues = {
-	--Vashnik resends the opening Imbibe, Plague Froth, and Dripping Fangs timeline batch.
-	[8] = true,
-	[13] = true,
-	[16] = true,
-	[80] = true,
-}
 
 mod.vb.DrippingFangsCount = 0
 mod.vb.AdaptiveInfectionCount = 0
@@ -96,7 +89,7 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
-	self:TLBatchReset()
+	self:TLActiveEventReset()
 	nextDAEvent = "dripping"
 	self.vb.DrippingFangsCount = 1
 	self.vb.AdaptiveInfectionCount = 1
@@ -128,7 +121,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
-	self:TLBatchReset()
+	self:TLActiveEventReset()
 	nextDAEvent = "dripping"
 	self:UnregisterShortTermEvents()
 end
@@ -214,9 +207,9 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
+		if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
-		if self:TLBatchTrackLatest(timer, eventID, batchTimerValues) == eventID then return end
 		if not badStateDetected then
 			if self:IsNormal() then
 				timersNormal(self, timer, timerExact, eventID)
@@ -229,7 +222,9 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
-		self:TLBatchUntrack(eventID)
+		if eventState >= 2 then
+			self:TLReleaseActiveEvent(eventID)
+		end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if eventType and eventCount then
