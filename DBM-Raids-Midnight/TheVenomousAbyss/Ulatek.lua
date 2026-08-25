@@ -76,14 +76,19 @@ local lfrStage3FortyCount = 0--LFR stage 3: Circling Prey, Submerge, then Circli
 local lfrStage3FortySixCount = 0--LFR stage 3: Call of the Serpent then Caustic Waves share the exact 46s slot
 local lfrStage3FiftyCount = 0--LFR stage 3: Circling Prey then Submerge share the exact 50s slot
 local stage2Pending = false--Opening Rage completion arms the boss1 targetability-loss transition into stage 2
+local stage3ScheduledEvents = {}
 local lfrStage3Batch = {}
 local lfrStage3BatchScheduled = false
 local resetLFRStage3Batch
+local resetStage3ScheduledEvents
 local lfrStage3BatchTimers = {
 	[5] = true,
 	[20] = true,
 	[30] = true,
 	[38] = true,
+	[40] = true,
+	[46] = true,
+	[50] = true,
 	[141] = true,
 	[180] = true,
 }
@@ -148,6 +153,7 @@ function mod:OnLimitedCombatStart()
 	lfrStage3FortySixCount = 0
 	lfrStage3FiftyCount = 0
 	stage2Pending = false
+	resetStage3ScheduledEvents(self)
 	resetLFRStage3Batch(self)
 	self.vb.mothersWrathCount = 1
 	self.vb.rageCount = 1
@@ -184,12 +190,67 @@ function mod:OnCombatEnd()
 	lfrStage3FortySixCount = 0
 	lfrStage3FiftyCount = 0
 	stage2Pending = false
+	resetStage3ScheduledEvents(self)
 	resetLFRStage3Batch(self)
 	self:UnregisterShortTermEvents()
 	badStateDetected = false--TEMP, we want to allow partial hardcode to work each pull til it's finished
 end
 
 do
+	local function finishTimelineEvent(self, eventID)
+		local eventType, eventCount = self:TLCountFinish(eventID)
+		if not eventType or not eventCount then return end
+		if eventType == "mothersWrath" then
+			if self:IsTanking("player", "boss1", nil, true) then
+				specWarnMothersWrath:Show()
+				specWarnMothersWrath:Play("defensive")
+			end
+		elseif eventType == "rage" then
+			if self:GetStage() == 1 then
+				stage2Pending = true
+			end
+			specWarnRageoftheShackled:Show(eventCount)
+			specWarnRageoftheShackled:Play("aesoon")
+		elseif eventType == "causticWaves" then
+			specWarnCausticWaves:Show(eventCount)
+			specWarnCausticWaves:Play("watchwave")
+		elseif eventType == "goreRattle" then
+			specWarnGoreRattle:Show(eventCount)
+			specWarnGoreRattle:Play("bigmob")
+		elseif eventType == "spectralCoils" then
+			specWarnSpectralCoils:Show(eventCount)
+			specWarnSpectralCoils:Play("helpsoak")
+		elseif eventType == "call" then
+			specWarnCalloftheSerpent:Show(eventCount)
+			specWarnCalloftheSerpent:Play("mobsoon")
+		elseif eventType == "mephiticThrash" then
+			specWarnMephiticThrash:Show(eventCount)
+			specWarnMephiticThrash:Play("aesoon")
+		elseif eventType == "virulentSpit" then
+			specWarnVirulentSpit:Show(eventCount)
+			specWarnVirulentSpit:Play("watchstep")
+		elseif eventType == "furyUnleashed" then
+			specWarnFuryUnleashed:Show(eventCount)
+			specWarnFuryUnleashed:Play("stilldanger")
+		elseif eventType == "circlingPrey" then
+			specWarnCirclingPrey:Show(eventCount)
+			specWarnCirclingPrey:Play("justrun")
+		elseif eventType == "submerge" then
+			specWarnSubmerge:Show(eventCount)
+			specWarnSubmerge:Play("phasechange")
+		end
+	end
+
+	local function finishScheduledStage3Event(self, eventID)
+		stage3ScheduledEvents[eventID] = nil
+		finishTimelineEvent(self, eventID)
+	end
+
+	resetStage3ScheduledEvents = function(self)
+		self:Unschedule(finishScheduledStage3Event)
+		stage3ScheduledEvents = {}
+	end
+
 	local function hardcodeFailed(self)
 		badStateDetected = true
 		self:ResumeBlizzardAPI()
@@ -198,9 +259,47 @@ do
 		DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 	end
 
-	local function startLFRStage3Timer(self, timer, timerExact, eventID, isBatchTimer)
+	local function resolveLFRStage3Collision(timer)
+		if timer == 40 then
+			lfrStage3FortyCount = lfrStage3FortyCount + 1
+			if lfrStage3FortyCount == 1 or lfrStage3FortyCount == 3 then
+				return timerCirclingPreyCD, "circlingPrey", "circlingPreyCount"
+			elseif lfrStage3FortyCount == 2 then
+				return timerSubmergeCD, "submerge", "submergeCount"
+			end
+		elseif timer == 46 then
+			lfrStage3FortySixCount = lfrStage3FortySixCount + 1
+			if lfrStage3FortySixCount == 1 then
+				return timerCalloftheSerpentCD, "call", "callCount"
+			elseif lfrStage3FortySixCount == 2 then
+				return timerCausticWavesCD, "causticWaves", "causticWavesCount"
+			end
+		elseif timer == 50 then
+			lfrStage3FiftyCount = lfrStage3FiftyCount + 1
+			if lfrStage3FiftyCount == 1 then
+				return timerCirclingPreyCD, "circlingPrey", "circlingPreyCount"
+			elseif lfrStage3FiftyCount == 2 then
+				return timerSubmergeCD, "submerge", "submergeCount"
+			end
+		end
+	end
+
+	local function startLFRStage3Timer(self, timer, timerExact, eventID, isOpeningBatch)
+		if not isOpeningBatch and (timer == 40 or timer == 46 or timer == 50) then
+			self:TLBatchStart(timer, function()
+				local timerObj, eventType, countKey = resolveLFRStage3Collision(timer)
+				if not timerObj then
+					hardcodeFailed(self)
+				end
+				return timerObj, eventType, countKey
+			end, timerExact, eventID, nil, nil, lfrStage3BatchTimers)
+			stage3ScheduledEvents[eventID] = true
+			self:Schedule(timerExact, finishScheduledStage3Event, self, eventID)
+			return true
+		end
+
 		local timerObj, eventType, countKey
-		if isBatchTimer then
+		if isOpeningBatch then
 			if timer == 5 then
 				timerObj, eventType, countKey = timerCalloftheSerpentCD, "call", "callCount"
 			elseif timer == 20 then
@@ -216,34 +315,15 @@ do
 			end
 		elseif timer == 5 or timer == 20 or timer == 30 then
 			timerObj, eventType, countKey = timerCausticWavesCD, "causticWaves", "causticWavesCount"
-		elseif timer == 40 then
-			lfrStage3FortyCount = lfrStage3FortyCount + 1
-			if lfrStage3FortyCount == 1 or lfrStage3FortyCount == 3 then
-				timerObj, eventType, countKey = timerCirclingPreyCD, "circlingPrey", "circlingPreyCount"
-			elseif lfrStage3FortyCount == 2 then
-				timerObj, eventType, countKey = timerSubmergeCD, "submerge", "submergeCount"
-			end
-		elseif timer == 46 then
-			lfrStage3FortySixCount = lfrStage3FortySixCount + 1
-			if lfrStage3FortySixCount == 1 then
-				timerObj, eventType, countKey = timerCalloftheSerpentCD, "call", "callCount"
-			elseif lfrStage3FortySixCount == 2 then
-				timerObj, eventType, countKey = timerCausticWavesCD, "causticWaves", "causticWavesCount"
-			end
-		elseif timer == 50 then
-			lfrStage3FiftyCount = lfrStage3FiftyCount + 1
-			if lfrStage3FiftyCount == 1 then
-				timerObj, eventType, countKey = timerCirclingPreyCD, "circlingPrey", "circlingPreyCount"
-			elseif lfrStage3FiftyCount == 2 then
-				timerObj, eventType, countKey = timerSubmergeCD, "submerge", "submergeCount"
-			end
 		end
 		if not timerObj then return false end
-		if isBatchTimer then
+		if isOpeningBatch then
 			self:TLBatchStart(timer, timerObj, timerExact, eventID, eventType, countKey, lfrStage3BatchTimers)
 		else
-			timerObj:TLStart(timerExact, eventID, self:TLCountStart(eventID, eventType, countKey))
+			self:TLBatchStart(timer, timerObj, timerExact, eventID, eventType, countKey, lfrStage3BatchTimers)
 		end
+		stage3ScheduledEvents[eventID] = true
+		self:Schedule(timerExact, finishScheduledStage3Event, self, eventID)
 		return true
 	end
 
@@ -409,51 +489,16 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
-		self:TLBatchUntrack(eventID)
-		--Stage 3 incorrectly reports completed timeline bars as canceled (state 3).
-		if eventState == 2 or (self:GetStage() == 3 and eventState == 3) then
-			local eventType, eventCount = self:TLCountFinish(eventID)
-			if eventType and eventCount then
-				if eventType == "mothersWrath" then
-					if self:IsTanking("player", "boss1", nil, true) then
-						specWarnMothersWrath:Show()
-						specWarnMothersWrath:Play("defensive")
-					end
-				elseif eventType == "rage" then
-					if self:GetStage() == 1 then
-						stage2Pending = true
-					end
-					specWarnRageoftheShackled:Show(eventCount)
-					specWarnRageoftheShackled:Play("aesoon")
-				elseif eventType == "causticWaves" then
-					specWarnCausticWaves:Show(eventCount)
-					specWarnCausticWaves:Play("watchwave")
-				elseif eventType == "goreRattle" then
-					specWarnGoreRattle:Show(eventCount)
-					specWarnGoreRattle:Play("bigmob")
-				elseif eventType == "spectralCoils" then
-					specWarnSpectralCoils:Show(eventCount)
-					specWarnSpectralCoils:Play("helpsoak")
-				elseif eventType == "call" then
-					specWarnCalloftheSerpent:Show(eventCount)
-					specWarnCalloftheSerpent:Play("mobsoon")
-				elseif eventType == "mephiticThrash" then
-					specWarnMephiticThrash:Show(eventCount)
-					specWarnMephiticThrash:Play("aesoon")
-				elseif eventType == "virulentSpit" then
-					specWarnVirulentSpit:Show(eventCount)
-					specWarnVirulentSpit:Play("watchstep")
-				elseif eventType == "furyUnleashed" then
-					specWarnFuryUnleashed:Show(eventCount)
-					specWarnFuryUnleashed:Play("stilldanger")
-				elseif eventType == "circlingPrey" then
-					specWarnCirclingPrey:Show(eventCount)
-					specWarnCirclingPrey:Play("justrun")
-				elseif eventType == "submerge" then
-					specWarnSubmerge:Show(eventCount)
-					specWarnSubmerge:Play("phasechange")
-				end
+		local batchTimer = self:TLBatchUntrack(eventID)
+		if stage3ScheduledEvents[eventID] then
+			if eventState == 3 and batchTimer then--Superseded duplicate stage-3 event
+				stage3ScheduledEvents[eventID] = nil
+				self:Unschedule(finishScheduledStage3Event, self, eventID)
+				self:TLCountCancel(eventID)
 			end
+			return--Stage 3 cancel states are delayed or inaccurate; finish from the raw timeline duration instead
+		elseif eventState == 2 or (self:GetStage() == 3 and eventState == 3) then
+			finishTimelineEvent(self, eventID)
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)
 		end
