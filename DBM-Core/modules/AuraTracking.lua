@@ -275,7 +275,10 @@ end
 local function GetRowWidth(settings)
 	local width = settings.Width or 1
 	if settings.GrowDirection == "UP" or settings.GrowDirection == "DOWN" then
-		return width
+		local height = settings.Height or 1
+		local limit = settings.Limit or 1
+		local spacing = settings.Spacing or 0
+		return math.max(height, (height * limit) + (spacing * math.max(limit - 1, 0)))
 	end
 	local limit = settings.Limit or 1
 	local spacing = settings.Spacing or 0
@@ -575,6 +578,10 @@ local function InitContainerState(state, settings, unit)
 	container:SetSize(settings.Width, settings.Height)
 	container:SetPoint(layoutAnchorPoint, anchor, layoutAnchorPoint, 0, 0)
 	container:SetUnit(unit)
+	container:SetFlowLayoutAxis(GetFlowLayoutAxis(settings))
+	container:SetFlowLayoutAnchorPoint(layoutAnchorPoint)
+	container:SetFlowLayoutGrowthDirection(GetFlowDirections(settings.GrowDirection))
+	container:SetFlowLayoutMaximumLineSize(GetRowWidth(settings))
 
 	local candidateFilters = {
 --		maxDuration = DBM.Options.AurasMaxDuration,
@@ -621,12 +628,6 @@ local function InitContainerState(state, settings, unit)
 	else
 		container:AddAuraGroup(groupKey, AuraTrackingFilters[1], options)
 	end
-	-- Aura group registration refreshes the container immediately. Apply the flow
-	-- settings afterward so its deferred layout update uses the selected direction.
-	container:SetFlowLayoutAxis(GetFlowLayoutAxis(settings))
-	container:SetFlowLayoutAnchorPoint(layoutAnchorPoint)
-	container:SetFlowLayoutGrowthDirection(GetFlowDirections(settings.GrowDirection))
-	container:SetFlowLayoutMaximumLineSize(GetRowWidth(settings))
 	if not ShouldAurasBeSecret() then
 		for button in pairs(state.buttonRegions) do
 			ConfigureButton(state, button, settings, unit)
