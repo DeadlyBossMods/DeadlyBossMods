@@ -412,7 +412,7 @@ do
 				specWarnMushroomToss:Show(eventCount)
 				specWarnMushroomToss:Play("watchstep")
 			elseif eventType == "shredding" then
-				if self:IsTank() then
+				if self:IsTanking("player", "boss4", nil, true) then--Iku
 					specWarnShreddingShards:Show()
 					specWarnShreddingShards:Play("defensive")
 				end
