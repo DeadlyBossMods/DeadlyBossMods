@@ -412,8 +412,10 @@ do
 				specWarnMushroomToss:Show(eventCount)
 				specWarnMushroomToss:Play("watchstep")
 			elseif eventType == "shredding" then
-				specWarnShreddingShards:Show()
-				specWarnShreddingShards:Play("defensive")
+				if self:IsTank() then
+					specWarnShreddingShards:Show()
+					specWarnShreddingShards:Play("defensive")
+				end
 			elseif eventType == "frostfire" then
 				specWarnFrostfireVolley:Show(eventCount)
 				specWarnFrostfireVolley:Play("watchstep")
