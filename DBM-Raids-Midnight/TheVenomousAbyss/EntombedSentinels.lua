@@ -44,15 +44,14 @@ local timerUnstableMiasmaCD				= mod:NewCDCountTimer(20.5, 1288232, nil, nil, ni
 local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
---Aura sounds cannot be change in combat, unfortunately mechanics differ on heroic/mythic vs normal/lfr. pools don't drop on easy difficulty
---So right now the choice is give hard difficulties a weak warning or give easy difficulties an incorrect strong one. I chose later
+--Aura sounds cannot be changed in combat. Pools do not drop on Normal/LFR, so use a generic debuff warning there.
 --Evidence Log https://www.warcraftlogs.com/reports/xdTc1fhtKWPrbCVv?fight=29&type=auras&spells=debuffs
 mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "toxic", 2, 0)--Helical Toxins (better audio?)
-mod:AddAuraSoundOption(1284471, true, 1284483, 1, 1, "poolyou", 18, 0)--Blighted Blood
+mod:AddAuraSoundOption(1284471, true, 1284483, 1, 1, "poolyou", 18, 0, {[14] = "debuffyou", [17] = "debuffyou"})--Blighted Blood
 mod:AddAuraSoundOption(1284210, true, 1284210, 1, 2, "watchfeet", 8, 0)--Blood Venom (1284208 is target ID but not logged so probbably no aura either)
 mod:AddAuraSoundOption(1288260, true, 1288232, 1, 1, "gathershare", 2, 0)--Unstable Miasma
-mod:AddAuraSoundOption(1288297, true, 1288232, 1, 3, "poolyou", 18, 0)--Clinging Mark (stacks from soaking unstalbe Miasma)
-mod:AddAuraSoundOption(1284491, true, 1284491, 1, 1, "poolyou", 18, 1)--Bloodvenom Injection (stacks only, cause you swap at 2+ stacks)
+mod:AddAuraSoundOption(1288297, true, 1288232, 1, 3, "poolyou", 18, 0, {[14] = "debuffyou", [17] = "debuffyou"})--Clinging Mark (stacks from soaking unstalbe Miasma)
+mod:AddAuraSoundOption(1284491, true, 1284491, 1, 1, "poolyou", 18, {0,1}, {[14] = "debuffyou", [17] = "debuffyou"})--Bloodvenom Injection
 --Debuffs that do not appear in combat log but MIGHT still work with aura sounds?
 mod:AddAuraSoundOption(1296880, true, 1296878, 1, 1, "movetopartner", 20, 0)--Shifting Protovenom
 
