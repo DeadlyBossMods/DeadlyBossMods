@@ -46,7 +46,7 @@ local timerBerserkCD					= mod:NewBerserkTimer(600)
 
 --Aura sounds cannot be changed in combat. Pools do not drop on Normal/LFR, so use a generic debuff warning there.
 --Evidence Log https://www.warcraftlogs.com/reports/xdTc1fhtKWPrbCVv?fight=29&type=auras&spells=debuffs
-mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "toxic", 2, 0)--Helical Toxins (better audio?)
+mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "phasechange", 2, 0)--Helical Toxins (better audio?)
 mod:AddAuraSoundOption(1284471, true, 1284483, 1, 1, "poolyou", 18, 0, {[14] = "debuffyou", [17] = "debuffyou"})--Blighted Blood
 mod:AddAuraSoundOption(1284210, true, 1284210, 1, 2, "watchfeet", 8, 0)--Blood Venom (1284208 is target ID but not logged so probbably no aura either)
 mod:AddAuraSoundOption(1288260, true, 1288232, 1, 1, "gathershare", 2, 0)--Unstable Miasma
