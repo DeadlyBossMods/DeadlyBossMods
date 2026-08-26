@@ -229,8 +229,11 @@ do
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if eventType and eventCount then
 				if eventType == "dripping" then
-					specWarnDrippingFangs:Show(eventCount)
-					specWarnDrippingFangs:Play("defensive")
+					if self:IsTanking("player", "boss1", nil, true) then
+						specWarnDrippingFangs:Show(eventCount)
+						specWarnDrippingFangs:Play("defensive")
+						--Test if taunt swap can be inserted here or needs scheduled delay
+					end
 				elseif eventType == "catalyst" then
 					specWarnMalignantCatalyst:Show(eventCount)
 					specWarnMalignantCatalyst:Play("helpsoak")

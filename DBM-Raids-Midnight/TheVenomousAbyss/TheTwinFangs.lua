@@ -22,7 +22,7 @@ DBM:RegisterAltSpellName(1288484, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.GROUP
 DBM:RegisterAltSpellName(1290956, DBM_COMMON_L.WAVES)--Stir the Depths --> Waves
 DBM:RegisterAltSpellName(1290516, DBM_COMMON_L.GROUPSOAK)--Ravenous Feast --> Group Soak
 DBM:RegisterAltSpellName(1303230, DBM_COMMON_L.HEALABSORBS)--Blood Torrent --> Heal Absorbs
-local specWarnCausticDeluge				= mod:NewSpecialWarningBlizzYou(1289192, nil, nil, nil, 1, 2, nil, nil, "defensive")
+local specWarnCausticDeluge				= mod:NewSpecialWarningDefensive(1289192, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnStoneBreaker				= mod:NewSpecialWarningSoakCount(1288484, nil, nil, nil, 1, 2, nil, nil, "helpsoak")
 local specWarnSurge						= mod:NewSpecialWarningDodgeCount(1294293, nil, nil, nil, 1, 15, nil, nil, "frontal")
 --local specWarnFlood						= mod:NewSpecialWarningDodgeCount(1294921, nil, nil, nil, 1, 19, nil, nil, "beamincoming")--Likely unused
@@ -90,8 +90,8 @@ local function setFallback(self, dontSetAlerts)
 	if not dontSetAlerts then
 		if self:IsTank() then
 			specWarnStoneBreaker:SetAlert(739, "helpsoak", 2, 2)
+			specWarnCausticDeluge:SetAlert(711, "defensive", 2, 2, 2)
 		end
-		specWarnCausticDeluge:SetAlert(711, "defensive", 2, 2, 0)
 		specWarnSurge:SetAlert(740, "frontal", 15, 2)
 	--	specWarnFlood:SetAlert(741, "beamincoming", 19, 2)
 		specWarnStirtheDepths:SetAlert(742, "watchwave", 2, 2)
@@ -424,9 +424,13 @@ do
 			if not eventCount then return end
 			submergeEventIDs[eventID] = nil
 			if eventType == "caustic" then
-				specWarnCausticDeluge:Show(eventCount, "defensive")
+				if self:IsTanking("player", "boss1", nil, true) then
+					specWarnCausticDeluge:Show()
+					specWarnCausticDeluge:Play("defensive")
+				end
 			elseif eventType == "stone" then
-				if self:IsTank() then--TODO: verify bosses stay at same UNITID and we can threat check right one
+				--ALways boss2, unless boss1 is dead
+				if UnitExists("boss2") and self:IsTanking("player", "boss2", nil, true) or self:IsTanking("player", "boss1", nil, true) then
 					specWarnStoneBreaker:Show(eventCount)
 					specWarnStoneBreaker:Play("helpsoak")
 				end

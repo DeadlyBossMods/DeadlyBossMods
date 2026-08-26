@@ -178,7 +178,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.SpiritcackleCount = 1
 	self.vb.ToxicDelugeCount = 1
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsNormal()) and not badStateDetected then
+	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsNormal() or self:IsLFR() or self:IsStory()) and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -507,7 +507,7 @@ do
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if not self:IsHeroic() and not self:IsNormal() then return end
+		if not self:IsHeroic() and not self:IsNormal() and not self:IsLFR() and not self:IsStory() then return end
 		local eventID = eventInfo.id
 		if C_EncounterTimeline.GetEventState(eventID) ~= 0 then return end
 		if not self:TLTrackActiveEvent(eventID) then return end
@@ -517,6 +517,7 @@ do
 			if self:IsHeroic() then
 				timersHeroic(self, timer, timerExact, eventID)
 			else
+				--LFR and Story share the verified Normal timer sequence (LFR:World/Week2/TheCoiledAltar).
 				timersNormal(self, timer, timerExact, eventID)
 			end
 		end
@@ -524,7 +525,7 @@ do
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
-		if not self:IsHeroic() and not self:IsNormal() then return end
+		if not self:IsHeroic() and not self:IsNormal() and not self:IsLFR() and not self:IsStory() then return end
 		lastTLEvent = GetTime()
 		if not eventID then return end
 		local eventState = C_EncounterTimeline.GetEventState(eventID)

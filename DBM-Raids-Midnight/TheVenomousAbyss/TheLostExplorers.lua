@@ -120,6 +120,7 @@ function mod:OnLimitedCombatStart()
 	self:EnableAlertOptions(1292779, 783, "stilldanger", 4)
 	badStateDetected = false
 	self:TLCountReset()
+	self:TLActiveEventReset()
 	delayedStarts = {}
 	pendingNormalStage = nil
 	normalStage2Special32Count = 0
@@ -154,6 +155,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	self:TLActiveEventReset()
 	self:Unschedule()
 	delayedStarts = {}
 	pendingNormalStage = nil
@@ -226,7 +228,8 @@ do
 			self:SetStage(3)
 			pendingNormalStage = nil
 			stage = 3
-		elseif ((stage == 2 or stage == 4) and (timer == 20 or timer == 60)) or stage == 3 and timer == 60 then
+		--The stage 1 Shell Spin opener can arrive before Final Ascension's later reset marker when returning from stage 4.
+		elseif (stage == 4 and (timer == 18 or timer == 20 or timer == 60)) or (stage == 2 and (timer == 20 or timer == 60)) or stage == 3 and timer == 60 then
 			self:SetStage(1)
 			pendingNormalStage = nil
 			normalNext31IsIce = true
@@ -368,18 +371,23 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 or not self:IsNormal() or badStateDetected then return end
 		local eventID = eventInfo.id
+		if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
 		timersNormal(self, math.floor(timerExact + 0.5), timerExact, eventID)
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		if not eventID then return end
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
+		if not eventState then return end
+		if eventState >= 2 then
+			self:TLReleaseActiveEvent(eventID)
+		end
 		local queued = delayedStarts[eventID]
 		if eventState == 3 and queued then
 			delayedStarts[eventID] = nil
 			return
 		end
-		if not eventID or not eventState then return end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType or not eventCount then return end
@@ -404,8 +412,10 @@ do
 				specWarnMushroomToss:Show(eventCount)
 				specWarnMushroomToss:Play("watchstep")
 			elseif eventType == "shredding" then
-				specWarnShreddingShards:Show()
-				specWarnShreddingShards:Play("defensive")
+				if self:IsTanking("player", "boss4", nil, true) then--Iku
+					specWarnShreddingShards:Show()
+					specWarnShreddingShards:Play("defensive")
+				end
 			elseif eventType == "frostfire" then
 				specWarnFrostfireVolley:Show(eventCount)
 				specWarnFrostfireVolley:Play("watchstep")

@@ -26,8 +26,8 @@ local warnUnstableMiasma				= mod:NewCountAnnounce(1288232, 2)--Hardcode only
 
 local specWarnVenomCoagulation			= mod:NewSpecialWarningCount(1284251, nil, nil, nil, 2, 2, nil, nil, "bigmob")
 local specWarnToxicDroplets				= mod:NewSpecialWarningCount(1284434, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
-local specWarnEmpoweringSlam			= mod:NewSpecialWarningCount(1284458, nil, nil, nil, 1, 2, nil, nil, "defensive")
-local specWarnBloodvenomInjection		= mod:NewSpecialWarningCount(1284487, nil, nil, nil, 1, 2, nil, nil, "defensive")
+local specWarnEmpoweringSlam			= mod:NewSpecialWarningDefensive(1284458, nil, nil, nil, 1, 2, nil, nil, "defensive")
+local specWarnBloodvenomInjection		= mod:NewSpecialWarningDefensive(1284487, nil, nil, nil, 1, 2, nil, nil, "defensive")
 --local specWarnBlightedBlood			= mod:NewSpecialWarningCount(1284483, "Healer", nil, nil, 2, 2, nil, nil, "helpdispel")--Verify we want to dispel right away first
 --local specWarnDebilitatingMiasma		= mod:NewSpecialWarningCount(1284485, nil, nil, nil, 2, 2, nil, nil, "keepmove")--Possibly unused
 --local specWarnUnstableMiasma			= mod:NewSpecialWarningSoakCount(1288232, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Aura used instead
@@ -284,13 +284,13 @@ do
 				specWarnToxicDroplets:Show(eventCount)
 				specWarnToxicDroplets:Play("helpsoak")
 			elseif eventType == "empoweringslam" then
-				if self:IsTank() then--Change to IsTanking with boss unit id confirmation
-					specWarnEmpoweringSlam:Show(eventCount)
+				if self:IsTanking("player", "boss1", nil, true) then--Breath
+					specWarnEmpoweringSlam:Show()
 					specWarnEmpoweringSlam:Play("defensive")
 				end
 			elseif eventType == "bloodvenominjection" then
-				if self:IsTank() then--Change to IsTanking with boss unit id confirmation
-					specWarnBloodvenomInjection:Show(eventCount)
+				if self:IsTanking("player", "boss2", nil, true) then--Blood
+					specWarnBloodvenomInjection:Show()
 					specWarnBloodvenomInjection:Play("defensive")
 				end
 			elseif eventType == "blightedblood" then
