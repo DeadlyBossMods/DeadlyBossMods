@@ -50,6 +50,7 @@ mod:AddAuraSoundOption({1300524, 1300521}, true, 1293212, 1, 3, "teleyou", 5, 0)
 mod:AddAuraSoundOption(1306666, true, 1305421, 1, 1, "gathershare", 2, 0)--Hungering Pyre
 mod:AddAuraSoundOption(1294933, true, 1290679, 1, 3, "dotyou", 19, 0)--Slithering Flame
 --mod:AddAuraSoundOption(1284103, true, 1284103, 4, 1, "justrun", 2, 0)--Possession Barrage (threat check used for now)
+mod:AddAuraSoundOption(1288554, true, 1288554, 1, 2, "watchfeet", 8, 0)--Latent Cultist
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local engageBatchWindow = 0.6--Current Blizzard bug can emit duplicate initial events; hold briefly so we can prefer second batch without breaking if bug is fixed
