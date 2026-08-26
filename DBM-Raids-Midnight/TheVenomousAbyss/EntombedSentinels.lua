@@ -61,6 +61,7 @@ local badStateDetected = false--Used to track if hardcode features have failed a
 local badStateDetectedAt = nil
 local badStateDetectedDuringWipeResend = false
 local seenTimelineEventIDs = {}
+local timelineEventStartTimes = {}
 local firstBerserkIgnored = false
 local next22Event = "empoweringslam"
 local mythic20EventCycleIndex = 1
@@ -123,6 +124,7 @@ function mod:OnLimitedCombatStart()
 	badStateDetectedAt = nil
 	badStateDetectedDuringWipeResend = false
 	seenTimelineEventIDs = {}
+	timelineEventStartTimes = {}
 	self.vb.VenomCoagulationCount = 1
 	self.vb.ToxicDropletsCount = 1
 	self.vb.EmpoweringSlamCount = 1
@@ -157,6 +159,7 @@ function mod:OnCombatEnd()
 	badStateDetectedAt = nil
 	badStateDetectedDuringWipeResend = false
 	seenTimelineEventIDs = {}
+	timelineEventStartTimes = {}
 	firstBerserkIgnored = false
 	next22Event = "empoweringslam"
 	mythic20EventCycleIndex = 1
@@ -259,6 +262,9 @@ do
 		local isResend = seenTimelineEventIDs[eventID]
 		seenTimelineEventIDs[eventID] = true
 		local timerExact = eventInfo.duration
+		if not isResend then
+			timelineEventStartTimes[eventID] = {started = GetTime(), duration = timerExact}
+		end
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
 			local wasBadStateDetected = badStateDetected
@@ -273,8 +279,13 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
+		local timelineEvent = timelineEventStartTimes[eventID]
+		timelineEventStartTimes[eventID] = nil
 		self:TLBatchUntrack(eventID)
-		if eventState == 2 then
+		-- Toxic Droplets, Venom Coagulation, and the 51.5s Coagulation row can reach their
+		-- scheduled expiry with state 3. Immediate state-3 rows are genuine reset cancellations.
+		local expiredWithCancelState = eventState == 3 and timelineEvent and math.abs((GetTime() - timelineEvent.started) - timelineEvent.duration) <= 1
+		if eventState == 2 or expiredWithCancelState then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType or not eventCount then return end
 			if eventType == "venomcoagulation" then
