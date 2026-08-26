@@ -40,7 +40,7 @@ local timerStygianBurstCD				= mod:NewCDCountTimer(20.5, 1302489, nil, nil, nil,
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
 --Evidence https://www.warcraftlogs.com/reports/MyHmVwLj8ncbpxvW?fight=23&type=auras&spells=debuffs
-mod:AddAuraSoundOption(1291461, true, 1291461, 1, 2, "watchfeet", 8, 0)--Virulent Fumes
+mod:AddAuraSoundOption(1291461, false, 1291461, 1, 2, "watchfeet", 8, 0)--Virulent Fumes
 --mod:AddAuraSoundOption(1281913, true, 1281907, 1, 1, "runout", 2, 0)--Plague Froth (uncomment if BlizzYou doesn't work)
 mod:AddAuraSoundOption(1295173, true, 1282114, 1, 1, "runout", 2, 0)--Exploding Infection
 mod:AddAuraSoundOption(1295224, true, 1282114, 1, 1, "gathershare", 2, 0)--Siphoning Infection (maybe clearer audio depending on common strat of heal it off or lifesteal it off

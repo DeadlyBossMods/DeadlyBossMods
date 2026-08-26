@@ -11,7 +11,6 @@ mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
---TODO, threat checks to warn appropriate tanks of tank mechanics
 --TODO, inconsistencies on what Coiling Toxin does. Figure out good audio for it once clearer
 --TODO, are progeny killed? how many swap if they are?
 --TODO, does blood torrent go on current tank or random target?
@@ -22,10 +21,11 @@ DBM:RegisterAltSpellName(1288484, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.GROUP
 DBM:RegisterAltSpellName(1290956, DBM_COMMON_L.WAVES)--Stir the Depths --> Waves
 DBM:RegisterAltSpellName(1290516, DBM_COMMON_L.GROUPSOAK)--Ravenous Feast --> Group Soak
 DBM:RegisterAltSpellName(1303230, DBM_COMMON_L.HEALABSORBS)--Blood Torrent --> Heal Absorbs
+DBM:RegisterAltSpellName(1308356, DBM_COMMON_L.INTERRUPTS)--Rouse the Brood
 local specWarnCausticDeluge				= mod:NewSpecialWarningDefensive(1289192, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnStoneBreaker				= mod:NewSpecialWarningSoakCount(1288484, nil, nil, nil, 1, 2, nil, nil, "helpsoak")
 local specWarnSurge						= mod:NewSpecialWarningDodgeCount(1294293, nil, nil, nil, 1, 15, nil, nil, "frontal")
---local specWarnFlood						= mod:NewSpecialWarningDodgeCount(1294921, nil, nil, nil, 1, 19, nil, nil, "beamincoming")--Likely unused
+--local specWarnFlood					= mod:NewSpecialWarningDodgeCount(1294921, nil, nil, nil, 1, 19, nil, nil, "beamincoming")--Likely unused
 local specWarnStirtheDepths				= mod:NewSpecialWarningCount(1290956, nil, nil, nil, 1, 2, nil, nil, "watchwave")--Likely flood's replacement
 local specWarnCoilingIchor				= mod:NewSpecialWarningDodgeCount(1290809, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnBeckonProgeny				= mod:NewSpecialWarningCount(1291404, "-Healer", nil, nil, 1, 2, nil, nil, "mobsoon")
@@ -38,7 +38,7 @@ local specWarnCorrosiveSpit				= mod:NewSpecialWarningBlizzYou(1291478, nil, nil
 local timerCausticDelugeCD				= mod:NewCDCountTimer(20.5, 1289192, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
 local timerStoneBreakerCD				= mod:NewCDCountTimer(20.5, 1288484, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--Also affects players near tanks
 local timerSurgeCD						= mod:NewCDCountTimer(20.5, 1294293, nil, nil, nil, 3)
---local timerFloodCD						= mod:NewCDCountTimer(20.5, 1294921, nil, nil, nil, 3)--Likely unused
+--local timerFloodCD					= mod:NewCDCountTimer(20.5, 1294921, nil, nil, nil, 3)--Likely unused
 local timerStirtheDepthsCD				= mod:NewCDCountTimer(20.5, 1290956, nil, nil, nil, 3)--Likely flood's replacement
 local timerCoilingIchorCD				= mod:NewCDCountTimer(20.5, 1290809, nil, nil, nil, 3)
 local timerBeckonProgenyCD				= mod:NewCDCountTimer(20.5, 1291404, nil, nil, nil, 1)

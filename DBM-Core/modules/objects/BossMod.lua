@@ -1524,7 +1524,8 @@ do
 	---@param voice VPSound voice pack media path
 	---@param voiceVersion number Required voice pack version (if not met, falls back to default special warning sounds)
 	---@param soundType number? UnitAuraSoundTrigger: 0 = added, 1 = applications increased, 2 = removed
-	local function enableAuraSound(mod, auraspellId, voice, voiceVersion, soundType)
+	---@param difficultyVoices table<number, VPSound>? voice pack media path overrides keyed by Blizzard difficulty index
+	local function enableAuraSound(mod, auraspellId, voice, voiceVersion, soundType, difficultyVoices)
 		local optionId
 		if type(auraspellId) == "table" then
 			optionId = auraspellId[1]
@@ -1545,6 +1546,10 @@ do
 		end
 		if DBM.Options.DontPlayPrivateAuraSound then return end
 		if optionId and mod.Options["PrivateAuraSound" .. optionId] then
+			local difficulty = DBM:GetCurrentDifficulty()
+			if difficulty and difficultyVoices and difficultyVoices[difficulty] then
+				voice = difficultyVoices[difficulty]
+			end
 			local mediaPath = checkValidVPSound(mod, "PrivateAuraSound", optionId, voice, voiceVersion)
 			if DBM:IsNoneValue(mediaPath) then return end--Don't register if media path is none, even if option is enabled
 			if type(auraspellId) == "table" then
@@ -1565,7 +1570,7 @@ do
 		local zoneEntries = self.pendingPASoundsByZone[mapID]
 		if not zoneEntries then return end
 		for _, entry in ipairs(zoneEntries) do
-			enableAuraSound(self, entry[1], entry[2], entry[3], entry[4])
+			enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5])
 		end
 	end
 
@@ -1588,7 +1593,7 @@ do
 		for _, entry in ipairs(zoneEntries) do
 			local entryOptionId = type(entry[1]) == "table" and entry[1][1] or entry[1]
 			if entryOptionId == optionId then
-				enableAuraSound(self, entry[1], entry[2], entry[3], entry[4])
+				enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5])
 			end
 		end
 		return true

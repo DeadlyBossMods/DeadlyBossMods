@@ -174,7 +174,7 @@ do
 		local entry = delayedStarts[eventID]
 		if not entry then return end
 		delayedStarts[eventID] = nil
-		entry.timerObj:TLStart(entry.timerExact, eventID, self:TLCountStart(eventID, entry.eventType, entry.countKey))
+		entry.timerObj:TLStart(entry.timerExact - 1, eventID, self:TLCountStart(eventID, entry.eventType, entry.countKey))
 	end
 
 	---@param self DBMMod
