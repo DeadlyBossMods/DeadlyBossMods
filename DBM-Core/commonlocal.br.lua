@@ -91,6 +91,7 @@ CL.HEALABSORB		= "Absorção de cura"
 CL.HEALABSORBS		= "Absorções de cura"
 CL.INTERRUPT		= "Interrupção"
 CL.INTERRUPTS		= "Interrupções"
+CL.KNOCK			= "Empurrão"
 CL.KNOCKUP			= "Derrubar"
 CL.LASER			= "Laser"
 CL.LASERS			= "Lasers"
@@ -98,6 +99,7 @@ CL.LINE				= "Linha"
 CL.LINES			= "Linhas"
 CL.MARK				= "Marca"--As in short text for all the encounter mechanics that start or end in "Mark"
 CL.MARKS			= "Marcas"--Plural of above
+CL.MATHPUZZLE		= "Quebra-cabeça matemático"
 CL.MINDCONTROL		= "Controle mental"
 CL.NEGATIVE			= "Negativo"
 CL.ORB				= "Orbe"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
@@ -123,6 +125,7 @@ CL.TANKBUSTER		= "Destruidor de tanque"
 CL.TANKCOMBO		= "Combo de tanque"
 CL.TANKDEBUFF		= "Penalidade do tanque"
 CL.TRAPS			= "Armadilhas"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
+CL.WAVES			= "Ondas"
 
 -- Colors
 CL.BLACK			= "Preto"
