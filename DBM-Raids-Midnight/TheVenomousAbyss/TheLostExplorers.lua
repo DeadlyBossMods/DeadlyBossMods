@@ -20,22 +20,24 @@ mod:RegisterSafeEventsInCombat("UNIT_FLAGS boss1 boss3 boss4")
 --NOTE: Blink Nova has two spellids and two encounter event IDs. TODO, identify if maybe diff IDs are diff teleport locations and further refine voice pack
 --NOTE: These 3 spells are not timeline based but activated on deaths that we cant detect so we'll use non hardcoded objects for them only. Cataclysmic Invocation, Relentless Escalation, and Smashing Shovel
 --TODO, maybe add a troll BOING sound to https://www.wowhead.com/ptr/spell=1299854/bounce ?
+--TODO, better handle Cataclysmic Invocation and Empowered Ascension
 DBM:RegisterAltSpellName(1295854, DBM_COMMON_L.TANKDEBUFF)--Shredding Shards --> Tank Debuff
-mod:AddCustomAlertSoundOption(1291390, true, 2)--Cataclysmic Invocation
+--mod:AddCustomAlertSoundOption(1291390, true, 2)--Cataclysmic Invocation
 --mod:AddCustomAlertSoundOption(0, true, 2)--Relentless Escalation (no event ID?)
 --mod:AddCustomAlertSoundOption(0, true, 2)--Smashing Shovel (no event ID?)
-mod:AddCustomAlertSoundOption(1292779, true, 2, nil)--Empowered Ascension
+--mod:AddCustomAlertSoundOption(1292779, true, 2)--Empowered Ascension
 local warnFlingFish						= mod:NewCountAnnounce(1295817, 3)--hardcode only?
 local warnExplosiveSurprise				= mod:NewBlizzTargetAnnounce(1296249, 3)--hardcode only
+local warnFrostfireVolley				= mod:NewCountAnnounce(1295935, 3)--hardcode only?
+--local warnBlinkNova						= mod:NewTargetNoFilterAnnounce(1290711, 2)
 
 local specWarnIceboundFlames			= mod:NewSpecialWarningCount(1286921, nil, nil, nil, 1, 2, nil, nil, "kickcast")--Fix audio if targetting doable
-local specWarnBlinkNova					= mod:NewSpecialWarningRunCount(1290711, nil, nil, nil, 4, 2, nil, nil, "justrun")
+local specWarnBlinkNova					= mod:NewSpecialWarningBlizzYou(1290711, nil, nil, nil, 4, 2, nil, nil, "justrun")
 local specWarnMightyThud				= mod:NewSpecialWarningSoakCount(1296092, nil, nil, nil, 2, 17, nil, nil, "soakincoming")
 local specWarnShellSpin					= mod:NewSpecialWarningDodgeCount(1291759, nil, nil, nil, 2, 2, nil, nil, "farfromline")
 local specWarnThrowJunk					= mod:NewSpecialWarningDodgeCount(1291933, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnMushroomToss				= mod:NewSpecialWarningDodgeCount(1292104, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnShreddingShards			= mod:NewSpecialWarningDefensive(1295854, nil, nil, nil, 1, 2, nil, nil, "defensive")
-local specWarnFrostfireVolley			= mod:NewSpecialWarningDodgeCount(1295935, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 
 local timerIceboundFlamesCD				= mod:NewCDCountTimer(20.5, 1286921, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON..DBM_COMMON_L.MAGIC_ICON)
 local timerBlinkNovaCD					= mod:NewCDCountTimer(20.5, 1290711, nil, nil, nil, 2)
@@ -62,7 +64,7 @@ mod:AddAuraSoundOption(1297650, true, 1296249, 1, 2, "watchfeet", 8, 0)--Spreadi
 --Debuffs that do not appear in combat log but MIGHT still work with aura sounds?
 mod:AddAuraSoundOption(1295886, true, 1295935, 1, 1, "flameyou", 15, 0)--Frostfire Volley (targeted by fire)
 mod:AddAuraSoundOption(1295935, true, 1295935, 1, 1, "frostyou", 20, 0)--Frostfire Volley (targeted by frost)
-mod:AddAuraSoundOption(1296025, true, 1290711, 1, 1, "teleyou", 5, 0)--Blink Nova
+--mod:AddAuraSoundOption(1296025, true, 1290711, 1, 1, "teleyou", 5, 0)--Blink Nova (Handled by ENCOUNTER_WARNING intercept)
 mod:AddAuraSoundOption(1296092, true, 1296092, 1, 1, "leapyou", 19, 0)--Mighty Thud
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
@@ -93,12 +95,11 @@ local function setFallback(self, dontSetAlerts)
 			specWarnShreddingShards:SetAlert(768, "defensive", 2, 2)
 		end
 		specWarnIceboundFlames:SetAlert(722, "kickcast", 2, 2)
-		specWarnBlinkNova:SetAlert({723, 724, 737, 738}, "justrun", 2, 3)--1290711, 1290742, 1290740, 1290743
+		specWarnBlinkNova:SetAlert({723, 724, 737, 738}, "justrun", 2, 3, 0)--1290711, 1290742, 1290740, 1290743
 		specWarnMightyThud:SetAlert(725, "soakincoming", 17, 2)
 		specWarnShellSpin:SetAlert(726, "farfromline", 2, 2)
 		specWarnThrowJunk:SetAlert(727, "watchstep", 2, 2)
 		specWarnMushroomToss:SetAlert(729, "watchstep", 2, 2)
-		specWarnFrostfireVolley:SetAlert({776, 777}, "watchstep", 2, 2)--1295886, 1295935
 	end
 	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
 	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
@@ -116,8 +117,8 @@ local function setFallback(self, dontSetAlerts)
 end
 
 function mod:OnLimitedCombatStart()
-	self:EnableAlertOptions(1291390, 721, "stilldanger", 2)
-	self:EnableAlertOptions(1292779, 783, "stilldanger", 4)
+--	self:EnableAlertOptions(1291390, 721, "stilldanger", 2)
+--	self:EnableAlertOptions(1292779, 783, "stilldanger", 4)
 	badStateDetected = false
 	self:TLCountReset()
 	self:TLActiveEventReset()
@@ -395,8 +396,7 @@ do
 				specWarnIceboundFlames:Show(eventCount)
 				specWarnIceboundFlames:Play("kickcast")
 			elseif eventType == "blink" then
-				specWarnBlinkNova:Show(eventCount)
-				specWarnBlinkNova:Play("justrun")
+				specWarnBlinkNova:Show(eventCount, "teleyou")
 			elseif eventType == "mighty" then
 				specWarnMightyThud:Show(eventCount)
 				specWarnMightyThud:Play("soakincoming")
@@ -417,8 +417,7 @@ do
 					specWarnShreddingShards:Play("defensive")
 				end
 			elseif eventType == "frostfire" then
-				specWarnFrostfireVolley:Show(eventCount)
-				specWarnFrostfireVolley:Play("watchstep")
+				warnFrostfireVolley:Show(eventCount)
 			elseif eventType == "explosive" then
 				warnExplosiveSurprise:Show(eventCount)
 			end

@@ -240,6 +240,14 @@ local function SetAuraIconZoom(texture, zoom)
 	texture:SetTexCoord(edge, 1 - edge, edge, 1 - edge)
 end
 
+---@param r number
+---@param g number
+---@param b number
+---@return colorRGBA
+local function CreateAuraDurationColor(r, g, b)
+	return { r = r, g = g, b = b, a = 1 }
+end
+
 ---@param settings table
 ---@return number
 local function GetCoTankRowYOffset(settings)
@@ -458,11 +466,11 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	local emphasizeThreshold = GetAuraDurationEmphasizeThreshold(settings)
 	if emphasizeThreshold > 0 then
 		local emphasizeColor = settings.DurationEmphasizeColor
-		colorCurve:AddPoint(0.1, CreateColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
-		colorCurve:AddPoint(math.max(emphasizeThreshold - 0.1, 0.1), CreateColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
-		colorCurve:AddPoint(emphasizeThreshold, CreateColor(durationColor.r, durationColor.g, durationColor.b))
+		colorCurve:AddPoint(0.1, CreateAuraDurationColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
+		colorCurve:AddPoint(math.max(emphasizeThreshold - 0.1, 0.1), CreateAuraDurationColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
+		colorCurve:AddPoint(emphasizeThreshold, CreateAuraDurationColor(durationColor.r, durationColor.g, durationColor.b))
 	else
-		colorCurve:AddPoint(0, CreateColor(durationColor.r, durationColor.g, durationColor.b))
+		colorCurve:AddPoint(0, CreateAuraDurationColor(durationColor.r, durationColor.g, durationColor.b))
 	end
 	local durationObject = frame.DurationObjects[index]
 	durationObject:SetTimeFromStart(GetTime(), duration)
@@ -596,11 +604,11 @@ local function ConfigureButton(state, button, settings, unit)
 	local emphasizeThreshold = GetAuraDurationEmphasizeThreshold(settings)
 	if emphasizeThreshold > 0 then
 		local emphasizeColor = settings.DurationEmphasizeColor
-		colorCurve:AddPoint(0.1, CreateColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
-		colorCurve:AddPoint(math.max(emphasizeThreshold - 0.1, 0.1), CreateColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
-		colorCurve:AddPoint(emphasizeThreshold, CreateColor(durationColor.r, durationColor.g, durationColor.b))
+		colorCurve:AddPoint(0.1, CreateAuraDurationColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
+		colorCurve:AddPoint(math.max(emphasizeThreshold - 0.1, 0.1), CreateAuraDurationColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
+		colorCurve:AddPoint(emphasizeThreshold, CreateAuraDurationColor(durationColor.r, durationColor.g, durationColor.b))
 	else
-		colorCurve:AddPoint(0, CreateColor(durationColor.r, durationColor.g, durationColor.b))
+		colorCurve:AddPoint(0, CreateAuraDurationColor(durationColor.r, durationColor.g, durationColor.b))
 	end
 	button:ClearDurationText()
 	button:SetDurationText(durationText, { binding = regions.durationBinding })
