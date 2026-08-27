@@ -29,7 +29,7 @@ DBM:RegisterAltSpellName(1295854, DBM_COMMON_L.TANKDEBUFF)--Shredding Shards -->
 local warnFlingFish						= mod:NewCountAnnounce(1295817, 3)--hardcode only?
 local warnExplosiveSurprise				= mod:NewBlizzTargetAnnounce(1296249, 3)--hardcode only
 local warnFrostfireVolley				= mod:NewCountAnnounce(1295935, 3)--hardcode only?
---local warnBlinkNova						= mod:NewTargetNoFilterAnnounce(1290711, 2)
+local warnBlinkNova						= mod:NewTargetNoFilterAnnounce(1290711, 2)--Hardcoded only; target is secret
 
 local specWarnIceboundFlames			= mod:NewSpecialWarningCount(1286921, nil, nil, nil, 1, 2, nil, nil, "kickcast")--Fix audio if targetting doable
 local specWarnBlinkNova					= mod:NewSpecialWarningBlizzYou(1290711, nil, nil, nil, 4, 2, nil, nil, "justrun")
@@ -396,6 +396,7 @@ do
 				specWarnIceboundFlames:Show(eventCount)
 				specWarnIceboundFlames:Play("kickcast")
 			elseif eventType == "blink" then
+				warnBlinkNova:ScheduleSecret(0.4, "boss4")
 				specWarnBlinkNova:Show(eventCount, "teleyou")
 			elseif eventType == "mighty" then
 				specWarnMightyThud:Show(eventCount)

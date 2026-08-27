@@ -284,9 +284,7 @@ do
 					specWarnPossessionBarrage:Show(eventCount)
 					specWarnPossessionBarrage:Play("justrun")
 				else
-					local targetGUID = UnitGUID("boss1target")
-					local targetName = UnitName("boss1target")
-					specWarnPossessionBarrageTaunt:SecretShow(targetGUID, targetName)
+					specWarnPossessionBarrageTaunt:SecretShowByUnit("boss1")
 					specWarnPossessionBarrageTaunt:Play("tauntboss")
 				end
 			elseif eventType == "invoke" then
