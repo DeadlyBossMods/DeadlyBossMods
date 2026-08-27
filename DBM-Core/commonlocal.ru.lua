@@ -89,6 +89,7 @@ CL.HEALABSORB				= "Поглощение исцеления"--По идее та
 CL.HEALABSORBS				= "Поглощение исцеления"--По идее так будет правильно. Но если вдруг окажется, что не подходит по смыслу, то дайте знать
 CL.INTERRUPT				= "Прерывание"
 CL.INTERRUPTS				= "Прерывания"
+CL.KNOCK					= "Удар"
 CL.KNOCKUP					= "Столкновение"
 CL.LASER					= "Лазер"
 CL.LASERS					= "Лазеры"
@@ -96,6 +97,7 @@ CL.LINE						= "Линия"
 CL.LINES					= "Линии"
 CL.MARK						= "Метка"
 CL.MARKS					= "Метки"
+CL.MATHPUZZLE				= "Математическая головоломка"
 CL.MINDCONTROL				= "Контроль над разумом"
 CL.NEGATIVE					= "Отрицательно"
 CL.ORB						= "Сфера"
@@ -121,6 +123,7 @@ CL.TANKBUSTER				= "Опасно для танка"
 CL.TANKCOMBO				= "Танковое комбо"
 CL.TANKDEBUFF				= "Дебафф на танке"
 CL.TRAPS					= "Ловушки"
+CL.WAVES					= "Волны"
 
 -- Colors
 CL.BLACK	= "Черный"
