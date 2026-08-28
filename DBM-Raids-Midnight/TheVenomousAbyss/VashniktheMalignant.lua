@@ -49,6 +49,7 @@ mod:AddAuraSoundOption(1295380, false, 1282114, 1, 3, "debuffyou", 17, 0)--Sipho
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local nextDAEvent = "dripping"
+local nextHeroic13Event = "plague"
 
 mod.vb.DrippingFangsCount = 0
 mod.vb.AdaptiveInfectionCount = 0
@@ -91,6 +92,7 @@ function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self:TLActiveEventReset()
 	nextDAEvent = "dripping"
+	nextHeroic13Event = "plague"
 	self.vb.DrippingFangsCount = 1
 	self.vb.AdaptiveInfectionCount = 1
 	self.vb.MalignantCatalystCount = 1
@@ -123,6 +125,7 @@ function mod:OnCombatEnd()
 	self:TLCountReset()
 	self:TLActiveEventReset()
 	nextDAEvent = "dripping"
+	nextHeroic13Event = "plague"
 	self:UnregisterShortTermEvents()
 end
 
@@ -167,30 +170,29 @@ do
 	local function timersHeroic(self, timer, timerExact, eventID)
 		--Confirmed same on heroic and mythic so far
 		local handled
-		if timer == 8 or timer == 11 or timer == 22 then
+		if timer == 8 or timer == 11 or timer == 22 or timer == 27 or timer == 28 then
 			handled = true
 			timerDrippingFangsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dripping", "DrippingFangsCount"))
-		elseif timer == 10 or timer == 16 or timer == 21 or timer == 31 then
+		elseif timer == 13 then
+			handled = true
+			if nextHeroic13Event == "plague" then
+				timerPlagueFrothCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "plague", "PlagueFrothCount"))
+				nextHeroic13Event = "dripping"
+			else
+				timerDrippingFangsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dripping", "DrippingFangsCount"))
+			end
+		elseif timer == 10 or timer == 16 or timer == 21 or timer == 30 or timer == 31 or timer == 33 then
 			handled = true
 			timerPlagueFrothCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "plague", "PlagueFrothCount"))
 		elseif timer == 20 or timer == 80 then
 			handled = true
 			timerImbibeToxinCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "imbibe", "ImbibeToxinCount"))
-		elseif timer == 6 or timer == 44 then
+		elseif timer == 6 or timer == 39 or timer == 44 then
 			handled = true
 			timerMalignantCatalystCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "catalyst", "MalignantCatalystCount"))
-		elseif timer == 23 or timer == 24 then
+		elseif timer == 18 or timer == 23 or timer == 24 or timer == 52 then
 			handled = true
 			timerAdaptiveInfectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "adaptive", "AdaptiveInfectionCount"))
-		elseif timer == 30 then
-			handled = true
-			if nextDAEvent == "dripping" then
-				timerDrippingFangsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dripping", "DrippingFangsCount"))
-				nextDAEvent = "adaptive"
-			else
-				timerAdaptiveInfectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "adaptive", "AdaptiveInfectionCount"))
-				nextDAEvent = "dripping"
-			end
 		end
 
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API

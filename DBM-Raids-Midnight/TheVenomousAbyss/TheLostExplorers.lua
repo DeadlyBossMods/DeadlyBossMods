@@ -137,8 +137,8 @@ function mod:OnLimitedCombatStart()
 	self.vb.ShreddingShardsCount = 1
 	self.vb.FrostfireVolleyCount = 1
 	self.vb.ExplosiveSurpriseCount = 1
-	--Normal is the only difficulty with a complete, fresh UNIT_FLAGS log. Heroic and Mythic use Blizzard fallback until equivalent logs are available.
-	if DBM.Options.HardcodedTimer and self:IsNormal() and not badStateDetected then
+	--Normal and Heroic use the same verified four-stage timeline schedule. Mythic uses Blizzard fallback until an equivalent log is available.
+	if DBM.Options.HardcodedTimer and (self:IsNormal() or self:IsHeroic()) and not badStateDetected then
 		normalHardcodeActive = true
 		self:SetStage(1)
 		self:IgnoreBlizzardAPI()
@@ -175,7 +175,7 @@ do
 		local entry = delayedStarts[eventID]
 		if not entry then return end
 		delayedStarts[eventID] = nil
-		entry.timerObj:TLStart(entry.timerExact - 1, eventID, self:TLCountStart(eventID, entry.eventType, entry.countKey))
+		entry.timerObj:TLStart(entry.timerExact, eventID, self:TLCountStart(eventID, entry.eventType, entry.countKey))
 	end
 
 	---@param self DBMMod
@@ -215,22 +215,24 @@ do
 		local handled = false
 		local stage = self:GetStage()
 
-		if pendingNormalStage == 4 and (timer == 7 or timer == 16) then
+		--The outgoing stage briefly re-publishes cancellable bars before the incoming schedule.
+		--Wait for a duration unique to the incoming stage so those rows retain their old-stage routing.
+		if pendingNormalStage == 4 and timer == 21 then
 			self:SetStage(4)
 			pendingNormalStage = nil
 			normalStage4Special27Count = 0
 			stage = 4
-		elseif pendingNormalStage == 2 and (timer == 7 or timer == 3) then
+		elseif pendingNormalStage == 2 and timer == 30 then
 			self:SetStage(2)
 			pendingNormalStage = nil
 			normalStage2Special32Count = 0
 			stage = 2
-		elseif pendingNormalStage == 3 and timer == 3 then
+		elseif pendingNormalStage == 3 and (timer == 11 or timer == 3) then
 			self:SetStage(3)
 			pendingNormalStage = nil
 			stage = 3
-		--The stage 1 Shell Spin opener can arrive before Final Ascension's later reset marker when returning from stage 4.
-		elseif (stage == 4 and (timer == 18 or timer == 20 or timer == 60)) or (stage == 2 and (timer == 20 or timer == 60)) or stage == 3 and timer == 60 then
+		--The stage 1 Blink Nova opener can arrive before Final Ascension's later reset marker when returning from stages 2, 3, or 4.
+		elseif (stage == 4 and (timer == 10 or timer == 18 or timer == 20 or timer == 60)) or (stage == 2 and (timer == 10 or timer == 20 or timer == 60)) or (stage == 3 and (timer == 10 or timer == 60)) then
 			self:SetStage(1)
 			pendingNormalStage = nil
 			normalNext31IsIce = true
@@ -352,7 +354,7 @@ do
 		end
 
 		if not handled then
-			fallbackToBlizzard(self, "|cffff0000Failed to match Normal encounter timeline events to expected timers, falling back to Blizzard API|r")
+			fallbackToBlizzard(self, "|cffff0000Failed to match Normal or Heroic encounter timeline events to expected timers, falling back to Blizzard API|r")
 		end
 	end
 
@@ -370,7 +372,7 @@ do
 	--Note, bar state changing and canceling is handled by core
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
-		if eventInfo.source ~= 0 or not self:IsNormal() or badStateDetected then return end
+		if eventInfo.source ~= 0 or not (self:IsNormal() or self:IsHeroic()) or badStateDetected then return end
 		local eventID = eventInfo.id
 		if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
