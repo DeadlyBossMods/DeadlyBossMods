@@ -231,8 +231,8 @@ do
 			self:SetStage(3)
 			pendingNormalStage = nil
 			stage = 3
-		--The stage 1 Shell Spin opener can arrive before Final Ascension's later reset marker when returning from stage 4.
-		elseif (stage == 4 and (timer == 18 or timer == 20 or timer == 60)) or (stage == 2 and (timer == 20 or timer == 60)) or stage == 3 and timer == 60 then
+		--The stage 1 Blink Nova opener can arrive before Final Ascension's later reset marker when returning from stages 2, 3, or 4.
+		elseif (stage == 4 and (timer == 10 or timer == 18 or timer == 20 or timer == 60)) or (stage == 2 and (timer == 10 or timer == 20 or timer == 60)) or (stage == 3 and (timer == 10 or timer == 60)) then
 			self:SetStage(1)
 			pendingNormalStage = nil
 			normalNext31IsIce = true
