@@ -91,7 +91,7 @@ local stage1FortyTwoCount = 0
 local stage1FortyThreeCount = 0
 local stage2ThirtyFourCount = 0
 local stage3ThirtyFourCount = 0
-local stage3FiftyNineCount = 0
+local stage3ThirtyThreeCount = 0
 local stage2YellFirstTime = 0
 local stage2YellPairTime = 0
 local lastYellTime = 0
@@ -160,7 +160,7 @@ function mod:OnLimitedCombatStart()
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
 	stage3ThirtyFourCount = 0
-	stage3FiftyNineCount = 0
+	stage3ThirtyThreeCount = 0
 	stage2YellFirstTime = 0
 	stage2YellPairTime = 0
 	lastYellTime = 0
@@ -199,7 +199,7 @@ function mod:OnCombatEnd()
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
 	stage3ThirtyFourCount = 0
-	stage3FiftyNineCount = 0
+	stage3ThirtyThreeCount = 0
 	stage2YellFirstTime = 0
 	stage2YellPairTime = 0
 	lastYellTime = 0
@@ -247,7 +247,7 @@ do
 		self.vb.EternalNightfallCount = 1
 		self.vb.ToxicDelugeCount = 1
 		stage3ThirtyFourCount = 0
-		stage3FiftyNineCount = 0
+		stage3ThirtyThreeCount = 0
 	end
 
 	---@param timer number
@@ -264,8 +264,8 @@ do
 
 	---@param timer number
 	---@return boolean
-	local function isHeroicStage3UniqueTimer(timer)
-		return timer == 15 or timer == 29 or timer == 42 or timer == 51 or timer == 59 or timer == 66 or timer == 88 or timer == 94
+	local function isHeroicStage3Timer(timer)
+		return timer == 2 or timer == 17 or timer == 26 or timer == 32 or timer == 33 or timer == 34 or timer == 38 or timer == 39 or timer == 43 or timer == 44 or timer == 47 or timer == 51 or timer == 57 or timer == 61 or timer == 62 or timer == 67 or timer == 100 or timer == 101 or timer == 105 or timer == 106 or timer == 170
 	end
 
 	---@param timer number
@@ -299,7 +299,7 @@ do
 			elseif timer == 28 or timer == 35 then--Venomfang
 				handled = true
 				timerVenomfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venomfang", "VenomfangCount"))
-			elseif timer == 80 then--Fangs of the Crucible
+			elseif timer == 85 then--Fangs of the Crucible
 				handled = true
 				timerFangsoftheCoiledAlterCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "crucible", "CrucibleCount"))
 			elseif timer == 43 then--Ambiguous: Guillotine OR Toxic Deluge
@@ -317,8 +317,8 @@ do
 				enterStage3(self)
 				return timersHeroic(self, timer, timerExact, eventID)
 			end
-			--Fallback stage 3 transition: unique stage 3 timer after long silence.
-			if isHeroicStage3UniqueTimer(timer) and (GetTime() - lastTLEvent) > 20 then
+			--Fallback stage 3 transition: any verified stage 3 timer after a long silence.
+			if isHeroicStage3Timer(timer) and (GetTime() - lastTLEvent) > 20 then
 				enterStage3(self)
 				return timersHeroic(self, timer, timerExact, eventID)
 			end
@@ -347,33 +347,33 @@ do
 				end
 			end
 		elseif stage == 3 then
-			--Stage 3 (limited data; route confirmed timers and fail over on unknown)
-			if timer == 2 or timer == 42 or timer == 51 then--Toxic Deluge
+			--Stage 3: CoiledAltar (Heroic/Week2)
+			if timer == 2 or timer == 43 or timer == 47 or timer == 57 or timer == 62 then--Toxic Deluge
 				handled = true
 				timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
-			elseif timer == 15 then--Grim Guillotine
+			elseif timer == 17 or timer == 170 then--Grim Guillotine
 				handled = true
 				timerGrimGuillotineCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grimGuillotine", "GuilotineCount"))
-			elseif timer == 22 then--Gloombomb
+			elseif timer == 26 or timer == 51 or timer == 67 then--Gloombomb
 				handled = true
 				timerGloombombCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloombomb", "GloombombCount"))
-			elseif timer == 29 then--Blighted Severing
+			elseif timer == 32 or timer == 34 or timer == 38 then--Blighted Severing
 				handled = true
 				timerBlightedSeveringCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blightedSevering", "SeverCount"))
-			elseif timer == 35 or timer == 88 then--Eternal Nightfall
+			elseif timer == 39 or timer == 100 then--Eternal Nightfall
 				handled = true
 				timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
-			elseif timer == 66 then--Dreadmarch
+			elseif timer == 44 or timer == 61 or timer == 101 then--Dreadmarch
 				handled = true
 				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
-			elseif timer == 94 then--Defilement of the Crucible
+			elseif timer == 105 or timer == 106 then--Defilement of the Crucible
 				handled = true
 				timerDefilementoftheCrucibleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "defilement", "CrucibleCount"))
-			elseif timer == 59 then--Ambiguous: Grim Guillotine OR Gloombomb
+			elseif self:IsRoundedTimer(timerExact, 33.333, 0.1) then--Ambiguous: Blighted Severing OR Gloombomb
 				handled = true
-				stage3FiftyNineCount = stage3FiftyNineCount + 1
-				if stage3FiftyNineCount % 2 == 1 then
-					timerGrimGuillotineCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grimGuillotine", "GuilotineCount"))
+				stage3ThirtyThreeCount = stage3ThirtyThreeCount + 1
+				if stage3ThirtyThreeCount % 2 == 1 then
+					timerBlightedSeveringCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "blightedSevering", "SeverCount"))
 				else
 					timerGloombombCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloombomb", "GloombombCount"))
 				end
