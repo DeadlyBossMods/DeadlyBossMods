@@ -40,7 +40,7 @@ local timerStygianBurstCD				= mod:NewCDCountTimer(20.5, 1302489, nil, nil, nil,
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
 --Evidence https://www.warcraftlogs.com/reports/MyHmVwLj8ncbpxvW?fight=23&type=auras&spells=debuffs
-mod:AddAuraSoundOption(1291461, true, 1291461, 1, 2, "watchfeet", 8, 0)--Virulent Fumes
+mod:AddAuraSoundOption(1291461, false, 1291461, 1, 2, "watchfeet", 8, 0)--Virulent Fumes
 --mod:AddAuraSoundOption(1281913, true, 1281907, 1, 1, "runout", 2, 0)--Plague Froth (uncomment if BlizzYou doesn't work)
 mod:AddAuraSoundOption(1295173, true, 1282114, 1, 1, "runout", 2, 0)--Exploding Infection
 mod:AddAuraSoundOption(1295224, true, 1282114, 1, 1, "gathershare", 2, 0)--Siphoning Infection (maybe clearer audio depending on common strat of heal it off or lifesteal it off
@@ -49,13 +49,7 @@ mod:AddAuraSoundOption(1295380, false, 1282114, 1, 3, "debuffyou", 17, 0)--Sipho
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local nextDAEvent = "dripping"
-local batchTimerValues = {
-	--Vashnik resends the opening Imbibe, Plague Froth, and Dripping Fangs timeline batch.
-	[8] = true,
-	[13] = true,
-	[16] = true,
-	[80] = true,
-}
+local nextHeroic13Event = "plague"
 
 mod.vb.DrippingFangsCount = 0
 mod.vb.AdaptiveInfectionCount = 0
@@ -96,8 +90,9 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
-	self:TLBatchReset()
+	self:TLActiveEventReset()
 	nextDAEvent = "dripping"
+	nextHeroic13Event = "plague"
 	self.vb.DrippingFangsCount = 1
 	self.vb.AdaptiveInfectionCount = 1
 	self.vb.MalignantCatalystCount = 1
@@ -128,8 +123,9 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
-	self:TLBatchReset()
+	self:TLActiveEventReset()
 	nextDAEvent = "dripping"
+	nextHeroic13Event = "plague"
 	self:UnregisterShortTermEvents()
 end
 
@@ -174,30 +170,29 @@ do
 	local function timersHeroic(self, timer, timerExact, eventID)
 		--Confirmed same on heroic and mythic so far
 		local handled
-		if timer == 8 or timer == 11 or timer == 22 then
+		if timer == 8 or timer == 11 or timer == 22 or timer == 27 or timer == 28 then
 			handled = true
 			timerDrippingFangsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dripping", "DrippingFangsCount"))
-		elseif timer == 10 or timer == 16 or timer == 21 or timer == 31 then
+		elseif timer == 13 then
+			handled = true
+			if nextHeroic13Event == "plague" then
+				timerPlagueFrothCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "plague", "PlagueFrothCount"))
+				nextHeroic13Event = "dripping"
+			else
+				timerDrippingFangsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dripping", "DrippingFangsCount"))
+			end
+		elseif timer == 10 or timer == 16 or timer == 21 or timer == 30 or timer == 31 or timer == 33 then
 			handled = true
 			timerPlagueFrothCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "plague", "PlagueFrothCount"))
 		elseif timer == 20 or timer == 80 then
 			handled = true
 			timerImbibeToxinCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "imbibe", "ImbibeToxinCount"))
-		elseif timer == 6 or timer == 44 then
+		elseif timer == 6 or timer == 39 or timer == 44 then
 			handled = true
 			timerMalignantCatalystCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "catalyst", "MalignantCatalystCount"))
-		elseif timer == 23 or timer == 24 then
+		elseif timer == 18 or timer == 23 or timer == 24 or timer == 52 then
 			handled = true
 			timerAdaptiveInfectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "adaptive", "AdaptiveInfectionCount"))
-		elseif timer == 30 then
-			handled = true
-			if nextDAEvent == "dripping" then
-				timerDrippingFangsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "dripping", "DrippingFangsCount"))
-				nextDAEvent = "adaptive"
-			else
-				timerAdaptiveInfectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "adaptive", "AdaptiveInfectionCount"))
-				nextDAEvent = "dripping"
-			end
 		end
 
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
@@ -214,9 +209,9 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
+		if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
-		if self:TLBatchTrackLatest(timer, eventID, batchTimerValues) == eventID then return end
 		if not badStateDetected then
 			if self:IsNormal() then
 				timersNormal(self, timer, timerExact, eventID)
@@ -229,13 +224,18 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
-		self:TLBatchUntrack(eventID)
+		if eventState >= 2 then
+			self:TLReleaseActiveEvent(eventID)
+		end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if eventType and eventCount then
 				if eventType == "dripping" then
-					specWarnDrippingFangs:Show(eventCount)
-					specWarnDrippingFangs:Play("defensive")
+					if self:IsTanking("player", "boss1", nil, true) then
+						specWarnDrippingFangs:Show(eventCount)
+						specWarnDrippingFangs:Play("defensive")
+						--Test if taunt swap can be inserted here or needs scheduled delay
+					end
 				elseif eventType == "catalyst" then
 					specWarnMalignantCatalyst:Show(eventCount)
 					specWarnMalignantCatalyst:Play("helpsoak")

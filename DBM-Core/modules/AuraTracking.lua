@@ -15,6 +15,7 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 ---@field SetDispelTypeText fun(self: DBMAuraButton, region: FontString, options: table)
 ---@field ClearDispelTypeText fun(self: DBMAuraButton)
 ---@field SetDurationCooldown fun(self: DBMAuraButton, cooldown: DBMAuraCooldown)
+---@field SetDurationText fun(self: DBMAuraButton, region: FontString, options: table)
 ---@field ClearDurationText fun(self: DBMAuraButton)
 ---@field SetApplicationCount fun(self: DBMAuraButton, region: FontString, options: table)
 ---@field ClearApplicationCount fun(self: DBMAuraButton)
@@ -57,6 +58,7 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 ---@field enabled boolean
 ---@field Width number
 ---@field Height number
+---@field IconZoom number
 ---@field Anchor string
 ---@field relativeTo string
 ---@field xOffset number
@@ -65,6 +67,8 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 ---@field TextFontStyle string
 ---@field DurationFontSize number
 ---@field DurationColor { r: number, g: number, b: number }
+---@field DurationEmphasizeThreshold number
+---@field DurationEmphasizeColor { r: number, g: number, b: number }
 ---@field ShowDecimalSeconds boolean
 ---@field DecimalThreshold number
 ---@field ShowCooldownSwipe boolean
@@ -89,6 +93,10 @@ DBM.Auras = AuraTracking
 ---@field BorderTextures table<integer, Texture>
 ---@field Symbols table<integer, FontString>
 ---@field Cooldowns table<integer, DBMAuraCooldown>
+---@field DurationTexts table<integer, FontString>
+---@field DurationBindings table<integer, table>
+---@field DurationColorCurves table<integer, table>
+---@field DurationObjects table<integer, table>
 ---@field StackTexts table<integer, FontString>
 ---@field Border Frame?
 ---@field NameLabel FontString?
@@ -147,6 +155,7 @@ end
 local function GetAuraSettings(prefix)
 	local stackColor = DBM.Options[prefix .. "StackColor"] or DBM.DefaultOptions[prefix .. "StackColor"]
 	local durationColor = DBM.Options[prefix .. "DurationColor"] or DBM.DefaultOptions[prefix .. "DurationColor"]
+	local durationEmphasizeColor = DBM.Options[prefix .. "DurationEmphasizeColor"] or DBM.DefaultOptions[prefix .. "DurationEmphasizeColor"]
 	return {
 		optionPrefix = prefix,
 		HideBorder = DBM.Options[prefix .. "HideBorder"],
@@ -158,6 +167,7 @@ local function GetAuraSettings(prefix)
 		enabled = DBM.Options[prefix .. "Enabled2"],
 		Width = DBM.Options[prefix .. "Width"],
 		Height = DBM.Options[prefix .. "Height"],
+		IconZoom = DBM.Options[prefix .. "IconZoom"] or DBM.DefaultOptions[prefix .. "IconZoom"],
 		Anchor = DBM.Options[prefix .. "Anchor"],
 		relativeTo = DBM.Options[prefix .. "RelativeTo"],
 		xOffset = DBM.Options[prefix .. "XOffset"],
@@ -166,6 +176,8 @@ local function GetAuraSettings(prefix)
 		TextFontStyle = DBM.Options[prefix .. "TextFontStyle"],
 		DurationFontSize = DBM.Options[prefix .. "DurationFontSize"],
 		DurationColor = durationColor,
+		DurationEmphasizeThreshold = DBM.Options[prefix .. "DurationEmphasizeThreshold"] or DBM.DefaultOptions[prefix .. "DurationEmphasizeThreshold"],
+		DurationEmphasizeColor = durationEmphasizeColor,
 		ShowDecimalSeconds = DBM.Options[prefix .. "ShowDecimalSeconds"],
 		DecimalThreshold = DBM.Options[prefix .. "DecimalThreshold"] or DBM.DefaultOptions[prefix .. "DecimalThreshold"],
 		ShowCooldownSwipe = DBM.Options.PrivateAurasShowCooldownSwipe,
@@ -214,11 +226,33 @@ local function GetAuraDecimalThreshold(settings)
 	return math.min(math.max(tonumber(settings.DecimalThreshold) or 3, 0.1), 59.9)
 end
 
+---@param settings DBMAuraSettings
+---@return number
+local function GetAuraDurationEmphasizeThreshold(settings)
+	return math.min(math.max(tonumber(settings.DurationEmphasizeThreshold) or 0, 0), 30)
+end
+
+---@param texture Texture
+---@param zoom number?
+local function SetAuraIconZoom(texture, zoom)
+	zoom = math.min(math.max(tonumber(zoom) or 0, 0), 0.5)
+	local edge = zoom / 2
+	texture:SetTexCoord(edge, 1 - edge, edge, 1 - edge)
+end
+
+---@param r number
+---@param g number
+---@param b number
+---@return colorRGBA
+local function CreateAuraDurationColor(r, g, b)
+	return { r = r, g = g, b = b, a = 1 }
+end
+
 ---@param settings table
 ---@return number
 local function GetCoTankRowYOffset(settings)
 	local step = settings.Height + settings.Spacing
-	if settings.GrowDirection == "UP" or settings.GrowDirection == "DOWN" then
+	if settings.GrowDirection == "UP" or settings.GrowDirection == "DOWN" or settings.GrowDirection == "CENTER_VERTICAL" then
 		step = settings.Height + (settings.Limit - 1) * (settings.Height + settings.Spacing) + settings.Spacing
 	end
 	return step
@@ -243,7 +277,7 @@ local function GetFlowDirections(growDirection)
 	local vertical = AnchorUtil.FlowDirection.Down
 	if growDirection == "LEFT" then
 		horizontal = AnchorUtil.FlowDirection.Left
-	elseif growDirection == "UP" then
+	elseif growDirection == "UP" or growDirection == "CENTER_VERTICAL" then
 		vertical = AnchorUtil.FlowDirection.Up
 	end
 	return horizontal, vertical
@@ -253,7 +287,9 @@ end
 ---@return string
 local function GetLayoutAnchorPoint(settings)
 	local growDirection = settings and settings.GrowDirection or "RIGHT"
-	if growDirection == "LEFT" then
+	if growDirection == "CENTER_HORIZONTAL" or growDirection == "CENTER_VERTICAL" then
+		return "CENTER"
+	elseif growDirection == "LEFT" then
 		return "TOPRIGHT"
 	elseif growDirection == "UP" then
 		return "BOTTOMLEFT"
@@ -262,9 +298,20 @@ local function GetLayoutAnchorPoint(settings)
 end
 
 ---@param settings table
+---@return string
+local function GetFlowLayoutAnchorPoint(settings)
+	if settings.GrowDirection == "CENTER_HORIZONTAL" then
+		return "LEFT"
+	elseif settings.GrowDirection == "CENTER_VERTICAL" then
+		return "BOTTOM"
+	end
+	return GetLayoutAnchorPoint(settings)
+end
+
+---@param settings table
 ---@return number
 local function GetFlowLayoutAxis(settings)
-	if settings.GrowDirection == "UP" or settings.GrowDirection == "DOWN" then
+	if settings.GrowDirection == "UP" or settings.GrowDirection == "DOWN" or settings.GrowDirection == "CENTER_VERTICAL" then
 		return AnchorUtil.FlowLayoutAxis.Vertical
 	end
 	return AnchorUtil.FlowLayoutAxis.Horizontal
@@ -274,8 +321,11 @@ end
 ---@return number
 local function GetRowWidth(settings)
 	local width = settings.Width or 1
-	if settings.GrowDirection == "UP" or settings.GrowDirection == "DOWN" then
-		return width
+	if settings.GrowDirection == "UP" or settings.GrowDirection == "DOWN" or settings.GrowDirection == "CENTER_VERTICAL" then
+		local height = settings.Height or 1
+		local limit = settings.Limit or 1
+		local spacing = settings.Spacing or 0
+		return math.max(height, (height * limit) + (spacing * math.max(limit - 1, 0)))
 	end
 	local limit = settings.Limit or 1
 	local spacing = settings.Spacing or 0
@@ -305,16 +355,26 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	frame.BorderTextures = frame.BorderTextures or {}
 	frame.Symbols = frame.Symbols or {}
 	frame.Cooldowns = frame.Cooldowns or {}
+	frame.DurationTexts = frame.DurationTexts or {}
+	frame.DurationBindings = frame.DurationBindings or {}
+	frame.DurationColorCurves = frame.DurationColorCurves or {}
+	frame.DurationObjects = frame.DurationObjects or {}
 	frame.StackTexts = frame.StackTexts or {}
 
 	local xOffset = (settings.GrowDirection == "RIGHT" and (index - 1) * (settings.Width + settings.Spacing)) or (settings.GrowDirection == "LEFT" and -(index - 1) * (settings.Width + settings.Spacing)) or 0
 	local yOffset = (settings.GrowDirection == "UP" and (index - 1) * (settings.Height + settings.Spacing)) or (settings.GrowDirection == "DOWN" and -(index - 1) * (settings.Height + settings.Spacing)) or 0
+	if settings.GrowDirection == "CENTER_HORIZONTAL" then
+		xOffset = (index - ((settings.Limit + 1) / 2)) * (settings.Width + settings.Spacing)
+	elseif settings.GrowDirection == "CENTER_VERTICAL" then
+		yOffset = (index - ((settings.Limit + 1) / 2)) * (settings.Height + settings.Spacing)
+	end
 
 	if not frame.Textures[index] then
 		frame.Textures[index] = frame:CreateTexture(nil, "ARTWORK")
 	end
 	local icon = frame.Textures[index]
 	icon:SetTexture(texture)
+	SetAuraIconZoom(icon, settings.IconZoom)
 	icon:SetSize(settings.Width, settings.Height)
 	icon:ClearAllPoints()
 	icon:SetPoint("CENTER", frame, "CENTER", xOffset, yOffset)
@@ -369,13 +429,54 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	cooldown:SetDrawEdge(false)
 	cooldown:SetDrawBling(false)
 	cooldown:SetDrawSwipe(settings.ShowCooldownSwipe)
-	cooldown:SetHideCountdownNumbers(false)
-	cooldown:SetCountdownMillisecondsThreshold(GetAuraDecimalThreshold(settings))
+	cooldown:SetHideCountdownNumbers(true)
 	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
-	cooldown:GetCountdownFontString():SetFont(fontPath, settings.DurationFontSize, fontFlags)
-	cooldown:GetCountdownFontString():SetTextColor(settings.DurationColor.r, settings.DurationColor.g, settings.DurationColor.b)
 	cooldown:SetCooldownFromExpirationTime(GetTime() + duration, duration)
 	cooldown:Show()
+
+	if not frame.DurationTexts[index] then
+		frame.DurationTexts[index] = overlayFrame:CreateFontString(nil, "OVERLAY")
+		frame.DurationTexts[index]:SetPoint("CENTER", icon, "CENTER")
+		frame.DurationBindings[index] = C_DurationUtil.CreateDurationTextBinding()
+		frame.DurationBindings[index]:SetFontString(frame.DurationTexts[index])
+		frame.DurationColorCurves[index] = C_CurveUtil.CreateColorCurve()
+		frame.DurationColorCurves[index]:SetType(Enum.LuaCurveType.Step)
+		frame.DurationBindings[index]:SetTextColorCurve(frame.DurationColorCurves[index], Enum.DurationTextBindingProperty.RemainingDuration)
+		frame.DurationObjects[index] = C_DurationUtil.CreateDuration()
+	end
+	local durationText = frame.DurationTexts[index]
+	durationText:SetFont(fontPath, settings.DurationFontSize, fontFlags)
+	local formatter = C_StringUtil.CreateNumericRuleFormatter()
+	local decimalThreshold = GetAuraDecimalThreshold(settings)
+	local breakpoints = {
+		{ threshold = 0.01, format = "" },
+	}
+	if decimalThreshold > 0 then
+		table.insert(breakpoints, { threshold = 0.011, format = "%0.1f" })
+		table.insert(breakpoints, { threshold = decimalThreshold, format = "%d" })
+	else
+		table.insert(breakpoints, { threshold = 0.011, format = "%d" })
+	end
+	formatter:SetBreakpoints(breakpoints)
+	local durationBinding = frame.DurationBindings[index]
+	durationBinding:SetFormatter(formatter)
+	local colorCurve = frame.DurationColorCurves[index]
+	colorCurve:ClearPoints()
+	local durationColor = settings.DurationColor
+	local emphasizeThreshold = GetAuraDurationEmphasizeThreshold(settings)
+	if emphasizeThreshold > 0 then
+		local emphasizeColor = settings.DurationEmphasizeColor
+		colorCurve:AddPoint(0.1, CreateAuraDurationColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
+		colorCurve:AddPoint(math.max(emphasizeThreshold - 0.1, 0.1), CreateAuraDurationColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
+		colorCurve:AddPoint(emphasizeThreshold, CreateAuraDurationColor(durationColor.r, durationColor.g, durationColor.b))
+	else
+		colorCurve:AddPoint(0, CreateAuraDurationColor(durationColor.r, durationColor.g, durationColor.b))
+	end
+	local durationObject = frame.DurationObjects[index]
+	durationObject:SetTimeFromStart(GetTime(), duration)
+	durationBinding:SetDuration(durationObject)
+	durationBinding:SetEnabled(true)
+	durationText:Show()
 
 	if not frame.StackTexts[index] then
 		frame.StackTexts[index] = overlayFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -419,6 +520,7 @@ local function ConfigureButton(state, button, settings, unit)
 	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
 	local durationFontSize = tonumber(settings.DurationFontSize) or tonumber(DBM.DefaultOptions[prefix .. "DurationFontSize"]) or 12
 	local stackFontSize = tonumber(settings.StackFontSize) or tonumber(DBM.DefaultOptions[prefix .. "StackFontSize"]) or 12
+	SetAuraIconZoom(regions.icon, settings.IconZoom)
 	if settings.ShowDispelBorder and not settings.HideBorder then
 		if not regions.dispelOverlay then
 			regions.dispelOverlay = CreateFrame("Frame", nil, button)
@@ -468,13 +570,49 @@ local function ConfigureButton(state, button, settings, unit)
 	local durationCooldown = regions.durationCooldown
 	---@cast durationCooldown DBMAuraCooldown
 	durationCooldown:SetDrawSwipe(settings.ShowCooldownSwipe)
-	durationCooldown:SetHideCountdownNumbers(false)
-	durationCooldown:SetCountdownMillisecondsThreshold(GetAuraDecimalThreshold(settings))
-	durationCooldown:GetCountdownFontString():SetFont(fontPath, durationFontSize, fontFlags)
-	durationCooldown:GetCountdownFontString():SetTextColor(settings.DurationColor.r, settings.DurationColor.g, settings.DurationColor.b)
+	durationCooldown:SetHideCountdownNumbers(true)
 	durationCooldown:Show()
-	button:ClearDurationText()
 	button:SetDurationCooldown(durationCooldown)
+
+	if not regions.durationText then
+		regions.durationText = regions.textOverlay:CreateFontString(nil, "OVERLAY")
+		regions.durationText:SetPoint("CENTER", button, "CENTER")
+		regions.durationBinding = C_DurationUtil.CreateDurationTextBinding()
+		regions.durationBinding:SetFontString(regions.durationText)
+		regions.durationColorCurve = C_CurveUtil.CreateColorCurve()
+		regions.durationColorCurve:SetType(Enum.LuaCurveType.Step)
+		regions.durationBinding:SetTextColorCurve(regions.durationColorCurve, Enum.DurationTextBindingProperty.RemainingDuration)
+	end
+	local durationText = regions.durationText
+	durationText:SetFont(fontPath, durationFontSize, fontFlags)
+	local formatter = C_StringUtil.CreateNumericRuleFormatter()
+	local decimalThreshold = GetAuraDecimalThreshold(settings)
+	local breakpoints = {
+		{ threshold = 0.01, format = "" },
+	}
+	if decimalThreshold > 0 then
+		table.insert(breakpoints, { threshold = 0.011, format = "%0.1f" })
+		table.insert(breakpoints, { threshold = decimalThreshold, format = "%d" })
+	else
+		table.insert(breakpoints, { threshold = 0.011, format = "%d" })
+	end
+	formatter:SetBreakpoints(breakpoints)
+	regions.durationBinding:SetFormatter(formatter)
+	local colorCurve = regions.durationColorCurve
+	colorCurve:ClearPoints()
+	local durationColor = settings.DurationColor
+	local emphasizeThreshold = GetAuraDurationEmphasizeThreshold(settings)
+	if emphasizeThreshold > 0 then
+		local emphasizeColor = settings.DurationEmphasizeColor
+		colorCurve:AddPoint(0.1, CreateAuraDurationColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
+		colorCurve:AddPoint(math.max(emphasizeThreshold - 0.1, 0.1), CreateAuraDurationColor(emphasizeColor.r, emphasizeColor.g, emphasizeColor.b))
+		colorCurve:AddPoint(emphasizeThreshold, CreateAuraDurationColor(durationColor.r, durationColor.g, durationColor.b))
+	else
+		colorCurve:AddPoint(0, CreateAuraDurationColor(durationColor.r, durationColor.g, durationColor.b))
+	end
+	button:ClearDurationText()
+	button:SetDurationText(durationText, { binding = regions.durationBinding })
+	durationText:Show()
 
 	if not regions.countText then
 		regions.countText = regions.textOverlay:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -576,7 +714,7 @@ local function InitContainerState(state, settings, unit)
 	container:SetPoint(layoutAnchorPoint, anchor, layoutAnchorPoint, 0, 0)
 	container:SetUnit(unit)
 	container:SetFlowLayoutAxis(GetFlowLayoutAxis(settings))
-	container:SetFlowLayoutAnchorPoint(layoutAnchorPoint)
+	container:SetFlowLayoutAnchorPoint(GetFlowLayoutAnchorPoint(settings))
 	container:SetFlowLayoutGrowthDirection(GetFlowDirections(settings.GrowDirection))
 	container:SetFlowLayoutMaximumLineSize(GetRowWidth(settings))
 
@@ -736,6 +874,8 @@ local function UpdatePreviewFrame(frame, settings, texture, name)
 				frame.Symbols[i]:Hide()
 			end
 			if frame.Cooldowns[i] then frame.Cooldowns[i]:Hide() end
+			if frame.DurationTexts[i] then frame.DurationTexts[i]:Hide() end
+			if frame.DurationBindings[i] then frame.DurationBindings[i]:SetEnabled(false) end
 			if frame.StackTexts[i] then frame.StackTexts[i]:Hide() end
 		end
 	end

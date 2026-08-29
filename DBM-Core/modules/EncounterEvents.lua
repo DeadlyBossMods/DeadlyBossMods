@@ -31,6 +31,9 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	local targetGUID = encounterWarningInfo.targetGUID
 	local formattedTargetName = targetName
 	local tooltipSpellID = encounterWarningInfo.tooltipSpellID
+	--Non secrets
+	local severity = encounterWarningInfo.severity--0 low, 1 medium, 2 critical
+
 	if targetGUID then
 		local _, className = GetPlayerInfoByGUID(targetGUID)
 		if className then
@@ -40,15 +43,15 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 			end
 		end
 		if tooltipSpellID then
-			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 3, nil, nil, true, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with severity: "..severity.." and casterName: "..casterName.." and spellId: "..tooltipSpellID.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 3, nil, nil, true, true)
 		else
-			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 3, nil, nil, true, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with severity: "..severity.." and casterName: "..casterName.." and targetName: "..formattedTargetName.." and targetGUID: "..targetGUID, 3, nil, nil, true, true)
 		end
 	else
 		if tooltipSpellID then
-			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName.." and spellId: "..tooltipSpellID, 3, nil, nil, true, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with severity: "..severity.." and casterName: "..casterName.." and spellId: "..tooltipSpellID, 3, nil, nil, true, true)
 		else
-			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with casterName: "..casterName, 3, nil, nil, true, true)
+			self:Debug("|cffff4000ENCOUNTER_WARNING: |r fired for text: "..text.." with severity: "..severity.." and casterName: "..casterName, 3, nil, nil, true, true)
 		end
 	end
 	local consumedBlizzTargetAnnounce = self:ConsumeBlizzTargetAnnounce(formattedTargetName or UNKNOWN)
@@ -67,8 +70,6 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	end--Set by modules, not core options to filter blizz events for hard coded mods
 	if self.Options.HideDBMWarnings then return end
 	local iconFileID = encounterWarningInfo.iconFileID
-	--Non secrets
-	local severity = encounterWarningInfo.severity--0 low, 1 medium, 2 critical
 	local formatedText = string.format(text, casterName, formattedTargetName)
 	if severity == 0 then
 		--Use normal warning for low severity, but we call it here to avoid duplicate event registration

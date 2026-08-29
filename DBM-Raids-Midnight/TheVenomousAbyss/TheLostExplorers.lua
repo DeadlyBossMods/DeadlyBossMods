@@ -20,22 +20,24 @@ mod:RegisterSafeEventsInCombat("UNIT_FLAGS boss1 boss3 boss4")
 --NOTE: Blink Nova has two spellids and two encounter event IDs. TODO, identify if maybe diff IDs are diff teleport locations and further refine voice pack
 --NOTE: These 3 spells are not timeline based but activated on deaths that we cant detect so we'll use non hardcoded objects for them only. Cataclysmic Invocation, Relentless Escalation, and Smashing Shovel
 --TODO, maybe add a troll BOING sound to https://www.wowhead.com/ptr/spell=1299854/bounce ?
+--TODO, better handle Cataclysmic Invocation and Empowered Ascension
 DBM:RegisterAltSpellName(1295854, DBM_COMMON_L.TANKDEBUFF)--Shredding Shards --> Tank Debuff
-mod:AddCustomAlertSoundOption(1291390, true, 2)--Cataclysmic Invocation
+--mod:AddCustomAlertSoundOption(1291390, true, 2)--Cataclysmic Invocation
 --mod:AddCustomAlertSoundOption(0, true, 2)--Relentless Escalation (no event ID?)
 --mod:AddCustomAlertSoundOption(0, true, 2)--Smashing Shovel (no event ID?)
-mod:AddCustomAlertSoundOption(1292779, true, 2, nil)--Empowered Ascension
+--mod:AddCustomAlertSoundOption(1292779, true, 2)--Empowered Ascension
 local warnFlingFish						= mod:NewCountAnnounce(1295817, 3)--hardcode only?
 local warnExplosiveSurprise				= mod:NewBlizzTargetAnnounce(1296249, 3)--hardcode only
+local warnFrostfireVolley				= mod:NewCountAnnounce(1295935, 3)--hardcode only?
+local warnBlinkNova						= mod:NewTargetNoFilterAnnounce(1290711, 2)--Hardcoded only; target is secret
 
 local specWarnIceboundFlames			= mod:NewSpecialWarningCount(1286921, nil, nil, nil, 1, 2, nil, nil, "kickcast")--Fix audio if targetting doable
-local specWarnBlinkNova					= mod:NewSpecialWarningRunCount(1290711, nil, nil, nil, 4, 2, nil, nil, "justrun")
+local specWarnBlinkNova					= mod:NewSpecialWarningBlizzYou(1290711, nil, nil, nil, 4, 2, nil, nil, "justrun")
 local specWarnMightyThud				= mod:NewSpecialWarningSoakCount(1296092, nil, nil, nil, 2, 17, nil, nil, "soakincoming")
 local specWarnShellSpin					= mod:NewSpecialWarningDodgeCount(1291759, nil, nil, nil, 2, 2, nil, nil, "farfromline")
 local specWarnThrowJunk					= mod:NewSpecialWarningDodgeCount(1291933, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnMushroomToss				= mod:NewSpecialWarningDodgeCount(1292104, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnShreddingShards			= mod:NewSpecialWarningDefensive(1295854, nil, nil, nil, 1, 2, nil, nil, "defensive")
-local specWarnFrostfireVolley			= mod:NewSpecialWarningDodgeCount(1295935, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 
 local timerIceboundFlamesCD				= mod:NewCDCountTimer(20.5, 1286921, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON..DBM_COMMON_L.MAGIC_ICON)
 local timerBlinkNovaCD					= mod:NewCDCountTimer(20.5, 1290711, nil, nil, nil, 2)
@@ -62,7 +64,7 @@ mod:AddAuraSoundOption(1297650, true, 1296249, 1, 2, "watchfeet", 8, 0)--Spreadi
 --Debuffs that do not appear in combat log but MIGHT still work with aura sounds?
 mod:AddAuraSoundOption(1295886, true, 1295935, 1, 1, "flameyou", 15, 0)--Frostfire Volley (targeted by fire)
 mod:AddAuraSoundOption(1295935, true, 1295935, 1, 1, "frostyou", 20, 0)--Frostfire Volley (targeted by frost)
-mod:AddAuraSoundOption(1296025, true, 1290711, 1, 1, "teleyou", 5, 0)--Blink Nova
+--mod:AddAuraSoundOption(1296025, true, 1290711, 1, 1, "teleyou", 5, 0)--Blink Nova (Handled by ENCOUNTER_WARNING intercept)
 mod:AddAuraSoundOption(1296092, true, 1296092, 1, 1, "leapyou", 19, 0)--Mighty Thud
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
@@ -93,12 +95,11 @@ local function setFallback(self, dontSetAlerts)
 			specWarnShreddingShards:SetAlert(768, "defensive", 2, 2)
 		end
 		specWarnIceboundFlames:SetAlert(722, "kickcast", 2, 2)
-		specWarnBlinkNova:SetAlert({723, 724, 737, 738}, "justrun", 2, 3)--1290711, 1290742, 1290740, 1290743
+		specWarnBlinkNova:SetAlert({723, 724, 737, 738}, "justrun", 2, 3, 0)--1290711, 1290742, 1290740, 1290743
 		specWarnMightyThud:SetAlert(725, "soakincoming", 17, 2)
 		specWarnShellSpin:SetAlert(726, "farfromline", 2, 2)
 		specWarnThrowJunk:SetAlert(727, "watchstep", 2, 2)
 		specWarnMushroomToss:SetAlert(729, "watchstep", 2, 2)
-		specWarnFrostfireVolley:SetAlert({776, 777}, "watchstep", 2, 2)--1295886, 1295935
 	end
 	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
 	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
@@ -116,10 +117,11 @@ local function setFallback(self, dontSetAlerts)
 end
 
 function mod:OnLimitedCombatStart()
-	self:EnableAlertOptions(1291390, 721, "stilldanger", 2)
-	self:EnableAlertOptions(1292779, 783, "stilldanger", 4)
+--	self:EnableAlertOptions(1291390, 721, "stilldanger", 2)
+--	self:EnableAlertOptions(1292779, 783, "stilldanger", 4)
 	badStateDetected = false
 	self:TLCountReset()
+	self:TLActiveEventReset()
 	delayedStarts = {}
 	pendingNormalStage = nil
 	normalStage2Special32Count = 0
@@ -135,8 +137,8 @@ function mod:OnLimitedCombatStart()
 	self.vb.ShreddingShardsCount = 1
 	self.vb.FrostfireVolleyCount = 1
 	self.vb.ExplosiveSurpriseCount = 1
-	--Normal is the only difficulty with a complete, fresh UNIT_FLAGS log. Heroic and Mythic use Blizzard fallback until equivalent logs are available.
-	if DBM.Options.HardcodedTimer and self:IsNormal() and not badStateDetected then
+	--Normal and Heroic use the same verified four-stage timeline schedule. Mythic uses Blizzard fallback until an equivalent log is available.
+	if DBM.Options.HardcodedTimer and (self:IsNormal() or self:IsHeroic()) and not badStateDetected then
 		normalHardcodeActive = true
 		self:SetStage(1)
 		self:IgnoreBlizzardAPI()
@@ -154,6 +156,7 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	self:TLActiveEventReset()
 	self:Unschedule()
 	delayedStarts = {}
 	pendingNormalStage = nil
@@ -212,21 +215,24 @@ do
 		local handled = false
 		local stage = self:GetStage()
 
-		if pendingNormalStage == 4 and (timer == 7 or timer == 16) then
+		--The outgoing stage briefly re-publishes cancellable bars before the incoming schedule.
+		--Wait for a duration unique to the incoming stage so those rows retain their old-stage routing.
+		if pendingNormalStage == 4 and timer == 21 then
 			self:SetStage(4)
 			pendingNormalStage = nil
 			normalStage4Special27Count = 0
 			stage = 4
-		elseif pendingNormalStage == 2 and (timer == 7 or timer == 3) then
+		elseif pendingNormalStage == 2 and timer == 30 then
 			self:SetStage(2)
 			pendingNormalStage = nil
 			normalStage2Special32Count = 0
 			stage = 2
-		elseif pendingNormalStage == 3 and timer == 3 then
+		elseif pendingNormalStage == 3 and (timer == 11 or timer == 3) then
 			self:SetStage(3)
 			pendingNormalStage = nil
 			stage = 3
-		elseif ((stage == 2 or stage == 4) and (timer == 20 or timer == 60)) or stage == 3 and timer == 60 then
+		--The stage 1 Blink Nova opener can arrive before Final Ascension's later reset marker when returning from stages 2, 3, or 4.
+		elseif (stage == 4 and (timer == 10 or timer == 18 or timer == 20 or timer == 60)) or (stage == 2 and (timer == 10 or timer == 20 or timer == 60)) or (stage == 3 and (timer == 10 or timer == 60)) then
 			self:SetStage(1)
 			pendingNormalStage = nil
 			normalNext31IsIce = true
@@ -348,7 +354,7 @@ do
 		end
 
 		if not handled then
-			fallbackToBlizzard(self, "|cffff0000Failed to match Normal encounter timeline events to expected timers, falling back to Blizzard API|r")
+			fallbackToBlizzard(self, "|cffff0000Failed to match Normal or Heroic encounter timeline events to expected timers, falling back to Blizzard API|r")
 		end
 	end
 
@@ -366,20 +372,25 @@ do
 	--Note, bar state changing and canceling is handled by core
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
-		if eventInfo.source ~= 0 or not self:IsNormal() or badStateDetected then return end
+		if eventInfo.source ~= 0 or not (self:IsNormal() or self:IsHeroic()) or badStateDetected then return end
 		local eventID = eventInfo.id
+		if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
 		timersNormal(self, math.floor(timerExact + 0.5), timerExact, eventID)
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		if not eventID then return end
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
+		if not eventState then return end
+		if eventState >= 2 then
+			self:TLReleaseActiveEvent(eventID)
+		end
 		local queued = delayedStarts[eventID]
 		if eventState == 3 and queued then
 			delayedStarts[eventID] = nil
 			return
 		end
-		if not eventID or not eventState then return end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType or not eventCount then return end
@@ -387,8 +398,8 @@ do
 				specWarnIceboundFlames:Show(eventCount)
 				specWarnIceboundFlames:Play("kickcast")
 			elseif eventType == "blink" then
-				specWarnBlinkNova:Show(eventCount)
-				specWarnBlinkNova:Play("justrun")
+				warnBlinkNova:ScheduleSecret(0.4, "boss4")
+				specWarnBlinkNova:Show(eventCount, "teleyou")
 			elseif eventType == "mighty" then
 				specWarnMightyThud:Show(eventCount)
 				specWarnMightyThud:Play("soakincoming")
@@ -404,11 +415,12 @@ do
 				specWarnMushroomToss:Show(eventCount)
 				specWarnMushroomToss:Play("watchstep")
 			elseif eventType == "shredding" then
-				specWarnShreddingShards:Show()
-				specWarnShreddingShards:Play("defensive")
+				if self:IsTanking("player", "boss4", nil, true) then--Iku
+					specWarnShreddingShards:Show()
+					specWarnShreddingShards:Play("defensive")
+				end
 			elseif eventType == "frostfire" then
-				specWarnFrostfireVolley:Show(eventCount)
-				specWarnFrostfireVolley:Play("watchstep")
+				warnFrostfireVolley:Show(eventCount)
 			elseif eventType == "explosive" then
 				warnExplosiveSurprise:Show(eventCount)
 			end

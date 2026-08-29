@@ -71,6 +71,7 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
+	self:TLActiveEventReset()
 	self.vb.tankWaterCount = 1
 	self.vb.alluringBubbleCount = 2--1276710 is the combined initial/recast Bubble count 2
 	self.vb.ChillingFrostCount = 1
@@ -88,12 +89,14 @@ function mod:OnLimitedCombatStart()
 	else
 		setFallback(self)
 	end
+	--timerBerserkCD:Start(468)
 end
 
 
 function mod:OnCombatEnd()
 	repeating44Slot = 0
 	self:TLCountReset()
+	self:TLActiveEventReset()
 	self:UnregisterShortTermEvents()
 end
 
@@ -117,6 +120,11 @@ do
 		if timer == 27 or timer == 22 or timer == 9 then--Iceblade Flurry
 			handled = true
 			timerIcebladeFlurryCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "IcebladeFlurry", "tankWaterCount"))
+		elseif timer == 10 then--Unending Tides
+			handled = true
+			--Blizz resends berserk 10 seconds til
+			timerBerserkCD:Stop()
+			timerBerserkCD:Start(timerExact)
 		elseif timer == 8 or timer == 33 or timer == 23 then--Abyssal Rain
 			handled = true
 			timerAbyssalRainCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rain", "abyssalRainCount"))
@@ -164,6 +172,8 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
+		if C_EncounterTimeline.GetEventState(eventID) ~= 0 then return end
+		if not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
@@ -172,8 +182,12 @@ do
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		if not eventID then return end
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
-		if not eventID or not eventState then return end
+		if not eventState then return end
+		if eventState >= 2 then
+			self:TLReleaseActiveEvent(eventID)
+		end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end

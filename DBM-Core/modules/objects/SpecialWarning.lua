@@ -728,25 +728,50 @@ function specialWarningPrototype:Show(...)
 	end
 end
 
----Variant of Show for niche cases where the args contain secret data that must not be materialized into a Lua table.
----Uses an announce-type-specific secret template without name delimiters, then optionally class-colors the secret player name from its GUID.
----The GUID may be literal false to explicitly skip the class lookup and color wrapping.
----@param playerGUID WOWGUID|false|nil
+---Shows a secret player name without materializing it into a Lua table.
+---@param self SpecialWarning
+---@param className string|nil
 ---@param ... any
-function specialWarningPrototype:SecretShow(playerGUID, ...)
+local function secretShowByClass(self, className, ...)
 	local playerName = select(1, ...)
-	if playerGUID then
-		local _, className = GetPlayerInfoByGUID(playerGUID)
-		if className then
-			local classColor = C_ClassColor.GetClassColor(className)
-			if classColor then
-				playerName = classColor:WrapTextInColorCode(playerName)
-			end
+	if className then
+		local classColor = C_ClassColor.GetClassColor(className)
+		if classColor then
+			playerName = classColor:WrapTextInColorCode(playerName)
 		end
 	end
 	private.secretShowConsuming = true
 	self:Show(playerName, select(2, ...))
 	private.secretShowConsuming = false
+end
+
+---Shows a secret player name from an ENCOUNTER_WARNING target GUID without materializing it into a Lua table.
+---Uses an announce-type-specific secret template without name delimiters, then optionally class-colors the secret player name from its GUID.
+---The GUID may be literal false to explicitly skip the class lookup and color wrapping.
+---@param playerGUID WOWGUID|false|nil
+---@param ... any
+function specialWarningPrototype:SecretShowByGUID(playerGUID, ...)
+	local className
+	if playerGUID then
+		local _
+		_, className = GetPlayerInfoByGUID(playerGUID)
+	end
+	secretShowByClass(self, className, ...)
+end
+
+---Shows a unit's secret spell target without materializing it into a Lua table.
+---@param unit enemyUIDs|targetUIDs
+function specialWarningPrototype:SecretShowByUnit(unit)
+	secretShowByClass(self, UnitSpellTargetClass(unit), UnitSpellTargetName(unit))
+end
+
+---Shows a unit's secret spell target after a delay.
+---@param delay number
+---@param unit enemyUIDs|targetUIDs
+function specialWarningPrototype:ScheduleSecret(delay, unit)
+	self.mod:Schedule(delay, function()
+		self:SecretShowByUnit(unit)
+	end)
 end
 
 ---Object that's used when precision isn't possible (number of targets variable or unknown

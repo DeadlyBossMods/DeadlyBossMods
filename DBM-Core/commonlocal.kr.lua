@@ -89,6 +89,7 @@ CL.HEALABSORB						= "치유 흡수"
 CL.HEALABSORBS						= "치유 흡수"
 CL.INTERRUPT						= "차단"
 CL.INTERRUPTS						= "차단"
+CL.KNOCK							= "넉백"
 CL.KNOCKUP							= "띄우기"
 CL.LASER							= "레이저"
 CL.LASERS							= "레이저"
@@ -96,6 +97,7 @@ CL.LINE								= "선"
 CL.LINES							= "선"
 CL.MARK								= "징표"--As in short text for all the encounter mechanics that start or end in "Mark"
 CL.MARKS							= "징표"--Plural of above
+CL.MATHPUZZLE						= "산수 퍼즐"
 CL.MINDCONTROL						= "정신 지배"
 CL.NEGATIVE							= "음극"
 CL.ORB								= "구슬"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
@@ -121,6 +123,7 @@ CL.TANKBUSTER						= "탱커 버스터"
 CL.TANKCOMBO					= "탱커 연속 공격"
 CL.TANKDEBUFF						= "탱커 디버프"
 CL.TRAPS							= "함정"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
+CL.WAVES							= "물결"
 
 -- Colors
 CL.BLACK	= "검은용"

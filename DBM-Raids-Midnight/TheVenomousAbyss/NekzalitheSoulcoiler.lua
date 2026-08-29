@@ -34,7 +34,7 @@ local specWarnResidualToll				= mod:NewSpecialWarningCount(1298698, nil, nil, ni
 
 local timerEssenceRendCD				= mod:NewCDCountTimer(20.5, 1287426, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
 local timerRestlessAmaniCD				= mod:NewCDCountTimer(20.5, 1297630, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
-local timerPossessionBarrageCD			= mod:NewCDCountTimer(20.5, 1284103, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerPossessionBarrageCD			= mod:NewCDCountTimer(20.5, 1284103, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGraspingDepthsCD				= mod:NewCDCountTimer(20.5, 1293212, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerInvokeCD						= mod:NewCDCountTimer(20.5, 1299673, nil, nil, nil, 6)
 local timerHungeringPyreCD				= mod:NewCDCountTimer(20.5, 1305421, nil, nil, nil, 5)
@@ -50,6 +50,7 @@ mod:AddAuraSoundOption({1300524, 1300521}, true, 1293212, 1, 3, "teleyou", 5, 0)
 mod:AddAuraSoundOption(1306666, true, 1305421, 1, 1, "gathershare", 2, 0)--Hungering Pyre
 mod:AddAuraSoundOption(1294933, true, 1290679, 1, 3, "dotyou", 19, 0)--Slithering Flame
 --mod:AddAuraSoundOption(1284103, true, 1284103, 4, 1, "justrun", 2, 0)--Possession Barrage (threat check used for now)
+mod:AddAuraSoundOption(1288554, true, 1288554, 1, 2, "watchfeet", 8, 0)--Latent Cultist
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local engageBatchWindow = 0.6--Current Blizzard bug can emit duplicate initial events; hold briefly so we can prefer second batch without breaking if bug is fixed
@@ -283,9 +284,7 @@ do
 					specWarnPossessionBarrage:Show(eventCount)
 					specWarnPossessionBarrage:Play("justrun")
 				else
-					local targetGUID = UnitGUID("boss1target")
-					local targetName = UnitName("boss1target")
-					specWarnPossessionBarrageTaunt:SecretShow(targetGUID, targetName)
+					specWarnPossessionBarrageTaunt:SecretShowByUnit("boss1")
 					specWarnPossessionBarrageTaunt:Play("tauntboss")
 				end
 			elseif eventType == "invoke" then

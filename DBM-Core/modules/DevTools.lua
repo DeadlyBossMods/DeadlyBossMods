@@ -330,14 +330,14 @@ end
 
 do
 	local eventsRegistered = false
-	local UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit = UnitName, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit
+	local UnitName, UnitGUID, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit = UnitName, UnitGUID, UnitExists, UnitIsVisible, UnitCanAttack, UnitIsFriend, UnitIsUnit
 	local bossUnits = {
 		"boss1", "boss2", "boss3", "boss4", "boss5",
 		"boss6", "boss7", "boss8", "boss9", "boss10",
 		"arena1", "arena2", "arena3", "arena4", "arena5",
 	}
 	function module:UNIT_TARGETABLE_CHANGED(uId)
-		if DBM.Options.DebugLevel < 2 then return end
+		if DBM.Options.DebugLevel < 1 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
 		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." IsFriend:"..tostring(UnitIsFriend("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 3, nil, nil, true, true)
@@ -351,7 +351,7 @@ do
 	end
 
 	function module:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		if DBM.Options.DebugLevel < 2 then return end
+		if DBM.Options.DebugLevel < 1 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
 		local hasBossUnits = false
@@ -359,7 +359,7 @@ do
 			local unit = bossUnits[i]
 			if UnitExists(unit) then
 				hasBossUnits = true
-				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", unit)).." IsFriend:"..tostring(UnitIsFriend("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 3, nil, nil, true, true)
+				DBM:Debug("|c00D8B4FEIEEU|r fired for "..unit..": "..(UnitName(unit) or "?").." ("..(UnitGUID(unit) or "?")..") [CanAttack:"..tostring(UnitCanAttack("player", unit)).." IsFriend:"..tostring(UnitIsFriend("player", unit)).." Exists:"..tostring(UnitExists(unit)).." IsVisible:"..tostring(UnitIsVisible(unit)).."]", 3, nil, nil, true, true)
 			end
 		end
 		if not hasBossUnits then
@@ -388,17 +388,17 @@ do
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
-		if DBM.Options.DebugLevel < 3 then return end
+		if DBM.Options.DebugLevel < 2 then return end
 		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 		local spellName = DBM:GetSpellName(spellId)
-		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
+		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
-		if DBM.Options.DebugLevel < 3 then return end
+		if DBM.Options.DebugLevel < 2 then return end
 		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
 		local spellName = DBM:GetSpellName(spellId)
-		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
+		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
 	end
 
 	--Spammy events that core doesn't otherwise need are now dynamically registered/unregistered based on whether or not user is actually debugging
@@ -415,14 +415,25 @@ do
 						"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5 target",
 						"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5 target",
 						"UNIT_SPELLCAST_CHANNEL_START boss1 boss2 boss3 boss4 boss5 target",
-						"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5 target"
+						"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5 target",
+						"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+						"UNIT_TARGETABLE_CHANGED",
+						"UNIT_FLAGS boss1 boss2 boss3 boss4 boss5"
 					)
 					eventsRegistered = true
 				elseif DBM.Options.DebugLevel >= 2 then
 					self:RegisterShortTermEvents(
+						"UNIT_SPELLCAST_CHANNEL_START boss1 boss2 boss3 boss4 boss5",--target omitted at level 2
+						"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5",--target omitted at level 2
 						"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 						"UNIT_TARGETABLE_CHANGED",
 						"UNIT_FLAGS boss1 boss2 boss3 boss4 boss5"
+					)
+					eventsRegistered = true
+				elseif DBM.Options.DebugLevel >= 1 then
+					self:RegisterShortTermEvents(
+						"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+						"UNIT_TARGETABLE_CHANGED"
 					)
 					eventsRegistered = true
 				end

@@ -493,8 +493,9 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 			end
 			self.renameRevision = DBM:GetSpellRenameRevision()
 		end
+		local isSecretBlizzType = self.announceType == "blizztarget" or private.secretAnnounceConsuming
 		local argTable
-		if self.announceType ~= "blizztarget" then
+		if not isSecretBlizzType then
 			--Don't create table out of args if it has secrets
 			argTable = {...}
 		end
@@ -521,7 +522,7 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		--blizztarget purposely omited from here even though it's also a count warning, we don't want to perform any extra actions on secrets
 		if self.announceType and (self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" or self.announceType == "incomingcount") then--Don't use find "count" here, it'll match countdown
 			--Stage triggers don't pass count, but they do not need to, there is a stage callback and trigger option in WA that should be used
-			if type(argTable[1]) == "number" then
+			if argTable and type(argTable[1]) == "number" then
 				announceCount = argTable[1]
 			end
 		end
@@ -541,8 +542,8 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		)
 		self.combinedcount = 0
 		self.combinedtext = {}
-		--Avoid computational actions on blizz target, which is using secret passthrough
-		if self.announceType ~= "blizztarget" then
+		--Avoid computational actions on secret passthrough warnings
+		if not isSecretBlizzType then
 			if not cachedColorFunctions[self.color] then
 				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
 				cachedColorFunctions[color] = function(cap)
@@ -607,6 +608,51 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		self.combinedcount = 0
 		self.combinedtext = {}
 	end
+end
+
+---Shows a secret player name without materializing it into a Lua table.
+---@param self Announce
+---@param className string|nil
+---@param ... any
+local function secretShowByClass(self, className, ...)
+	local playerName = select(1, ...)
+	if className then
+		local classColor = C_ClassColor.GetClassColor(className)
+		if classColor then
+			playerName = classColor:WrapTextInColorCode(playerName)
+		end
+	end
+	private.secretAnnounceConsuming = true
+	self:Show(playerName, select(2, ...))
+	private.secretAnnounceConsuming = false
+end
+
+---Shows a secret player name from an ENCOUNTER_WARNING target GUID without materializing it into a Lua table.
+---Optionally class-colors the secret player name from its GUID.
+---@param playerGUID WOWGUID|false|nil
+---@param ... any
+function announcePrototype:SecretShowByGUID(playerGUID, ...)
+	local className
+	if playerGUID then
+		local _
+		_, className = GetPlayerInfoByGUID(playerGUID)
+	end
+	secretShowByClass(self, className, ...)
+end
+
+---Shows a unit's secret spell target without materializing it into a Lua table.
+---@param unit enemyUIDs|targetUIDs
+function announcePrototype:SecretShowByUnit(unit)
+	secretShowByClass(self, UnitSpellTargetClass(unit), UnitSpellTargetName(unit))
+end
+
+---Shows a unit's secret spell target after a delay.
+---@param delay number
+---@param unit enemyUIDs|targetUIDs
+function announcePrototype:ScheduleSecret(delay, unit)
+	self.mod:Schedule(delay, function()
+		self:SecretShowByUnit(unit)
+	end)
 end
 
 ---Object that's used when precision isn't possible (number of targets variable or unknown)

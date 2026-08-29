@@ -16,21 +16,21 @@ DBM:RegisterAltSpellName(1285425, DBM_COMMON_L.KNOCK.. " " .. DBM_COMMON_L.DEBUF
 local warnVenomousSurge					= mod:NewCountAnnounce(1305959, 2)
 
 local specWarnRagingCrosswinds			= mod:NewSpecialWarningBlizzYou(1285425, nil, nil, nil, 1, 17, nil, nil, "debuffyou")
-local specWarnApexPedator				= mod:NewSpecialWarningCount(1285430, nil, nil, nil, 1, 19, nil, nil, "tankcombo")
+local specWarnApexPedator				= mod:NewSpecialWarningCount(1277025, nil, nil, nil, 1, 19, nil, nil, "tankcombo")
 local specWarnHowlingMaelstrom			= mod:NewSpecialWarningCount(1285732, nil, nil, nil, 2, 13, nil, nil, "pushbackincoming")
 local specWarnCausticClaws				= mod:NewSpecialWarningCount(1285733, nil, nil, nil, 2, 2, nil, nil, "scatter")--Sub mechanic of Venomous Surge
 
 local timerRagingCrosswindsCD			= mod:NewCDCountTimer(20.5, 1285425, nil, nil, nil, 3)
 local timerVenomousSurgeCD				= mod:NewCDCountTimer(20.5, 1305959, nil, nil, nil, 3)
-local timerApexPedatorCD				= mod:NewCDCountTimer(20.5, 1285430, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+local timerApexPedatorCD				= mod:NewCDCountTimer(20.5, 1277025, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerHowlingMaelstromCD			= mod:NewCDCountTimer(20.5, 1285732, nil, nil, nil, 2, nil, DBM_COMMON_L.IMPORTANT_ICON)
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
 --Evidenced by https://www.warcraftlogs.com/reports/nFX9MYTV26tpmCrk?fight=16&type=auras&spells=debuffs
 --and
 --https://www.warcraftlogs.com/reports/nFX9MYTV26tpmCrk?fight=16&pins=2%24Off%24%23244F4B%24expression%24ability.name+%3D+%22Raging+Crosswinds%22+and+not+type+%3D+%22damage%22&view=replay&position=8576
-mod:AddAuraSoundOption(1277051, false, 1285430, 1, 3, "debuffyou", 17, 0)--Infected Gash from soaking
-mod:AddAuraSoundOption(1287083, true, 1285430, 1, 3, "slowyou", 20, 0)--Tempest
+mod:AddAuraSoundOption(1277051, false, 1277025, 1, 3, "debuffyou", 17, 0)--Infected Gash from soaking
+mod:AddAuraSoundOption(1287083, true, 1277025, 1, 3, "slowyou", 20, 0)--Tempest
 mod:AddAuraSoundOption(1305963, true, 1305959, 1, 1, "runout", 2, 0)--Venomous Surge
 mod:AddAuraSoundOption(1285425, true, 1285425, 1, 1, "south", 2, 0)--Raging Crosswinds knocks North (Right now it announces where to go, NOT knock direction)
 mod:AddAuraSoundOption(1285453, true, 1285425, 1, 1, "north", 2, 0)--Raging Crosswinds knocks South ^
