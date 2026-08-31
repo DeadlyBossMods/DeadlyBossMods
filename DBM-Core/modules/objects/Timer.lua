@@ -484,7 +484,8 @@ function timerPrototype:Start(timer, ...)
 			end
 		end
 		-- timerStringWithVariance checks for timer string sent from Start method, self.timerStringWithVariance is from newTimer constructor. Else, use timer value
-		bar = DBT:CreateBar(timerStringWithVariance or (hasVariance and self.timerStringWithVariance) or timer, id, self.icon, self.startLarge, nil, nil, nil, colorId, self.inlineIcon, self.keep, self.fade, countVoice, countVoiceMax, self.simpType == "cd" or self.simpType == "cdnp")
+		-- Use the full type for DBT's approximate-timer prefix; simpType intentionally merges precise next timers into "cd" for external callbacks.
+		bar = DBT:CreateBar(timerStringWithVariance or (hasVariance and self.timerStringWithVariance) or timer, id, self.icon, self.startLarge, nil, nil, nil, colorId, self.inlineIcon, self.keep, self.fade, countVoice, countVoiceMax, self.type and self.type:find("cd", 1, true) ~= nil)
 		if not bar then
 			return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 		end
