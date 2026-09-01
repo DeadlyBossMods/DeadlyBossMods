@@ -44,6 +44,21 @@ local function HasLegacyCountVoiceOption(options)
 		(type(options.PullVoice) == "string" and countdownVoiceRenames[options.PullVoice])
 end
 
+local function RepairAuraIconZoomOption(options)
+	-- The initial icon zoom default was accidentally saved as 3 instead of 0. The slider only permits 0-0.5.
+	if options.PrivateAurasPlayerIconZoom == 3 then
+		options.PrivateAurasPlayerIconZoom = 0
+	end
+end
+
+local function ResetAuraDurationEmphasizeThreshold(options)
+	-- Profiles created before this migration received the incorrect default of 0.
+	if not options.PrivateAurasPlayerDurationEmphasizeThresholdMigrated then
+		options.PrivateAurasPlayerDurationEmphasizeThreshold = 3
+		options.PrivateAurasPlayerDurationEmphasizeThresholdMigrated = true
+	end
+end
+
 DBM.DefaultOptions = {
 	WarningColors = {
 		{r = 0.41, g = 0.80, b = 0.94}, -- Color 1 - #69CCF0 - Turquoise
@@ -394,12 +409,13 @@ DBM.DefaultOptions = {
 	PrivateAurasPlayerSortMode = "Default",
 	PrivateAurasPlayerWidth = 65,
 	PrivateAurasPlayerHeight = 65,
-	PrivateAurasPlayerIconZoom = 3,
+	PrivateAurasPlayerIconZoom = 0,
 	PrivateAurasPlayerTextFont = "standardFont",
 	PrivateAurasPlayerTextFontStyle = "OUTLINE",
 	PrivateAurasPlayerDurationFontSize = 32,
 	PrivateAurasPlayerDurationColor = {r = 1, g = 1, b = 1},
-	PrivateAurasPlayerDurationEmphasizeThreshold = 0,
+	PrivateAurasPlayerDurationEmphasizeThreshold = 3,
+	PrivateAurasPlayerDurationEmphasizeThresholdMigrated = true,
 	PrivateAurasPlayerDurationEmphasizeColor = {r = 1, g = 0.1, b = 0.1},
 	PrivateAurasPlayerShowDecimalSeconds = true,
 	PrivateAurasPlayerDecimalThreshold = 3,
@@ -1084,6 +1100,10 @@ do
 	function DBM:LoadOptions()
 		--init
 		if not DBM_AllSavedOptions then DBM_AllSavedOptions = {} end
+		for _, options in pairs(DBM_AllSavedOptions) do
+			RepairAuraIconZoomOption(options)
+			ResetAuraDurationEmphasizeThreshold(options)
+		end
 		usedProfile = DBM_UsedProfile or usedProfile
 		if not usedProfile or (usedProfile ~= "Default" and not DBM_AllSavedOptions[usedProfile]) then
 			-- DBM.Option is not loaded. so use print function
