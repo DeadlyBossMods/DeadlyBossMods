@@ -81,6 +81,7 @@ CL.DEBUFF							= "디버프"
 CL.DEBUFFS							= "디버프"
 CL.DISPELS							= "해제"
 CL.DODGES							= "피하기"
+CL.DPSSWAP							= "타겟 변경"
 CL.ENEMIES					= "적"
 CL.FRONTAL							= "전방 시전"
 CL.GROUPSOAK						= "스킬 맞기"
@@ -123,6 +124,7 @@ CL.TANKBUSTER						= "탱커 버스터"
 CL.TANKCOMBO					= "탱커 연속 공격"
 CL.TANKDEBUFF						= "탱커 디버프"
 CL.TRAPS							= "함정"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
+CL.TARGETSWAP						= "타겟 변경"
 CL.WAVES							= "물결"
 
 -- Colors
