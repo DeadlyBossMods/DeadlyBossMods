@@ -1725,6 +1725,10 @@ do
 			if not self.Options.HasShownMidnightPopup then
 				DBM.MidnightPopup:ShowMidnightPopup()
 			end
+			--GetSpecialization can be unavailable during the initial reload-time aura update, leaving a fallback spec cached.
+			--Refresh it here and rebuild anchors so Auto co-tank auras use the now-available tank role.
+			self:SetCurrentSpecInfo()
+			self:UpdateZoneAuraAnchors(2)
 		end
 		difficulties:RefreshCache()
 	end
