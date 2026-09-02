@@ -1836,13 +1836,12 @@ do
 				if self.Options.HideBossEmoteFrame2 then
 					C_EncounterWarnings.SetWarningsShown(false)
 				end
-			else
-				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
-				local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
-				--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.
-				if soundChannels < 128 then
-					SetCVar("Sound_NumChannels", 128)
-				end
+			end
+			--Continue working around regression introduced in legion https://www.patreon.com/deadlybossmods/posts/addon-sound-work-16575915
+			local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
+			--It's only fix for addon sound ducking.
+			if soundChannels < 128 then
+				SetCVar("Sound_NumChannels", 128)
 			end
 			self.Voices = {{text = "None", value = "None"}}--Create voice table, with default "None" value
 			self.VoiceVersions = {}
