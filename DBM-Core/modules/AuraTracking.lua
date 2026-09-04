@@ -10,7 +10,7 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 
 ---@class DBMAuraButton: Frame
 ---@field SetIcon fun(self: DBMAuraButton, icon: Texture)
----@field AddDispelTypeTexture fun(self: DBMAuraButton, region: Texture, options: table): integer
+---@field AddDispelTypeTexture fun(self: DBMAuraButton, region: Texture, options: table)
 ---@field ClearDispelTypeTextures fun(self: DBMAuraButton)
 ---@field SetDispelTypeText fun(self: DBMAuraButton, region: FontString, options: table)
 ---@field ClearDispelTypeText fun(self: DBMAuraButton)

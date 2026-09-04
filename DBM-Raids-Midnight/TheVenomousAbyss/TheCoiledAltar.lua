@@ -553,7 +553,7 @@ do
 				specWarnEternalNightfall:Show(eventCount)
 				specWarnEternalNightfall:Play("attackshield")
 			elseif eventType == "gloombomb" then
-				specWarnGloombomb:Show(eventCount, "bombyou")
+				specWarnGloombomb:Show(eventCount, "bombyou", 3)
 			elseif eventType == "deathmarch" then
 				specWarnDeathmarch:Show(eventCount)
 				specWarnDeathmarch:Play("findmc")
