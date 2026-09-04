@@ -81,6 +81,7 @@ CL.DEBUFF							= "Debuff"
 CL.DEBUFFS							= "Debuffs"
 CL.DISPELS							= "Dispels"
 CL.DODGES							= "Dodges"
+CL.DPSSWAP							= "Dps Swap"
 CL.ENEMIES							= "Enemies"
 CL.FRONTAL							= "Frontal"
 CL.GROUPSOAK						= "Soak"
@@ -122,6 +123,7 @@ CL.SWIRLS							= "Swirls"--Plural of Swirl
 CL.TANKBUSTER						= "Tank Buster"
 CL.TANKCOMBO						= "Tank Combo"
 CL.TANKDEBUFF						= "Tank Debuff"
+CL.TARGETSWAP						= "Target Swap"
 CL.TRAPS							= "Traps"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
 CL.WAVES							= "Waves"
 --NOTE, many common locals are auto localized:

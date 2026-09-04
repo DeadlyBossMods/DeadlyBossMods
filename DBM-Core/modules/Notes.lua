@@ -8,7 +8,22 @@ local L = DBM_CORE_L
 
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
 
-local frame, fontstring, editBox, button3
+local frame, fontstring, editBox, button, button2, button3
+
+local function applyButtonLayout()
+	if not frame then return end
+	for _, btn in ipairs({button, button2, button3}) do
+		btn:ClearAllPoints()
+	end
+	if button3:IsShown() then
+		button3:SetPoint("BOTTOM", -80, 13)
+		button2:SetPoint("BOTTOM", 0, 13)
+		button:SetPoint("BOTTOM", 80, 13)
+	else
+		button:SetPoint("BOTTOM", -40, 13)
+		button2:SetPoint("BOTTOM", 40, 13)
+	end
+end
 
 local function CreateOurFrame()
 	---@class DBMNotesEditorFrame: Frame, BackdropTemplate
@@ -64,10 +79,9 @@ local function CreateOurFrame()
 	fontstringFooter:SetHeight(0)
 	fontstringFooter:SetPoint("TOP", editBox, "BOTTOM", 0, 0)
 	fontstringFooter:SetText(L.NOTEFOOTER)
-	local button = CreateFrame("Button", nil, frame)
+	button = CreateFrame("Button", nil, frame)
 	button:SetHeight(24)
 	button:SetWidth(75)
-	button:SetPoint("BOTTOM", 80, 13)
 	button:SetNormalFontObject(GameFontNormal)
 	button:SetHighlightFontObject(GameFontHighlight)
 	button:SetNormalTexture(button:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
@@ -87,10 +101,9 @@ local function CreateOurFrame()
 		frame.customApply = nil
 		frame:Hide()
 	end)
-	local button2 = CreateFrame("Button", nil, frame)
+	button2 = CreateFrame("Button", nil, frame)
 	button2:SetHeight(24)
 	button2:SetWidth(75)
-	button2:SetPoint("BOTTOM", 0, 13)
 	button2:SetNormalFontObject(GameFontNormal)
 	button2:SetHighlightFontObject(GameFontHighlight)
 	button2:SetNormalTexture(button2:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
@@ -107,7 +120,6 @@ local function CreateOurFrame()
 	button3 = CreateFrame("Button", nil, frame)
 	button3:SetHeight(24)
 	button3:SetWidth(75)
-	button3:SetPoint("BOTTOM", -80, 13)
 	button3:SetNormalFontObject(GameFontNormal)
 	button3:SetHighlightFontObject(GameFontHighlight)
 	button3:SetNormalTexture(button3:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
@@ -136,6 +148,7 @@ local function CreateOurFrame()
 			end
 		end
 	end)
+	applyButtonLayout()
 end
 
 function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender)
@@ -165,6 +178,7 @@ function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender)
 			editBox:SetText("")
 		end
 	end
+	applyButtonLayout()
 end
 
 ---@param headerText string
@@ -184,4 +198,5 @@ function DBM:ShowTextEditor(headerText, initialText, onAccept)
 	-- Generic text editors intentionally clear note-sharing context (mod/modvar),
 	-- so keep Share hidden to avoid invalid share handler access.
 	button3:Hide()
+	applyButtonLayout()
 end

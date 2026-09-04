@@ -18,7 +18,7 @@ mod:RegisterCombat("combat")
 --TODO, is rush an aoe or something you dodge or both?
 DBM:RegisterAltSpellName(1276710, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
 DBM:RegisterAltSpellName(1282937, DBM_COMMON_L.TANKBUSTER)
-local specWarnWaterJet					= mod:NewSpecialWarningBlizzYou(1268562, nil, nil, nil, 1, 17, 4, nil, "lineyou")--Mythic version
+local specWarnWaterJet					= mod:NewSpecialWarningYou(1268562, nil, nil, nil, 1, 17, 4, nil, "lineyou")--Mythic version
 local specWarnIcebladeFlurry			= mod:NewSpecialWarningDefensive(1282937, nil, nil, nil, 1, 2, 4, nil, "defensive")--Non Mythic version
 local specWarnAlluringBubble			= mod:NewSpecialWarningCount(1276710, nil, nil, nil, 2, 2, nil, nil, "killmob")
 local specWarnChillingFrost				= mod:NewSpecialWarningBlizzYou(1313393, nil, nil, nil, 1, 2, 3, nil, "orbrun")
@@ -117,9 +117,13 @@ do
 	---@param eventID number
 	local function timersAll(self, timer, timerExact, eventID)
 		local handled
-		if timer == 27 or timer == 22 or timer == 9 then--Iceblade Flurry
+		if timer == 27 or timer == 22 or timer == 9 then--Water Jet (Mythic) / Iceblade Flurry (non-Mythic)
 			handled = true
-			timerIcebladeFlurryCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "IcebladeFlurry", "tankWaterCount"))
+			if self:IsMythic() then
+				timerWaterJetCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "WaterJet", "tankWaterCount"))
+			else
+				timerIcebladeFlurryCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "IcebladeFlurry", "tankWaterCount"))
+			end
 		elseif timer == 10 then--Unending Tides
 			handled = true
 			--Blizz resends berserk 10 seconds til
@@ -192,7 +196,12 @@ do
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end
 			if not eventCount then return end
-			if eventType == "IcebladeFlurry" then
+			if eventType == "WaterJet" then
+				if self:IsTanking("boss1", nil, nil, true) then
+					specWarnWaterJet:Show()
+					specWarnWaterJet:Play("lineyou")
+				end
+			elseif eventType == "IcebladeFlurry" then
 				if self:IsTanking("boss1", nil, nil, true) then
 					specWarnIcebladeFlurry:Show()
 					specWarnIcebladeFlurry:Play("defensive")

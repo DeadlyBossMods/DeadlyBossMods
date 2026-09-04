@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 416, "1888a1e"--416.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.7 alpha"--Core version
+DBM.DisplayVersion = "12.1.9 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 8, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 9, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -1725,6 +1725,10 @@ do
 			if not self.Options.HasShownMidnightPopup then
 				DBM.MidnightPopup:ShowMidnightPopup()
 			end
+			--GetSpecialization can be unavailable during the initial reload-time aura update, leaving a fallback spec cached.
+			--Refresh it here and rebuild anchors so Auto co-tank auras use the now-available tank role.
+			self:SetCurrentSpecInfo()
+			self:UpdateZoneAuraAnchors(2)
 		end
 		difficulties:RefreshCache()
 	end
@@ -1836,13 +1840,12 @@ do
 				if self.Options.HideBossEmoteFrame2 then
 					C_EncounterWarnings.SetWarningsShown(false)
 				end
-			else
-				--Only mess with sound channels if NOT midnight, since it's not like we need the sound channels anymore
-				local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
-				--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.
-				if soundChannels < 64 then
-					SetCVar("Sound_NumChannels", 64)
-				end
+			end
+			--Continue working around regression introduced in legion https://www.patreon.com/deadlybossmods/posts/addon-sound-work-16575915
+			local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
+			--It's only fix for addon sound ducking.
+			if soundChannels < 128 then
+				SetCVar("Sound_NumChannels", 128)
 			end
 			self.Voices = {{text = "None", value = "None"}}--Create voice table, with default "None" value
 			self.VoiceVersions = {}

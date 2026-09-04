@@ -103,9 +103,11 @@ local heroicStage3BatchTimers = {
 	[25] = true,
 	[30] = true,
 	[37] = true,
+	[44] = true,
 	[45] = true,
 	[50] = true,
 	[51] = true,
+	[52] = true,
 	[53] = true,
 	[55] = true,
 	[60] = true,
@@ -396,6 +398,8 @@ do
 			return timerCalloftheSerpentCD, "call", "callCount"
 		elseif heroicStage3SixtyCount == 2 then
 			return timerSubmergeCD, "submerge", "submergeCount"
+		elseif heroicStage3SixtyCount == 3 then
+			return timerSerpentsBiteCD, "serpentsBite", "serpentsBiteCount"
 		end
 	end
 
@@ -436,9 +440,9 @@ do
 			timerObj, eventType, countKey = timerCalloftheSerpentCD, "call", "callCount"
 		elseif timer == 37 or timer == 71 then
 			timerObj, eventType, countKey = timerSerpentsBiteCD, "serpentsBite", "serpentsBiteCount"
-		elseif timer == 50 or timer == 55 then
+		elseif timer == 44 or timer == 50 or timer == 55 then
 			timerObj, eventType, countKey = timerCausticWavesCD, "causticWaves", "causticWavesCount"
-		elseif timer == 51 or timer == 61 then
+		elseif timer == 51 or timer == 52 or timer == 61 then
 			timerObj, eventType, countKey = timerCirclingPreyCD, "circlingPrey", "circlingPreyCount"
 		elseif timer == 53 then
 			timerObj, eventType, countKey = timerSubmergeCD, "submerge", "submergeCount"
