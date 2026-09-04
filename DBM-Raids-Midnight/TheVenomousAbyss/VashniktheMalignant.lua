@@ -167,7 +167,7 @@ do
 		end
 	end
 
-	local function timersHeroic(self, timer, timerExact, eventID)
+	local function timersHard(self, timer, timerExact, eventID)
 		--Confirmed same on heroic and mythic so far
 		local handled
 		if timer == 8 or timer == 11 or timer == 22 or timer == 27 or timer == 28 then
@@ -216,7 +216,7 @@ do
 			if self:IsNormal() then
 				timersNormal(self, timer, timerExact, eventID)
 			else
-				timersHeroic(self, timer, timerExact, eventID)
+				timersHard(self, timer, timerExact, eventID)
 			end
 		end
 	end
