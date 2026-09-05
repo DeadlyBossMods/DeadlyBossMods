@@ -18,6 +18,9 @@ if not DBM:IsPostMidnight() then
 	check5 = specArea:CreateCheckButton(L.SWarnNameInNote, true, nil, "SWarnNameInNote")
 end
 check6 = specArea:CreateCheckButton(L.ShortTextSpellname, true, nil, "SpecialWarningShortText")
+check6:HookScript("OnClick", function()
+	DBM:RefreshSpellRenames()
+end)
 
 
 local movemebutton = specArea:CreateButton(L.MoveMe, 120, 16)
@@ -476,6 +479,7 @@ resetbutton:SetScript("OnClick", function()
 	-- Set UI visuals
 	check1:SetChecked(DBM.Options.ShowSWarningsInChat)
 	check2:SetChecked(DBM.Options.SpecialWarningIcon)
+	check6:SetChecked(DBM.Options.SpecialWarningShortText)
 	FontDropDown:SetSelectedValue(DBM.Options.SpecialWarningFont)
 	FontStyleDropDown:SetSelectedValue(DBM.Options.SpecialWarningFontStyle)
 	FontShadow:SetChecked(DBM.Options.SpecialWarningFontShadow)
@@ -513,7 +517,6 @@ resetbutton:SetScript("OnClick", function()
 		check3:SetChecked(DBM.Options.SWarnClassColor)
 		check4:SetChecked(DBM.Options.SWarningAlphabetical)
 		check5:SetChecked(DBM.Options.SWarnNameInNote)
-		check6:SetChecked(DBM.Options.SpecialWarningShortText)
 		color5:SetColorRGB(DBM.Options.SpecialWarningFlashCol5[1], DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3])
 		flashCheck5:SetChecked(DBM.Options.SpecialWarningFlash5)
 		vibrateCheck5:SetChecked(DBM.Options.SpecialWarningVibrate5)
@@ -522,4 +525,5 @@ resetbutton:SetScript("OnClick", function()
 		flashRepSlider5:SetValue(DBM.Options.SpecialWarningFlashCount5)
 	end
 	DBM:UpdateSpecialWarningOptions()
+	DBM:RefreshSpellRenames()
 end)

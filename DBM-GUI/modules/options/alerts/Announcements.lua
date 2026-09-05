@@ -14,6 +14,9 @@ if not DBM:IsPostMidnight() then
 	check5 = raidwarnoptions:CreateCheckButton(L.WarningAlphabetical, true, nil, "WarningAlphabetical")
 end
 check6 = raidwarnoptions:CreateCheckButton(L.ShortTextSpellname, true, nil, "WarningShortText")
+check6:HookScript("OnClick", function()
+	DBM:RefreshSpellRenames()
+end)
 
 -- RaidWarn Font
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
@@ -134,9 +137,9 @@ resetbutton:SetScript("OnClick", function()
 	check2:SetChecked(DBM.Options.WarningIconLeft)
 	check3:SetChecked(DBM.Options.WarningIconRight)
 	check4:SetChecked(DBM.Options.WarningIconChat)
+	check6:SetChecked(DBM.Options.WarningShortText)
 	if not DBM:IsPostMidnight() then
 		check5:SetChecked(DBM.Options.WarningAlphabetical)
-		check6:SetChecked(DBM.Options.WarningShortText)
 	end
 	FontDropDown:SetSelectedValue(DBM.Options.WarningFont)
 	FontStyleDropDown:SetSelectedValue(DBM.Options.WarningFontStyle)
@@ -145,6 +148,7 @@ resetbutton:SetScript("OnClick", function()
 	FontShadow:SetChecked(DBM.Options.WarningFontShadow)
 	RaidWarnSoundDropDown:SetSelectedValue(DBM.Options.RaidWarningSound)
 	DBM:UpdateWarningOptions()
+	DBM:RefreshSpellRenames()
 end)
 
 --Raid Warning Colors
