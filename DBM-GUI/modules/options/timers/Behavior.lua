@@ -41,7 +41,10 @@ HiddenBarsToggle:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -65)
 
 BarBehaviors:CreateCheckButton(L.ClickThrough, true, nil, nil, "ClickThrough")
 BarBehaviors:CreateCheckButton(L.DisableRightClickBar, true, nil, nil, "DisableRightClick")
-BarBehaviors:CreateCheckButton(L.ShortTimerText, true, nil, "ShortTimerText")
+local shortTimerText = BarBehaviors:CreateCheckButton(L.ShortTimerText, true, nil, "ShortTimerText")
+shortTimerText:HookScript("OnClick", function()
+	DBM:RefreshSpellRenames()
+end)
 BarBehaviors:CreateCheckButton(L.KeepBar, true, nil, nil, "KeepBars")
 if not DBM:IsPostMidnight() then
 	--Only option we can't restore even with mod hardcodes

@@ -837,7 +837,7 @@ do
 	bossModPrototype.GetRenameDefault = DBM.GetRenameDefault
 
 	function DBM:RefreshSpellRenames()
-		refreshSpellRenameCache(false)
+		refreshSpellRenameCache(true)
 	end
 	bossModPrototype.RefreshSpellRenames = DBM.RefreshSpellRenames
 

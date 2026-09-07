@@ -380,7 +380,7 @@ local function setText(announceType, spellId, castTime, preWarnTime, customName)
 	else
 		baseSpellName = DBM:ParseSpellName(spellId, announceType) or CL.UNKNOWN
 	end
-	if spellId then
+	if spellId and DBM.Options.WarningShortText then
 		spellName = DBM:GetRename(spellId, baseSpellName)
 	else
 		spellName = baseSpellName
@@ -435,7 +435,8 @@ function announcePrototype:UpdateKey(altSpellId)
 		self.customName = nil
 		self.renameRevision = DBM:GetSpellRenameRevision()
 	else--Just regenerating spellName not message text because it's likely a custom text object such as NewSpecialWarning
-		self.spellName = DBM:ParseSpellName(altSpellId)
+		self.originalSpellName = DBM:ParseSpellName(altSpellId)
+		self.spellName = DBM.Options.WarningShortText and DBM:GetRename(altSpellId, self.originalSpellName) or self.originalSpellName
 	end
 end
 
@@ -489,7 +490,8 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 				self.text = text
 				self.spellName = spellName
 			else
-				self.spellName = DBM:GetRename(self.spellId, self.spellName or DBM:ParseSpellName(self.spellId) or CL.UNKNOWN)
+				local originalSpellName = self.originalSpellName or DBM:ParseSpellName(self.spellId) or CL.UNKNOWN
+				self.spellName = DBM.Options.WarningShortText and DBM:GetRename(self.spellId, originalSpellName) or originalSpellName
 			end
 			self.renameRevision = DBM:GetSpellRenameRevision()
 		end
@@ -804,10 +806,12 @@ function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionNa
 	end
 	icon = DBM:ParseSpellIcon(icon)
 	local spellName
+	local originalSpellName
 	local renameRevision
 	if spellID then
 		local baseSpellName = waCustomName or DBM:ParseSpellName(spellID) or CL.UNKNOWN
-		spellName = DBM:GetRename(spellID, baseSpellName)
+		originalSpellName = baseSpellName
+		spellName = DBM.Options.WarningShortText and DBM:GetRename(spellID, baseSpellName) or baseSpellName
 		renameRevision = DBM:GetSpellRenameRevision()
 	end
 	---@class Announce
@@ -823,6 +827,7 @@ function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionNa
 			icon = icon,
 			spellId = spellID,--For WeakAuras / other callbacks
 			spellName = spellName,
+			originalSpellName = originalSpellName,
 			renameRevision = renameRevision,
 		},
 		mt

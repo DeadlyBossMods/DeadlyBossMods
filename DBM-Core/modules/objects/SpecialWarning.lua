@@ -433,7 +433,7 @@ local function setText(announceType, spellId, stacks, customName)
 	else
 		fallbackSpellName = customName or originalSpellName
 	end
-	if effectiveSpellId then
+	if effectiveSpellId and DBM.Options.SpecialWarningShortText then
 		spellName = DBM:GetRename(effectiveSpellId, fallbackSpellName, originalSpellName)
 	else
 		spellName = fallbackSpellName
@@ -481,7 +481,8 @@ function specialWarningPrototype:UpdateKey(altSpellId)
 		self.customName = nil
 		self.renameRevision = DBM:GetSpellRenameRevision()
 	else--Just regenerating spellName not message text because it's likely a custom text object such as NewSpecialWarning
-		self.spellName = DBM:ParseSpellName(altSpellId)
+		self.originalSpellName = DBM:ParseSpellName(altSpellId)
+		self.spellName = DBM.Options.SpecialWarningShortText and DBM:GetRename(altSpellId, self.originalSpellName) or self.originalSpellName
 	end
 end
 
@@ -554,7 +555,8 @@ function specialWarningPrototype:Show(...)
 				self.text = text
 				self.spellName = spellName
 			else
-				self.spellName = DBM:GetRename(self.spellId, self.spellName or DBM:ParseSpellName(self.spellId) or CL.UNKNOWN)
+				local originalSpellName = self.originalSpellName or DBM:ParseSpellName(self.spellId) or CL.UNKNOWN
+				self.spellName = DBM.Options.SpecialWarningShortText and DBM:GetRename(self.spellId, originalSpellName) or originalSpellName
 			end
 			self.renameRevision = DBM:GetSpellRenameRevision()
 		end
@@ -946,10 +948,12 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 	icon = DBM:ParseSpellIcon(icon)
 	local warningText = self.localization.warnings[text]
 	local spellName
+	local originalSpellName
 	local renameRevision
 	if spellID then
 		local baseSpellName = waCustomName or DBM:ParseSpellName(spellID) or CL.UNKNOWN
-		spellName = DBM:GetRename(spellID, baseSpellName)
+		originalSpellName = baseSpellName
+		spellName = DBM.Options.SpecialWarningShortText and DBM:GetRename(spellID, baseSpellName) or baseSpellName
 		renameRevision = DBM:GetSpellRenameRevision()
 	end
 	---@class SpecialWarning
@@ -966,6 +970,7 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 			difficulty = difficulty,
 			spellId = spellID,--For WeakAuras / other callbacks
 			spellName = spellName,
+			originalSpellName = originalSpellName,
 			renameRevision = renameRevision,
 			icon = icon,
 			voiceFile = voiceFile,
