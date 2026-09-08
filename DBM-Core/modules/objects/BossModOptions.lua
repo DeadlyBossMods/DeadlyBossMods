@@ -116,7 +116,8 @@ end
 ---@param voiceVersion number|number[]? required voice pack version(s); if voice pack version is below this value, falls back to default sound
 ---@param soundType number|number[]? UnitAuraSoundTrigger(s): 0 = added, 1 = applications increased, 2 = removed; defaults to 0
 ---@param difficultyVoices table<number, VPSound>? voice pack media path overrides keyed by Blizzard difficulty index; voice remains the fallback
-function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion, soundType, difficultyVoices)
+---@param throttleSeconds number? minimum seconds between sound plays for this aura; defaults to 3
+function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion, soundType, difficultyVoices, throttleSeconds)
 	if type(subType) == "string" then
 		local shorthandVoiceVersion = type(voice) == "number" and voice or nil
 		voice = subType
@@ -188,7 +189,7 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 					if not self.pendingPASoundsByZone then self.pendingPASoundsByZone = {} end
 					for zoneID in pairs(self.zones) do
 						self.pendingPASoundsByZone[zoneID] = self.pendingPASoundsByZone[zoneID] or {}
-						self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, pairedVoice, pairedVoiceVersion, pairedSoundType, difficultyVoices}
+						self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, pairedVoice, pairedVoiceVersion, pairedSoundType, difficultyVoices, throttleSeconds}
 					end
 				else
 					invalidRegistration = true

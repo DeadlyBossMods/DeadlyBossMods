@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 416, "1888a1e"--416.0
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.9 alpha"--Core version
+DBM.DisplayVersion = "12.1.10 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 9, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 9, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -233,6 +233,9 @@ local deprecatedMods = { -- a list of "banned" (meaning they are replaced by ano
 
 	"DBM-Affixes",--Retired in midnight
 }
+if private.isRetail then
+	deprecatedMods[#deprecatedMods + 1] = "DBM-TimelessIsle"--Retail version is deprecated; retain support for MoP Classic
+end
 
 -----------------
 --  Libraries  --
@@ -837,7 +840,7 @@ do
 	bossModPrototype.GetRenameDefault = DBM.GetRenameDefault
 
 	function DBM:RefreshSpellRenames()
-		refreshSpellRenameCache(false)
+		refreshSpellRenameCache(true)
 	end
 	bossModPrototype.RefreshSpellRenames = DBM.RefreshSpellRenames
 

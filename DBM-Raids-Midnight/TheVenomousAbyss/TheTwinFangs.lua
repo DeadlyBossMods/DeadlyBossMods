@@ -50,7 +50,7 @@ local timerSubmergeCD					= mod:NewCDCountTimer(20.5, 1308556, nil, nil, nil, 6)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)--Unending Tides
 
 --Evidence https://www.warcraftlogs.com/reports/8yDbgRFz9NnQktTx?fight=35&type=auras&spells=debuffs
-mod:AddAuraSoundOption(1310102, true, 1290516, 1, 3, "absorbyou", 19, 0)--Tainted Blood
+--mod:AddAuraSoundOption(1310102, true, 1290516, 1, 3, "absorbyou", 19, 0)--Tainted Blood
 mod:AddAuraSoundOption(1310096, false, 1290516, 1, 3, "debuffyou", 2, 0)--Feasted
 mod:AddAuraSoundOption(1290814, true, 1290809, 1, 1, "poolyou", 18, 0)--Coiling Ichor
 mod:AddAuraSoundOption(1292552, true, 1290809, 1, 2, "watchfeet", 8, 0)--Congealed Gore
