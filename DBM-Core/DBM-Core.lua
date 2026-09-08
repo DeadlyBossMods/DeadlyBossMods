@@ -233,6 +233,9 @@ local deprecatedMods = { -- a list of "banned" (meaning they are replaced by ano
 
 	"DBM-Affixes",--Retired in midnight
 }
+if private.isRetail then
+	deprecatedMods[#deprecatedMods + 1] = "DBM-TimelessIsle"--Retail version is deprecated; retain support for MoP Classic
+end
 
 -----------------
 --  Libraries  --
