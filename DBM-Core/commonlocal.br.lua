@@ -83,6 +83,7 @@ CL.DEBUFF			= "Penalidade"
 CL.DEBUFFS			= "Penalidades"
 CL.DISPELS			= "Dissipações"
 CL.DODGES			= "Esquivas"
+CL.DPSSWAP			= "Troca de DPS"
 CL.ENEMIES			= "Inimigos"
 CL.FRONTAL			= "Frontal"
 CL.GROUPSOAK		= "Absorção"
@@ -124,6 +125,7 @@ CL.SWIRLS			= "Redemoinhos"--Plural of Swirl
 CL.TANKBUSTER		= "Destruidor de tanque"
 CL.TANKCOMBO		= "Combo de tanque"
 CL.TANKDEBUFF		= "Penalidade do tanque"
+CL.TARGETSWAP		= "Troca de alvo"
 CL.TRAPS			= "Armadilhas"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
 CL.WAVES			= "Ondas"
 
