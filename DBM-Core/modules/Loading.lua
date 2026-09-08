@@ -234,6 +234,11 @@ do
 						--Don't load dungeon mods in SoD Raids
 						return
 					end
+					local targetMapId = type(checkValue) == "number" and checkValue or tonumber(tostring(checkValue):match("^m(%d+)$"))
+					if not self:IsSeasonal("SeasonOfDiscovery") and sodPvpZones[targetMapId] and v.modId == "DBM-PvP" then
+						--Don't load PvP mod in SoD world PvP zones outside of SoD
+						return
+					end
 					self:LoadMod(v)
 				else
 					AddMsg(self, L.LOAD_MOD_DISABLED:format(v.name))
