@@ -84,7 +84,7 @@ updateTeleports()
 local partyKeystones, guildKeystones = {}, {}
 
 ---@class DBMKeystonesFrame: DefaultPanelTemplate
----@field CreateTab fun(self: DBMKeystonesFrame, title: string, OnShowFn: function)
+---@field CreateTab fun(self: DBMKeystonesFrame, title: string, OnShowFn: function): integer
 ---@field ShowTab fun(self: DBMKeystonesFrame, tab: number)
 local frame = CreateFrame("Frame", "DBMKeystonesFrame", UIParent, "DefaultPanelTemplate")
 tinsert(_G["UISpecialFrames"], frame:GetName())
@@ -176,6 +176,7 @@ local function GetTextFrame()
 end
 
 local tabs, tabsBtn, selectedTab = {}, {}, 1
+local teleportTab
 function frame:CreateTab(title, OnShowFn)
 	local i = #tabs + 1
 	tabs[i] = OnShowFn
@@ -193,9 +194,13 @@ function frame:CreateTab(title, OnShowFn)
 	_tab:SetScript("OnClick", function()
 		self:ShowTab(i)
 	end)
+	return i
 end
 
 function frame:ShowTab(tab)
+	if tab == teleportTab and InCombatLockdown() then
+		return
+	end
 	PanelTemplates_SetTab(self, tab)
 	WipeTextFrames()
 	selectedTab = tab
@@ -469,7 +474,7 @@ end)
 -- Teleport
 do
 	-- This will never be nil, but falling back just so it shuts up LuaLS
-	frame:CreateTab(DBM:GetSpellName(4801) or 'Teleport', function()
+	teleportTab = frame:CreateTab(DBM:GetSpellName(4801) or 'Teleport', function()
 		refresh:Hide()
 		WipeTextFrames()
 
@@ -516,6 +521,9 @@ do
 end
 
 function Keystones:Show()
+	if selectedTab == teleportTab and InCombatLockdown() then
+		return
+	end
 	DBM.Durability:Hide()
 	DBM.Latency:Hide()
 	if DBM.GearCheck then
@@ -587,6 +595,9 @@ do
 
 	local function RefreshChallengesUI()
 		if InCombatLockdown() then
+			for _, button in pairs(iconButtons) do
+				button:EnableMouse(false)
+			end
 			return
 		end
 		if not ChallengesFrame or not ChallengesFrame.DungeonIcons then
@@ -609,6 +620,7 @@ do
 						iconButtons[icon]:SetAttribute('spell', data[2])
 						iconButtons[icon].spellID = data[2]
 					end
+					iconButtons[icon]:EnableMouse(true)
 					iconButtons[icon]:Show()
 				elseif icon.mapID then
 					DBM:Debug("Missing keystone info for challengeMapID: " .. icon.mapID)
@@ -666,6 +678,13 @@ frame:SetScript('OnEvent', function(_, event, arg1, arg2)
 			selectedTab = 1
 			Keystones:Show()
 		end
+	elseif event == 'PLAYER_REGEN_DISABLED' then
+		if selectedTab == teleportTab then
+			Keystones:Hide()
+		end
+		Keystones.RefreshChallengesUI()
+	elseif event == 'PLAYER_REGEN_ENABLED' then
+		Keystones.RefreshChallengesUI()
 	end
 end)
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -673,3 +692,5 @@ frame:RegisterEvent('PLAYER_INTERACTION_MANAGER_FRAME_HIDE')
 frame:RegisterEvent('UNIT_CONNECTION')
 frame:RegisterEvent('CHALLENGE_MODE_COMPLETED')
 frame:RegisterEvent('ADDON_LOADED')
+frame:RegisterEvent('PLAYER_REGEN_DISABLED')
+frame:RegisterEvent('PLAYER_REGEN_ENABLED')

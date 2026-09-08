@@ -1,9 +1,6 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
-local L = DBM_CORE_L
-local CL = DBM_COMMON_L
-
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
 
@@ -1430,7 +1427,6 @@ end
 ----------------------------------
 do
 	local AddAuraSound = C_UnitAuras.AddAuraSound
-	local AddPrivateAuraAppliedSound = C_UnitAuras.AddPrivateAuraAppliedSound
 	local RemoveAuraSound = C_UnitAuras.RemoveAuraSound or C_UnitAuras.RemovePrivateAuraAppliedSound
 
 	-- Helper function to register an aura sound for a single spell ID
@@ -1439,8 +1435,9 @@ do
 	---@param spellId number
 	---@param media number|string
 	---@param soundType number? UnitAuraSoundTrigger: 0 = added, 1 = applications increased, 2 = removed
-	local function registerAuraSound(self, optionId, spellId, media, soundType)
-		if not AddAuraSound and not AddPrivateAuraAppliedSound then
+	---@param throttleSeconds number? Optional throttle time in seconds to limit sound spam
+	local function registerAuraSound(self, optionId, spellId, media, soundType, throttleSeconds)
+		if not AddAuraSound then
 			DBM:Debug("Attempting to register aura sound failed because no aura sound API is available for mod " .. self.id, 2)
 			return
 		end
@@ -1462,11 +1459,13 @@ do
 		else--It's a string, so it's not an ID, we need to set soundFileName instead
 			soundInfo.soundFileName = media
 		end
+		--In patch 12.1.5, Blizzard added a new optional field to the soundInfo table called "throttleSeconds"
+		--that allows you to limit how often the sound can be played. Default is 3
 		local auraSoundId
-		if AddAuraSound then
-			auraSoundId = AddAuraSound(soundType or 0, soundInfo)
+		if DBM:GetTOC() >= 120105 then
+			auraSoundId = AddAuraSound(soundType or 0, soundInfo, throttleSeconds or 3)
 		else
-			auraSoundId = AddPrivateAuraAppliedSound(soundInfo)
+			auraSoundId = AddAuraSound(soundType or 0, soundInfo)
 		end
 		self.paSounds[optionId][#self.paSounds[optionId] + 1] = auraSoundId
 	end
@@ -1525,7 +1524,8 @@ do
 	---@param voiceVersion number Required voice pack version (if not met, falls back to default special warning sounds)
 	---@param soundType number? UnitAuraSoundTrigger: 0 = added, 1 = applications increased, 2 = removed
 	---@param difficultyVoices table<number, VPSound>? voice pack media path overrides keyed by Blizzard difficulty index
-	local function enableAuraSound(mod, auraspellId, voice, voiceVersion, soundType, difficultyVoices)
+	---@param throttleSeconds number? Optional throttle time in seconds to limit sound spam
+	local function enableAuraSound(mod, auraspellId, voice, voiceVersion, soundType, difficultyVoices, throttleSeconds)
 		local optionId
 		if type(auraspellId) == "table" then
 			optionId = auraspellId[1]
@@ -1554,10 +1554,10 @@ do
 			if DBM:IsNoneValue(mediaPath) then return end--Don't register if media path is none, even if option is enabled
 			if type(auraspellId) == "table" then
 				for _, spellId in ipairs(auraspellId) do
-					registerAuraSound(mod, optionId, spellId, mediaPath, soundType)
+					registerAuraSound(mod, optionId, spellId, mediaPath, soundType, throttleSeconds)
 				end
 			else
-				registerAuraSound(mod, optionId, auraspellId, mediaPath, soundType)
+				registerAuraSound(mod, optionId, auraspellId, mediaPath, soundType, throttleSeconds)
 			end
 		end
 	end
@@ -1570,7 +1570,7 @@ do
 		local zoneEntries = self.pendingPASoundsByZone[mapID]
 		if not zoneEntries then return end
 		for _, entry in ipairs(zoneEntries) do
-			enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5])
+			enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6])
 		end
 	end
 
@@ -1593,7 +1593,7 @@ do
 		for _, entry in ipairs(zoneEntries) do
 			local entryOptionId = type(entry[1]) == "table" and entry[1][1] or entry[1]
 			if entryOptionId == optionId then
-				enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5])
+				enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6])
 			end
 		end
 		return true
