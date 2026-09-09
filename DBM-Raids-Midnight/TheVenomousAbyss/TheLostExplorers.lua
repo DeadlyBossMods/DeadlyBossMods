@@ -22,6 +22,7 @@ mod:RegisterSafeEventsInCombat("UNIT_FLAGS boss1 boss3 boss4")
 --TODO, maybe add a troll BOING sound to https://www.wowhead.com/ptr/spell=1299854/bounce ?
 --TODO, better handle Cataclysmic Invocation and Empowered Ascension
 DBM:RegisterAltSpellName(1295854, DBM_COMMON_L.TANKDEBUFF)--Shredding Shards --> Tank Debuff
+DBM:RegisterAltSpellName(1286921, DBM_COMMON_L.INTERRUPT)--Icebound Flames --> Interrupt
 --mod:AddCustomAlertSoundOption(1291390, true, 2)--Cataclysmic Invocation
 --mod:AddCustomAlertSoundOption(0, true, 2)--Relentless Escalation (no event ID?)
 --mod:AddCustomAlertSoundOption(0, true, 2)--Smashing Shovel (no event ID?)
