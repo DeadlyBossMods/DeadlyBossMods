@@ -63,6 +63,8 @@ local seenTimelineEventIDs = {}
 local timelineEventStartTimes = {}
 local firstBerserkIgnored = false
 local next22Event = "empoweringslam"
+local pending22Caster = nil
+local pending22CasterAt = 0
 local mythic20EventCycleIndex = 1
 local batchTimerValues = {
 	[4] = true,
@@ -119,6 +121,8 @@ function mod:OnLimitedCombatStart()
 	self:TLBatchReset()
 	firstBerserkIgnored = false
 	next22Event = "empoweringslam"
+	pending22Caster = nil
+	pending22CasterAt = 0
 	mythic20EventCycleIndex = 1
 	badStateDetectedAt = nil
 	badStateDetectedDuringWipeResend = false
@@ -138,7 +142,8 @@ function mod:OnLimitedCombatStart()
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
-			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+			"UNIT_SPELLCAST_START boss1 boss2"
 		)
 		setFallback(self, true)
 	else
@@ -161,6 +166,8 @@ function mod:OnCombatEnd()
 	timelineEventStartTimes = {}
 	firstBerserkIgnored = false
 	next22Event = "empoweringslam"
+	pending22Caster = nil
+	pending22CasterAt = 0
 	mythic20EventCycleIndex = 1
 	self:UnregisterShortTermEvents()
 end
@@ -215,7 +222,18 @@ do
 			end
 		elseif timer == 22 then
 			handled = true
-			if next22Event == "empoweringslam" then
+			-- Timeline spell details are secret. Week 4 Mythic evidence confirms the
+			-- caster unit starts immediately before its matching 21.5s timeline row.
+			local caster = pending22Caster
+			local hasRecentCaster = caster and (GetTime() - pending22CasterAt) <= 1
+			pending22Caster = nil
+			if hasRecentCaster and caster == "boss1" then
+				next22Event = "bloodvenominjection"
+				timerEmpoweringSlamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "empoweringslam", "EmpoweringSlamCount"))
+			elseif hasRecentCaster and caster == "boss2" then
+				next22Event = "empoweringslam"
+				timerBloodvenomInjectionCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "bloodvenominjection", "BloodvenomInjectionCount"))
+			elseif next22Event == "empoweringslam" then
 				next22Event = "bloodvenominjection"
 				timerEmpoweringSlamCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "empoweringslam", "EmpoweringSlamCount"))
 			else
@@ -254,6 +272,10 @@ do
 	end
 
 	--Note, bar state changing and canceling is handled by core
+	function mod:UNIT_SPELLCAST_START(uId)
+		pending22Caster = uId
+		pending22CasterAt = GetTime()
+	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end

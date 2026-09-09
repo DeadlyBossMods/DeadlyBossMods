@@ -83,6 +83,7 @@ CL.DEBUFF			= "Debuff"
 CL.DEBUFFS			= "Debuff"
 CL.DISPELS			= "Dispel"
 CL.DODGES			= "Schivate"
+CL.DPSSWAP			= "Cambio DPS"
 CL.ENEMIES			= "Nemici"
 CL.FRONTAL			= "Frontale"
 CL.GROUPSOAK		= "Assorbimento"
@@ -124,6 +125,7 @@ CL.SWIRLS			= "Vortici"--Plural of Swirl
 CL.TANKBUSTER		= "Tank Buster"
 CL.TANKCOMBO		= "Combo del Tank"
 CL.TANKDEBUFF		= "Debuff del Tank"
+CL.TARGETSWAP		= "Cambio bersaglio"
 CL.TRAPS			= "Trappole"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
 CL.WAVES			= "Onde"
 
