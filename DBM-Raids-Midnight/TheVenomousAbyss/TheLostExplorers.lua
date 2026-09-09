@@ -12,7 +12,11 @@ mod:SetZone(3004)
 mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
-mod:RegisterSafeEventsInCombat("UNIT_FLAGS boss1 boss3 boss4")
+mod:RegisterSafeEventsInCombat(
+	"UNIT_FLAGS boss1 boss3 boss4",
+	"UNIT_SPELLCAST_CHANNEL_START boss2",
+	"UNIT_SPELLCAST_CHANNEL_STOP boss2"
+)
 
 --TODO: Toss targets for toss mechanics?
 --TODO, Frostfire Volley patches need GTFOs, when it's possible (aura api?)
@@ -45,7 +49,7 @@ local timerBlinkNovaCD					= mod:NewCDCountTimer(20.5, 1290711, nil, nil, nil, 2
 local timerMightyThudCD					= mod:NewCDCountTimer(20.5, 1296092, nil, nil, nil, 5)
 local timerShellSpinCD					= mod:NewCDCountTimer(20.5, 1291759, nil, nil, nil, 3)
 local timerThrowJunkCD					= mod:NewCDCountTimer(20.5, 1291933, nil, nil, nil, 3)
-local timerFlingFishCD					= mod:NewCDCountTimer(20.5, 1295817, nil, nil, nil, 5)
+--local timerFlingFishCD				= mod:NewCDCountTimer(20.5, 1295817, nil, nil, nil, 5)
 local timerMushroomTossCD				= mod:NewCDCountTimer(20.5, 1292104, nil, nil, nil, 3)
 local timerShreddingShardsCD			= mod:NewCDCountTimer(20.5, 1295854, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerFrostfireVolleyCD			= mod:NewCDCountTimer(20.5, 1295935, nil, nil, nil, 3)
@@ -71,11 +75,13 @@ mod:AddAuraSoundOption(1296092, true, 1296092, 1, 1, "leapyou", 19, 0)--Mighty T
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local delayedStarts = {}
-local pendingNormalStage = nil
 local normalStage2Special32Count = 0
 local normalStage4Special27Count = 0
 local normalNext31IsIce = true
 local normalHardcodeActive = false
+local stageBatch = {}
+local stageBatchScheduled = false
+local morzahiChannelGUID = nil
 
 mod.vb.IceboundFlamesCount = 0
 mod.vb.BlinkNovaCount = 0
@@ -112,7 +118,6 @@ local function setFallback(self, dontSetAlerts)
 	timerMightyThudCD:SetTimeline(725, onlyColor)
 	timerShellSpinCD:SetTimeline(726, onlyColor)
 	timerThrowJunkCD:SetTimeline(727, onlyColor)
-	timerFlingFishCD:SetTimeline(728, onlyColor)
 	timerMushroomTossCD:SetTimeline(729, onlyColor)
 	timerShreddingShardsCD:SetTimeline(768, onlyColor)
 	timerFrostfireVolleyCD:SetTimeline({776, 777}, onlyColor)
@@ -126,10 +131,12 @@ function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self:TLActiveEventReset()
 	delayedStarts = {}
-	pendingNormalStage = nil
 	normalStage2Special32Count = 0
 	normalStage4Special27Count = 0
 	normalNext31IsIce = true
+	stageBatch = {}
+	stageBatchScheduled = false
+	morzahiChannelGUID = nil
 	self.vb.IceboundFlamesCount = 1
 	self.vb.BlinkNovaCount = 1
 	self.vb.MightyThudCount = 1
@@ -148,7 +155,9 @@ function mod:OnLimitedCombatStart()
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
-			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+			"UNIT_SPELLCAST_CHANNEL_START",
+			"UNIT_SPELLCAST_CHANNEL_STOP"
 		)
 		setFallback(self, true)
 	else
@@ -163,15 +172,68 @@ function mod:OnCombatEnd()
 	self:TLActiveEventReset()
 	self:Unschedule()
 	delayedStarts = {}
-	pendingNormalStage = nil
 	normalStage2Special32Count = 0
 	normalStage4Special27Count = 0
 	normalNext31IsIce = true
+	stageBatch = {}
+	stageBatchScheduled = false
+	morzahiChannelGUID = nil
 	normalHardcodeActive = false
 	self:UnregisterShortTermEvents()
 end
 
 do
+	local timersNormal
+
+	---@param self DBMMod
+	local function processStageBatch(self)
+		stageBatchScheduled = false
+		if badStateDetected then
+			stageBatch = {}
+			return
+		end
+		local timers = {}
+		local activeEvents = 0
+		for _, entry in ipairs(stageBatch) do
+			if C_EncounterTimeline.GetEventState(entry.eventID) == 0 then
+				timers[entry.timer] = true
+				activeEvents = activeEvents + 1
+			end
+		end
+		local stage = self:GetStage()
+		--Only a complete schedule batch identifies an incoming stage; UNIT_FLAGS announces the fish use separately.
+		local incomingStage
+		if activeEvents >= 3 then
+			if timers[60] then
+				incomingStage = 1
+			elseif timers[27] then
+				incomingStage = 2
+			elseif timers[11] then
+				incomingStage = 3
+			elseif timers[16] then
+				incomingStage = 4
+			end
+		end
+		if incomingStage and incomingStage ~= stage then
+			self:SetStage(incomingStage)
+			if incomingStage == 1 then
+				normalNext31IsIce = true
+			elseif incomingStage == 2 then
+				normalStage2Special32Count = 0
+			elseif incomingStage == 4 then
+				normalStage4Special27Count = 0
+			end
+		end
+		local batch = stageBatch
+		stageBatch = {}
+		for _, entry in ipairs(batch) do
+			if C_EncounterTimeline.GetEventState(entry.eventID) == 0 then
+				timersNormal(self, entry.timer, entry.timerExact, entry.eventID)
+				if badStateDetected then return end
+			end
+		end
+	end
+
 	---@param self DBMMod
 	---@param eventID number
 	local function startQueued(self, eventID)
@@ -215,35 +277,9 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	local function timersNormal(self, timer, timerExact, eventID)
+	timersNormal = function(self, timer, timerExact, eventID)
 		local handled = false
 		local stage = self:GetStage()
-
-		--The outgoing stage briefly re-publishes cancellable bars before the incoming schedule.
-		--Wait for a duration unique to the incoming stage so those rows retain their old-stage routing.
-		--Normal can send the unique 16-second Shell Spin before stage 4's Blink Nova.
-		if pendingNormalStage == 4 and (timer == 21 or timer == 16) then
-			self:SetStage(4)
-			pendingNormalStage = nil
-			normalStage4Special27Count = 0
-			stage = 4
-		--Stage 2's unique 7-second Shell Spin can follow outgoing stage-1 rows in any order.
-		elseif pendingNormalStage == 2 and timer == 7 then
-			self:SetStage(2)
-			pendingNormalStage = nil
-			normalStage2Special32Count = 0
-			stage = 2
-		elseif pendingNormalStage == 3 and (timer == 11 or timer == 3) then
-			self:SetStage(3)
-			pendingNormalStage = nil
-			stage = 3
-		--Stage 1's 18-second Shell Spin can arrive before Final Ascension when returning from stage 3.
-		elseif (stage == 4 and (timer == 10 or timer == 18 or timer == 20 or timer == 60)) or (stage == 2 and (timer == 10 or timer == 20 or timer == 60 or (self:IsMythic() and timer == 18))) or (stage == 3 and (timer == 10 or timer == 18 or timer == 60)) then
-			self:SetStage(1)
-			pendingNormalStage = nil
-			normalNext31IsIce = true
-			stage = 1
-		end
 
 		if stage == 1 then
 			if timer == 30 then
@@ -375,11 +411,29 @@ do
 	function mod:UNIT_FLAGS(unit)
 		if not normalHardcodeActive or not UnitIsFriend("player", unit) then return end
 		if unit == "boss1" then
-			pendingNormalStage = 2 -- Gebbo
+			warnFlingFish:Show(self.vb.FlingFishCount)
+			self.vb.FlingFishCount = self.vb.FlingFishCount + 1
 		elseif unit == "boss3" then
-			pendingNormalStage = 3 -- Nama
+			warnFlingFish:Show(self.vb.FlingFishCount)
+			self.vb.FlingFishCount = self.vb.FlingFishCount + 1
 		elseif unit == "boss4" then
-			pendingNormalStage = 4 -- Iku
+			warnFlingFish:Show(self.vb.FlingFishCount)
+			self.vb.FlingFishCount = self.vb.FlingFishCount + 1
+		end
+	end
+
+	function mod:UNIT_SPELLCAST_CHANNEL_START(unit, castGUID)
+		if normalHardcodeActive and unit == "boss2" then
+			morzahiChannelGUID = castGUID
+		end
+	end
+
+	function mod:UNIT_SPELLCAST_CHANNEL_STOP(unit, castGUID)
+		if not normalHardcodeActive or unit ~= "boss2" or castGUID ~= morzahiChannelGUID then return end
+		morzahiChannelGUID = nil
+		if self:GetStage() ~= 1 then
+			self:SetStage(1)
+			normalNext31IsIce = true
 		end
 	end
 
@@ -390,7 +444,15 @@ do
 		local eventID = eventInfo.id
 		if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
-		timersNormal(self, math.floor(timerExact + 0.5), timerExact, eventID)
+		stageBatch[#stageBatch + 1] = {
+			eventID = eventID,
+			timer = math.floor(timerExact + 0.5),
+			timerExact = timerExact,
+		}
+		if not stageBatchScheduled then
+			stageBatchScheduled = true
+			self:Schedule(0, processStageBatch, self)
+		end
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
@@ -423,8 +485,6 @@ do
 			elseif eventType == "throwjunk" then
 				specWarnThrowJunk:Show(eventCount)
 				specWarnThrowJunk:Play("watchstep")
-			elseif eventType == "fling" then
-				warnFlingFish:Show(eventCount)
 			elseif eventType == "mushroom" then
 				specWarnMushroomToss:Show(eventCount)
 				specWarnMushroomToss:Play("watchstep")
