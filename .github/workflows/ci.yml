@@ -49,6 +49,7 @@ jobs:
     permissions:
       contents: read
       issues: write
+      pull-requests: write
 
     steps:
       - name: Checkout pull request
@@ -79,6 +80,7 @@ jobs:
         env:
           ARTIFACT_URL: ${{ steps.upload-test-packages.outputs.artifact-url }}
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const marker = '<!-- dbm-retail-test-package -->';
             const body = [
