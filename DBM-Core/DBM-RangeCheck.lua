@@ -28,9 +28,9 @@ local function UnitPhaseReasonHack(uId)
 end
 
 local L = DBM_CORE_L
----@class DBMRangeCheckFrame: Frame
-local mainFrame = CreateFrame("Frame")
-local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown, initializeDropdownLegacy
+local mainFrame = {}
+local controllerFrame, updater
+local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown, initializeDropdownLegacy, createController
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS -- For Phanx' Class Colors
 
 -- Function for automatically converting inputed ranges from old mods to be ones that have valid item/api checks
@@ -579,7 +579,7 @@ do
 	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, GetBestMapForUnit = UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit
 	local max, min, sin, cos, pi2 = math.max, math.min, math.sin, math.cos, math.pi * 2
 	local circleColor, rotation, pixelsperyard, activeDots, prevRange, prevThreshold, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	local unitList = {}
+	local unitList, unitClasses, unitIcons = {}, {}, {}
 	local BLIP_TEX_COORDS = {
 		["WARRIOR"]		= { 0, 0.125, 0, 0.25 },
 		["PALADIN"]		= { 0.125, 0.25, 0, 0.25 },
@@ -611,28 +611,35 @@ do
 		local numPlayers = GetNumGroupMembers() or 0
 		activeDots = max(numPlayers, activeDots)
 		for i = 1, activeDots do
-			local dot = radarFrame.dots[i]
 			if i <= numPlayers then
 				unitList[i] = IsInRaid() and "raid" .. i or "party" .. i
 				local _, class = UnitClass(unitList[i])
 				local icon = GetRaidTargetIndex(unitList[i])
-				dot.class = class
-				if icon and icon < 9 then
-					dot.icon = icon
-					dot:SetTexture(13700 .. icon) -- "Interface\\TargetingFrame\\UI-RaidTargetingIcon_" .. icon
-					dot:SetTexCoord(0, 1, 0, 1)
-					dot:SetSize(16, 16)
-					dot:SetDrawLayer("OVERLAY", 1)
-				else
-					dot.icon = nil
-					class = class or "PRIEST"
-					dot:SetTexture(249183) -- "Interface\\Minimap\\PartyRaidBlips"
-					dot:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3], BLIP_TEX_COORDS[class][4])
-					dot:SetSize(24, 24)
-					dot:SetDrawLayer("OVERLAY", 0)
+				unitClasses[i] = class
+				unitIcons[i] = icon and icon < 9 and icon or nil
+				if radarFrame then
+					local dot = radarFrame.dots[i]
+					dot.class = class
+					if unitIcons[i] then
+						dot.icon = unitIcons[i]
+						dot:SetTexture(13700 .. unitIcons[i]) -- "Interface\\TargetingFrame\\UI-RaidTargetingIcon_" .. icon
+						dot:SetTexCoord(0, 1, 0, 1)
+						dot:SetSize(16, 16)
+						dot:SetDrawLayer("OVERLAY", 1)
+					else
+						dot.icon = nil
+						class = class or "PRIEST"
+						dot:SetTexture(249183) -- "Interface\\Minimap\\PartyRaidBlips"
+						dot:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3], BLIP_TEX_COORDS[class][4])
+						dot:SetSize(24, 24)
+						dot:SetDrawLayer("OVERLAY", 0)
+					end
 				end
-			elseif dot:IsShown() then
-				dot:Hide()
+			else
+				unitList[i], unitClasses[i], unitIcons[i] = nil, nil, nil
+				if radarFrame and radarFrame.dots[i]:IsShown() then
+					radarFrame.dots[i]:Hide()
+				end
 			end
 		end
 	end
@@ -644,8 +651,8 @@ do
 		end
 		local activeRange = mainFrame.range
 		local restricted = mainFrame.restrictions
-		local tEnabled = textFrame:IsShown()
-		local rEnabled = radarFrame:IsShown()
+		local tEnabled = textFrame and textFrame:IsShown()
+		local rEnabled = radarFrame and radarFrame:IsShown()
 		local reverse = mainFrame.reverse
 		local warnThreshold = mainFrame.redCircleNumPlayers
 		if tEnabled then
@@ -692,7 +699,7 @@ do
 		local onlySummary = mainFrame.onlySummary
 		for i = 1, GetNumGroupMembers() do
 			local uId = unitList[i]
-			local dot = radarFrame.dots[i]
+			local dot = radarFrame and radarFrame.dots[i]
 			local mapId = GetBestMapForUnit(uId) or 0
 			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitPhaseReasonHack(uId) and (not filter or filter(uId)) then
 				local range = restricted and itsBCAgain(uId, activeRange) or UnitDistanceSquared(uId) ^ 0.5
@@ -715,8 +722,8 @@ do
 				if tEnabled and inRange and not onlySummary and closePlayer < 6 then -- Display up to 5 players in text range frame.
 					local playerName = DBM:GetUnitFullName(uId)
 					playerName = DBM:GetShortServerName(playerName)
-					local color = RAID_CLASS_COLORS[dot.class] or NORMAL_FONT_COLOR
-					textFrame.lines[closePlayer]:SetText(dot.icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(dot.icon, playerName) or playerName)
+					local color = RAID_CLASS_COLORS[unitClasses[i]] or NORMAL_FONT_COLOR
+					textFrame.lines[closePlayer]:SetText(unitIcons[i] and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(unitIcons[i], playerName) or playerName)
 					textFrame.lines[closePlayer]:SetTextColor(color.r, color.g, color.b)
 					textFrame.lines[closePlayer]:Show()
 					textFrame:SetHeight((closePlayer * 12) + 12)
@@ -791,17 +798,25 @@ do
 	end
 end
 
-local updater = mainFrame:CreateAnimationGroup()
-updater:SetLooping("REPEAT")
-local anim = updater:CreateAnimation()
-anim:SetDuration(0.05)
-
-mainFrame:SetSize(0, 0)
-mainFrame:SetScript("OnEvent", function(self, event)
-	if event == "GROUP_ROSTER_UPDATE" or event == "RAID_TARGET_UPDATE" then
-		updateIcon()
+function createController()
+	if controllerFrame then
+		return controllerFrame
 	end
-end)
+	controllerFrame = CreateFrame("Frame")
+	controllerFrame:SetSize(0, 0)
+	controllerFrame:SetScript("OnEvent", function(_, event)
+		if event == "GROUP_ROSTER_UPDATE" or event == "RAID_TARGET_UPDATE" then
+			updateIcon()
+		elseif event == "PLAYER_REGEN_DISABLED" and IsInInstance() then
+			rangeCheck:Hide(true)
+		end
+	end)
+	updater = controllerFrame:CreateAnimationGroup()
+	updater:SetLooping("REPEAT")
+	local anim = updater:CreateAnimation()
+	anim:SetDuration(0.05)
+	return controllerFrame
+end
 
 ---------------
 --  Methods  --
@@ -814,7 +829,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	end
 	DBM:UpdateMapRestrictions()--Probably redundant but one place I feel good about a redundant call. this isn't something that spams like an update handler
 	local restrictionsActive = DBM:HasMapRestrictions()
-	if restrictionsActive then--Don't popup on retail or classic era at all if in an instance (it now only works in wrath)
+	if restrictionsActive and InCombatLockdown() then
 		return
 	end
 	if type(range) == "function" then -- The first argument is optional
@@ -822,20 +837,27 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	end
 	range = range or 10
 	redCircleNumPlayers = redCircleNumPlayers or 1
-	if not textFrame then
+	local showText = DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive
+	local showRadar = not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both")
+	if showText and not textFrame then
 		createTextFrame()
 	end
-	if not radarFrame then
+	if showRadar and not radarFrame then
 		createRadarFrame()
 	end
 	if restrictionsActive then
 		range = setCompatibleRestrictedRange(range)
 	end
-	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame:IsShown() then
+	if textFrame then
+		textFrame:Hide()
+	end
+	if radarFrame then
+		radarFrame:Hide()
+	end
+	if showText then
 		textFrame:Show()
 	end
-	-- TODO, add check for restricted area here so we can prevent radar frame loading.
-	if not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame:IsShown() then
+	if showRadar then
 		radarFrame:Show()
 	end
 	mainFrame.range = range
@@ -845,11 +867,13 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
 	mainFrame.restrictions = restrictionsActive
 	mainFrame.onlySummary = onlySummary
+	local eventFrame = createController()
 	if not mainFrame.eventRegistered then
 		mainFrame.eventRegistered = true
 		updateIcon()
-		mainFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
-		mainFrame:RegisterEvent("RAID_TARGET_UPDATE")
+		eventFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+		eventFrame:RegisterEvent("RAID_TARGET_UPDATE")
+		eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	end
 	updater:SetScript("OnLoop", updateRangeFrame)
 	updater:Play()
@@ -863,10 +887,15 @@ function rangeCheck:Hide(force)
 		rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
 	else
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
-		updater:Stop()
+		if updater then
+			updater:Stop()
+			updater:SetScript("OnLoop", nil)
+		end
 		if mainFrame.eventRegistered then
 			mainFrame.eventRegistered = nil
-			mainFrame:UnregisterAllEvents()
+			controllerFrame:UnregisterEvent("GROUP_ROSTER_UPDATE")
+			controllerFrame:UnregisterEvent("RAID_TARGET_UPDATE")
+			controllerFrame:UnregisterEvent("PLAYER_REGEN_DISABLED")
 		end
 		if textFrame then
 			textFrame:Hide()
@@ -888,7 +917,7 @@ end
 function rangeCheck:UpdateRestrictions(force)
 	DBM:UpdateMapRestrictions()
 	mainFrame.restrictions = force or DBM:HasMapRestrictions()
-	if mainFrame.restrictions then
+	if mainFrame.restrictions and InCombatLockdown() then
 		rangeCheck:Hide(true)
 	end
 end
@@ -925,7 +954,7 @@ do
 	SLASH_DBMRRANGE2 = "/rdistance"
 	SlashCmdList["DBMRANGE"] = function(msg)
 		DBM:UpdateMapRestrictions()
-		if DBM:HasMapRestrictions() then
+		if DBM:HasMapRestrictions() and InCombatLockdown() then
 			DBM:AddMsg(L.NO_RANGE)
 		else
 			UpdateLocalRangeFrame(tonumber(msg))
@@ -933,7 +962,7 @@ do
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
 		DBM:UpdateMapRestrictions()
-		if DBM:HasMapRestrictions() then
+		if DBM:HasMapRestrictions() and InCombatLockdown() then
 			DBM:AddMsg(L.NO_RANGE)
 		else
 			UpdateLocalRangeFrame(tonumber(msg), true)
