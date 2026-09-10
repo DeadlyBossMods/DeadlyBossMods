@@ -40,6 +40,31 @@ jobs:
           status: ${{ job.status }}
         if: ${{ failure() }}
 
+  test-package:
+    name: Test Package
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    needs:
+      - test
+
+    steps:
+      - name: Checkout pull request
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Create test package
+        uses: BigWigsMods/packager@master
+        with:
+          args: -d
+          pandoc: false
+      - name: Upload test packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: DBM-Retail-pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+          path: .release/*.zip
+          if-no-files-found: error
+          retention-days: 14
+
   deploy:
     name: Deployment
     runs-on: ubuntu-latest
