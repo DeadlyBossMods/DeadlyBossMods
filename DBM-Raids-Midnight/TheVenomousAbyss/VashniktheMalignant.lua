@@ -23,7 +23,7 @@ local warnImbibeToxin					= mod:NewCountAnnounce(1283164, 2)--Hardcode only
 
 local specWarnDrippingFangs				= mod:NewSpecialWarningCount(1280935, nil, nil, nil, 1, 2, nil, nil, "defensive")
 local specWarnMalignantCatalyst			= mod:NewSpecialWarningSoakCount(1282509, nil, nil, nil, 2, 2, 3, nil, "helpsoak")
-local specWarnPlagueFroth				= mod:NewSpecialWarningBlizzYou(1281907, nil, nil, nil, 2, 2, nil, nil, "runout")
+--local specWarnPlagueFroth				= mod:NewSpecialWarningBlizzYou(1281907, nil, nil, nil, 2, 2, nil, nil, "runout")
 --local specWarnStygianInfection		= mod:NewSpecialWarningCount(1294994, nil, nil, nil, 2, 2, nil, nil, "watchstep")--Sub ability to Adaptive Infection
 --local specWarnSiphoningInfection		= mod:NewSpecialWarningCount(1295224, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Sub ability to Adaptive Infection
 --local specWarnExplodingInfection		= mod:NewSpecialWarningCount(1295173, nil, nil, nil, 2, 2, nil, nil, "runout")--Sub ability to Adaptive Infection
@@ -41,7 +41,7 @@ local timerStygianBurstCD				= mod:NewCDCountTimer(20.5, 1302489, nil, nil, nil,
 
 --Evidence https://www.warcraftlogs.com/reports/MyHmVwLj8ncbpxvW?fight=23&type=auras&spells=debuffs
 mod:AddAuraSoundOption(1291461, false, 1291461, 1, 2, "watchfeet", 8, 0)--Virulent Fumes
---mod:AddAuraSoundOption(1281913, true, 1281907, 1, 1, "runout", 2, 0)--Plague Froth (uncomment if BlizzYou doesn't work)
+mod:AddAuraSoundOption(1281913, true, 1281907, 1, 1, "runout", 2, 0)--Plague Froth (uncomment if BlizzYou doesn't work)
 mod:AddAuraSoundOption(1295173, true, 1282114, 1, 1, "runout", 2, 0)--Exploding Infection
 mod:AddAuraSoundOption(1295224, true, 1282114, 1, 1, "gathershare", 2, 0)--Siphoning Infection (maybe clearer audio depending on common strat of heal it off or lifesteal it off
 mod:AddAuraSoundOption(1294994, true, 1282114, 1, 1, "absorbyou", 19, 0)--Stygian Infection
@@ -69,7 +69,7 @@ local function setFallback(self, dontSetAlerts)
 			specWarnDrippingFangs:SetAlert(754, "defensive", 2, 2)
 		end
 		specWarnMalignantCatalyst:SetAlert(756, self:IsHard() and "helpsoak" or "aesoon", 2, 2)
-		specWarnPlagueFroth:SetAlert(757, "runout", 2, 2, 0)
+		--specWarnPlagueFroth:SetAlert(757, "runout", 2, 2, 0)
 		--specWarnStygianInfection:SetAlert({770, 774}, "watchstep", 2, 2, 0)
 		--specWarnSiphoningInfection:SetAlert(771, "gathershare", 2, 2, 0)
 		--specWarnExplodingInfection:SetAlert({772, 773}, "runout", 2, 2, 0)
