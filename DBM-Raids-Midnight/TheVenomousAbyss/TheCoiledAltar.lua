@@ -80,7 +80,7 @@ mod:AddAuraSoundOption(1285017, true, 1283832, 1, 2, "watchfeet", 8, 0)--Axegrin
 mod:AddAuraSoundOption(1307959, "Tank", 1286573, 1, 3, "debuffyou", 17, 0)--Hit by Soul Severing
 mod:AddAuraSoundOption(1286947, false, 1286918, 1, 3, "absorbyou", 19, 0)--Suffocating Darkness
 mod:AddAuraSoundOption(1286399, true, 1286441, 1, 3, "fearyou", 19, 0)--Wail of Terror
-mod:AddAuraSoundOption(1286837, true, 1286895, 1, 3, "ghostsoon", 8, 0)--Gravebound (maybe record new audio)
+mod:AddAuraSoundOption(1286837, true, 1286895, 1, 3, {"collectghosts","safenow"}, {20, 2}, {0, 2})--Gravebound
 mod:AddAuraSoundOption(1298591, true, 1298381, 1, 2, "watchfeet", 8, 0)--Defiled Ground
 mod:AddAuraSoundOption(1299266, true, 1299266, 1, 1, "gathershare", 2, 0)--Targeted by Grim Guillotine
 mod:AddAuraSoundOption(1307652, true, 1299266, 1, 3, "debuffyou", 17, 0)--Soaked Grim Guillotine
