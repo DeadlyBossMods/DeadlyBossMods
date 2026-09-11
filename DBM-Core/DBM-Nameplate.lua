@@ -17,7 +17,7 @@ local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_Na
 local twipe, floor, strsub, strbyte= table.wipe, math.floor, _G.strsub, _G.strbyte
 local CooldownFrame_Set = CooldownFrame_Set
 --function locals
-local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame
+local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame, CreateRootFrame
 
 ---@class DBMNameplate: Frame, NamePlateBaseMixin
 ---@field DBMAuraFrame DBMAuraFrame
@@ -82,9 +82,8 @@ end
 --------------------
 --  Create Frame  --
 --------------------
-local DBMNameplateFrame = CreateFrame("Frame", "DBMNameplate", UIParent)
-DBMNameplateFrame:SetFrameStrata('BACKGROUND')
-DBMNameplateFrame:Hide()
+---@type Frame?
+local DBMNameplateFrame
 
 ----------------------
 -- Helper functions --
@@ -136,7 +135,7 @@ do
 	local function AuraFrame_CreateIcon(frame)
 		-- base frame
 		---@class DBMNamePlateIconFrame: Button, BackdropTemplate
-		local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame, "BackdropTemplate")
+		local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, CreateRootFrame(), "BackdropTemplate")
 		iconFrame:EnableMouse(false)
 		iconFrame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
 		iconFrame:Hide()
@@ -374,6 +373,10 @@ do
 		if not iconFrame then return end
 
 		iconFrame:SetScript("OnUpdate", nil)
+		if iconFrame.isGlowing then
+			frame:StopGlow(iconFrame, iconFrame.isGlowing)
+			iconFrame.isGlowing = false
+		end
 		iconFrame:Hide()
 		frame.texture_index[index] = nil
 
@@ -391,6 +394,9 @@ do
 		twipe(frame.texture_index)
 	end
 	local function AuraFrame_StartGlow(self, iconFrame, glowType)
+		if not LCG then
+			return false
+		end
 		local aura_tbl = iconFrame.aura_tbl
 		iconFrame.__DBM_NPIconGlowFrame:Show()
 		if glowType == 1 then--Pixel
@@ -437,9 +443,13 @@ do
 			}
 			LCG.ButtonGlow_Start(iconFrame.__DBM_NPIconGlowFrame, options.color, options.frequency)--This one doesn't use a key
 		end
+		return true
 	end
 	local function AuraFrame_StopGlow(self, iconFrame, glowType)
-		if glowType == 1 then
+		if not LCG then
+			iconFrame.__DBM_NPIconGlowFrame:Hide()
+			return
+		elseif glowType == 1 then
 			LCG.PixelGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
 		elseif glowType == 2 then
 			LCG.ProcGlow_Stop(iconFrame.__DBM_NPIconGlowFrame, "DBM_ImportantMinDurationGlow")
@@ -480,9 +490,10 @@ do
 			end
 			local glowType = aura_tbl.barType == "castnp" and DBM.Options.CastNPIconGlowType2 or DBM.Options.CDNPIconGlowType
 			if canGlow and not self.isGlowing then
-				self.parent:StartGlow(self, glowType)
-				self.isGlowing = glowType
-			elseif not canGlow and self.isGlowing ~= false or aura_tbl.remaining < 0 then
+				if self.parent:StartGlow(self, glowType) then
+					self.isGlowing = glowType
+				end
+			elseif self.isGlowing and (not canGlow or aura_tbl.remaining < 0) then
 				self.parent:StopGlow(self, self.isGlowing)
 				self.isGlowing = false
 			end
@@ -570,9 +581,10 @@ local function NameplateIcon_Show(isGUID, unit, aura_tbl)
 	if not unit or not aura_tbl then return end
 
 	--Not running supported NP Mod, internal handling
-	if not DBMNameplateFrame:IsShown() then
-		DBMNameplateFrame:Show()
-		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+	local rootFrame = CreateRootFrame()
+	if not rootFrame:IsShown() then
+		rootFrame:Show()
+		rootFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 		DBM:Debug("DBM.Nameplate Enabling", 2)
 	end
 
@@ -664,8 +676,10 @@ function NameplateIcon_Hide(isGUID, unit, index, force)
 		twipe(units)
 		num_units = 0
 
-		DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
-		DBMNameplateFrame:Hide()
+		if DBMNameplateFrame then
+			DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
+			DBMNameplateFrame:Hide()
+		end
 		DBM:Debug("DBM.Nameplate Disabling", 2)
 	end
 end
@@ -707,16 +721,25 @@ end
 ----------------
 --  On Event  --
 ----------------
-DBMNameplateFrame:SetScript("OnEvent", function(_, event, ...)
-	if event == 'NAME_PLATE_UNIT_ADDED' then
-		local unit = ...
-		if not unit then return end
-		local f = GetNamePlateForUnit(unit)
-		if not f then return end
-
-		Nameplate_UnitAdded(f,unit)
+function CreateRootFrame()
+	if DBMNameplateFrame then
+		return DBMNameplateFrame
 	end
-end)
+	DBMNameplateFrame = CreateFrame("Frame", "DBMNameplate", UIParent)
+	DBMNameplateFrame:SetFrameStrata('BACKGROUND')
+	DBMNameplateFrame:Hide()
+	DBMNameplateFrame:SetScript("OnEvent", function(_, event, ...)
+		if event == 'NAME_PLATE_UNIT_ADDED' then
+			local unit = ...
+			if not unit then return end
+			local f = GetNamePlateForUnit(unit)
+			if not f then return end
+
+			Nameplate_UnitAdded(f,unit)
+		end
+	end)
+	return DBMNameplateFrame
+end
 
 --------------------------------------
 --  Nameplate Timer Icons Registry  --

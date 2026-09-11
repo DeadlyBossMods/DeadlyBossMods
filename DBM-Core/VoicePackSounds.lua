@@ -85,6 +85,7 @@ local VPSound = {
 	["cleave"] = 12,
 	["cntnuemove"] = 0,
 	["coinyou"] = 18,
+	["collectghosts"] = 20,--Neuro Done
 	["colorchange"] = 19,--Neuro Done
 	["colorchangesoon"] = 19,--Neuro Done
 	["com_go"] = 0,

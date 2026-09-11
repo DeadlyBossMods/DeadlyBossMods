@@ -24,50 +24,10 @@ if not LibDurability then
 	return
 end
 
-local frame = CreateFrame("Frame", "DBMDurabilityFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
-tinsert(_G["UISpecialFrames"], frame:GetName())
-frame:Hide()
-frame:SetSize(380, 300)
-frame:SetClampedToScreen(true)
-frame:SetPoint("LEFT")
-frame:SetFrameStrata("DIALOG")
-frame:SetMovable(true)
-frame:EnableMouse(true)
-frame:RegisterForDrag("LeftButton")
-frame:SetTitle(L.DUR_HEADER)
-frame:SetScript("OnDragStart", frame.StartMoving)
-frame:SetScript("OnDragStop", function(self)
-	self:StopMovingOrSizing()
-	local point, _, _, x, y = self:GetPoint(1)
-	DBM.Options.DurabilityPosition = {point, x, y}
-end)
-
-frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
-frame.Bg:SetColorTexture(0, 0, 0, 0.8)
-
-local closeBtn = CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
-closeBtn:SetFrameLevel(frame.NineSlice:GetFrameLevel() + 10)
-
-local scroll = CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
-scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
-scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
-
-local child = CreateFrame("Frame", nil, scroll)
-scroll:SetScrollChild(child)
-child:SetSize(scroll:GetWidth(), scroll:GetHeight())
-child:SetPoint("LEFT")
-
-local refresh = CreateFrame("Button", nil, frame)
-refresh:SetSize(20, 20)
-refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
-refresh:SetText("REFRESH")
-refresh:Show()
-refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
-refresh:SetPushedTexture("Interface\\Buttons\\UI-RefreshButton-Down")
-refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
-refresh:SetScript("OnClick", function()
-	LibDurability:RequestDurability()
-end)
+---@type DefaultPanelTemplate?
+local frame
+local scroll, child, titlePlayer, titlePercent, titleBroken
+local percentWidth, brokenWidth
 
 -- Frames handler
 local spareTextFrames, usedTextFrames = {}, {}
@@ -102,38 +62,91 @@ local function GetTextFrame()
 	return _frame
 end
 
-local titlePlayer = GetTextFrame()
-titlePlayer.Keep = true
-titlePlayer:SetFontObject(GameFontNormalLarge)
-titlePlayer:SetText(PLAYER)
-titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
-titlePlayer:SetWidth(120)
+local function CreateFrame()
+	if frame then
+		return frame
+	end
+	frame = _G.CreateFrame("Frame", "DBMDurabilityFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+	tinsert(_G["UISpecialFrames"], frame:GetName())
+	frame:Hide()
+	frame:SetSize(380, 300)
+	frame:SetClampedToScreen(true)
+	frame:SetPoint("LEFT")
+	frame:SetFrameStrata("DIALOG")
+	frame:SetMovable(true)
+	frame:EnableMouse(true)
+	frame:RegisterForDrag("LeftButton")
+	frame:SetTitle(L.DUR_HEADER)
+	frame:SetScript("OnDragStart", frame.StartMoving)
+	frame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+		local point, _, _, x, y = self:GetPoint(1)
+		DBM.Options.DurabilityPosition = {point, x, y}
+	end)
 
-local titlePercent = GetTextFrame()
-titlePercent.Keep = true
-titlePercent:SetFontObject(GameFontNormalLarge)
-titlePercent:SetText("%")
-titlePercent:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
+	frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
+	frame.Bg:SetColorTexture(0, 0, 0, 0.8)
 
-local titleBroken = GetTextFrame()
-titleBroken.Keep = true
-titleBroken:SetFontObject(GameFontNormalLarge)
-titleBroken:SetText(TUTORIAL_TITLE37)
-titleBroken:SetPoint("LEFT", titlePercent, "RIGHT")
+	local closeBtn = _G.CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
+	closeBtn:SetFrameLevel(frame.NineSlice:GetFrameLevel() + 10)
 
-local percentWidth, brokenWidth = mmax(75, titlePercent:GetStringWidth() + 20), mmax(75, titleBroken:GetStringWidth() + 20)
-titlePercent:SetWidth(percentWidth)
-titleBroken:SetWidth(brokenWidth)
+	scroll = _G.CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
+	scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
+	scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
 
--- Update main frame width
-child:SetWidth(120 + percentWidth + brokenWidth + 8)
-frame:SetWidth(child:GetWidth() + 32)
+	child = _G.CreateFrame("Frame", nil, scroll)
+	scroll:SetScrollChild(child)
+	child:SetSize(scroll:GetWidth(), scroll:GetHeight())
+	child:SetPoint("LEFT")
+
+	local refresh = _G.CreateFrame("Button", nil, frame)
+	refresh:SetSize(20, 20)
+	refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
+	refresh:SetText("REFRESH")
+	refresh:Show()
+	refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
+	refresh:SetPushedTexture("Interface\\Buttons\\UI-RefreshButton-Down")
+	refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
+	refresh:SetScript("OnClick", function()
+		LibDurability:RequestDurability()
+	end)
+
+	titlePlayer = GetTextFrame()
+	titlePlayer.Keep = true
+	titlePlayer:SetFontObject(GameFontNormalLarge)
+	titlePlayer:SetText(PLAYER)
+	titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
+	titlePlayer:SetWidth(120)
+
+	titlePercent = GetTextFrame()
+	titlePercent.Keep = true
+	titlePercent:SetFontObject(GameFontNormalLarge)
+	titlePercent:SetText("%")
+	titlePercent:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
+
+	titleBroken = GetTextFrame()
+	titleBroken.Keep = true
+	titleBroken:SetFontObject(GameFontNormalLarge)
+	titleBroken:SetText(TUTORIAL_TITLE37)
+	titleBroken:SetPoint("LEFT", titlePercent, "RIGHT")
+
+	percentWidth, brokenWidth = mmax(75, titlePercent:GetStringWidth() + 20), mmax(75, titleBroken:GetStringWidth() + 20)
+	titlePercent:SetWidth(percentWidth)
+	titleBroken:SetWidth(brokenWidth)
+
+	child:SetWidth(120 + percentWidth + brokenWidth + 8)
+	frame:SetWidth(child:GetWidth() + 32)
+	return frame
+end
 
 local function SortDurability(v1, v2)
 	return (v1.durpercent or 9999) < (v2.durpercent or 9999)
 end
 
 local function Update()
+	if not frame or not frame:IsShown() then
+		return
+	end
 	local sortDur = {}
 	for _, v in pairs(DBM:GetRaidRoster()) do
 		tinsert(sortDur, v)
@@ -192,15 +205,19 @@ function Durability:Show()
 		DBM.GearCheck:Hide()
 	end
 	DBM.Latency:Hide()
-	LibDurability:RequestDurability()
+	local displayFrame = CreateFrame()
 	if _G["DBM_GUI_OptionsFrame"] then
-		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
+		displayFrame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 	end
-	frame:ClearAllPoints()
-	frame:SetPoint(DBM.Options.DurabilityPosition[1], DBM.Options.DurabilityPosition[2], DBM.Options.DurabilityPosition[3])
-	frame:Show()
+	displayFrame:ClearAllPoints()
+	displayFrame:SetPoint(DBM.Options.DurabilityPosition[1], DBM.Options.DurabilityPosition[2], DBM.Options.DurabilityPosition[3])
+	displayFrame:Show()
+	Update()
+	LibDurability:RequestDurability()
 end
 
 function Durability:Hide()
-	frame:Hide()
+	if frame then
+		frame:Hide()
+	end
 end

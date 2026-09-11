@@ -157,7 +157,7 @@ function mod:OnCombatEnd()
 	self:TLBatchReset()
 	--A wipe can resend every remaining Blizzard timer, including rows that are not valid
 	--hardcoded routes. Preserve the current-pull fallback, but recover for the next pull.
-	if badStateDetected and (badStateDetectedDuringWipeResend or (badStateDetectedAt and (GetTime() - badStateDetectedAt) <= 5)) then
+	if badStateDetected and (badStateDetectedDuringWipeResend or self:TLShouldRecoverBadState(badStateDetectedAt)) then
 		badStateDetected = false
 	end
 	badStateDetectedAt = nil

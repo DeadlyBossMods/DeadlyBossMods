@@ -24,50 +24,10 @@ if not LibLatency then
 	return
 end
 
-local frame = CreateFrame("Frame", "DBMLatencyFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
-tinsert(_G["UISpecialFrames"], frame:GetName())
-frame:Hide()
-frame:SetSize(380, 300)
-frame:SetClampedToScreen(true)
-frame:SetPoint("LEFT")
-frame:SetFrameStrata("DIALOG")
-frame:SetMovable(true)
-frame:EnableMouse(true)
-frame:RegisterForDrag("LeftButton")
-frame:SetTitle(L.LAG_HEADER)
-frame:SetScript("OnDragStart", frame.StartMoving)
-frame:SetScript("OnDragStop", function(self)
-	self:StopMovingOrSizing()
-	local point, _, _, x, y = self:GetPoint(1)
-	DBM.Options.LatencyPosition = {point, x, y}
-end)
-
-frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
-frame.Bg:SetColorTexture(0, 0, 0, 0.8)
-
-local closeBtn = CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
-closeBtn:SetFrameLevel(frame.NineSlice:GetFrameLevel() + 10)
-
-local scroll = CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
-scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
-scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
-
-local child = CreateFrame("Frame", nil, scroll)
-scroll:SetScrollChild(child)
-child:SetSize(scroll:GetWidth(), scroll:GetHeight())
-child:SetPoint("LEFT")
-
-local refresh = CreateFrame("Button", nil, frame)
-refresh:SetSize(20, 20)
-refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
-refresh:SetText("REFRESH")
-refresh:Show()
-refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
-refresh:SetPushedTexture("Interface\\Buttons\\UI-RefreshButton-Down")
-refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
-refresh:SetScript("OnClick", function()
-	LibLatency:RequestLatency()
-end)
+---@type DefaultPanelTemplate?
+local frame
+local scroll, child, titlePlayer, titleWorld, titleHome
+local worldWidth, homeWidth
 
 -- Frames handler
 local spareTextFrames, usedTextFrames = {}, {}
@@ -102,40 +62,93 @@ local function GetTextFrame()
 	return _frame
 end
 
-local titlePlayer = GetTextFrame()
-titlePlayer.Keep = true
-titlePlayer:SetFontObject(GameFontNormalLarge)
-titlePlayer:SetText(PLAYER)
-titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
-titlePlayer:SetWidth(120)
+local function CreateFrame()
+	if frame then
+		return frame
+	end
+	frame = _G.CreateFrame("Frame", "DBMLatencyFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+	tinsert(_G["UISpecialFrames"], frame:GetName())
+	frame:Hide()
+	frame:SetSize(380, 300)
+	frame:SetClampedToScreen(true)
+	frame:SetPoint("LEFT")
+	frame:SetFrameStrata("DIALOG")
+	frame:SetMovable(true)
+	frame:EnableMouse(true)
+	frame:RegisterForDrag("LeftButton")
+	frame:SetTitle(L.LAG_HEADER)
+	frame:SetScript("OnDragStart", frame.StartMoving)
+	frame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+		local point, _, _, x, y = self:GetPoint(1)
+		DBM.Options.LatencyPosition = {point, x, y}
+	end)
 
-local titleWorld = GetTextFrame()
-titleWorld.Keep = true
-titleWorld:SetFontObject(GameFontNormalLarge)
-titleWorld:SetText(WORLD)
-titleWorld:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
-titleWorld:SetWidth(75)
+	frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
+	frame.Bg:SetColorTexture(0, 0, 0, 0.8)
 
-local titleHome = GetTextFrame()
-titleHome.Keep = true
-titleHome:SetFontObject(GameFontNormalLarge)
-titleHome:SetText(HOME)
-titleHome:SetPoint("LEFT", titleWorld, "RIGHT")
-titleHome:SetWidth(75)
+	local closeBtn = _G.CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
+	closeBtn:SetFrameLevel(frame.NineSlice:GetFrameLevel() + 10)
 
-local worldWidth, homeWidth = mmax(75, titleWorld:GetStringWidth() + 20), mmax(75, titleHome:GetStringWidth() + 20)
-titleWorld:SetWidth(worldWidth)
-titleHome:SetWidth(homeWidth)
+	scroll = _G.CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
+	scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
+	scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
 
--- Update main frame width
-child:SetWidth(120 + worldWidth + homeWidth + 8)
-frame:SetWidth(child:GetWidth() + 32)
+	child = _G.CreateFrame("Frame", nil, scroll)
+	scroll:SetScrollChild(child)
+	child:SetSize(scroll:GetWidth(), scroll:GetHeight())
+	child:SetPoint("LEFT")
+
+	local refresh = _G.CreateFrame("Button", nil, frame)
+	refresh:SetSize(20, 20)
+	refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
+	refresh:SetText("REFRESH")
+	refresh:Show()
+	refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
+	refresh:SetPushedTexture("Interface\\Buttons\\UI-RefreshButton-Down")
+	refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
+	refresh:SetScript("OnClick", function()
+		LibLatency:RequestLatency()
+	end)
+
+	titlePlayer = GetTextFrame()
+	titlePlayer.Keep = true
+	titlePlayer:SetFontObject(GameFontNormalLarge)
+	titlePlayer:SetText(PLAYER)
+	titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
+	titlePlayer:SetWidth(120)
+
+	titleWorld = GetTextFrame()
+	titleWorld.Keep = true
+	titleWorld:SetFontObject(GameFontNormalLarge)
+	titleWorld:SetText(WORLD)
+	titleWorld:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
+	titleWorld:SetWidth(75)
+
+	titleHome = GetTextFrame()
+	titleHome.Keep = true
+	titleHome:SetFontObject(GameFontNormalLarge)
+	titleHome:SetText(HOME)
+	titleHome:SetPoint("LEFT", titleWorld, "RIGHT")
+	titleHome:SetWidth(75)
+
+	worldWidth, homeWidth = mmax(75, titleWorld:GetStringWidth() + 20), mmax(75, titleHome:GetStringWidth() + 20)
+	titleWorld:SetWidth(worldWidth)
+	titleHome:SetWidth(homeWidth)
+
+	child:SetWidth(120 + worldWidth + homeWidth + 8)
+	frame:SetWidth(child:GetWidth() + 32)
+	return frame
+end
 
 local function SortLag(v1, v2)
 	return (v1.worldlag or 9999) < (v2.worldlag or 9999)
 end
 
 local function Update()
+	if not frame or not frame:IsShown() then
+		return
+	end
 	local sortLag = {}
 	for _, v in pairs(DBM:GetRaidRoster()) do
 		tinsert(sortLag, v)
@@ -194,15 +207,19 @@ function Latency:Show()
 		DBM.GearCheck:Hide()
 	end
 	DBM.Durability:Hide()
-	LibLatency:RequestLatency()
+	local displayFrame = CreateFrame()
 	if _G["DBM_GUI_OptionsFrame"] then
-		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
+		displayFrame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 	end
-	frame:ClearAllPoints()
-	frame:SetPoint(DBM.Options.LatencyPosition[1], DBM.Options.LatencyPosition[2], DBM.Options.LatencyPosition[3])
-	frame:Show()
+	displayFrame:ClearAllPoints()
+	displayFrame:SetPoint(DBM.Options.LatencyPosition[1], DBM.Options.LatencyPosition[2], DBM.Options.LatencyPosition[3])
+	displayFrame:Show()
+	Update()
+	LibLatency:RequestLatency()
 end
 
 function Latency:Hide()
-	frame:Hide()
+	if frame then
+		frame:Hide()
+	end
 end

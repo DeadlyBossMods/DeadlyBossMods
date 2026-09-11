@@ -39,6 +39,9 @@ end
 ---------------------------------------
 local ApplyFont
 local function CreateDisplayFrame()
+	if frame then
+		return frame
+	end
 	frame = CreateFrame("Frame", "DBMBattleRezTimerFrame", UIParent, "BackdropTemplate")
 	frame:SetSize(140, 30)
 	frame:SetClampedToScreen(true)
@@ -94,6 +97,7 @@ local function CreateDisplayFrame()
 	end)
 
 	ApplyFont()
+	return frame
 end
 
 local function ApplyPosition()
@@ -186,11 +190,12 @@ do
 			lastCharges = -1
 			-- Cancel any preview auto-hide timer now that combat has started
 			CancelPreviewTimer()
-			if DBM.Options.ShowBrezFrame and frame then
+			if DBM.Options.ShowBrezFrame then
+				local displayFrame = CreateDisplayFrame()
 				ApplyPosition()
-				frame:EnableMouse(false)
-				frame.header:Hide()
-				frame:Show()
+				displayFrame:EnableMouse(false)
+				displayFrame.header:Hide()
+				displayFrame:Show()
 			end
 		end
 
@@ -300,8 +305,6 @@ do
 	end
 end
 
-CreateDisplayFrame()
-
 ---------------------------------------
 -- Public API
 ---------------------------------------
@@ -312,15 +315,15 @@ end
 
 --- Show the frame for manual positioning (out of combat preview)
 function BattleRezTimer:Show()
-	if not frame then return end
 	-- When in active combat, respect the ShowBrezFrame option
 	if chargesActive and not DBM.Options.ShowBrezFrame then
 		return
 	end
+	local displayFrame = CreateDisplayFrame()
 
 	-- Out-of-combat preview: toggle visibility
 	if not chargesActive then
-		if frame:IsShown() then
+		if displayFrame:IsShown() then
 			CancelPreviewTimer()
 			self:Hide()
 			return
@@ -333,17 +336,17 @@ function BattleRezTimer:Show()
 
 	-- Unlock for positioning when in preview (out of combat)
 	if not chargesActive then
-		frame:EnableMouse(true)
-		frame.header:Show()
-		frame.charges:SetText("0")
-		frame.charges:SetTextColor(1, 1, 1)
-		frame.timer:SetText("0:00")
+		displayFrame:EnableMouse(true)
+		displayFrame.header:Show()
+		displayFrame.charges:SetText("0")
+		displayFrame.charges:SetTextColor(1, 1, 1)
+		displayFrame.timer:SetText("0:00")
 	else
-		frame:EnableMouse(false)
-		frame.header:Hide()
+		displayFrame:EnableMouse(false)
+		displayFrame.header:Hide()
 	end
 
-	frame:Show()
+	displayFrame:Show()
 
 	-- Auto-hide preview after 15 seconds if still out of combat
 	if not chargesActive then

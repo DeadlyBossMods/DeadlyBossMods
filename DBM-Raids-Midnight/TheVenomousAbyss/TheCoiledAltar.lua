@@ -80,13 +80,16 @@ mod:AddAuraSoundOption(1285017, true, 1283832, 1, 2, "watchfeet", 8, 0)--Axegrin
 mod:AddAuraSoundOption(1307959, "Tank", 1286573, 1, 3, "debuffyou", 17, 0)--Hit by Soul Severing
 mod:AddAuraSoundOption(1286947, false, 1286918, 1, 3, "absorbyou", 19, 0)--Suffocating Darkness
 mod:AddAuraSoundOption(1286399, true, 1286441, 1, 3, "fearyou", 19, 0)--Wail of Terror
-mod:AddAuraSoundOption(1286837, true, 1286895, 1, 3, "ghostsoon", 8, 0)--Gravebound (maybe record new audio)
+mod:AddAuraSoundOption(1286837, true, 1286895, 1, 3, {"collectghosts","safenow"}, {20, 2}, {0, 2})--Gravebound
 mod:AddAuraSoundOption(1298591, true, 1298381, 1, 2, "watchfeet", 8, 0)--Defiled Ground
 mod:AddAuraSoundOption(1299266, true, 1299266, 1, 1, "gathershare", 2, 0)--Targeted by Grim Guillotine
 mod:AddAuraSoundOption(1307652, true, 1299266, 1, 3, "debuffyou", 17, 0)--Soaked Grim Guillotine
 mod:AddAuraSoundOption(1307403, "Tank", 1287227, 1, 3, "debuffyou", 17, 0)--Hit by Blighted Severing
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
+local badStateDetectedAt = nil
+local badStateDetectedDuringWipeResend = false
+local seenTimelineEventIDs = {}
 local stage1FortyTwoCount = 0
 local stage1FortyThreeCount = 0
 local stage2ThirtyFourCount = 0
@@ -167,6 +170,9 @@ function mod:OnLimitedCombatStart()
 	lastTLEvent = GetTime()
 	stage1CancelBurstCount = 0
 	stage1CancelBurstStart = 0
+	badStateDetectedAt = nil
+	badStateDetectedDuringWipeResend = false
+	seenTimelineEventIDs = {}
 	self.vb.CrucibleCount = 1
 	self.vb.GuilotineCount = 1
 	self.vb.VenomfangCount = 1
@@ -195,6 +201,14 @@ end
 function mod:OnCombatEnd()
 	self:TLCountReset()
 	self:TLActiveEventReset()
+	--A wipe can resend remaining Blizzard timers which are not valid hardcoded routes.
+	--Keep fallback active for this pull, but restore hardcodes for the next pull.
+	if badStateDetected and (badStateDetectedDuringWipeResend or self:TLShouldRecoverBadState(badStateDetectedAt)) then
+		badStateDetected = false
+	end
+	badStateDetectedAt = nil
+	badStateDetectedDuringWipeResend = false
+	seenTimelineEventIDs = {}
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
 	stage2ThirtyFourCount = 0
@@ -509,16 +523,23 @@ do
 		if eventInfo.source ~= 0 then return end
 		if not self:IsHeroic() and not self:IsNormal() and not self:IsLFR() and not self:IsStory() then return end
 		local eventID = eventInfo.id
+		local isResend = seenTimelineEventIDs[eventID]
+		seenTimelineEventIDs[eventID] = true
 		if C_EncounterTimeline.GetEventState(eventID) ~= 0 then return end
 		if not self:TLTrackActiveEvent(eventID) then return end
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
+			local wasBadStateDetected = badStateDetected
 			if self:IsHeroic() then
 				timersHeroic(self, timer, timerExact, eventID)
 			else
 				--LFR and Story share the verified Normal timer sequence (LFR:World/Week2/TheCoiledAltar).
 				timersNormal(self, timer, timerExact, eventID)
+			end
+			if not wasBadStateDetected and badStateDetected then
+				badStateDetectedAt = GetTime()
+				badStateDetectedDuringWipeResend = isResend and DBM:NumRealAlivePlayers() < DBM:GetNumRealGroupMembers() / 2
 			end
 		end
 		lastTLEvent = GetTime()
