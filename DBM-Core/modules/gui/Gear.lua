@@ -13,30 +13,10 @@ local tinsert, tremove, tsort, mmax, mfloor = table.insert, table.remove, table.
 local L = DBM_CORE_L
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
----@class DBMGearCheckFrame: DefaultPanelTemplate
-local frame = CreateFrame("Frame", "DBMGearCheckFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
-tinsert(_G["UISpecialFrames"], frame:GetName())
-frame:Hide()
-frame:SetSize(380, 300)
-frame:SetClampedToScreen(true)
-frame:SetPoint("LEFT")
-frame:SetFrameStrata("DIALOG")
-frame:SetMovable(true)
-frame:EnableMouse(true)
-frame:RegisterForDrag("LeftButton")
-frame:SetTitle(L.GEAR_HEADER)
-frame:SetScript("OnDragStart", frame.StartMoving)
-frame:SetScript("OnDragStop", function(self)
-	self:StopMovingOrSizing()
-	local point, _, _, x, y = self:GetPoint(1)
-	DBM.Options.GearPosition = {point, x, y}
-end)
-
-frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
-frame.Bg:SetColorTexture(0, 0, 0, 0.8)
-
-local closeBtn = CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
-closeBtn:SetFrameLevel(frame.NineSlice:GetFrameLevel() + 10)
+---@type DefaultPanelTemplate?
+local frame
+local scroll, child, titlePlayer, titleItemLevel, titleMissingGems, titleMissingEnchants
+local playerWidth, itemLevelWidth, missingGemsWidth, missingEnchantsWidth
 
 local spareTextFrames, usedTextFrames = {}, {}
 local pendingInspects = {}
@@ -75,60 +55,40 @@ local validAnchorPoints = {
 
 local tabs, tabsBtn, selectedTab = {}, {}, 1
 
-local WipeTextFrames, Refresh, SendGuildGearSyncRequest, ShouldUseCommScan, RequestNextInspect, HandleRosterUpdate, ScanGear
+local WipeTextFrames, Refresh, SendGuildGearSyncRequest, ShouldUseCommScan, RequestNextInspect, HandleRosterUpdate, ScanGear, CreateDisplayFrame
 
-function frame:CreateTab(title, OnShowFn)
+local function IsDisplayShown()
+	return frame and frame:IsShown()
+end
+
+local function CreateTab(title, OnShowFn)
 	local i = #tabs + 1
 	tabs[i] = OnShowFn
 	---@class DBMGearTabButton: Button
 	---@field Text FontString
 	local _tab = CreateFrame("Button", nil, frame, "PanelTabButtonTemplate")
 	tabsBtn[i] = _tab
-	PanelTemplates_SetNumTabs(self, i)
+	PanelTemplates_SetNumTabs(frame, i)
 	if i == 1 then
-		_tab:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 11, 2)
+		_tab:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 11, 2)
 	else
 		_tab:SetPoint("TOPLEFT", tabsBtn[i - 1], "TOPRIGHT", 1, 0)
 	end
 	_tab.Text:SetText(title)
 	_tab:SetScript("OnClick", function()
-		self:ShowTab(i)
+		PanelTemplates_SetTab(frame, i)
+		WipeTextFrames()
+		selectedTab = i
+		tabs[i]()
 	end)
 end
 
-function frame:ShowTab(tab)
-	PanelTemplates_SetTab(self, tab)
+local function ShowTab(tab)
+	PanelTemplates_SetTab(frame, tab)
 	WipeTextFrames()
 	selectedTab = tab
 	tabs[tab]()
 end
-
-local scroll = CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
-scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -50)
-scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
-
-local child = CreateFrame("Frame", nil, scroll)
-scroll:SetScrollChild(child)
-child:SetSize(scroll:GetWidth(), scroll:GetHeight())
-child:SetPoint("LEFT")
-
-local refresh = CreateFrame("Button", nil, frame)
-refresh:SetSize(20, 20)
-refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
-refresh:SetText("REFRESH")
-refresh:Show()
-refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
-refresh:SetPushedTexture("Interface\\Buttons\\UI-RefreshButton-Down")
-refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
-refresh:SetScript("OnClick", function()
-	if selectedTab == 1 then
-		Refresh()
-	elseif selectedTab == 2 then
-		if ShouldUseCommScan() and IsInGuild() then
-			SendGuildGearSyncRequest()
-		end
-	end
-end)
 
 function WipeTextFrames()
 	for _frame in next, usedTextFrames do
@@ -162,43 +122,6 @@ local function GetTextFrame()
 	return _frame
 end
 
-local titlePlayer = GetTextFrame()
-titlePlayer.Keep = true
-titlePlayer:SetFontObject(GameFontNormalLarge)
-titlePlayer:SetText(PLAYER)
-titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
-local playerWidth = 120
-titlePlayer:SetWidth(playerWidth)
-
-local titleItemLevel = GetTextFrame()
-titleItemLevel.Keep = true
-titleItemLevel:SetFontObject(GameFontNormalLarge)
-titleItemLevel:SetText(_G["ITEM_LEVEL_ABBR"] or "iLvl")
-titleItemLevel:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
-
-local itemLevelWidth = mmax(75, titleItemLevel:GetStringWidth() + 20)
-titleItemLevel:SetWidth(itemLevelWidth)
-
-local titleMissingGems = GetTextFrame()
-titleMissingGems.Keep = true
-titleMissingGems:SetFontObject(GameFontNormalLarge)
-titleMissingGems:SetText(L.GEAR_MISSING_GEMS)
-titleMissingGems:SetPoint("LEFT", titleItemLevel, "RIGHT", 0, 0)
-
-local missingGemsWidth = mmax(55, titleMissingGems:GetStringWidth() + 20)
-titleMissingGems:SetWidth(missingGemsWidth)
-
-local titleMissingEnchants = GetTextFrame()
-titleMissingEnchants.Keep = true
-titleMissingEnchants:SetFontObject(GameFontNormalLarge)
-titleMissingEnchants:SetText(L.GEAR_MISSING_ENCHANTS)
-titleMissingEnchants:SetPoint("LEFT", titleMissingGems, "RIGHT", 0, 0)
-
-local missingEnchantsWidth = mmax(55, titleMissingEnchants:GetStringWidth() + 20)
-titleMissingEnchants:SetWidth(missingEnchantsWidth)
-
-child:SetWidth(playerWidth + itemLevelWidth + missingGemsWidth + missingEnchantsWidth + 8)
-frame:SetWidth(child:GetWidth() + 32)
 
 local function SetPlayerGearState(name, itemLevel, missingGems, missingEnchants, pending, unavailable)
 	local player = DBM:GetRaidRoster()[name]
@@ -343,6 +266,9 @@ local function UpdateGuildTab()
 end
 
 local function Update()
+	if not IsDisplayShown() then
+		return
+	end
 	if selectedTab == 1 then
 		UpdateRaidTab()
 	elseif selectedTab == 2 then
@@ -409,14 +335,14 @@ local function RemovePendingInspect(name)
 end
 
 local function SendGearSyncRequest()
-	if not frame:IsShown() or not private.sendSync or not ShouldUseCommScan() or not next(pendingCommReplies) then
+	if not IsDisplayShown() or not private.sendSync or not ShouldUseCommScan() or not next(pendingCommReplies) then
 		return
 	end
 	commRequestToken = commRequestToken + 1
 	local requestToken = commRequestToken
 	private.sendSync(private.DBMSyncProtocol or 1, "GIQ", nil, "NORMAL")
 	C_Timer.After(commReplyTimeoutSeconds, function()
-		if not frame:IsShown() or requestToken ~= commRequestToken then
+		if not IsDisplayShown() or requestToken ~= commRequestToken then
 			return
 		end
 		local queuedInspect = false
@@ -435,7 +361,7 @@ local function SendGearSyncRequest()
 end
 
 function SendGuildGearSyncRequest()
-	if not frame:IsShown() or not private.sendGuildSync or not ShouldUseCommScan() or not IsInGuild() then
+	if not IsDisplayShown() or not private.sendGuildSync or not ShouldUseCommScan() or not IsInGuild() then
 		return
 	end
 	wipe(guildGearData)
@@ -460,7 +386,7 @@ function SendGuildGearSyncRequest()
 			return
 		end
 		guildGearQuerySent = false
-		if not frame:IsShown() or selectedTab ~= 2 then
+		if not IsDisplayShown() or selectedTab ~= 2 then
 			return
 		end
 		Update()
@@ -557,7 +483,7 @@ local function FinishInspect(token, itemLevel, missingGems, missingEnchants)
 	if activeInspect.token ~= token then
 		wipe(activeInspect)
 		ClearInspectPlayer()
-		if pendingRosterRefresh and frame:IsShown() then
+		if pendingRosterRefresh and IsDisplayShown() then
 			pendingRosterRefresh = false
 			HandleRosterUpdate()
 		end
@@ -574,14 +500,14 @@ local function FinishInspect(token, itemLevel, missingGems, missingEnchants)
 	wipe(activeInspect)
 	ClearInspectPlayer()
 	Update()
-	if pendingRosterRefresh and frame:IsShown() then
+	if pendingRosterRefresh and IsDisplayShown() then
 		pendingRosterRefresh = false
 		HandleRosterUpdate()
 		return
 	end
-	if frame:IsShown() and #pendingInspects > 0 then
+	if IsDisplayShown() and #pendingInspects > 0 then
 		C_Timer.After(0.1, function()
-			if frame:IsShown() and not activeInspect.name then
+			if IsDisplayShown() and not activeInspect.name then
 				RequestNextInspect()
 			end
 		end)
@@ -589,7 +515,7 @@ local function FinishInspect(token, itemLevel, missingGems, missingEnchants)
 end
 
 function RequestNextInspect()
-	if not frame:IsShown() or activeInspect.name then
+	if not IsDisplayShown() or activeInspect.name then
 		return
 	end
 	if InCombatLockdown() or UnitAffectingCombat("player") or (InspectFrame and InspectFrame:IsShown()) then
@@ -742,7 +668,7 @@ end
 
 local function OnEvent(_, event, arg1)
 	if event == "GROUP_ROSTER_UPDATE" then
-		if frame:IsShown() then
+		if IsDisplayShown() then
 			if activeInspect.name then
 				pendingRosterRefresh = true
 			else
@@ -750,7 +676,7 @@ local function OnEvent(_, event, arg1)
 			end
 		end
 	elseif event == "PLAYER_REGEN_ENABLED" then
-		if frame:IsShown() and #pendingInspects > 0 and not activeInspect.name then
+		if IsDisplayShown() and #pendingInspects > 0 and not activeInspect.name then
 			RequestNextInspect()
 		end
 	elseif event == "INSPECT_READY" then
@@ -771,21 +697,121 @@ local function OnUpdate(_, elapsed)
 		return
 	end
 	inspectUpdateElapsed = 0
-	if frame:IsShown() and #pendingInspects > 0 and not activeInspect.name then
+	if IsDisplayShown() and #pendingInspects > 0 and not activeInspect.name then
 		RequestNextInspect()
 	end
 end
 
-frame:SetScript("OnHide", function()
-	frame:UnregisterEvent("GROUP_ROSTER_UPDATE")
-	frame:UnregisterEvent("INSPECT_READY")
-	frame:UnregisterEvent("PLAYER_REGEN_ENABLED")
-	frame:SetScript("OnEvent", nil)
-	frame:SetScript("OnUpdate", nil)
-	pendingRosterRefresh = false
-	inspectUpdateElapsed = 0
-	ClearInspectQueue()
-end)
+function CreateDisplayFrame()
+	if frame then
+		return frame
+	end
+	frame = CreateFrame("Frame", "DBMGearCheckFrame", UIParent, "DefaultPanelTemplate") --[[@as DefaultPanelTemplate]]
+	tinsert(_G["UISpecialFrames"], frame:GetName())
+	frame:Hide()
+	frame:SetSize(380, 300)
+	frame:SetClampedToScreen(true)
+	frame:SetPoint("LEFT")
+	frame:SetFrameStrata("DIALOG")
+	frame:SetMovable(true)
+	frame:EnableMouse(true)
+	frame:RegisterForDrag("LeftButton")
+	frame:SetTitle(L.GEAR_HEADER)
+	frame:SetScript("OnDragStart", frame.StartMoving)
+	frame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+		local point, _, _, x, y = self:GetPoint(1)
+		DBM.Options.GearPosition = {point, x, y}
+	end)
+	frame:SetScript("OnHide", function(self)
+		self:UnregisterEvent("GROUP_ROSTER_UPDATE")
+		self:UnregisterEvent("INSPECT_READY")
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+		self:SetScript("OnEvent", nil)
+		self:SetScript("OnUpdate", nil)
+		pendingRosterRefresh = false
+		inspectUpdateElapsed = 0
+		ClearInspectQueue()
+	end)
+
+	frame.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
+	frame.Bg:SetColorTexture(0, 0, 0, 0.8)
+
+	local closeBtn = CreateFrame("Button", nil, frame, "UIPanelCloseButtonDefaultAnchors")
+	closeBtn:SetFrameLevel(frame.NineSlice:GetFrameLevel() + 10)
+
+	scroll = CreateFrame("ScrollFrame", nil, frame, "ScrollFrameTemplate")
+	scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -50)
+	scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 30)
+
+	child = CreateFrame("Frame", nil, scroll)
+	scroll:SetScrollChild(child)
+	child:SetSize(scroll:GetWidth(), scroll:GetHeight())
+	child:SetPoint("LEFT")
+
+	local refresh = CreateFrame("Button", nil, frame)
+	refresh:SetSize(20, 20)
+	refresh:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 6)
+	refresh:SetText("REFRESH")
+	refresh:Show()
+	refresh:SetNormalTexture("Interface\\Buttons\\UI-RefreshButton")
+	refresh:SetPushedTexture("Interface\\Buttons\\UI-RefreshButton-Down")
+	refresh:SetHighlightTexture("Interface\\Buttons\\UI-RefreshButton")
+	refresh:SetScript("OnClick", function()
+		if selectedTab == 1 then
+			Refresh()
+		elseif selectedTab == 2 and ShouldUseCommScan() and IsInGuild() then
+			SendGuildGearSyncRequest()
+		end
+	end)
+
+	playerWidth = 120
+	titlePlayer = GetTextFrame()
+	titlePlayer.Keep = true
+	titlePlayer:SetFontObject(GameFontNormalLarge)
+	titlePlayer:SetText(PLAYER)
+	titlePlayer:SetPoint("TOPLEFT", child, 7, 0)
+	titlePlayer:SetWidth(playerWidth)
+
+	titleItemLevel = GetTextFrame()
+	titleItemLevel.Keep = true
+	titleItemLevel:SetFontObject(GameFontNormalLarge)
+	titleItemLevel:SetText(_G["ITEM_LEVEL_ABBR"] or "iLvl")
+	titleItemLevel:SetPoint("LEFT", titlePlayer, "RIGHT", 0, 0)
+	itemLevelWidth = mmax(75, titleItemLevel:GetStringWidth() + 20)
+	titleItemLevel:SetWidth(itemLevelWidth)
+
+	titleMissingGems = GetTextFrame()
+	titleMissingGems.Keep = true
+	titleMissingGems:SetFontObject(GameFontNormalLarge)
+	titleMissingGems:SetText(L.GEAR_MISSING_GEMS)
+	titleMissingGems:SetPoint("LEFT", titleItemLevel, "RIGHT", 0, 0)
+	missingGemsWidth = mmax(55, titleMissingGems:GetStringWidth() + 20)
+	titleMissingGems:SetWidth(missingGemsWidth)
+
+	titleMissingEnchants = GetTextFrame()
+	titleMissingEnchants.Keep = true
+	titleMissingEnchants:SetFontObject(GameFontNormalLarge)
+	titleMissingEnchants:SetText(L.GEAR_MISSING_ENCHANTS)
+	titleMissingEnchants:SetPoint("LEFT", titleMissingGems, "RIGHT", 0, 0)
+	missingEnchantsWidth = mmax(55, titleMissingEnchants:GetStringWidth() + 20)
+	titleMissingEnchants:SetWidth(missingEnchantsWidth)
+
+	child:SetWidth(playerWidth + itemLevelWidth + missingGemsWidth + missingEnchantsWidth + 8)
+	frame:SetWidth(child:GetWidth() + 32)
+
+	CreateTab(GROUP, function()
+		if IsDisplayShown() then
+			Refresh()
+		end
+	end)
+	CreateTab(GUILD, function()
+		if ShouldUseCommScan() and IsInGuild() then
+			SendGuildGearSyncRequest()
+		end
+	end)
+	return frame
+end
 
 function GearCheck:Show()
 	if DBM.Keystones then
@@ -793,38 +819,29 @@ function GearCheck:Show()
 	end
 	DBM.Durability:Hide()
 	DBM.Latency:Hide()
+	local displayFrame = CreateDisplayFrame()
 	if _G["DBM_GUI_OptionsFrame"] then
-		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
+		displayFrame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 	end
-	frame:ClearAllPoints()
+	displayFrame:ClearAllPoints()
 	local position = DBM.Options.GearPosition
 	if type(position) ~= "table" or not validAnchorPoints[position[1]] or type(position[2]) ~= "number" or type(position[3]) ~= "number" then
 		position = {"RIGHT", -150, 0}
 	end
-	frame:SetPoint(position[1], position[2], position[3])
-	frame:RegisterEvent("GROUP_ROSTER_UPDATE")
-	frame:RegisterEvent("INSPECT_READY")
-	frame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	frame:SetScript("OnEvent", OnEvent)
-	frame:SetScript("OnUpdate", OnUpdate)
-	if #tabs == 0 then
-		frame:CreateTab(GROUP, function()
-			if frame:IsShown() then
-				Refresh()
-			end
-		end)
-		frame:CreateTab(GUILD, function()
-			if ShouldUseCommScan() and IsInGuild() then
-				SendGuildGearSyncRequest()
-			end
-		end)
-	end
-	frame:Show()
-	frame:ShowTab(1)
+	displayFrame:SetPoint(position[1], position[2], position[3])
+	displayFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+	displayFrame:RegisterEvent("INSPECT_READY")
+	displayFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	displayFrame:SetScript("OnEvent", OnEvent)
+	displayFrame:SetScript("OnUpdate", OnUpdate)
+	displayFrame:Show()
+	ShowTab(1)
 end
 
 function GearCheck:Hide()
-	frame:Hide()
+	if frame then
+		frame:Hide()
+	end
 end
 
 function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants, classToken)
@@ -860,7 +877,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 			SetPlayerGearState(sender, nil, nil, nil, true, false)
 			tinsert(pendingInspects, sender)
 		end
-		if frame:IsShown() then
+		if IsDisplayShown() then
 			Update()
 			if #pendingInspects > 0 and not activeInspect.name then
 				RequestNextInspect()
@@ -902,11 +919,11 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		missingGems = mmax(0, mfloor(missingGems or 0))
 		missingEnchants = mmax(0, mfloor(missingEnchants or 0))
 		guildGearData[sender] = {class = classToken, itemLevel = itemLevel, missingGems = missingGems, missingEnchants = missingEnchants}
-		if frame:IsShown() and selectedTab == 2 and not guildUpdatePending then
+		if IsDisplayShown() and selectedTab == 2 and not guildUpdatePending then
 			guildUpdatePending = true
 			C_Timer.After(guildUpdateDebounceSeconds, function()
 				guildUpdatePending = false
-				if frame:IsShown() and selectedTab == 2 then
+				if IsDisplayShown() and selectedTab == 2 then
 					Update()
 				end
 			end)

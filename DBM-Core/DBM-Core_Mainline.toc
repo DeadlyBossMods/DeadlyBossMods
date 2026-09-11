@@ -86,7 +86,7 @@ DBM-Flash.lua
 DBM-RangeCheck.lua
 DBM-InfoFrame.lua
 DBM-HudMap.lua
-DBM-Nameplate.lua
+DBM-Nameplate-Mainline.lua
 
 # GUI Features
 modules\gui\Gear.lua
