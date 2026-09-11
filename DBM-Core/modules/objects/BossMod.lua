@@ -1174,7 +1174,8 @@ do
 	---@param recoveryWindow number? Maximum elapsed time in seconds; defaults to 5.
 	---@return boolean shouldRecover True when the fallback is within the recovery window.
 	function bossModPrototype:TLShouldRecoverBadState(badStateDetectedAt, recoveryWindow)
-		return badStateDetectedAt and (GetTime() - badStateDetectedAt) <= (recoveryWindow or 5)
+		if not badStateDetectedAt then return false end
+		return (GetTime() - badStateDetectedAt) <= (recoveryWindow or 5)
 	end
 
 	---Reset short-term resolver history used by hardcoded timeline disambiguation.
