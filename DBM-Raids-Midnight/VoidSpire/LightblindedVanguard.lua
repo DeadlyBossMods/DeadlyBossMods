@@ -238,7 +238,7 @@ function mod:OnCombatEnd()
 	self:TLCountReset()
 	-- If badState was only tripped in the last few seconds of a wipe, treat it as
 	-- transient timeline noise (bulk timer artifact) and recover for the next pull.
-	if badStateDetected and badStateDetectedAt and (GetTime() - badStateDetectedAt) <= 5 then
+	if badStateDetected and self:TLShouldRecoverBadState(badStateDetectedAt) then
 		badStateDetected = false
 	end
 	badStateDetectedAt = nil

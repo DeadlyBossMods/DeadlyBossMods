@@ -1165,6 +1165,18 @@ do
 		self.tlActiveEventIDs = nil
 	end
 
+	---Determine whether a hardcoded timeline fallback occurred immediately before combat ended.
+	---
+	---Blizzard can resend timer rows while an encounter is wiping down. A module should retain
+	---its fallback for the current pull, but may use this predicate from OnCombatEnd to restore
+	---hardcoded routing for the next pull when the failure was sufficiently close to that end.
+	---@param badStateDetectedAt number? Timestamp recorded when the module entered fallback.
+	---@param recoveryWindow number? Maximum elapsed time in seconds; defaults to 5.
+	---@return boolean shouldRecover True when the fallback is within the recovery window.
+	function bossModPrototype:TLShouldRecoverBadState(badStateDetectedAt, recoveryWindow)
+		return badStateDetectedAt and (GetTime() - badStateDetectedAt) <= (recoveryWindow or 5)
+	end
+
 	---Reset short-term resolver history used by hardcoded timeline disambiguation.
 	---Use this at encounter boundaries (combat start/end) so stale context from prior pulls
 	---cannot influence current routing decisions.
