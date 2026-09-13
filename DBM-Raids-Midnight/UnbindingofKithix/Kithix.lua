@@ -87,6 +87,7 @@ end
 function mod:OnLimitedCombatStart(delay)
 	self:TLCountReset()
 	--Hardcode features first
+	badStateDetected = true--TEMP, REMOVE ME IN HARDCODE
 	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:SetStage(1)
 		self:IgnoreBlizzardAPI()
