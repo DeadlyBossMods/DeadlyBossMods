@@ -256,6 +256,7 @@ local VPSound = {
 	["movetobeam"] = 19,
 	["movetoboss"] = 14,
 	["movetoegg"] = 17,
+	["movetogate"] = 20,--Neuro Done
 	["movetofire"] = 20,--Neuro Done
 	["movetofrost"] = 20,--Neuro Done
 	["movetojelly"] = 0,
