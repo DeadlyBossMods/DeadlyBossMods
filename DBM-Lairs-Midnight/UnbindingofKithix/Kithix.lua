@@ -1,6 +1,8 @@
 if DBM:GetTOC() < 120105 then return end
-local mod	= DBM:NewMod(2896, "DBM-Raids-Midnight", 5, 1324)--Change order when 12.1.5 ships
+local mod	= DBM:NewMod(2896, "DBM-Lairs-Midnight", 1, 1324)--Change order when 12.1.5 ships
 local L		= mod:GetLocalizedStrings()
+
+mod.statTypes = "lfr,normal,heroic,mythic"
 
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(267861)
