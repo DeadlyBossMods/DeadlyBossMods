@@ -158,7 +158,7 @@ elseif private.isWrath then
 		[619] = {80, 2}, [601] = {80, 2}, [595] = {80, 2}, [600] = {80, 2}, [604] = {80, 2}, [602] = {80, 2}, [599] = {80, 2}, [576] = {80, 2}, [578] = {80, 2}, [574] = {80, 2}, [575] = {80, 2}, [608] = {80, 2}, [658] = {80, 2}, [632] = {80, 2}, [668] = {80, 2}, [650] = {80, 2},--Wrath Dungeons
 	}
 	seasonalDungeons = {}--None
-else--TBC and Vanilla
+else--TBC, Vanilla, Forever
 	instanceDifficultyBylevel = {
 		--World
 		[0] = {60, 1}, [1] = {60, 1},--Eastern Kingdoms and Kalimdor world bosses.
@@ -169,6 +169,9 @@ else--TBC and Vanilla
 		--Dungeons
 		[429] = {45, 2}, [389] = {18, 2}, [349] = {52, 2}, [329] = {60, 2}, [289] = {60, 2}, [230] = {60, 2}, [229] = {60, 2}, [209] = {54, 2}, [189] = {45, 2}, [129] = {47, 2}, [109] = {60, 2}, [90] = {34, 2}, [70] = {52, 2}, [48] = {32, 2}, [47] = {42, 2}, [43] = {27, 2}, [36] = {25, 2}, [34] = {32, 2}, [33] = {30, 2},--Classic Dungeons
 		[540] = {70, 2}, [558] = {70, 2}, [556] = {70, 2}, [555] = {70, 2}, [542] = {70, 2}, [546] = {70, 2}, [545] = {70, 2}, [547] = {70, 2}, [553] = {70, 2}, [554] = {70, 2}, [552] = {70, 2}, [557] = {70, 2}, [269] = {70, 2}, [560] = {70, 2}, [543] = {70, 2}, [585] = {70, 2},--BC Dungeons
+		--Missing Forever dungeons (The Drowned City, Krol'dok Stronghold)
+		[3065] = {18, 2}, [2999] = {20, 2}, [2998] = {29, 2}, [2959] = {30, 2},--Forever Dungeons
+		--Forever Raids (none in data yet)
 	}
 	seasonalDungeons = {}--None
 	-- Season of Discovery
@@ -417,7 +420,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "normal5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 2 or difficulty == 174 then--5 man Heroic Dungeon
 		return "heroic5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 3 or difficulty == 175 or difficulty == 198 then--Legacy 10 man Normal Raid/SoD 10 man raid
+	elseif difficulty == 3 or difficulty == 175 or difficulty == 198 or difficulty == 243 or difficulty == 256 then--Legacy 10 man Normal Raid/SoD 10 man raid/Forever 10 man raid
 		return "normal10", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 4 or difficulty == 176 then--Legacy 25 man Normal Raid
 		return "normal25", difficultyName .. " - ", difficulty, instanceGroupSize, 0
@@ -431,6 +434,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		local keystoneLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo and C_ChallengeMode.GetActiveKeystoneInfo() or 0
 		return "challenge5", PLAYER_DIFFICULTY6 .. "+ (" .. keystoneLevel .. ") - ", difficulty, instanceGroupSize, keystoneLevel
 	 --20 man classic raids:
+	elseif difficulty == 255 or difficulty == 242 then--Forever 20 man raid
+		return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	 -- 226 is SoD 20 (and 10/20 flex)
 	 -- 186 is era 40 and SoD 20/40 flex, only SoD 186 is handled here because they are considered 20 player raids
 	elseif difficulty == 148 or difficulty == 185 or difficulty == 215 or difficulty == 226 or (difficulty == 186 and DBM:IsSeasonal("SeasonOfDiscovery")) then
