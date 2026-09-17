@@ -35,7 +35,7 @@ local timerMothersWrathCD				= mod:NewCDCountTimer(20.5, 1298367, nil, nil, nil,
 local timerRageoftheShackledCD			= mod:NewCDCountTimer(20.5, 1286860, nil, nil, nil, 2)
 local timerCausticWavesCD				= mod:NewCDCountTimer(20.5, 1292188, nil, nil, nil, 3)
 local timerFuryUnleashedCD				= mod:NewCDCountTimer(20.5, 1286905, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
-local timerGoreRattleCD					= mod:NewCDCountTimer(20.5, 1298559, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerGoreRattleCD					= mod:NewCDCountTimer("d20.5", 1298559, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--1298559 is used for recast, 1304527 for initial
 local timerSerpentsBiteCD				= mod:NewCDCountTimer(20.5, 1295905, nil, nil, nil, 3)
 local timerToxicIncubationCD			= mod:NewCDCountTimer(20.5, 1299757, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerSpectralCoilsCD				= mod:NewCDCountTimer(20.5, 1300530, nil, nil, nil, 5)
@@ -189,7 +189,8 @@ function mod:OnLimitedCombatStart()
 	self.vb.mothersWrathCount = 1
 	self.vb.rageCount = 1
 	self.vb.causticWavesCount = 1
-	self.vb.goreRattleCount = 1
+	--Heroic registers the 1298559 recast before the 1304527 initial event, so start its recast count at 2.
+	self.vb.goreRattleCount = self:IsHeroic() and 2 or 1
 	self.vb.spectralCoilsCount = 1
 	self.vb.callCount = 1
 	self.vb.mephiticThrashCount = 1
@@ -234,7 +235,13 @@ end
 do
 	local function finishTimelineEvent(self, eventID)
 		local eventType, eventCount = self:TLCountFinish(eventID)
-		if not eventType or not eventCount then return end
+		if not eventType then return end
+		if eventType == "goreRattleInitial" then
+			specWarnGoreRattle:Show(1)
+			specWarnGoreRattle:Play("bigmob")
+			return
+		end
+		if not eventCount then return end
 		if eventType == "mothersWrath" then
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnMothersWrath:Show()
@@ -497,8 +504,9 @@ do
 		if stage == 1 then
 			if timer == 55 then
 				timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
-			elseif timer == 3 then
-				timerGoreRattleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "goreRattle", "goreRattleCount"))
+			elseif timer == 3 then--1304527 initial Gore Rattle
+				self:TLCountStart(eventID, "goreRattleInitial")
+				timerGoreRattleCD:TLStart(timerExact, eventID, 1)
 			elseif timer == 40 then
 				timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
 			elseif timer == 7 or timer == 68 then
@@ -557,7 +565,10 @@ do
 			timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
 			handled = true
 		elseif stage == 1 then
-			if timer == 5 or timer == 70 then
+			if timer == 5 then--1304527 initial Gore Rattle
+				self:TLCountStart(eventID, "goreRattleInitial")
+				timerGoreRattleCD:TLStart(timerExact, eventID, 1)
+			elseif timer == 70 then
 				timerGoreRattleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "goreRattle", "goreRattleCount"))
 			elseif timer == 10 or timer == 37 or timer == 67 then
 				timerMothersWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mothersWrath", "mothersWrathCount"))
@@ -643,8 +654,9 @@ do
 			elseif timer == 130 then
 				timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
 				handled = true
-			elseif timer == 5 then
-				timerGoreRattleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "goreRattle", "goreRattleCount"))
+			elseif timer == 5 then--1304527 initial Gore Rattle
+				self:TLCountStart(eventID, "goreRattleInitial")
+				timerGoreRattleCD:TLStart(timerExact, eventID, 1)
 				handled = true
 			elseif timer == 35 or timer == 41 then
 				timerMephiticThrashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mephiticThrash", "mephiticThrashCount"))

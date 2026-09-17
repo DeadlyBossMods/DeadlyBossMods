@@ -11,9 +11,8 @@ local specArea = specPanel:CreateArea(L.Area_SpecWarn)
 
 local check1 = specArea:CreateCheckButton(L.ShowSWarningsInChat, true, nil, "ShowSWarningsInChat")
 local check2 = specArea:CreateCheckButton(L.SpecialWarningIcon, true, nil, "SpecialWarningIcon")
-local check3, check4, check5, check6
-if not DBM:IsPostMidnight() then
-	check3 = specArea:CreateCheckButton(L.SpecWarn_ClassColor, true, nil, "SWarnClassColor")
+local check4, check5, check6
+if not DBM:IsRestricted() then
 	check4 = specArea:CreateCheckButton(L.WarningAlphabetical, true, nil, "SWarningAlphabetical")
 	check5 = specArea:CreateCheckButton(L.SWarnNameInNote, true, nil, "SWarnNameInNote")
 end
@@ -39,7 +38,7 @@ local color0 = specArea:CreateColorSelect(L.FontColor, function(_, r, g, b)
 end, function(self)
 	self:SetColorRGB(DBM.DefaultOptions.SpecialWarningFontCol[1], DBM.DefaultOptions.SpecialWarningFontCol[2], DBM.DefaultOptions.SpecialWarningFontCol[3], true)
 end)
-color0:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, DBM:IsPostMidnight() and -122 or -220)
+color0:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, DBM:IsRestricted() and -122 or -220)
 color0:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
 color0.myheight = 74
 
@@ -67,7 +66,7 @@ local FontDropDown = specArea:CreateDropdown(L.FontType, Fonts, "DBM", "SpecialW
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1, nil, true)
 end)
-FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 115, DBM:IsPostMidnight() and -110 or -220)
+FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 115, DBM:IsRestricted() and -110 or -220)
 FontDropDown.myheight = 0
 
 local FontStyleDropDown = specArea:CreateFontDropdown(L.FontStyle, "DBM", "SpecialWarningFontStyle", function(value)
@@ -119,6 +118,7 @@ if isRetail then
 		{ text = "Void Reaver: Marked", value = 563787 },
 		{ text = "Yogg Saron: Laugh", value = 564859 },
 	})
+	--TODO, see if these sound files are also added to Forever
 	if DBM:IsPostMidnight() then
 		tinsert(sounds, { text = "Blizzard: Low", value = 7670699, sound = true })
 		tinsert(sounds, { text = "Blizzard: Medium", value = 7670701, sound = true })
@@ -155,7 +155,7 @@ else--Vanilla
 end
 
 local color1, SpecialWarnSoundDropDown, flashCheck1, vibrateCheck1, flashdurSlider1, flashdalphaSlider, flashRepSlider
-local specWarnOne = specPanel:CreateArea(DBM:IsPostMidnight() and L.SpecialWarnHeaderMedium or L.SpecialWarnHeader1)
+local specWarnOne = specPanel:CreateArea(DBM:IsRestricted() and L.SpecialWarnHeaderMedium or L.SpecialWarnHeader1)
 local showbuttonOne = specWarnOne:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 showbuttonOne:SetPoint("BOTTOMRIGHT", specWarnOne.frame, "BOTTOMRIGHT", -2, 4)
 showbuttonOne:SetNormalFontObject(GameFontNormalSmall)
@@ -201,7 +201,7 @@ flashRepSlider:SetPoint("TOPLEFT", flashdurSlider1, "TOPLEFT", 95, -45)
 flashRepSlider.myheight = 20
 
 --Special Warning Area 2
-local specWarnTwo = specPanel:CreateArea(DBM:IsPostMidnight() and L.SpecialWarnHeaderCritical or L.SpecialWarnHeader2)
+local specWarnTwo = specPanel:CreateArea(DBM:IsRestricted() and L.SpecialWarnHeaderCritical or L.SpecialWarnHeader2)
 
 local showbuttonTwo = specWarnTwo:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 showbuttonTwo:SetPoint("BOTTOMRIGHT", specWarnTwo.frame, "BOTTOMRIGHT", -2, 4)
@@ -358,58 +358,51 @@ end)
 flashRepSlider4:SetPoint("TOPLEFT", flashdurSlider4, "TOPLEFT", 95, -45)
 flashRepSlider4.myheight = 10
 
-if not DBM:IsPostMidnight() then
-	local specWarnFive = specPanel:CreateArea(L.SpecialWarnHeader5)
-	local showbuttonFive = specWarnFive:CreateButton(L.SpecWarn_DemoButton, 120, 16)
-	showbuttonFive:SetPoint("BOTTOMRIGHT", specWarnFive.frame, "BOTTOMRIGHT", -2, 4)
-	showbuttonFive:SetNormalFontObject(GameFontNormalSmall)
-	showbuttonFive:SetHighlightFontObject(GameFontNormalSmall)
-	showbuttonFive:SetScript("OnClick", function()
-		DBM:ShowTestSpecialWarning(nil, 5, nil, true)
-	end)
-	color5 = specWarnFive:CreateColorSelect(L.SpecWarn_FlashColor:format(5), function(_, r, g, b)
-		DBM.Options.SpecialWarningFlashCol5[1] = r
-		DBM.Options.SpecialWarningFlashCol5[2] = g
-		DBM.Options.SpecialWarningFlashCol5[3] = b
-		DBM:UpdateSpecialWarningOptions()
-	end, function(self)
-		self:SetColorRGB(DBM.DefaultOptions.SpecialWarningFlashCol5[1], DBM.DefaultOptions.SpecialWarningFlashCol5[2], DBM.DefaultOptions.SpecialWarningFlashCol5[3], true)
-	end)
-	color5:SetWidth(110)
-	color5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 20, -30)
-	color5:SetColorRGB(DBM.Options.SpecialWarningFlashCol5[1], DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3])
-	color5.myheight = 104
-
-	SpecialWarnSoundDropDown5 = specWarnFive:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound5", function(value)
-		DBM.Options.SpecialWarningSound5 = value
-	end)
-	SpecialWarnSoundDropDown5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 125, -28)
-	SpecialWarnSoundDropDown5.myheight = 0
-
-	flashCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash5")
-	flashCheck5:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown5, "BOTTOMLEFT", 220, 20)
-	vibrateCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate5")
-	vibrateCheck5:SetPoint("TOPLEFT", flashCheck5, "TOPLEFT", 0, -20)
-
-	flashdurSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120, DBM.Options.SpecialWarningFlashDura5, function(value)
-		DBM.Options.SpecialWarningFlashDura5 = value
-	end)
-	flashdurSlider5:SetPoint("TOPLEFT", SpecialWarnSoundDropDown5, "TOPLEFT", 20, -45)
-	flashdurSlider5.myheight = 0
-
-	flashdalphaSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120, DBM.Options.SpecialWarningFlashAlph5, function(value)
-		DBM.Options.SpecialWarningFlashAlph5 = value
-	end)
-	flashdalphaSlider5:SetPoint("BOTTOMLEFT", flashdurSlider5, "BOTTOMLEFT", 180, 0)
-	flashdalphaSlider5.myheight = 0
-
-	flashRepSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120, math.floor(DBM.Options.SpecialWarningFlashCount5), function(value)
-		DBM.Options.SpecialWarningFlashCount5 = math.floor(value)
-		DBM:UpdateSpecialWarningOptions()
-	end)
-	flashRepSlider5:SetPoint("TOPLEFT", flashdurSlider5, "TOPLEFT", 95, -45)
-	flashRepSlider5.myheight = 10
-end
+local specWarnFive = specPanel:CreateArea(L.SpecialWarnHeader5)
+local showbuttonFive = specWarnFive:CreateButton(L.SpecWarn_DemoButton, 120, 16)
+showbuttonFive:SetPoint("BOTTOMRIGHT", specWarnFive.frame, "BOTTOMRIGHT", -2, 4)
+showbuttonFive:SetNormalFontObject(GameFontNormalSmall)
+showbuttonFive:SetHighlightFontObject(GameFontNormalSmall)
+showbuttonFive:SetScript("OnClick", function()
+	DBM:ShowTestSpecialWarning(nil, 5, nil, true)
+end)
+color5 = specWarnFive:CreateColorSelect(L.SpecWarn_FlashColor:format(5), function(_, r, g, b)
+	DBM.Options.SpecialWarningFlashCol5[1] = r
+	DBM.Options.SpecialWarningFlashCol5[2] = g
+	DBM.Options.SpecialWarningFlashCol5[3] = b
+	DBM:UpdateSpecialWarningOptions()
+end, function(self)
+	self:SetColorRGB(DBM.DefaultOptions.SpecialWarningFlashCol5[1], DBM.DefaultOptions.SpecialWarningFlashCol5[2], DBM.DefaultOptions.SpecialWarningFlashCol5[3], true)
+end)
+color5:SetWidth(110)
+color5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 20, -30)
+color5:SetColorRGB(DBM.Options.SpecialWarningFlashCol5[1], DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3])
+color5.myheight = 104
+SpecialWarnSoundDropDown5 = specWarnFive:CreateDropdown(L.SpecialWarnSoundOption, sounds, "DBM", "SpecialWarningSound5", function(value)
+	DBM.Options.SpecialWarningSound5 = value
+end)
+SpecialWarnSoundDropDown5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 125, -28)
+SpecialWarnSoundDropDown5.myheight = 0
+flashCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Flash, nil, nil, "SpecialWarningFlash5")
+flashCheck5:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown5, "BOTTOMLEFT", 220, 20)
+vibrateCheck5 = specWarnFive:CreateCheckButton(L.SpecWarn_Vibrate, nil, nil, "SpecialWarningVibrate5")
+vibrateCheck5:SetPoint("TOPLEFT", flashCheck5, "TOPLEFT", 0, -20)
+flashdurSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120, DBM.Options.SpecialWarningFlashDura5, function(value)
+	DBM.Options.SpecialWarningFlashDura5 = value
+end)
+flashdurSlider5:SetPoint("TOPLEFT", SpecialWarnSoundDropDown5, "TOPLEFT", 20, -45)
+flashdurSlider5.myheight = 0
+flashdalphaSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120, DBM.Options.SpecialWarningFlashAlph5, function(value)
+	DBM.Options.SpecialWarningFlashAlph5 = value
+end)
+flashdalphaSlider5:SetPoint("BOTTOMLEFT", flashdurSlider5, "BOTTOMLEFT", 180, 0)
+flashdalphaSlider5.myheight = 0
+flashRepSlider5 = specWarnFive:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 4, 1, 120, math.floor(DBM.Options.SpecialWarningFlashCount5), function(value)
+	DBM.Options.SpecialWarningFlashCount5 = math.floor(value)
+	DBM:UpdateSpecialWarningOptions()
+end)
+flashRepSlider5:SetPoint("TOPLEFT", flashdurSlider5, "TOPLEFT", 95, -45)
+flashRepSlider5.myheight = 10
 
 local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", specArea.frame, "BOTTOMRIGHT", -2, 4)
@@ -420,7 +413,6 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.SWarnNameInNote = DBM.DefaultOptions.SWarnNameInNote
 	DBM.Options.ShowSWarningsInChat = DBM.DefaultOptions.ShowSWarningsInChat
 	DBM.Options.SpecialWarningIcon = DBM.DefaultOptions.SpecialWarningIcon
-	DBM.Options.SWarnClassColor = DBM.DefaultOptions.SWarnClassColor
 	DBM.Options.SWarningAlphabetical = DBM.DefaultOptions.SWarningAlphabetical
 	DBM.Options.SpecialWarningShortText = DBM.DefaultOptions.SpecialWarningShortText
 	DBM.Options.SpecialWarningFontStyle = DBM.DefaultOptions.SpecialWarningFontStyle
@@ -512,17 +504,16 @@ resetbutton:SetScript("OnClick", function()
 	flashdalphaSlider4:SetValue(DBM.Options.SpecialWarningFlashAlph4)
 	flashRepSlider:SetValue(DBM.Options.SpecialWarningFlashCount1)
 	flashRepSlider4:SetValue(DBM.Options.SpecialWarningFlashCount4)
+	check5:SetChecked(DBM.Options.SWarnNameInNote)
+	color5:SetColorRGB(DBM.Options.SpecialWarningFlashCol5[1], DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3])
+	flashCheck5:SetChecked(DBM.Options.SpecialWarningFlash5)
+	vibrateCheck5:SetChecked(DBM.Options.SpecialWarningVibrate5)
+	flashdurSlider5:SetValue(DBM.Options.SpecialWarningFlashDura5)
+	flashdalphaSlider5:SetValue(DBM.Options.SpecialWarningFlashAlph5)
+	flashRepSlider5:SetValue(DBM.Options.SpecialWarningFlashCount5)
 	if not DBM:IsPostMidnight() then
 		SpecialWarnSoundDropDown5:SetSelectedValue(DBM.Options.SpecialWarningSound5)
-		check3:SetChecked(DBM.Options.SWarnClassColor)
 		check4:SetChecked(DBM.Options.SWarningAlphabetical)
-		check5:SetChecked(DBM.Options.SWarnNameInNote)
-		color5:SetColorRGB(DBM.Options.SpecialWarningFlashCol5[1], DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3])
-		flashCheck5:SetChecked(DBM.Options.SpecialWarningFlash5)
-		vibrateCheck5:SetChecked(DBM.Options.SpecialWarningVibrate5)
-		flashdurSlider5:SetValue(DBM.Options.SpecialWarningFlashDura5)
-		flashdalphaSlider5:SetValue(DBM.Options.SpecialWarningFlashAlph5)
-		flashRepSlider5:SetValue(DBM.Options.SpecialWarningFlashCount5)
 	end
 	DBM:UpdateSpecialWarningOptions()
 	DBM:RefreshSpellRenames()

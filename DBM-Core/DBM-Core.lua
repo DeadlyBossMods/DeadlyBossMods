@@ -420,12 +420,18 @@ end
 bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
 
 ---@param self DBMModOrDBM
+function DBM:IsRestricted()
+	return private.isRetail or private.isForever
+end
+bossModPrototype.IsRestricted = DBM.IsRestricted
+
+---@param self DBMModOrDBM
 ---@param includeAuras boolean?
 ---@param includeEncounters boolean?
 ---@param includeChat boolean?
 function DBM:MidRestrictionsActive(includeAuras, includeEncounters, includeChat)
 	--Not Midnight (or later), rest of checks don't apply
-	if not private.isRetail then
+	if not private.isRetail and not private.isForever then
 		return false
 	end
 	--includeAura's defaults to off, other two default to true if omited
@@ -436,7 +442,7 @@ function DBM:MidRestrictionsActive(includeAuras, includeEncounters, includeChat)
 		return true
 	end
 	--In active encounter or active M+
-	if includeEncounters and (private.IsEncounterInProgress() or C_ChallengeMode.IsChallengeModeActive()) then
+	if includeEncounters and (private.IsEncounterInProgress() or C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive and C_ChallengeMode.IsChallengeModeActive()) then
 		return true
 	end
 	--Comms and chat messages blocked. might be redundant to above but for good measure
@@ -1260,11 +1266,11 @@ do
 		test:Trace(self, "RegisterEvents", "Regular", ...)
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
-			if not self:IsPostMidnight() or self:IsPostMidnight() and not (restrictedEvents[event] or event:sub(0, 5) == "UNIT_") then
+			if not self:IsRestricted() or self:IsRestricted() and not (restrictedEvents[event] or event:sub(0, 5) == "UNIT_") then
 				-- spell events with special care.
 				if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 6) == "SWING_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "PARTY_KILL" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
 					--CLEU is completely gone in Midnight+
-					if not self:IsPostMidnight() then
+					if not self:IsRestricted() then
 						registerCLEUEvent(self, event)
 					end
 				else
@@ -2090,22 +2096,24 @@ do
 				"START_PLAYER_COUNTDOWN",
 				"CANCEL_PLAYER_COUNTDOWN"
 			)
-			if not DBM:IsPostMidnight() then
+			if not DBM:IsRestricted() then
 				self:RegisterEvents(
 					"COMBAT_LOG_EVENT_UNFILTERED",
 					"UNIT_DIED",
 					"UNIT_DESTROYED"
 				)
 			else
-				self:RegisterEvents(
-					"ENCOUNTER_TIMELINE_EVENT_ADDED",
-					--"ENCOUNTER_TIMELINE_EVENT_REMOVED",
-					"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
-					"ENCOUNTER_TIMELINE_EVENT_COLOR_CHANGED",
-					"ENCOUNTER_WARNING"
-				)
+				if private.isRetail then
+					self:RegisterEvents(
+						"ENCOUNTER_TIMELINE_EVENT_ADDED",
+						--"ENCOUNTER_TIMELINE_EVENT_REMOVED",
+						"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+						"ENCOUNTER_TIMELINE_EVENT_COLOR_CHANGED",
+						"ENCOUNTER_WARNING"
+					)
+				end
 			end
-			if not private.isClassic then -- Retail, WoTLKC, and BCC
+			if not private.isClassic and not private.isForever then -- Retail, WoTLKC, and BCC
 				self:RegisterEvents(
 					"LFG_PROPOSAL_FAILED",
 					"LFG_PROPOSAL_SHOW",
@@ -2128,11 +2136,7 @@ do
 					"CHARACTER_POINTS_CHANGED",
 					"PLAYER_SPECIALIZATION_CHANGED"
 				)
-			elseif private.isClassic then
-				self:RegisterEvents(
-					"CHARACTER_POINTS_CHANGED"
-				)
-			elseif private.isBCC then
+			elseif private.isClassic or private.isForever or private.isBCC then
 				self:RegisterEvents(
 					"CHARACTER_POINTS_CHANGED"
 				)
@@ -2152,7 +2156,7 @@ do
 			self:ZONE_CHANGED_NEW_AREA()
 			playerName = UnitName("player")--In case it's unknown at login, we check it again
 			private:GetModule("CombatDetection"):SetPlayerName(playerName)
-			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha
+			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha (Is this workaround still needed?)
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
 			self.Options.fixBlizzApi = false
 			self.Options.DisableSWSound = false--In event it didn't get restored on combat end due to crash or reload
@@ -2512,7 +2516,7 @@ do
 					end
 				end
 			end
-			if not self:IsPostMidnight() then
+			if not self:IsRestricted() then
 				--There is no icon setting in midnight so no reason to even elect an icon setter
 				if #iconSeter > 0 then
 					tsort(iconSeter, function(a, b) return a > b end)
@@ -2763,7 +2767,7 @@ do
 	function DBM:GetRaidClass(name)
 		if raid[name] then
 			local icon = 0
-			if not self:IsPostMidnight() then
+			if not self:IsRestricted() then
 				icon = raid[name].id and GetRaidTargetIndex(raid[name].id) or 0
 			end
 			return raid[name].class or "UNKNOWN", icon
@@ -2908,7 +2912,7 @@ do
 	---@param name string
 	---@param bossOnly boolean? --Used when you only need to check "boss" unitids.
 	function DBM:GetBossUnitId(name, bossOnly)
-		if self:IsPostMidnight() and IsInInstance() then return end
+		if self:IsRestricted() and IsInInstance() then return end
 		local returnUnitID
 		if not private.isClassic and not private.isBCC then
 			for i = 1, 10 do

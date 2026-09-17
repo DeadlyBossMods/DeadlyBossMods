@@ -285,7 +285,6 @@ L.AnnouncementMidnightNotice		= "Options on this pannel are for warnings Blizzar
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame				= "Special Announcements"
 L.Area_SpecWarn						= "Special Announce Options"
-L.SpecWarn_ClassColor				= "Use class coloring for special announcements"
 L.ShowSWarningsInChat 				= "Show special announcements in chat frame"
 L.SWarnNameInNote					= "Use Type 5 options if a special announce note contains your name"
 L.SpecialWarningIcon				= "Show icons on special announcements"
@@ -305,7 +304,7 @@ L.SpecialWarnHeader1				= "SA 1: Set options for normal priority announcements a
 L.SpecialWarnHeader2				= "SA 2: Set options for normal priority announcements affecting everyone"
 L.SpecialWarnHeader3				= "SA 3: Set options for HIGH priority announcements"
 L.SpecialWarnHeader4				= "SA 4: Set options for HIGH priority run away special announcements"
-L.SpecialWarnHeader5				= "SA 5: Set options for announcements with notes containing your player name"
+L.SpecialWarnHeader5				= "SA 5: Set options for announcements with notes containing your player name (hardcoded mods only)"
 --Post Midnight
 L.SpecialWarnHeaderMedium			= "SA 1: Announcements for mechanics that blizzard classifies as 'medium'"
 L.SpecialWarnHeaderCritical			= "SA 2: Announcements for mechanics that blizzard classifies as 'critical'"

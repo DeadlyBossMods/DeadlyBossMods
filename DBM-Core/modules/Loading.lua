@@ -319,7 +319,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 		if private.LastInstanceType ~= "pvp" and not self:InCombat() and IsInGroup() then--do timer recovery only mod load
 			if not private.isTimerRequestInProgress() then
 				private.setTimerRequestInProgress(true)
-				if self:IsPostMidnight() then--TODO, see if needed, blizzard timeline might already resend added events
+				if self:IsRestricted() then--TODO, see if needed, blizzard timeline might already resend added events
 				--	--Request timeline timers from API
 					self:RecoverBlizzardTimers()
 				end
@@ -372,17 +372,17 @@ do
 
 	--Loading routeens checks for world bosses based on target or mouseover or nameplate.
 	function DBM:UPDATE_MOUSEOVER_UNIT()
-		if self:IsPostMidnight() and IsInInstance() then return end
+		if self:IsRestricted() and IsInInstance() then return end
 		loadModByUnit("mouseover")
 	end
 
 	function DBM:NAME_PLATE_UNIT_ADDED(uId)
-		if self:IsPostMidnight() and IsInInstance() then return end
+		if self:IsRestricted() and IsInInstance() then return end
 		loadModByUnit(uId)
 	end
 
 	function DBM:UNIT_TARGET(uId)
-		if self:IsPostMidnight() and IsInInstance() then return end
+		if self:IsRestricted() and IsInInstance() then return end
 		loadModByUnit(uId .. "target")
 	end
 end

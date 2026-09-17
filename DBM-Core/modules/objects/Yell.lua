@@ -94,7 +94,7 @@ function yellPrototype:Yell(...)
 	end
 	local text = stringUtils.pformat(alteredText or self.text, ...)
 	test:Trace(self.mod, "ShowYell", self, text) -- Trace before actually showing to not run into the IsInInstance() filter while testing
-	if DBM:IsPostMidnight() then
+	if DBM:IsRestricted() then
 		--Post midnight yell restrictions in instances
 		return
 	end
@@ -120,7 +120,7 @@ function yellPrototype:Say(...)
 	end
 	local text = stringUtils.pformat(self.text, ...)
 	test:Trace(self.mod, "ShowYell", self, text) -- Trace before actually showing to not run into the IsInInstance() filter while testing
-	if DBM:IsPostMidnight() then
+	if DBM:IsRestricted() then
 		--Post midnight yell restrictions in instances
 		return
 	end

@@ -357,7 +357,7 @@ do
 	---<br>Uses mod:StartEngageTimers(guid, cid, scanTime) as return function to start timers
 	---@param maxScanTime number?
 	function bossModPrototype:RegisterBossUnitScan(maxScanTime)
-		if DBM:IsPostMidnight() then return end
+		if DBM:IsRestricted() then return end
 		ScanEngagedBossUnits(self, 0, maxScanTime or 3)
 	end
 end

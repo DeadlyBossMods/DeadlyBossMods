@@ -195,7 +195,7 @@ end)
 local UIGroupingOptions = coreoptions:CreateArea(L.UIGroupingOptions)
 UIGroupingOptions:CreateCheckButton(L.AutoExpandSpellGroups2, true, nil, "AutoExpandSpellGroups2")
 UIGroupingOptions:CreateCheckButton(L.ShowWAKeys, true, nil, "ShowWAKeys")
-if not DBM:IsPostMidnight() then
+if not DBM:IsRestricted() then
 --	UIGroupingOptions:CreateCheckButton(L.GroupOptionsExcludePrivateAura, true, nil, "GroupOptionsExcludePA")
 	UIGroupingOptions:CreateCheckButton(L.GroupOptionsExcludeIcon, true, nil, "GroupOptionsExcludeIcon")
 end

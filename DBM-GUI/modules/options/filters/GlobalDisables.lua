@@ -15,7 +15,7 @@ spamSpecAnnounceFeat:CreateCheckButton(L.SpamBlockNoSpecWarnFlash, true, nil, "D
 spamSpecAnnounceFeat:CreateCheckButton(L.SpamBlockNoSpecWarnVibrate, true, nil, "DontDoSpecialWarningVibrate")
 spamSpecAnnounceFeat:CreateCheckButton(L.SpamBlockNoSpecWarnSound, true, nil, "DontPlaySpecialWarningSound")
 
-if DBM:IsPostMidnight() then
+if DBM:IsRestricted() then
 	local spamPrivateAuras = spamPanel:CreateArea(L.Area_Private_Aura_Features)
 	local disableAuraFrames = spamPrivateAuras:CreateCheckButton(L.SpamBlockNoPrivateAuraFrame, true, nil, "DontShowPrivateAuraFrame")
 	disableAuraFrames:SetScript("OnClick", function()
@@ -89,7 +89,7 @@ else
 end
 
 local spamMisc = spamPanel:CreateArea(L.Area_SpamFilter_Misc)
-if not DBM:IsPostMidnight() then
+if not DBM:IsRestricted() then
 	spamMisc:CreateCheckButton(L.SpamBlockNoYells, true, nil, "DontSendYells")
 	spamMisc:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
 	spamMisc:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
@@ -99,7 +99,7 @@ spamMisc:CreateCheckButton(L.SpamBlockNoHudMap, true, nil, "DontShowHudMap2")
 spamMisc:CreateCheckButton(L.SpamBlockNoNoteSync, true, nil, "BlockNoteShare")
 spamMisc:CreateCheckButton(L.SpamBlockAutoGossip, true, nil, "DontAutoGossip")
 
-if not DBM:IsPostMidnight() then
+if not DBM:IsRestricted() then
 	local spamRestoreArea = spamPanel:CreateArea(L.Area_Restore)
 	spamRestoreArea:CreateCheckButton(L.SpamBlockNoIconRestore, true, nil, "DontRestoreIcons")
 	spamRestoreArea:CreateCheckButton(L.SpamBlockNoRangeRestore, true, nil, "DontRestoreRange")

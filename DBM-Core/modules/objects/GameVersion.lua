@@ -11,3 +11,6 @@ private.isBCC = (WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)) o
 private.isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 private.isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATACLYSM_CLASSIC or 14)
 private.isMop = WOW_PROJECT_ID == (WOW_PROJECT_MISTS_CLASSIC or 19)
+private.isForever = private.wowTOC == 16001
+
+--TODO, see if https://wago.tools/db2/GameMode?build=1.60.1.69893 useful

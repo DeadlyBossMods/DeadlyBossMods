@@ -127,7 +127,7 @@ local function CreateOurFrame()
 	button3:SetHighlightTexture(button3:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
 	button3:SetText(SHARE_QUEST_ABBREV)
 	button3:SetScript("OnClick", function(self)
-		if IsInInstance() and DBM:IsPostMidnight() then return end--Block all in instance syncs in Midnight Alpha
+		if IsInInstance() and DBM:IsRestricted() then return end--Block all in instance syncs in Midnight Alpha
 		local syncText = editBox:GetText() or ""
 		if syncText == "" then
 			DBM:AddMsg(L.NOTESHAREERRORBLANK)

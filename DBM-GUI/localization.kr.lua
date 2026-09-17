@@ -283,7 +283,6 @@ L.AnnouncementMidnightNotice		= "이 패널엔 블리자드에서 '하급'으로
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame				= "특수 알림"
 L.Area_SpecWarn						= "특수 알림 설정"
-L.SpecWarn_ClassColor				= "특수 알림에 직업 색상 사용"
 L.ShowSWarningsInChat 				= "대화창에 특수 알림 보기"
 L.SWarnNameInNote					= "특수 알림 메모에 내 이름이 있으면 5번 설정 사용"
 L.SpecialWarningIcon				= "특수 알림에 아이콘 사용"

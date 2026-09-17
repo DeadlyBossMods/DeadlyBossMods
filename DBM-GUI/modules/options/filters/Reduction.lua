@@ -1,4 +1,4 @@
-if DBM:IsPostMidnight() then return end--All options here useless in midnight
+if DBM:IsRestricted() then return end--All options here useless in restricted mode
 local L = DBM_GUI_L
 
 local reducPanel = DBM_GUI.Cat_Filters:CreateNewPanel(L.Panel_ReducedInformation, "option")
