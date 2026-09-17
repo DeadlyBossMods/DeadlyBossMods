@@ -694,7 +694,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 		specRoleTable[183] = specRoleTable[182]--Subtlety Rogue same as Assassination
 		specRoleTable[867] = specRoleTable[871]--Demonology Warlock same as Affliction
 		specRoleTable[865] = specRoleTable[871]--Destruction Warlock same as Affliction
-	else--Vanilla and Wrath and Forever
+	else--Vanilla and Wrath and forever
 		specRoleTable = {
 			["MAGE1"] = {	--Arcane Mage
 				["Dps"] = true,

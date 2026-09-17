@@ -3417,7 +3417,7 @@ do
 	}
 
 	function DBM:SetCurrentSpecInfo()
-		if private.isRetail or private.isMop or private.isForever then
+		if private.isRetail or private.isMop then
 			currentSpecGroup = GetSpecialization()
 			if currentSpecGroup then
 				currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)
@@ -3429,6 +3429,22 @@ do
 				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 			end
 			DBM:Debug("Current specID set to: "..currentSpecID, 2)
+		elseif private.isForever then
+			local highestPointsSpent = 0
+			for i = 1, 3 do
+				local _, _, _, _, _, _, pointsSpent = GetSpecializationInfo(i)
+				if pointsSpent then
+					if pointsSpent > highestPointsSpent then
+						highestPointsSpent = pointsSpent
+						currentSpecGroup = i
+						currentSpecID = playerClass .. tostring(i)--Associate specID with class name and tabnumber (class is used because spec name is shared in some spots like "holy")
+						currentSpecName = currentSpecID
+					end
+				end
+			end
+			--If 0 talents are spent, then just set them to first spec to prevent nil errors
+			--This should only happen for a level 1 player or someone who's in middle of respecing
+			if not currentSpecID then currentSpecID = playerClass .. tostring(1) end
 		elseif private.isCata then
 			currentSpecGroup = GetPrimaryTalentTree()
 			if currentSpecGroup and GetTalentTabInfo(currentSpecGroup) then
@@ -3441,6 +3457,7 @@ do
 		else
 			local numTabs = GetNumTalentTabs()
 			local highestPointsSpent = 0
+			--FIX ME later on era client
 			if MAX_TALENT_TABS then
 				for i = 1, MAX_TALENT_TABS do
 					if i <= numTabs then
@@ -4461,7 +4478,7 @@ end)
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
 function DBM:RoleCheck(ignoreLoot)
 	local role
-	if private.isRetail or private.isForever or private.isMop then
+	if private.isRetail or private.isMop then
 		local spec = GetSpecialization()
 		if not spec then return end
 		role = GetSpecializationRole(spec)
@@ -4831,7 +4848,7 @@ do
 		if (not currentSpecID or currentSpecID == 0) then
 			DBM:SetCurrentSpecInfo()
 		end
-		if not private.isRetail and not private.isMop and not private.isForever then
+		if not private.isRetail and not private.isMop then
 			if private.specRoleTable[currentSpecID]["Tank"] then
 				-- 18 defensive stance, 5487 bear form, 9634 dire bear, 25780 righteous fury
 				if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff("player", 5487, 9634) then
@@ -4858,7 +4875,7 @@ function bossModPrototype:IsDps(uId)
 	if uId then--External unit call.
 		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
 		--This check is VERY problematic in classic if raid doesn't set main tanks correctly cause it'll also flag tanks as dps without question
-		if private.isRetail or private.isMop or private.isForever then
+		if private.isRetail or private.isMop then
 			return not self:issecretunit(uId) and UnitGroupRolesAssigned(uId) == "DAMAGER"
 		end
 		return not self:issecretunit(uId) and not GetPartyAssignment("MAINTANK", uId, true)
@@ -4866,7 +4883,7 @@ function bossModPrototype:IsDps(uId)
 	if (not currentSpecID or currentSpecID == 0) then
 		DBM:SetCurrentSpecInfo()
 	end
-	if not private.isRetail and not private.isMop and not private.isForever then
+	if not private.isRetail and not private.isMop then
 		return private.specRoleTable[currentSpecID]["Dps"]
 	end
 	local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
@@ -4878,7 +4895,7 @@ end
 ---@return boolean
 function DBM:IsHealer(uId)
 	if uId then--External unit call.
-		if not private.isRetail and not private.isMop and not private.isForever then
+		if not private.isRetail and not private.isMop then
 			print("bossModPrototype:IsHealer should not be called in classic, report this message")
 			return false
 		end
@@ -4888,7 +4905,7 @@ function DBM:IsHealer(uId)
 	if (not currentSpecID or currentSpecID == 0) then
 		DBM:SetCurrentSpecInfo()
 	end
-	if not private.isRetail and not private.isMop and not private.isForever then
+	if not private.isRetail and not private.isMop then
 		if private.specRoleTable[currentSpecID]["Healer"] then
 			if playerClass == "DRUID" then
 				-- not in form (moonkin for balance, cat/bear for ferals)

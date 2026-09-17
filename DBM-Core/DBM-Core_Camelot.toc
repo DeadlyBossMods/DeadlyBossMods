@@ -31,12 +31,10 @@ Libs\ChatThrottleLib\ChatThrottleLib.lua
 Libs\LibSharedMedia-3.0\lib.xml
 Libs\LibLatency\LibLatency.xml
 Libs\LibDurability\LibDurability.xml
-Libs\LibKeystone\LibKeystone.lua
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\lib.xml
 Libs\LibDeflate\LibDeflate.lua
 Libs\LibSerialize\lib.xml
-Libs\LibSpecialization\LibSpecialization.lua
 Libs\LibCustomGlow-1.0\LibCustomGlow-1.0.xml
 
 localization.en.lua
@@ -89,18 +87,15 @@ DBM-HudMap.lua
 DBM-Nameplate-Mainline.lua
 
 # GUI Features
-modules\gui\Gear.lua
 modules\gui\Latency.lua
 modules\gui\Durability.lua
-modules\gui\Keystones.lua
-modules\gui\BattleRezTimer.lua
 
 # Modules
 modules\Loading.lua
 modules\Commands.lua
 modules\Hyperlinks.lua
 modules\MinimapButton.lua
-modules\MidnightPopup.lua
+
 modules\Notes.lua
 modules\objects\Sounds.lua
 modules\UpdateReminder.lua
