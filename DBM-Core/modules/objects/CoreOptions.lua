@@ -288,7 +288,6 @@ DBM.DefaultOptions = {
 	SpecialWarningVibrate3 = true,
 	SpecialWarningVibrate4 = true,
 	SpecialWarningVibrate5 = true,
-	SWarnClassColor = true,
 	ArrowPosX = 0,
 	ArrowPosY = -150,
 	ArrowPoint = "TOP",

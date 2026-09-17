@@ -83,7 +83,7 @@ do
 				dummyMod.timer:Start(timer, L.TIMER_PULL)
 			end
 			if not self.Options.DontShowPTText and timer then
-				if not self:IsPostMidnight() then
+				if not self:IsRestricted() then
 					local target = unitId and DBM:GetUnitFullName(unitId.."target")
 					if target and not DBM:GetRaidRoster(target) then
 						dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
@@ -299,7 +299,7 @@ do
 	local function normalizeTimerText(text)
 		text = text:sub(1, 16)
 		--No UnitName in instances at all in midnight
-		if not (DBM:IsPostMidnight() and IsInInstance()) then
+		if not (DBM:IsRestricted() and IsInInstance()) then
 			text = text:gsub("%%t", UnitName("target") or "<no target>")
 		end
 		return text

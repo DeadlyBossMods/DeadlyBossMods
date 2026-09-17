@@ -62,7 +62,7 @@ function module:RegisterCoreEvents()
 	else
 		DBM:RegisterEvents("UNIT_HEALTH_FREQUENT mouseover target focus player targettarget")
 	end
-	if not DBM:IsPostMidnight() then
+	if not DBM:IsRestricted() then
 		DBM:RegisterEvents("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 	end
 end
@@ -376,6 +376,7 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if v.noEEDetection then return end
+			--TODO, see if forever also sends respawn timer themselves
 			if not self:IsPostMidnight() and v.respawnTime and success == 0 then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
 				local timerEnabled = self.Options.ShowRespawn and not self.Options.DontShowEventTimers
 				name = string.split(",", name)
@@ -954,7 +955,7 @@ do
 				--Update Elected Icon Setter
 				self:ElectIconSetter(mod)
 				--call OnCombatStart
-				if not self:IsPostMidnight() then
+				if not self:IsRestricted() then
 					if mod.OnCombatStart then
 						local startEvent = syncedEvent or event
 						local nonZeroDelay = delay or 0
@@ -1187,7 +1188,7 @@ do
 				--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
 				local thisTime = GetTime() - mod.combatInfo.pull
 				local wipeHP
-				if not self:IsPostMidnight() then
+				if not self:IsRestricted() then
 					local hp = mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()
 					wipeHP = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or hp and ("%d%%"):format(hp) or CL.UNKNOWN
 					if mod.vb.phase then

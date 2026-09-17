@@ -1188,7 +1188,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 	if DBM.Options.DontShowInfoFrame and not (event or ""):find("test") then
 		return
 	end
-	if midnightRestrictedEvents[event] and DBM:IsPostMidnight() then
+	if midnightRestrictedEvents[event] and DBM:IsRestricted() then
 		return
 	end
 	prevLines = 0

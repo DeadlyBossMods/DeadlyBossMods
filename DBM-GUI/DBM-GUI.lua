@@ -849,7 +849,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	if isTestView then
 		extraOffset = extraOffset + DBM_GUI:AddModTestOptionsAbove(panel, mod)
 	end
-	if not DBM:IsPostMidnight() then
+	if not DBM:IsRestricted() then
 		local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons" .. mod.localization.general.name, "ARTWORK")
 		iconstat:SetPoint("TOP", panel.frame, 0, -10 - extraOffset)
 		iconstat:SetFontObject(GameFontNormal)
@@ -889,7 +889,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	reset:SetScript("OnClick", function()
 		DBM:LoadModDefaultOption(mod)
 	end)
-	if not isTestView and not DBM:IsPostMidnight() then
+	if not isTestView and not DBM:IsRestricted() then
 		local playground = panel:CreateButton(L.EnterTestMode, 155, 28, nil, GameFontNormalSmall)
 		playground.myheight = 0
 		playground:SetPoint("TOPLEFT", reset, "BOTTOMLEFT", 0, -2)

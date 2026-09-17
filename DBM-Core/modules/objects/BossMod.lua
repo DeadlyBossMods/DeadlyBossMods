@@ -644,7 +644,7 @@ do
 	---@param ignoreTandF boolean? is usually used when interrupt is on a main boss or event that is global to entire raid and should always be alerted regardless of targetting.
 	---@return boolean
 	function bossModPrototype:CheckInterruptFilter(sourceGUID, checkOnlyTandF, checkCooldown, ignoreTandF)
-		if self:IsPostMidnight() then return true end--No filtering during post midnight since CD checks and GUID checks not allowed
+		if self:IsRestricted() then return true end--No filtering during restricted periods since CD checks and GUID checks not allowed
 		-- Check healer spec filter
 		if not checkOnlyTandF and self:IsHealer() and (self.isTrashMod and DBM.Options.FilterTInterruptHealer or not self.isTrashMod and DBM.Options.FilterBInterruptHealer) then
 			return false
@@ -744,7 +744,7 @@ do
 	---Smart alert filtering based on cooldown check for dispel type
 	---@param dispelType DispelType
 	function bossModPrototype:CheckDispelFilter(dispelType)
-		if not DBM.Options.FilterDispel or self:IsPostMidnight() then return true end
+		if not DBM.Options.FilterDispel or self:IsRestricted() then return true end
 		-- Retail - Druid: Nature's Cure (88423), Remove Corruption (2782), Monk: Detox (115450) Monk: Detox (218164), Priest: Purify (527) Priest: Purify Disease (213634), Paladin: Cleanse (4987), Shaman: Cleanse Spirit (51886), Purify Spirit (77130), Mage: Remove Curse (475), Warlock: Singe Magic (89808)
 		-- Classic - Druid: Remove Curse (2782), Priest: Purify (527), Paladin: Cleanse (4987), Mage: Remove Curse (475)
 		--start, duration, enable = GetSpellCooldown
@@ -847,7 +847,7 @@ do
 	---Smart alert filtering based on cooldown check for cc type
 	---@param ccType CCType
 	function bossModPrototype:CheckCCFilter(ccType)
-		if not DBM.Options.FilterCrowdControl or DBM:IsPostMidnight() then return true end
+		if not DBM.Options.FilterCrowdControl or DBM:IsRestricted() then return true end
 		--start, duration, enable = GetSpellCooldown
 		--start & duration == 0 if spell not on cd
 		if UnitIsDeadOrGhost("player") then return false end--if dead, can't crowd control

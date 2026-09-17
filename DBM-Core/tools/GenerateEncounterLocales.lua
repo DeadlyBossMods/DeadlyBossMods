@@ -3,7 +3,7 @@ local lfs = require "lfs"
 local product = "wow_classic_era_ptr"
 local languages = {
 	"enUS", "deDE", "esES", "esMX", "frFR", "koKR", "ptBR", "ruRU", "zhCN", "zhTW",
-	-- "itIT", -- not actually a thing for classic
+	 "itIT", -- not actually a thing for classic (it is in forever though)
 }
 
 local root = ...

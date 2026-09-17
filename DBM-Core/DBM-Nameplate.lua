@@ -1048,7 +1048,7 @@ end
 function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, isPriority, forceDBM)
 
 	-- nameplate icons are disabled;
-	if DBM.Options.DontShowNameplateIcons or DBM:IsPostMidnight() then return end
+	if DBM.Options.DontShowNameplateIcons or DBM:IsRestricted() then return end
 
 	-- ignore player nameplate;
 	if playerGUID == unit or playerName == unit then return end

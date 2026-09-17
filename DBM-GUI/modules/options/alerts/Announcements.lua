@@ -10,7 +10,7 @@ local check2 = raidwarnoptions:CreateCheckButton(L.WarningIconLeft, true, nil, "
 local check3 = raidwarnoptions:CreateCheckButton(L.WarningIconRight, true, nil, "WarningIconRight")
 local check4 = raidwarnoptions:CreateCheckButton(L.WarningIconChat, true, nil, "WarningIconChat")
 local check5, check6
-if not DBM:IsPostMidnight() then
+	if not DBM:IsRestricted() then
 	check5 = raidwarnoptions:CreateCheckButton(L.WarningAlphabetical, true, nil, "WarningAlphabetical")
 end
 check6 = raidwarnoptions:CreateCheckButton(L.ShortTextSpellname, true, nil, "WarningShortText")
@@ -138,7 +138,7 @@ resetbutton:SetScript("OnClick", function()
 	check3:SetChecked(DBM.Options.WarningIconRight)
 	check4:SetChecked(DBM.Options.WarningIconChat)
 	check6:SetChecked(DBM.Options.WarningShortText)
-	if not DBM:IsPostMidnight() then
+	if not DBM:IsRestricted() then
 		check5:SetChecked(DBM.Options.WarningAlphabetical)
 	end
 	FontDropDown:SetSelectedValue(DBM.Options.WarningFont)
@@ -155,7 +155,7 @@ end)
 local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors)
 local color1, color2, color3, color4
 
-if not DBM:IsPostMidnight() then
+if not DBM:IsRestricted() then
 	color1 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_1, function(_, r, g, b)
 		DBM.Options.WarningColors[1].r = r
 		DBM.Options.WarningColors[1].g = g
@@ -166,7 +166,7 @@ if not DBM:IsPostMidnight() then
 end
 
 --Only Color 2 is used in Midnight for now
-color2 = raidwarncolors:CreateColorSelect(DBM:IsPostMidnight() and L.RaidWarnColor or L.RaidWarnColor_2, function(_, r, g, b)
+color2 = raidwarncolors:CreateColorSelect(DBM:IsRestricted() and L.RaidWarnColor or L.RaidWarnColor_2, function(_, r, g, b)
 	DBM.Options.WarningColors[2].r = r
 	DBM.Options.WarningColors[2].g = g
 	DBM.Options.WarningColors[2].b = b
@@ -174,7 +174,7 @@ end, function(self)
 	self:SetColorRGB(DBM.DefaultOptions.WarningColors[2].r, DBM.DefaultOptions.WarningColors[2].g, DBM.DefaultOptions.WarningColors[2].b, true)
 end)
 
-if not DBM:IsPostMidnight() then
+if not DBM:IsRestricted() then
 	color3 = raidwarncolors:CreateColorSelect(L.RaidWarnColor_3, function(_, r, g, b)
 		DBM.Options.WarningColors[3].r = r
 		DBM.Options.WarningColors[3].g = g
@@ -195,7 +195,7 @@ if not DBM:IsPostMidnight() then
 	color4.myheight = 0
 end
 
-if DBM:IsPostMidnight() then
+if DBM:IsRestricted() then
 	color2:SetPoint("TOPLEFT", 20, -10)
 	color2:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
 else
