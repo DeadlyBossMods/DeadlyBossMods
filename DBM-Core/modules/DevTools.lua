@@ -337,7 +337,6 @@ do
 		"arena1", "arena2", "arena3", "arena4", "arena5",
 	}
 	function module:UNIT_TARGETABLE_CHANGED(uId)
-		if DBM.Options.DebugLevel < 1 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
 		DBM:Debug("|c00D8B4FEUTC|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." IsFriend:"..tostring(UnitIsFriend("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 3, nil, nil, true, true)
@@ -351,7 +350,6 @@ do
 	end
 
 	function module:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		if DBM.Options.DebugLevel < 1 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
 		local hasBossUnits = false
