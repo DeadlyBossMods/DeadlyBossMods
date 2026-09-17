@@ -214,10 +214,10 @@ L.OUTDATEDRLT						= "AVVISO: DBM-RaidLeadTools rompe " .. L.DBM .. ". DBM-RaidL
 L.VICTORYSOUND						= "AVVISO: DBM-VictorySound non è compatibile con questa versione di " .. L.DBM .. ". Deve essere rimosso prima che " .. L.DBM .. " possa procedere, per evitare conflitti."
 L.DPMCORE							= "AVVISO: Deadly PvP mods è discontinuato e incompatibile con questa versione di "..L.DBM..". Deve essere rimosso per utilizzare "..L.DBM..", per evitare conflitti."
 L.DBMLDB							= "AVVISO: DBM-LDB è ora incluso in DBM-Core. Anche se non dannoso, è consigliabile rimuovere 'DBM-LDB' dalla cartella addon"
-L.DBMLOOTREMINDER					= "AVVISO: è installato il mod di terze parti DBM-LootReminder. Questo addon non è più compatibile con il client retail di WoW e farà sì che " .. L.DBM .. " si rompa e non possa inviare timer di pull. Si consiglia di disinstallare questo addon"
+L.DBMLOOTREMINDER					= "AVVISO: è installato il mod di terze parti DBM-LootReminder. Questo addon non è più compatibile con il client retail di WoW e farà sì che " .. L.DBM .. " si rompa e non possa inviare temporizzatore di pull. Si consiglia di disinstallare questo addon"
 L.UPDATE_REQUIRES_RELAUNCH			= "AVVISO: Questo aggiornamento "..L.DBM.." non funzionerà correttamente a meno di un riavvio del gioco. Questo aggiornamento contiene nuovi file o modifiche al file .toc che non possono essere caricate con ReloadUI. Potresti avere malfunzionamenti o errori se continui senza riavviare."
-L.OUT_OF_DATE_NAG					= "La versione di "..L.DEADLY_BOSS_MODS.." è obsoleta. Ti consigliamo di aggiornarla per questo combattimento, così da non perdere avvisi, timer o messaggi importanti da comunicare al resto dell'incursione."
-L.HARDCODED_FALLBACK				= L.DBM .. " ha rilevato un risultato inatteso in una mod codificata internamente. " .. L.DBM .. " userà timer e avvisi Blizzard per questo scontro."
+L.OUT_OF_DATE_NAG					= "La versione di "..L.DEADLY_BOSS_MODS.." è obsoleta. Ti consigliamo di aggiornarla per questo combattimento, così da non perdere avvisi, temporizzatore o messaggi importanti da comunicare al resto dell'incursione."
+L.HARDCODED_FALLBACK				= L.DBM .. " ha rilevato un risultato inatteso in una mod codificata internamente. " .. L.DBM .. " userà temporizzatore e avvisi Blizzard per questo scontro."
 L.DBM_INSTALL_REMINDER_HEADER		= "Rilevata un'installazione DBM incompleta!"
 L.DBM_INSTALL_REMINDER_EXPLAIN		= "Benvenuto in %s. I mod di DBM per i boss di questa zona sono inclusi nel %s che non hai installato. DBM non mostrerà temporizzatori o avvisi in questa zona finché non installerai il %s!"
 L.DBM_INSTALL_REMINDER_DISABLE		= "Disabilita tutti gli avvisi e i temporizzatori di DBM in questa zona." -- Used when we believe it's a user error that the mod isn't installed (i.e., current raids)
@@ -230,14 +230,14 @@ L.DBM_INSTALL_PACKAGE_WRATH			= "Pacchetto Wrath"
 L.DBM_INSTALL_PACKAGE_CATA			= "Pacchetto Cataclysm"
 L.DBM_INSTALL_PACKAGE_MOP			= "Pacchetto Mist of Pandaria"
 L.DBM_INSTALL_PACKAGE_DUNGEON		= "Pacchetto Spedizioni, Delves, Sfide ed Eventi"
-L.PLATER_NP_AURAS_MSG				= L.DBM .. " include una funzionalità avanzata per mostrare i timer di ricarica dei nemici usando icone sulle barre dei nomi. Questa è attiva per impostazione predefinita per la maggior parte degli utenti, ma per gli utenti di Plater è disattivata di default nelle opzioni di Plater a meno che non la abiliti. Per ottenere il massimo da " .. L.DBM .. " (e Plater) si consiglia di abilitare questa funzionalità in Plater nella sezione \'Buff Special\'. Se non vuoi più vedere questo messaggio, puoi anche disabilitare completamente l\'opzione \'Icone di ricarica sulle barre dei nomi\' nel pannello di disabilitazione globale o in quello delle barre dei nomi di DBM"
+L.PLATER_NP_AURAS_MSG				= L.DBM .. " include una funzionalità avanzata per mostrare i temporizzatore di ricarica dei nemici usando icone sulle barre dei nomi. Questa è attiva per impostazione predefinita per la maggior parte degli utenti, ma per gli utenti di Plater è disattivata di default nelle opzioni di Plater a meno che non la abiliti. Per ottenere il massimo da " .. L.DBM .. " (e Plater) si consiglia di abilitare questa funzionalità in Plater nella sezione \'Buff Special\'. Se non vuoi più vedere questo messaggio, puoi anche disabilitare completamente l\'opzione \'Icone di ricarica sulle barre dei nomi\' nel pannello di disabilitazione globale o in quello delle barre dei nomi di DBM"
 
 L.MOVABLE_BAR		= "Trascinami!"
 L.MOVABLE_FRAMES	= "Riquadri Trascinabili"
 
-L.PIZZA_SYNC_INFO	= "|Hplayer:%1$s|h[%1$s]|h ti ha mandato un Timer "..L.DBM..": '%2$s'\n|Haddon:DBM:cancel:%2$s:nil|h|cff3588ff[Cancella questo Timer]|r|h |Haddon:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignora timer da %1$s]|r|h"
+L.PIZZA_SYNC_INFO	= "|Hplayer:%1$s|h[%1$s]|h ti ha mandato un temporizzatore "..L.DBM..": '%2$s'\n|Haddon:DBM:cancel:%2$s:nil|h|cff3588ff[Cancella questo temporizzatore]|r|h |Haddon:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignora temporizzatore da %1$s]|r|h"
 --L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h ti ha inviato un temporizzatore "..L.DBM..""
-L.PIZZA_CONFIRM_IGNORE	= "Sei sicuro di voler ignorare i Timer DMB da %s per questa sessione?"
+L.PIZZA_CONFIRM_IGNORE	= "Sei sicuro di voler ignorare i temporizzatore DMB da %s per questa sessione?"
 L.PIZZA_ERROR_USAGE		= "Uso: /dbm [broadcast] timer <time> <text>"
 
 L.MINIMAP_TOOLTIP_HEADER	= L.DEADLY_BOSS_MODS -- (Identico all'Inglese)
@@ -285,14 +285,14 @@ L.LFG_INVITE	= "Invito LFG"
 L.SLASHCMD_HELP	= {--AI translated (check me)
 	"Comandi slash disponibili:",
 	"-----------------",
-	"/dbm unlock: Mostra un timer della barra di stato mobile (alias: move).",
-	"/dbm pull <sec>: Invia un timer di ingaggio di <sec> secondi all'incursione (richiede la promozione. alias: pull).",
-	"/dbm break <min>: Invia un timer di pausa di <min> minuti all'incursione (richiede la promozione. alias: break).",
-	"/dbm timer: Avvia un timer personalizzato di " .. L.DBM .. ", vedere '/dbm timer' per dettagli.",
+	"/dbm unlock: Mostra un temporizzatore della barra di stato mobile (alias: move).",
+	"/dbm pull <sec>: Invia un temporizzatore di ingaggio di <sec> secondi all'incursione (richiede la promozione. alias: pull).",
+	"/dbm break <min>: Invia un temporizzatore di pausa di <min> minuti all'incursione (richiede la promozione. alias: break).",
+	"/dbm timer: Avvia un temporizzatore personalizzato di " .. L.DBM .. ", vedere '/dbm timer' per dettagli.",
 	"/dbm key: Esegue controlli delle chiavi M+ e delle valutazioni su party/gilda e scorciatoie per i teletrasporti delle dungeon. (alias: key, keys, keystone)",
 	"/dbm lag: Esegue un controllo della latenza per tutta l'incursione.",
 	"/dbm durability: Esegue un controllo della durabilità per tutta l'incursione.",
-	"/dbm brez: Mostra il riquadro del timer di resurrezione da combattimento per il posizionamento.",--AI translated (check me)
+	"/dbm brez: Mostra il riquadro del temporizzatore di resurrezione da combattimento per il posizionamento.",--AI translated (check me)
 	"/dbm help2: Mostra comandi slash aggiuntivi"
 }
 --Less used slash commands
@@ -317,13 +317,13 @@ L.TIMER_USAGE			= {
 	"/dbm timer <sec> <testo>: Avvia un temporizzatore di <sec> secondi con il testo <testo>.",
 	"/dbm ltimer <sec> <testo>: Avvia un temporizzatore a ciclo continuo fino ad annullamento.",
 	"(Il prefisso 'Broadcast' di qualunque temporizzatore lo condivide se capogruppo/assistente)",
-	"/dbm timer endloop: Termina il ciclo di un ltimer."
+	"/dbm timer endloop: Termina il ciclo di un temporizzatore."
 }
 
 L.ERROR_NO_PERMISSION			= "Non hai i permessi per eseguire questo comando."
-L.ERROR_NO_PERMISSION_COMBAT	= "Il timer Pull/Pausa non può essere inviato mentre un incontro è in corso"
-L.PULL_TIME_TOO_SHORT			= "Il timer di pull deve durare più di 3 secondi."
-L.PULL_TIME_TOO_LONG			= "Pull timer cannot be longer than 60 seconds"
+L.ERROR_NO_PERMISSION_COMBAT	= "Il temporizzatore Pull/Pausa non può essere inviato mentre un incontro è in corso"
+L.PULL_TIME_TOO_SHORT			= "Il temporizzatore di pull deve durare più di 3 secondi."
+L.PULL_TIME_TOO_LONG			= "Pull temporizzatore cannot be longer than 60 seconds"
 
 L.BREAK_USAGE			= "Il temporizzatore della pausa non può durare più di 60 minuti. Assicurati di aver inserito il tempo in minuti e non in secondi."
 L.BREAK_START			= "Inizia la pausa -- hai %s! (Iniziata da %s)"
