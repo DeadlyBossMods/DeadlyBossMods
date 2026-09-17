@@ -3,7 +3,7 @@ local private = select(2, ...)
 
 private.wowTOC = (select(4, GetBuildInfo()))
 private.testBuild = IsTestBuild() or IsBetaBuild()
-private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1) and private.wowTOC >= 120000
 private.isClassic = (WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)) and private.wowTOC < 20000
 private.isHardcoreServer = C_GameRules and C_GameRules.IsHardcoreActive and C_GameRules.IsHardcoreActive()
 private.currentSeason = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason()

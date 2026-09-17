@@ -2156,7 +2156,6 @@ do
 			self:ZONE_CHANGED_NEW_AREA()
 			playerName = UnitName("player")--In case it's unknown at login, we check it again
 			private:GetModule("CombatDetection"):SetPlayerName(playerName)
-			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha (Is this workaround still needed?)
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
 			self.Options.fixBlizzApi = false
 			self.Options.DisableSWSound = false--In event it didn't get restored on combat end due to crash or reload
@@ -3418,7 +3417,7 @@ do
 	}
 
 	function DBM:SetCurrentSpecInfo()
-		if private.isRetail or private.isMop then
+		if private.isRetail or private.isMop or private.isForever then
 			currentSpecGroup = GetSpecialization()
 			if currentSpecGroup then
 				currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)
@@ -4462,7 +4461,7 @@ end)
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
 function DBM:RoleCheck(ignoreLoot)
 	local role
-	if private.isRetail then
+	if private.isRetail or private.isForever or private.isMop then
 		local spec = GetSpecialization()
 		if not spec then return end
 		role = GetSpecializationRole(spec)
@@ -4832,7 +4831,7 @@ do
 		if (not currentSpecID or currentSpecID == 0) then
 			DBM:SetCurrentSpecInfo()
 		end
-		if not private.isRetail and not private.isMop then
+		if not private.isRetail and not private.isMop and not private.isForever then
 			if private.specRoleTable[currentSpecID]["Tank"] then
 				-- 18 defensive stance, 5487 bear form, 9634 dire bear, 25780 righteous fury
 				if playerIsTank or GetShapeshiftFormID() == 18 or DBM:UnitBuff("player", 5487, 9634) then
@@ -4859,7 +4858,7 @@ function bossModPrototype:IsDps(uId)
 	if uId then--External unit call.
 		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
 		--This check is VERY problematic in classic if raid doesn't set main tanks correctly cause it'll also flag tanks as dps without question
-		if private.isRetail or private.isMop then
+		if private.isRetail or private.isMop or private.isForever then
 			return not self:issecretunit(uId) and UnitGroupRolesAssigned(uId) == "DAMAGER"
 		end
 		return not self:issecretunit(uId) and not GetPartyAssignment("MAINTANK", uId, true)
@@ -4867,7 +4866,7 @@ function bossModPrototype:IsDps(uId)
 	if (not currentSpecID or currentSpecID == 0) then
 		DBM:SetCurrentSpecInfo()
 	end
-	if not private.isRetail and not private.isMop then
+	if not private.isRetail and not private.isMop and not private.isForever then
 		return private.specRoleTable[currentSpecID]["Dps"]
 	end
 	local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
@@ -4879,7 +4878,7 @@ end
 ---@return boolean
 function DBM:IsHealer(uId)
 	if uId then--External unit call.
-		if not private.isRetail and not private.isMop then
+		if not private.isRetail and not private.isMop and not private.isForever then
 			print("bossModPrototype:IsHealer should not be called in classic, report this message")
 			return false
 		end
@@ -4889,7 +4888,7 @@ function DBM:IsHealer(uId)
 	if (not currentSpecID or currentSpecID == 0) then
 		DBM:SetCurrentSpecInfo()
 	end
-	if not private.isRetail and not private.isMop then
+	if not private.isRetail and not private.isMop and not private.isForever then
 		if private.specRoleTable[currentSpecID]["Healer"] then
 			if playerClass == "DRUID" then
 				-- not in form (moonkin for balance, cat/bear for ferals)
