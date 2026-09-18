@@ -1,5 +1,5 @@
-## Interface: 16001
-## X-Min-Interface: 16001
+## Interface: 11509, 16001, 20506, 30405, 38002, 40402, 50504, 120100
+## X-Min-Interface: 11503
 ## Category: DBM
 ## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Main Core|r
@@ -28,15 +28,17 @@
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 Libs\ChatThrottleLib\ChatThrottleLib.lua
+Libs\LibChatAnims\LibChatAnims.xml [AllowLoadGameType standard, classic]
 Libs\LibSharedMedia-3.0\lib.xml
 Libs\LibLatency\LibLatency.xml
 Libs\LibDurability\LibDurability.xml
-Libs\LibKeystone\LibKeystone.lua
+Libs\LibKeystone\LibKeystone.lua [AllowLoadGameType standard]
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\lib.xml
 Libs\LibDeflate\LibDeflate.lua
 Libs\LibSerialize\lib.xml
-Libs\LibSpecialization\LibSpecialization.lua
+Libs\LibSpecialization\LibSpecialization.lua [AllowLoadGameType standard, classic]
+Libs\LibDropDownMenu\LibDropDownMenu.xml [AllowLoadGameType tbc, wrath]
 Libs\LibCustomGlow-1.0\LibCustomGlow-1.0.xml
 
 localization.en.lua
@@ -62,9 +64,9 @@ commonlocal.kr.lua
 commonlocal.ru.lua
 
 # Pre-core modules
-modules\objects\GameVersion.lua
 modules\objects\PrototypeRegistry.lua
 modules\objects\Testing.lua
+modules\objects\GameVersion.lua
 modules\objects\StringUtils.lua
 modules\objects\TableUtils.lua
 modules\objects\StandardFont.lua
@@ -86,21 +88,22 @@ DBM-Flash.lua
 DBM-RangeCheck.lua
 DBM-InfoFrame.lua
 DBM-HudMap.lua
-DBM-Nameplate-Mainline.lua
+DBM-Nameplate.lua [AllowLoadGameType classic]
+DBM-Nameplate-Mainline.lua [AllowLoadGameType mainline]
 
 # GUI Features
-modules\gui\Gear.lua
+modules\gui\Gear.lua [AllowLoadGameType standard]
 modules\gui\Latency.lua
 modules\gui\Durability.lua
-modules\gui\Keystones.lua
-modules\gui\BattleRezTimer.lua
+modules\gui\Keystones.lua [AllowLoadGameType standard]
+modules\gui\BattleRezTimer.lua [AllowLoadGameType standard]
 
 # Modules
 modules\Loading.lua
 modules\Commands.lua
 modules\Hyperlinks.lua
 modules\MinimapButton.lua
-modules\MidnightPopup.lua
+modules\MidnightPopup.lua [AllowLoadGameType standard]
 modules\Notes.lua
 modules\objects\Sounds.lua
 modules\UpdateReminder.lua
@@ -121,5 +124,5 @@ modules\objects\Announce.lua
 modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
 modules\objects\Sorting.lua
-modules\AuraTracking.lua
-modules\EncounterEvents.lua
+modules\AuraTracking.lua [AllowLoadGameType mainline]
+modules\EncounterEvents.lua [AllowLoadGameType mainline]

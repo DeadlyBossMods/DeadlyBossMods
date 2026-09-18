@@ -2156,7 +2156,6 @@ do
 			self:ZONE_CHANGED_NEW_AREA()
 			playerName = UnitName("player")--In case it's unknown at login, we check it again
 			private:GetModule("CombatDetection"):SetPlayerName(playerName)
-			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha (Is this workaround still needed?)
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
 			self.Options.fixBlizzApi = false
 			self.Options.DisableSWSound = false--In event it didn't get restored on combat end due to crash or reload
@@ -3430,6 +3429,22 @@ do
 				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 			end
 			DBM:Debug("Current specID set to: "..currentSpecID, 2)
+		elseif private.isForever then
+			local highestPointsSpent = 0
+			for i = 1, 3 do
+				local _, _, _, _, _, _, pointsSpent = GetSpecializationInfo(i)
+				if pointsSpent then
+					if pointsSpent > highestPointsSpent then
+						highestPointsSpent = pointsSpent
+						currentSpecGroup = i
+						currentSpecID = playerClass .. tostring(i)--Associate specID with class name and tabnumber (class is used because spec name is shared in some spots like "holy")
+						currentSpecName = currentSpecID
+					end
+				end
+			end
+			--If 0 talents are spent, then just set them to first spec to prevent nil errors
+			--This should only happen for a level 1 player or someone who's in middle of respecing
+			if not currentSpecID then currentSpecID = playerClass .. tostring(1) end
 		elseif private.isCata then
 			currentSpecGroup = GetPrimaryTalentTree()
 			if currentSpecGroup and GetTalentTabInfo(currentSpecGroup) then
@@ -3442,6 +3457,7 @@ do
 		else
 			local numTabs = GetNumTalentTabs()
 			local highestPointsSpent = 0
+			--FIX ME later on era client
 			if MAX_TALENT_TABS then
 				for i = 1, MAX_TALENT_TABS do
 					if i <= numTabs then
@@ -4462,7 +4478,7 @@ end)
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
 function DBM:RoleCheck(ignoreLoot)
 	local role
-	if private.isRetail then
+	if private.isRetail or private.isMop then
 		local spec = GetSpecialization()
 		if not spec then return end
 		role = GetSpecializationRole(spec)

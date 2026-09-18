@@ -1,4 +1,4 @@
-## Interface: 50504
+## Interface: 11509, 16001, 20506, 30405, 38002, 40402, 50504, 120100
 ## Category: DBM
 ## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Options GUI|r
@@ -61,6 +61,7 @@ modules\options\general\Profile.lua
 modules\options\alerts\Alerts.lua
 modules\options\alerts\Announcements.lua
 modules\options\alerts\SpecialAnnouncements.lua
+modules\options\alerts\AurasOptions.lua [AllowLoadGameType standard]
 modules\options\alerts\ChatframeMessages.lua
 modules\options\alerts\SpokenAlerts.lua
 modules\options\alerts\EventSounds.lua
@@ -80,7 +81,7 @@ modules\options\filters\Privacy.lua
 
 modules\options\frames\Frames.lua
 modules\options\frames\InfoFrame.lua
-modules\options\frames\Nameplate.lua
+modules\options\frames\Nameplate.lua [AllowLoadGameType classic]
 
 modules\options\dev\Dev.lua
 
