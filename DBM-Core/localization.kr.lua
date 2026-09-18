@@ -278,6 +278,17 @@ L.SLASHCMD_HELP							= {
 	"/dbm brez: 전투 부활 타이머 창을 표시해서 위치를 조정합니다.",
 	"/dbm help2: 추가 슬래시 명령어를 표시합니다"
 }
+L.SLASHCMD_HELP_CLASSIC							= {
+	"사용 가능한 슬래시 명령어:",
+	"-----------------",
+	"/dbm unlock: 위치를 옮길 수 있는 상태 바 타이머를 표시합니다. (다른 명령어: move)",
+	"/dbm pull <초>: <초> 만큼의 풀링 타이머를 공격대에 전송합니다. (승급 권한이 필요함. 다른 명령어: pull)",
+	"/dbm break <분>: <분> 만큼의 휴식 타이머를 공격대에 전송합니다. (승급 권한이 필요함. 다른 명령어: break)",
+	"/dbm timer: 사용자 정의 " .. L.DBM .. " 타이머를 시작합니다. 자세한 내용은 '/dbm timer'를 참조하세요.",
+	"/dbm lag: 공격대 전원의 지연 시간을 확인합니다.",
+	"/dbm durability: 공격대 전원의 내구도를 확인합니다.",
+	"/dbm help2: 추가 슬래시 명령어를 표시합니다"
+}
 --Less used slash commands
 L.SLASHCMD_HELP2						= {
 	"사용 가능한 슬래시 명령어:",
