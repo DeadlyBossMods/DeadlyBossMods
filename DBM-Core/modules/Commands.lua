@@ -127,8 +127,14 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			DBM:AddMsg(v)
 		end
 	elseif cmd == "help" then
-		for _, v in ipairs(L.SLASHCMD_HELP) do
-			DBM:AddMsg(v)
+		if private.isRetail then
+			for _, v in ipairs(L.SLASHCMD_HELP) do
+				DBM:AddMsg(v)
+			end
+		else
+			for _, v in ipairs(L.SLASHCMD_HELP_CLASSIC) do
+				DBM:AddMsg(v)
+			end
 		end
 	elseif cmd:sub(1, 13) == "timer endloop" then
 		DBM:CreatePizzaTimer(0, "", nil, nil, nil, true)

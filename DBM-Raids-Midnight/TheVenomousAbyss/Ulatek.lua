@@ -15,7 +15,8 @@ mod:RegisterCombat("combat")
 --TODO, cull unused timers and warnings, like Fury Unleashed?
 --TODO, which Gore Rattle id does TL use, does it use both? https://www.wowhead.com/spell=1304527/gore-rattle
 --TODO, same with https://www.wowhead.com/spell=1311037/mothers-wrath and https://www.wowhead.com/spell=1287265/spectral-coils as gore rattle
---DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
+DBM:RegisterAltSpellName(1298367, DBM_COMMON_L.TANKBUSTER)--Mother's Wrath --> Tank Buster
+DBM:RegisterAltSpellName(1300530, DBM_COMMON_L.GROUPSOAKS)--Spectral Coils --> Group Soaks
 --local warnSerpentsBite					= mod:NewCountAnnounce(1295905, 2)--Hardcode only
 
 local specWarnMothersWrath				= mod:NewSpecialWarningDefensive(1298367, nil, nil, nil, 1, 2, nil, nil, "defensive")
@@ -78,6 +79,7 @@ local lfrStage3FiftyCount = 0--LFR stage 3: Circling Prey then Submerge share th
 local heroicStage1FiftyTwoCount = 0--Heroic: Mephitic Thrash then Caustic Waves share the exact 52s opening slot
 local heroicStage3SixtyCount = 0--Heroic stage 3: Call of the Serpent then Submerge share the exact 60s slot
 local stage2Pending = false--Opening Rage completion arms the boss1 targetability-loss transition into stage 2
+local mephiticThrashEvents = {}
 local stage3ScheduledEvents = {}
 local lfrStage3Batch = {}
 local lfrStage3BatchScheduled = false
@@ -183,6 +185,7 @@ function mod:OnLimitedCombatStart()
 	heroicStage1FiftyTwoCount = 0
 	heroicStage3SixtyCount = 0
 	stage2Pending = false
+	mephiticThrashEvents = {}
 	resetStage3ScheduledEvents(self)
 	resetLFRStage3Batch(self)
 	resetHeroicStage3Batch(self)
@@ -225,6 +228,7 @@ function mod:OnCombatEnd()
 	heroicStage1FiftyTwoCount = 0
 	heroicStage3SixtyCount = 0
 	stage2Pending = false
+	mephiticThrashEvents = {}
 	resetStage3ScheduledEvents(self)
 	resetLFRStage3Batch(self)
 	resetHeroicStage3Batch(self)
@@ -575,12 +579,14 @@ do
 			elseif timer == 20 or timer == 95 then
 				timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
 			elseif timer == 35 then
+				mephiticThrashEvents[eventID] = {started = GetTime(), duration = timerExact}
 				timerMephiticThrashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mephiticThrash", "mephiticThrashCount"))
 			elseif timer == 42 then
 				timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
 			elseif timer == 52 then
 				heroicStage1FiftyTwoCount = heroicStage1FiftyTwoCount + 1
 				if heroicStage1FiftyTwoCount == 1 then
+					mephiticThrashEvents[eventID] = {started = GetTime(), duration = timerExact}
 					timerMephiticThrashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mephiticThrash", "mephiticThrashCount"))
 				elseif heroicStage1FiftyTwoCount == 2 then
 					timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
@@ -659,6 +665,7 @@ do
 				timerGoreRattleCD:TLStart(timerExact, eventID, 1)
 				handled = true
 			elseif timer == 35 or timer == 41 then
+				mephiticThrashEvents[eventID] = {started = GetTime(), duration = timerExact}
 				timerMephiticThrashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mephiticThrash", "mephiticThrashCount"))
 				handled = true
 			elseif timer == 62 then
@@ -705,6 +712,8 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
+		local mephiticThrashEvent = mephiticThrashEvents[eventID]
+		mephiticThrashEvents[eventID] = nil
 		local batchTimer = self:TLBatchUntrack(eventID)
 		if stage3ScheduledEvents[eventID] then
 			if eventState == 3 and batchTimer then--Superseded duplicate stage-3 event
@@ -713,7 +722,7 @@ do
 				self:TLCountCancel(eventID)
 			end
 			return--Stage 3 cancel states are delayed or inaccurate; finish from the raw timeline duration instead
-		elseif eventState == 2 or (self:GetStage() == 3 and eventState == 3) then
+		elseif eventState == 2 or (self:GetStage() == 3 and eventState == 3) or (eventState == 3 and mephiticThrashEvent and math.abs((GetTime() - mephiticThrashEvent.started) - mephiticThrashEvent.duration) <= 1) then
 			finishTimelineEvent(self, eventID)
 		elseif eventState == 3 then
 			self:TLCountCancel(eventID)

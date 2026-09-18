@@ -288,6 +288,17 @@ L.SLASHCMD_HELP							= {
 	"/dbm brez: Shows the battle resurrection timer frame for positioning.",
 	"/dbm help2: Shows additional slash commands"
 }
+L.SLASHCMD_HELP_CLASSIC							= {
+	"Available slash commands:",
+	"-----------------",
+	"/dbm unlock: Shows a movable status bar timer (alias: move).",
+	"/dbm pull <sec>: Sends a pull timer for <sec> seconds to the raid (requires promoted. alias: pull).",
+	"/dbm break <min>: Sends a break timer for <min> minutes to the raid (requires promoted. alias: break).",
+	"/dbm timer: Starts a custom " .. L.DBM .. " timer, see '/dbm timer' for details.",
+	"/dbm lag: Performs a raid-wide latency check.",
+	"/dbm durability: Performs a raid-wide durability check.",
+	"/dbm help2: Shows additional slash commands"
+}
 --Less used slash commands
 L.SLASHCMD_HELP2						= {
 	"Available slash commands:",
