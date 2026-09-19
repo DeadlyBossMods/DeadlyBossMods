@@ -1,7 +1,7 @@
 local _, private = ...
 
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
+local isRetail = DBM:IsRetail()
+local isClassic = DBM:IsVanillaEra()
 
 local L		= DBM_GUI_L
 local CL	= DBM_COMMON_L
@@ -568,7 +568,7 @@ do
 		tinsert(sounds, { text = "Milhouse: Light You Up", value = 555337, sound = true })
 		tinsert(sounds, { text = "Void Reaver: Marked", value = 563787, sound = true })
 		tinsert(sounds, { text = "Yogg Saron: Laugh", value = 564859, sound = true })
-		if DBM:IsPostMidnight() then
+		if DBM:IsRetail() then
 			tinsert(sounds, { text = "Blizzard: Low", value = 7670699, sound = true })
 			tinsert(sounds, { text = "Blizzard: Medium", value = 7670701, sound = true })
 			tinsert(sounds, { text = "Blizzard: Critical", value = 7670697, sound = true })

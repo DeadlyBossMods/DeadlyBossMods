@@ -11,8 +11,8 @@ DBM.InfoFrame = infoFrame
 -------------------
 -- Local Globals --
 -------------------
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
+local isRetail = DBM:IsRetail()
+local isWrath = DBM:IsWrath()
 
 local DDM, UIDropDownMenu_AddButton, UIDropDownMenu_Initialize, ToggleDropDownMenu
 if isWrath then

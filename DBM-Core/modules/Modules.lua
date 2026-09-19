@@ -1,7 +1,7 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isRetail = private.isRetail
 
 local tinsert, twipe = table.insert, table.wipe
 

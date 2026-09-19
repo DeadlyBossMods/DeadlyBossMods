@@ -1,8 +1,8 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isMop = WOW_PROJECT_ID == (WOW_PROJECT_MISTS_CLASSIC or 19)
+local isRetail = DBM:IsRetail()
+local isMop = DBM:IsMop()
 
 ---@class DBMGUI
 local DBM_GUI = DBM_GUI

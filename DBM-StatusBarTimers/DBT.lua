@@ -1721,7 +1721,7 @@ do
 	local tostring, mfloor = tostring, math.floor
 	local ChatEdit_GetActiveWindow, SendChatMessage, IsInGroup, IsInRaid = ChatEdit_GetActiveWindow, C_ChatInfo.SendChatMessage or SendChatMessage, IsInGroup, IsInRaid
 	function barPrototype:Announce()
-		if DBM:IsPostMidnight() then return end--Don't announce if it's past midnight, secrets can't be shared
+		if DBM:IsRestricted() then return end--Don't announce if it's past midnight, secrets can't be shared
 		local msg
 		if DBT.announceHook then
 			msg = DBT.announceHook(self)
@@ -1731,7 +1731,7 @@ do
 		if chatWindow then
 			chatWindow:Insert(msg)
 		else
-			if not DBM:IsPostMidnight() then
+			if not DBM:IsRestricted() then
 				SendChatMessage(msg, (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY")
 			end
 		end

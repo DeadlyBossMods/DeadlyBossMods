@@ -377,53 +377,87 @@ function DBM:IsSeasonal(season)
 end
 
 
---Catch alls to basically allow encounter mods to use pre retail changes within mods
+---Catch alls to basically allow encounter mods to use pre retail changes within mods
+---Includes Vanilla, The Burning Crusade, Wrath of the Lich King, Cataclysm, Mists of Pandaria
 ---@param self DBMModOrDBM
 function DBM:IsClassic()
 	return not private.isRetail
 end
 bossModPrototype.IsClassic = DBM.IsClassic
 
+---Includes just the standard retail version of game
 ---@param self DBMModOrDBM
 function DBM:IsRetail()
 	return private.isRetail
 end
 bossModPrototype.IsRetail = DBM.IsRetail
 
+---Check if the game version is Vanilla Based
+---True for both Vanilla and Vanilla Forever
+---@param self DBMModOrDBM
+function DBM:IsVanilla()
+	return private.isClassic or private.isForever
+end
+bossModPrototype.IsVanilla = DBM.IsVanilla
+
+---Check if the game version is Vanilla Era
+---True only for the original Vanilla (Classic) version
+---@param self DBMModOrDBM
+function DBM:IsVanillaEra()
+	return private.isClassic
+end
+bossModPrototype.IsVanillaEra = DBM.IsVanillaEra
+
+---Check if the game version is The Burning Crusade (TBC)
+---@param self DBMModOrDBM
+function DBM:IsTBC()
+	return private.isBCC
+end
+bossModPrototype.IsTBC = DBM.IsTBC
+
+---Check if the game version is Wrath of the Lich King (WotLK)
+---@param self DBMModOrDBM
+function DBM:IsWrath()
+	return private.isWrath
+end
+bossModPrototype.IsWrath = DBM.IsWrath
+
+---Check if the game version is Cataclysm (Cata)
 ---@param self DBMModOrDBM
 function DBM:IsCata()
 	return private.isCata
 end
 bossModPrototype.IsCata = DBM.IsCata
 
+---Check if the game version is Mists of Pandaria (MoP)
 ---@param self DBMModOrDBM
 function DBM:IsMop()
 	return private.isMop
 end
 bossModPrototype.IsMop = DBM.IsMop
 
+---Check if the game version is Cataclysm (Cata) or later
 ---@param self DBMModOrDBM
 function DBM:IsPostCata()
 	return private.isCata or private.isMop or private.isRetail
 end
 bossModPrototype.IsPostCata = DBM.IsPostCata
 
+---Check if the game version is post-MoP (Mists of Pandaria) or later
+---@param self DBMModOrDBM
 function DBM:IsPostMoP()
 	return private.isRetail or private.isMop
 end
+bossModPrototype.IsPostMoP = DBM.IsPostMoP
 
----Currently same as isRetail check, but if restrictions ever come to classic we'll still have one function for checking addongeddon api
----@param self DBMModOrDBM
-function DBM:IsPostMidnight()
-	return private.isRetail
-end
-bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
-
+---Check if the game version one of mainline clients that use restrictions
+---Includes standard retail and Vanilla Forever)
 ---@param self DBMModOrDBM
 function DBM:IsRestricted()
 	return private.isRetail or private.isForever
 end
 bossModPrototype.IsRestricted = DBM.IsRestricted
+DBM.IsPostMidnight = DBM.IsRestricted--Temp compat wrapper. Deprecated
 
 ---@param self DBMModOrDBM
 ---@param includeAuras boolean?
@@ -1834,7 +1868,7 @@ do
 				end
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
-			if self:IsPostMidnight() then
+			if self:IsRetail() then
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
 				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
 				if not self.Options.DontSetTimelineColors then
@@ -4394,7 +4428,7 @@ do
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
 	local testSpecialWarning1, testSpecialWarning2, testSpecialWarning3
 	function DBM:DemoMode(forceOld)
-		if self:IsPostMidnight() and not forceOld then
+		if self:IsRetail() and not forceOld then
 			demoDuration = 26
 			--Run the encounter timeline demo mode instead of DBM test Bars
 			C_EncounterTimeline.AddEditModeEvents()

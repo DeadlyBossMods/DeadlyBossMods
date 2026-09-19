@@ -1,6 +1,6 @@
 local L = DBM_GUI_L
 
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isRetail = DBM:IsRetail()
 
 local coreoptions = DBM_GUI.Cat_General:CreateNewPanel(L.Core_GUI, "option")
 
@@ -71,7 +71,7 @@ bmtestmode:SetScript("OnClick", function()
 	DBM_GUI:CollapseForPreview(DBM:DemoMode())
 end)
 
-if DBM:IsPostMidnight() then
+if DBM:IsRetail() then
 	local showMidnightWizard = generaloptions:CreateButton(L.Button_ShowMidnightWizard, 120, 30)
 	showMidnightWizard.myheight = 0
 	showMidnightWizard:SetPoint("LEFT", bmtestmode, "RIGHT", 6, 0)
