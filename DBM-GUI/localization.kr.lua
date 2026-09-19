@@ -302,7 +302,7 @@ L.SpecialWarnHeader1				= "SA 1: 당신이 뭔가 걸렸거나 취해야 할 행
 L.SpecialWarnHeader2				= "SA 2: 공격대 전체에 해당되는 보통 수준 알림 설정 세트"
 L.SpecialWarnHeader3				= "SA 3: 최우선 알림 설정 세트"
 L.SpecialWarnHeader4				= "SA 4: 최우선 도망 특수 알림 설정 세트"
-L.SpecialWarnHeader5				= "SA 5: 메모에 당신의 이름이 있을 때 알림 설정 세트"
+L.SpecialWarnHeader5				= "SA 5: 메모에 내 이름이 있을 때 알림 설정 세트 (하드코드 모드 전용)"
 --Post Midnight
 L.SpecialWarnHeaderMedium			= "SA 1: 블리자드에서 '중간' 등급으로 분류한 스킬 알림"
 L.SpecialWarnHeaderCritical			= "SA 2: 블리자드에서 '치명적' 등급으로 분류한 스킬 알림"
