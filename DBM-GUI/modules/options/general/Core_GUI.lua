@@ -1,7 +1,5 @@
 local L = DBM_GUI_L
 
-local isRetail = DBM:IsRetail()
-
 local coreoptions = DBM_GUI.Cat_General:CreateNewPanel(L.Core_GUI, "option")
 
 local generaloptions = coreoptions:CreateArea(L.General)
@@ -13,7 +11,7 @@ miniMapIcon:SetScript("OnClick", function(self)
 end)
 miniMapIcon:SetChecked(not DBM_MinimapIcon.hide)
 
-if isRetail then
+if DBM:IsRestricted() then
 	local compartmentIcon = generaloptions:CreateCheckButton(L.EnableCompartmentIcon)
 	compartmentIcon:SetScript("OnClick", function(self)
 		DBM:ToggleCompartmentButton()

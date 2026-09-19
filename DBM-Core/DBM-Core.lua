@@ -408,6 +408,14 @@ function DBM:IsVanillaEra()
 end
 bossModPrototype.IsVanillaEra = DBM.IsVanillaEra
 
+---Check if the game version is Vanilla Forever
+---True only for the Vanilla Forever version
+---@param self DBMModOrDBM
+function DBM:IsForever()
+	return private.isForever
+end
+bossModPrototype.IsForever = DBM.IsForever
+
 ---Check if the game version is The Burning Crusade (TBC)
 ---@param self DBMModOrDBM
 function DBM:IsTBC()

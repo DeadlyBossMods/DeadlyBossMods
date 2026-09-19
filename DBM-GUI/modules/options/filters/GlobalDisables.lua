@@ -52,7 +52,7 @@ if DBM:IsRetail() then
 			end
 		end
 	end)
-else
+elseif not DBM:IsForever() then
 	spamTimers:CreateCheckButton(L.SpamBlockNoShowTrashTimers, true, nil, "DontShowTrashTimers")
 
 	local spamNameplates = spamPanel:CreateArea(L.Area_SpamFilter_Nameplates)
