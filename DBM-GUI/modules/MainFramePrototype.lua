@@ -1,7 +1,6 @@
 local L = DBM_GUI_L
 
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
+local isRetail = DBM:IsRetail()
 
 ---@class DBMGUI
 local DBM_GUI = DBM_GUI

@@ -1,7 +1,7 @@
 --TODO, hide entire areas for type 2, 4, and 5 in midnight. midnight will only use 1 and 3 (it'll use new strings for medium and critical for these respectively)
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
-local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
+local isRetail = DBM:IsRetail()
+local isWrath = DBM:IsWrath()
+local isClassic = DBM:IsVanilla()
 
 local L = DBM_GUI_L
 
@@ -119,7 +119,7 @@ if isRetail then
 		{ text = "Yogg Saron: Laugh", value = 564859 },
 	})
 	--TODO, see if these sound files are also added to Forever
-	if DBM:IsPostMidnight() then
+	if DBM:IsRetail() then
 		tinsert(sounds, { text = "Blizzard: Low", value = 7670699, sound = true })
 		tinsert(sounds, { text = "Blizzard: Medium", value = 7670701, sound = true })
 		tinsert(sounds, { text = "Blizzard: Critical", value = 7670697, sound = true })
@@ -511,7 +511,7 @@ resetbutton:SetScript("OnClick", function()
 	flashdurSlider5:SetValue(DBM.Options.SpecialWarningFlashDura5)
 	flashdalphaSlider5:SetValue(DBM.Options.SpecialWarningFlashAlph5)
 	flashRepSlider5:SetValue(DBM.Options.SpecialWarningFlashCount5)
-	if not DBM:IsPostMidnight() then
+	if not DBM:IsRestricted() then
 		SpecialWarnSoundDropDown5:SetSelectedValue(DBM.Options.SpecialWarningSound5)
 		check4:SetChecked(DBM.Options.SWarningAlphabetical)
 	end

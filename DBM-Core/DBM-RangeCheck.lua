@@ -8,9 +8,9 @@ DBM.RangeCheck = rangeCheck
 --------------
 --  Locals  --
 --------------
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
-local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
+local isRetail = DBM:IsRetail()
+local isWrath = DBM:IsWrath()
+local isClassic = DBM:IsVanilla()--Intentionally including era and forever
 
 local DDM, UIDropDownMenu_AddButton, UIDropDownMenu_Initialize, ToggleDropDownMenu
 if isWrath then

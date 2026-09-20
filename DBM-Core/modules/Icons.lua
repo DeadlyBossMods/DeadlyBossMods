@@ -4,7 +4,7 @@ local private = select(2, ...)
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
 
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isRetail = private.isRetail
 local GetTime = GetTime
 local tinsert, tsort = table.insert, table.sort
 local UnitIsUnit, UnitExists, UnitIsVisible, SetRaidTarget, GetRaidTargetIndex =
