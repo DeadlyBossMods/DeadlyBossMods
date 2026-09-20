@@ -1,7 +1,7 @@
 --TODO, hide entire areas for type 2, 4, and 5 in midnight. midnight will only use 1 and 3 (it'll use new strings for medium and critical for these respectively)
 local isRetail = DBM:IsRetail()
 local isWrath = DBM:IsWrath()
-local isClassic = DBM:IsVanillaEra()
+local isClassic = DBM:IsVanilla()
 
 local L = DBM_GUI_L
 

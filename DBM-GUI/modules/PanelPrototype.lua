@@ -1,7 +1,7 @@
 local _, private = ...
 
 local isRetail = DBM:IsRetail()
-local isClassic = DBM:IsVanillaEra()
+local isClassic = DBM:IsVanilla()
 
 local L		= DBM_GUI_L
 local CL	= DBM_COMMON_L
