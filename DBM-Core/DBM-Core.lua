@@ -82,7 +82,7 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 424, "754bdce"--424.7
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.10"--Core version
+DBM.DisplayVersion = "12.1.11 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2026, 9, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
