@@ -1395,6 +1395,38 @@ do
 		return timer
 	end
 
+	---Handle generic terminal bookkeeping for ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED.
+	---
+	---Returns the current state without changing anything for active or paused events.
+	---For terminal state 2 (finished), releases any batch/active-event tracking and commits
+	---the count reservation. For terminal state 3 (canceled), releases the same tracking and
+	---cancels the count reservation without advancing its counter, unless state3Completes is
+	---true for a module-verified event that completes on state 3.
+	---
+	---Modules retain ownership of warnings, derived-timer cleanup, stage transitions, and any
+	---special ordering. Use the individual helpers instead when the return value of
+	---TLBatchUntrack is needed or cleanup must happen between these operations.
+	---@param eventID number? Encounter timeline runtime event ID.
+	---@param state3Completes boolean? True only when module-local evidence verifies this event's state 3 is completion.
+	---@return number? eventState Current timeline state, or nil when unavailable.
+	---@return string? eventType Finished, state-3-completed, or canceled event type from the count reservation.
+	---@return number? eventCount Finished or state-3-completed event's reserved count; nil for canceled events.
+	function bossModPrototype:TLHandleStateChanged(eventID, state3Completes)
+		if not eventID then return nil, nil, nil end
+		local eventState = C_EncounterTimeline.GetEventState(eventID)
+		if not eventState then return nil, nil, nil end
+		if eventState < 2 then return eventState, nil, nil end
+		self:TLBatchUntrack(eventID)
+		self:TLReleaseActiveEvent(eventID)
+		if eventState == 2 or (eventState == 3 and state3Completes) then
+			local eventType, eventCount = self:TLCountFinish(eventID)
+			return eventState, eventType, eventCount
+		elseif eventState == 3 then
+			return eventState, self:TLCountCancel(eventID), nil
+		end
+		return eventState, nil, nil
+	end
+
 	---Ignore initial timeline batch noise until a known unlock timer appears.
 	---
 	---Purpose:

@@ -417,10 +417,9 @@ do
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
-		local eventState = C_EncounterTimeline.GetEventState(eventID)
-		if not eventID or not eventState then return end
+		local state3Completes = submergeEventIDs[eventID]
+		local eventState, eventType, eventCount = self:TLHandleStateChanged(eventID, state3Completes)
 		if eventState == 2 then
-			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end
 			if not eventCount then return end
 			submergeEventIDs[eventID] = nil
@@ -460,11 +459,8 @@ do
 				specWarnRousetheBrood:Show(eventCount)
 				specWarnRousetheBrood:Play("mobsoon")
 			end
-		elseif eventState == 3 and submergeEventIDs[eventID] then--Normal evidence shows Submerge completes with state 3 on time
+		elseif eventState == 3 and state3Completes then--Normal evidence shows Submerge completes with state 3 on time
 			submergeEventIDs[eventID] = nil
-			self:TLCountFinish(eventID)
-		elseif eventState == 3 then
-			self:TLCountCancel(eventID)
 		end
 	end
 end
