@@ -267,6 +267,7 @@ do
 			timerRavenousFeastCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "ravenous", "RavenousFeastCount"))
 		elseif timer == 68 then
 			handled = true
+			timerExact = timerExact - 0.2
 			if next68Event == "caustic" then
 				timerCausticDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "caustic", "CausticDelugeCount"))
 				next68Event = "stone"
