@@ -271,15 +271,15 @@ L.LFG_INVITE						= "Aceitar convite"
 L.SLASHCMD_HELP						= {
 	"Comandos disponíveis:",
 	"-----------------",
-	"/dbm unlock: Mostra um cronômetro de barra de status movível (alias: move).",--AI translated (check me)
+	"/dbm unlock: Mostra um cronômetro de barra de status movível (alias: move).",
 	"/dbm pull <seg>: Dispara um cronômetro para iniciar a luta em <seg> segundos. Dá a todos os integrantes da raide um cronômetro para iniciar a luta (requer status de líder/assistente).",
 	"/dbm break <min>: Inicia um cronômetro de intervalo de <min> minutos. Dá a todos os integrantes da raide um cronômetro de intervalo (requer status de líder/assistente).",
 	"/dbm timer: Inicia um cronômetro personalizado do " .. L.DBM .. ", veja '/dbm timer' para detalhes.",
-	"/dbm key: Realiza verificações de keystone e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keys, keystone)",--AI translated (check me)
+	"/dbm key: Realiza verificações de pedra-chave e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keys, keystone)",
 	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
 	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide.",
-	"/dbm brez: Exibe o quadro do cronômetro de ressurreição de batalha para posicionamento.",--AI translated (check me)
-	"/dbm help2: Mostra comandos de gerenciamento de raide."--AI translated (check me)
+	"/dbm brez: Exibe o quadro do cronômetro de ressurreição de batalha para posicionamento.",
+	"/dbm help2: Mostra comandos de gerenciamento de raide."
 }
 L.SLASHCMD_HELP2					= {
 	"Comandos disponíveis:",
