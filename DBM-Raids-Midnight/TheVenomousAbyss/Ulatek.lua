@@ -7,7 +7,6 @@ mod:SetEncounterID(3492)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
 mod:SetZone(3004)
-mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
