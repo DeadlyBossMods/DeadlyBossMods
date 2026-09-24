@@ -76,7 +76,7 @@ local growDirection = general:CreateDropdown(L.SetPAGrowDirection, {
 	DBM.Options.TextTimersGrowDirection = value
 	display:RefreshStyle()
 end)
-growDirection:SetPoint("TOPLEFT", iconPosition, "BOTTOMLEFT", 0, -15)
+growDirection:SetPoint("TOPLEFT", iconPosition, "BOTTOMLEFT", 0, -20)
 growDirection.myheight = 40
 
 local fonts = DBM_GUI:MixinSharedMedia3("font", {
