@@ -71,6 +71,7 @@ modules\options\timers\Appearance.lua
 modules\options\timers\ColorbyType.lua
 modules\options\timers\Behavior.lua
 modules\options\timers\PBC.lua
+modules\options\timers\TextTimers.lua
 
 modules\options\filters\Filters.lua
 modules\options\filters\GlobalDisables.lua

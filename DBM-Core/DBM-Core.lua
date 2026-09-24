@@ -1818,6 +1818,9 @@ do
 			DBM_ModsToLoadWithFullTestSupport.bossModsWithTests = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests or {}
 			DBM_ModsToLoadWithFullTestSupport.addonsWithTests = DBM_ModsToLoadWithFullTestSupport.addonsWithTests or {}
 			DBT:LoadOptions("DBM")
+			if self.TextTimers then
+				self.TextTimers:SyncOptions()
+			end
 			self.AddOns = {}
 			private:OnModuleLoad()
 			if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
@@ -2272,6 +2275,7 @@ do
 	--- |"DBM_TimerPause"
 	--- |"DBM_TimerResume"
 	--- |"DBM_TimerUpdateIcon"
+	--- |"DBM_TimerUpdateName"
 	--- |"DBM_NameplateBegin"
 	--- |"DBM_NameplateStart"
 	--- |"DBM_NameplateStop"

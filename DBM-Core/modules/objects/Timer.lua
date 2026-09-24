@@ -336,9 +336,12 @@ end
 
 function timerPrototype:Start(timer, ...)
 	if not self.mod.isDummyMod then--Don't apply following rulesets to pull timers and such
-		if DBM.Options.HideDBMBars then return end
+		-- Keep the original fast return before formatting or tracking anything.
+		if DBM.Options.HideDBMBars and not DBM.Options.TextTimersEnabled then return end
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
+		if DBM.Options.HideDBMBars and (self.option and not self.mod.Options[self.option]
+			or self.simpType == "cdnp" or self.simpType == "castnp" or self.type == "nextnp" or self.type == "nextpnp" or self.type == "cdpnp" or self.type == "castpnp") then return end
 	end
 	local isDelayed = type(timer) == "number" and (isNegativeZero(timer) or timer < 0)
 	local hasVariance = type(timer) == "number" and timer > 0 and false or not timer and self.hasVariance -- account for metavariant timers that were fired with a fixed timer start, like timer:Start(10). Does not account for timer:Start(-delay), which is parsed below after variance started timers
@@ -364,6 +367,10 @@ function timerPrototype:Start(timer, ...)
 		return self:Start(nil, timer, ...) -- first argument is optional!
 	end
 	local isBarEnabled = not self.option or self.mod.Options[self.option]
+	local textOnly = not self.mod.isDummyMod and DBM.Options.HideDBMBars and DBM.Options.TextTimersEnabled and isBarEnabled
+		and self.simpType ~= "cdnp" and self.simpType ~= "castnp"
+		and self.type ~= "nextnp" and self.type ~= "nextpnp" and self.type ~= "cdpnp" and self.type ~= "castpnp"
+	if textOnly then isBarEnabled = false end
 	--this segment needs to run regardless of enabled to collect info for callback
 	local isCountTimer = false
 	if self.type and (self.type == "cdcount" or self.type == "nextcount" or self.type == "stagecount" or self.type == "stagecontextcount" or self.type == "stagecountcycle" or self.type == "intermissioncount" or self.type == "varcount" or self.type == "castcount" or self.type == "addscount") then
@@ -537,7 +544,8 @@ function timerPrototype:Start(timer, ...)
 	--NOTE, nameplate variant has same args as timer variant, but is sent to a different event (DBM_NameplateStart)
 	--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
 	--This check is performed secondary to args scan so that no adds guids are overwritten
-	--NOTE: Begin fires regardless of enabled status, and includes additional enabled flag. Start only fires if option is enabled (old behavior)
+	--NOTE: isBarEnabled retains its bar-creation meaning. The trailing textOnly flag
+	--is true only for opt-in, non-nameplate module timers with globally hidden bars.
 	if not DBM:IsRestricted() and not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then--Variance excluded for now while NP timers don't support yet
 		guid = UnitGUID("boss1")
 	end
@@ -547,8 +555,12 @@ function timerPrototype:Start(timer, ...)
 			DBM:FireEvent("DBM_NameplateStart", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, (self.simpType == "cdnp" and DBM.Options.AlwaysKeepNPs) and true or self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer)
 		end
 	else--Send both callbacks
-		DBM:FireEvent("DBM_TimerBegin", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer, isBarEnabled)
-		if guid then--But nameplate is only sent if actual GUID
+		if textOnly then
+			DBM:FireEvent("DBM_TimerBegin", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer, false, true)
+		else
+			DBM:FireEvent("DBM_TimerBegin", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer, isBarEnabled)
+		end
+		if guid and not textOnly then--Do not create new nameplate callback traffic for text-only timers
 			DBM:FireEvent("DBM_NameplateBegin", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer, isBarEnabled)
 			if isBarEnabled then
 				DBM:FireEvent("DBM_NameplateStart", id, msg, minTimer or (hasVariance and self.minTimer) or timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount, self.isPriority, self.type, hasVariance, hasVariance and timer)
@@ -773,6 +785,9 @@ function timerPrototype:HardStop(guid)
 		guid = UnitGUID("boss1")
 	end
 	for i = #self.startedTimers, 1, -1 do
+		if DBM.Options.TextTimersEnabled and DBM.TextTimers and DBM.TextTimers:GetBarlessRemaining(self.startedTimers[i]) then
+			DBM:Unschedule(removeEntry, self.startedTimers, self.startedTimers[i])
+		end
 		DBM:FireEvent("DBM_TimerStop", self.startedTimers[i], guid)
 		DBM:FireEvent("DBM_NameplateStop", self.startedTimers[i], guid)
 		test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
@@ -809,13 +824,47 @@ function timerPrototype:SetTimer(timer)
 	self.timer = timer
 end
 
+local function textOnlyRemaining(id)
+	if DBM.Options.TextTimersEnabled and DBM.TextTimers then
+		return DBM.TextTimers:GetBarlessRemaining(id)
+	end
+end
+
+local function updateTextOnly(self, id, remaining)
+	if remaining <= 0 then
+		self.mod:Unschedule(removeEntry, self.startedTimers, id)
+		removeEntry(self.startedTimers, id)
+		DBM:FireEvent("DBM_TimerStop", id)
+		return
+	end
+	local _, paused, keep = textOnlyRemaining(id)
+	self.mod:Unschedule(removeEntry, self.startedTimers, id)
+	if not paused and not keep then
+		self.mod:Schedule(remaining, removeEntry, self.startedTimers, id)
+	end
+	DBM:FireEvent("DBM_TimerUpdate", id, 0, remaining)
+	return true
+end
+
 function timerPrototype:Update(elapsed, totalTime, ...)
-	if DBM.Options.HideDBMBars then return end
+	if DBM.Options.HideDBMBars and not DBM.Options.TextTimersEnabled then return end
 	if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 	if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	---@type DBTBar|boolean|nil
 	local bar = DBT:GetBar(id)
+	if not bar then
+		local textRemaining = textOnlyRemaining(id)
+		if textRemaining then
+			local total = totalTime
+			if type(total) == "string" and total:match("^v%d+%.?%d*-%d+%.?%d*$") then
+				local maximum, minimum = parseVarianceFromTimer(total)
+				total = DBT.Options.VarianceEnabled2 and maximum or minimum
+			end
+			if type(total) == "number" then return updateTextOnly(self, id, total - (elapsed or 0)) end
+			return
+		end
+	end
 	if not bar then
 		bar = self:Start(totalTime, ...)
 	end
@@ -867,13 +916,15 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 end
 
 function timerPrototype:AddTime(extendAmount, ...)
-	if DBM.Options.HideDBMBars then return end
+	if DBM.Options.HideDBMBars and not DBM.Options.TextTimersEnabled then return end
 	if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 	if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	DBM:Unschedule(playCountSound, id)--Needs to be unscheduled early in case Start is called instead of Update
 	local bar = DBT:GetBar(id)
 	if not bar then
+		local textRemaining = textOnlyRemaining(id)
+		if textRemaining then return updateTextOnly(self, id, textRemaining + extendAmount) end
 		return self:Start(extendAmount, ...)
 	else
 		local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
@@ -914,13 +965,15 @@ function timerPrototype:AddTime(extendAmount, ...)
 end
 
 function timerPrototype:RemoveTime(reduceAmount, ...)
-	if DBM.Options.HideDBMBars then return end
+	if DBM.Options.HideDBMBars and not DBM.Options.TextTimersEnabled then return end
 	if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 	if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	DBM:Unschedule(playCountSound, id)--Needs to be unscheduled here, or countdown might not be canceled if removing time made it cease to have a > 0 value
 	local bar = DBT:GetBar(id)
 	if not bar then
+		local textRemaining = textOnlyRemaining(id)
+		if textRemaining then return updateTextOnly(self, id, textRemaining - reduceAmount) end
 		return--Do nothing
 	else
 		self.mod:Unschedule(removeEntry, self.startedTimers, id)--Needs to be unscheduled here, or the entry might just get left in table until original expire time, if new expire time is less than 0
@@ -976,6 +1029,14 @@ function timerPrototype:Pause(...)
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
 	DBM:Unschedule(playCountSound, id)--Kill countdown on pause
+	if not bar then
+		local remaining, paused = textOnlyRemaining(id)
+		if remaining and not paused then
+			self.mod:Unschedule(removeEntry, self.startedTimers, id)
+			DBM:FireEvent("DBM_TimerPause", id)
+		end
+		return
+	end
 	if bar then
 		self.mod:Unschedule(removeEntry, self.startedTimers, id)--Prevent removal from startedTimers table while bar is paused
 		local guid
@@ -999,6 +1060,14 @@ end
 function timerPrototype:Resume(...)
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
+	if not bar then
+		local remaining, paused, keep = textOnlyRemaining(id)
+		if remaining and paused then
+			if not keep then self.mod:Schedule(remaining, removeEntry, self.startedTimers, id) end
+			DBM:FireEvent("DBM_TimerResume", id)
+		end
+		return
+	end
 	if bar then
 		local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 		if elapsed and total then
@@ -1036,6 +1105,10 @@ end
 function timerPrototype:UpdateIcon(icon, ...)
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
+	if not bar and textOnlyRemaining(id) then
+		DBM:FireEvent("DBM_TimerUpdateIcon", id, DBM:ParseSpellIcon(icon))
+		return
+	end
 	if bar then
 		icon = DBM:ParseSpellIcon(icon)
 		DBM:FireEvent("DBM_TimerUpdateIcon", id, icon)
@@ -1050,13 +1123,14 @@ function timerPrototype:UpdateKey(altSpellId, ...)
 	--Check if existing bar first,
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
+	local textRemaining = not bar and textOnlyRemaining(id)
 	self.spellId = altSpellId
 	self.icon = DBM:ParseSpellIcon(altSpellId, self.type, self.icon)
 	self.name = nil--By wiping name, it becomes uncached and can get replaced by GetLocalizedTimerText in :Start
-	if bar then
+	if bar or textRemaining then
 		--If a bar exists while updating key we"
 		--Get remainig, kill old timer, start new one with ID/name replacement applied
-		local remaining = bar.timer
+		local remaining = bar and bar.timer or textRemaining
 		self:Stop(...)
 		self:Unschedule(...)
 		DBM:Unschedule(playCountSound, id)
@@ -1077,6 +1151,10 @@ end
 function timerPrototype:UpdateName(name, ...)
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
+	if not bar and textOnlyRemaining(id) then
+		DBM:FireEvent("DBM_TimerUpdateName", id, name)
+		return
+	end
 	if bar then
 		bar:SetText(name)
 		test:Trace(self.mod, "SetTimerProperty", self, id, "Name", name)
