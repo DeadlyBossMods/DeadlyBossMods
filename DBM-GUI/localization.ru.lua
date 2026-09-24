@@ -433,6 +433,7 @@ L.TextTimersUrgentThreshold			= "Срочно при остатке секунд
 L.TextTimersUrgentColor				= "Цвет срочности"
 L.TextTimersIcon					= "Показывать значок способности"
 L.TextTimersIconPosition			= "Положение значка"
+L.TextTimersIconBoth				= "Значки с обеих сторон"
 L.AreaTitle_BarSetup				= "Параметры внешнего вида полос"
 L.AreaTitle_Behavior				= "Параметры режима полос"
 L.AreaTitle_BarSetupSmall 			= "Параметры маленькой полосы"

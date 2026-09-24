@@ -433,6 +433,7 @@ L.TextTimersUrgentThreshold			= "Urgent sous ce nombre de secondes (0 : désacti
 L.TextTimersUrgentColor				= "Couleur urgente"
 L.TextTimersIcon					= "Afficher l'icône de la technique"
 L.TextTimersIconPosition			= "Position de l'icône"
+L.TextTimersIconBoth				= "Icônes des deux côtés"
 L.AreaTitle_BarSetup				= "Options de l'apparence des barres"
 L.AreaTitle_Behavior				= "Options du comportement de la barre"
 L.AreaTitle_BarSetupSmall 			= "Options des petites barres"

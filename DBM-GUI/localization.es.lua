@@ -434,6 +434,7 @@ L.TextTimersUrgentThreshold			= "Urgente por debajo de segundos (0: desactivado)
 L.TextTimersUrgentColor				= "Color urgente"
 L.TextTimersIcon					= "Mostrar icono de habilidad"
 L.TextTimersIconPosition			= "Posición del icono"
+L.TextTimersIconBoth				= "Iconos a ambos lados"
 L.AreaTitle_BarSetup				= "Opciones de apariencia de barras"
 L.AreaTitle_Behavior				= "Opciones de comportamiento de barras"
 L.AreaTitle_BarSetupSmall 			= "Opciones de barras pequeñas"

@@ -61,6 +61,7 @@ urgent.myheight = 0
 local iconPosition = general:CreateDropdown(L.TextTimersIconPosition, {
 	{text = L.BarIconLeft, value = "LEFT"},
 	{text = L.BarIconRight, value = "RIGHT"},
+	{text = L.TextTimersIconBoth, value = "BOTH"},
 }, "DBM", "TextTimersIconPosition", function(value)
 	DBM.Options.TextTimersIconPosition = value
 	display:RefreshStyle()

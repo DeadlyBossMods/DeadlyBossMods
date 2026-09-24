@@ -85,8 +85,29 @@ local function acquireRow(index)
 	row.text:SetShadowOffset(1, -1)
 	row.icon = row:CreateTexture(nil, "ARTWORK")
 	row.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+	row.iconRight = row:CreateTexture(nil, "ARTWORK")
+	row.iconRight:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 	rows[index] = row
 	return row
+end
+
+local function styleIcons(row, size)
+	row.icon:SetSize(size + 4, size + 4)
+	row.icon:ClearAllPoints()
+	row.icon:SetPoint("RIGHT", row.text, "LEFT", -4, 0)
+	row.iconRight:SetSize(size + 4, size + 4)
+	row.iconRight:ClearAllPoints()
+	row.iconRight:SetPoint("LEFT", row.text, "RIGHT", 4, 0)
+end
+
+local function showIcons(row, texture)
+	local show = DBM.Options.TextTimersIcon and texture ~= nil
+	if texture then
+		row.icon:SetTexture(texture)
+		row.iconRight:SetTexture(texture)
+	end
+	row.icon:SetShown(show and DBM.Options.TextTimersIconPosition ~= "RIGHT")
+	row.iconRight:SetShown(show and DBM.Options.TextTimersIconPosition ~= "LEFT")
 end
 
 function TextTimers:RefreshStyle()
@@ -102,13 +123,7 @@ function TextTimers:RefreshStyle()
 		row:ClearAllPoints()
 		row:SetPoint("TOP", frame, "TOP", 0, -(i - 1) * (size + 10))
 		row.text:SetFont(fontPath(), size, "OUTLINE")
-		row.icon:SetSize(size + 4, size + 4)
-		row.icon:ClearAllPoints()
-		if DBM.Options.TextTimersIconPosition == "RIGHT" then
-			row.icon:SetPoint("LEFT", row.text, "RIGHT", 4, 0)
-		else
-			row.icon:SetPoint("RIGHT", row.text, "LEFT", -4, 0)
-		end
+		styleIcons(row, size)
 	end
 	if preview then
 		renderPreview()
@@ -200,9 +215,7 @@ refresh = function()
 			row:SetHeight(size + 10)
 			row:ClearAllPoints()
 			row:SetPoint("TOP", frame, "TOP", 0, -(i - 1) * (size + 10))
-			row.icon:SetSize(size + 4, size + 4)
-			row.icon:ClearAllPoints()
-			row.icon:SetPoint(DBM.Options.TextTimersIconPosition == "RIGHT" and "LEFT" or "RIGHT", row.text, DBM.Options.TextTimersIconPosition == "RIGHT" and "RIGHT" or "LEFT", DBM.Options.TextTimersIconPosition == "RIGHT" and 4 or -4, 0)
+			styleIcons(row, size)
 			local label = candidate.bar and _G[candidate.bar.frame:GetName() .. "BarName"]
 			local name = label and label:GetText() or candidate.data.name or candidate.id
 			row.text:SetText(("%s  %.1f"):format(cleanName(name), candidate.time))
@@ -216,8 +229,7 @@ refresh = function()
 				local texture = _G[candidate.bar.frame:GetName() .. "BarIcon1"]
 				icon = texture and texture:GetTexture()
 			end
-			row.icon:SetShown(DBM.Options.TextTimersIcon and icon ~= nil)
-			if icon then row.icon:SetTexture(icon) end
+			showIcons(row, icon)
 			row:Show()
 		end
 		for i = count + 1, #rows do rows[i]:Hide() end
@@ -373,17 +385,14 @@ renderPreview = function()
 			row:ClearAllPoints()
 			row:SetPoint("TOP", frame, "TOP", 0, -(count - 1) * (size + 10))
 			row.text:SetFont(fontPath(), size, "OUTLINE")
-			row.icon:SetSize(size + 4, size + 4)
-			row.icon:ClearAllPoints()
-			row.icon:SetPoint(DBM.Options.TextTimersIconPosition == "RIGHT" and "LEFT" or "RIGHT", row.text, DBM.Options.TextTimersIconPosition == "RIGHT" and "RIGHT" or "LEFT", DBM.Options.TextTimersIconPosition == "RIGHT" and 4 or -4, 0)
+			styleIcons(row, size)
 			row.text:SetText(("%s  %.1f"):format(cleanName(sample.name), time))
 			if DBM.Options.TextTimersUrgentThreshold > 0 and time <= DBM.Options.TextTimersUrgentThreshold then
 				row.text:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
 			else
 				row.text:SetTextColor(1, 1, 1)
 			end
-			row.icon:SetTexture(sample.icon)
-			row.icon:SetShown(DBM.Options.TextTimersIcon)
+			showIcons(row, sample.icon)
 			row:Show()
 		end
 	end
