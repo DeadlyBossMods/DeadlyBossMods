@@ -510,18 +510,25 @@ function DBM:ResumeBlizzardAPI()
 		DBM.Options.IgnoreBlizzAPI = false
 		fireEvent("DBM_ResumeBlizzAPI")
 	end
-	--Cancel any hardcoded bars that are still running to avoid duplicates once Blizzard bars are recovered
+	--Cancel hardcoded bars and their producer-owned text-only counterparts before
+	-- recovering Blizzard timers, so rejected predictions cannot keep counting down.
 	if private.hardCodedTimers then
 		for _, timerIds in pairs(private.hardCodedTimers) do
 			if type(timerIds) == "table" then
 				for _, timerId in ipairs(timerIds) do
 					DBT:CancelBar(timerId)
+					local owner = private.hardCodedTimerOwners and private.hardCodedTimerOwners[timerId]
+					if owner then owner:StopTextOnly(timerId) end
 				end
 			else
 				DBT:CancelBar(timerIds)
+				local owner = private.hardCodedTimerOwners and private.hardCodedTimerOwners[timerIds]
+				if owner then owner:StopTextOnly(timerIds) end
 			end
 		end
 		wipe(private.hardCodedTimers)
+		if private.hardCodedTimerOwners then wipe(private.hardCodedTimerOwners) end
+		if private.hardCodedTimerEvents then wipe(private.hardCodedTimerEvents) end
 	end
 	DBM:RecoverBlizzardTimers()
 end
@@ -1818,6 +1825,9 @@ do
 			DBM_ModsToLoadWithFullTestSupport.bossModsWithTests = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests or {}
 			DBM_ModsToLoadWithFullTestSupport.addonsWithTests = DBM_ModsToLoadWithFullTestSupport.addonsWithTests or {}
 			DBT:LoadOptions("DBM")
+			if self.TextTimers then
+				self.TextTimers:SyncOptions()
+			end
 			self.AddOns = {}
 			private:OnModuleLoad()
 			if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
@@ -2272,6 +2282,7 @@ do
 	--- |"DBM_TimerPause"
 	--- |"DBM_TimerResume"
 	--- |"DBM_TimerUpdateIcon"
+	--- |"DBM_TimerUpdateName"
 	--- |"DBM_NameplateBegin"
 	--- |"DBM_NameplateStart"
 	--- |"DBM_NameplateStop"

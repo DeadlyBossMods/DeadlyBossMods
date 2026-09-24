@@ -162,6 +162,25 @@ DBM.DefaultOptions = {
 	HideBlizzardTimeline = true,
 	HideDBMBars = false,
 	HideDBMWarnings = false,
+	TextTimersEnabled = false,
+	TextTimersThreshold = 5,
+	TextTimersMaxLines = 5,
+	TextTimersMaxNameLength = 0,
+	TextTimersFont = "standardFont",
+	TextTimersFontSize = 18,
+	TextTimersFontR = 1,
+	TextTimersFontG = 1,
+	TextTimersFontB = 1,
+	TextTimersUrgentThreshold = 2.5,
+	TextTimersUrgentR = 1,
+	TextTimersUrgentG = 0.1,
+	TextTimersUrgentB = 0.1,
+	TextTimersIcon = true,
+	TextTimersInheritBarColor = false,
+	TextTimersIconPosition = "LEFT",
+	TextTimersGrowDirection = "DOWN",
+	TextTimersX = 0,
+	TextTimersY = 150,
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
 	CustomSounds = 0,
@@ -583,6 +602,9 @@ function DBM:RepositionFrames()
 	-- rearrange position
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
+	if self.TextTimers then
+		self.TextTimers:SyncOptions()
+	end
 	if private.isRetail then
 		self:UpdateZoneAuraAnchors(1)
 	end
