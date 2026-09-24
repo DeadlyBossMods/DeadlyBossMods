@@ -12,7 +12,7 @@ local created, callbacks, scheduled, bars, frames = 0, {}, {}, {}, {}
 local fontUsed
 local function widget()
 	local object = {scripts = {}}
-	local methods = {"SetSize", "SetHeight", "SetClampedToScreen", "SetFrameStrata", "SetMovable", "RegisterForDrag", "ClearAllPoints", "SetPoint", "Hide", "Show", "EnableMouse", "SetJustifyH", "SetShadowOffset", "SetTexCoord", "SetFont", "SetText", "SetTextColor", "SetShown", "SetTexture", "StartMoving", "StopMovingOrSizing"}
+	local methods = {"SetSize", "SetWidth", "SetHeight", "SetClampedToScreen", "SetFrameStrata", "SetMovable", "RegisterForDrag", "ClearAllPoints", "SetPoint", "Hide", "Show", "EnableMouse", "SetJustifyH", "SetShadowOffset", "SetTexCoord", "SetFont", "SetText", "SetTextColor", "SetShown", "SetTexture", "StartMoving", "StopMovingOrSizing"}
 	for _, method in ipairs(methods) do rawset(object, method, function() end) end
 	function object:SetFont(path) fontUsed = path end
 	function object:SetText(text) self.text = text end
@@ -39,7 +39,7 @@ local now = 0
 mockGlobals.GetTime = function() return now end
 
 local DBM = {Options = {TextTimersEnabled = false, TextTimersThreshold = 5, TextTimersMaxLines = 5,
-	TextTimersMaxNameLength = 20, TextTimersFont = "standardFont", TextTimersFontSize = 18,
+	TextTimersMaxNameLength = 0, TextTimersFont = "standardFont", TextTimersFontSize = 18,
 	TextTimersUrgentThreshold = 2, TextTimersUrgentR = 1, TextTimersUrgentG = 0,
 	TextTimersUrgentB = 0, TextTimersIcon = true, TextTimersIconPosition = "LEFT",
 	TextTimersLocked = true, TextTimersX = 0, TextTimersY = 150}, DefaultOptions = {TextTimersX = 0, TextTimersY = 150}}
@@ -95,6 +95,20 @@ bar.timer = 4
 for handler in pairs(scheduled) do scheduled[handler] = nil; handler() end
 assert(created > 0, "enabled timer did not create display")
 assert(frames[2].text.text == "Meteor  4.0", "display did not use live bar time and label")
+local demoName = "Test Bar showing 5s Variance"
+callbacks.DBM_TimerBegin(nil, "timer1", demoName, 4, 123, "cd", 12, 1, 1, nil, nil, nil, nil, nil, false, "cd", nil, nil, true)
+for handler, delay in pairs(scheduled) do
+	if delay == 0 then scheduled[handler] = nil; handler() end
+end
+assert(frames[2].text.text == demoName .. "  4.0", "default name limit truncated a demo timer despite available space")
+DBM.Options.TextTimersMaxNameLength = 20
+DBM.TextTimers:RefreshStyle()
+assert(frames[2].text.text == "Test Bar showing 5s ...  4.0", "explicit name limit did not shorten the demo timer")
+DBM.Options.TextTimersMaxNameLength = 0
+callbacks.DBM_TimerBegin(nil, "timer1", "Meteor", 4, 123, "cd", 12, 1, 1, nil, nil, nil, nil, nil, false, "cd", nil, nil, true)
+for handler, delay in pairs(scheduled) do
+	if delay == 0 then scheduled[handler] = nil; handler() end
+end
 DBM.Options.TextTimersFont = "Fonts\\CUSTOM.TTF"
 DBM.TextTimers:RefreshStyle()
 assert(fontUsed == "Fonts\\CUSTOM.TTF", "shared-media font path was not applied")
@@ -286,7 +300,11 @@ local function control()
 end
 local general = {frame = widget(), SetLastObj = function() end}
 function general:CreateCheckButton() return control() end
-function general:CreateSlider() return control() end
+function general:CreateSlider()
+	local result = control()
+	result.textFrame = control()
+	return result
+end
 function general:CreateColorSelect() return control() end
 function general:CreateDropdown() return control() end
 local previewClick
