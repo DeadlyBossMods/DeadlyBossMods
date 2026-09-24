@@ -1,4 +1,5 @@
 -- Run from DBM-Retail: lua DBM-Test/Tools/CLI/TextTimersSmoke.lua
+---@diagnostic disable: redundant-parameter
 -- Keep test-only WoW API replacements out of LuaLS's shared global namespace.
 local mockGlobals = setmetatable({}, {__index = _G})
 mockGlobals._G = mockGlobals
@@ -11,7 +12,7 @@ local created, callbacks, scheduled, bars, frames = 0, {}, {}, {}, {}
 local function widget()
 	local object = {scripts = {}}
 	local methods = {"SetSize", "SetHeight", "SetClampedToScreen", "SetFrameStrata", "SetMovable", "RegisterForDrag", "ClearAllPoints", "SetPoint", "Hide", "Show", "EnableMouse", "SetJustifyH", "SetShadowOffset", "SetTexCoord", "SetFont", "SetText", "SetTextColor", "SetShown", "SetTexture", "StartMoving", "StopMovingOrSizing"}
-	for _, method in ipairs(methods) do object[method] = function() end end
+	for _, method in ipairs(methods) do rawset(object, method, function() end) end
 	function object:SetText(text) self.text = text end
 	function object:Show() self.shown = true end
 	function object:Hide() self.shown = false end

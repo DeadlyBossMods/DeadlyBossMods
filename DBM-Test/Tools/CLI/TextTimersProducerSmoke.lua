@@ -1,4 +1,5 @@
 -- Run from DBM-Retail: lua DBM-Test/Tools/CLI/TextTimersProducerSmoke.lua
+---@diagnostic disable: redundant-parameter
 -- Load actual addon code with private WoW globals, not LuaLS-visible global mocks.
 local mockGlobals = setmetatable({}, {__index = _G})
 mockGlobals._G = mockGlobals
