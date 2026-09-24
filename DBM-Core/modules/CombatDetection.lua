@@ -36,7 +36,7 @@ local combatInitialized, healthCombatInitialized = false, false
 local watchFrameRestore, questieWatchRestore, bossuIdFound = false, false, false
 local delayedFunction
 
-local playerName = UnitName("player")
+local playerName = private.isForever and GetUnitName("player") or UnitName("player")--Forever needs first and last name to be pulled
 local normalizedPlayerRealm = GetRealmName():gsub("[%s-]+", "")
 local tinsert, twipe = table.insert, table.wipe
 local pairs, ipairs, type, select = pairs, ipairs, type, select

@@ -71,7 +71,12 @@ local function sendSync(protocol, prefix, msg, priority, isLogged)
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	if DBM:IsEnabled() or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		local fullname = playerName .. "-" .. normalizedPlayerRealm
+		local fullname
+		if private.isForever then
+			fullname = playerName--Realm names not used in forever
+		else
+			fullname = playerName .. "-" .. normalizedPlayerRealm
+		end
 		local sendChannel = "SOLO"
 		if not IsTrialAccount() then
 			if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
@@ -106,7 +111,12 @@ private.sendSync = sendSync
 ---@param isLogged boolean?
 local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
-	local fullname = playerName .. "-" .. normalizedPlayerRealm
+	local fullname
+	if private.isForever then
+		fullname = playerName--Realm names not used in forever
+	else
+		fullname = playerName .. "-" .. normalizedPlayerRealm
+	end
 	if isLogged then
 		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
 	else
@@ -123,7 +133,12 @@ local function sendGuildSync(protocol, prefix, msg)
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	if IsInGuild() and (DBM:IsEnabled() or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		local fullname = playerName .. "-" .. normalizedPlayerRealm
+		local fullname
+		if private.isForever then
+			fullname = playerName--Realm names not used in forever
+		else
+			fullname = playerName .. "-" .. normalizedPlayerRealm
+		end
 		ChatThrottleLib:SendAddonMessage("NORMAL", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 	end
 end
@@ -139,7 +154,12 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not DBM:IsEnabled() then return end--Block all world syncs if force disabled
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	DBM:Debug("SendWorldSync running for " .. prefix)
-	local fullname = playerName .. "-" .. normalizedPlayerRealm
+	local fullname
+	if private.isForever then
+		fullname = playerName--Realm names not used in forever
+	else
+		fullname = playerName .. "-" .. normalizedPlayerRealm
+	end
 	local sendChannel = "SOLO"
 	if not IsTrialAccount() then
 		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)

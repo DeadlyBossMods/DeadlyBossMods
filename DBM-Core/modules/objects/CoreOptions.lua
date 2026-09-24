@@ -680,7 +680,10 @@ function DBM:GetProfileID()
 	local _, currentSpecName, currentSpecGroup = self:GetCurrentSpecInfo()
 
 	-- variable init
-	local fullname = playerName .. "-" .. playerRealm
+
+	--In forever, realm name can change based on server load, since you don't actually get a perma realm, just a random one in a given region in the mega realm
+	--So we ignore realm name. This works because character names are region locked, meaning it's not possible to have two of same first and last name anyways
+	local fullname = private.isForever and playerName or playerName .. "-" .. playerRealm
 	local profileNum = private.playerLevel > 9 and DBM_UseDualProfile and currentSpecGroup or 0
 
 	return fullname, profileNum, currentSpecName

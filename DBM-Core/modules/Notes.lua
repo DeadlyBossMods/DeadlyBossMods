@@ -135,7 +135,12 @@ local function CreateOurFrame()
 			DBM:AddMsg(L.NOTESHAREERRORGROUPFINDER)
 		else
 			local playerName, _, playerRealm = DBM:GetMyPlayerInfo()
-			local fullname = playerName.."-"..playerRealm
+			local fullname
+			if private.isForever then
+				fullname = fullname
+			else
+				fullname = playerName.."-"..playerRealm
+			end
 			local msg = frame.mod.id.."\t"..frame.modvar.."\t"..syncText.."\t"..frame.abilityName
 			if IsInRaid() then
 				SendAddonMessage(private.DBMPrefix, fullname .. "\t" .. private.DBMSyncProtocol .. "\tNS\t" .. msg, "RAID")

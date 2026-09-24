@@ -4,6 +4,9 @@
 ---@class DBM
 local DBM = DBM
 
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 ---@class DBMHudMap
 local mod =  {
 	Version = 2 -- That way external usage can querie hud api feature level of of users installed mod version
@@ -23,7 +26,7 @@ local onUpdate, Point, Edge
 local callbacks = CallbackHandler:New(mod)
 local activeMarkers = 0
 local hudarActive = false
-local playerName = UnitName("player")
+local playerName = private.isForever and GetUnitName("player") or UnitName("player")
 local encounterMarkers = {}
 
 local GetNumGroupMembers, IsInRaid = GetNumGroupMembers, IsInRaid

@@ -134,7 +134,8 @@ private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDis
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
-local playerName = UnitName("player")
+local playerName = private.isForever and GetUnitName("player") or UnitName("player")--Forever needs first and last name to be pulled
+local playerGUID = UnitGUID("player")
 private.playerLevel = UnitLevel("player")
 private.LastInstanceType = nil
 local playerRealm = GetRealmName()
@@ -1830,17 +1831,17 @@ do
 			end
 			self.AddOns = {}
 			private:OnModuleLoad()
-			if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("VEM-Core", playerGUID) >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infiniteLoopNotice, self, L.VEM)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerGUID) >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infiniteLoopNotice, self, L.OUTDATEDPROFILES)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerGUID) >= 1 then
 				---@type string|number
 				local version = C_AddOns.GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 				version = tonumber(string.sub(version, 2, 4)) or 0
@@ -1856,20 +1857,20 @@ do
 			if Plater and not Plater.db.profile.bossmod_support_bars_enabled and not DBM.Options.DontShowNameplateIconsCD then
 				C_TimerAfter(15, function() AddMsg(self, L.PLATER_NP_AURAS_MSG) end)
 			end
-			if C_AddOns.GetAddOnEnableState("DPMCore", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DPMCore", playerGUID) >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infiniteLoopNotice, self, L.DPMCORE)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerGUID) >= 1 then
 				self:Disable(true)
 				C_TimerAfter(15, function() AddMsg(self, L.VICTORYSOUND) end)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-LDB", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-LDB", playerGUID) >= 1 then
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLDB) end)
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-LootReminder", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-LootReminder", playerGUID) >= 1 then
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLOOTREMINDER) end)
 			end
 			self.Arrow:LoadPosition()
@@ -1912,7 +1913,7 @@ do
 			self.VoiceVersions = {}
 			for i = 1, C_AddOns.GetNumAddOns() do
 				local addonName = C_AddOns.GetAddOnInfo(i)
-				local enabled = C_AddOns.GetAddOnEnableState(i, playerName)
+				local enabled = C_AddOns.GetAddOnEnableState(i, playerGUID)
 				if C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod") then
 					if enabled ~= 0 then
 						if checkEntry(deprecatedMods, addonName) then
@@ -2206,7 +2207,7 @@ do
 			private:GetModule("CombatDetection"):StartInitializationTimers()
 			self:Schedule(10, runDelayedFunctions, self)
 			self:ZONE_CHANGED_NEW_AREA()
-			playerName = UnitName("player")--In case it's unknown at login, we check it again
+			playerName = private.isForever and GetUnitName("player") or UnitName("player")--Forever needs first and last name to be pulled
 			private:GetModule("CombatDetection"):SetPlayerName(playerName)
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
 			self.Options.fixBlizzApi = false
@@ -2389,15 +2390,15 @@ do
 	end
 
 	function DBM:LoadGUI()
-		if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("VEM-Core", playerGUID) >= 1 then
 			self:AddMsg(L.VEM)
 			return
 		end
-		if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerGUID) >= 1 then
 			self:AddMsg(L.OUTDATEDPROFILES)
 			return
 		end
-		if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerGUID) >= 1 then
 			---@type number|string
 			local version = C_AddOns.GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 			version = tonumber(string.sub(version, 2, 4)) or 0
@@ -2406,11 +2407,11 @@ do
 				return
 			end
 		end
-		if C_AddOns.GetAddOnEnableState("DPMCore", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DPMCore", playerGUID) >= 1 then
 			self:AddMsg(L.DPMCORE)
 			return
 		end
-		if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerGUID) >= 1 then
 			self:AddMsg(L.VICTORYSOUND)
 			return
 		end
@@ -2433,7 +2434,7 @@ do
 		end
 		local firstLoad = false
 		if not C_AddOns.IsAddOnLoaded("DBM-GUI") then
-			local enabled = C_AddOns.GetAddOnEnableState("DBM-GUI", playerName)
+			local enabled = C_AddOns.GetAddOnEnableState("DBM-GUI", playerGUID)
 			if enabled == 0 then
 				C_AddOns.EnableAddOn("DBM-GUI")
 			end
@@ -2989,7 +2990,7 @@ do
 	end
 
 	function DBM:GetMyPlayerInfo()
-		return playerName, private.playerLevel, playerRealm, normalizedPlayerRealm
+		return playerName, private.playerLevel, playerRealm, normalizedPlayerRealm, playerGUID
 	end
 
 	---Intentionally grabs server name at all times, usually to make sure warning/infoframe target info can name match the combat log in the table

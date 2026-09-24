@@ -1,6 +1,9 @@
 ---@class DBM
 local DBM = DBM
 
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 ---------------
 --  Globals  --
 ---------------
@@ -85,7 +88,7 @@ local frame, initializeDropdown, initializeDropdownLegacy, currentMapId, current
 local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
-local playerName = UnitName("player")
+local playerName = private.isForever and GetUnitName("player") or UnitName("player")
 ---@cast playerName string
 
 ---------------------
