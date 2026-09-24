@@ -149,6 +149,23 @@ local function showIcons(row, texture)
 	row.iconRight:SetShown(show and DBM.Options.TextTimersIconPosition ~= "LEFT")
 end
 
+local function setRowColor(row, time, colorType)
+	local urgent = DBM.Options.TextTimersUrgentThreshold > 0 and time <= DBM.Options.TextTimersUrgentThreshold
+	local r, g, b
+	if DBM.Options.TextTimersInheritBarColor and type(colorType) == "number" and colorType >= 0 and colorType <= 8 and colorType % 1 == 0 then
+		r, g, b = DBT:GetColorForType(colorType, urgent)
+	end
+	if not r then
+		if urgent then
+			r, g, b = DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB
+		else
+			r, g, b = DBM.Options.TextTimersFontR, DBM.Options.TextTimersFontG, DBM.Options.TextTimersFontB
+		end
+	end
+	row.text:SetTextColor(r, g, b)
+	row.time:SetTextColor(r, g, b)
+end
+
 function TextTimers:RefreshStyle()
 	if not frame then
 		if active then refresh() end
@@ -263,13 +280,7 @@ refresh = function()
 			local label = candidate.bar and _G[candidate.bar.frame:GetName() .. "BarName"]
 			local name = label and label:GetText() or candidate.data.name or candidate.id
 			setRowText(row, candidate.id, name, candidate.time)
-			if DBM.Options.TextTimersUrgentThreshold > 0 and candidate.time <= DBM.Options.TextTimersUrgentThreshold then
-				row.text:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
-				row.time:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
-			else
-				row.text:SetTextColor(DBM.Options.TextTimersFontR, DBM.Options.TextTimersFontG, DBM.Options.TextTimersFontB)
-				row.time:SetTextColor(DBM.Options.TextTimersFontR, DBM.Options.TextTimersFontG, DBM.Options.TextTimersFontB)
-			end
+			setRowColor(row, candidate.time, candidate.data.colorType or candidate.bar and candidate.bar.colorType)
 			local icon = candidate.data.icon
 			if not icon and candidate.bar then
 				local texture = _G[candidate.bar.frame:GetName() .. "BarIcon1"]
@@ -295,21 +306,21 @@ local function changed()
 	DBM:Schedule(0, wake)
 end
 
-local function began(_, id, name, duration, icon, _, _, _, _, keep, _, _, _, _, _, _, hasVariance, peak, enabled, textOnly)
+local function began(_, id, name, duration, icon, _, _, colorType, _, keep, _, _, _, _, _, _, hasVariance, peak, enabled, textOnly)
 	local bar = DBT:GetBar(id)
 	-- Encounter-timeline bars can contain protected text/icons. Check only DBT's
 	-- non-secret metadata before retaining callback data or reading bar fields.
 	if bar and bar.isSecret then
 		if tracked[id] then tracked[id] = nil; changed() end
 	elseif enabled and bar and not bar.dead and not bar.dummy then
-		tracked[id] = {name = name, icon = icon}
+		tracked[id] = {name = name, icon = icon, colorType = colorType}
 		changed()
 	elseif textOnly == true and not enabled and not bar and type(duration) == "number" and duration > 0 then
 		-- In variance mode DBT counts down from the peak; its 'zero at minimum'
 		-- option shifts the visible time back to the callback's minimum.
 		local time = hasVariance and DBT.Options.VarianceEnabled2 and type(peak) == "number" and peak or duration
 		local offset = hasVariance and DBT.Options.VarianceEnabled2 and DBT.Options.VarianceBehavior == "ZeroAtMinTimerAndNeg" and (time - duration) or 0
-		tracked[id] = {name = name, icon = icon, textOnly = true, expires = GetTime() + time, offset = offset, keep = keep}
+		tracked[id] = {name = name, icon = icon, colorType = colorType, textOnly = true, expires = GetTime() + time, offset = offset, keep = keep}
 		changed()
 	elseif tracked[id] then
 		tracked[id] = nil
@@ -428,13 +439,7 @@ renderPreview = function()
 			count = count + 1
 			local row = acquireRow(count)
 			setRowText(row, sample, sample.name, time)
-			if DBM.Options.TextTimersUrgentThreshold > 0 and time <= DBM.Options.TextTimersUrgentThreshold then
-				row.text:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
-				row.time:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
-			else
-				row.text:SetTextColor(DBM.Options.TextTimersFontR, DBM.Options.TextTimersFontG, DBM.Options.TextTimersFontB)
-				row.time:SetTextColor(DBM.Options.TextTimersFontR, DBM.Options.TextTimersFontG, DBM.Options.TextTimersFontB)
-			end
+			setRowColor(row, time, sample.colorType)
 			showIcons(row, sample.icon)
 			row:Show()
 		end
@@ -470,8 +475,8 @@ function TextTimers:TogglePreview(movable)
 		local threshold = DBM.Options.TextTimersThreshold
 		local duration = previewMovable and 20 or math.min(10, threshold)
 		previewTimers = {
-			{name = "Evil Spell", expires = now + math.min(7, threshold * 0.6), icon = 135826},
-			{name = "Boom", expires = now + duration, icon = 135826},
+			{name = "Evil Spell", expires = now + math.min(7, threshold * 0.6), icon = 135826, colorType = 3},
+			{name = "Boom", expires = now + duration, icon = 135826, colorType = 2},
 		}
 		self:RefreshStyle()
 		if preview then frame:SetScript("OnUpdate", previewOnUpdate) end

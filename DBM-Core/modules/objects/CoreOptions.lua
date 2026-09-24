@@ -176,6 +176,7 @@ DBM.DefaultOptions = {
 	TextTimersUrgentG = 0.1,
 	TextTimersUrgentB = 0.1,
 	TextTimersIcon = true,
+	TextTimersInheritBarColor = false,
 	TextTimersIconPosition = "LEFT",
 	TextTimersGrowDirection = "DOWN",
 	TextTimersX = 0,

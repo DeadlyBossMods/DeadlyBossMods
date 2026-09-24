@@ -20,6 +20,8 @@ enabled:HookScript("OnClick", function(self)
 end)
 local icon = general:CreateCheckButton(L.TextTimersIcon, true, nil, "TextTimersIcon")
 icon:HookScript("OnClick", function() display:RefreshStyle() end)
+local inheritColor = general:CreateCheckButton(L.TextTimersInheritBarColor, true, nil, "TextTimersInheritBarColor")
+inheritColor:HookScript("OnClick", function() display:RefreshStyle() end)
 
 local sliders = {}
 local function addSlider(label, option, low, high, step)
@@ -33,7 +35,7 @@ local function addSlider(label, option, low, high, step)
 end
 
 local threshold = addSlider(L.TextTimersThreshold, "TextTimersThreshold", 1, 15, 0.5)
-threshold:SetPoint("TOPLEFT", general.frame, "TOPLEFT", 50, -105)
+threshold:SetPoint("TOPLEFT", general.frame, "TOPLEFT", 50, -135)
 threshold.myheight = 60
 local maxLines = addSlider(L.TextTimersMaxLines, "TextTimersMaxLines", 1, 10, 1)
 maxLines:SetPoint("TOPLEFT", threshold, "TOPLEFT", 250, 0)
@@ -107,6 +109,7 @@ local function refreshControls()
 	options = DBM.Options
 	enabled:SetChecked(options.TextTimersEnabled)
 	icon:SetChecked(options.TextTimersIcon)
+	inheritColor:SetChecked(options.TextTimersInheritBarColor)
 	fontColor:SetColorRGB(options.TextTimersFontR, options.TextTimersFontG, options.TextTimersFontB)
 	urgent:SetColorRGB(options.TextTimersUrgentR, options.TextTimersUrgentG, options.TextTimersUrgentB)
 	for _, entry in ipairs(sliders) do
@@ -121,7 +124,7 @@ reset:SetScript("OnClick", function()
 	for _, option in ipairs({
 		"TextTimersEnabled", "TextTimersThreshold", "TextTimersMaxLines", "TextTimersMaxNameLength",
 		"TextTimersFont", "TextTimersFontSize", "TextTimersFontR", "TextTimersFontG", "TextTimersFontB", "TextTimersUrgentThreshold", "TextTimersUrgentR",
-		"TextTimersUrgentG", "TextTimersUrgentB", "TextTimersIcon", "TextTimersIconPosition", "TextTimersGrowDirection",
+		"TextTimersUrgentG", "TextTimersUrgentB", "TextTimersIcon", "TextTimersInheritBarColor", "TextTimersIconPosition", "TextTimersGrowDirection",
 	}) do
 		DBM.Options[option] = DBM.DefaultOptions[option]
 	end
