@@ -137,7 +137,7 @@ local function CreateOurFrame()
 			local playerName, _, playerRealm = DBM:GetMyPlayerInfo()
 			local fullname
 			if private.isForever then
-				fullname = fullname
+				fullname = playerName
 			else
 				fullname = playerName.."-"..playerRealm
 			end
