@@ -1,4 +1,12 @@
 -- Run from DBM-Retail: lua DBM-Test/Tools/CLI/TextTimersSmoke.lua
+-- Keep test-only WoW API replacements out of LuaLS's shared global namespace.
+local mockGlobals = setmetatable({}, {__index = _G})
+mockGlobals._G = mockGlobals
+local function loadMock(path)
+	local chunk = assert(loadfile(path, "t", mockGlobals))
+	if setfenv then setfenv(chunk, mockGlobals) end -- Lua 5.1 / LuaJIT
+	return chunk
+end
 local created, callbacks, scheduled, bars, frames = 0, {}, {}, {}, {}
 local function widget()
 	local object = {scripts = {}}
@@ -14,24 +22,25 @@ local function widget()
 	function object:GetHeight() return 60 end
 	return object
 end
-UIParent = widget()
-_G = _G or {}
-function CreateFrame()
+mockGlobals.UIParent = widget()
+local function CreateFrame()
 	created = created + 1
 	local frame = widget()
 	frames[#frames + 1] = frame
 	return frame
 end
-function wipe(t) for key in pairs(t) do t[key] = nil end end
-function LibStub() return {Fetch = function() return "Fonts\\FRIZQT__.TTF" end} end
+mockGlobals.CreateFrame = CreateFrame
+mockGlobals.wipe = function(t) for key in pairs(t) do t[key] = nil end end
+mockGlobals.LibStub = function() return {Fetch = function() return "Fonts\\FRIZQT__.TTF" end} end
 local now = 0
-function GetTime() return now end
+mockGlobals.GetTime = function() return now end
 
-DBM = {Options = {TextTimersEnabled = false, TextTimersThreshold = 5, TextTimersMaxLines = 5,
+local DBM = {Options = {TextTimersEnabled = false, TextTimersThreshold = 5, TextTimersMaxLines = 5,
 	TextTimersMaxNameLength = 20, TextTimersFont = "standardFont", TextTimersFontSize = 18,
 	TextTimersUrgentThreshold = 2, TextTimersUrgentR = 1, TextTimersUrgentG = 0,
 	TextTimersUrgentB = 0, TextTimersIcon = true, TextTimersIconPosition = "LEFT",
 	TextTimersLocked = true, TextTimersX = 0, TextTimersY = 150}, DefaultOptions = {TextTimersX = 0, TextTimersY = 150}}
+mockGlobals.DBM = DBM
 function DBM:RegisterCallback(event, handler)
 	assert(not callbacks[event], "duplicate callback")
 	callbacks[event] = handler
@@ -42,7 +51,8 @@ function DBM:UnregisterCallback(event, handler)
 end
 function DBM:Schedule(delay, handler) scheduled[handler] = delay end
 function DBM:Unschedule(handler) scheduled[handler] = nil end
-DBT = {Options = {VarianceEnabled2 = false}}
+local DBT = {Options = {VarianceEnabled2 = false}}
+mockGlobals.DBT = DBT
 function DBT:GetBar(id) return bars[id] end
 function DBT:GetBarIterator()
 	local activeBars = {}
@@ -50,7 +60,7 @@ function DBT:GetBarIterator()
 	return next, activeBars, nil
 end
 
-assert(loadfile("DBM-Core/DBM-TextTimers.lua"))("DBM-Core", {standardFont = "Fonts\\FRIZQT__.TTF"})
+loadMock("DBM-Core/DBM-TextTimers.lua")("DBM-Core", {standardFont = "Fonts\\FRIZQT__.TTF"})
 assert(created == 0 and not next(callbacks) and not next(scheduled), "disabled load did work")
 DBM.TextTimers:SyncOptions()
 assert(created == 0 and not next(callbacks) and not next(scheduled), "disabled sync did work")
@@ -84,6 +94,18 @@ assert(frames[2].text.text == "Meteor  4.0", "display did not use live bar time 
 bar.timer = 1.5
 frames[1].scripts.OnUpdate(frames[1], 0.11)
 assert(frames[2].text.text == "Meteor  1.5", "display kept a separate countdown")
+-- Numeric timeline IDs and string module IDs must sort safely at equal time.
+bars[42] = {id = 42, timer = 1.5, frame = {GetName = function() return "numeric" end}}
+callbacks.DBM_TimerBegin(nil, 42, "Numeric", 1.5, 123, "cd", 12, 1, 1, nil, nil, nil, nil, nil, false, "cd", nil, nil, true)
+for handler, delay in pairs(scheduled) do
+	if delay == 0 then scheduled[handler] = nil; handler() end
+end
+assert(frames[2].text.text == "Numeric  1.5" and frames[3].text.text == "Meteor  1.5", "mixed-type timer IDs failed tie sorting")
+callbacks.DBM_TimerStop(nil, 42)
+bars[42] = nil
+for handler, delay in pairs(scheduled) do
+	if delay == 0 then scheduled[handler] = nil; handler() end
+end
 bar.isSecret = true
 bar.timer = nil
 bar.frame = nil
@@ -141,13 +163,13 @@ DBM.TextTimers:SetEnabled(false)
 assert(not next(callbacks) and not next(scheduled), "second disable leaked callbacks")
 assert(DBM.TextTimers:TogglePreview() == 5, "preview did not return its GUI collapse duration")
 assert(not next(callbacks) and not next(scheduled), "disabled preview subscribed to timers")
-assert(frames[2].text.text == "Evil Spell  3.2" and frames[3].text.text == "Boom  5.0", "preview did not start sorted sample timers")
+assert(frames[2].text.text == "Evil Spell  3.0" and frames[3].text.text == "Boom  5.0", "preview did not start ordered sample timers")
 now = 1
 frames[1].scripts.OnUpdate(frames[1], 0.11)
-assert(frames[2].text.text == "Evil Spell  2.2" and frames[3].text.text == "Boom  4.0", "preview did not count down")
-now = 3.3
+assert(frames[2].text.text == "Evil Spell  2.0" and frames[3].text.text == "Boom  4.0", "preview did not count down")
+now = 3.5
 frames[1].scripts.OnUpdate(frames[1], 0.11)
-assert(frames[2].text.text == "Boom  1.7" and not frames[3].shown, "preview did not remove expired sample")
+assert(frames[2].text.text == "Boom  1.5" and not frames[3].shown, "preview did not remove the earlier sample")
 DBM.TextTimers:HidePreview()
 assert(not frames[1].shown and not frames[1].scripts.OnUpdate and not next(callbacks) and not next(scheduled), "preview teardown leaked work")
 DBM.TextTimers:TogglePreview()
@@ -163,7 +185,7 @@ DBM.TextTimers:SetEnabled(true)
 assert(callbacks.DBM_TimerBegin and not next(scheduled) and frames[1].scripts.OnUpdate, "enabled preview consumed live bar or stopped animating")
 now = 10
 frames[1].scripts.OnUpdate(frames[1], 0.11)
-assert(frames[2].text.text == "Evil Spell  2.2", "enabled preview did not count down")
+assert(frames[2].text.text == "Evil Spell  2.0", "enabled preview did not count down")
 DBM.TextTimers:SetEnabled(false)
 assert(not next(callbacks) and not next(scheduled) and frames[1].scripts.OnUpdate, "disabling live timers stopped preview or leaked work")
 DBM.TextTimers:SetEnabled(true)
@@ -244,7 +266,7 @@ assert(not next(callbacks) and not next(scheduled), "barless disable leaked call
 
 -- The GUI hides the panel while collapsing; that must not cancel its preview.
 local guiFrame, panelFrame = widget(), widget()
-_G.DBM_GUI_OptionsFrame = guiFrame
+mockGlobals.DBM_GUI_OptionsFrame = guiFrame
 function guiFrame:HookScript(event, handler) self.scripts[event] = handler end
 local function control()
 	local result = widget()
@@ -264,10 +286,10 @@ end
 function general.frame:HookScript(event, handler) self.scripts[event] = handler end
 local panel = {frame = panelFrame, CreateArea = function() return general end}
 function panelFrame:HookScript(event, handler) self.scripts[event] = handler end
-DBM_GUI_L = setmetatable({}, {__index = function(_, key) return key end})
-DEFAULT = "Default"
+mockGlobals.DBM_GUI_L = setmetatable({}, {__index = function(_, key) return key end})
+mockGlobals.DEFAULT = "Default"
 local collapseDuration
-DBM_GUI = {
+local DBM_GUI = {
 	Cat_Timers = {CreateNewPanel = function() return panel end},
 	MixinSharedMedia3 = function(_, _, fonts) return fonts end,
 	CollapseForPreview = function(_, duration)
@@ -277,12 +299,13 @@ DBM_GUI = {
 		panelFrame.scripts.OnHide()
 	end,
 }
-assert(loadfile("DBM-GUI/modules/options/timers/TextTimers.lua"))()
+mockGlobals.DBM_GUI = DBM_GUI
+loadMock("DBM-GUI/modules/options/timers/TextTimers.lua")()
 previewClick()
 assert(collapseDuration == 5 and guiFrame.collapsed and frames[1].shown and frames[1].scripts.OnUpdate, "collapsing GUI canceled the preview")
 now = 35
 frames[1].scripts.OnUpdate(frames[1], 0.11)
-assert(frames[2].text.text == "Evil Spell  2.2", "collapsed GUI preview did not keep counting down")
+assert(frames[2].text.text == "Evil Spell  2.0", "collapsed GUI preview did not keep counting down")
 guiFrame.scripts.OnHide()
 assert(not frames[1].shown and not frames[1].scripts.OnUpdate, "closing collapsed GUI left preview running")
 guiFrame.collapsed = false

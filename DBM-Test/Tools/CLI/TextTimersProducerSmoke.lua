@@ -1,9 +1,17 @@
 -- Run from DBM-Retail: lua DBM-Test/Tools/CLI/TextTimersProducerSmoke.lua
+-- Load actual addon code with private WoW globals, not LuaLS-visible global mocks.
+local mockGlobals = setmetatable({}, {__index = _G})
+mockGlobals._G = mockGlobals
+local function loadMock(path)
+	local chunk = assert(loadfile(path, "t", mockGlobals))
+	if setfenv then setfenv(chunk, mockGlobals) end -- Lua 5.1 / LuaJIT
+	return chunk
+end
 local events, bars, schedules, formats, now = {}, {}, {}, 0, 10
-DBM_CORE_L = {}
-function GetTime() return now end
-abs, tinsert, tremove = math.abs, table.insert, table.remove
-function tContains(t, value)
+mockGlobals.DBM_CORE_L = {}
+mockGlobals.GetTime = function() return now end
+mockGlobals.abs, mockGlobals.tinsert, mockGlobals.tremove = math.abs, table.insert, table.remove
+mockGlobals.tContains = function(t, value)
 	for _, entry in ipairs(t) do if entry == value then return true end end
 	return false
 end
@@ -18,7 +26,8 @@ function private:GetPrototype(name)
 	return prototypes[name]
 end
 function private:GetModule() return {Schedule = function() end, Unschedule = function() end, ScheduleLoop = function() end} end
-DBM = prototypes.DBM
+local DBM = prototypes.DBM
+mockGlobals.DBM = DBM
 DBM.Options = {HideDBMBars = true, TextTimersEnabled = false}
 function DBM:IsRestricted() return false end
 function DBM:IsNonPlayableGUID() return false end
@@ -49,7 +58,8 @@ function DBM:FireEvent(event, ...)
 		textState[id].expires = now + args[3] - args[2]
 	end
 end
-DBT = {Options = {VarianceEnabled2 = false}}
+local DBT = {Options = {VarianceEnabled2 = false}}
+mockGlobals.DBT = DBT
 function DBT:GetBar(id) return bars[id] end
 function DBT:CancelBar(id) bars[id] = nil end
 function DBT:CreateBar(timer, id)
@@ -58,7 +68,7 @@ function DBT:CreateBar(timer, id)
 	bars[id] = bar
 	return bar
 end
-assert(loadfile("DBM-Core/modules/objects/Timer.lua"))("DBM-Core", private)
+loadMock("DBM-Core/modules/objects/Timer.lua")("DBM-Core", private)
 local mod = {id = "TestMod", Options = {TimerOpt = true, TimerOptCVoice = 0}, timers = {}}
 function mod:GetLocalizedTimerText()
 	formats = formats + 1
@@ -144,8 +154,8 @@ timer = newTimer()
 timer:Start(12)
 DBM.Debug = function() end
 local state = 0
-C_EncounterTimeline = {GetEventState = function() return state end}
-assert(loadfile("DBM-Core/modules/EncounterEvents.lua"))("DBM-Core", private)
+mockGlobals.C_EncounterTimeline = {GetEventState = function() return state end}
+loadMock("DBM-Core/modules/EncounterEvents.lua")("DBM-Core", private)
 private.hardCodedTimers[42] = "Timer1"
 private.hardCodedTimerEvents["Timer1"] = 42
 now = 20

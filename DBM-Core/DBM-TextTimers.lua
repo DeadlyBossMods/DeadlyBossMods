@@ -186,7 +186,7 @@ refresh = function()
 		ensureFrame()
 		assert(frame)
 		table.sort(candidates, function(a, b)
-			if a.time == b.time then return a.id < b.id end
+			if a.time == b.time then return tostring(a.id) < tostring(b.id) end
 			return a.time < b.time
 		end)
 		local count = math.min(#candidates, DBM.Options.TextTimersMaxLines)
@@ -415,7 +415,7 @@ function TextTimers:TogglePreview()
 		local threshold = DBM.Options.TextTimersThreshold
 		local duration = math.min(10, threshold)
 		previewTimers = {
-			{name = "Evil Spell", expires = now + duration, icon = 135826},
+			{name = "Evil Spell", expires = now + math.min(7, threshold * 0.6), icon = 135826},
 			{name = "Boom", expires = now + duration, icon = 135826},
 		}
 		self:RefreshStyle()
