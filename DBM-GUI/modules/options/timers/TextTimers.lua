@@ -48,14 +48,22 @@ local urgentThreshold = addSlider(L.TextTimersUrgentThreshold, "TextTimersUrgent
 urgentThreshold:SetPoint("TOPLEFT", nameLength, "BOTTOMLEFT", 0, -35)
 urgentThreshold.myheight = 50
 
+local fontColor = general:CreateColorSelect(L.FontColor, function(_, r, g, b)
+	DBM.Options.TextTimersFontR = r
+	DBM.Options.TextTimersFontG = g
+	DBM.Options.TextTimersFontB = b
+	display:RefreshStyle()
+end)
+fontColor:SetPoint("TOPLEFT", fontSize, "BOTTOMLEFT", 0, -35)
+fontColor.myheight = 0
+
 local urgent = general:CreateColorSelect(L.TextTimersUrgentColor, function(_, r, g, b)
 	DBM.Options.TextTimersUrgentR = r
 	DBM.Options.TextTimersUrgentG = g
 	DBM.Options.TextTimersUrgentB = b
 	display:RefreshStyle()
 end)
-urgent:SetPoint("TOPLEFT", fontSize, "BOTTOMLEFT", 0, -35)
-urgent:SetWidth(250)
+urgent:SetPoint("TOPLEFT", fontColor, "TOPLEFT", 130, 0)
 urgent.myheight = 0
 
 local iconPosition = general:CreateDropdown(L.TextTimersIconPosition, {
@@ -99,6 +107,7 @@ local function refreshControls()
 	options = DBM.Options
 	enabled:SetChecked(options.TextTimersEnabled)
 	icon:SetChecked(options.TextTimersIcon)
+	fontColor:SetColorRGB(options.TextTimersFontR, options.TextTimersFontG, options.TextTimersFontB)
 	urgent:SetColorRGB(options.TextTimersUrgentR, options.TextTimersUrgentG, options.TextTimersUrgentB)
 	for _, entry in ipairs(sliders) do
 		entry[1]:SetValue(options[entry[2]])
@@ -111,7 +120,7 @@ end
 reset:SetScript("OnClick", function()
 	for _, option in ipairs({
 		"TextTimersEnabled", "TextTimersThreshold", "TextTimersMaxLines", "TextTimersMaxNameLength",
-		"TextTimersFont", "TextTimersFontSize", "TextTimersUrgentThreshold", "TextTimersUrgentR",
+		"TextTimersFont", "TextTimersFontSize", "TextTimersFontR", "TextTimersFontG", "TextTimersFontB", "TextTimersUrgentThreshold", "TextTimersUrgentR",
 		"TextTimersUrgentG", "TextTimersUrgentB", "TextTimersIcon", "TextTimersIconPosition", "TextTimersGrowDirection",
 	}) do
 		DBM.Options[option] = DBM.DefaultOptions[option]

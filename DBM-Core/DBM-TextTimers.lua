@@ -267,8 +267,8 @@ refresh = function()
 				row.text:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
 				row.time:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
 			else
-				row.text:SetTextColor(1, 1, 1)
-				row.time:SetTextColor(1, 1, 1)
+				row.text:SetTextColor(DBM.Options.TextTimersFontR, DBM.Options.TextTimersFontG, DBM.Options.TextTimersFontB)
+				row.time:SetTextColor(DBM.Options.TextTimersFontR, DBM.Options.TextTimersFontG, DBM.Options.TextTimersFontB)
 			end
 			local icon = candidate.data.icon
 			if not icon and candidate.bar then
@@ -432,8 +432,8 @@ renderPreview = function()
 				row.text:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
 				row.time:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
 			else
-				row.text:SetTextColor(1, 1, 1)
-				row.time:SetTextColor(1, 1, 1)
+				row.text:SetTextColor(DBM.Options.TextTimersFontR, DBM.Options.TextTimersFontG, DBM.Options.TextTimersFontB)
+				row.time:SetTextColor(DBM.Options.TextTimersFontR, DBM.Options.TextTimersFontG, DBM.Options.TextTimersFontB)
 			end
 			showIcons(row, sample.icon)
 			row:Show()
