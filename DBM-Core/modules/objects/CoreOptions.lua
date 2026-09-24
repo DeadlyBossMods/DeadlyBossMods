@@ -174,7 +174,6 @@ DBM.DefaultOptions = {
 	TextTimersUrgentB = 0.1,
 	TextTimersIcon = true,
 	TextTimersIconPosition = "LEFT",
-	TextTimersLocked = true,
 	TextTimersX = 0,
 	TextTimersY = 150,
 	SWarningAlphabetical = true,

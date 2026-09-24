@@ -15,7 +15,7 @@ local tracked = {}
 local rows = {}
 ---@type Frame?
 local frame
-local active, preview, elapsed = false, false, 0
+local active, preview, previewMovable, elapsed = false, false, false, 0
 local refresh, renderPreview
 local previewTimers
 
@@ -57,8 +57,9 @@ local function ensureFrame()
 	frame:SetFrameStrata("HIGH")
 	frame:SetMovable(true)
 	frame:RegisterForDrag("LeftButton")
+	frame:EnableMouse(false)
 	frame:SetScript("OnDragStart", function(self)
-		if preview or not DBM.Options.TextTimersLocked then self:StartMoving() end
+		if preview and previewMovable then self:StartMoving() end
 	end)
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
@@ -94,7 +95,7 @@ function TextTimers:RefreshStyle()
 		return
 	end
 	position()
-	frame:EnableMouse(preview or not DBM.Options.TextTimersLocked)
+	frame:EnableMouse(preview and previewMovable)
 	local size = DBM.Options.TextTimersFontSize
 	for i, row in ipairs(rows) do
 		row:SetHeight(size + 10)
@@ -365,7 +366,7 @@ renderPreview = function()
 	-- ordinary test bars would appear in the player's actual timer bar stack.
 	for _, sample in ipairs(previewTimers) do
 		local time = sample.expires - now
-		if time > 0 and time <= DBM.Options.TextTimersThreshold and count < DBM.Options.TextTimersMaxLines then
+		if time > 0 and (previewMovable or time <= DBM.Options.TextTimersThreshold) and count < DBM.Options.TextTimersMaxLines then
 			count = count + 1
 			local row = acquireRow(count)
 			row:SetHeight(size + 10)
@@ -403,17 +404,18 @@ local function previewOnUpdate(_, delta)
 	end
 end
 
-function TextTimers:TogglePreview()
+function TextTimers:TogglePreview(movable)
 	preview = not preview
 	if preview then
+		previewMovable = not not movable
 		ensureFrame()
 		assert(frame)
 		DBM:Unschedule(wake)
 		frame:SetScript("OnUpdate", nil)
-		frame:EnableMouse(true)
+		frame:EnableMouse(previewMovable)
 		local now = GetTime()
 		local threshold = DBM.Options.TextTimersThreshold
-		local duration = math.min(10, threshold)
+		local duration = previewMovable and 20 or math.min(10, threshold)
 		previewTimers = {
 			{name = "Evil Spell", expires = now + math.min(7, threshold * 0.6), icon = 135826},
 			{name = "Boom", expires = now + duration, icon = 135826},
@@ -422,6 +424,7 @@ function TextTimers:TogglePreview()
 		if preview then frame:SetScript("OnUpdate", previewOnUpdate) end
 		if preview then return duration end
 	else
+		previewMovable = false
 		previewTimers = nil
 		if frame then frame:SetScript("OnUpdate", nil) end
 		hideRows()

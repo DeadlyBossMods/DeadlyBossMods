@@ -12,8 +12,11 @@ local created, callbacks, scheduled, bars, frames = 0, {}, {}, {}, {}
 local fontUsed
 local function widget()
 	local object = {scripts = {}}
-	local methods = {"SetSize", "SetWidth", "SetHeight", "SetClampedToScreen", "SetFrameStrata", "SetMovable", "RegisterForDrag", "ClearAllPoints", "SetPoint", "Hide", "Show", "EnableMouse", "SetJustifyH", "SetShadowOffset", "SetTexCoord", "SetFont", "SetText", "SetTextColor", "SetShown", "SetTexture", "StartMoving", "StopMovingOrSizing"}
+	local methods = {"SetSize", "SetWidth", "SetHeight", "SetClampedToScreen", "SetFrameStrata", "SetMovable", "RegisterForDrag", "ClearAllPoints", "SetPoint", "Hide", "Show", "EnableMouse", "SetJustifyH", "SetShadowOffset", "SetTexCoord", "SetFont", "SetText", "SetTextColor", "SetShown", "SetTexture", "StopMovingOrSizing", "SetNormalFontObject", "SetHighlightFontObject", "SetColorRGB", "SetValue", "SetSelectedValue"}
 	for _, method in ipairs(methods) do rawset(object, method, function() end) end
+	function object:SetChecked(value) self.checked = value end
+	function object:EnableMouse(enabled) self.mouseEnabled = enabled end
+	function object:StartMoving() self.moving = true end
 	function object:SetFont(path) fontUsed = path end
 	function object:SetText(text) self.text = text end
 	function object:Show() self.shown = true end
@@ -42,7 +45,8 @@ local DBM = {Options = {TextTimersEnabled = false, TextTimersThreshold = 5, Text
 	TextTimersMaxNameLength = 0, TextTimersFont = "standardFont", TextTimersFontSize = 18,
 	TextTimersUrgentThreshold = 2, TextTimersUrgentR = 1, TextTimersUrgentG = 0,
 	TextTimersUrgentB = 0, TextTimersIcon = true, TextTimersIconPosition = "LEFT",
-	TextTimersLocked = true, TextTimersX = 0, TextTimersY = 150}, DefaultOptions = {TextTimersX = 0, TextTimersY = 150}}
+	TextTimersX = 0, TextTimersY = 150}, DefaultOptions = {TextTimersX = 0, TextTimersY = 150}}
+for option, value in pairs(DBM.Options) do DBM.DefaultOptions[option] = value end
 mockGlobals.DBM = DBM
 function DBM:IsFontValid(path) return path == "Fonts\\CUSTOM.TTF" end
 function DBM:RegisterCallback(event, handler)
@@ -94,6 +98,9 @@ assert(created == 0 and next(scheduled), "distant timer did not defer display")
 bar.timer = 4
 for handler in pairs(scheduled) do scheduled[handler] = nil; handler() end
 assert(created > 0, "enabled timer did not create display")
+assert(frames[1].mouseEnabled == false, "live text frame intercepted mouse input")
+frames[1].scripts.OnDragStart(frames[1])
+assert(not frames[1].moving, "live text frame started moving outside preview")
 assert(frames[2].text.text == "Meteor  4.0", "display did not use live bar time and label")
 local demoName = "Test Bar showing 5s Variance"
 callbacks.DBM_TimerBegin(nil, "timer1", demoName, 4, 123, "cd", 12, 1, 1, nil, nil, nil, nil, nil, false, "cd", nil, nil, true)
@@ -186,17 +193,29 @@ end
 assert(frames[1].shown and frames[2].text.text == "timer2  3.0", "mid-encounter scan included secret bar or missed ordinary bar")
 DBM.TextTimers:SetEnabled(false)
 assert(not next(callbacks) and not next(scheduled), "second disable leaked callbacks")
-assert(DBM.TextTimers:TogglePreview() == 5, "preview did not return its GUI collapse duration")
+assert(DBM.TextTimers:TogglePreview(true) == 20, "move preview did not return its GUI collapse duration")
+assert(frames[1].mouseEnabled == true, "preview did not enable mouse input")
+frames[1].scripts.OnDragStart(frames[1])
+assert(frames[1].moving, "preview did not permit dragging")
+frames[1].moving = false
 assert(not next(callbacks) and not next(scheduled), "disabled preview subscribed to timers")
-assert(frames[2].text.text == "Evil Spell  3.0" and frames[3].text.text == "Boom  5.0", "preview did not start ordered sample timers")
+assert(frames[2].text.text == "Evil Spell  3.0" and frames[3].text.text == "Boom  20.0", "move preview did not start sample timers")
 now = 1
 frames[1].scripts.OnUpdate(frames[1], 0.11)
-assert(frames[2].text.text == "Evil Spell  2.0" and frames[3].text.text == "Boom  4.0", "preview did not count down")
+assert(frames[2].text.text == "Evil Spell  2.0" and frames[3].text.text == "Boom  19.0", "move preview did not count down")
 now = 3.5
 frames[1].scripts.OnUpdate(frames[1], 0.11)
-assert(frames[2].text.text == "Boom  1.5" and not frames[3].shown, "preview did not remove the earlier sample")
+assert(frames[2].text.text == "Boom  16.5" and not frames[3].shown, "move preview did not remove the earlier sample")
 DBM.TextTimers:HidePreview()
+assert(frames[1].mouseEnabled == false, "preview teardown did not restore click-through")
+frames[1].scripts.OnDragStart(frames[1])
+assert(not frames[1].moving, "preview teardown left dragging enabled")
 assert(not frames[1].shown and not frames[1].scripts.OnUpdate and not next(callbacks) and not next(scheduled), "preview teardown leaked work")
+assert(DBM.TextTimers:TogglePreview() == 5, "test preview did not start")
+assert(frames[1].mouseEnabled == false, "test preview intercepted mouse input")
+frames[1].scripts.OnDragStart(frames[1])
+assert(not frames[1].moving, "test preview permitted dragging")
+DBM.TextTimers:HidePreview()
 DBM.TextTimers:TogglePreview()
 now = 9
 frames[1].scripts.OnUpdate(frames[1], 0.11)
@@ -307,16 +326,19 @@ function general:CreateSlider()
 end
 function general:CreateColorSelect() return control() end
 function general:CreateDropdown() return control() end
-local previewClick
-function general:CreateButton(_, _, _, onClick)
-	if not previewClick then previewClick = onClick end
-	return control()
+local buttons = {}
+function general:CreateButton(label, _, _, onClick)
+	local button = control()
+	if onClick then button.scripts.OnClick = onClick end
+	buttons[label] = button
+	return button
 end
 function general.frame:HookScript(event, handler) self.scripts[event] = handler end
 local panel = {frame = panelFrame, CreateArea = function() return general end}
 function panelFrame:HookScript(event, handler) self.scripts[event] = handler end
 mockGlobals.DBM_GUI_L = setmetatable({}, {__index = function(_, key) return key end})
 mockGlobals.DEFAULT = "Default"
+mockGlobals.GameFontNormalSmall = "GameFontNormalSmall"
 local collapseDuration
 local DBM_GUI = {
 	Cat_Timers = {CreateNewPanel = function() return panel end},
@@ -330,16 +352,21 @@ local DBM_GUI = {
 }
 mockGlobals.DBM_GUI = DBM_GUI
 loadMock("DBM-GUI/modules/options/timers/TextTimers.lua")()
-previewClick()
-assert(collapseDuration == 5 and guiFrame.collapsed and frames[1].shown and frames[1].scripts.OnUpdate, "collapsing GUI canceled the preview")
+assert(buttons.MoveMe and buttons.SpecWarn_ResetMe and not buttons.Test and not buttons.TextTimersReset, "GUI did not use the two standard corner buttons")
+buttons.MoveMe.scripts.OnClick()
+assert(collapseDuration == 20 and guiFrame.collapsed and frames[1].shown and frames[1].scripts.OnUpdate and frames[1].mouseEnabled, "collapsing GUI canceled the move preview")
 now = 35
 frames[1].scripts.OnUpdate(frames[1], 0.11)
-assert(frames[2].text.text == "Evil Spell  2.0", "collapsed GUI preview did not keep counting down")
+assert(frames[2].text.text == "Evil Spell  2.0", "collapsed GUI move preview did not keep counting down")
 guiFrame.scripts.OnHide()
 assert(not frames[1].shown and not frames[1].scripts.OnUpdate, "closing collapsed GUI left preview running")
 guiFrame.collapsed = false
-previewClick()
-guiFrame.collapsed = false
+DBM.Options.TextTimersEnabled = true
+DBM.Options.TextTimersThreshold = 3
+DBM.Options.TextTimersX = 80
+buttons.SpecWarn_ResetMe.scripts.OnClick()
+assert(DBM.Options.TextTimersEnabled == false and DBM.Options.TextTimersThreshold == 5 and DBM.Options.TextTimersX == 0, "reset did not restore text timer defaults and position")
+assert(not next(callbacks) and not frames[1].mouseEnabled, "reset left timers enabled or the frame interactive")
 panelFrame.scripts.OnHide()
 assert(not frames[1].shown and not frames[1].scripts.OnUpdate, "leaving the panel left preview running")
 print("TextTimersSmoke: OK")
