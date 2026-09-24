@@ -69,6 +69,16 @@ end)
 iconPosition:SetPoint("TOPLEFT", urgentThreshold, "BOTTOMLEFT", 0, -40)
 iconPosition.myheight = 90
 
+local growDirection = general:CreateDropdown(L.SetPAGrowDirection, {
+	{text = L.DOWN, value = "DOWN"},
+	{text = L.UP, value = "UP"},
+}, "DBM", "TextTimersGrowDirection", function(value)
+	DBM.Options.TextTimersGrowDirection = value
+	display:RefreshStyle()
+end)
+growDirection:SetPoint("TOPLEFT", iconPosition, "BOTTOMLEFT", 0, -15)
+growDirection.myheight = 40
+
 local fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{text = DEFAULT, value = "standardFont"},
 })
@@ -94,6 +104,7 @@ local function refreshControls()
 		entry[1]:SetValue(options[entry[2]])
 	end
 	iconPosition:SetSelectedValue(options.TextTimersIconPosition)
+	growDirection:SetSelectedValue(options.TextTimersGrowDirection)
 	font:SetSelectedValue(options.TextTimersFont)
 end
 
@@ -101,7 +112,7 @@ reset:SetScript("OnClick", function()
 	for _, option in ipairs({
 		"TextTimersEnabled", "TextTimersThreshold", "TextTimersMaxLines", "TextTimersMaxNameLength",
 		"TextTimersFont", "TextTimersFontSize", "TextTimersUrgentThreshold", "TextTimersUrgentR",
-		"TextTimersUrgentG", "TextTimersUrgentB", "TextTimersIcon", "TextTimersIconPosition",
+		"TextTimersUrgentG", "TextTimersUrgentB", "TextTimersIcon", "TextTimersIconPosition", "TextTimersGrowDirection",
 	}) do
 		DBM.Options[option] = DBM.DefaultOptions[option]
 	end

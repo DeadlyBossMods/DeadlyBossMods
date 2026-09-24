@@ -16,6 +16,7 @@ local rows = {}
 ---@type Frame?
 local frame
 local active, preview, previewMovable, elapsed = false, false, false, 0
+local updateInterval = 0.1
 local refresh, renderPreview
 local previewTimers
 
@@ -46,7 +47,21 @@ end
 local function position()
 	if not frame then return end
 	frame:ClearAllPoints()
-	frame:SetPoint("TOP", UIParent, "CENTER", DBM.Options.TextTimersX, DBM.Options.TextTimersY)
+	if DBM.Options.TextTimersGrowDirection == "UP" then
+		frame:SetPoint("BOTTOM", UIParent, "CENTER", DBM.Options.TextTimersX, DBM.Options.TextTimersY - DBM.Options.TextTimersFontSize - 10)
+	else
+		frame:SetPoint("TOP", UIParent, "CENTER", DBM.Options.TextTimersX, DBM.Options.TextTimersY)
+	end
+end
+
+local function positionRow(row, index, size)
+	row:SetHeight(size + 10)
+	row:ClearAllPoints()
+	if DBM.Options.TextTimersGrowDirection == "UP" then
+		row:SetPoint("BOTTOM", frame, "BOTTOM", 0, (index - 1) * (size + 10))
+	else
+		row:SetPoint("TOP", frame, "TOP", 0, -(index - 1) * (size + 10))
+	end
 end
 
 local function ensureFrame()
@@ -66,7 +81,8 @@ local function ensureFrame()
 		local x, y = self:GetCenter()
 		if x and y then
 			DBM.Options.TextTimersX = x - UIParent:GetCenter()
-			DBM.Options.TextTimersY = y + self:GetHeight() / 2 - select(2, UIParent:GetCenter())
+			local firstRowTop = DBM.Options.TextTimersGrowDirection == "UP" and y - self:GetHeight() / 2 + DBM.Options.TextTimersFontSize + 10 or y + self:GetHeight() / 2
+			DBM.Options.TextTimersY = firstRowTop - select(2, UIParent:GetCenter())
 		end
 		position()
 	end)
@@ -78,26 +94,49 @@ local function acquireRow(index)
 	if rows[index] then return rows[index] end
 	local row = CreateFrame("Frame", nil, frame)
 	row:SetSize(320, 30)
-	row:SetPoint("TOP", frame, "TOP", 0, -(index - 1) * 30)
 	row.text = row:CreateFontString(nil, "OVERLAY")
-	row.text:SetPoint("CENTER")
-	row.text:SetJustifyH("CENTER")
+	row.text:SetJustifyH("LEFT")
 	row.text:SetShadowOffset(1, -1)
+	row.time = row:CreateFontString(nil, "OVERLAY")
+	row.time:SetJustifyH("RIGHT")
+	row.time:SetShadowOffset(1, -1)
 	row.icon = row:CreateTexture(nil, "ARTWORK")
 	row.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 	row.iconRight = row:CreateTexture(nil, "ARTWORK")
 	row.iconRight:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 	rows[index] = row
+	local size = DBM.Options.TextTimersFontSize
+	positionRow(row, index, size)
+	local font = fontPath()
+	row.text:SetFont(font, size, "OUTLINE")
+	row.time:SetFont(font, size, "OUTLINE")
+	row.time:SetWidth(size * 4) -- Fixed-width field; the digits never move the label or icons.
+	row.icon:SetSize(size + 4, size + 4)
+	row.icon:SetPoint("RIGHT", row.text, "LEFT", -4, 0)
+	row.iconRight:SetSize(size + 4, size + 4)
+	row.iconRight:SetPoint("LEFT", row.time, "RIGHT", 4, 0)
 	return row
 end
 
 local function styleIcons(row, size)
 	row.icon:SetSize(size + 4, size + 4)
-	row.icon:ClearAllPoints()
-	row.icon:SetPoint("RIGHT", row.text, "LEFT", -4, 0)
 	row.iconRight:SetSize(size + 4, size + 4)
-	row.iconRight:ClearAllPoints()
-	row.iconRight:SetPoint("LEFT", row.text, "RIGHT", 4, 0)
+end
+
+local function setRowText(row, key, name, time)
+	if row.key ~= key or row.name ~= name then
+		row.key, row.name = key, name
+		row.text:SetText(cleanName(name))
+		row.text:ClearAllPoints()
+		row.text:SetPoint("LEFT", row, "CENTER", -(row.text:GetStringWidth() + 4 + row.time:GetWidth()) / 2, 0)
+		row.time:ClearAllPoints()
+		row.time:SetPoint("LEFT", row.text, "RIGHT", 4, 0)
+	end
+	local number = ("%.1f"):format(time)
+	if row.number ~= number then
+		row.number = number
+		row.time:SetText(number)
+	end
 end
 
 local function showIcons(row, texture)
@@ -119,10 +158,11 @@ function TextTimers:RefreshStyle()
 	frame:EnableMouse(preview and previewMovable)
 	local size = DBM.Options.TextTimersFontSize
 	for i, row in ipairs(rows) do
-		row:SetHeight(size + 10)
-		row:ClearAllPoints()
-		row:SetPoint("TOP", frame, "TOP", 0, -(i - 1) * (size + 10))
+		positionRow(row, i, size)
 		row.text:SetFont(fontPath(), size, "OUTLINE")
+		row.time:SetFont(fontPath(), size, "OUTLINE")
+		row.time:SetWidth(size * 4)
+		row.key = nil -- Font/size changes require a fresh label width and center.
 		styleIcons(row, size)
 	end
 	if preview then
@@ -162,9 +202,17 @@ local function wake()
 	refresh()
 end
 
+local function setUpdateInterval(count)
+	local interval = count > 1 and 0.02 or 0.1
+	if updateInterval ~= interval then
+		updateInterval = interval
+		elapsed = 0
+	end
+end
+
 local function onUpdate(_, delta)
 	elapsed = elapsed + delta
-	if elapsed >= 0.1 then
+	if elapsed >= updateInterval then
 		elapsed = 0
 		refresh()
 	end
@@ -206,23 +254,21 @@ refresh = function()
 			return a.time < b.time
 		end)
 		local count = math.min(#candidates, DBM.Options.TextTimersMaxLines)
-		local size, font = DBM.Options.TextTimersFontSize, fontPath()
+		setUpdateInterval(count)
+		local size = DBM.Options.TextTimersFontSize
 		frame:SetHeight(count * (size + 10))
 		for i = 1, count do
 			local candidate = candidates[i]
 			local row = acquireRow(i)
-			row.text:SetFont(font, size, "OUTLINE")
-			row:SetHeight(size + 10)
-			row:ClearAllPoints()
-			row:SetPoint("TOP", frame, "TOP", 0, -(i - 1) * (size + 10))
-			styleIcons(row, size)
 			local label = candidate.bar and _G[candidate.bar.frame:GetName() .. "BarName"]
 			local name = label and label:GetText() or candidate.data.name or candidate.id
-			row.text:SetText(("%s  %.1f"):format(cleanName(name), candidate.time))
+			setRowText(row, candidate.id, name, candidate.time)
 			if DBM.Options.TextTimersUrgentThreshold > 0 and candidate.time <= DBM.Options.TextTimersUrgentThreshold then
 				row.text:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
+				row.time:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
 			else
 				row.text:SetTextColor(1, 1, 1)
+				row.time:SetTextColor(1, 1, 1)
 			end
 			local icon = candidate.data.icon
 			if not icon and candidate.bar then
@@ -381,22 +427,20 @@ renderPreview = function()
 		if time > 0 and (previewMovable or time <= DBM.Options.TextTimersThreshold) and count < DBM.Options.TextTimersMaxLines then
 			count = count + 1
 			local row = acquireRow(count)
-			row:SetHeight(size + 10)
-			row:ClearAllPoints()
-			row:SetPoint("TOP", frame, "TOP", 0, -(count - 1) * (size + 10))
-			row.text:SetFont(fontPath(), size, "OUTLINE")
-			styleIcons(row, size)
-			row.text:SetText(("%s  %.1f"):format(cleanName(sample.name), time))
+			setRowText(row, sample, sample.name, time)
 			if DBM.Options.TextTimersUrgentThreshold > 0 and time <= DBM.Options.TextTimersUrgentThreshold then
 				row.text:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
+				row.time:SetTextColor(DBM.Options.TextTimersUrgentR, DBM.Options.TextTimersUrgentG, DBM.Options.TextTimersUrgentB)
 			else
 				row.text:SetTextColor(1, 1, 1)
+				row.time:SetTextColor(1, 1, 1)
 			end
 			showIcons(row, sample.icon)
 			row:Show()
 		end
 	end
 	for i = count + 1, #rows do rows[i]:Hide() end
+	setUpdateInterval(count)
 	if count == 0 then
 		TextTimers:TogglePreview()
 	else
@@ -407,7 +451,7 @@ end
 
 local function previewOnUpdate(_, delta)
 	elapsed = elapsed + delta
-	if elapsed >= 0.1 then
+	if elapsed >= updateInterval then
 		elapsed = 0
 		renderPreview()
 	end
