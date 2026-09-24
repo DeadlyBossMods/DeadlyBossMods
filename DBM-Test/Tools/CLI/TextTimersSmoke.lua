@@ -9,10 +9,12 @@ local function loadMock(path)
 	return chunk
 end
 local created, callbacks, scheduled, bars, frames = 0, {}, {}, {}, {}
+local fontUsed
 local function widget()
 	local object = {scripts = {}}
 	local methods = {"SetSize", "SetHeight", "SetClampedToScreen", "SetFrameStrata", "SetMovable", "RegisterForDrag", "ClearAllPoints", "SetPoint", "Hide", "Show", "EnableMouse", "SetJustifyH", "SetShadowOffset", "SetTexCoord", "SetFont", "SetText", "SetTextColor", "SetShown", "SetTexture", "StartMoving", "StopMovingOrSizing"}
 	for _, method in ipairs(methods) do rawset(object, method, function() end) end
+	function object:SetFont(path) fontUsed = path end
 	function object:SetText(text) self.text = text end
 	function object:Show() self.shown = true end
 	function object:Hide() self.shown = false end
@@ -42,6 +44,7 @@ local DBM = {Options = {TextTimersEnabled = false, TextTimersThreshold = 5, Text
 	TextTimersUrgentB = 0, TextTimersIcon = true, TextTimersIconPosition = "LEFT",
 	TextTimersLocked = true, TextTimersX = 0, TextTimersY = 150}, DefaultOptions = {TextTimersX = 0, TextTimersY = 150}}
 mockGlobals.DBM = DBM
+function DBM:IsFontValid(path) return path == "Fonts\\CUSTOM.TTF" end
 function DBM:RegisterCallback(event, handler)
 	assert(not callbacks[event], "duplicate callback")
 	callbacks[event] = handler
@@ -92,6 +95,13 @@ bar.timer = 4
 for handler in pairs(scheduled) do scheduled[handler] = nil; handler() end
 assert(created > 0, "enabled timer did not create display")
 assert(frames[2].text.text == "Meteor  4.0", "display did not use live bar time and label")
+DBM.Options.TextTimersFont = "Fonts\\CUSTOM.TTF"
+DBM.TextTimers:RefreshStyle()
+assert(fontUsed == "Fonts\\CUSTOM.TTF", "shared-media font path was not applied")
+DBM.Options.TextTimersFont = "missing font"
+DBM.TextTimers:RefreshStyle()
+assert(fontUsed == "Fonts\\FRIZQT__.TTF", "invalid font did not fall back")
+DBM.Options.TextTimersFont = "standardFont"
 bar.timer = 1.5
 frames[1].scripts.OnUpdate(frames[1], 0.11)
 assert(frames[2].text.text == "Meteor  1.5", "display kept a separate countdown")

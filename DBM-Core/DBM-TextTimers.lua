@@ -22,8 +22,8 @@ local previewTimers
 local function fontPath()
 	local font = DBM.Options.TextTimersFont
 	if font == "standardFont" then return private.standardFont end
-	local media = LibStub("LibSharedMedia-3.0")
-	return media:Fetch("font", font, true) or private.standardFont
+	if DBM:IsFontValid(font, private.standardFont, DBM.Options.TextTimersFontSize, "OUTLINE") then return font end
+	return private.standardFont
 end
 
 local function cleanName(text)

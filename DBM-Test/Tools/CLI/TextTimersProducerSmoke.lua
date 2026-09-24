@@ -8,7 +8,7 @@ local function loadMock(path)
 	if setfenv then setfenv(chunk, mockGlobals) end -- Lua 5.1 / LuaJIT
 	return chunk
 end
-local events, bars, schedules, formats, now = {}, {}, {}, 0, 10
+local events, bars, schedules, cleanupTasks, formats, now = {}, {}, {}, {}, 0, 10
 mockGlobals.DBM_CORE_L = {}
 mockGlobals.GetTime = function() return now end
 mockGlobals.abs, mockGlobals.tinsert, mockGlobals.tremove = math.abs, table.insert, table.remove
@@ -33,7 +33,7 @@ DBM.Options = {HideDBMBars = true, TextTimersEnabled = false}
 function DBM:IsRestricted() return false end
 function DBM:IsNonPlayableGUID() return false end
 function DBM:Unschedule(fn, _, id)
-	if fn == removeEntry then schedules[id] = nil end
+	if fn == removeEntry then schedules[id], cleanupTasks[id] = nil, nil end
 end
 function DBM:ParseSpellIcon(icon) return icon end
 local textState = {}
@@ -75,14 +75,15 @@ function mod:GetLocalizedTimerText()
 	formats = formats + 1
 	return "Test Timer"
 end
-function mod:Schedule(delay, fn, _, id) schedules[id] = delay end
-function mod:Unschedule(fn, _, id) schedules[id] = nil end
+function mod:Schedule(delay, fn, list, id) schedules[id], cleanupTasks[id] = delay, {fn, list, id} end
+function mod:Unschedule(fn, _, id) schedules[id], cleanupTasks[id] = nil, nil end
 local function newTimer()
 	return setmetatable({id = "Timer1", type = "cd", simpType = "cd", option = "TimerOpt", mod = mod, timer = 12, icon = 136116, startedTimers = {}}, {__index = prototypes.Timer})
 end
 local function clear()
 	for k in pairs(events) do events[k] = nil end
 	for k in pairs(schedules) do schedules[k] = nil end
+	for k in pairs(cleanupTasks) do cleanupTasks[k] = nil end
 	for k in pairs(bars) do bars[k] = nil end
 	for k in pairs(textState) do textState[k] = nil end
 	formats = 0
@@ -157,17 +158,48 @@ DBM.Debug = function() end
 local state = 0
 mockGlobals.C_EncounterTimeline = {GetEventState = function() return state end}
 loadMock("DBM-Core/modules/EncounterEvents.lua")("DBM-Core", private)
-private.hardCodedTimers[42] = "Timer1"
-private.hardCodedTimerEvents["Timer1"] = 42
+timer:SetEventID(42)
 now = 20
 state = 1
 DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(42)
 assert(DBM.TextTimers:GetBarlessRemaining("Timer1") == 11, "mapped barless timeline pause failed")
-now = 22
+assert(not cleanupTasks.Timer1, "timeline pause left the producer's original removal scheduled")
+now = 32 -- Past the original deadline (the timer started at 19).
+assert(#timer.startedTimers == 1, "paused timer lost its producer ID at the original deadline")
 state = 0
 DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(42)
 assert(DBM.TextTimers:GetBarlessRemaining("Timer1") == 11, "mapped barless timeline resume failed")
+assert(schedules.Timer1 == 11, "timeline resume did not reschedule producer cleanup")
+timer:Stop()
+assert(not DBM.TextTimers:GetBarlessRemaining("Timer1") and #timer.startedTimers == 0, "module Stop missed resumed text-only timer")
+timer:Start(12)
+timer:SetEventID(42)
 state = 3
 DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(42)
-assert(not DBM.TextTimers:GetBarlessRemaining("Timer1"), "mapped barless timeline cancel failed")
+assert(not DBM.TextTimers:GetBarlessRemaining("Timer1") and not cleanupTasks.Timer1 and #timer.startedTimers == 0, "mapped barless timeline cancel leaked producer state")
+-- Load only the core fallback method: loading all of DBM-Core.lua would require
+-- mocking the entire WoW runtime rather than testing this lifecycle boundary.
+local sourceFile = assert(io.open("DBM-Core/DBM-Core.lua", "r"))
+local source = sourceFile:read("*a")
+sourceFile:close()
+local fallback = assert(source:match("(function DBM:ResumeBlizzardAPI%(%).-end)%s+bossModPrototype.ResumeBlizzardAPI"))
+mockGlobals.private = private
+mockGlobals.wipe = function(t) for key in pairs(t) do t[key] = nil end end
+mockGlobals.fireEvent = function() end
+local fallbackChunk = assert(loadstring and loadstring(fallback) or load(fallback, "fallback", "t", mockGlobals))
+if setfenv then setfenv(fallbackChunk, mockGlobals) end
+fallbackChunk()
+timer:Start(12)
+timer:SetEventID(43)
+now = 33
+state = 1
+DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(43)
+assert(not schedules.Timer1 and DBM.TextTimers:GetBarlessRemaining("Timer1") == 11, "fallback setup did not pause mapped timer")
+now = 46 -- Past the original deadline while paused.
+DBM.Options.IgnoreBlizzAPI = true
+function DBM:RecoverBlizzardTimers()
+	assert(not self.TextTimers:GetBarlessRemaining("Timer1") and not schedules.Timer1 and #timer.startedTimers == 0, "fallback recovered Blizzard bars before stopping mapped text timer")
+end
+DBM:ResumeBlizzardAPI()
+assert(not DBM.Options.IgnoreBlizzAPI and not next(private.hardCodedTimers) and not next(private.hardCodedTimerOwners), "fallback left hardcoded timer mappings behind")
 print("TextTimersProducerSmoke: OK")

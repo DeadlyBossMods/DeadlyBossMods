@@ -289,6 +289,8 @@ function timerPrototype:SetEventID(eventID, ...)
 	hardcodedIds[#hardcodedIds + 1] = id
 	private.hardCodedTimerEvents = private.hardCodedTimerEvents or {}
 	private.hardCodedTimerEvents[id] = eventID
+	private.hardCodedTimerOwners = private.hardCodedTimerOwners or {}
+	private.hardCodedTimerOwners[id] = self
 end
 
 ---@param eventID number eventID of an event we need to be ignored by handlers because blizzard is using it incorrectly
@@ -830,6 +832,31 @@ local function textOnlyRemaining(id)
 	end
 end
 
+-- Timeline callbacks have the fully formatted timer ID, not the original Start
+-- arguments. Keep its producer's startedTimers cleanup in sync with the text clock.
+function timerPrototype:PauseTextOnly(id)
+	local remaining, paused = textOnlyRemaining(id)
+	if remaining and not paused then
+		self.mod:Unschedule(removeEntry, self.startedTimers, id)
+		DBM:FireEvent("DBM_TimerPause", id)
+	end
+end
+
+function timerPrototype:ResumeTextOnly(id)
+	local remaining, paused, keep = textOnlyRemaining(id)
+	if remaining and paused then
+		if not keep then self.mod:Schedule(remaining, removeEntry, self.startedTimers, id) end
+		DBM:FireEvent("DBM_TimerResume", id)
+	end
+end
+
+function timerPrototype:StopTextOnly(id)
+	if not textOnlyRemaining(id) then return end
+	self.mod:Unschedule(removeEntry, self.startedTimers, id)
+	removeEntry(self.startedTimers, id)
+	DBM:FireEvent("DBM_TimerStop", id)
+end
+
 local function updateTextOnly(self, id, remaining)
 	if remaining <= 0 then
 		self.mod:Unschedule(removeEntry, self.startedTimers, id)
@@ -1030,11 +1057,7 @@ function timerPrototype:Pause(...)
 	local bar = DBT:GetBar(id)
 	DBM:Unschedule(playCountSound, id)--Kill countdown on pause
 	if not bar then
-		local remaining, paused = textOnlyRemaining(id)
-		if remaining and not paused then
-			self.mod:Unschedule(removeEntry, self.startedTimers, id)
-			DBM:FireEvent("DBM_TimerPause", id)
-		end
+		self:PauseTextOnly(id)
 		return
 	end
 	if bar then
@@ -1061,11 +1084,7 @@ function timerPrototype:Resume(...)
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
 	if not bar then
-		local remaining, paused, keep = textOnlyRemaining(id)
-		if remaining and paused then
-			if not keep then self.mod:Schedule(remaining, removeEntry, self.startedTimers, id) end
-			DBM:FireEvent("DBM_TimerResume", id)
-		end
+		self:ResumeTextOnly(id)
 		return
 	end
 	if bar then
