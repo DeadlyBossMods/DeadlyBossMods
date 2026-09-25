@@ -674,9 +674,9 @@ local function updateAllAbsorb()
 			local absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
 			if absorbAmount and absorbAmount > 0 then
 				if totalAbsorb then
-					lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
+					lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
 				else
-					lines[UnitName(uId)] = mfloor(absorbAmount)
+					lines[DBM:GetUnitFullName(uId)] = mfloor(absorbAmount)
 				end
 			end
 		end
@@ -698,9 +698,9 @@ local function updatePlayerAbsorb()
 		end
 		if absorbAmount and absorbAmount > 0 then
 			if totalAbsorb then
-				lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
+				lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
 			else
-				lines[UnitName(uId)] = mfloor(absorbAmount)
+				lines[DBM:GetUnitFullName(uId)] = mfloor(absorbAmount)
 			end
 		end
 	end
