@@ -750,7 +750,7 @@ function timerPrototype:Stop(...)
 				end
 				--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
 				--This check is performed secondary to args scan so that no adds guids are overwritten
-				if not guid and self.mod.sendMainBossGUID and DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
+				if not DBM:IsRestricted() and not guid and self.mod.sendMainBossGUID and DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 					guid = UnitGUID("boss1")
 				end
 				if guid then--if guid, there is also a nameplate timer, so stop that too
@@ -783,7 +783,7 @@ end
 function timerPrototype:HardStop(guid)
 	--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
 	--This check is performed secondary to args scan so that no adds guids are overwritten
-	if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
+	if not DBM:IsRestricted() and not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 		guid = UnitGUID("boss1")
 	end
 	for i = #self.startedTimers, 1, -1 do
