@@ -26,7 +26,8 @@ local onUpdate, Point, Edge
 local callbacks = CallbackHandler:New(mod)
 local activeMarkers = 0
 local hudarActive = false
-local playerName = private.isForever and GetUnitName("player") or UnitName("player")
+local playerName = private.playerName
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 local encounterMarkers = {}
 
 local GetNumGroupMembers, IsInRaid = GetNumGroupMembers, IsInRaid

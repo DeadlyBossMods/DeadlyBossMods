@@ -269,7 +269,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			end
 			local targetName = private.isForever and GetUnitName(uId) or UnitName(uId)
 			if hudType == "arrow" then
-				local playerName = private.isForever and GetUnitName("player") or UnitName("player")
+				local playerName = private.playerName
 				local _, targetClass = UnitClass(uId)
 				local color2 = RAID_CLASS_COLORS[targetClass]
 				local m1 = DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "party", playerName, 0.1, hudDuration, 0, 1, 0, 1, nil):Appear()

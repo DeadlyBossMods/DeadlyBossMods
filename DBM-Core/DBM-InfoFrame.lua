@@ -88,7 +88,8 @@ local frame, initializeDropdown, initializeDropdownLegacy, currentMapId, current
 local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
-local playerName = private.isForever and GetUnitName("player") or UnitName("player")
+local playerName = private.playerName
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 ---@cast playerName string
 
 ---------------------

@@ -89,7 +89,8 @@ function DBM:ConsumeBlizzTargetSpecialWarning(formattedTargetName)
 	return consumed
 end
 
-local playerName = private.isForever and GetUnitName("player") or UnitName("player")
+local playerName = private.playerName
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 local textureCode = " |T%s:12:12|t "
 
 ---@param queue table

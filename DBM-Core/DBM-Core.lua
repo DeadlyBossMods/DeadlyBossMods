@@ -82,7 +82,7 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 424, "754bdce"--424.7
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.11"--Core version
+DBM.DisplayVersion = "12.1.12 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
 DBM.ReleaseRevision = releaseDate(2026, 9, 24) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
@@ -134,7 +134,8 @@ private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDis
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
-local playerName = private.isForever and GetUnitName("player") or UnitName("player")--Forever needs first and last name to be pulled
+local playerName = private.playerName
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 local playerGUID = UnitGUID("player")
 private.playerLevel = UnitLevel("player")
 private.LastInstanceType = nil
@@ -1821,6 +1822,11 @@ do
 				xpcall(v, geterrorhandler())
 			end
 			onLoadCallbacks = nil
+			local updatedPlayerName = private:ReadPlayerName()
+			if updatedPlayerName and updatedPlayerName ~= private.playerName then
+				private:UpdatePlayerName(updatedPlayerName)
+			end
+			private:ClearPlayerNameCallbacks()
 			self:LoadOptions()
 			DBM_ModsToLoadWithFullTestSupport = DBM_ModsToLoadWithFullTestSupport or {} -- Separate saved var because tests mess with the usual saved vars temporarily
 			DBM_ModsToLoadWithFullTestSupport.bossModsWithTests = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests or {}
@@ -2207,8 +2213,6 @@ do
 			private:GetModule("CombatDetection"):StartInitializationTimers()
 			self:Schedule(10, runDelayedFunctions, self)
 			self:ZONE_CHANGED_NEW_AREA()
-			playerName = private.isForever and GetUnitName("player") or UnitName("player")--Forever needs first and last name to be pulled
-			private:GetModule("CombatDetection"):SetPlayerName(playerName)
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
 			self.Options.fixBlizzApi = false
 			self.Options.DisableSWSound = false--In event it didn't get restored on combat end due to crash or reload
@@ -2273,6 +2277,7 @@ do
 	--- |"BossMod_DisableFriendlyNameplates"
 	--- |"BossMod_DisableHostileNameplates"
 	--- |"DBM_Debug"
+	--- |"DBM_PlayerNameChanged"
 	--- |"DBM_SetStage"
 	--- |"DBM_AffixEvent"
 	--- |"DBM_EnemyEngaged"
@@ -2359,6 +2364,7 @@ do
 		end
 	end
 end
+private:ActivatePlayerNameCallbacks()
 
 --------------------------
 --  OnUpdate/Scheduler  --
