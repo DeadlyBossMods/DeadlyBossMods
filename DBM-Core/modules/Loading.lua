@@ -219,11 +219,11 @@ do
 	function DBM:LoadModsOnDemand(checkTable, checkValue, delay)
 		self:Debug("LoadModsOnDemand fired for table " .. checkTable .. " value " .. tostring(checkValue))
 		local dmfMod
-		local playerName = self:GetMyPlayerInfo()
+		local _, _, _, _, playerGUID = self:GetMyPlayerInfo()
 		local mapID = self:GetCurrentArea()
 		for _, v in ipairs(self.AddOns) do
 			local modTable = v[checkTable]
-			local enabled = C_AddOns.GetAddOnEnableState(v.modId, playerName)
+			local enabled = C_AddOns.GetAddOnEnableState(v.modId, playerGUID)
 			if v.modId == "DBM-WorldEvents" and enabled ~= 0 and not C_AddOns.IsAddOnLoaded(v.modId) then
 				dmfMod = v
 			end
@@ -355,9 +355,9 @@ do
 		local guid = UnitGUID(uId)
 		if guid and DBM:IsCreatureGUID(guid) then
 			local cId = DBM:GetCIDFromGUID(guid)
-			local playerName = DBM:GetMyPlayerInfo()
+			local _, _, _, _, playerGUID = DBM:GetMyPlayerInfo()
 			for bosscId, addon in pairs(loadcIds) do
-				local enabled = C_AddOns.GetAddOnEnableState(addon, playerName)
+				local enabled = C_AddOns.GetAddOnEnableState(addon, playerGUID)
 				if cId and bosscId and cId == bosscId and not C_AddOns.IsAddOnLoaded(addon) and enabled ~= 0 then
 					for _, v in ipairs(DBM.AddOns) do
 						if v.modId == addon then

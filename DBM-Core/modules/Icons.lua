@@ -10,7 +10,8 @@ local tinsert, tsort = table.insert, table.sort
 local UnitIsUnit, UnitExists, UnitIsVisible, SetRaidTarget, GetRaidTargetIndex =
 	UnitIsUnit, UnitExists, UnitIsVisible, SetRaidTarget, GetRaidTargetIndex
 
-local playerName = UnitName("player")
+local playerName = private.playerName
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 
 --These still need to exist in private since they are heavily intertwined with DBM-Core
 --Do not move these to local/OnModuleEnd

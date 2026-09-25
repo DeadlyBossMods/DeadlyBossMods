@@ -1,6 +1,9 @@
 ---@class DBM
 local DBM = DBM
 
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 ---------------
 --  Globals  --
 ---------------
@@ -85,7 +88,8 @@ local frame, initializeDropdown, initializeDropdownLegacy, currentMapId, current
 local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
-local playerName = UnitName("player")
+local playerName = private.playerName
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 ---@cast playerName string
 
 ---------------------
@@ -671,9 +675,9 @@ local function updateAllAbsorb()
 			local absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
 			if absorbAmount and absorbAmount > 0 then
 				if totalAbsorb then
-					lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
+					lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
 				else
-					lines[UnitName(uId)] = mfloor(absorbAmount)
+					lines[DBM:GetUnitFullName(uId)] = mfloor(absorbAmount)
 				end
 			end
 		end
@@ -695,9 +699,9 @@ local function updatePlayerAbsorb()
 		end
 		if absorbAmount and absorbAmount > 0 then
 			if totalAbsorb then
-				lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
+				lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
 			else
-				lines[UnitName(uId)] = mfloor(absorbAmount)
+				lines[DBM:GetUnitFullName(uId)] = mfloor(absorbAmount)
 			end
 		end
 	end

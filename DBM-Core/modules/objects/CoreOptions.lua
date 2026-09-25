@@ -162,6 +162,25 @@ DBM.DefaultOptions = {
 	HideBlizzardTimeline = true,
 	HideDBMBars = false,
 	HideDBMWarnings = false,
+	TextTimersEnabled = false,
+	TextTimersThreshold = 5,
+	TextTimersMaxLines = 5,
+	TextTimersMaxNameLength = 0,
+	TextTimersFont = "standardFont",
+	TextTimersFontSize = 18,
+	TextTimersFontR = 1,
+	TextTimersFontG = 1,
+	TextTimersFontB = 1,
+	TextTimersUrgentThreshold = 2.5,
+	TextTimersUrgentR = 1,
+	TextTimersUrgentG = 0.1,
+	TextTimersUrgentB = 0.1,
+	TextTimersIcon = true,
+	TextTimersInheritBarColor = false,
+	TextTimersIconPosition = "LEFT",
+	TextTimersGrowDirection = "DOWN",
+	TextTimersX = 0,
+	TextTimersY = 150,
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
 	CustomSounds = 0,
@@ -583,6 +602,9 @@ function DBM:RepositionFrames()
 	-- rearrange position
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
+	if self.TextTimers then
+		self.TextTimers:SyncOptions()
+	end
 	if private.isRetail then
 		self:UpdateZoneAuraAnchors(1)
 	end
@@ -658,7 +680,10 @@ function DBM:GetProfileID()
 	local _, currentSpecName, currentSpecGroup = self:GetCurrentSpecInfo()
 
 	-- variable init
-	local fullname = playerName .. "-" .. playerRealm
+
+	--In forever, realm name can change based on server load, since you don't actually get a perma realm, just a random one in a given region in the mega realm
+	--So we ignore realm name. This works because character names are region locked, meaning it's not possible to have two of same first and last name anyways
+	local fullname = private.isForever and playerName or playerName .. "-" .. playerRealm
 	local profileNum = private.playerLevel > 9 and DBM_UseDualProfile and currentSpecGroup or 0
 
 	return fullname, profileNum, currentSpecName

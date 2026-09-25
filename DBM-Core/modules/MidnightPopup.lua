@@ -13,7 +13,7 @@ local L = DBM_CORE_L
 function MidnightPopup:ShowMidnightPopup()
 	local frame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 	frame:SetFrameStrata("FULLSCREEN_DIALOG") -- In front of other frames including DBM-GUI
-	frame:SetSize(600, 300)
+	frame:SetSize(600, 340)
 	frame:SetPoint("TOP", 0, -230)
 	frame.backdropInfo = {
 		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",
@@ -117,6 +117,18 @@ function MidnightPopup:ShowMidnightPopup()
 		rootDescription:CreateCheckbox(L.MN_BLIZZARD_WARNINGS, IsSelected2, SetSelected2, 1)
 		rootDescription:CreateCheckbox(L.MN_DBM_WARNINGS, IsSelected2, SetSelected2, 2)
 	end)
+
+	local timerText = frame:CreateFontString(nil, nil, "GameFontNormal")
+	timerText:SetWidth(520)
+	timerText:SetJustifyH("LEFT")
+	timerText:SetText(L.MN_TEXT_TIMERS_HEADER)
+	local timerCheckbox = CreateFrame("CheckButton", nil, frame, "OptionsBaseCheckButtonTemplate")
+	timerCheckbox:SetPoint("TOPLEFT", dropdown2, "BOTTOMLEFT", 0, -25)
+	timerCheckbox:SetChecked(DBM.Options.TextTimersEnabled)
+	timerCheckbox:SetScript("OnClick", function(self)
+		DBM.TextTimers:SetEnabled(self:GetChecked())
+	end)
+	timerText:SetPoint("TOPLEFT", timerCheckbox, "TOPRIGHT", 4, 0)
 
 	frame.button = CreateFrame("Button", nil, frame)
 	frame.button:SetHeight(24)

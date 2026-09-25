@@ -113,7 +113,7 @@ function mod:OnLimitedCombatStart()
 	self.vb.HungeringPyreCount = 1
 	self.vb.ResidualTollCount = 1
 	--Hardcode features first
-	if DBM.Options.HardcodedTimer and (self:IsHeroic() or self:IsEasy()) and not badStateDetected then
+	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -161,7 +161,7 @@ do
 		local handled = false
 
 		if stage == 1 then
-			--Live Heroic/Normal stage 1: Amani/Rend alternate on 40, Amani (30), Barrage (28/36), Rend (15), Pyre (11), Invoke (8)
+			--Live Mythic/Heroic/Normal stage 1: Amani/Rend alternate on 40, Amani (30), Barrage (28/36), Rend (15), Pyre (11), Invoke (8)
 			if timer == 40 then
 				normalStage1FortyCount = normalStage1FortyCount + 1
 				handled = true
@@ -192,6 +192,22 @@ do
 					warnPhase2:Show()
 					warnPhase2:Play("ptwo")
 				end
+			end
+		elseif stage == 1.5 then
+			--Mythic intermission: Restless Amani (25), Hungering Pyre (11); the next Invoke (8) begins stage 2.
+			if timer == 25 then
+				handled = true
+				timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
+			elseif timer == 11 then
+				handled = true
+				timerHungeringPyreCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "hungeringpyre", "HungeringPyreCount"))
+			elseif timer == 8 then
+				handled = true
+				self:SetStage(2)
+				normalStage2FortyCount = 0
+				timerInvokeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "invoke", "InvokeCount"))
+				warnPhase2:Show()
+				warnPhase2:Play("ptwo")
 			end
 		elseif stage == 2 then
 			--Live Heroic/Normal stage 2: Restless Amani (20/30), Barrage/Amani alternate on 40, Possession Barrage (28), Essence Rend (50), Invoke (8/48), Hungering Pyre (11)
@@ -235,12 +251,14 @@ do
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
-		if not self:IsHeroic() and not self:IsEasy() then return end--Hardcoded routing currently Heroic/Normal-only
 		local timerRouter = timersLive
 		local eventID = eventInfo.id
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
+			if self:IsMythic() and self:GetStage(1) and timer == 25 and not self:GetStage(1.5) then
+				self:SetStage(1.5)--Mythic intermission is uniquely identified by the 25-second Restless Amani timer
+			end
 			local elapsed = GetTime() - combatStartTime
 			if elapsed <= engageBatchWindow then
 				local pending = pendingEngageEvents[timer]

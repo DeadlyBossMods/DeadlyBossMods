@@ -200,9 +200,28 @@ DBT.DefaultOptions = {
 ---@field hasVariance boolean
 local barPrototype = {}
 local unusedBarObjects = {}
+-- A FontString that has displayed protected timeline text remains protected.
+-- Never reuse that frame for a normal/hardcoded bar.
+local unusedSecretBarObjects = {}
 local smallBars, largeBars, hiddenBars = {}, {}, {}
 local debugHistory, debugHistoryIndex, debugHistoryCount = {}, 0, 0
 local debugHistorySize = 10
+
+local function acquireUnusedBar(isSecret)
+	local unusedPool = isSecret and unusedSecretBarObjects or unusedBarObjects
+	while true do
+		local bar = next(unusedPool)
+		if not bar then return end
+		unusedPool[bar] = nil
+		if isSecret then return bar end
+		local label = _G[bar.frame:GetName() .. "BarName"]
+		if label and DBM:issecretvalue(label:GetText()) then
+			unusedSecretBarObjects[bar] = bar
+		else
+			return bar
+		end
+	end
+end
 
 local dbtFontResetNotified = false
 
@@ -524,10 +543,9 @@ do
 				newBar:ResetAnimations()
 			end
 		else -- Create a new bar
-			newBar = next(unusedBarObjects)
+			newBar = acquireUnusedBar(isSecret)
 			if newBar then
 				newBar.lastUpdate = GetTime()
-				unusedBarObjects[newBar] = nil
 				newBar.dead = nil -- Resurrected it :)
 				newBar.id = id
 				newBar.timer = timer
@@ -1465,7 +1483,10 @@ function barPrototype:Cancel()
 	self:RemoveFromList()
 	DBT.bars[self] = nil
 	barIDIndex[self.id] = nil
-	unusedBarObjects[self] = self
+	local label = _G[self.frame:GetName() .. "BarName"]
+	local hasSecretText = self.isSecret or label and DBM:issecretvalue(label:GetText())
+	local unusedPool = hasSecretText and unusedSecretBarObjects or unusedBarObjects
+	unusedPool[self] = self
 	self.dead = true
 	self.paused = nil
 	DBT.numBars = DBT.numBars - 1

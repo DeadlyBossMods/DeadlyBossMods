@@ -1,6 +1,9 @@
 ---@class DBM
 local DBM = DBM
 
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 -- globals
 ---@class DBMNameplateFrame
 local nameplateFrame = {}
@@ -11,7 +14,8 @@ local units = {}
 local nameplateTimerBars = {}
 local num_units = 0
 local lastOptionsUpdateTime = GetTime()
-local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
+local playerName, playerGUID = private.playerName, UnitGUID("player")
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
 ---@cast GetNamePlates fun(): table[] -- https://github.com/Ketho/vscode-wow-api/issues/122
 local twipe, floor, strsub, strbyte= table.wipe, math.floor, _G.strsub, _G.strbyte

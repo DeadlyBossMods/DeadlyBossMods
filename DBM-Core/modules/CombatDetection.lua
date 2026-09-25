@@ -36,7 +36,7 @@ local combatInitialized, healthCombatInitialized = false, false
 local watchFrameRestore, questieWatchRestore, bossuIdFound = false, false, false
 local delayedFunction
 
-local playerName = UnitName("player")
+local playerName = private.playerName
 local normalizedPlayerRealm = GetRealmName():gsub("[%s-]+", "")
 local tinsert, twipe = table.insert, table.wipe
 local pairs, ipairs, type, select = pairs, ipairs, type, select
@@ -79,6 +79,7 @@ end
 function module:SetPlayerName(name)
 	playerName = name
 end
+private:RegisterPlayerNameCallback(function(_, name) module:SetPlayerName(name) end)
 
 function module:ClearSpamTimers(time)
 	lastCombatStarted = time

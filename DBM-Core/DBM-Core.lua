@@ -82,10 +82,10 @@ DBM.TaintedByTests = false -- Tests may mess with some internal state, you proba
 private.fakeBWVersion, private.fakeBWHash = 424, "754bdce"--424.7
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.11 alpha"--Core version
+DBM.DisplayVersion = "12.1.12 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 9, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 9, 24) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -134,7 +134,9 @@ private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDis
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
-local playerName = UnitName("player")
+local playerName = private.playerName
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
+local playerGUID = UnitGUID("player")
 private.playerLevel = UnitLevel("player")
 private.LastInstanceType = nil
 local playerRealm = GetRealmName()
@@ -510,18 +512,25 @@ function DBM:ResumeBlizzardAPI()
 		DBM.Options.IgnoreBlizzAPI = false
 		fireEvent("DBM_ResumeBlizzAPI")
 	end
-	--Cancel any hardcoded bars that are still running to avoid duplicates once Blizzard bars are recovered
+	--Cancel hardcoded bars and their producer-owned text-only counterparts before
+	-- recovering Blizzard timers, so rejected predictions cannot keep counting down.
 	if private.hardCodedTimers then
 		for _, timerIds in pairs(private.hardCodedTimers) do
 			if type(timerIds) == "table" then
 				for _, timerId in ipairs(timerIds) do
 					DBT:CancelBar(timerId)
+					local owner = private.hardCodedTimerOwners and private.hardCodedTimerOwners[timerId]
+					if owner then owner:StopTextOnly(timerId) end
 				end
 			else
 				DBT:CancelBar(timerIds)
+				local owner = private.hardCodedTimerOwners and private.hardCodedTimerOwners[timerIds]
+				if owner then owner:StopTextOnly(timerIds) end
 			end
 		end
 		wipe(private.hardCodedTimers)
+		if private.hardCodedTimerOwners then wipe(private.hardCodedTimerOwners) end
+		if private.hardCodedTimerEvents then wipe(private.hardCodedTimerEvents) end
 	end
 	DBM:RecoverBlizzardTimers()
 end
@@ -1813,24 +1822,32 @@ do
 				xpcall(v, geterrorhandler())
 			end
 			onLoadCallbacks = nil
+			local updatedPlayerName = private:ReadPlayerName()
+			if updatedPlayerName and updatedPlayerName ~= private.playerName then
+				private:UpdatePlayerName(updatedPlayerName)
+			end
+			private:ClearPlayerNameCallbacks()
 			self:LoadOptions()
 			DBM_ModsToLoadWithFullTestSupport = DBM_ModsToLoadWithFullTestSupport or {} -- Separate saved var because tests mess with the usual saved vars temporarily
 			DBM_ModsToLoadWithFullTestSupport.bossModsWithTests = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests or {}
 			DBM_ModsToLoadWithFullTestSupport.addonsWithTests = DBM_ModsToLoadWithFullTestSupport.addonsWithTests or {}
 			DBT:LoadOptions("DBM")
+			if self.TextTimers then
+				self.TextTimers:SyncOptions()
+			end
 			self.AddOns = {}
 			private:OnModuleLoad()
-			if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("VEM-Core", playerGUID) >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infiniteLoopNotice, self, L.VEM)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerGUID) >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infiniteLoopNotice, self, L.OUTDATEDPROFILES)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerGUID) >= 1 then
 				---@type string|number
 				local version = C_AddOns.GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 				version = tonumber(string.sub(version, 2, 4)) or 0
@@ -1846,20 +1863,20 @@ do
 			if Plater and not Plater.db.profile.bossmod_support_bars_enabled and not DBM.Options.DontShowNameplateIconsCD then
 				C_TimerAfter(15, function() AddMsg(self, L.PLATER_NP_AURAS_MSG) end)
 			end
-			if C_AddOns.GetAddOnEnableState("DPMCore", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DPMCore", playerGUID) >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infiniteLoopNotice, self, L.DPMCORE)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerGUID) >= 1 then
 				self:Disable(true)
 				C_TimerAfter(15, function() AddMsg(self, L.VICTORYSOUND) end)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-LDB", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-LDB", playerGUID) >= 1 then
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLDB) end)
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-LootReminder", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-LootReminder", playerGUID) >= 1 then
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLOOTREMINDER) end)
 			end
 			self.Arrow:LoadPosition()
@@ -1902,7 +1919,7 @@ do
 			self.VoiceVersions = {}
 			for i = 1, C_AddOns.GetNumAddOns() do
 				local addonName = C_AddOns.GetAddOnInfo(i)
-				local enabled = C_AddOns.GetAddOnEnableState(i, playerName)
+				local enabled = C_AddOns.GetAddOnEnableState(i, playerGUID)
 				if C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod") then
 					if enabled ~= 0 then
 						if checkEntry(deprecatedMods, addonName) then
@@ -2196,8 +2213,6 @@ do
 			private:GetModule("CombatDetection"):StartInitializationTimers()
 			self:Schedule(10, runDelayedFunctions, self)
 			self:ZONE_CHANGED_NEW_AREA()
-			playerName = UnitName("player")--In case it's unknown at login, we check it again
-			private:GetModule("CombatDetection"):SetPlayerName(playerName)
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
 			self.Options.fixBlizzApi = false
 			self.Options.DisableSWSound = false--In event it didn't get restored on combat end due to crash or reload
@@ -2262,6 +2277,7 @@ do
 	--- |"BossMod_DisableFriendlyNameplates"
 	--- |"BossMod_DisableHostileNameplates"
 	--- |"DBM_Debug"
+	--- |"DBM_PlayerNameChanged"
 	--- |"DBM_SetStage"
 	--- |"DBM_AffixEvent"
 	--- |"DBM_EnemyEngaged"
@@ -2272,6 +2288,7 @@ do
 	--- |"DBM_TimerPause"
 	--- |"DBM_TimerResume"
 	--- |"DBM_TimerUpdateIcon"
+	--- |"DBM_TimerUpdateName"
 	--- |"DBM_NameplateBegin"
 	--- |"DBM_NameplateStart"
 	--- |"DBM_NameplateStop"
@@ -2347,6 +2364,7 @@ do
 		end
 	end
 end
+private:ActivatePlayerNameCallbacks()
 
 --------------------------
 --  OnUpdate/Scheduler  --
@@ -2378,15 +2396,15 @@ do
 	end
 
 	function DBM:LoadGUI()
-		if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("VEM-Core", playerGUID) >= 1 then
 			self:AddMsg(L.VEM)
 			return
 		end
-		if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerGUID) >= 1 then
 			self:AddMsg(L.OUTDATEDPROFILES)
 			return
 		end
-		if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerGUID) >= 1 then
 			---@type number|string
 			local version = C_AddOns.GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 			version = tonumber(string.sub(version, 2, 4)) or 0
@@ -2395,11 +2413,11 @@ do
 				return
 			end
 		end
-		if C_AddOns.GetAddOnEnableState("DPMCore", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DPMCore", playerGUID) >= 1 then
 			self:AddMsg(L.DPMCORE)
 			return
 		end
-		if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerGUID) >= 1 then
 			self:AddMsg(L.VICTORYSOUND)
 			return
 		end
@@ -2422,7 +2440,7 @@ do
 		end
 		local firstLoad = false
 		if not C_AddOns.IsAddOnLoaded("DBM-GUI") then
-			local enabled = C_AddOns.GetAddOnEnableState("DBM-GUI", playerName)
+			local enabled = C_AddOns.GetAddOnEnableState("DBM-GUI", playerGUID)
 			if enabled == 0 then
 				C_AddOns.EnableAddOn("DBM-GUI")
 			end
@@ -2978,7 +2996,7 @@ do
 	end
 
 	function DBM:GetMyPlayerInfo()
-		return playerName, private.playerLevel, playerRealm, normalizedPlayerRealm
+		return playerName, private.playerLevel, playerRealm, normalizedPlayerRealm, playerGUID
 	end
 
 	---Intentionally grabs server name at all times, usually to make sure warning/infoframe target info can name match the combat log in the table
