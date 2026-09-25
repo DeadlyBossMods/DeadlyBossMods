@@ -124,6 +124,13 @@ local function styleIcons(row, size)
 end
 
 local function setRowText(row, key, name, time)
+	-- A recycled DBT FontString can retain protected text even after the bar's
+	-- current metadata no longer identifies it as secret. Never compare or reuse
+	-- a protected cached value from an earlier refresh.
+	if DBM:issecretvalue(row.key) or DBM:issecretvalue(row.name) then
+		row.key, row.name = nil, nil
+	end
+	if DBM:issecretvalue(key) or DBM:issecretvalue(name) then return end
 	if row.key ~= key or row.name ~= name then
 		row.key, row.name = key, name
 		row.text:SetText(cleanName(name))
@@ -250,7 +257,15 @@ refresh = function()
 				tracked[id] = nil
 			elseif not data.paused or bar then
 				if time > 0 and time <= threshold then
-					candidates[#candidates + 1] = {id = id, bar = bar, data = data, time = time}
+					local label = bar and _G[bar.frame:GetName() .. "BarName"]
+					local name = label and label:GetText() or data.name or id
+					-- DBT metadata normally marks timeline bars as secret, but the
+					-- FontString value is authoritative when a bar frame is reused.
+					if DBM:issecretvalue(name) then
+						tracked[id] = nil
+					else
+						candidates[#candidates + 1] = {id = id, bar = bar, data = data, name = name, time = time}
+					end
 				elseif time > threshold then
 					local delay = time - threshold
 					if not nextWake or delay < nextWake then nextWake = delay end
@@ -277,9 +292,7 @@ refresh = function()
 		for i = 1, count do
 			local candidate = candidates[i]
 			local row = acquireRow(i)
-			local label = candidate.bar and _G[candidate.bar.frame:GetName() .. "BarName"]
-			local name = label and label:GetText() or candidate.data.name or candidate.id
-			setRowText(row, candidate.id, name, candidate.time)
+			setRowText(row, candidate.id, candidate.name, candidate.time)
 			setRowColor(row, candidate.time, candidate.data.colorType or candidate.bar and candidate.bar.colorType)
 			local icon = candidate.data.icon
 			if not icon and candidate.bar then
