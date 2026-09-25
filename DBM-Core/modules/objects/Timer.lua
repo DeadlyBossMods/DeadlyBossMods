@@ -742,16 +742,18 @@ function timerPrototype:Stop(...)
 		for i = #self.startedTimers, 1, -1 do
 			if self.startedTimers[i] == id then
 				local guid
-				for j = 1, select("#", ...) do
-					local v = select(j, ...)
-					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
-						guid = v--If found, guid will be passed in DBM_TimerBegin callback
+				if not DBM:IsRestricted() then
+					for j = 1, select("#", ...) do
+						local v = select(j, ...)
+						if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+							guid = v--If found, guid will be passed in DBM_TimerStop callback
+						end
 					end
-				end
-				--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
-				--This check is performed secondary to args scan so that no adds guids are overwritten
-				if not DBM:IsRestricted() and not guid and self.mod.sendMainBossGUID and DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
-					guid = UnitGUID("boss1")
+					--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
+					--This check is performed secondary to args scan so that no adds guids are overwritten
+					if not guid and self.mod.sendMainBossGUID and DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
+						guid = UnitGUID("boss1")
+					end
 				end
 				if guid then--if guid, there is also a nameplate timer, so stop that too
 					DBM:FireEvent("DBM_NameplateStop", id, guid)
@@ -781,6 +783,7 @@ end
 --This is especially useful for count timers where guid is 2nd arg and count is 1st
 --where Stop(guid) would mismatch object and not stop a bar and calling stop on every possible count is silly and stop without args wouldn't send GUID
 function timerPrototype:HardStop(guid)
+	if DBM:issecretvalue(guid) then guid = nil end
 	--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
 	--This check is performed secondary to args scan so that no adds guids are overwritten
 	if not DBM:IsRestricted() and not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
@@ -903,11 +906,13 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 	end
 	if bar then -- still need to check as :Start() can return nil instead of actually starting the timer
 		local guid
-		if select("#", ...) > 0 then--If timer has args
-			for i = 1, select("#", ...) do
-				local v = select(i, ...)
-				if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
-					guid = v--If found, guid will be passed in callback
+		if not DBM:IsRestricted() then
+			if select("#", ...) > 0 then--If timer has args
+				for i = 1, select("#", ...) do
+					local v = select(i, ...)
+					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+						guid = v--If found, guid will be passed in callback
+					end
 				end
 			end
 		end
@@ -972,11 +977,13 @@ function timerPrototype:AddTime(extendAmount, ...)
 				end
 			end
 			local guid
-			if select("#", ...) > 0 then--If timer has args
-				for i = 1, select("#", ...) do
-					local v = select(i, ...)
-					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
-						guid = v--If found, guid will be passed in callback
+			if not DBM:IsRestricted() then
+				if select("#", ...) > 0 then--If timer has args
+					for i = 1, select("#", ...) do
+						local v = select(i, ...)
+						if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+							guid = v--If found, guid will be passed in callback
+						end
 					end
 				end
 			end
@@ -1008,11 +1015,13 @@ function timerPrototype:RemoveTime(reduceAmount, ...)
 		if elapsed and total then
 			local newRemaining = (total - reduceAmount) - elapsed
 			local guid
-			if select("#", ...) > 0 then--If timer has args
-				for i = 1, select("#", ...) do
-					local v = select(i, ...)
-					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
-						guid = v--If found, guid will be passed in callback
+			if not DBM:IsRestricted() then
+				if select("#", ...) > 0 then--If timer has args
+					for i = 1, select("#", ...) do
+						local v = select(i, ...)
+						if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+							guid = v--If found, guid will be passed in callback
+						end
 					end
 				end
 			end
@@ -1063,11 +1072,13 @@ function timerPrototype:Pause(...)
 	if bar then
 		self.mod:Unschedule(removeEntry, self.startedTimers, id)--Prevent removal from startedTimers table while bar is paused
 		local guid
-		if select("#", ...) > 0 then--If timer has args
-			for i = 1, select("#", ...) do
-				local v = select(i, ...)
-				if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
-					guid = v--If found, guid will be passed in callback
+		if not DBM:IsRestricted() then
+			if select("#", ...) > 0 then--If timer has args
+				for i = 1, select("#", ...) do
+					local v = select(i, ...)
+					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+						guid = v--If found, guid will be passed in callback
+					end
 				end
 			end
 		end
@@ -1104,11 +1115,13 @@ function timerPrototype:Resume(...)
 			end
 		end
 		local guid
-		if select("#", ...) > 0 then--If timer has args
-			for i = 1, select("#", ...) do
-				local v = select(i, ...)
-				if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
-					guid = v--If found, guid will be passed in callback
+		if not DBM:IsRestricted() then
+			if select("#", ...) > 0 then--If timer has args
+				for i = 1, select("#", ...) do
+					local v = select(i, ...)
+					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
+						guid = v--If found, guid will be passed in callback
+					end
 				end
 			end
 		end
