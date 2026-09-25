@@ -263,7 +263,6 @@ L.RaidWarnColor_4 					= "색상 4"
 L.RaidWarnColor 					= "색상"--Only one used in midnight
 L.InfoRaidWarning					= [[레이드 경고 프레임의 위치와 색상을 설정할 수 있습니다.
 본 프레임은 "플레이어 X가 Y에 걸렸습니다"와 같은 메시지를 표시하는데 사용됩니다.]]
-
 L.ColorResetted 					= "이 영역의 색상 설정을 초기화 합니다."
 L.ShowWarningsInChat 				= "대화창에서 알림 보기"
 L.WarningIconLeft 					= "왼쪽에 아이콘 표시"
@@ -415,6 +414,7 @@ L.EventFilterMythicMusic			= "신화/신화+ 난이도에선 보스 전투 배�
 -- Tab: Timers
 L.TabCategory_Timers				= "타이머 바"
 L.Area_ColorBytype					= "속성별 바 색상 가이드"
+-- Panel: Color by Type
 L.Panel_ColorByType	 				= "바 색상"
 L.AreaTitle_BarColors				= "일반 바 색상 (기본값은 스킬 속성마다 지정)"
 L.AreaTitle_ImpBarColors			= "중요 바 색상 (사용자가 중요로 설정한 바)"
@@ -494,19 +494,19 @@ L.CVoiceThree						= "전역 초읽기 3"
 -- Panel: Bar Appearance
 L.Panel_Appearance	 				= "바 외형"
 L.Panel_Behavior	 				= "바 작동 방식"
-L.Panel_TextTimers					= "문자 타이머"
-L.Area_TextTimers					= "곧 종료되는 타이머 문자 (DBM 하드코딩 바의 데이터를 사용하며, 바가 보이지 않아도 표시)"
-L.TextTimersEnable					= "종료 직전에 문자 타이머 표시"
-L.TextTimersThreshold				= "남은 시간 표시 기준 (초)"
+L.Panel_TextTimers					= "텍스트 타이머"
+L.Area_TextTimers					= "곧 종료될 타이머 텍스트 (하드코딩된 DBM 바 데이터를 사용하기 때문에 바가 보이지 않아도 표시됨)"
+L.TextTimersEnable					= "종료 직전에 타이머 텍스트 표시 (기본값은 꺼져 있음)"
+L.TextTimersThreshold				= "남은 시간 표시 시점 (초)"
 L.TextTimersMaxLines				= "최대 줄 수"
 L.TextTimersMaxNameLength			= "최대 이름 길이 (0: 무제한)"
-L.TextTimersFontSize				= "문자 크기"
-L.TextTimersUrgentThreshold			= "긴급 표시 기준 초 (0: 끔)"
-L.TextTimersUrgentColor				= "긴급 색상"
-L.TextTimersIcon					= "기술 아이콘 표시"
-L.TextTimersInheritBarColor			= "바의 시작 및 종료 색상 사용"
+L.TextTimersFontSize				= "텍스트 크기"
+L.TextTimersUrgentThreshold			= "아래 시간보다 낮으면 긴급으로 표시 (0: 끔)"
+L.TextTimersUrgentColor				= "긴급 표시 색상"
+L.TextTimersIcon					= "스킬 아이콘 표시"
+L.TextTimersInheritBarColor			= "타이머 바의 시작과 종료 색상 가져오기"
 L.TextTimersIconPosition			= "아이콘 위치"
-L.TextTimersIconBoth				= "양쪽 아이콘"
+L.TextTimersIconBoth				= "양쪽 면 모두 아이콘 배치"
 L.AreaTitle_BarSetup				= "바 외형 설정"
 L.AreaTitle_Behavior				= "바 작동 방식 설정"
 L.AreaTitle_BarSetupSmall 			= "작은 바 설정"
@@ -524,34 +524,34 @@ L.ZeroatWindowStartNeg				= "타이머 시작 지점을 0으로 하고 0에서 �
 L.BarIconLeft 						= "왼쪽 아이콘"
 L.BarIconRight 						= "오른쪽 아이콘"
 L.BarIconPosition					= "아이콘 위치"
-L.ExpandUpwards						= "위로 쌓기"
+L.ExpandUpwards						= "위로 확장"
 L.FillUpBars						= "채워나가기"
-L.ClickThrough						= "마우스 클릭 방지 (클릭 통과)"
-L.Bar_Decimal						= "남은시간 소수점 표시초 이하"
-L.Bar_Alpha							= "투명도"
-L.Bar_EnlargeTime					= "타이머 바 확대초 이하"
-L.Bar_AppearTime					= "타이머 바 숨김초 이상"--Used for when hidden bars show on the small bar anchor
-L.Bar_HideLongBars					= "위의 설정시간에 도달하지 않은 타이머 바 숨김"
-L.BarSpark							= "바 끝 강조"
+L.ClickThrough						= "마우스 동작 비활성화 (클릭 통과)"
+L.Bar_Decimal						= "아래 시간보다 적으면 소수점 표시"
+L.Bar_Alpha							= "불투명도"
+L.Bar_EnlargeTime					= "아래 시간보다 적으면 바가 커짐"
+L.Bar_AppearTime					= "아래보다 높은 시간의 바 숨김"--Used for when hidden bars show on the small bar anchor
+L.Bar_HideLongBars					= "위의 기준값 미만의 타이머 바 숨김"
+L.BarSpark							= "바 섬광 효과"
 L.BarFlash							= "만료 전에 바 점멸"
-L.BarSort							= "남은 시간 기준으로 정렬"
-L.BarColorByType					= "속성마다 색상 변경"
+L.BarSort							= "남은 시간 기준 정렬"
+L.BarColorByType					= "속성별 색상"
 L.Highest							= "가장 높은 순"
 L.Lowest							= "가장 낮은 순"
 L.NoBarFade							= "시작/종료시 색상 변화를 그라데이션 효과 대신 작은/큰 바 색을 사용"
-L.BarInlineIcons					= "바 안쪽에 아이콘 사용"
-L.DisableRightClickBar				= "우클릭으로 타이머 취소 기능 끄기"
-L.ShortTimerText					= "짧은 타이머 텍스트 사용 (사용 가능할 때만)"
-L.HardcodedTimer					= "하드코딩된 타이머를 사용하여 (사용 가능할 때만) 주문 이름 변경이나 타이머 바 숨김을 위한 비활성화 같은 없어진 기능 복구"
-L.KeepBar							= "스킬 시전 전까지 타이머 작동 중단"
-L.KeepBar2							= "(모드에서 지원할 경우에만)"
-L.FadeBar							= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
+L.BarInlineIcons					= "도감 아이콘 표시"--Deprecated
+L.DisableRightClickBar				= "우클릭으로 타이머 취소 기능 사용 안함"
+L.ShortTimerText					= "타이머 텍스트에 바꾼 주문 이름 사용"
+L.HardcodedTimer					= "하드코딩된 타이머를 사용해서 (사용 가능할 때만) 주문 이름 변경이나 보고 싶지 않은 타이머 끄기 같은 없어진 기능 복구"
+L.KeepBar							= "스킬 시전 전까지 타이머를 계속 활성화"
+L.KeepBar2							= "(모드에서 지원할 때만)"
+L.FadeBar							= "사정거리를 벗어난 스킬의 타이머 바 숨김"
 L.BarSkin							= "바 스킨"
 L.InlineIconsDropdown				= "도감 속성 아이콘 스타일"
 L.SingleLargeIcon					= "큰 아이콘 1개"
 L.DoubleLargeIcons					= "큰 아이콘 2개"
-L.DoubleInlineIcons					= "모든 큰 아이콘"
-L.StackedMiniIcons					= "작은 아이콘 모음"
+L.DoubleInlineIcons					= "전부 큰 아이콘으로"
+L.StackedMiniIcons					= "작은 아이콘 뭉치"
 
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat				= "풀링과 휴식"
@@ -568,7 +568,7 @@ L.Panel_SpamFilter					= "DBM 기능 끄기"
 
 L.Area_Global_Toggles				= "전체 기능 켜기/끄기"
 L.NoWarnings						= "모든 DBM 알림 끄기"
-L.NoTimers							= "DBM 타이머 바 끄기 (텍스트 타이머가 켜져 있으면 계속 표시)"
+L.NoTimers							= "DBM 타이머 바 끄기 (이 옵션을 켰더라도 텍스트 타이머는 계속 표시됨)"
 
 L.Area_SpamFilter_SpecFeatures		= "세부 알림 기능 (위에서 전체 비활성화를 하지 않을 때만 적용)"
 L.SpamBlockNoShowAnnounce			= "모든 알림 및 효과음 재생 안함"
@@ -689,6 +689,7 @@ L.ReceivingFooter					= "공격대 징표와 말풍선 설정이 주변 다른 �
 L.ReceivingFooter2					= "이러한 설정을 활성화했을때 내 설정이 의도한 것과 충돌할 경우 당신과 공대장 둘만 조정하면 됩니다"--NYI
 L.ReceivingFooter3					= "'내 모드 설정을 대체'를 활성화하면 당신의 원래 설정은 강제 적용된 설정에 의해 지워질 것입니다"--NYI
 
+
 L.TabFooter							= "이 패널의 모든 설정은 당신이 공격대/공찾 공대장일때만 작동합니다"
 
 -- Panel: Privacy
@@ -738,7 +739,7 @@ L.AuraStackFontSize					= "중첩 글꼴 크기"
 L.AuraStackFontColor				= "중첩 글꼴 색상"
 L.AuraShowStacks						= "중첩 텍스트 표시"
 L.AuraShowDispelBorder				= "해제 속성 테두리 표시"
-L.AuraShowCooldownSwipe				= "쿨타임 애니메이션 표시"
+L.AuraShowCooldownSwipe				= "쿨타임 회전 표시"
 L.AuraSortOrder						= "오라 정렬 순서"
 L.AuraSortDefault					= "기본 블리자드식 정렬"
 L.AuraSortShortDurationFirst		= "짧은 지속 시간 우선"
@@ -793,7 +794,6 @@ L.ImportTranscriptor				= "Transcriptor 로그 가져오기"
 L.ImportTranscriptorHeader			= [[
 아래 상자의 아무곳이나 붙여넣으면 Transcriptor 로그를 가져올 수 있습니다. 붙여넣기 속도는 대략 2 MiB/s 정도 되며, 이는 아주 큰 용량의 로그 파일을 붙여넣기하면 수 초 가량 게임이 멈춘다는 뜻입니다.
 우측의 가져오기 버튼으로 Transcriptor의 저장된 데이터 중에서 현재 세션만 가져올 수도 있습니다.]]
-
 L.PasteLogHere						= (IsMacClient() and "Cmd-V" or "Ctrl-V") .. "를 눌러서 이곳에 로그를 붙여넣기 하세요."
 L.LogPasted							= "%.2f MiB를 %.1f초간 붙여넣었습니다. (%.2f MiB/s)"
 L.ImportLocalTranscriptor			= "현재 Transcriptor\n세션 붙여넣기"
