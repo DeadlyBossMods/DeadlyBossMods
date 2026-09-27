@@ -202,7 +202,8 @@ L.SpellRenamesImported				= "法術重命名已匯入。"
 
 L.ImportErrorOn						= "缺少設置中的自定義聲音：%s"
 L.ImportVoiceMissing				= "缺少語音包：%s"
-L.LegacyProfileImportNotice			= "匯入舊設定檔。這種格式已被棄用；請使用新格式重新匯出。"
+L.ImportLegacyProfileFailed		= "此設定檔使用舊版匯出格式，無法匯入。請使用新版 DBM 重新匯出，或改用其他設定檔。"
+L.ImportProfileFreshExport		= "如果這是舊版設定檔，請使用新版 DBM 重新匯出，或改用其他設定檔。"
 
 L.TabCategory_Alerts	 			= "警告"
 L.Area_SpecAnnounceConfig			= "特別警告視覺和聲音指南"

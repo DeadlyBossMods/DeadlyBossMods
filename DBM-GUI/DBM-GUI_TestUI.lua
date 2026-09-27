@@ -23,6 +23,35 @@ local importTranscriptorFrame
 
 local ephemeralTests = {}
 
+-- The parser lives in DBM-Test/Tools/Shared, which LuaLS may not index with the GUI addon.
+---@class DBMTranscriptorParserEncounterInfo
+---@field startOffset number
+---@field endOffset number
+---@field startTime number
+---@field endTime number
+---@field id number
+---@field name string
+---@field success boolean
+
+---@class DBMTranscriptorParserLogInfo
+---@field timestamp number
+---@field startTime number
+---@field endTime number
+---@field lines string[]
+---@field encounters DBMTranscriptorParserEncounterInfo[]
+
+---@class DBMTestUIAnonymizer
+---@field CheckForLeaks fun(self: DBMTestUIAnonymizer, output: string, callback: fun(str: string))
+
+---@class DBMTranscriptorParserTestGenerator
+---@field stats {parsedLines: number, outputLines: number}
+---@field anonymizer DBMTestUIAnonymizer
+---@field GetTestDefinition fun(self: DBMTranscriptorParserTestGenerator): TestDefinition
+---@field GetHeaderString fun(self: DBMTranscriptorParserTestGenerator): string
+---@field GetPlayersString fun(self: DBMTranscriptorParserTestGenerator): string
+---@field GetLogString fun(self: DBMTranscriptorParserTestGenerator): string
+---@field GetCompressedLogString fun(self: DBMTranscriptorParserTestGenerator): string
+
 local function createImportTranscriptorFrame()
 	---@class DBMImportTranscriptorFrame: Frame, BackdropTemplate
 	importTranscriptorFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
@@ -350,22 +379,19 @@ local function showImportTranscriptorFrame(testSelect, playerSelect, mod)
 	importTranscriptorFrame:Show()
 end
 
-local compressAsync = CreateFrame("Frame")
 ---@param testData TestDefinition
 local function serializeLog(testData)
 	if testData.compressedLog then return end
-	local libSerialize = LibStub("LibSerialize")
-	local libDeflate = LibStub("LibDeflate")
-	local handler = libSerialize:SerializeAsync(testData.log)
-	compressAsync:SetScript("OnUpdate", function()
-		local completed, serialized = handler()
-		if completed then
-			compressAsync:Hide()
-			testData.compressedLog = libDeflate:EncodeForPrint(libDeflate:CompressDeflate(serialized))
-		end
-	end)
+	local serialized = C_EncodingUtil.SerializeCBOR(testData.log)
+	local compressed = serialized and C_EncodingUtil.CompressString(serialized, 0, 2)
+	local encoded = compressed and C_EncodingUtil.EncodeBase64(compressed, 0)
+	if not encoded then
+		DBM:AddMsg("Failed to compress test log " .. testData.name)
+		return
+	end
+	testData.compressedLogFormat = 2
+	testData.compressedLog = encoded
 	testData.duration = testData.log[#testData.log][1]
-	compressAsync:Show()
 end
 
 ---@param panel DBMPanel

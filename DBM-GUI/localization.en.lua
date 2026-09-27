@@ -247,7 +247,8 @@ L.SpellRenamesImported				= "Spell renames imported."
 
 L.ImportErrorOn						= "Custom sounds missing for setting: %s"
 L.ImportVoiceMissing				= "Missing voice pack: %s"
-L.LegacyProfileImportNotice			= "Legacy profile imported. This format is deprecated; please re-export using the new format."
+L.ImportLegacyProfileFailed		= "This profile uses the old export format and cannot be imported. Ask for a fresh export from a recent version of DBM, or use a different profile."
+L.ImportProfileFreshExport		= "If this is an older profile, ask for a fresh export from a recent version of DBM, or use a different profile."
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 			= "Alerts"

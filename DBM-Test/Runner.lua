@@ -943,7 +943,8 @@ frame:SetScript("OnUpdate", function() test:OnUpdate() end)
 ---@field ephemeral boolean? Set to true for tests imported from Transcriptor via the test UI
 ---@field showInAllMods boolean? Ephemeral tests that show up in all playground UIs
 ---@field persistent boolean? Ephemeral test that is stored to saved variables
----@field compressedLog string? LibDeflate compressed log
+---@field compressedLog string? CBOR/Deflate/Base64 compressed log (or pre-migration LibDeflate data)
+---@field compressedLogFormat integer? Format 2 for C_EncodingUtil encoded logs
 ---@field duration number? Test duration, required if log is compressed
 ---@field uiInfo TestUiInfo? Internal field used by the UI, do not set manually
 

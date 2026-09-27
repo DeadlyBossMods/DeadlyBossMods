@@ -748,16 +748,35 @@ function testGenerator:GetLogString()
 end
 
 local compressedLogTemplate = [[
-	-- LibSerialize/LibDeflate encoded and compressed list of TestLogEntry. If an uncompressed log is specified it is used instead of the compressed version.
+	-- CBOR/Deflate/Base64 test log. If a raw log is specified it is used instead of the compressed version.
+	compressedLogFormat = 2,
 	compressedLog = "%s",
 	duration = %.2f,
 ]]
 
 function testGenerator:GetCompressedLogString()
-	local libSerialize = LibStub("LibSerialize")
-	local libDeflate = LibStub("LibDeflate")
 	local log = select(3, self:GetLogAndPlayers())
-	local compressed = libDeflate:EncodeForPrint(libDeflate:CompressDeflate((libSerialize:Serialize(log))))
+	local compressed
+	if C_EncodingUtil then
+		local serialized = assert(C_EncodingUtil.SerializeCBOR(log))
+		compressed = assert(C_EncodingUtil.EncodeBase64(assert(C_EncodingUtil.CompressString(serialized, 0, 2)), 0))
+	else
+		local codec = require "CLI.TestLogCodec"
+		local inputName, outputName = os.tmpname(), os.tmpname()
+		local file = assert(io.open(inputName, "wb"))
+		file:write(codec.Encode(log))
+		file:close()
+		local command = ("python3 CLI/CompressTestLog.py %q %q"):format(inputName, outputName)
+		local ok = os.execute(command)
+		local output = ok and io.open(outputName, "rb")
+		if output then
+			compressed = output:read("*a")
+			output:close()
+		end
+		os.remove(inputName)
+		os.remove(outputName)
+		assert(compressed and #compressed > 0, "failed to encode test log (Python 3 required)")
+	end
 	return compressedLogTemplate:format(compressed, log[#log][1])
 end
 
