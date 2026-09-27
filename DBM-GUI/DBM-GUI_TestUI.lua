@@ -23,35 +23,6 @@ local importTranscriptorFrame
 
 local ephemeralTests = {}
 
--- The parser lives in DBM-Test/Tools/Shared, which LuaLS may not index with the GUI addon.
----@class DBMTranscriptorParserEncounterInfo
----@field startOffset number
----@field endOffset number
----@field startTime number
----@field endTime number
----@field id number
----@field name string
----@field success boolean
-
----@class DBMTranscriptorParserLogInfo
----@field timestamp number
----@field startTime number
----@field endTime number
----@field lines string[]
----@field encounters DBMTranscriptorParserEncounterInfo[]
-
----@class DBMTestUIAnonymizer
----@field CheckForLeaks fun(self: DBMTestUIAnonymizer, output: string, callback: fun(str: string))
-
----@class DBMTranscriptorParserTestGenerator
----@field stats {parsedLines: number, outputLines: number}
----@field anonymizer DBMTestUIAnonymizer
----@field GetTestDefinition fun(self: DBMTranscriptorParserTestGenerator): TestDefinition
----@field GetHeaderString fun(self: DBMTranscriptorParserTestGenerator): string
----@field GetPlayersString fun(self: DBMTranscriptorParserTestGenerator): string
----@field GetLogString fun(self: DBMTranscriptorParserTestGenerator): string
----@field GetCompressedLogString fun(self: DBMTranscriptorParserTestGenerator): string
-
 local function createImportTranscriptorFrame()
 	---@class DBMImportTranscriptorFrame: Frame, BackdropTemplate
 	importTranscriptorFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
