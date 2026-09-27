@@ -25,6 +25,19 @@ end
 function test:DecompressLog(testData)
 	if testData.log then return end
 	DBM:Debug("DecompressLog(" .. testData.name .. ")", 1)
+	if testData.compressedLogFormat == 2 then
+		local ok, decoded = pcall(C_EncodingUtil.DecodeBase64, testData.compressedLog, 0)
+		if not ok or not decoded then error("failed to decode test log " .. testData.name) end
+		yield()
+		ok, decoded = pcall(C_EncodingUtil.DecompressString, decoded, 0)
+		if not ok or not decoded then error("failed to decompress test log " .. testData.name) end
+		yield()
+		local deserialized
+		ok, deserialized = pcall(C_EncodingUtil.DeserializeCBOR, decoded)
+		if not ok or type(deserialized) ~= "table" then error("failed to deserialize test log " .. testData.name) end
+		testData.log = deserialized
+		return
+	end
 	local libSerialize = LibStub("LibSerialize")
 	local libDeflate = LibStub("LibDeflate")
 	local decodedLog = libDeflate:DecodeForPrint(testData.compressedLog)

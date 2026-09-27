@@ -239,9 +239,6 @@ do
 end
 
 do
-	local LibSerialize = LibStub("LibSerialize")
-	local LibDeflate = LibStub("LibDeflate")
-
 	-- Reference: Blizzard APIDocumentation (EncodingUtil enums)
 	-- Base64Variant.Standard = 0
 	-- CompressionMethod.Deflate = 0
@@ -250,26 +247,6 @@ do
 	local compressionMethod = 0
 	local compressionLevel = 2
 	local popupFrame
-	local function detectLegacyProfileType(profile)
-		if type(profile.payloadType) == "string" then
-			return profile.payloadType
-		end
-		if type(profile.DBM) == "table" and type(profile.DBT) == "table" and type(profile.minimap) == "table" then
-			return "Profile"
-		end
-		local moduleCount = 0
-		for _, value in pairs(profile) do
-			if type(value) == "table" then
-				moduleCount = moduleCount + 1
-			end
-		end
-		if moduleCount == 1 then
-			return "ModProfile"
-		elseif moduleCount > 1 then
-			return "AddonProfile"
-		end
-	end
-
 	local profileTypeMismatchMessages = {
 		Profile = function()
 			return L.ImportProfileWrongTypeCore:format(L.Panel_Profile, L.Area_ImportExportProfile)
@@ -302,26 +279,10 @@ do
 				local deserialized
 				ok, deserialized = pcall(C_EncodingUtil.DeserializeCBOR, decoded)
 				if ok and type(deserialized) == "table" then
-					return deserialized, false
+					return deserialized
 				end
 			end
 		end
-
-		-- Legacy fallback for pre-C_EncodingUtil profile exports
-		if LibSerialize and LibDeflate then
-			local legacyDecoded = LibDeflate:DecodeForPrint(importText)
-			if legacyDecoded then
-				local legacyDecompressed = LibDeflate:DecompressDeflate(legacyDecoded)
-				if legacyDecompressed then
-					local success, legacyDeserialized = LibSerialize:Deserialize(legacyDecompressed)
-					if success and type(legacyDeserialized) == "table" then
-						return legacyDeserialized, true
-					end
-				end
-			end
-		end
-
-		return nil, false
 	end
 
 	local function createPopupFrame()
@@ -463,7 +424,7 @@ do
 		popupFrame:Show()
 	end
 
-	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage, payloadTypeFailureMessage, payloadVersionFailureMessage, allowUnversionedPayload, footerText)
+	function DBM_GUI:CreateImportProfile(importFunc, expectedPayloadType, expectedPayloadVersion, importFailureMessage, payloadTypeFailureMessage, payloadVersionFailureMessage, footerText)
 		if not popupFrame then
 			createPopupFrame()
 		end
@@ -474,32 +435,36 @@ do
 			local function reportImportFailure()
 				DBM:AddMsg(failureMessage)
 			end
-			local deserialized, isLegacy = decodeProfile(import)
+			local deserialized = decodeProfile(import)
 			if type(deserialized) ~= "table" then
 				reportImportFailure()
+				-- LibDeflate's printable alphabet includes parentheses, which standard Base64 cannot contain.
+				-- Old strings with only alphanumeric characters cannot be distinguished from corrupt modern strings.
+				if type(import) == "string" and #import > 20 and import:match("^[%w()]+$") and import:find("[()]") then
+					DBM:AddMsg(L.ImportLegacyProfileFailed, nil, true)
+				else
+					DBM:AddMsg(L.ImportProfileFreshExport, nil, true)
+				end
 				return false
 			end
-			local payloadType = isLegacy and detectLegacyProfileType(deserialized) or deserialized.payloadType
-			if expectedPayloadType and (not isLegacy or payloadType) then
+			local payloadType = deserialized.payloadType
+			if expectedPayloadType then
 				local payloadTypeMatches = payloadType == expectedPayloadType
 				if type(expectedPayloadType) == "table" then
 					payloadTypeMatches = expectedPayloadType[payloadType] == true
-				elseif isLegacy and expectedPayloadType == "AddonProfile" and payloadType == "ModProfile" then
-					-- A one-module legacy table can also be a partial instance profile.
-					payloadTypeMatches = true
 				end
 				if not payloadTypeMatches then
 					local profileTypeMismatchMessage = profileTypeMismatchMessages[payloadType]
 					DBM:AddMsg(profileTypeMismatchMessage and profileTypeMismatchMessage() or typeMismatchMessage)
 					return false
 				end
-				if not isLegacy and expectedPayloadVersion and deserialized.payloadVersion ~= expectedPayloadVersion and not (allowUnversionedPayload and deserialized.payloadVersion == nil) then
+				if expectedPayloadVersion and deserialized.payloadVersion ~= expectedPayloadVersion then
 					DBM:AddMsg(versionMismatchMessage)
 					return false
 				end
 			end
 			local ok, accepted = xpcall(function()
-				return importFunc(deserialized, isLegacy)
+				return importFunc(deserialized)
 			end, function(err)
 				return tostring(err)
 			end)
@@ -510,9 +475,6 @@ do
 			end
 			if accepted == false then
 				return false
-			end
-			if isLegacy then
-				DBM:AddMsg(L.LegacyProfileImportNotice, nil, true)
 			end
 			return true
 		end
@@ -915,16 +877,8 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 	importMod.myheight = 0
 	importMod:SetPoint("LEFT", exportMod, "RIGHT", 4, 0)
 	importMod:SetScript("OnClick", function()
-		DBM_GUI:CreateImportProfile(function(importTable, isLegacy)
+		DBM_GUI:CreateImportProfile(function(importTable)
 			local isAddonProfile = importTable.payloadType == "AddonProfile"
-			if isLegacy then
-				for _, id in ipairs(DBM.ModLists[mod.addon.modId]) do
-					if id ~= mod.id and importTable[id] ~= nil then
-						isAddonProfile = true
-						break
-					end
-				end
-			end
 			if isAddonProfile then
 				local popup = StaticPopup_Show("DBM_IMPORT_INSTANCE_FROM_MOD", mod.localization.general.name)
 				if not popup then
@@ -940,7 +894,7 @@ function DBM_GUI:CreateBossModPanel(mod, isTestView)
 				return true
 			end
 			return importSingleModProfile(mod, importTable)
-		end, {ModProfile = true, AddonProfile = true}, modProfileVersion, L.ModImportFailed:format(mod.localization.general.name), L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, true, L.ModProfileImportFooter)
+		end, {ModProfile = true, AddonProfile = true}, modProfileVersion, L.ModImportFailed:format(mod.localization.general.name), L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, L.ModProfileImportFooter)
 	end)
 	local modNameForHTML = mod.localization.general.name:gsub("&", "&amp;")
 	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. modNameForHTML), true)
@@ -1228,7 +1182,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 			DBM_GUI:CreateImportProfile(function(importTable)
 				return importAddonProfile(addon, importTable)
-			end, {AddonProfile = true, ModProfile = true}, modProfileVersion, L.ImportProfileFailed, L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, true, L.AddonProfileImportFooter)
+			end, {AddonProfile = true, ModProfile = true}, modProfileVersion, L.ImportProfileFailed, L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, L.AddonProfileImportFooter)
 		end)
 		importProfile.myheight = 12
 		importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
