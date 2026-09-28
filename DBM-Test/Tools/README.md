@@ -10,13 +10,13 @@ Requires [`luafilesystem`](https://lunarmodules.github.io/luafilesystem/index.ht
 Turn a Transcriptor log into a test for embedding it directly in DBM.
 You do not need to use this for one-off tests, this is just needed to permanently embed a test in DBM.
 
-Usage: 
+Usage:
 
 ```
 lua CreateTest.lua /path/to/log/file
 ```
 
-This tool should work with any Lua version >= 5.1 (including LuaJIT), but is mainly tested with Lua 5.1 as it is also used in WoW.
+The CLI test generator requires Lua >= 5.3 (`string.pack`) and Python 3 for encoding compressed logs. Lua 5.1 and LuaJIT are not supported for this CLI path. In-game test generation uses WoW's `C_EncodingUtil` instead.
 
 TODO: describe other options and `| pbcopy`/`| clip.exe` trick
 

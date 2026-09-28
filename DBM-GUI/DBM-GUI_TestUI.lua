@@ -350,22 +350,19 @@ local function showImportTranscriptorFrame(testSelect, playerSelect, mod)
 	importTranscriptorFrame:Show()
 end
 
-local compressAsync = CreateFrame("Frame")
 ---@param testData TestDefinition
 local function serializeLog(testData)
 	if testData.compressedLog then return end
-	local libSerialize = LibStub("LibSerialize")
-	local libDeflate = LibStub("LibDeflate")
-	local handler = libSerialize:SerializeAsync(testData.log)
-	compressAsync:SetScript("OnUpdate", function()
-		local completed, serialized = handler()
-		if completed then
-			compressAsync:Hide()
-			testData.compressedLog = libDeflate:EncodeForPrint(libDeflate:CompressDeflate(serialized))
-		end
-	end)
+	local serialized = C_EncodingUtil.SerializeCBOR(testData.log)
+	local compressed = serialized and C_EncodingUtil.CompressString(serialized, 0, 2)
+	local encoded = compressed and C_EncodingUtil.EncodeBase64(compressed, 0)
+	if not encoded then
+		DBM:AddMsg("Failed to compress test log " .. testData.name)
+		return
+	end
+	testData.compressedLogFormat = 2
+	testData.compressedLog = encoded
 	testData.duration = testData.log[#testData.log][1]
-	compressAsync:Show()
 end
 
 ---@param panel DBMPanel

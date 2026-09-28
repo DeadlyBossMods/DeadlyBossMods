@@ -244,7 +244,8 @@ L.SpellRenamesImported					= "변경된 주문 이름을 가져왔습니다."
 
 L.ImportErrorOn						= "프로필 설정에 빠져있는 사용자 지정 효과음: %s"
 L.ImportVoiceMissing				= "보이스팩 없음: %s"
-L.LegacyProfileImportNotice			= "구형 프로필을 가져왔습니다. 이 형식은 앞으로 사용할 수 없으므로 새 형식으로 다시 내보내기를 해주세요."
+L.ImportLegacyProfileFailed		= "이 프로필은 이전 내보내기 형식이므로 가져올 수 없습니다. 최신 DBM 버전에서 다시 내보내거나 다른 프로필을 사용하세요."
+L.ImportProfileFreshExport		= "이전 프로필이라면 최신 DBM 버전에서 다시 내보내거나 다른 프로필을 사용하세요."
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 			= "경고"
