@@ -16,10 +16,16 @@ mod:RegisterCombat("combat")
 --TODO, same with https://www.wowhead.com/spell=1311037/mothers-wrath and https://www.wowhead.com/spell=1287265/spectral-coils as gore rattle
 DBM:RegisterAltSpellName(1298367, DBM_COMMON_L.TANKBUSTER)--Mother's Wrath --> Tank Buster
 DBM:RegisterAltSpellName(1300530, DBM_COMMON_L.GROUPSOAKS)--Spectral Coils --> Group Soaks
---local warnSerpentsBite					= mod:NewCountAnnounce(1295905, 2)--Hardcode only
+DBM:RegisterAltSpellName(1298559, 106239)--Gore Rattle --> Summon Tail
+DBM:RegisterAltSpellName(1300751, 179450)--Call of the Serpent --> Hatch Eggs
+DBM:RegisterAltSpellName(1301510, DBM_COMMON_L.PLATFORM_BREAK)--Circling Prey --> Platform Break
+DBM:RegisterAltSpellName(1296301, DBM_COMMON_L.BIG_CIRCLE)--Mephitic Thrash --> Big Circle
+DBM:RegisterAltSpellName(1295905, DBM_COMMON_L.GROUPSOAKS)--Serpent's Bite --> Group Soaks
+local warnSerpentsBite					= mod:NewCountAnnounce(1295905, 2)--Hardcode only
+local warnSubmerge						= mod:NewCountAnnounce(1292999, 2)
 
 local specWarnMothersWrath				= mod:NewSpecialWarningDefensive(1298367, nil, nil, nil, 1, 2, nil, nil, "defensive")
-local specWarnRageoftheShackled			= mod:NewSpecialWarningCount(1286860, nil, nil, nil, 2, 2, nil, nil, "aesoon")
+local specWarnRageoftheShackled			= mod:NewSpecialWarningCount(1286860, nil, nil, nil, 2, 16, nil, nil, "dpshard")
 local specWarnCausticWaves				= mod:NewSpecialWarningCount(1292188, nil, nil, nil, 2, 2, nil, nil, "watchwave")
 local specWarnFuryUnleashed				= mod:NewSpecialWarningCount(1286905, nil, nil, nil, 3, 2, nil, nil, "stilldanger")--Stage 3 berserk?
 local specWarnGoreRattle				= mod:NewSpecialWarningSwitchCount(1298559, nil, nil, nil, 1, 2, nil, nil, "bigmob")
@@ -29,7 +35,6 @@ local specWarnCalloftheSerpent			= mod:NewSpecialWarningCount(1300751, nil, nil,
 local specWarnCirclingPrey				= mod:NewSpecialWarningRunCount(1301510, nil, nil, nil, 2, 2, nil, nil, "justrun")
 local specWarnVirulentSpit				= mod:NewSpecialWarningDodgeCount(1302982, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnMephiticThrash			= mod:NewSpecialWarningDodgeCount(1296301, nil, nil, nil, 2, 2, nil, nil, "aesoon")--Used by Gore Rattle
-local specWarnSubmerge					= mod:NewSpecialWarningCount(1292999, nil, nil, nil, 2, 2, nil, nil, "phasechange")
 
 local timerMothersWrathCD				= mod:NewCDCountTimer(20.5, 1298367, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerRageoftheShackledCD			= mod:NewCDCountTimer(20.5, 1286860, nil, nil, nil, 2)
@@ -145,7 +150,7 @@ local function setFallback(self, dontSetAlerts)
 		if self:IsTank() then
 			specWarnMothersWrath:SetAlert({699,952}, "defensive", 2, 2)
 		end
-		specWarnRageoftheShackled:SetAlert(700, "aesoon", 2, 2)
+		specWarnRageoftheShackled:SetAlert(700, "dpshard", 16, 2)
 		specWarnCausticWaves:SetAlert(719, "watchwave", 2, 2)
 		specWarnFuryUnleashed:SetAlert({746,810}, "stilldanger", 3, 2, 0)
 		specWarnGoreRattle:SetAlert({799,847}, "bigmob", 2, 2)
@@ -155,7 +160,6 @@ local function setFallback(self, dontSetAlerts)
 		specWarnCirclingPrey:SetAlert(826, "justrun", 2, 2)
 		specWarnVirulentSpit:SetAlert(830, "watchstep", 2, 2)
 		specWarnMephiticThrash:SetAlert(912, "aesoon", 2, 2)
-		specWarnSubmerge:SetAlert(949, "phasechange", 2, 2)
 	end
 	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
 	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
@@ -241,6 +245,8 @@ function mod:OnCombatEnd()
 end
 
 do
+	---comment
+	---@param self DBMMod
 	local function finishTimelineEvent(self, eventID)
 		local eventType, eventCount = self:TLCountFinish(eventID)
 		if not eventType then return end
@@ -260,7 +266,7 @@ do
 				stage2Pending = true
 			end
 			specWarnRageoftheShackled:Show(eventCount)
-			specWarnRageoftheShackled:Play("aesoon")
+			specWarnRageoftheShackled:Play("dpshard")
 		elseif eventType == "causticWaves" then
 			specWarnCausticWaves:Show(eventCount)
 			specWarnCausticWaves:Play("watchwave")
@@ -286,8 +292,9 @@ do
 			specWarnCirclingPrey:Show(eventCount)
 			specWarnCirclingPrey:Play("justrun")
 		elseif eventType == "submerge" then
-			specWarnSubmerge:Show(eventCount)
-			specWarnSubmerge:Play("phasechange")
+			warnSubmerge:Show(eventCount)
+		elseif eventType == "serpentsBite" then
+			warnSerpentsBite:Show(eventCount)
 		end
 	end
 
