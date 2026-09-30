@@ -108,6 +108,8 @@ if setfenv then
 	chunk = assert(loadfile("DBM-Core/DBM-InfoFrame.lua"))
 	setfenv(chunk, env)
 else
+	-- Lua 5.2+ accepts mode/environment; CI's Lua 5.1 signature does not.
+	---@diagnostic disable-next-line: redundant-parameter
 	chunk = assert(loadfile("DBM-Core/DBM-InfoFrame.lua", "t", env))
 end
 chunk("DBM-Core", {playerName = "Player", RegisterPlayerNameCallback = noop})
