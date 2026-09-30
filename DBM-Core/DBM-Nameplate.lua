@@ -27,18 +27,7 @@ local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame, CreateRootFrame
 ---@field DBMAuraFrame DBMAuraFrame
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
-local standardFont
-if LOCALE_koKR then
-	standardFont = "Fonts\\2002.TTF"
-elseif LOCALE_zhCN then
-	standardFont = "Fonts\\ARKai_T.ttf"
-elseif LOCALE_zhTW then
-	standardFont = "Fonts\\blei00d.TTF"
-elseif LOCALE_ruRU then
-	standardFont = "Fonts\\FRIZQT___CYR.TTF"
-else
-	standardFont = "Fonts\\FRIZQT__.TTF"
-end
+local standardFont = private.standardFont
 
 local nameplateTimerFontResetNotified = false
 local nameplateTextFontResetNotified = false
