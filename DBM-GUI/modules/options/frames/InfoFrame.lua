@@ -84,7 +84,7 @@ local columns = {
 	}
 }
 
-local columnsDropdown = general:CreateDropdown(CL.INFOFRAME_SETCOLS, columns, "DBM", "InfoFrameLines", function(value)
+local columnsDropdown = general:CreateDropdown(CL.INFOFRAME_SETCOLS, columns, "DBM", "InfoFrameCols", function(value)
 	DBM.Options.InfoFrameCols = value
 	DBM.InfoFrame:UpdateStyle()
 end)
