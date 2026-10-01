@@ -21,40 +21,48 @@ DBM:RegisterAltSpellName(1284434, DBM_COMMON_L.GROUPSOAK.. " ".. DBM_COMMON_L.OR
 DBM:RegisterAltSpellName(1284483, DBM_COMMON_L.POOL.. " ".. DBM_COMMON_L.DEBUFFS)--Blighted Blood --> Pool Debuffs
 DBM:RegisterAltSpellName(1284588, DBM_COMMON_L.MATHPUZZLE)--Vitriolic Stasis --> Math Puzzle
 --DBM:RegisterAltSpellName(1296878, DBM_COMMON_L.MATHPUZZLE)--Not sure what to give it yet
-local warnVitriolicStasis				= mod:NewCountAnnounce(1284588, 2)--Hardcode only
-local warnUnstableMiasma				= mod:NewCountAnnounce(1288232, 2)--Hardcode only
 
+--Both/Shared
+local warnVitriolicStasis				= mod:NewCountAnnounce(1284588, 2)--Hardcode only
+
+local specWarnShiftingProtovenom		= mod:NewSpecialWarningCount(1296878, nil, nil, nil, 3, 19, 4, nil, "colorchange")
+
+local timerVitriolicStasisCD			= mod:NewCDCountTimer(20.5, 1284588, nil, nil, nil, 6)
+local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerBerserkCD					= mod:NewBerserkTimer(600)
+
+mod:AddBoolOption("AdvancedBossFiltering", true, "misc")
+mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "phasechange", 2, 0)--Helical Toxins (better audio?)
+--Debuffs that do not appear in combat log but MIGHT still work with aura sounds?
+mod:AddAuraSoundOption(1296880, true, 1296878, 1, 1, "movetopartner", 20, 0)--Shifting Protovenom
+--Breath of Ula'tek (boss1)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(34951))
 local specWarnVenomCoagulation			= mod:NewSpecialWarningCount(1284251, nil, nil, nil, 2, 2, nil, nil, "bigmob")
 local specWarnToxicDroplets				= mod:NewSpecialWarningCount(1284434, nil, nil, nil, 2, 2, nil, nil, "helpsoak")
 local specWarnEmpoweringSlam			= mod:NewSpecialWarningDefensive(1284458, nil, nil, nil, 1, 2, nil, nil, "defensive")
-local specWarnBloodvenomInjection		= mod:NewSpecialWarningDefensive(1284487, nil, nil, nil, 1, 2, nil, nil, "defensive")
---local specWarnBlightedBlood			= mod:NewSpecialWarningCount(1284483, "Healer", nil, nil, 2, 2, nil, nil, "helpdispel")--Verify we want to dispel right away first
---local specWarnDebilitatingMiasma		= mod:NewSpecialWarningCount(1284485, nil, nil, nil, 2, 2, nil, nil, "keepmove")--Possibly unused
---local specWarnUnstableMiasma			= mod:NewSpecialWarningSoakCount(1288232, nil, nil, nil, 2, 2, nil, nil, "gathershare")--Aura used instead
-local specWarnShiftingProtovenom		= mod:NewSpecialWarningCount(1296878, nil, nil, nil, 3, 19, 4, nil, "colorchange")
 
 local timerVenomCoagulationCD			= mod:NewCDCountTimer(20.5, 1284251, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerToxicDropletsCD				= mod:NewCDCountTimer(20.5, 1284434, nil, nil, nil, 5)
 local timerEmpoweringSlamCD				= mod:NewCDCountTimer(20.5, 1284458, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
+--Blood of Ula'tek (boss2)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(34953))
+local warnUnstableMiasma				= mod:NewCountAnnounce(1288232, 2)--Hardcode only
+
+local specWarnBloodvenomInjection		= mod:NewSpecialWarningDefensive(1284487, nil, nil, nil, 1, 2, nil, nil, "defensive")
+
 local timerBloodvenomInjectionCD		= mod:NewCDCountTimer(20.5, 1284487, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerBlightedBloodCD				= mod:NewCDCountTimer(20.5, 1284483, nil, "Healer", nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
---local timerDebilitatingMiasmaCD		= mod:NewCDCountTimer(20.5, 1284485, nil, nil, nil, 3)--Possibly unused
-local timerVitriolicStasisCD			= mod:NewCDCountTimer(20.5, 1284588, nil, nil, nil, 6)
 local timerUnstableMiasmaCD				= mod:NewCDCountTimer(20.5, 1288232, nil, nil, nil, 3)
-local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerBerserkCD					= mod:NewBerserkTimer(600)
 
 --Aura sounds cannot be changed in combat. Pools do not drop on Normal/LFR, so use a generic debuff warning there.
 --Evidence Log https://www.warcraftlogs.com/reports/xdTc1fhtKWPrbCVv?fight=29&type=auras&spells=debuffs
-mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "phasechange", 2, 0)--Helical Toxins (better audio?)
 mod:AddAuraSoundOption(1284471, true, 1284483, 1, 1, "poolyou", 18, 0, {[14] = "debuffyou", [17] = "debuffyou"})--Blighted Blood
 mod:AddAuraSoundOption(1284210, true, 1284210, 1, 2, "watchfeet", 8, 0)--Blood Venom (1284208 is target ID but not logged so probbably no aura either)
 mod:AddAuraSoundOption(1288260, true, 1288232, 1, 1, "gathershare", 2, 0)--Unstable Miasma
 mod:AddAuraSoundOption(1288297, true, 1288232, 1, 3, "poolyou", 18, 0, {[14] = "debuffyou", [17] = "debuffyou"})--Clinging Mark (stacks from soaking unstalbe Miasma)
 mod:AddAuraSoundOption(1284491, true, 1284491, 1, 1, "poolyou", 18, {0,1}, {[14] = "debuffyou", [17] = "debuffyou"})--Bloodvenom Injection
---Debuffs that do not appear in combat log but MIGHT still work with aura sounds?
-mod:AddAuraSoundOption(1296880, true, 1296878, 1, 1, "movetopartner", 20, 0)--Shifting Protovenom
 
+local nearBreath, nearBlood = true, true
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 --Tracks wipe-time bulk timeline resends so the next pull can restore hardcoded routing.
 local badStateDetectedAt = nil
@@ -85,6 +93,35 @@ mod.vb.DebilitatingMiasmaCount = 0
 mod.vb.VitriolicStasisCount = 0
 mod.vb.UnstableMiasmaCount = 0
 mod.vb.ShiftingProtovenomCount = 0
+
+---@param self DBMMod
+---@param breath boolean
+---@param blood boolean
+local function setBossDistance(self, breath, blood)
+	--TLCount counters already contain the next cast number, unlike completed-cast counters.
+	if nearBreath ~= breath then
+		nearBreath = breath
+		timerVenomCoagulationCD:SetFade(not breath, self.vb.VenomCoagulationCount)
+--		timerToxicDropletsCD:SetFade(not breath, self.vb.ToxicDropletsCount)
+		timerEmpoweringSlamCD:SetFade(not breath, self.vb.EmpoweringSlamCount)
+	end
+	if nearBlood ~= blood then
+		nearBlood = blood
+		timerBloodvenomInjectionCD:SetFade(not blood, self.vb.BloodvenomInjectionCount)
+		timerBlightedBloodCD:SetFade(not blood, self.vb.BlightedBloodCount)
+		timerUnstableMiasmaCD:SetFade(not blood, self.vb.UnstableMiasmaCount)
+	end
+end
+
+---@param self DBMMod
+local function updateBossDistance(self)
+	if badStateDetected then return end
+	--Disabling the option restores warnings/fades instead of leaving a far state latched.
+	local breath = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss1", true, 34471, 43, nil, true)
+	local blood = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss2", true, 34471, 43, nil, true)
+	setBossDistance(self, breath, blood)
+	self:Schedule(2, updateBossDistance, self)
+end
 
 ---@param self DBMMod
 ---@param dontSetAlerts boolean? Called when user has disabled DBM bars and is only using timeline, therefore we must still enable SetTimeline calls even in hardcodes
@@ -137,6 +174,14 @@ function mod:OnLimitedCombatStart()
 	self.vb.VitriolicStasisCount = 1
 	self.vb.UnstableMiasmaCount = 1
 	self.vb.ShiftingProtovenomCount = 1
+	nearBreath, nearBlood = true, true
+	timerVenomCoagulationCD:SetFade(false, 1)
+	--timerToxicDropletsCD:SetFade(false, 1)
+	timerEmpoweringSlamCD:SetFade(false, 1)
+	timerBloodvenomInjectionCD:SetFade(false, 1)
+	timerBlightedBloodCD:SetFade(false, 1)
+	timerUnstableMiasmaCD:SetFade(false, 1)
+	self:Unschedule(updateBossDistance)
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:IgnoreBlizzardAPI()
@@ -146,6 +191,7 @@ function mod:OnLimitedCombatStart()
 			"UNIT_SPELLCAST_START boss1 boss2"
 		)
 		setFallback(self, true)
+		self:Schedule(2, updateBossDistance, self)
 	else
 		setFallback(self)
 	end
@@ -153,6 +199,8 @@ end
 
 
 function mod:OnCombatEnd()
+	self:Unschedule(updateBossDistance)
+	setBossDistance(self, true, true)
 	self:TLCountReset()
 	self:TLBatchReset()
 	--A wipe can resend every remaining Blizzard timer, including rows that are not valid
@@ -264,6 +312,8 @@ do
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			badStateDetected = true
 			self:ResumeBlizzardAPI()
+			self:Unschedule(updateBossDistance)
+			setBossDistance(self, true, true)
 			self:TLBatchReset()
 			self:UnregisterShortTermEvents()
 			setFallback(self)
@@ -310,9 +360,12 @@ do
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType or not eventCount then return end
 			if eventType == "venomcoagulation" then
-				specWarnVenomCoagulation:Show(eventCount)
-				specWarnVenomCoagulation:Play("bigmob")
+				if nearBreath then
+					specWarnVenomCoagulation:Show(eventCount)
+					specWarnVenomCoagulation:Play("bigmob")
+				end
 			elseif eventType == "toxicdroplets" then
+				--This one purposely avoids nearBreath because they can spawn on both sides of room
 				specWarnToxicDroplets:Show(eventCount)
 				specWarnToxicDroplets:Play("helpsoak")
 			elseif eventType == "empoweringslam" then
@@ -329,7 +382,9 @@ do
 			--	specWarnBlightedBlood:Show(eventCount)
 			--	specWarnBlightedBlood:Play("helpdispel")
 			elseif eventType == "unstablemiasma" then
-				warnUnstableMiasma:Show(eventCount)
+				if nearBlood then
+					warnUnstableMiasma:Show(eventCount)
+				end
 			elseif eventType == "shiftingprotovenom" then
 				specWarnShiftingProtovenom:Show(eventCount)
 				specWarnShiftingProtovenom:Play("colorchange")

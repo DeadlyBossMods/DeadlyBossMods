@@ -2,6 +2,15 @@ if GetLocale() ~= "koKR" then return end
 local L
 
 ---------------------------
+--  Entombed Sentinels (3445) --
+---------------------------
+L= DBM:GetModLocalization(2874)
+
+L:SetOptionLocalization({
+	AdvancedBossFiltering	= "각 보스와의 거리를 주기적으로 검사하여 멀리 있는 보스의 특정 경고를 숨기고 타이머를 흐리게 표시 (48미터 이상)"
+})
+
+---------------------------
 --  LightblindedVanguard (3180) --
 ---------------------------
 L= DBM:GetModLocalization(2737)
