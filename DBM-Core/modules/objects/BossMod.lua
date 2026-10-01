@@ -514,15 +514,23 @@ do
 	local IsItemInRange = C_Item and C_Item.IsItemInRange or IsItemInRange
 
 	---Used when we want to alert or filter based on proximity to the casting boss
-	---@param cidOrGuid number|string
+	---@param cidOrGuid number|string? Creature ID, GUID, or direct unit token (such as "boss1").
 	---@param onlyBoss boolean? Used when you only need to check "boss" unitids
 	---@param itemId number? Used to define which item (range) is used. 32698 (48) is used if empty
 	---@param distance number? Used for tank distance fallback if item api is restricted (Deprecated)
 	---@param defaultReturn boolean? Fallback return if all checks fail (whether a failure returns true or false)
+	---@param restrictedCheck boolean? Requires a direct unit token and forbids CID/GUID lookups and tank-distance fallback.
 	---@return boolean
-	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
+	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn, restrictedCheck)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
-		if self:MidRestrictionsActive() then return true end--GUID checks not allowed in Midnight+ during combat
+		if restrictedCheck or (type(cidOrGuid) == "string" and UnitExists(cidOrGuid)) then
+			--IsItemInRange permits secret units. Pass the unit through without inspecting its identity.
+			--Direct tokens never enter the CID/GUID-based tank fallback, even outside restrictions.
+			local inRange = IsItemInRange(itemId or 32698, cidOrGuid)
+			if inRange == nil then return (defaultReturn == nil) or defaultReturn end
+			return inRange
+		end
+		if self:MidRestrictionsActive() then return true end--CID/GUID checks and tank fallback are not allowed during restrictions.
 		cidOrGuid = cidOrGuid or self.creatureId
 		local uId
 		if type(cidOrGuid) == "number" then--CID passed
