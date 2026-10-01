@@ -523,11 +523,10 @@ do
 	---@return boolean
 	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn, restrictedCheck)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
-		if restrictedCheck or (type(cidOrGuid) == "string" and UnitExists(cidOrGuid)) then
+		if restrictedCheck and (type(cidOrGuid) == "string" and UnitExists(cidOrGuid)) then
 			--IsItemInRange permits secret units. Pass the unit through without inspecting its identity.
 			--Direct tokens never enter the CID/GUID-based tank fallback, even outside restrictions.
-			itemId = itemId or 32698
-			local inRange = IsItemInRange(itemId, cidOrGuid)
+			local inRange = IsItemInRange(itemId or 32698, cidOrGuid)
 			if inRange == nil then return (defaultReturn == nil) or defaultReturn end
 			return inRange
 		end
