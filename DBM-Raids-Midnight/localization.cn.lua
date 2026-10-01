@@ -2,6 +2,15 @@ if GetLocale() ~= "zhCN" then return end
 local L
 
 ---------------------------
+--  Entombed Sentinels (3445) --
+---------------------------
+L= DBM:GetModLocalization(2874)
+
+L:SetOptionLocalization({
+	AdvancedBossFiltering	= "动态扫描与每个Boss的距离，并自动隐藏距离超过48码的Boss的部分警告和淡化其计时条"
+})
+
+---------------------------
 --  LightblindedVanguard (3180) --
 ---------------------------
 L= DBM:GetModLocalization(2737)

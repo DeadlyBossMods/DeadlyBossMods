@@ -43,6 +43,17 @@ color2.myheight = 0
 color1:SetColorRGB(DBT.Options.StartColorR, DBT.Options.StartColorG, DBT.Options.StartColorB)
 color2:SetColorRGB(DBT.Options.EndColorR, DBT.Options.EndColorG, DBT.Options.EndColorB)
 
+local function lockDummyBarSize(bar)
+	-- Preview bars ignore the live bar size/scale options
+	local old = bar.ApplyStyle
+	function bar:ApplyStyle(...)
+		old(self, ...)
+		self.frame:SetWidth(183)
+		self.frame:SetScale(0.9)
+		_G[self.frame:GetName() .. "Bar"]:SetWidth(183)
+	end
+end
+
 ---@class MainDummyBar: DBTBar
 local maindummybar = DBT:CreateDummyBar(nil, nil, SMALL)
 maindummybar.frame:SetParent(BarSetup.frame)
@@ -50,16 +61,7 @@ maindummybar.frame:SetPoint("BOTTOMLEFT", color1, "TOPLEFT", 20, 40)
 maindummybar.frame:SetScript("OnUpdate", function(_, elapsed)
 	maindummybar:Update(elapsed)
 end)
-do
-	-- little hook to prevent this bar from changing size/scale
-	local old = maindummybar.ApplyStyle
-	function maindummybar:ApplyStyle(...)
-		old(self, ...)
-		self.frame:SetWidth(183)
-		self.frame:SetScale(0.9)
-		_G[self.frame:GetName() .. "Bar"]:SetWidth(183)
-	end
-end
+lockDummyBarSize(maindummybar)
 maindummybar:ApplyStyle()
 
 ---@class MainDummyBarHuge: DBTBar
@@ -71,16 +73,7 @@ maindummybarHuge.frame:SetScript("OnUpdate", function(_, elapsed)
 end)
 maindummybarHuge.enlarged = true
 maindummybarHuge.dummyEnlarge = true
-do
-	-- Little hook to prevent this bar from changing size/scale
-	local old = maindummybarHuge.ApplyStyle
-	function maindummybarHuge:ApplyStyle(...)
-		old(self, ...)
-		self.frame:SetWidth(183)
-		self.frame:SetScale(0.9)
-		_G[self.frame:GetName() .. "Bar"]:SetWidth(183)
-	end
-end
+lockDummyBarSize(maindummybarHuge)
 maindummybarHuge:ApplyStyle()
 
 local Styles = {

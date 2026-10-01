@@ -154,35 +154,11 @@ do
 			LSM:Register("sound", "Blakbyrd Alert 2", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert2.ogg]])
 			LSM:Register("sound", "Blakbyrd Alert 3", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert3.ogg]])
 			-- User Media
-			if DBM.Options.CustomSounds >= 1 then
-				LSM:Register("sound", "DBM: Custom 1", [[Interface\AddOns\DBM-CustomSounds\Custom1.ogg]])
+			if DBM.Options.CustomSounds > 9 then
+				DBM.Options.CustomSounds = 9
 			end
-			if DBM.Options.CustomSounds >= 2 then
-				LSM:Register("sound", "DBM: Custom 2", [[Interface\AddOns\DBM-CustomSounds\Custom2.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 3 then
-				LSM:Register("sound", "DBM: Custom 3", [[Interface\AddOns\DBM-CustomSounds\Custom3.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 4 then
-				LSM:Register("sound", "DBM: Custom 4", [[Interface\AddOns\DBM-CustomSounds\Custom4.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 5 then
-				LSM:Register("sound", "DBM: Custom 5", [[Interface\AddOns\DBM-CustomSounds\Custom5.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 6 then
-				LSM:Register("sound", "DBM: Custom 6", [[Interface\AddOns\DBM-CustomSounds\Custom6.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 7 then
-				LSM:Register("sound", "DBM: Custom 7", [[Interface\AddOns\DBM-CustomSounds\Custom7.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 8 then
-				LSM:Register("sound", "DBM: Custom 8", [[Interface\AddOns\DBM-CustomSounds\Custom8.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 9 then
-				LSM:Register("sound", "DBM: Custom 9", [[Interface\AddOns\DBM-CustomSounds\Custom9.ogg]])
-				if DBM.Options.CustomSounds > 9 then
-					DBM.Options.CustomSounds = 9
-				end
+			for i = 1, DBM.Options.CustomSounds do
+				LSM:Register("sound", "DBM: Custom " .. i, "Interface\\AddOns\\DBM-CustomSounds\\Custom" .. i .. ".ogg")
 			end
 		end
 		-- Sort LibSharedMedia keys alphabetically (case-insensitive)

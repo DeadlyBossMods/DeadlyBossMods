@@ -66,6 +66,7 @@ end
 local voiceReplaceArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackReplace)
 local VPReplaceAnnounce		= voiceReplaceArea:CreateCheckButton(L.ReplacesAnnounce, true, nil, "VPReplacesAnnounce")
 local VPReplaceSADefault	= voiceReplaceArea:CreateCheckButton(L.ReplacesSADefault, true, nil, "VPReplacesSADefault")
+voiceReplaceArea:CreateText(L.VPReplaceNote, nil, true)
 
 local resetbutton = voiceReplaceArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", voiceReplaceArea.frame, "BOTTOMRIGHT", -2, 4)
@@ -79,8 +80,6 @@ resetbutton:SetScript("OnClick", function()
 	VPReplaceAnnounce:SetChecked(DBM.Options.VPReplacesAnnounce)
 	VPReplaceSADefault:SetChecked(DBM.Options.VPReplacesSADefault)
 end)
-
---TODO, add note (L.VPReplaceNote) either above or below the replace checkboxes and within voiceReplaceArea
 
 --local voiceAdvancedArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackAdvOptions)
 
