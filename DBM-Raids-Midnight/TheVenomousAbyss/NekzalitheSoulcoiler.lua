@@ -58,6 +58,7 @@ local combatStartTime = 0
 local pendingEngageEvents = {}
 local normalStage1FortyCount = 0--Normal alternates Amani/Rend on 40s in stage 1
 local normalStage2FortyCount = 0--Normal alternates Barrage/Amani on 40s in stage 2
+local bossCastStartTime, ritualCastStopTime, ritualChannelStartTime
 mod.vb.RendCount = 0
 mod.vb.IgnitionCount = 0
 mod.vb.EntwinedStepCount = 0
@@ -97,11 +98,13 @@ end
 
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
+	self:TLBatchReset()
 	self:SetStage(1)
 	combatStartTime = GetTime()
 	table.wipe(pendingEngageEvents)
 	normalStage1FortyCount = 0
 	normalStage2FortyCount = 0
+	bossCastStartTime, ritualCastStopTime, ritualChannelStartTime = nil, nil, nil
 	self.vb.RendCount = 1
 	self.vb.IgnitionCount = 1
 	self.vb.EntwinedStepCount = 1
@@ -117,7 +120,10 @@ function mod:OnLimitedCombatStart()
 		self:IgnoreBlizzardAPI()
 		self:RegisterShortTermEvents(
 			"ENCOUNTER_TIMELINE_EVENT_ADDED",
-			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+			"UNIT_SPELLCAST_START boss1",
+			"UNIT_SPELLCAST_STOP boss1",
+			"UNIT_SPELLCAST_CHANNEL_START boss1"
 		)
 		setFallback(self, true)
 	else
@@ -128,13 +134,58 @@ end
 
 function mod:OnCombatEnd()
 	self:TLCountReset()
+	self:TLBatchReset()
 	table.wipe(pendingEngageEvents)
 	normalStage1FortyCount = 0
 	normalStage2FortyCount = 0
+	bossCastStartTime, ritualCastStopTime, ritualChannelStartTime = nil, nil, nil
 	self:UnregisterShortTermEvents()
 end
 
 do
+	---@param self DBMMod
+	local function enterStage2(self)
+		if self:GetStage(2) then return end
+		self:SetStage(2)
+		normalStage2FortyCount = 0
+		bossCastStartTime, ritualCastStopTime, ritualChannelStartTime = nil, nil, nil
+		warnPhase2:Show()
+		warnPhase2:Play("ptwo")
+	end
+
+	--Optional early phase detection, using cast timing rather than secret spell IDs.
+	--UNIT_SPELLCAST events may disappear in a future patch; timeline batches remain authoritative backups.
+	function mod:UNIT_SPELLCAST_START()
+		if not self:GetStage(1) then return end
+		bossCastStartTime = GetTime()
+		ritualCastStopTime = nil
+	end
+
+	function mod:UNIT_SPELLCAST_STOP()
+		if not self:GetStage(1) then return end
+		local now = GetTime()
+		if bossCastStartTime and self:IsRoundedTimer(now - bossCastStartTime, 1.5, 0.2) then
+			ritualCastStopTime = now--Ritual of Awakening's 1.5s cast precedes its channel by roughly 1s.
+		end
+		bossCastStartTime = nil
+	end
+
+	function mod:UNIT_SPELLCAST_CHANNEL_START()
+		local now = GetTime()
+		if self:GetStage(1) then
+			if ritualCastStopTime and now - ritualCastStopTime <= 2 then
+				self:SetStage(1.5)
+				ritualChannelStartTime = now
+				ritualCastStopTime = nil
+			end
+		elseif self:GetStage(1.5) then
+			--Ignore resends of the opening Ritual channel; Uncoiling follows its 20.5s channel.
+			if not ritualChannelStartTime or now - ritualChannelStartTime >= 20.5 then
+				enterStage2(self)
+			end
+		end
+	end
+
 	---@param self DBMMod
 	---@param timerRouter fun(self: DBMMod, timer: number, timerExact: number, eventID: number)
 	local function flushPendingEngage(self, timerRouter)
@@ -157,11 +208,18 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersLive(self, timer, timerExact, eventID)
+		if timer == 8 or timer == 20 or timer == 50 or self:IsRoundedTimer(timerExact, 49.5, 0.01) then
+			enterStage2(self)--Stage-2-only durations still identify the phase without UNIT_SPELLCAST events.
+		end
+		if timer == 8 then
+			--Each stage-2 opening batch starts with Invoke, including Week7 Mythic's replacement batch.
+			normalStage2FortyCount = 0
+		end
 		local stage = self:GetStage()
 		local handled = false
 
 		if stage == 1 then
-			--Live Mythic/Heroic/Normal stage 1: Amani/Rend alternate on 40, Amani (30), Barrage (28/36), Rend (15), Pyre (11), Invoke (8)
+			--Live Mythic/Heroic/Normal stage 1: Amani/Rend alternate on 40, Amani (30), Barrage (28/36), Rend (15), Pyre (11)
 			if timer == 40 then
 				normalStage1FortyCount = normalStage1FortyCount + 1
 				handled = true
@@ -182,55 +240,44 @@ do
 			elseif timer == 11 then
 				handled = true
 				timerHungeringPyreCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "hungeringpyre", "HungeringPyreCount"))
-			elseif timer == 8 then
-				handled = true
-				local invokeCount = self:TLCountStart(eventID, "invoke", "InvokeCount")
-				timerInvokeCD:TLStart(timerExact, eventID, invokeCount)
-				if invokeCount == 1 and self:GetStage(2, 1) then--Boss swaps pattern at 50%; detect stage 2 by first low-duration Invoke
-					self:SetStage(2)
-					normalStage2FortyCount = 0
-					warnPhase2:Show()
-					warnPhase2:Play("ptwo")
-				end
 			end
 		elseif stage == 1.5 then
-			--Mythic intermission: Restless Amani (25), Hungering Pyre (11); the next Invoke (8) begins stage 2.
-			if timer == 25 then
+			--Intermission: Restless Amani (Mythic 25, otherwise 30), Hungering Pyre (11).
+			if timer == (self:IsMythic() and 25 or 30) then
 				handled = true
 				timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
 			elseif timer == 11 then
 				handled = true
 				timerHungeringPyreCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "hungeringpyre", "HungeringPyreCount"))
-			elseif timer == 8 then
-				handled = true
-				self:SetStage(2)
-				normalStage2FortyCount = 0
-				timerInvokeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "invoke", "InvokeCount"))
-				warnPhase2:Show()
-				warnPhase2:Play("ptwo")
 			end
 		elseif stage == 2 then
-			--Live Heroic/Normal stage 2: Restless Amani (20/30), Barrage/Amani alternate on 40, Possession Barrage (28), Essence Rend (50), Invoke (8/48), Hungering Pyre (11)
+			--Live Mythic/Heroic/Normal stage 2: Restless Amani (20/30), Barrage/Amani alternate on 40, Barrage (28), Rend (49.5), Invoke (8/48), Pyre (11)
 			--Note: a 40s Possession Barrage state-2 arrived ~10s late in Normal NekzaliKill2, but completed on time in NekzaliKill; use Blizzard's raw duration without correction.
+			--Track only opening lanes: new IDs can replace the opening batch before old IDs cancel.
+			--Do NOT track the later 40s Amani here; it legitimately overlaps the opening 40s Barrage.
 			if timer == 40 then
 				normalStage2FortyCount = normalStage2FortyCount + 1
 				handled = true
 				if normalStage2FortyCount % 2 == 1 then
+					self:TLBatchTrackLatest(40, eventID)
 					timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
 				else
 					timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
 				end
 			elseif timer == 20 or timer == 30 then
 				handled = true
+				if timer == 20 then self:TLBatchTrackLatest(20, eventID) end
 				timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
 			elseif timer == 28 then
 				handled = true
 				timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
-			elseif timer == 50 then
+			elseif self:IsRoundedTimer(timerExact, 49.5, 0.5) then--49.499 rounds down to 49 in Week7 Mythic.
 				handled = true
+				self:TLBatchTrackLatest(49.5, eventID)
 				timerEssenceRendCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "essencerend", "RendCount"))
 			elseif timer == 8 or timer == 48 then
 				handled = true
+				if timer == 8 then self:TLBatchTrackLatest(8, eventID) end
 				timerInvokeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "invoke", "InvokeCount"))
 			elseif timer == 11 then
 				handled = true
@@ -256,8 +303,8 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			if self:IsMythic() and self:GetStage(1) and timer == 25 and not self:GetStage(1.5) then
-				self:SetStage(1.5)--Mythic intermission is uniquely identified by the 25-second Restless Amani timer
+			if self:GetStage(1) and timer == (self:IsMythic() and 25 or 30) then
+				self:SetStage(1.5)--Restless Amani's intermission duration is the backup if spellcast events disappear.
 			end
 			local elapsed = GetTime() - combatStartTime
 			if elapsed <= engageBatchWindow then
@@ -284,6 +331,7 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
+		self:TLBatchUntrack(eventID)
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
 			if not eventType then return end
