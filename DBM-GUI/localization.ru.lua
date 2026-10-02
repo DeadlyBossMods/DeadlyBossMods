@@ -652,67 +652,9 @@ L.FontColor							= "Цвет шрифта"
 L.FontShadow						= "Тень"
 L.FontType							= "Выбор шрифта"
 L.FontHeight						= 16
-L.DevPanel							= "Разработка и тестирование"
-L.DevPanelArea						= "Разработка и тестирование интерфейса"
-L.DevPanelExplanation				= "Это интерфейс для разработки и тестирования, который проверяет правильность работы DBM путем воспроизведения журналов боевых действий." -- Test UI panel under options
-L.DevModPanelExplanation			= [[Добро пожаловать на площадку разработки и тестирования этого мода.
-Здесь Вы можете просмотреть журналы боев с боссами, чтобы увидеть, как ведет себя мод, и протестировать интеграцию с функцией обратных вызовов DBM. Смотри DBM-Test/README.md для получения более подробной информации об интеграции и функциях обратных вызовов. DBM поставляется с примерами журналов для многих рейдов, но Вы также можете импортировать свои собственные журналы из Transcriptor.
-]] -- Playground mode in mods
 
-L.TimewarpSetting					= "Изменение времени: %dx"
-L.TimewarpDynamic					= "Изменение времени: динамическое (самое быстрое)"
-L.TestSupportArea					= "Параметры загрузки модов"
-L.ModNotLoadedWithTests				= "Предупреждение: в настоящее время этот мод не загружен с полной тестовой поддержкой. Если мод напрямую вызывает функции API, такие как UnitHealth() или UnitName(), они не будут работать корректно. Это часто относится к функциям, связанным со здоровьем, мощью или целями."
-L.ModLoadedWithTests				= "В настоящее время мод загружен с поддержкой тестирования, поскольку, по крайней мере, в одном моде в аддоне включены тесты."
-L.AlwaysLoadModWithTests			= "Всегда загружать этот мод с полной поддержкой тестирования (немного замедляет загрузку)"
-L.ModLoadRequiresReload				= ", требуется перезагрузка интерфейса, чтобы изменения вступили в силу" -- Appended to L.AlwaysLoadModWithTests
-L.TestSelectArea					= "Тестовые данные" -- Title of the UI area
-L.SelectTestLog						= L.TestSelectArea -- Title for the dropdown to select a specific test
-L.SelectPerspective					= "Перспектива журнала (имитация игрока)"
-L.ImportTranscriptor				= "Импортировать журнал Transcriptor"
-L.ImportTranscriptorHeader			= [[
-Импортируйте журнал Transcriptor, вставив его в любое место в поле редактирования ниже. Скорость вставки составляет примерно 2 МБ/с. Это означает, что Ваша игра зависнет на несколько секунд при вставке очень больших файлов журналов.
-Вы также можете импортировать текущий сеанс Transcriptor из сохраненных переменных Transcriptor с помощью кнопки импорта справа.]]
 
-L.PasteLogHere						= "Нажмите " .. (IsMacClient() and "Cmd-V" or "Ctrl-V") .. " , чтобы вставить лог сюда."
-L.LogPasted							= "Вставлено %.2f Мбайт за %.1f секунд (%.2f Мбайт/с)."
-L.ImportLocalTranscriptor			= "Импортировать текущий\nсеанс Transcriptor"
-L.NoLocalTranscriptor				= "Не удалось найти локальные данные Transcriptor."
-L.LocalImportDone					= "Импортировано %d журналов с %d сражениями из Transcriptor."
-L.Parsing							= "Анализ..."
-L.SelectLogDropdown					= "Выбрать сражение"
-L.CreateTest						= "Создать тест"
-L.ExportTest						= "Экспорт теста"
-L.ExportedTest						= "Экспортированный тестовый пример с %d строками (%.1f%% отфильтровано)."
-L.ExportedTestFailedAnon			= "ВНИМАНИЕ: Не удалось анонимизировать журнал, найдено %d неанонимизированных строк (подробности в чате)."
-L.ExportTestFailedNonAnonString		= "ВНИМАНИЕ: Строка %q выглядит неанонимизированной."
-L.CreatedTest						= "Создан тест с %d событиями за %.1f секунд."
-L.NoLogsFound						= "Импорт Transcriptor не содержит данных журнала."
-L.NoTestDataAvailable				= "Нет доступных тестовых данных"
-L.TestDataLoading					= "Загрузка тестов..."
-L.NoLogSelected						= "Создание теста не удалось: журнал не выбран."
-L.LogAlreadyImported				= "Создание теста не удалось: тест уже импортирован."
-L.RewriteAllToYou					= "Все игроки одновременно"
-L.RealModOptionsBelow				= "Параметры мода, приведенные ниже, синхронизируются между режимом игровыми настройками и Вашими реальными настройками."
 L.Test								= "Тест"
-L.Tests								= "Тесты"
-L.AllTests							= "Все тесты"
-L.RunTest							= "Запустить тест"
-L.RunTestShort						= "Запустить" -- Тот же функционал, что и у RunTest (запустить тест), но кнопка меньшего размера
-L.StopTest							= "остановить тест"
-L.StopTests							= "Остановить тесты"
-L.RunAllTests						= "Запустить все тесты"
-L.Queued							= "В очереди"
-L.Running							= "Запущенный"
-L.Failed							= "Неудачно"
-L.ShowReport						= "Показать отчет"
-L.ShowErrors						= "Показать ошибки"
-L.TestModEntry						= "[Игровая площадка] %s"
-L.EnterTestMode						= "Режим игровой площадки"
-L.SkipPhase							= "Перейти к следующему этапу"
-L.AnonymizeTest						= "Анонимизировать имена игроков и GUID"
-L.ShowThisTestEverywhere			= "Показать этот тест для всех модов"
-L.SaveThisTest						= "Сохранить этот тестовый журнал на постоянной основе"
 L.BossModTColor						= "Цвет полосы"
 L.BossModCVoice						= "Голос обратного отсчета"
 L.BossModSWSound					= "Звук предупреждений"

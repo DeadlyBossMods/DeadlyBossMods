@@ -9,7 +9,6 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 
 local scheduler = private:GetModule("DBMScheduler")
 local tableUtils = private:GetPrototype("TableUtils")
-local test = private:GetPrototype("DBMTest")
 
 ---@type table<string, DBMMod>
 local modsById = setmetatable({}, {__mode = "v"})
@@ -107,10 +106,6 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 		},
 		mt
 	)
-	test:Trace(obj, "NewMod", name, modId)
-	if test.testRunning and test.Mocks and test.Mocks.SetModEnvironment then
-		test.Mocks:SetModEnvironment(2)
-	end
 
 	local encounterId = tonumber(name)
 	if encounterId and EJ_GetEncounterInfo and EJ_GetEncounterInfo(encounterId) then
@@ -278,7 +273,6 @@ function bossModPrototype:SetStage(stage)
 		DBM:FireEvent("DBM_SetStage", self, self.id, self.vb.phase, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, self.vb.stageTotality)--Mod, modId, Stage, Encounter Id (if available), total number of times SetStage has been called since combat start
 		--Note, some encounters have more than one encounter Id, for these encounters, the first ID from mod is always returned regardless of actual engage ID triggered fight
 		DBM:Debug("DBM_SetStage: " .. self.vb.phase .. "/" .. self.vb.stageTotality, nil, nil, nil, true)
-		test:Trace(self, "SetStage", self.vb.phase, self.vb.stageTotality)
 	end
 end
 
@@ -335,7 +329,6 @@ end
 
 ---@param ... DBMEvent|string
 function bossModPrototype:RegisterEventsInCombat(...)
-	test:Trace(self, "RegisterEvents", "InCombat", ...)
 	if self.inCombatOnlyEvents and select("#", ...) > 1 then
 		geterrorhandler()("combat events already set")
 	end
@@ -366,7 +359,6 @@ end
 
 ---@param ... DBMEvent|string
 function bossModPrototype:RegisterSafeEventsInCombat(...)
-	test:Trace(self, "RegisterEvents", "InCombat", ...)
 	if self.inCombatOnlySafeEvents and select("#", ...) > 1 then
 		geterrorhandler()("combat events already set")
 	end
@@ -674,8 +666,7 @@ do
 		end
 
 		local unitID
-		-- Always assume we are currently targeting the unit in question in tests
-		if UnitGUID("target") == sourceGUID or test.testRunning then
+		if UnitGUID("target") == sourceGUID then
 			unitID = "target"
 		elseif not private.isClassic and (UnitGUID("focus") == sourceGUID) then
 			unitID = "focus"
@@ -1855,7 +1846,6 @@ function bossModPrototype:ScheduleMethod(t, method, ...)
 		error(("Method %s does not exist"):format(tostring(method)), 2)
 	end
 	local id = self:Schedule(t, self[method], self, ...)
-	test:Trace(self, "SetScheduleMethodName", id, self, method, ...)
 	return id
 end
 bossModPrototype.ScheduleEvent = bossModPrototype.ScheduleMethod
@@ -1903,11 +1893,4 @@ end
 function bossModPrototype:GetLocalizedStrings()
 	self.localization.miscStrings.name = self.localization.general.name
 	return self.localization.miscStrings
-end
-
-
--- Test support
-
-function bossModPrototype:TestTrace(...)
-	test:Trace(self, "ModTrace", ...)
 end

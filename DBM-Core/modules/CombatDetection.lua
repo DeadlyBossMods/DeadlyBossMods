@@ -12,7 +12,6 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 local stringUtils = private:GetPrototype("StringUtils")
 local tableUtils = private:GetPrototype("TableUtils")
 local difficulties = private:GetPrototype("Difficulties")
-local test = private:GetPrototype("DBMTest")
 local checkEntry, removeEntry = tableUtils.checkEntry, tableUtils.removeEntry
 
 ---@class CombatDetection: DBMModule
@@ -87,7 +86,7 @@ function module:ClearSpamTimers(time)
 end
 
 function DBM:SCENARIO_COMPLETED()
-	if #inCombat > 0 and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) then
+	if #inCombat > 0 and C_Scenario.IsInScenario() then
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if v.inScenario then
@@ -752,9 +751,6 @@ do
 		---@class DBMMod
 		mod = mod
 		if not checkEntry(inCombat, mod) then
-			if DBM.TaintedByTests then
-				self:AddMsg(L.DBM_TAINTED_BY_TESTS) -- Shows this early in case tests messed with some filters below
-			end
 			if not mod.Options.Enabled then return end
 			if not mod.combatInfo then return end
 			if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
@@ -781,7 +777,6 @@ do
 				event = ""
 			end
 			--check completed. starting combat
-			test:Trace(mod, "StartCombat", event)
 			tinsert(inCombat, mod)
 			-- Pull time is always considered as in combat, this makes sure checkWipe() triggers only after the minimum time without combat has passed since start.
 			lastValidCombat = GetTime()
@@ -805,7 +800,7 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if private.isRetail then
-				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
+				if mod.addon and mod.addon.type == "SCENARIO" and C_Scenario.IsInScenario() and not mod.soloChallenge then
 					mod.inScenario = true
 				end
 				-- Cache timeline countdown duration once per pull.
@@ -1116,7 +1111,6 @@ do
 		---@class DBMMod
 		mod = mod
 		if removeEntry(inCombat, mod) then
-			test:Trace(mod, "EndCombat", event)
 			local scenario = mod.addon and mod.addon.type == "SCENARIO" and not mod.soloChallenge
 			if (mod.inCombatOnlyEvents or mod.inCombatOnlySafeEvents) and mod.inCombatOnlyEventsRegistered then
 				if srmIncluded then
