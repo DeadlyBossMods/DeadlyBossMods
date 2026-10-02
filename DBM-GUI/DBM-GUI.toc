@@ -43,7 +43,6 @@ localization.es.lua
 localization.br.lua
 
 DBM-GUI.lua
-DBM-GUI_TestUI.lua
 DBM-GUI_DropDownNEW.lua
 
 # Modules
@@ -83,7 +82,5 @@ modules\options\filters\Privacy.lua
 modules\options\frames\Frames.lua
 modules\options\frames\InfoFrame.lua
 modules\options\frames\Nameplate.lua [AllowLoadGameType classic]
-
-modules\options\dev\Dev.lua
 
 modules\options\tools.lua

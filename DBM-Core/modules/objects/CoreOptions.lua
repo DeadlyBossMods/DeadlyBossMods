@@ -707,7 +707,6 @@ function DBM:LoadModOptions(modId, inCombat, first)
 		---@class DBMMod
 		local mod = self:GetModByName(id)
 		modInstance = mod
-		mod.showTestUI = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests[id]
 		-- migrate old option
 		if _G[oldSavedVarsName] and _G[oldSavedVarsName][id] then
 			self:Debug("LoadModOptions: Found old options, importing", 2)
