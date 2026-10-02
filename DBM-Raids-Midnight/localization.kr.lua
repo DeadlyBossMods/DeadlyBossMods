@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(2874)
 
 L:SetOptionLocalization({
-	AdvancedBossFiltering	= "각 보스와의 거리를 주기적으로 검사하여 멀리 있는 보스의 특정 경고를 숨기고 타이머를 흐리게 표시 (48미터 이상)"
+	AdvancedBossFiltering	= "각 보스와의 거리를 주기적으로 검사해서 자동으로 멀리 있는 보스(48미터 이상)와 관련된 경고를 숨기고 타이머를 흐리게 표시"
 })
 
 ---------------------------
