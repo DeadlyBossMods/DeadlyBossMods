@@ -24,6 +24,7 @@
 		"ChatFont.*"
 	],
 	"diagnostics.globals": [
+		"WOW_PROJECT_CAMELOT",
 		"---MIDNIGHT SHIT---",
 		"C_InstanceEncounter",
 		"C_InstanceEncounter.IsEncounterInProgress",
