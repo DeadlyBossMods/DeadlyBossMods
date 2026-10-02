@@ -16,7 +16,6 @@ local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
-local test = private:GetPrototype("DBMTest")
 private.blizzTargetSpecialWarningQueue = private.blizzTargetSpecialWarningQueue or setmetatable({}, {__mode = "k"})
 local blizzTargetSpecialWarningQueue = private.blizzTargetSpecialWarningQueue
 private.blizzYouSpecialWarningQueue = private.blizzYouSpecialWarningQueue or setmetatable({}, {__mode = "k"})
@@ -295,8 +294,6 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 				font1elapsed = font2elapsed
 				self:AddSpecialWarning(text, true, specWarnObject, number, customIcon, noSound)
 			end
-		else
-			test:Trace(specWarnObject and specWarnObject.mod or self, "ShowSpecialWarning", specWarnObject, text)
 		end
 	end
 	--DUPLICATE CODE
@@ -798,16 +795,13 @@ function specialWarningPrototype:CombinedShow(delay, ...)
 		end
 	end
 	DBMScheduler:Unschedule(self.Show, self.mod, self)
-	local id = DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
-	test:Trace(self.mod, "SchedulerHideFromTraceIfUnscheduled", id)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "CombinedShow", ...)
+	DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
 end
 
 ---New object that allows defining count instead of scheduling for more efficient and immediate warnings when precise count is known
 ---@param maxTotal number
 ---@param ... any
 function specialWarningPrototype:PreciseShow(maxTotal, ...)
-	test:Trace(self.mod, "CombinedWarningPreciseShow", self, maxTotal)
 	--Check if option for this warning is even enabled
 	if self.option and not self.mod.Options[self.option] then return end
 	--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
@@ -830,11 +824,8 @@ function specialWarningPrototype:PreciseShow(maxTotal, ...)
 	local viableTotal = DBM:NumRealAlivePlayers()
 	if (maxTotal == #self.combinedtext) or (viableTotal == #self.combinedtext) then--All targets gathered, show immediately
 		self:Show(...)--Does this need self or mod? will it have this bug? https://github.com/DeadlyBossMods/DBM-Unified/issues/153
-		test:Trace(self.mod, "CombinedWarningPreciseShowSuccess", self, maxTotal)
 	else--And even still, use scheduling backup in case counts still fail
-		local id = DBMScheduler:Schedule(1.2, self.Show, self.mod, self, ...)
-		test:Trace(self.mod, "SchedulerHideFromTraceIfUnscheduled", id)
-		test:Trace(self.mod, "SetScheduleMethodName", id, self, "PreciseShow", maxTotal, ...)
+		DBMScheduler:Schedule(1.2, self.Show, self.mod, self, ...)
 	end
 end
 
@@ -843,16 +834,13 @@ end
 ---@param ... any
 function specialWarningPrototype:DelayedShow(delay, ...)
 	DBMScheduler:Unschedule(self.Show, self.mod, self, ...)
-	local id = DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
-	test:Trace(self.mod, "SchedulerHideFromTraceIfUnscheduled", id)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "DelayedShow", ...)
+	DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
 end
 
 ---@param t number
 ---@param ... any
 function specialWarningPrototype:Schedule(t, ...)
 	local id = DBMScheduler:Schedule(t, self.Show, self.mod, self, ...)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "Schedule", ...)
 	return id
 end
 
@@ -904,7 +892,6 @@ function specialWarningPrototype:ScheduleVoice(t, name, customPath)
 	if not canVoiceReplace(self) then return end
 	DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
 	local id = DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "ScheduleVoice", name, customPath)
 	return id
 end
 
@@ -915,7 +902,6 @@ end
 function specialWarningPrototype:ScheduleVoiceOverLap(t, name, customPath)
 	if not canVoiceReplace(self) then return end
 	local id = DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "ScheduleVoiceOverLap", name, customPath)
 	return id
 end
 
@@ -976,7 +962,6 @@ function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, opt
 		},
 		mt
 	)
-	test:Trace(self, "NewSpecialWarning", obj, "untyped")
 	local optionId = optionName or optionName ~= false and text
 	if optionId then
 		obj.voiceOptionId = hasVoice and "Voice" .. optionId or nil
@@ -1035,7 +1020,6 @@ local function newSpecialWarning(self, announceType, spellId, stacks, optionDefa
 		},
 		mt
 	)
-	test:Trace(self, "NewSpecialWarning", obj, announceType)
 	if optionName then
 		obj.option = optionName
 	elseif optionName ~= false then

@@ -775,67 +775,10 @@ L.FontHeight	= 16
 
 
 -- Testing
-L.DevPanel							= "개발 및 테스트"
-L.DevPanelArea						= "개발 및 테스트 UI"
-L.DevPanelExplanation				= "DBM이 의도한 대로 작동하고 있는지 전투 로그를 재생해서 검증하는 개발 및 테스트 UI입니다." -- Test UI panel under options
-L.DevModPanelExplanation			= [[본 모듈의 개발 및 시험장에 오신 것을 환영합니다.
-이곳에선 보스 전투 로그를 재생해서 해당 모듈이 어떻게 작동하는지 관찰하고 DBM 콜백들의 통합을 테스트합니다. 통합과 콜백에 관한 자세한 사항은 DBM-Test/README.md를 참고하시기 바랍니다. DBM에서 제공하는 여러 레이드의 예제 로그가 있으며 Transcriptor로 작성된 로그를 가져올 수도 있습니다.
-]] -- Playground mode in mods
 
-L.TimewarpSetting					= "시간 흐름: %dx"
-L.TimewarpDynamic					= "시간 흐름: 동적 (가장 빠름)"
-L.TestSupportArea					= "모듈 로딩 설정"
-L.ModNotLoadedWithTests				= "경고: 이 모듈은 현재 완전한 테스트가 가능하게 로딩되지 않았습니다. 이 모듈이 UnitHealth()나 UnitName()같은 API 함수를 직접 호출할 경우 제대로 작동하지 않을 것입니다. 유닛의 생명력, 자원, 대상과 관련된 함수에서 자주 발생합니다."
-L.ModLoadedWithTests				= "모듈이 완전한 테스트가 가능하도록 로딩되지 않았습니다. 애드온에서 최소 1개 이상의 모듈은 테스트 모드를 활성화해야 합니다."
-L.AlwaysLoadModWithTests			= "이 모듈을 항상 완전한 테스트가 가능하도록 로드 (로딩 속도 약간 느려짐)"
-L.ModLoadRequiresReload				= ", UI 재시작 필요" -- Appended to L.AlwaysLoadModWithTests
-L.TestSelectArea					= "데이터 테스트" -- Title of the UI area
-L.SelectPerspective					= "로그 관점 (플레이어로 가정)"
-L.ImportTranscriptor				= "Transcriptor 로그 가져오기"
-L.ImportTranscriptorHeader			= [[
-아래 상자의 아무곳이나 붙여넣으면 Transcriptor 로그를 가져올 수 있습니다. 붙여넣기 속도는 대략 2 MiB/s 정도 되며, 이는 아주 큰 용량의 로그 파일을 붙여넣기하면 수 초 가량 게임이 멈춘다는 뜻입니다.
-우측의 가져오기 버튼으로 Transcriptor의 저장된 데이터 중에서 현재 세션만 가져올 수도 있습니다.]]
-L.PasteLogHere						= (IsMacClient() and "Cmd-V" or "Ctrl-V") .. "를 눌러서 이곳에 로그를 붙여넣기 하세요."
-L.LogPasted							= "%.2f MiB를 %.1f초간 붙여넣었습니다. (%.2f MiB/s)"
-L.ImportLocalTranscriptor			= "현재 Transcriptor\n세션 붙여넣기"
-L.NoLocalTranscriptor				= "로컬 Transcriptor 데이터를 찾을 수 없습니다."
-L.LocalImportDone					= "Transcriptor에서 로그 %d개 보스 전투 %d개를 가져왔습니다."
-L.Parsing							= "분석중..."
-L.SelectLogDropdown					= "보스 전투 선택"
-L.CreateTest						= "테스트 작성"
-L.ExportTest						= "테스트 내보내기"
-L.ExportedTest						= "테스트 케이스를 %d줄 내보냈습니다. (%.1f%% 걸러짐)"
-L.ExportedTestFailedAnon			= "경고: 로그 익명화에 실패했으며 %d개의 익명화가 안된 문자열이 있습니다. (대화창에 세부 내역과 출력)"
-L.ExportTestFailedNonAnonString		= "경고: 문자열 %q 익명화되지 않은 것으로 보입니다."
-L.CreatedTest						= "%d개의 이벤트로 테스트를 %.1f초에 걸쳐 작성했습니다."
-L.NoLogsFound						= "Transcriptor 가져오기에 로그 데이터가 들어있지 않습니다."
-L.NoTestDataAvailable				= "사용 가능한 테스트 데이터 없음"
-L.TestDataLoading					= "테스트 로딩 중..."
-L.NoLogSelected						= "테스트 작성 실패: 선택한 로그가 없습니다."
-L.LogAlreadyImported				= "테스트 작성 실패: 이미 가져온 것입니다."
 
-L.RewriteAllToYou					= "모든 플레이어를 동시에"
-L.RealModOptionsBelow				= "아래의 모듈 설정은 시험장 모드와 실제 설정간의 동기화에 관한 것입니다."
 L.Test								= "테스트"
-L.Tests								= "테스트"
-L.AllTests							= "모든 테스트"
-L.RunTest							= "테스트 실행"
-L.RunTestShort						= "실행" -- Same intend as RunTest, but a smaller button
-L.StopTest							= "테스트 중지"
-L.StopTests							= "테스트 중지"
-L.RunAllTests						= "모든 테스트 실행"
-L.Queued							= "대기중"
-L.Running							= "실행중"
-L.Failed							= "실패"
-L.ShowReport						= "보고서 보기"
-L.ShowErrors						= "오류 보기"
-L.TestModEntry						= "[시험장] %s"
-L.EnterTestMode						= "시험장 모드"
-L.SkipPhase							= "다음 단계로 넘어가기"
 
-L.AnonymizeTest						= "플레이어 이름과 GUID 익명 처리"
-L.ShowThisTestEverywhere			= "모든 모드에 이 테스트 표시"
-L.SaveThisTest						= "이 테스트 기록을 계속해서 저장"
 
 L.BossModTColor						= "바 색상"
 L.BossModCVoice						= "초읽기 음성"

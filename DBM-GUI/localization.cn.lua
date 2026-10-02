@@ -658,67 +658,9 @@ L.FontColor							= "字体颜色"
 L.FontShadow						= "字体阴影"
 L.FontType							= "选择字体"
 L.FontHeight	= 18
-L.DevPanel							= "开发和测试"
-L.DevPanelArea						= "开发和测试UI"
-L.DevPanelExplanation				= "这是个开发和测试的UI，用于回放战斗记录来证实DBM是否按预期工作。" -- Test UI panel under options
-L.DevModPanelExplanation			= [[欢迎来到此模组的开发和测试模式。
-您可以在此回放BOSS战斗记录来观察模组的行为和DBM回调的整合测试。有关整合和回调的详细信息可以阅读 DBM-Test/README.md 。DBM带了很多副本的战斗记录，但你也可以通过 Transcriptor 导入自己的 log。
-]] -- Playground mode in mods
 
-L.TimewarpSetting					= "时间扭曲：%dx"
-L.TimewarpDynamic					= "时间扭曲：动态 (最快)"
-L.TestSupportArea					= "模组载入选项"
-L.ModNotLoadedWithTests				= "警告：本模组尚加载完整的支持测试。如果模组直接调用 UnitHealth()或UnitName()之类的函数，将不会工作正确，一般是与目标的生命值、能量或者目标有关。"
-L.ModLoadedWithTests				= "模组当前载入了测试支持，因为至少有一个插件启动了测试模式。"
-L.AlwaysLoadModWithTests			= "总是载入此模组的测试模式 (轻微延长加载时间)"
-L.ModLoadRequiresReload				= "，需要UI重新 /reload 来生效" -- Appended to L.AlwaysLoadModWithTests
-L.TestSelectArea					= "测试数据" -- Title of the UI area
-L.SelectTestLog						= L.TestSelectArea -- Title for the dropdown to select a  specific test
-L.SelectPerspective					= "日志观察点 (模拟玩家)"
-L.ImportTranscriptor				= "导入 Transcriptor log"
-L.ImportTranscriptorHeader			= [[
-在下面的编辑框中导入Transcriptor log。导入速度大概是 2 MiB/秒, 如果贴入大文件时将会卡住几秒。
-你也可以点击右侧的导入按钮，在Transcriptor的保存变量中导入当前的Transcriptor进程。]]
 
-L.PasteLogHere						= "按下 " .. (IsMacClient() and "Cmd-V" or "Ctrl-V") .. " 在此粘贴 Transcriptor log"
-L.LogPasted							= "导入 %.2f MiB，用时 %.1f 秒。 (%.2f MiB/秒)."
-L.ImportLocalTranscriptor			= "导入当前\nTranscriptor 进程。"
-L.NoLocalTranscriptor				= "找不到本地的Transcriptor数据。"
-L.LocalImportDone					= "在Transcriptor中导入了 %d 个 logs，包括 %d 场战斗。"
-L.Parsing							= "分析中..."
-L.SelectLogDropdown					= "选择战斗"
-L.CreateTest						= "创建测试"
-L.ExportTest						= "输出测试"
-L.ExportedTest						= "测试已输出，一共%d行 (过滤了 %.1f%%)."
-L.ExportedTestFailedAnon			= "警告：日志匿名化失败，发现 %d 个非匿名字符串（详细信息见聊天框架和输出）。"
-L.ExportTestFailedNonAnonString		= "警告：字符串 %q 看上去非匿名"
-L.CreatedTest						= "为 %d 个事件建立了测试，用时 %.1f 秒。"
-L.NoLogsFound						= "Transcriptor 的导入不包含任何战斗数据。"
-L.NoTestDataAvailable				= "无可用测试数据"
-L.TestDataLoading					= "Loading tests..."
-L.NoLogSelected						= "创建测试失败：没有选择日志"
-L.LogAlreadyImported				= "创建测试失败：测试已导入"
-L.RewriteAllToYou					= "同时的全体玩家"
-L.RealModOptionsBelow				= "下面的模组选项已经在测试模式和真实设置中同步"
 L.Test								= "测试"
-L.Tests								= "测试"
-L.AllTests							= "全部测试"
-L.RunTest							= "运行测试"
-L.RunTestShort						= "运行" -- Same intend as RunTest, but a smaller button
-L.StopTest							= "停止测试"
-L.StopTests							= "停止测试"
-L.RunAllTests						= "运行全部测试"
-L.Queued							= "队列中"
-L.Running							= "运行中"
-L.Failed							= "失败"
-L.ShowReport						= "显示报告"
-L.ShowErrors						= "显示错误"
-L.TestModEntry						= "[测试环境] %s"
-L.EnterTestMode						= "测试模式"
-L.SkipPhase							= "转跳至下一阶段"
-L.AnonymizeTest						= "将玩家姓名和GUID匿名"
-L.ShowThisTestEverywhere			= "在每个MOD中显示此测试"
-L.SaveThisTest						= "保存此测试记录"
 L.BossModTColor						= "条颜色"
 L.BossModCVoice						= "倒数语音"
 L.BossModSWSound					= "警报声音"

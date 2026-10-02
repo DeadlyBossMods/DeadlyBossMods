@@ -729,7 +729,6 @@ L.DBM_INSTALL_PACKAGE_MOP = "Pacote de Mists of Pandaria"
 L.DBM_INSTALL_PACKAGE_DUNGEON = "Pacote de Masmorras, Imersões e Eventos"
 
 -- Tests
-L.DBM_TAINTED_BY_TESTS = "O DBM foi usado em modo de teste com distorção temporal na sessão atual, é recomendável recarregar sua interface antes de usar o DBM em uma luta de chefe real. Tudo deve funcionar como esperado, mas sem garantias!"
 
 -- Boss tooltip
 L.TOOLTIP_DBM                 = L.DBM .. " informações"

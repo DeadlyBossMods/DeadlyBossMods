@@ -654,67 +654,9 @@ L.FontColor							= "文字顏色"
 L.FontShadow						= "陰影"
 L.FontType							= "選擇字型"
 L.FontHeight	= 16
-L.DevPanel							= "開發 & 測試"
-L.DevPanelArea						= "開發以及測試UI"
-L.DevPanelExplanation				= "這是一個開發和測試UI，它透由播放戰鬥日誌來驗證DBM是否按預期工作。"
-L.DevModPanelExplanation			= [[歡迎來到此模組的開發和測試操練場。
-您可以在此處回放首領戰鬥的日誌，以查看模組的行為以及與DBM回調的整合測試。有關整合和回調的更多詳細訊息，請參見dbm-test/readme.md。 DBM帶有許多團隊副本的範例日誌，但您也可以從紀錄器中匯入自己的日誌。
-]] -- Playground mode in mods
 
-L.TimewarpSetting					= "時間扭曲：%dx"
-L.TimewarpDynamic					= "時間扭曲：動態 (最快)"
-L.TestSupportArea					= "模組載入選項"
-L.ModNotLoadedWithTests				= "警告：此模組當前尚未載入完整的測試支持。如果模組直接調用 UnitHealth() 或 UnitName() 等API函數，則這些功能將無法正常運作。與單位生命值、能量或目標有關的功能通常是這種情況。"
-L.ModLoadedWithTests				= "模組當前載入了測試支援，因為插件中至少有一個模組啟用了測試。"
-L.AlwaysLoadModWithTests			= "總是載入此模組的完整測試支援 (稍微減慢載入)"
-L.ModLoadRequiresReload				= "，需要UI重載以取得效果" -- Appended to L.AlwaysLoadModWithTests
-L.TestSelectArea					= "測試數據" -- Title of the UI area
-L.SelectTestLog						= L.TestSelectArea -- Title for the dropdown to select a  specific test
-L.SelectPerspective					= "日誌觀點 (模擬玩家)"
-L.ImportTranscriptor				= "匯入紀錄器日誌"
-L.ImportTranscriptorHeader			= [[
-通過將其貼上到下面的編輯框中的任何位置，匯入紀錄器日誌。貼上速度約為2 MIB/秒，這意味著您的遊戲在貼上非常大的日誌文件時會凍結幾秒鐘。
-您還可以從右側的匯入按鈕中從紀錄器的保存紀錄檔匯入當前的紀錄器階段。]]
 
-L.PasteLogHere						= "按下 " .. (IsMacClient() and "Cmd-V" or "Ctrl-V") .. " 來在此貼上日誌。"
-L.LogPasted							= "貼上 %.2f MiB 於 %.1f 秒 (%.2f MiB/秒)。"
-L.ImportLocalTranscriptor			= "匯入當前\n紀錄器階段"
-L.NoLocalTranscriptor				= "無法找到本地紀錄器數據。"
-L.LocalImportDone					= "匯入 %d 日誌包含 %d 遭遇戰自紀錄器。"
-L.Parsing							= "分析..."
-L.SelectLogDropdown					= "選擇遭遇戰"
-L.CreateTest						= "建立測試"
-L.ExportTest						= "匯出測試"
-L.ExportedTest						= "匯出帶有 %d 線的測試案例 (%.1f%% 過濾)。"
-L.ExportedTestFailedAnon			= "警告：紀錄匿名失敗，發現了％d非匿名字串（詳細訊息在聊天框架和輸出中）。"
-L.ExportTestFailedNonAnonString		= "警告：字串 %q 看起來非匿名化。"
-L.CreatedTest						= "建立測試包含 %d 事件於 %.1f 秒。"
-L.NoLogsFound						= "紀錄器匯入不包含日誌數據。"
-L.NoTestDataAvailable				= "無可用測試數據"
-L.TestDataLoading					= "載入測試中..."
-L.NoLogSelected						= "測試建立失敗：未選擇日誌。"
-L.LogAlreadyImported				= "測試建立失敗：測試已經匯入。"
-L.RewriteAllToYou					= "同時間的全部玩家"
-L.RealModOptionsBelow				= "下面的模組選項在操練場模式和您的真實設置之間同步。"
 L.Test								= "測試"
-L.Tests								= "測試"
-L.AllTests							= "全部測試"
-L.RunTest							= "運行測試"
-L.RunTestShort						= "運行" -- Same intend as RunTest, but a smaller button
-L.StopTest							= "停止測試"
-L.StopTests							= "停止測試"
-L.RunAllTests						= "運行全部測試"
-L.Queued							= "佇列"
-L.Running							= "運行中"
-L.Failed							= "失敗"
-L.ShowReport						= "顯示報告"
-L.ShowErrors						= "顯示錯誤"
-L.TestModEntry						= "[操練場] %s"
-L.EnterTestMode						= "操練場模式"
-L.SkipPhase							= "跳到下個階段"
-L.AnonymizeTest						= "匿名玩家名字以及標誌"
-L.ShowThisTestEverywhere			= "顯示此測試在所有模組"
-L.SaveThisTest						= "永久儲存此測試紀錄"
 L.BossModTColor						= "計時條顏色"
 L.BossModCVoice						= "倒數語音"
 L.BossModSWSound					= "警報聲音"

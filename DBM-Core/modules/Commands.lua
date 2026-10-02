@@ -7,8 +7,6 @@ local DBM = DBM
 
 local L = DBM_CORE_L
 
-local test = private:GetPrototype("DBMTest")
-
 local tinsert = table.insert
 
 do
@@ -355,13 +353,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM.Options.DebugMode = not DBM.Options.DebugMode
 		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
 		private:GetModule("DevToolsModule"):OnDebugToggle()
-	elseif cmd:sub(1, 4) == "test" then
-		local args = msg:sub(5):trim()
-		if args == "" then
-			DBM:DemoMode()
-		else
-			test:HandleCommand(string.split(" ", args))
-		end
+	elseif cmd == "test" then
+		DBM:DemoMode()
 	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 		local x, y, _, map = UnitPosition("player")
 		local mapID = C_Map.GetBestMapForUnit("player") or -1
