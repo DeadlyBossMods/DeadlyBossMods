@@ -777,7 +777,6 @@ L.DBM_INSTALL_PACKAGE_MOP		= "Mist of Pandaria package"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "Dungeons, Delves, Challenges, and Events package"
 
 -- Tests
-L.DBM_TAINTED_BY_TESTS			= "DBM was used in test mode with time warping in the current session, it is recommended to reload your UI prior to using DBM in a real boss fight. Everything should still work as expected, but no gurantees!"
 
 -- Boss tooltip
 L.TOOLTIP_DBM					= L.DBM .. " info"

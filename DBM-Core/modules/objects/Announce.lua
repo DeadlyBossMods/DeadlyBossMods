@@ -16,7 +16,6 @@ local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
-local test = private:GetPrototype("DBMTest")
 private.blizzTargetQueue = private.blizzTargetQueue or setmetatable({}, {__mode = "k"})
 local blizzTargetQueue = private.blizzTargetQueue
 
@@ -295,8 +294,6 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 			font2elapsed = font3elapsed
 			self:AddWarning(text, true, announceObject, useSound, prefix, overrideDuration, customIcon)
 		end
-	else
-		test:Trace(announceObject and announceObject.mod or self, "ShowAnnounce", announceObject, text)
 	end
 	if useSound then
 		self:PlaySoundFile(self.Options.RaidWarningSound, nil, true)
@@ -677,16 +674,13 @@ function announcePrototype:CombinedShow(delay, ...)
 		end
 	end
 	DBMScheduler:Unschedule(self.Show, self.mod, self)
-	local id = DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
-	test:Trace(self.mod, "SchedulerHideFromTraceIfUnscheduled", id)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "CombinedShow", ...)
+	DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
 end
 
 ---New object that allows defining count instead of scheduling for more efficient and immediate warnings when precise count is known
 ---@param maxTotal number
 ---@param ... any
 function announcePrototype:PreciseShow(maxTotal, ...)
-	test:Trace(self.mod, "CombinedWarningPreciseShow", self, maxTotal)
 	if self.option and not self.mod.Options[self.option] then return end
 	if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
@@ -706,11 +700,8 @@ function announcePrototype:PreciseShow(maxTotal, ...)
 	local viableTotal = DBM:NumRealAlivePlayers()
 	if (maxTotal <= #self.combinedtext + self.combinedcount) or (viableTotal <= #self.combinedtext + self.combinedcount) then--All targets gathered, show immediately
 		self:Show(...)--Does this need self or mod? will it have this bug? https://github.com/DeadlyBossMods/DBM-Unified/issues/153
-		test:Trace(self.mod, "CombinedWarningPreciseShowSuccess", self, maxTotal)
 	else--And even still, use scheduling backup in case counts still fail
-		local id = DBMScheduler:Schedule(1.2, self.Show, self.mod, self, ...)
-		test:Trace(self.mod, "SchedulerHideFromTraceIfUnscheduled", id, maxTotal)
-		test:Trace(self.mod, "SetScheduleMethodName", id, self, "PreciseShow", maxTotal, ...)
+		DBMScheduler:Schedule(1.2, self.Show, self.mod, self, ...)
 	end
 end
 
@@ -718,7 +709,6 @@ end
 ---@param ... any
 function announcePrototype:Schedule(t, ...)
 	local id = DBMScheduler:Schedule(t, self.Show, self.mod, self, ...)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "Schedule", ...)
 	return id
 end
 
@@ -761,7 +751,6 @@ function announcePrototype:ScheduleVoice(t, name, customPath)
 	if private.voiceSessionDisabled or DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) or not DBM.Options.VPReplacesAnnounce then return end
 	DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
 	local id = DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "ScheduleVoice", name, customPath)
 	return id
 end
 
@@ -772,7 +761,6 @@ end
 function announcePrototype:ScheduleVoiceOverLap(t, name, customPath)
 	if private.voiceSessionDisabled or DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) or not DBM.Options.VPReplacesAnnounce then return end
 	local id = DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "ScheduleVoiceOverLap", name, customPath)
 	return id
 end
 
@@ -832,7 +820,6 @@ function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionNa
 		},
 		mt
 	)
-	test:Trace(self, "NewAnnounce", obj, "untyped")
 	if optionName then
 		obj.option = optionName
 		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, waCustomName)
@@ -890,7 +877,6 @@ local function newAnnounce(self, announceType, spellId, color, icon, optionDefau
 		},
 		mt
 	)
-	test:Trace(self, "NewAnnounce", obj, announceType)
 	if optionName then
 		obj.option = optionName
 		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellId, announceType)

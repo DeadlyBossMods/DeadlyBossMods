@@ -11,12 +11,6 @@ mod:SetZone(3004)
 mod:RegisterCombat("combat")
 
 --TODO, peresonal essence Rend alert if it has ENCOUNTER_WARNING, else auras api if that aura is public
---TODO, Entwined step might be redundant, Invoke is parent ability and has own script/ID, mod has both for now since need to see which blizz links to timer
---TODO, https://www.wowhead.com/ptr/spell=1289923/call-of-devotion has an ID of 694 but doesn't exist in journal
---TODO, https://www.wowhead.com/ptr/spell=1290679/vengeful-hiss has an ID of 696 but doesn't exist in journal
---TODO, split posession barriage to a threat based run out warning for one tank and taunt warning for other
---TODO, verify https://www.wowhead.com/ptr/spell=1290003/uncoiling is triggered by ID 712 as ENCOUNTER_WARNING (script uses 1290001 but it has no tooltip)
---TODO, verify if intermission abilities neeed counts or not (some might some might not)
 DBM:RegisterAltSpellName(1284103, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.LINE)--Possession Barrage --> Tank Line
 DBM:RegisterAltSpellName(1297630, DBM_COMMON_L.ADDS)--Restless Amani --> Adds
 DBM:RegisterAltSpellName(1305421, DBM_COMMON_L.GROUPSOAK)--Hungering Pyre --> Group Soak
@@ -208,7 +202,7 @@ do
 	---@param timerExact number
 	---@param eventID number
 	local function timersLive(self, timer, timerExact, eventID)
-		if timer == 8 or timer == 20 or timer == 50 or self:IsRoundedTimer(timerExact, 49.5, 0.01) then
+		if timer == 8 or timer == 20 or self:IsRoundedTimer(timerExact, 49.5, 0.5) then
 			enterStage2(self)--Stage-2-only durations still identify the phase without UNIT_SPELLCAST events.
 		end
 		if timer == 8 then

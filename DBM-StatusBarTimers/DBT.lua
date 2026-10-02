@@ -367,7 +367,6 @@ do
 		local frame = CreateFrame("Frame", "DBT_Bar_" .. fCounter, smallBarsAnchor)
 		frame:SetSize(195, 20)
 		frame:SetScript("OnUpdate", onUpdate)
-		DBM.Test:RegisterTimeWarpFrame(frame)
 		frame:SetScript("OnMouseDown", onMouseDown)
 		frame:SetScript("OnMouseUp", onMouseUp)
 		frame:SetScript("OnHide", onHide)
@@ -656,13 +655,6 @@ do
 	end
 
 	function DBT:LoadOptions(id)
-		if id == "DBM" then
-			DBM.Test:RegisterLocalHook("GetTime", function(val)
-				local old = GetTime
-				GetTime = val
-				return old
-			end)
-		end
 		local profile = ensureProfileStructure()
 		profile[id] = profile[id] or {}
 		self:AddDefaultOptions(profile[id], self.DefaultOptions)

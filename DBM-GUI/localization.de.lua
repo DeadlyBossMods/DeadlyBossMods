@@ -646,67 +646,9 @@ L.FontColor							= "Schriftfarbe"
 L.FontShadow						= "Schatten"
 L.FontType							= "Schriftart"
 L.FontHeight						= 16
-L.DevPanel							= "Entwicklung und Tests"
-L.DevPanelArea						= "Entwicklungs- und Testoberfläche"
-L.DevPanelExplanation				= "Dies ist eine Entwicklungs- und Testoberfläche, die überprüft, ob DBM korrekt funktioniert, indem Kampfprotokolle abgespielt werden." -- Test UI panel under options
-L.DevModPanelExplanation			= [[Willkommen im Entwicklungs- und Testbereich dieses Mods.
-Hier kannst du Aufzeichnungen von Bosskämpfen abspielen, um zu sehen, wie sich der Mod verhält, und um DBM-Callbacks zu testen. Siehe DBM-Test/README.md für weitere Details zu Integrationen und Callbacks. DBM enthält Beispiel-Logs für viele Raids, du kannst aber auch eigene Logs aus Transcriptor importieren.
-]] -- Playground mode in mods
 
-L.TimewarpSetting					= "Zeitverzerrung: %dx"
-L.TimewarpDynamic					= "Zeitverzerrung: dynamisch (am schnellsten)"
-L.TestSupportArea					= "Mod-Ladeoptionen"
-L.ModNotLoadedWithTests				= "Warnung: Dieser Mod wurde derzeit nicht mit vollständiger Testunterstützung geladen. Wenn der Mod direkt API-Funktionen wie UnitHealth() oder UnitName() aufruft, funktionieren diese nicht korrekt. Dies betrifft häufig Funktionen für Lebenspunkte, Energie oder Ziele."
-L.ModLoadedWithTests				= "Der Mod wird derzeit mit Testunterstützung geladen, da mindestens ein Mod im Addon Tests aktiviert hat."
-L.AlwaysLoadModWithTests			= "Diesen Mod immer mit vollständiger Testunterstützung laden (verlangsamt das Laden leicht)"
-L.ModLoadRequiresReload				= ", erfordert UI-Neuladen zum Wirksamwerden" -- Appended to L.AlwaysLoadModWithTests
-L.TestSelectArea					= "Testdaten" -- Title of the UI area
-L.SelectTestLog						= L.TestSelectArea -- Title for the dropdown to select a  specific test
-L.SelectPerspective					= "Log-Perspektive (simulierter Spieler)"
-L.ImportTranscriptor				= "Transcriptor-Log importieren"
-L.ImportTranscriptorHeader			= [[
-Importiere ein Transcriptor-Log, indem du es irgendwo in das Eingabefeld unten einfügst. Die Einfügegeschwindigkeit liegt bei ca. 2 MiB/s, das bedeutet, dass dein Spiel bei sehr großen Logdateien für mehrere Sekunden einfriert.
-Du kannst außerdem die aktuelle Transcriptor-Sitzung aus den gespeicherten Variablen von Transcriptor über den Import-Button rechts importieren.]]
 
-L.PasteLogHere						= "Drücke " .. (IsMacClient() and "Cmd-V" or "Strg-V") .. " um ein Log hier einzufügen."
-L.LogPasted							= "%.2f MiB in %.1f Sekunden eingefügt (%.2f MiB/s)."
-L.ImportLocalTranscriptor			= "Aktuelle\nTranscriptor-Sitzung importieren"
-L.NoLocalTranscriptor				= "Keine lokalen Transcriptor-Daten gefunden."
-L.LocalImportDone					= "%d Logs mit %d Begegnungen aus Transcriptor importiert."
-L.Parsing							= "Analysiere..."
-L.SelectLogDropdown					= "Begegnung auswählen"
-L.CreateTest						= "Test erstellen"
-L.ExportTest						= "Test exportieren"
-L.ExportedTest						= "Testfall mit %d Zeilen exportiert (%.1f%% gefiltert)."
-L.ExportedTestFailedAnon			= "WARNUNG: Log-Anonymisierung fehlgeschlagen, %d nicht anonymisierte Strings gefunden (Details im Chatfenster und Output)."
-L.ExportTestFailedNonAnonString		= "WARNUNG: String %q sieht nicht anonymisiert aus."
-L.CreatedTest						= "Test mit %d Ereignissen in %.1f Sekunden erstellt."
-L.NoLogsFound						= "Transcriptor-Import enthält keine Logdaten."
-L.NoTestDataAvailable				= "Keine Testdaten verfügbar"
-L.TestDataLoading					= "Lade Tests..."
-L.NoLogSelected						= "Test-Erstellung fehlgeschlagen: Kein Log ausgewählt."
-L.LogAlreadyImported				= "Test-Erstellung fehlgeschlagen: Test bereits importiert."
-L.RewriteAllToYou					= "Alle Spieler gleichzeitig"
-L.RealModOptionsBelow				= "Die Mod-Optionen unten werden zwischen Playground-Modus und deinen echten Einstellungen synchronisiert."
 L.Test								= "Testen"
-L.Tests								= "Tests"
-L.AllTests							= "Alle Tests"
-L.RunTest							= "Test starten"
-L.RunTestShort						= "Starten"
-L.StopTest							= "Test stoppen"
-L.StopTests							= "Tests stoppen"
-L.RunAllTests						= "Alle Tests starten"
-L.Queued							= "In Warteschlange"
-L.Running							= "Läuft"
-L.Failed							= "Fehlgeschlagen"
-L.ShowReport						= "Bericht anzeigen"
-L.ShowErrors						= "Fehler anzeigen"
-L.TestModEntry						= "[Playground] %s"
-L.EnterTestMode						= "Playground-Modus"
-L.SkipPhase							= "Zur nächsten Phase springen"
-L.AnonymizeTest						= "Spielernamen und GUIDs anonymisieren"
-L.ShowThisTestEverywhere			= "Diesen Test für alle Mods anzeigen"
-L.SaveThisTest						= "Diesen Test dauerhaft speichern"
 L.BossModTColor						= "Balkenfarbe"
 L.BossModCVoice						= "Countdown-Stimme"
 L.BossModSWSound					= "Ansage-Sound"

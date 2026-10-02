@@ -13,7 +13,6 @@ local DBM = private:GetPrototype("DBM")
 local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
-local test = private:GetPrototype("DBMTest")
 
 local pformat = stringUtils.pformat
 local removeEntry = tableUtils.removeEntry
@@ -260,10 +259,6 @@ local function detectEarlyTimerRefresh(self, bar, timer)
 		end
 	end
 
-	-- Trace early refreshes for tests
-	if bar.timer > correctWithVarianceDuration(0.1, bar) then
-		test:Trace(self.mod, "EarlyTimerRefresh", self, bar.timer, bar.totalTime, bar.varianceDuration)
-	end
 end
 
 ---Used to set fallback options to blizzard encounter API for hardcoded timers to fall back on
@@ -511,19 +506,9 @@ function timerPrototype:Start(timer, ...)
 			msg = pformat(self.text, ...)
 		end
 	end
-	if test.testRunning and self.type == "target"  then
-		-- Target timers may use the real player's name as arg
-		-- We just update the text, not the timer id because if we would change the id we would need to do this everywhere which is a mess
-		local targetArg = ...
-		if targetArg == UnitName("player") or targetArg and targetArg:match(">.-<") and stringUtils.stripServerName(targetArg) == UnitName("player") then
-			msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId, self.name), "PlayerName", ...)
-		end
-	end
 	msg = msg:gsub(">.-<", stringUtils.stripServerName)
 	if bar then
 		bar:SetText(msg)
-		-- FIXME: i would prefer to trace this directly in DBT, but since I want to rewrite DBT... meh.
-		test:Trace(self.mod, "StartTimer", self, timer, msg)
 	end
 	--ID (string) Internal DBM timer ID
 	--msg (string) Timer Text (Do not use msg has an event trigger, it varies language to language or based on user timer options. Use this to DISPLAY only (such as timer replacement UI). use spellId field 99% of time
@@ -607,7 +592,6 @@ function timerPrototype:SetFade(fadeOn, ...)
 			DBM:FireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, true, self.name)--Timer ID, spellId, modId, true/nil, spellName (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
 			bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
 			bar:ApplyStyle()
-			test:Trace(self.mod, "SetTimerProperty", self, id, "Fade", true)
 			DBM:Unschedule(playCountSound, id)--Don't even need to check option, it's faster cpu wise to just unschedule countdown either way
 		end
 	elseif not fadeOn and self.fade then
@@ -619,7 +603,6 @@ function timerPrototype:SetFade(fadeOn, ...)
 			DBM:FireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil, self.name)--Timer ID, spellId, modId, true/nil, spellName (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
 			bar.fade = nil--Set bar object metatable, which is copied from timer metatable at bar start only
 			bar:ApplyStyle()
-			test:Trace(self.mod, "SetTimerProperty", self, id, "Fade", false)
 			if self.option then
 				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 				if (type(countVoice) == "string" or countVoice > 0) then--Unfading bar, start countdown
@@ -643,13 +626,11 @@ function timerPrototype:SetSTFade(fadeOn, ...)
 			DBM:FireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, true, self.name)--Timer ID, spellId, modId, true/nil, spellName (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
 			bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
 			bar:ApplyStyle()
-			test:Trace(self.mod, "SetTimerProperty", self, id, "STFade", true)
 			DBM:Unschedule(playCountSound, id)
 		elseif not fadeOn and bar.fade then
 			DBM:FireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil, self.name)
 			bar.fade = false
 			bar:ApplyStyle()
-			test:Trace(self.mod, "SetTimerProperty", self, id, "STFade", false)
 			if self.option then
 				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 				if (type(countVoice) == "string" or countVoice > 0) then--Unfading bar, start countdown
@@ -669,41 +650,24 @@ function timerPrototype:SetSTKeep(keepOn, ...)
 		if keepOn and not bar.keep then
 			bar.keep = true--Set bar object metatable, which is copied from timer metatable at bar start only
 			bar:ApplyStyle()
-			test:Trace(self.mod, "SetTimerProperty", self, id, "STKeep", true)
 		elseif not keepOn and bar.keep then
 			DBM:FireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil)
 			bar.keep = false
 			bar:ApplyStyle()
-			test:Trace(self.mod, "SetTimerProperty", self, id, "STKeep", false)
 		end
-	end
-end
-
-local function testFixupScheduleMethodName(self, ...)
-	if not test.testRunning or self.type ~= "target" then
-		return ...
-	end
-	local targetArg = ...
-	if targetArg == UnitName("player") or targetArg and targetArg:match(">.-<") and stringUtils.stripServerName(targetArg) == UnitName("player") then
-		return "PlayerName", select(2, ...)
-	else
-		return ...
 	end
 end
 
 function timerPrototype:DelayedStart(delay, ...)
 	DBMScheduler:Unschedule(self.Start, self.mod, self, ...)
-	local id = DBMScheduler:Schedule(delay or 0.5, self.Start, self.mod, self, ...)
-	test:Trace(self.mod, "SchedulerHideFromTraceIfUnscheduled", id)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "DelayedStart", testFixupScheduleMethodName(self, ...))
+	DBMScheduler:Schedule(delay or 0.5, self.Start, self.mod, self, ...)
 end
 timerPrototype.DelayedShow = timerPrototype.DelayedStart
 
 ---@param t number
 ---@param ... any
 function timerPrototype:Schedule(t, ...)
-	local id = DBMScheduler:Schedule(t, self.Start, self.mod, self, ...)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "Schedule", testFixupScheduleMethodName(self, ...))
+	DBMScheduler:Schedule(t, self.Start, self.mod, self, ...)
 end
 
 ---@param t number|table
@@ -731,7 +695,6 @@ function timerPrototype:Stop(...)
 			else
 				DBM:FireEvent("DBM_TimerStop", self.startedTimers[i])
 			end
-			test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
 			DBT:CancelBar(self.startedTimers[i])
 			DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
 			DBM:Unschedule(removeEntry, self.startedTimers, self.startedTimers[i])
@@ -759,7 +722,6 @@ function timerPrototype:Stop(...)
 					DBM:FireEvent("DBM_NameplateStop", id, guid)
 				end
 				DBM:FireEvent("DBM_TimerStop", id, guid)
-				test:Trace(self.mod, "StopTimer", self, id)
 				DBT:CancelBar(id)
 				DBM:Unschedule(playCountSound, id)--Unschedule countdown by timerId
 				DBM:Unschedule(removeEntry, self.startedTimers, self.startedTimers[i])
@@ -795,7 +757,6 @@ function timerPrototype:HardStop(guid)
 		end
 		DBM:FireEvent("DBM_TimerStop", self.startedTimers[i], guid)
 		DBM:FireEvent("DBM_NameplateStop", self.startedTimers[i], guid)
-		test:Trace(self.mod, "StopTimer", self, self.startedTimers[i])
 		DBT:CancelBar(self.startedTimers[i])
 		DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
 		tremove(self.startedTimers, i)
@@ -942,7 +903,6 @@ function timerPrototype:Update(elapsed, totalTime, ...)
 			end
 		end
 		local updated = DBT:UpdateBar(id, elapsed, totalTime)
-		test:Trace(self.mod, "UpdateTimer", self, id, elapsed, (correctedTimer or totalTime)) -- REVIEW!
 		return updated
 	end
 end
@@ -992,7 +952,6 @@ function timerPrototype:AddTime(extendAmount, ...)
 			end
 			DBM:FireEvent("DBM_TimerUpdate", id, elapsed, total + extendAmount)
 			local updated = DBT:UpdateBar(id, elapsed, total + extendAmount)
-			test:Trace(self.mod, "UpdateTimer", self, id, elapsed, total + extendAmount)
 			return updated
 		end
 	end
@@ -1046,7 +1005,6 @@ function timerPrototype:RemoveTime(reduceAmount, ...)
 				end
 				DBM:FireEvent("DBM_TimerUpdate", id, elapsed, total - reduceAmount)
 				local updated = DBT:UpdateBar(id, elapsed, total - reduceAmount)
-				test:Trace(self.mod, "UpdateTimer", self, id, elapsed, total - reduceAmount)
 				return updated
 			else--New remaining less than 0
 				DBM:FireEvent("DBM_TimerStop", id)
@@ -1054,7 +1012,6 @@ function timerPrototype:RemoveTime(reduceAmount, ...)
 					DBM:FireEvent("DBM_NameplateStop", id)
 				end
 				removeEntry(self.startedTimers, id)
-				test:Trace(self.mod, "StopTimer", self, id)
 				return DBT:CancelBar(id)
 			end
 		end
@@ -1087,7 +1044,6 @@ function timerPrototype:Pause(...)
 			DBM:FireEvent("DBM_NameplatePause", id)
 		end
 		bar:Pause()
-		test:Trace(self.mod, "PauseTimer", self, id)
 	end
 end
 
@@ -1130,7 +1086,6 @@ function timerPrototype:Resume(...)
 			DBM:FireEvent("DBM_NameplateResume", id)
 		end
 		bar:Resume()
-		test:Trace(self.mod, "ResumeTimer", self, id)
 	end
 end
 
@@ -1145,7 +1100,6 @@ function timerPrototype:UpdateIcon(icon, ...)
 		icon = DBM:ParseSpellIcon(icon)
 		DBM:FireEvent("DBM_TimerUpdateIcon", id, icon)
 		bar:SetIcon(icon)
-		test:Trace(self.mod, "SetTimerProperty", self, id, "Icon", icon)
 	end
 end
 
@@ -1176,7 +1130,6 @@ function timerPrototype:UpdateInline(newInline, ...)
 	if bar then
 		local ttext = _G[bar.frame:GetName() .. "BarName"]:GetText() or ""
 		bar:SetIcon(self.icon, nil, newInline or self.inlineIcon)
-		test:Trace(self.mod, "SetTimerProperty", self, id, "InlineIcon", newInline or self.inlineIcon)
 	end
 end
 
@@ -1189,7 +1142,6 @@ function timerPrototype:UpdateName(name, ...)
 	end
 	if bar then
 		bar:SetText(name)
-		test:Trace(self.mod, "SetTimerProperty", self, id, "Name", name)
 	end
 end
 
@@ -1200,7 +1152,6 @@ function timerPrototype:SetColor(c, isSecret, ...)
 	local bar = DBT:GetBar(id)
 	if bar then
 		bar:SetColor(c, isSecret)
-		test:Trace(self.mod, "SetTimerProperty", self, id, "Color", c.r, c.g, c.b)
 	end
 end
 
@@ -1293,7 +1244,6 @@ function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName,
 		},
 		mt
 	)
-	test:Trace(self, "NewTimer", obj, obj.type)
 	obj:AddOption(optionDefault, optionName, colorType, countdown, spellId, nil, waCustomName)
 	tinsert(self.timers, obj)
 	return obj
@@ -1406,7 +1356,6 @@ local function newTimer(self, timerType, timer, spellId, timerText, optionDefaul
 		},
 		mt
 	)
-	test:Trace(self, "NewTimer", obj, obj.type)
 	obj:AddOption(optionDefault, optionName, colorType, countdown, spellId, timerType)
 	tinsert(self.timers, obj)
 	-- todo: move the string creation to the GUI with SetFormattedString...

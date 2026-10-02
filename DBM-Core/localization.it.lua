@@ -720,7 +720,6 @@ L.DUOS		= "Duo"
 --L.KEYSTONE_NAMES[542] = 'DOME' -- Eco-Dome Al'dani
 
 -- Tests
-L.DBM_TAINTED_BY_TESTS	= "DBM è stato usato in modalità test con distorsione temporale nella sessione corrente; si consiglia di ricaricare l'interfaccia prima di usare DBM in un vero combattimento con i boss. Tutto dovrebbe comunque funzionare come previsto, ma senza garanzie!"
 
 -- Boss tooltip
 L.TOOLTIP_DBM			= L.DBM .. " info"
