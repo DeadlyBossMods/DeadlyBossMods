@@ -627,6 +627,7 @@ L.AuraStackFontColor					= "Цвет шрифта количества стак�
 L.AuraShowStacks					= "Отображать текст стаков"
 L.AuraShowDispelBorder				= "Отображать границу рассеивания"
 L.AuraShowCooldownSwipe				= "Показывать круговое заполнение перезарядки"
+L.AuraShowGlow						= "Подсвечивать значки, пока ауры активны"
 L.AuraSortOrder						= "Порядок сортировки аур"
 L.AuraSortDefault					= "Сортировка Blizzard по умолчанию"
 L.AuraSortShortDurationFirst		= "Сначала с короткой длительностью"
