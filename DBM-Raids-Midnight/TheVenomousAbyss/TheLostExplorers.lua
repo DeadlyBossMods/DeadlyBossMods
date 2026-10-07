@@ -2,6 +2,7 @@ local mod	= DBM:NewMod(2894, "DBM-Raids-Midnight", 1, 1320)
 --local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
 
 local UnitIsFriend = UnitIsFriend
+local GetTime = GetTime
 
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(261835, 261843, 261848)--261584 is Mor'zahi
@@ -39,10 +40,11 @@ local warnBlinkNova						= mod:NewTargetNoFilterAnnounce(1290711, 2)--Hardcoded 
 local specWarnIceboundFlames			= mod:NewSpecialWarningCount(1286921, nil, nil, nil, 1, 2, nil, nil, "kickcast")--Fix audio if targetting doable
 local specWarnBlinkNova					= mod:NewSpecialWarningBlizzYou(1290711, nil, nil, nil, 4, 2, nil, nil, "justrun")
 local specWarnMightyThud				= mod:NewSpecialWarningSoakCount(1296092, nil, nil, nil, 2, 17, nil, nil, "soakincoming")
-local specWarnShellSpin					= mod:NewSpecialWarningDodgeCount(1291759, nil, nil, nil, 2, 2, nil, nil, "farfromline")
+local specWarnShellSpin					= mod:NewSpecialWarningDodgeLoc(1291759, nil, nil, nil, 2, 15, nil, nil, "frontal")
 local specWarnThrowJunk					= mod:NewSpecialWarningDodgeCount(1291933, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnMushroomToss				= mod:NewSpecialWarningDodgeCount(1292104, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnShreddingShards			= mod:NewSpecialWarningDefensive(1295854, nil, nil, nil, 1, 2, nil, nil, "defensive")
+local specWarnShreddingShardsTaunt		= mod:NewSpecialWarningTaunt(1295854, nil, nil, nil, 1, 2, nil, nil, "tauntboss")
 
 local timerIceboundFlamesCD				= mod:NewCDCountTimer(20.5, 1286921, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON..DBM_COMMON_L.MAGIC_ICON)
 local timerBlinkNovaCD					= mod:NewCDCountTimer(20.5, 1290711, nil, nil, nil, 2)
@@ -75,6 +77,8 @@ mod:AddAuraSoundOption(1296092, true, 1296092, 1, 1, "leapyou", 19, 0)--Mighty T
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local delayedStarts = {}
+---@type table<string, {eventID: number, expires: number, timerObj: any, countKey: string}>
+local mythicStage2Expected = {}
 local normalStage2Special32Count = 0
 local normalStage4Special27Count = 0
 local normalNext31IsIce = true
@@ -106,7 +110,7 @@ local function setFallback(self, dontSetAlerts)
 		specWarnIceboundFlames:SetAlert(722, "kickcast", 2, 2)
 		specWarnBlinkNova:SetAlert({723, 724, 737, 738}, "justrun", 2, 3, 0)--1290711, 1290742, 1290740, 1290743
 		specWarnMightyThud:SetAlert(725, "soakincoming", 17, 2)
-		specWarnShellSpin:SetAlert(726, "farfromline", 2, 2)
+		specWarnShellSpin:SetAlert(726, "frontal", 15, 2)
 		specWarnThrowJunk:SetAlert(727, "watchstep", 2, 2)
 		specWarnMushroomToss:SetAlert(729, "watchstep", 2, 2)
 	end
@@ -131,6 +135,7 @@ function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self:TLActiveEventReset()
 	delayedStarts = {}
+	mythicStage2Expected = {}
 	normalStage2Special32Count = 0
 	normalStage4Special27Count = 0
 	normalNext31IsIce = true
@@ -172,6 +177,7 @@ function mod:OnCombatEnd()
 	self:TLActiveEventReset()
 	self:Unschedule()
 	delayedStarts = {}
+	mythicStage2Expected = {}
 	normalStage2Special32Count = 0
 	normalStage4Special27Count = 0
 	normalNext31IsIce = true
@@ -216,6 +222,7 @@ do
 		end
 		if incomingStage and incomingStage ~= stage then
 			self:SetStage(incomingStage)
+			mythicStage2Expected = {}
 			if incomingStage == 1 then
 				normalNext31IsIce = true
 			elseif incomingStage == 2 then
@@ -228,7 +235,7 @@ do
 		stageBatch = {}
 		for _, entry in ipairs(batch) do
 			if C_EncounterTimeline.GetEventState(entry.eventID) == 0 then
-				timersNormal(self, entry.timer, entry.timerExact, entry.eventID)
+				timersNormal(self, entry.timer, entry.timerExact, entry.eventID, entry.addedAt)
 				if badStateDetected then return end
 			end
 		end
@@ -250,7 +257,16 @@ do
 	---@param eventID number
 	---@param eventType string
 	---@param countKey string
-	local function queueStart(self, timerObj, timerExact, eventID, eventType, countKey)
+	---@param addedAt number? Mythic stage-2 recurrence evidence; independent of the delayed bar start and bar visibility
+	local function queueStart(self, timerObj, timerExact, eventID, eventType, countKey, addedAt)
+		if addedAt and self:IsMythic() then
+			mythicStage2Expected[eventType] = {
+				eventID = eventID,
+				expires = addedAt + timerExact,
+				timerObj = timerObj,
+				countKey = countKey,
+			}
+		end
 		delayedStarts[eventID] = {
 			timerObj = timerObj,
 			timerExact = timerExact,
@@ -268,6 +284,7 @@ do
 		self:ResumeBlizzardAPI()
 		self:Unschedule()
 		delayedStarts = {}
+		mythicStage2Expected = {}
 		self:UnregisterShortTermEvents()
 		setFallback(self)
 		DBM:Debug(reason, nil, nil, nil, true, true)
@@ -277,7 +294,8 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	timersNormal = function(self, timer, timerExact, eventID)
+	---@param addedAt number
+	timersNormal = function(self, timer, timerExact, eventID, addedAt)
 		local handled = false
 		local stage = self:GetStage()
 
@@ -314,35 +332,48 @@ do
 		elseif stage == 2 then
 			if timer == 3 then
 				handled = true
-				queueStart(self, timerMushroomTossCD, timerExact, eventID, "mushroom", "MushroomTossCount")
+				queueStart(self, timerMushroomTossCD, timerExact, eventID, "mushroom", "MushroomTossCount", addedAt)
 			elseif timer == 27 or timer == 4 then
 				handled = true
 				queueStart(self, timerThrowJunkCD, timerExact, eventID, "throwjunk", "ThrowJunkCount")
 			elseif timer == 13 then
 				handled = true
-				queueStart(self, timerExplosiveSurpriseCD, timerExact, eventID, "explosive", "ExplosiveSurpriseCount")
+				queueStart(self, timerExplosiveSurpriseCD, timerExact, eventID, "explosive", "ExplosiveSurpriseCount", addedAt)
 			elseif timer == 7 then
 				handled = true
-				queueStart(self, timerShellSpinCD, timerExact, eventID, "shell", "ShellSpinCount")
+				queueStart(self, timerShellSpinCD, timerExact, eventID, "shell", "ShellSpinCount", addedAt)
 			elseif timer == 30 then
 				handled = true
 				queueStart(self, timerShreddingShardsCD, timerExact, eventID, "shredding", "ShreddingShardsCount")
 			elseif timer == 2 or timer == 16 then
 				handled = true
-				queueStart(self, timerIceboundFlamesCD, timerExact, eventID, "icebound", "IceboundFlamesCount")
+				queueStart(self, timerIceboundFlamesCD, timerExact, eventID, "icebound", "IceboundFlamesCount", addedAt)
 			elseif timer == 32 then
 				handled = true
-				--Mythic's Explosive Surprise is the distinct 31.96-second entry; the remaining exact-32 entries retain their verified order.
-				if self:IsMythic() and self:IsRoundedTimer(timerExact, 31.96, 0.02) then
-					queueStart(self, timerExplosiveSurpriseCD, timerExact, eventID, "explosive", "ExplosiveSurpriseCount")
+				if self:IsMythic() then
+					--All four recurrences can be exactly 32 seconds. Require a unique previous deadline, not duration/order.
+					local matchedType
+					for eventType, entry in pairs(mythicStage2Expected) do
+						if math.abs(addedAt - entry.expires) <= 0.5 then
+							if matchedType then
+								matchedType = nil
+								break
+							end
+							matchedType = eventType
+						end
+					end
+					if matchedType then
+						local entry = mythicStage2Expected[matchedType]
+						queueStart(self, entry.timerObj, timerExact, eventID, matchedType, entry.countKey, addedAt)
+					else
+						handled = false
+					end
 				else
 					normalStage2Special32Count = normalStage2Special32Count + 1
 					if normalStage2Special32Count == 1 then
 						queueStart(self, timerMushroomTossCD, timerExact, eventID, "mushroom", "MushroomTossCount")
 					elseif normalStage2Special32Count == 2 then
 						queueStart(self, timerShellSpinCD, timerExact, eventID, "shell", "ShellSpinCount")
-					elseif normalStage2Special32Count == 3 and self:IsMythic() then
-						queueStart(self, timerIceboundFlamesCD, timerExact, eventID, "icebound", "IceboundFlamesCount")
 					elseif normalStage2Special32Count == 3 then
 						queueStart(self, timerExplosiveSurpriseCD, timerExact, eventID, "explosive", "ExplosiveSurpriseCount")
 					elseif normalStage2Special32Count == 4 then
@@ -433,6 +464,7 @@ do
 		morzahiChannelGUID = nil
 		if self:GetStage() ~= 1 then
 			self:SetStage(1)
+			mythicStage2Expected = {}
 			normalNext31IsIce = true
 		end
 	end
@@ -448,6 +480,7 @@ do
 			eventID = eventID,
 			timer = math.floor(timerExact + 0.5),
 			timerExact = timerExact,
+			addedAt = GetTime(),
 		}
 		if not stageBatchScheduled then
 			stageBatchScheduled = true
@@ -461,6 +494,14 @@ do
 		if not eventState then return end
 		if eventState >= 2 then
 			self:TLReleaseActiveEvent(eventID)
+		end
+		--A finish can precede deferred recurrence routing; retain its deadline. Pause/cancel invalidates only its current owner.
+		if eventState == 1 or eventState == 3 then
+			for eventType, entry in pairs(mythicStage2Expected) do
+				if entry.eventID == eventID then
+					mythicStage2Expected[eventType] = nil
+				end
+			end
 		end
 		local queued = delayedStarts[eventID]
 		if eventState == 3 and queued then
@@ -480,8 +521,8 @@ do
 				specWarnMightyThud:Show(eventCount)
 				specWarnMightyThud:Play("soakincoming")
 			elseif eventType == "shell" then
-				specWarnShellSpin:Show(eventCount)
-				specWarnShellSpin:Play("farfromline")
+				specWarnShellSpin:ScheduleSecret(0.4, "boss3")
+				specWarnShellSpin:Play("frontal")
 			elseif eventType == "throwjunk" then
 				specWarnThrowJunk:Show(eventCount)
 				specWarnThrowJunk:Play("watchstep")
@@ -492,6 +533,9 @@ do
 				if self:IsTanking("player", "boss4", nil, true) then--Iku
 					specWarnShreddingShards:Show()
 					specWarnShreddingShards:Play("defensive")
+				elseif self:IsTank() then
+					specWarnShreddingShardsTaunt:ScheduleSecret(3, "boss4")
+					specWarnShreddingShardsTaunt:ScheduleVoice(3, "tauntboss")
 				end
 			elseif eventType == "frostfire" then
 				warnFrostfireVolley:Show(eventCount)
