@@ -1504,13 +1504,11 @@ do
 			soundInfo.soundFileName = media
 		end
 		--In patch 12.1.5, Blizzard added a new optional field to the soundInfo table called "throttleSeconds"
-		--that allows you to limit how often the sound can be played. Default is 3
-		local auraSoundId
+		--that allows you to limit how often the sound can be played. DBM defaults to 3 seconds.
 		if DBM:GetTOC() >= 120105 then
-			auraSoundId = AddAuraSound(soundType or 0, soundInfo, throttleSeconds or 3)
-		else
-			auraSoundId = AddAuraSound(soundType or 0, soundInfo)
+			soundInfo.throttleSeconds = throttleSeconds or 3
 		end
+		local auraSoundId = AddAuraSound(soundType or 0, soundInfo)
 		self.paSounds[optionId][#self.paSounds[optionId] + 1] = auraSoundId
 	end
 

@@ -291,6 +291,17 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 	personalAuraStackYOffset.myheight = 140
 	personalAuraStackColor.myheight = 50
 
+local personalAuraShowGlow
+if DBM:GetTOC() >= 120105 then
+	personalAuraShowGlow = personalAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasPlayerShowAuraGlow")
+	personalAuraShowGlow:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasPlayerShowAuraGlow = not DBM.Options.PrivateAurasPlayerShowAuraGlow
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraShowGlow:SetPoint("TOPLEFT", personalAuraStackColor, "TOPLEFT", 0, -85)
+	personalAuraShowGlow.myheight = 0
+end
+
 local personalMovemebutton = personalAuraArea:CreateButton(L.MoveMe, 100, 16)
 personalMovemebutton:SetPoint("TOPRIGHT", personalAuraArea.frame, "TOPRIGHT", -2, -4)
 personalMovemebutton:SetNormalFontObject(GameFontNormalSmall)
@@ -329,6 +340,7 @@ personalAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasPlayerStackYOffset = DBM.DefaultOptions.PrivateAurasPlayerStackYOffset
 	DBM.Options.PrivateAurasPlayerShowStacks = DBM.DefaultOptions.PrivateAurasPlayerShowStacks
 	DBM.Options.PrivateAurasPlayerShowDispelBorder = DBM.DefaultOptions.PrivateAurasPlayerShowDispelBorder
+	DBM.Options.PrivateAurasPlayerShowAuraGlow = DBM.DefaultOptions.PrivateAurasPlayerShowAuraGlow
 	DBM.Options.PrivateAurasPlayerXOffset = DBM.DefaultOptions.PrivateAurasPlayerXOffset
 	DBM.Options.PrivateAurasPlayerYOffset = DBM.DefaultOptions.PrivateAurasPlayerYOffset
 	DBM.Options.PrivateAurasPlayerAnchor = DBM.DefaultOptions.PrivateAurasPlayerAnchor
@@ -357,6 +369,7 @@ personalAuraReset:SetScript("OnClick", function()
 	personalAuraStackYOffset:SetValue(DBM.Options.PrivateAurasPlayerStackYOffset)
 	personalAuraShowStacks:SetChecked(DBM.Options.PrivateAurasPlayerShowStacks)
 	personalAuraShowDispelBorder:SetChecked(DBM.Options.PrivateAurasPlayerShowDispelBorder)
+	if personalAuraShowGlow then personalAuraShowGlow:SetChecked(DBM.Options.PrivateAurasPlayerShowAuraGlow) end
 	OnAuraSettingsChange(true)
 end)
 
@@ -571,6 +584,17 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 	coTankAuraStackYOffset.myheight = 140
 	coTankAuraStackColor.myheight = 50
 
+local coTankAuraShowGlow
+if DBM:GetTOC() >= 120105 then
+	coTankAuraShowGlow = coTankAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasCoTankShowAuraGlow")
+	coTankAuraShowGlow:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasCoTankShowAuraGlow = not DBM.Options.PrivateAurasCoTankShowAuraGlow
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraShowGlow:SetPoint("TOPLEFT", coTankAuraStackColor, "TOPLEFT", 0, -85)
+	coTankAuraShowGlow.myheight = 0
+end
+
 local coTankMovemebutton = coTankAuraArea:CreateButton(L.MoveMe, 100, 16)
 coTankMovemebutton:SetPoint("TOPRIGHT", coTankAuraArea.frame, "TOPRIGHT", -2, -4)
 coTankMovemebutton:SetNormalFontObject(GameFontNormalSmall)
@@ -609,6 +633,7 @@ coTankAuraReset:SetScript("OnClick", function()
 	DBM.Options.PrivateAurasCoTankStackYOffset = DBM.DefaultOptions.PrivateAurasCoTankStackYOffset
 	DBM.Options.PrivateAurasCoTankShowStacks = DBM.DefaultOptions.PrivateAurasCoTankShowStacks
 	DBM.Options.PrivateAurasCoTankShowDispelBorder = DBM.DefaultOptions.PrivateAurasCoTankShowDispelBorder
+	DBM.Options.PrivateAurasCoTankShowAuraGlow = DBM.DefaultOptions.PrivateAurasCoTankShowAuraGlow
 	DBM.Options.PrivateAurasCoTankXOffset = DBM.DefaultOptions.PrivateAurasCoTankXOffset
 	DBM.Options.PrivateAurasCoTankYOffset = DBM.DefaultOptions.PrivateAurasCoTankYOffset
 	DBM.Options.PrivateAurasCoTankAnchor = DBM.DefaultOptions.PrivateAurasCoTankAnchor
@@ -640,6 +665,7 @@ coTankAuraReset:SetScript("OnClick", function()
 	coTankAuraStackYOffset:SetValue(DBM.Options.PrivateAurasCoTankStackYOffset)
 	coTankAuraShowStacks:SetChecked(DBM.Options.PrivateAurasCoTankShowStacks)
 	coTankAuraShowDispelBorder:SetChecked(DBM.Options.PrivateAurasCoTankShowDispelBorder)
+	if coTankAuraShowGlow then coTankAuraShowGlow:SetChecked(DBM.Options.PrivateAurasCoTankShowAuraGlow) end
 	OnAuraSettingsChange(false)
 end)
 

@@ -12,22 +12,22 @@ mod:RegisterCombat("combat")
 
 --TODO, peresonal essence Rend alert if it has ENCOUNTER_WARNING, else auras api if that aura is public
 DBM:RegisterAltSpellName(1284103, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.LINE)--Possession Barrage --> Tank Line
-DBM:RegisterAltSpellName(1297630, DBM_COMMON_L.ADDS)--Restless Amani --> Adds
+DBM:RegisterAltSpellName(1295397, DBM_COMMON_L.ADDS)--Restless Amani --> Adds
 DBM:RegisterAltSpellName(1305421, DBM_COMMON_L.GROUPSOAK)--Hungering Pyre --> Group Soak
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnEssenceRend					= mod:NewCountAnnounce(1287426, 2)
 
 --local specWarnEssenceRend				= mod:NewSpecialWarningCount(1287426, nil, nil, nil, 1, 2, nil, nil, "lineyou")
-local specWarnRestlessAmani				= mod:NewSpecialWarningCount(1297630, nil, nil, nil, 2, 2, nil, nil, "killmob")--Script uses 1295397 but it has no tooltip, so we use 1297630 on purpose
+local specWarnRestlessAmani				= mod:NewSpecialWarningCount(1295397, nil, nil, nil, 2, 2, nil, nil, "killmob")
 local specWarnPossessionBarrage			= mod:NewSpecialWarningRunCount(1284103, nil, nil, nil, 4, 2, nil, nil, "justrun")--Script uses 1292036 but it has no tooltip, so we use 1284103 on purpose
-local specWarnPossessionBarrageTaunt	= mod:NewSpecialWarningTaunt(1284103, nil, nil, nil, 1, 2, nil, nil, "tauntboss")
+local specWarnPossessionBarrageOther	= mod:NewSpecialWarningDodgeLoc(1284103, nil, nil, nil, 2, 2, nil, nil, "farfromline")
 local specWarnGraspingDepths			= mod:NewSpecialWarningCount(1293212, nil, nil, nil, 2, 12, 4, nil, "pullin")--Mythic Only
 local specWarnInvoke					= mod:NewSpecialWarningCount(1299673, nil, nil, nil, 2, 2, nil, nil, "specialsoon")
 local specWarnHungeringPyre				= mod:NewSpecialWarningCount(1305421, nil, nil, nil, 2, 2, nil, nil, "helpsoak")--Script uses 1305421 but it has no tooltip, so we use 1289855 on purpose
 local specWarnResidualToll				= mod:NewSpecialWarningCount(1298698, nil, nil, nil, 2, 2, nil, nil, "aesoon")--Script uses 1305993, but it has no tooltip, so we use 1298698 on purpose
 
 local timerEssenceRendCD				= mod:NewCDCountTimer(20.5, 1287426, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON)
-local timerRestlessAmaniCD				= mod:NewCDCountTimer(20.5, 1297630, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
+local timerRestlessAmaniCD				= mod:NewCDCountTimer(20.5, 1295397, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)
 local timerPossessionBarrageCD			= mod:NewCDCountTimer(20.5, 1284103, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerGraspingDepthsCD				= mod:NewCDCountTimer(20.5, 1293212, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
 local timerInvokeCD						= mod:NewCDCountTimer(20.5, 1299673, nil, nil, nil, 6)
@@ -247,32 +247,36 @@ do
 		elseif stage == 2 then
 			--Live Mythic/Heroic/Normal stage 2: Restless Amani (20/30), Barrage/Amani alternate on 40, Barrage (28), Rend (49.5), Invoke (8/48), Pyre (11)
 			--Note: a 40s Possession Barrage state-2 arrived ~10s late in Normal NekzaliKill2, but completed on time in NekzaliKill; use Blizzard's raw duration without correction.
-			--Track only opening lanes: new IDs can replace the opening batch before old IDs cancel.
-			--Do NOT track the later 40s Amani here; it legitimately overlaps the opening 40s Barrage.
+			--Batch only opening lanes: replacement rows arrive before old IDs cancel, so defer starts until those cancels stop the old bars.
+			--Do NOT batch the later 40s Amani here; it legitimately overlaps the opening 40s Barrage.
 			if timer == 40 then
 				normalStage2FortyCount = normalStage2FortyCount + 1
 				handled = true
 				if normalStage2FortyCount % 2 == 1 then
-					self:TLBatchTrackLatest(40, eventID)
-					timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
+					self:TLBatchStart(40, timerPossessionBarrageCD, timerExact, eventID, "possessionbarrage", "PossessionBarrageCount")
 				else
 					timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
 				end
 			elseif timer == 20 or timer == 30 then
 				handled = true
-				if timer == 20 then self:TLBatchTrackLatest(20, eventID) end
-				timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
+				if timer == 20 then
+					self:TLBatchStart(20, timerRestlessAmaniCD, timerExact, eventID, "restlessamani", "RestlessAmaniCount")
+				else
+					timerRestlessAmaniCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "restlessamani", "RestlessAmaniCount"))
+				end
 			elseif timer == 28 then
 				handled = true
 				timerPossessionBarrageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "possessionbarrage", "PossessionBarrageCount"))
 			elseif self:IsRoundedTimer(timerExact, 49.5, 0.5) then--49.499 rounds down to 49 in Week7 Mythic.
 				handled = true
-				self:TLBatchTrackLatest(49.5, eventID)
-				timerEssenceRendCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "essencerend", "RendCount"))
+				self:TLBatchStart(49.5, timerEssenceRendCD, timerExact, eventID, "essencerend", "RendCount")
 			elseif timer == 8 or timer == 48 then
 				handled = true
-				if timer == 8 then self:TLBatchTrackLatest(8, eventID) end
-				timerInvokeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "invoke", "InvokeCount"))
+				if timer == 8 then
+					self:TLBatchStart(8, timerInvokeCD, timerExact, eventID, "invoke", "InvokeCount")
+				else
+					timerInvokeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "invoke", "InvokeCount"))
+				end
 			elseif timer == 11 then
 				handled = true
 				timerHungeringPyreCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "hungeringpyre", "HungeringPyreCount"))
@@ -344,8 +348,8 @@ do
 					specWarnPossessionBarrage:Show(eventCount)
 					specWarnPossessionBarrage:Play("justrun")
 				else
-					specWarnPossessionBarrageTaunt:SecretShowByUnit("boss1")
-					specWarnPossessionBarrageTaunt:Play("tauntboss")
+					specWarnPossessionBarrageOther:SecretShowByUnit("boss1")
+					specWarnPossessionBarrageOther:Play("farfromline")
 				end
 			elseif eventType == "invoke" then
 				specWarnInvoke:Show(eventCount)
