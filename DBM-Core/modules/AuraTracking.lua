@@ -432,9 +432,11 @@ local function StopAuraGlow(glow)
 	glow.frame:Hide()
 end
 
----@param frame DBMAuraPreviewFrame?
+---@param frame Frame?
 local function StopPreviewGlows(frame)
-	if not frame or not frame.Glows then return end
+	if not frame then return end
+	---@cast frame DBMAuraPreviewFrame
+	if not frame.Glows then return end
 	for _, glow in pairs(frame.Glows) do
 		StopAuraGlow(glow)
 	end
