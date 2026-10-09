@@ -249,6 +249,7 @@ L.RANGE_DISTANCE_NOCANDIDATES	= "请先运行 DBM:TestRanges 并等待找到可�
 L.RANGE_DISTANCE_INVALID		= "距离校准需要另一个存活且可见的单位，必须脱离战斗并处于无限制的地图。建议在户外选择队伍或团队玩家。"
 L.RANGE_DISTANCE_UNAVAILABLE	= "距离校准：无法获取经过验证的非机密 UnitDistanceSquared 数据或物品距离 API。请在户外选择队伍或团队玩家。"
 L.RANGE_DISTANCE_READY		= "正在测量 %d 件物品（容差 +/-0.5 码）。让另一名玩家保持静止，缓慢远离并返回，穿过各距离边界。使用 DBM:StopRangeDistances(true) 停止并导出。"
+L.RANGE_DISTANCE_REACQUIRE	= "请重新选中原来的目标，以继续距离校准。"
 L.RANGE_DISTANCE_ABORTED		= "距离校准已中止：单位、战斗、加载、限制或距离数据可用性发生变化。已保留部分记录；不会显示通过结果。"
 L.RANGE_DISTANCE_NODATA		= "没有已停止的距离校准。请运行 DBM:TestRangeDistances，然后运行 DBM:StopRangeDistances。"
 L.RANGE_DISTANCE_HEADER		= "DBM 距离校准。复制此字符串；预期距离包含 +3 码，容差为 +/-0.5 码。"
@@ -282,6 +283,9 @@ L.RANGECHECK_IN_RANGE_TEXT	= "%d人在监视距离内"
 L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1f码)"--One target
 
 L.INFOFRAME_TITLE				= "信息窗"
+L.INFOFRAME_BOSS_DISTANCE			= "首领距离"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%d码 - %d码"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %d码"
 L.INFOFRAME_SHOW_SELF			= "总是显示你的能量"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "设置最大行数"
 L.INFOFRAME_SETCOLS				= "设置最大列数"

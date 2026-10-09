@@ -235,6 +235,7 @@ L.RANGE_DISTANCE_NOCANDIDATES	= "Führe zuerst DBM:TestRanges aus und warte auf 
 L.RANGE_DISTANCE_INVALID		= "Die Kalibrierung benötigt eine andere lebende, sichtbare Einheit, außerhalb des Kampfes und auf uneingeschränkten Karten. Empfohlen: Gruppen-/Schlachtzugsspieler im Freien."
 L.RANGE_DISTANCE_UNAVAILABLE	= "Kalibrierung: Geprüfte, nicht geheime UnitDistanceSquared-Werte oder Gegenstandsreichweiten-APIs sind nicht verfügbar. Versuche einen Gruppen-/Schlachtzugsspieler im Freien."
 L.RANGE_DISTANCE_READY		= "%d Gegenstände werden gemessen (Toleranz +/-0,5 Yards). Der andere Spieler bleibt stehen; gehe langsam über die Grenzen hinaus und zurück. Stoppen/Export: DBM:StopRangeDistances(true)."
+L.RANGE_DISTANCE_REACQUIRE	= "Wähle bitte dein ursprüngliches Ziel erneut aus, um die Reichweitenkalibrierung fortzusetzen."
 L.RANGE_DISTANCE_ABORTED		= "Kalibrierung abgebrochen: Einheit, Kampf, Ladevorgang, Einschränkungen oder Entfernungsverfügbarkeit geändert. Teilmessungen behalten; keine bestandenen Ergebnisse."
 L.RANGE_DISTANCE_NODATA		= "Keine gestoppte Kalibrierung verfügbar. Führe DBM:TestRangeDistances und anschließend DBM:StopRangeDistances aus."
 L.RANGE_DISTANCE_HEADER		= "DBM-Entfernungskalibrierung. Kopiere diese Zeichenfolge; erwartete Reichweiten enthalten +3 Yards, mit +/-0,5 Yards Toleranz."
@@ -268,6 +269,9 @@ L.RANGECHECK_IN_RANGE_TEXT	= "%d in Reichweite"--Text based doesn't need (%dyd),
 L.RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"
 
 L.INFOFRAME_TITLE 			= "DBM-Infofenster"
+L.INFOFRAME_BOSS_DISTANCE			= "Bossentfernung"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%d Meter - %d Meter"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %d Meter"
 L.INFOFRAME_SHOW_SELF		= "Eigene Stärke immer anzeigen" -- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES		= "Setze maximale Zeilenanzahl"
 L.INFOFRAME_SETCOLS			= "Setze maximale Spaltenanzahl"

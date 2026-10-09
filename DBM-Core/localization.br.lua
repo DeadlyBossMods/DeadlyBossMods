@@ -246,6 +246,7 @@ L.RANGE_DISTANCE_NOCANDIDATES		= "Execute DBM:TestRanges e aguarde itens utiliz�
 L.RANGE_DISTANCE_INVALID			= "A calibração requer outra unidade viva e visível, fora de combate e em mapas sem restrições. Recomenda-se um jogador do grupo/raide ao ar livre."
 L.RANGE_DISTANCE_UNAVAILABLE		= "Calibração: leituras verificadas e não secretas de UnitDistanceSquared ou APIs de alcance de itens indisponíveis. Tente um jogador do grupo/raide ao ar livre."
 L.RANGE_DISTANCE_READY			= "Medindo %d itens (tolerância +/-0,5 jardas). O outro jogador deve ficar parado; afaste-se e retorne lentamente pelos limites. Pare/exporte com DBM:StopRangeDistances(true)."
+L.RANGE_DISTANCE_REACQUIRE		= "Selecione novamente seu alvo original para continuar a calibração de alcance."
 L.RANGE_DISTANCE_ABORTED			= "Calibração interrompida: unidade, combate, carregamento, restrições ou disponibilidade da distância mudou. Evidências parciais mantidas; nenhum resultado aprovado."
 L.RANGE_DISTANCE_NODATA			= "Nenhuma calibração encerrada disponível. Execute DBM:TestRangeDistances e depois DBM:StopRangeDistances."
 L.RANGE_DISTANCE_HEADER			= "Calibração de distância do DBM. Copie esta string; alcances esperados incluem +3 jardas, com tolerância de +/-0,5 jardas."
@@ -279,6 +280,9 @@ L.RANGECHECK_IN_RANGE_TEXT			= "%d em distância"--Text based doesn't need (%dyd
 L.RANGERADAR_IN_RANGE_TEXTONE		= "%s (%0.1fy)"--One target
 
 L.INFOFRAME_TITLE					= "Quadro de info"
+L.INFOFRAME_BOSS_DISTANCE				= "Distância dos chefes"
+L.INFOFRAME_BOSS_DISTANCE_RANGE			= "%d metros - %d metros"
+L.INFOFRAME_BOSS_DISTANCE_OVER			= "> %d metros"
 L.INFOFRAME_SHOW_SELF				= "Sempre exibir seu poder"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES				= "Linhas máximas"
 L.INFOFRAME_SETCOLS					= "Colunas máximas"

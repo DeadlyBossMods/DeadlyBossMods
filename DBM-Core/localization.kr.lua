@@ -241,6 +241,7 @@ L.RANGE_DISTANCE_NOCANDIDATES	= "먼저 DBM:TestRanges를 실행하고 사용 �
 L.RANGE_DISTANCE_INVALID		= "거리 보정에는 살아 있고 보이는 다른 대상이 필요하며 전투 밖의 제한 없는 지도에서 실행해야 합니다. 야외의 파티/공격대 플레이어를 권장합니다."
 L.RANGE_DISTANCE_UNAVAILABLE	= "거리 보정: 확인된 비밀 값이 아닌 UnitDistanceSquared 데이터 또는 아이템 거리 API를 사용할 수 없습니다. 야외의 파티/공격대 플레이어로 시도하세요."
 L.RANGE_DISTANCE_READY		= "아이템 %d개 측정 중 (허용 오차 +/-0.5야드). 다른 플레이어는 가만히 있고, 천천히 멀어졌다 돌아오며 경계를 통과하세요. DBM:StopRangeDistances(true)로 중지/내보내기하세요."
+L.RANGE_DISTANCE_REACQUIRE	= "거리 보정을 계속하려면 원래 대상을 다시 선택하세요."
 L.RANGE_DISTANCE_ABORTED		= "거리 보정 중단: 대상, 전투, 로딩, 제한 또는 거리 데이터 가용성이 변경되었습니다. 부분 기록은 보존되며 성공 결과는 표시되지 않습니다."
 L.RANGE_DISTANCE_NODATA		= "중지된 거리 보정이 없습니다. DBM:TestRangeDistances를 실행한 뒤 DBM:StopRangeDistances를 실행하세요."
 L.RANGE_DISTANCE_HEADER		= "DBM 거리 보정. 이 문자열을 복사하세요. 예상 거리에 +3야드가 포함되며 허용 오차는 +/-0.5야드입니다."
@@ -274,6 +275,9 @@ L.RANGECHECK_IN_RANGE_TEXT	= "거리 내 %d명"--Text based doesn't need (%dyd),
 L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
 
 L.INFOFRAME_TITLE				= "DBM 정보 창"
+L.INFOFRAME_BOSS_DISTANCE			= "우두머리 거리"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%d미터 - %d미터"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %d미터"
 L.INFOFRAME_SHOW_SELF			= "항상 내 자원 표시"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "최대 줄 설정"
 L.INFOFRAME_SETCOLS				= "최대 열 설정"

@@ -33,6 +33,7 @@ local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil,
 local timerBerserkCD					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("AdvancedBossFiltering", true, "misc")
+mod:AddInfoFrameOption(nil, true)
 mod:AddAuraSoundOption(1284590, true, 1284588, 1, 1, "phasechange", 2, 0)--Helical Toxins (better audio?)
 --Debuffs that do not appear in combat log but MIGHT still work with aura sounds?
 mod:AddAuraSoundOption(1296880, true, 1296878, 1, 1, "movetopartner", 20, 0)--Shifting Protovenom
@@ -184,6 +185,9 @@ function mod:OnLimitedCombatStart()
 	timerBlightedBloodCD:SetFade(false, 1)
 	timerUnstableMiasmaCD:SetFade(false, 1)
 	self:Unschedule(updateBossDistance)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Show(2, "bossdistance", {"boss1", "boss2"}, 43, "minRange")
+	end
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and not badStateDetected then
 		self:IgnoreBlizzardAPI()
@@ -202,6 +206,9 @@ end
 
 
 function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 	self:Unschedule(updateBossDistance)
 	setBossDistance(self, true, true)
 	self:TLCountReset()

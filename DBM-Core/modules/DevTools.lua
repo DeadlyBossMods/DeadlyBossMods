@@ -820,12 +820,13 @@ do
 				entries[#entries + 1] = sformat("%d=FAIL,%d,0", range, nilCount)
 			end
 		end
-		-- Schema v1: adjustedRange=itemID,T/F,precedingNil,precedingCacheFailure;
+		-- Schema v2 uses ^ for headers to avoid WoW pipe escapes in the copy dialog.
+		-- adjustedRange=itemID,T/F,precedingNil,precedingCacheFailure;
 		-- or adjustedRange=FAIL/INCOMPLETE,nilCount,cacheFailureCount. No unit identity.
 		local version, build, _, interface = GetBuildInfo()
 		lastContext = test.context
 		lastCandidates = {context = test.context, items = selected}
-		lastExport = sformat("DBMRangeTest:1|data=LRC38|version=%s|build=%s|toc=%s|project=%s|season=%s|context=%s|offset=3|%s",
+		lastExport = sformat("DBMRangeTest:2^data=LRC38^version=%s^build=%s^toc=%s^project=%s^season=%s^context=%s^offset=3^%s",
 			version, build, tostring(interface), tostring(WOW_PROJECT_ID), tostring(private.currentSeason or 0), test.context, table.concat(entries, ";"))
 		stopTest()
 		DBM:AddMsg(L.RANGE_TEST_DONE:format(passed, failed, incomplete))
@@ -995,7 +996,7 @@ do
 				distanceText(item.worstDistance), item.worstResult or "?", contradictory and 1 or 0, item.partial and 1 or 0)
 		end
 		local version, build, _, interface = GetBuildInfo()
-		lastDistanceExport = sformat("DBMRangeDistance:1|data=LRC38|version=%s|build=%s|toc=%s|project=%s|season=%s|discovery=%s|context=%s|offset=3|tolerance=0.5|interval=0.1|run=%s|%s",
+		lastDistanceExport = sformat("DBMRangeDistance:2^data=LRC38^version=%s^build=%s^toc=%s^project=%s^season=%s^discovery=%s^context=%s^offset=3^tolerance=0.5^interval=0.1^run=%s^%s",
 			version, build, tostring(interface), tostring(WOW_PROJECT_ID), tostring(private.currentSeason or 0), test.discoveryContext, test.context,
 			aborted and "ABORTED" or "STOPPED", table.concat(entries, ";"))
 		DBM:AddMsg(L.RANGE_DISTANCE_DONE:format(passed, failed, incomplete))
@@ -1005,7 +1006,19 @@ do
 		local test = activeDistanceTest
 		if not test then return end
 		-- Restrictions/combat are checked before identity inspection or distance arithmetic.
-		if InCombatLockdown() or DBM:HasMapRestrictions() or unitContext(test.unit) ~= test.context or UnitGUID(test.unit) ~= test.guid then
+		if InCombatLockdown() or DBM:HasMapRestrictions() then
+			finishDistanceTest(true)
+			return
+		end
+		if not UnitExists(test.unit) then
+			if not test.needsTarget then
+				test.needsTarget = true
+				DBM:AddMsg(L.RANGE_DISTANCE_REACQUIRE)
+			end
+			return
+		end
+		test.needsTarget = nil
+		if unitContext(test.unit) ~= test.context or UnitGUID(test.unit) ~= test.guid then
 			finishDistanceTest(true)
 			return
 		end
@@ -1088,13 +1101,14 @@ do
 		sampleDistances()
 	end
 
-	---Stop sampling and optionally copy the calibration; unlike aborts, this is a completed run.
+	---Stop sampling and copy collected evidence, even while waiting for the original target.
 	---/run DBM:StopRangeDistances(true)
 	---@param export boolean? Open the copy dialog after stopping.
 	function DBM:StopRangeDistances(export)
 		if activeDistanceTest then
 			local test = activeDistanceTest
-			local aborted = InCombatLockdown() or self:HasMapRestrictions() or unitContext(test.unit) ~= test.context or UnitGUID(test.unit) ~= test.guid or not measuredDistance(test.unit)
+			local aborted = InCombatLockdown() or self:HasMapRestrictions()
+				or (UnitExists(test.unit) and (unitContext(test.unit) ~= test.context or UnitGUID(test.unit) ~= test.guid or not measuredDistance(test.unit)))
 			finishDistanceTest(aborted)
 		end
 		if export and not InCombatLockdown() then self:ShowRangeDistanceResults() end

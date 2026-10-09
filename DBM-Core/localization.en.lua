@@ -251,6 +251,7 @@ L.RANGE_DISTANCE_NOCANDIDATES			= "Run DBM:TestRanges first and wait for usable 
 L.RANGE_DISTANCE_INVALID				= "Distance calibration requires another living, visible unit, outside combat and unrestricted maps. A party/raid player outdoors is recommended."
 L.RANGE_DISTANCE_UNAVAILABLE			= "Distance calibration: checked, non-secret UnitDistanceSquared readings or item range APIs are unavailable. Try a party/raid player outdoors."
 L.RANGE_DISTANCE_READY					= "Measuring %d items (tolerance +/-0.5 yards). Keep the other player still; walk slowly outward and back through the boundaries. Stop/export with DBM:StopRangeDistances(true)."
+L.RANGE_DISTANCE_REACQUIRE				= "Please reacquire your original target to continue range calibration."
 L.RANGE_DISTANCE_ABORTED				= "Distance calibration aborted: unit, combat, loading, restrictions, or distance availability changed. Partial evidence retained; no PASS results."
 L.RANGE_DISTANCE_NODATA					= "No stopped distance calibration is available. Run DBM:TestRangeDistances, then DBM:StopRangeDistances."
 L.RANGE_DISTANCE_HEADER					= "DBM distance calibration. Copy this string; expected ranges include +3 yards, with +/-0.5 yards tolerance."
@@ -284,6 +285,9 @@ L.RANGECHECK_IN_RANGE_TEXT				= "%d in range"--Text based doesn't need (%dyd), e
 L.RANGERADAR_IN_RANGE_TEXTONE			= "%s (%0.1fy)"--One target
 
 L.INFOFRAME_TITLE						= "DBM Info Frame"
+L.INFOFRAME_BOSS_DISTANCE				= "Boss Distance"
+L.INFOFRAME_BOSS_DISTANCE_RANGE			= GetLocale() == "enUS" and "%d yards - %d yards" or "%d meters - %d meters"
+L.INFOFRAME_BOSS_DISTANCE_OVER			= GetLocale() == "enUS" and "> %d yards" or "> %d meters"
 L.INFOFRAME_SHOW_SELF					= "Always show your power"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES					= "Set max lines"
 L.INFOFRAME_SETCOLS						= "Set max columns"
