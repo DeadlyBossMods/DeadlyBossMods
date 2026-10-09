@@ -262,7 +262,8 @@ do
 				if mythic20EventCycleIndex == 2 then
 					timerVitriolicStasisCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vitriolicstasis", "VitriolicStasisCount"))
 				else
-					timerShiftingProtovenomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shiftingprotovenom", "ShiftingProtovenomCount"))
+					--Blizzard starts 20 second timer for it, but timer is actually 18
+					timerShiftingProtovenomCD:TLStart(timerExact - 2, eventID, self:TLCountStart(eventID, "shiftingprotovenom", "ShiftingProtovenomCount"))
 				end
 				mythic20EventCycleIndex = mythic20EventCycleIndex + 1
 				if mythic20EventCycleIndex > 3 then
