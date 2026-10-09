@@ -4407,7 +4407,11 @@ function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug, custo
 		red, green, blue = 0.41, 0.8, 0.94
 	end
 	if prefix ~= false then
-		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), red, green, blue)
+		if DBM:issecretvalue(text) then
+			frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), text), red, green, blue)
+		else
+			frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), red, green, blue)
+		end
 	else
 		frame:AddMessage(text, red, green, blue)
 	end
