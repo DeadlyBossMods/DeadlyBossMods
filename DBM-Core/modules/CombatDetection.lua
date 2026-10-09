@@ -881,7 +881,7 @@ do
 				trackedAchievements = (C_ContentTracking and C_ContentTracking.GetTrackedIDs(2)[1])
 			end
 			if self.Options.HideObjectivesFrame and mod.addon and mod.addon.type ~= "SCENARIO" and not trackedAchievements and difficulties.difficultyIndex ~= 8 and not InCombatLockdown() then
-				if private.isRetail or private.isCata or private.isMop then--Do nothing due to taint and breaking
+				if private.isRetail or private.isCata or private.isMop or private.isForever then--Do nothing due to taint and breaking
 					--if ObjectiveTrackerFrame:IsVisible() then
 					--	ObjectiveTracker_Collapse()
 					--	watchFrameRestore = true
@@ -892,7 +892,7 @@ do
 							WatchFrame:Hide()
 							watchFrameRestore = true
 						end
-					elseif QuestWatchFrame:IsVisible() then -- Classic Era / BCC
+					elseif QuestWatchFrame and QuestWatchFrame:IsVisible() then -- Classic Era / BCC
 						QuestWatchFrame:Hide()
 						watchFrameRestore = true
 					end
@@ -961,7 +961,7 @@ do
 						end
 						mod:OnLimitedCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
 					end
-					if self.Options.HideBlizzardTimeline then
+					if private.isRetail and self.Options.HideBlizzardTimeline then
 						--Temporary. Will be removed in a future patch when api for supporting sounds works without forcing this
 						C_CVar.SetCVar("encounterTimelineEnabled", "1")
 						EncounterTimeline.TrackView:SetAlpha(0)
