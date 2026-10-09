@@ -20,12 +20,13 @@ DBM:RegisterAltSpellName(1284251, DBM_COMMON_L.BIG_ADDS)--Venom Coagulation --> 
 DBM:RegisterAltSpellName(1284434, DBM_COMMON_L.GROUPSOAK.. " ".. DBM_COMMON_L.ORBS)--Toxic Droplets --> Soak Orbs
 DBM:RegisterAltSpellName(1284483, DBM_COMMON_L.POOL.. " ".. DBM_COMMON_L.DEBUFFS)--Blighted Blood --> Pool Debuffs
 DBM:RegisterAltSpellName(1284588, DBM_COMMON_L.MATHPUZZLE)--Vitriolic Stasis --> Math Puzzle
+DBM:RegisterAltSpellName(1296878, DBM_COMMON_L.CIRCLES)
 --DBM:RegisterAltSpellName(1296878, DBM_COMMON_L.MATHPUZZLE)--Not sure what to give it yet
 
 --Both/Shared
 local warnVitriolicStasis				= mod:NewCountAnnounce(1284588, 2)--Hardcode only
 
-local specWarnShiftingProtovenom		= mod:NewSpecialWarningCount(1296878, nil, nil, nil, 3, 19, 4, nil, "colorchange")
+local specWarnShiftingProtovenom		= mod:NewSpecialWarningCount(1296878, nil, nil, nil, 3, 2, 4, nil, "scatter")
 
 local timerVitriolicStasisCD			= mod:NewCDCountTimer(20.5, 1284588, nil, nil, nil, 6)
 local timerShiftingProtovenomCD			= mod:NewCDCountTimer(20.5, 1296878, nil, nil, nil, 2, nil, DBM_COMMON_L.MYTHIC_ICON)
@@ -117,8 +118,9 @@ end
 local function updateBossDistance(self)
 	if badStateDetected then return end
 	--Disabling the option restores warnings/fades instead of leaving a far state latched.
-	local breath = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss1", true, 34471, 43, nil, true)
-	local blood = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss2", true, 34471, 43, nil, true)
+	--Use the hostile-unit range item, as in Amalgamation; failed item checks return "near".
+	local breath = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss1", true, 34255, 43, nil, true)
+	local blood = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss2", true, 34255, 43, nil, true)
 	setBossDistance(self, breath, blood)
 	self:Schedule(2, updateBossDistance, self)
 end
@@ -137,7 +139,7 @@ local function setFallback(self, dontSetAlerts)
 		--end
 		specWarnVenomCoagulation:SetAlert(637, "bigmob", 2, 2)
 		specWarnToxicDroplets:SetAlert(638, "helpsoak", 2, 2)
-		specWarnShiftingProtovenom:SetAlert(788, "colorchange", 19, 3)
+		specWarnShiftingProtovenom:SetAlert(788, "scatter", 2, 3)
 	end
 	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
 	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
@@ -191,6 +193,7 @@ function mod:OnLimitedCombatStart()
 			"UNIT_SPELLCAST_START boss1 boss2"
 		)
 		setFallback(self, true)
+		C_Item.RequestLoadItemDataByID(34255)
 		self:Schedule(2, updateBossDistance, self)
 	else
 		setFallback(self)
@@ -259,7 +262,8 @@ do
 				if mythic20EventCycleIndex == 2 then
 					timerVitriolicStasisCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "vitriolicstasis", "VitriolicStasisCount"))
 				else
-					timerShiftingProtovenomCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "shiftingprotovenom", "ShiftingProtovenomCount"))
+					--Blizzard starts 20 second timer for it, but timer is actually 18
+					timerShiftingProtovenomCD:TLStart(timerExact - 2, eventID, self:TLCountStart(eventID, "shiftingprotovenom", "ShiftingProtovenomCount"))
 				end
 				mythic20EventCycleIndex = mythic20EventCycleIndex + 1
 				if mythic20EventCycleIndex > 3 then
@@ -387,7 +391,7 @@ do
 				end
 			elseif eventType == "shiftingprotovenom" then
 				specWarnShiftingProtovenom:Show(eventCount)
-				specWarnShiftingProtovenom:Play("colorchange")
+				specWarnShiftingProtovenom:Play("scatter")
 			elseif eventType == "vitriolicstasis" then
 				warnVitriolicStasis:Show(eventCount)
 			end

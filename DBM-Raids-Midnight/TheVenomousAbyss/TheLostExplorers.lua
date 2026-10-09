@@ -534,7 +534,7 @@ do
 					specWarnShreddingShards:Show()
 					specWarnShreddingShards:Play("defensive")
 				elseif self:IsTank() then
-					specWarnShreddingShardsTaunt:ScheduleSecret(3, "boss4")
+					specWarnShreddingShardsTaunt:Schedule(3, DBM_COMMON_L.UNKNOWN)--Sadly, boss doesn't look at correct target, at all
 					specWarnShreddingShardsTaunt:ScheduleVoice(3, "tauntboss")
 				end
 			elseif eventType == "frostfire" then

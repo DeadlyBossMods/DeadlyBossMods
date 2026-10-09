@@ -25,6 +25,22 @@ function stringUtils.pformat(fstr, ...)
 	return ok and str or fstr:gsub("(%%+)([^%%%s%)<]+)", replace):gsub("%%%%", "%%")
 end
 
+--Only inspect the public format string, never the secret arguments or result.
+--Name delimiters normally feed classColoringFunction; secret names cannot use that path.
+---@param fstr string
+---@param ... any
+---@return string
+function stringUtils.secretFormat(fstr, ...)
+	local formatText = fstr:gsub(">([^<>]-)<", function(token)
+		local placeholder = token:gsub("^noStrip ", "")
+		if placeholder:match("^%%[%d%$%-%+ #%.]*[cdeEfgGiouqsxX]$") then
+			return placeholder
+		end
+		return ">" .. token .. "<"
+	end)
+	return string.format(formatText, ...)
+end
+
 function stringUtils.strFromTime(time)
 	if type(time) ~= "number" then time = 0 end
 	time = floor(time * 100) / 100
