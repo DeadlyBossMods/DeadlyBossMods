@@ -787,6 +787,7 @@ end
 ---@param ... any
 function specialWarningPrototype:CombinedShow(delay, ...)
 	if DBM:hasanysecretvalues(...) then
+		DBMScheduler:Unschedule(self.Show, self.mod, self)
 		self:Show(...)
 		return
 	end
@@ -817,6 +818,7 @@ end
 ---@param ... any
 function specialWarningPrototype:PreciseShow(maxTotal, ...)
 	if DBM:hasanysecretvalues(...) then
+		DBMScheduler:Unschedule(self.Show, self.mod, self)
 		self:Show(...)
 		return
 	end

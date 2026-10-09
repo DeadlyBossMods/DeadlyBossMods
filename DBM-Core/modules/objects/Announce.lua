@@ -677,6 +677,7 @@ end
 ---@param ... any
 function announcePrototype:CombinedShow(delay, ...)
 	if DBM:hasanysecretvalues(...) then
+		DBMScheduler:Unschedule(self.Show, self.mod, self)
 		self:Show(...)
 		return
 	end
@@ -704,6 +705,7 @@ end
 ---@param ... any
 function announcePrototype:PreciseShow(maxTotal, ...)
 	if DBM:hasanysecretvalues(...) then
+		DBMScheduler:Unschedule(self.Show, self.mod, self)
 		self:Show(...)
 		return
 	end
