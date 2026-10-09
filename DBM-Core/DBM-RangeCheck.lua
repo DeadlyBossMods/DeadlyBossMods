@@ -85,7 +85,7 @@ do
 	}
 	if not isClassic then -- Exists in Wrath/BCC but not vanilla/era
 		itemRanges[6] = 16114 -- Foremans Blackjack (TBC)
-		itemRanges[43] = 34471 -- Vial of the Sunwell (UnitInRange api alternate if item checks break)
+		itemRanges[43] = 34255 -- Razorthorn Flayer Gland (UnitInRange api alternate if item checks break)
 		itemRanges[48] = 32698 -- Wrangling Rope
 		itemRanges[60] = 32825 -- Soul Cannon
 		itemRanges[80] = 35278 -- Reinforced Net (WotLK)

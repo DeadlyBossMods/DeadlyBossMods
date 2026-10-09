@@ -118,8 +118,9 @@ end
 local function updateBossDistance(self)
 	if badStateDetected then return end
 	--Disabling the option restores warnings/fades instead of leaving a far state latched.
-	local breath = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss1", true, 34471, 43, nil, true)
-	local blood = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss2", true, 34471, 43, nil, true)
+	--Use the hostile-unit range item, as in Amalgamation; failed item checks return "near".
+	local breath = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss1", true, 34255, 43, nil, true)
+	local blood = not self.Options.AdvancedBossFiltering or self:CheckBossDistance("boss2", true, 34255, 43, nil, true)
 	setBossDistance(self, breath, blood)
 	self:Schedule(2, updateBossDistance, self)
 end
@@ -192,6 +193,7 @@ function mod:OnLimitedCombatStart()
 			"UNIT_SPELLCAST_START boss1 boss2"
 		)
 		setFallback(self, true)
+		C_Item.RequestLoadItemDataByID(34255)
 		self:Schedule(2, updateBossDistance, self)
 	else
 		setFallback(self)
