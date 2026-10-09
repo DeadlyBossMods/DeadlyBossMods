@@ -180,6 +180,7 @@ frame:SetClampedToScreen(true)
 frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 
 local font1elapsed, font2elapsed, moving
+local font2Secret = false
 
 local function fontHide1()
 	local duration = DBM.Options.SpecialWarningDuration2
@@ -270,6 +271,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 	else
 		formatedText = text
 	end
+	local replaceLast = force or (frame.font1ticker and frame.font2ticker and (font2Secret or customIcon))
 	if not self.Options.DontShowSpecialWarningText then
 		if not frame.font1ticker then
 			font1elapsed = 0
@@ -278,17 +280,18 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 			font1:Show()
 			added = true
 			frame.font1ticker = frame.font1ticker or C_Timer.NewTicker(0.05, fontHide1)
-		elseif not frame.font2ticker or force then
+		elseif not frame.font2ticker or replaceLast then
 			font2elapsed = 0
 			font2.lastUpdate = GetTime()
 			font2:SetText(formatedText)
+			font2Secret = self:issecretvalue(formatedText)
 			font2:Show()
 			added = true
 			frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, fontHide2)
 		end
 		if not added then
 			if not customIcon then
-				--GetText can't be called on secrets, so if customIcon exists this code path is skipped
+				--Secret slots are replaced above instead of being read back for rotation.
 				local prevText1 = font2:GetText()
 				font1:SetText(prevText1)
 				font1elapsed = font2elapsed
@@ -319,7 +322,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 			if C_StringUtil then
 				combinedText = C_StringUtil.WrapString(formatedText, colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] ", "|r")
 			else
-				combinedText = colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] " .. formatedText .. "|r"
+				combinedText = ("%s[%s] %s|r"):format(colorCode, L.MOVE_SPECIAL_WARNING_TEXT, formatedText)
 			end
 			self:AddMsg(combinedText)
 		end
@@ -528,7 +531,10 @@ function specialWarningPrototype:SetAlert(encounterEventId, voice, voiceVersion,
 	end
 end
 
-function specialWarningPrototype:Show(...)
+---@param self SpecialWarning
+---@param secret boolean
+---@param ... any
+local function showSpecialWarning(self, secret, ...)
 	if self.announceType == "blizztarget" then
 		if not private.blizzTargetConsuming then
 			local count, voiceName, expireOverride = ...
@@ -556,7 +562,7 @@ function specialWarningPrototype:Show(...)
 			end
 			self.renameRevision = DBM:GetSpellRenameRevision()
 		end
-		local isSecretBlizzType = self.announceType == "blizztarget" or self.announceType == "blizzyou" or private.secretShowConsuming
+		local isSecretBlizzType = secret or self.announceType == "blizztarget" or self.announceType == "blizzyou" or DBM:hasanysecretvalues(...)
 		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
 		if DBM.Options.HideDBMWarnings or (DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText) then return end
 		--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
@@ -571,11 +577,11 @@ function specialWarningPrototype:Show(...)
 		-- add a default parameter for move away warnings
 		if self.announceType == "gtfo" then
 			if DBM:UnitBuff("player", 27827) then return end--Don't tell a priest in spirit of redemption form to GTFO, they can't, and they don't take damage from it anyhow
-			if #argTable == 0 or type(argTable[1]) ~= "string" then
+			if argTable and (#argTable == 0 or type(argTable[1]) ~= "string") then
 				argTable[1] = self.spellName or L.BAD
 			end
 		end
-		if #self.combinedtext > 0 then
+		if argTable and #self.combinedtext > 0 then
 			--Throttle spam.
 			if DBM.Options.SWarningAlphabetical then
 				table.sort(self.combinedtext)
@@ -595,13 +601,17 @@ function specialWarningPrototype:Show(...)
 		end
 		--Grab count for both the callback and the notes feature
 		local announceCount
+		local secretCount = false
 		if self.announceType and (self.announceType:find("count") or self.announceType == "blizztarget" or self.announceType == "blizzyou") then
 			if self.announceType == "interruptcount" then
-				announceCount = argTable[2]--Count should be second arg in table
+				announceCount = select(2, ...)--Count is the second argument, even with a secret target
 			else
-				announceCount = argTable and argTable[1] or select(1, ...)--Count should be first arg in table
+				announceCount = select(1, ...)
 			end
-			if type(announceCount) == "string" then
+			secretCount = DBM:issecretvalue(announceCount)
+			if secretCount then
+				announceCount = nil--Secret counts are display-only, not note indices or callback metadata
+			elseif type(announceCount) == "string" then
 				--Probably a hypehnated double count like inferno slice or marked for death
 				--This is pretty atypical in newer content cause it's a bit hacky
 				local mainCount = string.split("-", announceCount)
@@ -611,15 +621,10 @@ function specialWarningPrototype:Show(...)
 		local message
 		if argTable then
 			message = stringUtils.pformat(self.text, unpack(argTable))
-		elseif private.secretShowConsuming then
-			local secretTemplate = L.AUTO_SPEC_WARN_TEXTS[self.announceType .. "secret"]
-			if not secretTemplate then
-				error("SecretShow requires an announce-type-specific secret-safe template", 2)
-			end
-			local secretFormatText = secretTemplate:format(self.spellName)
-			message = string.format(secretFormatText, ...)--Use native format to avoid secret args surfacing in error handlers
+		elseif self.announceType == "gtfo" and not DBM:issecretvalue(select(1, ...)) and type(select(1, ...)) ~= "string" then
+			message = stringUtils.secretFormat(self.text, self.spellName or L.BAD, select(2, ...))
 		else
-			message = string.format(self.text, ...)--Use native format to avoid secret args surfacing in error handlers
+			message = stringUtils.secretFormat(self.text, ...)
 		end
 		local text = ("%s%s%s"):format(
 			(DBM.Options.SpecialWarningIcon and self.icon and textureCode:format(self.icon)) or "",
@@ -627,7 +632,7 @@ function specialWarningPrototype:Show(...)
 			(DBM.Options.SpecialWarningIcon and self.icon and textureCode:format(self.icon)) or ""
 		)
 		local noteHasName = nil
-		if self.option then
+		if self.option and not secretCount then
 			local noteText = self.mod.Options[self.option .. "SWNote"]
 			if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
 				if announceCount then--Counts support different note for EACH count
@@ -644,7 +649,7 @@ function specialWarningPrototype:Show(...)
 						--Terminate special warning, it's an interrupt count warning without player name and filter enabled
 						if (self.announceType == "interruptcount") and DBM.Options.FilterInterruptNoteName and not hasPlayerName then return end
 						noteText = " (" .. noteText .. ")"
-						text = text .. noteText
+						text = ("%s%s"):format(text, noteText)
 					end
 				else--Non count warnings will have one note, period
 					if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
@@ -654,7 +659,7 @@ function specialWarningPrototype:Show(...)
 						noteText = noteText:gsub(">.-<", classColoringFunction)--Class color note text before combining with warning text.
 					end
 					noteText = " (" .. noteText .. ")"
-					text = text .. noteText
+					text = ("%s%s"):format(text, noteText)
 				end
 			end
 		end
@@ -667,7 +672,7 @@ function specialWarningPrototype:Show(...)
 			DBM:AddSpecialWarning(text, nil, self)
 			if DBM.Options.ShowSWarningsInChat then
 				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-				self.mod:AddMsg(colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] " .. text .. "|r", nil)
+				self.mod:AddMsg(("%s[%s] %s|r"):format(colorCode, L.MOVE_SPECIAL_WARNING_TEXT, text), nil)
 			end
 		end
 		self.combinedcount = 0
@@ -726,25 +731,30 @@ function specialWarningPrototype:Show(...)
 	end
 end
 
+function specialWarningPrototype:Show(...)
+	showSpecialWarning(self, false, ...)
+end
+
 ---Shows a secret player name without materializing it into a Lua table.
 ---@param self SpecialWarning
 ---@param className string|nil
 ---@param ... any
 local function secretShowByClass(self, className, ...)
 	local playerName = select(1, ...)
+	if not DBM:issecretvalue(playerName) and playerName == nil then
+		playerName = CL.UNKNOWN
+	end
 	if className then
 		local classColor = C_ClassColor.GetClassColor(className)
 		if classColor then
 			playerName = classColor:WrapTextInColorCode(playerName)
 		end
 	end
-	private.secretShowConsuming = true
-	self:Show(playerName, select(2, ...))
-	private.secretShowConsuming = false
+	showSpecialWarning(self, true, playerName, select(2, ...))
 end
 
 ---Shows a secret player name from an ENCOUNTER_WARNING target GUID without materializing it into a Lua table.
----Uses an announce-type-specific secret template without name delimiters, then optionally class-colors the secret player name from its GUID.
+---Uses the localized warning text without name delimiters, then optionally class-colors the secret player name from its GUID.
 ---The GUID may be literal false to explicitly skip the class lookup and color wrapping.
 ---@param playerGUID WOWGUID|false|nil
 ---@param ... any
@@ -776,6 +786,10 @@ end
 ---@param delay number
 ---@param ... any
 function specialWarningPrototype:CombinedShow(delay, ...)
+	if DBM:hasanysecretvalues(...) then
+		self:Show(...)
+		return
+	end
 	--Check if option for this warning is even enabled
 	if self.option and not self.mod.Options[self.option] then return end
 	--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
@@ -802,6 +816,10 @@ end
 ---@param maxTotal number
 ---@param ... any
 function specialWarningPrototype:PreciseShow(maxTotal, ...)
+	if DBM:hasanysecretvalues(...) then
+		self:Show(...)
+		return
+	end
 	--Check if option for this warning is even enabled
 	if self.option and not self.mod.Options[self.option] then return end
 	--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
