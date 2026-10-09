@@ -84,17 +84,15 @@ local directLines, directRows = {}, {}
 local directHeader, directLeftWidth, directRightWidth
 local updateDirectLayout
 local updateBossDistance
-local bossDistanceUnits-- Public unit tokens only; names go straight to SetDirectLine.
 local bossDistanceThreshold, bossDistanceRangeType
 
 local function stopBossDistance()
-	if not bossDistanceUnits then return end
+	if currentEvent ~= "bossdistance" then return end
 	DBM:Unschedule(updateBossDistance)
 	if frame and frame.ticker then
 		frame.ticker:Cancel()
 		frame.ticker = nil
 	end
-	bossDistanceUnits = nil
 	bossDistanceThreshold, bossDistanceRangeType = nil, nil
 	currentEvent = nil
 	displayGeneration = displayGeneration + 1
@@ -441,7 +439,7 @@ end
 ---@param generation number? Public display identity for scheduled updates
 function updateBossDistance(generation)
 	if generation and generation ~= displayGeneration then return end
-	if currentEvent ~= "bossdistance" or not bossDistanceUnits then return end
+	if currentEvent ~= "bossdistance" then return end
 	if not canUpdateDirect() then
 		stopBossDistance()
 		clearDirectDisplay()
@@ -450,8 +448,9 @@ function updateBossDistance(generation)
 	clearDirectLines()
 	updateDirectLayout()
 	local row = 0
-	for _, unit in ipairs(bossDistanceUnits) do
+	for i = 1, 10 do
 		if row >= maxLines * maxCols then break end
+		local unit = "boss" .. i
 		if UnitExists(unit) then
 			local minRange, maxRange = DBM:GetUnitMinMaxRange(unit)
 			local distanceText
@@ -490,41 +489,22 @@ function updateBossDistance(generation)
 end
 
 ---@param modMaxLines integer?
----@param units string[]? Ordered public unit tokens; defaults to boss1 through boss10
 ---@param colorThreshold number? Public minimum/maximum safe distance; omitted disables coloring
 ---@param rangeType "minRange"|"maxRange"|nil Minimum safe distance (default) or maximum safe distance
 ---@return boolean visible
-local function showBossDistance(modMaxLines, units, colorThreshold, rangeType)
+local function showBossDistance(modMaxLines, colorThreshold, rangeType)
 	if DBM.Options.DontShowInfoFrame then
 		if directMode then infoFrame:Hide() end
 		return false
 	end
-	if DBM:issecretvalue(units) or (units ~= nil and type(units) ~= "table") then
-		error("DBM-InfoFrame: bossdistance expects an ordered table of public unit tokens", 3)
-	end
-	if DBM:issecretvalue(colorThreshold) then
-		error("DBM-InfoFrame: bossdistance color threshold must be public", 3)
-	end
 	if colorThreshold ~= nil and (type(colorThreshold) ~= "number" or colorThreshold ~= colorThreshold or colorThreshold < 0 or colorThreshold == mhuge) then
 		error("DBM-InfoFrame: bossdistance color threshold must be a finite nonnegative number", 3)
 	end
-	if DBM:issecretvalue(rangeType) or (rangeType ~= nil and rangeType ~= "minRange" and rangeType ~= "maxRange") then
+	if (rangeType ~= nil and rangeType ~= "minRange" and rangeType ~= "maxRange") then
 		error("DBM-InfoFrame: bossdistance range type must be public minRange or maxRange", 3)
-	end
-	local selectedUnits = {}
-	if units then
-		for i, unit in ipairs(units) do
-			if DBM:issecretvalue(unit) or type(unit) ~= "string" or unit == "" then
-				error("DBM-InfoFrame: bossdistance unit tokens must be nonempty public strings", 3)
-			end
-			selectedUnits[i] = unit
-		end
-	else
-		for i = 1, 10 do selectedUnits[i] = "boss" .. i end
 	end
 	if not infoFrame:ShowDirect(modMaxLines) then return false end
 	currentEvent = "bossdistance"
-	bossDistanceUnits = selectedUnits
 	bossDistanceThreshold, bossDistanceRangeType = colorThreshold, rangeType or "minRange"
 	local generation = displayGeneration
 	infoFrame:SetDirectHeader(L.INFOFRAME_BOSS_DISTANCE)
@@ -1419,8 +1399,8 @@ end
 --  Methods  --
 ---------------
 --Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate. Arg 5: sortmethod (playerpower)
---bossdistance: Arg 1 is an optional ordered table of public unit tokens; names are rendered directly.
---Arg 2: optional color threshold. Arg 3: "minRange" (red below threshold, default) or "maxRange" (red above threshold).
+--bossdistance: Iterates boss1-boss10 using UnitExists; names are rendered directly without unit inspection.
+--Arg 1: optional color threshold. Arg 2: "minRange" (red below threshold, default) or "maxRange" (red above threshold).
 function infoFrame:Show(modMaxLines, event, ...)
 	if event == "bossdistance" then
 		return showBossDistance(modMaxLines, ...)
