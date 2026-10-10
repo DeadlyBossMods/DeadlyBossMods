@@ -9,6 +9,7 @@ DBM.RangeCheck = rangeCheck
 --  Locals  --
 --------------
 local isRetail = DBM:IsRetail()
+local isForever = DBM:IsForever()
 local isWrath = DBM:IsWrath()
 local isTBC = DBM:IsTBC()
 local isMop = DBM:IsMop()
@@ -24,7 +25,8 @@ if isWrath then
 end
 
 local function UnitPhaseReasonHack(uId)
-	if isRetail then
+	--TODO, see if other game versions need to use new phase api
+	if isRetail or isForever then
 		return not UnitPhaseReason(uId)
 	end
 	return UnitInPhase(uId)
