@@ -294,8 +294,8 @@ L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)" -- One target
 
 L.INFOFRAME_TITLE			= L.DBM .. " Riquadro Info"
 L.INFOFRAME_BOSS_DISTANCE			= "Distanza dei boss"
-L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%d metri - %d metri"
-L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %d metri"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %dm"
 L.INFOFRAME_SHOW_SELF		= "Visualizza sempre la tua forza"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES		= "Imposta linee massime"
 L.INFOFRAME_SETSTRATA		= "Imposta livello del riquadro"

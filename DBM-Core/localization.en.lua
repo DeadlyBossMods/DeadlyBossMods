@@ -241,7 +241,7 @@ L.RANGE_TEST_UNSUPPORTED				= "Item range test: item range or item cache APIs ar
 L.RANGE_TEST_ABORTED					= "Item range test canceled: the unit changed, became unavailable, or combat/loading began."
 L.RANGE_TEST_PASS						= "%d yards: item %d (%s), IsItemInRange=%s%s"
 L.RANGE_TEST_FAIL						= "%d yards: no usable item (cached nil: %d, cache failures/timeouts: %d)."
-L.RANGE_TEST_INCOMPLETE				= "%d yards: incomplete (cached nil: %d, cache failures/timeouts: %d)."
+L.RANGE_TEST_INCOMPLETE					= "%d yards: incomplete (cached nil: %d, cache failures/timeouts: %d)."
 L.RANGE_TEST_PARTIAL					= " (earlier candidates could not be cached)"
 L.RANGE_TEST_HEADER						= "DBM item range results (%s). Copy this string; ranges include +3 yards."
 L.RANGE_TEST_NODATA						= "No completed item range test is available. Run DBM:TestRanges first."
@@ -255,7 +255,7 @@ L.RANGE_DISTANCE_REACQUIRE				= "Please reacquire your original target to contin
 L.RANGE_DISTANCE_ABORTED				= "Distance calibration aborted: unit, combat, loading, restrictions, or distance availability changed. Partial evidence retained; no PASS results."
 L.RANGE_DISTANCE_NODATA					= "No stopped distance calibration is available. Run DBM:TestRangeDistances, then DBM:StopRangeDistances."
 L.RANGE_DISTANCE_HEADER					= "DBM distance calibration. Copy this string; expected ranges include +3 yards, with +/-0.5 yards tolerance."
-L.RANGE_DISTANCE_ROW						= "%d yards: item %d (%s), %s; farthest true=%s, nearest false=%s; true/false=%d/%d, mismatches=%d, unavailable=%d%s"
+L.RANGE_DISTANCE_ROW					= "%d yards: item %d (%s), %s; farthest true=%s, nearest false=%s; true/false=%d/%d, mismatches=%d, unavailable=%d%s"
 L.RANGE_DISTANCE_PASS					= "PASS"
 L.RANGE_DISTANCE_FAIL					= "FAIL"
 L.RANGE_DISTANCE_INCOMPLETE				= "INCOMPLETE (insufficient boundary coverage, contradictory readings, unavailable samples, or aborted run)"
@@ -286,8 +286,8 @@ L.RANGERADAR_IN_RANGE_TEXTONE			= "%s (%0.1fy)"--One target
 
 L.INFOFRAME_TITLE						= "DBM Info Frame"
 L.INFOFRAME_BOSS_DISTANCE				= "Boss Distance"
-L.INFOFRAME_BOSS_DISTANCE_RANGE			= GetLocale() == "enUS" and "%d yards - %d yards" or "%d meters - %d meters"
-L.INFOFRAME_BOSS_DISTANCE_OVER			= GetLocale() == "enUS" and "> %d yards" or "> %d meters"
+L.INFOFRAME_BOSS_DISTANCE_RANGE			= GetLocale() == "enUS" and "%dy - %dy" or "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER			= GetLocale() == "enUS" and "> %dy" or "> %dm"
 L.INFOFRAME_SHOW_SELF					= "Always show your power"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES					= "Set max lines"
 L.INFOFRAME_SETCOLS						= "Set max columns"

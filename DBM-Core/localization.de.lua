@@ -270,8 +270,8 @@ L.RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"
 
 L.INFOFRAME_TITLE 			= "DBM-Infofenster"
 L.INFOFRAME_BOSS_DISTANCE			= "Bossentfernung"
-L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%d Meter - %d Meter"
-L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %d Meter"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %dm"
 L.INFOFRAME_SHOW_SELF		= "Eigene Stärke immer anzeigen" -- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES		= "Setze maximale Zeilenanzahl"
 L.INFOFRAME_SETCOLS			= "Setze maximale Spaltenanzahl"

@@ -276,8 +276,8 @@ L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
 
 L.INFOFRAME_TITLE				= "DBM 정보 창"
 L.INFOFRAME_BOSS_DISTANCE			= "우두머리 거리"
-L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%d미터 - %d미터"
-L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %d미터"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %dm"
 L.INFOFRAME_SHOW_SELF			= "항상 내 자원 표시"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "최대 줄 설정"
 L.INFOFRAME_SETCOLS				= "최대 열 설정"

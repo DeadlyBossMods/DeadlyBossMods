@@ -281,8 +281,8 @@ L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"		--One target
 
 L.INFOFRAME_TITLE			= "Marco de info."
 L.INFOFRAME_BOSS_DISTANCE			= "Distancia de los jefes"
-L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%d metros - %d metros"
-L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %d metros"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %dm"
 L.INFOFRAME_SHOW_SELF		= "Mostrar siempre tu información"	-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES		= "Líneas máximas"
 L.INFOFRAME_SETCOLS			= "Columnas máximas"

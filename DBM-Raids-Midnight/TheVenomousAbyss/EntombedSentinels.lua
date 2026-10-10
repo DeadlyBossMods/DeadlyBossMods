@@ -186,7 +186,7 @@ function mod:OnLimitedCombatStart()
 	timerUnstableMiasmaCD:SetFade(false, 1)
 	self:Unschedule(updateBossDistance)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:Show(2, "bossdistance", {"boss1", "boss2"}, 43, "minRange")
+		DBM.InfoFrame:Show(2, "bossdistance", 41, "minRange")
 	end
 	--Hardcode features first
 	if DBM.Options.HardcodedTimer and not badStateDetected then
