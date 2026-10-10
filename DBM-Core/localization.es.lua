@@ -230,6 +230,32 @@ L.PIZZA_ERROR_USAGE				= "Uso: /dbm [broadcast] timer <seg> <texto>. <seg> debe 
 L.MINIMAP_TOOLTIP_HEADER		= L.DEADLY_BOSS_MODS
 L.MINIMAP_TOOLTIP_FOOTER		= "Mantén Mayús y arrastra para mover"
 
+L.RANGE_TEST_READY				= "Prueba de alcance de objetos (%s): solicitando datos de %d objetos. Mantén la unidad seleccionada y permanece fuera de combate."
+L.RANGE_TEST_INVALID			= "La prueba de alcance de objetos requiere una unidad amistosa u hostil viva y visible, y debe ejecutarse fuera de combate."
+L.RANGE_TEST_UNSUPPORTED		= "Prueba de alcance de objetos: las API de alcance o de caché de objetos no están disponibles en este cliente."
+L.RANGE_TEST_ABORTED			= "Prueba de alcance de objetos cancelada: la unidad ha cambiado, ya no está disponible o ha comenzado un combate/una carga."
+L.RANGE_TEST_PASS				= "%d yardas: objeto %d (%s), IsItemInRange=%s%s"
+L.RANGE_TEST_FAIL				= "%d yardas: ningún objeto utilizable (nil con datos en caché: %d, fallos/tiempos de espera agotados de caché: %d)."
+L.RANGE_TEST_INCOMPLETE		= "%d yardas: incompleto (nil con datos en caché: %d, fallos/tiempos de espera agotados de caché: %d)."
+L.RANGE_TEST_PARTIAL			= " (no se pudieron almacenar en caché los candidatos anteriores)"
+L.RANGE_TEST_HEADER				= "Resultados de alcance de objetos de DBM (%s). Copia esta cadena; los alcances incluyen +3 yardas."
+L.RANGE_TEST_NODATA				= "No hay ninguna prueba de alcance de objetos completada disponible. Ejecuta primero DBM:TestRanges."
+L.RANGE_TEST_DONE				= "Prueba de alcance de objetos completada: %d correctos, %d fallidos, %d incompletos. Usa DBM:ShowRangeTestResults() para copiar los resultados."
+L.RANGE_TEST_SELF				= "Probar contigo mismo no demuestra que estos objetos funcionen con otro jugador."
+L.RANGE_DISTANCE_NOCANDIDATES	= "Ejecuta DBM:TestRanges y espera a encontrar objetos utilizables antes de medir sus distancias."
+L.RANGE_DISTANCE_INVALID		= "La calibración requiere otra unidad viva y visible, fuera de combate y en mapas sin restricciones. Se recomienda un jugador del grupo/banda al aire libre."
+L.RANGE_DISTANCE_UNAVAILABLE	= "Calibración: lecturas verificadas y no secretas de UnitDistanceSquared o API de alcance de objetos no disponibles. Prueba con un jugador del grupo/banda al aire libre."
+L.RANGE_DISTANCE_READY		= "Midiendo %d objetos (tolerancia +/-0,5 yardas). El otro jugador debe permanecer quieto; aléjate y regresa lentamente cruzando los límites. Detén/exporta con DBM:StopRangeDistances(true)."
+L.RANGE_DISTANCE_REACQUIRE	= "Vuelve a seleccionar tu objetivo original para continuar la calibración de alcance."
+L.RANGE_DISTANCE_ABORTED		= "Calibración interrumpida: cambió la unidad, el combate, la carga, las restricciones o la disponibilidad de distancia. Se conservan datos parciales; ningún resultado correcto."
+L.RANGE_DISTANCE_NODATA		= "No hay una calibración detenida. Ejecuta DBM:TestRangeDistances y después DBM:StopRangeDistances."
+L.RANGE_DISTANCE_HEADER		= "Calibración de distancia de DBM. Copia esta cadena; los alcances esperados incluyen +3 yardas, con tolerancia de +/-0,5 yardas."
+L.RANGE_DISTANCE_ROW			= "%d yardas: objeto %d (%s), %s; true más lejano=%s, false más cercano=%s; true/false=%d/%d, discrepancias=%d, no disponibles=%d%s"
+L.RANGE_DISTANCE_PASS		= "CORRECTO"
+L.RANGE_DISTANCE_FAIL		= "FALLIDO"
+L.RANGE_DISTANCE_INCOMPLETE	= "INCOMPLETO (límite insuficientemente observado, lecturas contradictorias, muestras no disponibles o prueba interrumpida)"
+L.RANGE_DISTANCE_DONE			= "Calibración detenida: %d correctos, %d fallidos, %d incompletos. Usa DBM:ShowRangeDistanceResults() para copiar los resultados."
+
 L.RANGECHECK_HEADER				= "Comprobación de distancia (%d m)"
 L.RANGECHECK_HEADERT			= "Comprobación de distancia (%dm-%dP)"
 L.RANGECHECK_RHEADER			= "Comprobación inversa de distancia (%dm)"
@@ -254,6 +280,9 @@ L.RANGECHECK_IN_RANGE_TEXT		= "%d a distancia"	--Text based doesn't need (%dyd),
 L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"		--One target
 
 L.INFOFRAME_TITLE			= "Marco de info."
+L.INFOFRAME_BOSS_DISTANCE			= "Distancia de los jefes"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %dm"
 L.INFOFRAME_SHOW_SELF		= "Mostrar siempre tu información"	-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES		= "Líneas máximas"
 L.INFOFRAME_SETCOLS			= "Columnas máximas"

@@ -10,10 +10,13 @@ DBM.RangeCheck = rangeCheck
 --------------
 local isRetail = DBM:IsRetail()
 local isWrath = DBM:IsWrath()
+local isTBC = DBM:IsTBC()
+local isMop = DBM:IsMop()
 local isClassic = DBM:IsVanilla()--Intentionally including era and forever
 
 local DDM, UIDropDownMenu_AddButton, UIDropDownMenu_Initialize, ToggleDropDownMenu
 if isWrath then
+	-- Keep Wrath's legacy dropdown path until modern-menu support can be verified.
 	DDM = LibStub:GetLibrary("LibDropDownMenu")
 	UIDropDownMenu_AddButton = DDM.UIDropDownMenu_AddButton
 	UIDropDownMenu_Initialize = DDM.UIDropDownMenu_Initialize
@@ -33,35 +36,20 @@ local controllerFrame, updater
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown, initializeDropdownLegacy, createController
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS -- For Phanx' Class Colors
 
+local retailRanges = { 5, 6, 7, 8, 9, 10, 11, 13, 15, 18, 23, 28, 33, 38, 41, 43, 48, 53, 58, 63, 73, 83, 93, 103, 123, 153, 202 }
+local classicRanges = { 8, 13, 18, 23, 28, 33, 38, 43, 48, 103 }
+local tbcRanges = { 8, 11, 13, 18, 23, 28, 33, 38, 43, 48, 63 }
+local wrathRanges = { 6, 8, 11, 13, 18, 23, 28, 33, 38, 43, 48, 63, 73, 83, 103, 153 }
+local mopRanges = { 6, 8, 10, 11, 13, 18, 23, 28, 33, 38, 43, 48, 58, 63, 73, 83, 103, 153, 203 }
+local legacyRanges = { 6, 8, 13, 18, 23, 28, 33, 43, 48, 60, 80, 100 }
+local itemCheckRanges = isRetail and retailRanges or isClassic and classicRanges or isTBC and tbcRanges or isWrath and wrathRanges or isMop and mopRanges or legacyRanges
+
 -- Function for automatically converting inputed ranges from old mods to be ones that have valid item/api checks
 local function setCompatibleRestrictedRange(range)
-	if range <= 4 and isRetail then
-		return 4
-	elseif range <= 8 then
-		return 8
-	elseif range <= 13 then
-		return 13
-	elseif range <= 18 then
-		return 18
-	elseif range <= 23 then
-		return 23
-	elseif range <= 28 then
-		return 28
-	elseif range <= 33 then
-		return 33
-	elseif range <= 43 then
-		return 43
-	elseif range <= 48 and not isClassic then
-		return 48
-	elseif range <= 60 and not isClassic then
-		return 60
-	elseif range <= 80 and not isClassic then
-		return 80
-	elseif range <= 100 and not isClassic then
-		return 100
-	else--Mod passed a range that exceeds max range known apis can cover, we really don't have a way to measure this anymore so we return highest range we can measure based on game client
-		return isClassic and 43 or 100
+	for _, supportedRange in ipairs(itemCheckRanges) do
+		if range <= supportedRange then return supportedRange end
 	end
+	return itemCheckRanges[#itemCheckRanges]
 end
 
 -----------------------
@@ -73,23 +61,183 @@ do
 	local UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected = UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected
 
 	local IsItemInRange, UnitInRange = C_Item and C_Item.IsItemInRange or IsItemInRange, UnitInRange
-	-- All ranges are tested and compared against UnitDistanceSquared.
+	local useUnitInRange = not isRetail and not isTBC and not isWrath and not isMop
+	-- Legacy mappings; Retail verification notes below.
 	-- Example: Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8.
 	local itemRanges = {
 		[8] = 8149, -- Voodoo Charm
-		[13] = 17626, -- Sparrowhawk Net
+		[13] = 17626, -- Frostwolf Muzzle
 		[18] = 6450, -- Silk Bandage
 		[23] = 21519, -- Mistletoe
 		[28] = 13289,--Egan's Blaster
 		[33] = 1180, -- Scroll of Stamina
 	}
-	if not isClassic then -- Exists in Wrath/BCC but not vanilla/era
+	if isRetail then
+		-- Candidates returned valid results on hostile NPCs and during friendly-player calibration.
+		-- All mapped ranges from 5-153 yards passed +/-0.5-yard calibration.
+		-- Nominal +3 ranges, except the conservative 202-yard cap below.
+		-- 49 yards omitted: its sole candidate (219320) returned nil on hostile units.
+		itemRanges = {
+			[5] = 168948, -- Dried Kelp
+			[6] = 42732, -- Everfrost Razor
+			[7] = 129055, -- Shoe Shine Kit
+			[8] = 8149, -- Voodoo Charm
+			[9] = 164766, -- Iwen's Enchanting Rod
+			[10] = 61323, -- Ruby Seeds
+			[11] = 33278, -- Burning Torch
+			[13] = 17626, -- Frostwolf Muzzle
+			[15] = 208068, -- Rotten Delicious
+			[18] = 30651, -- Dertrok's First Wand
+			[23] = 17757, -- Amulet of Spirits
+			[28] = 13289, -- Egan's Blaster
+			[33] = 17202, -- Snowball
+			[38] = 18904, -- Zorbin's Ultra-Shrinker
+			[41] = 140786, -- Ley Spider Eggs
+			[43] = 33581, -- Vrykul Insult
+			[48] = 28369, -- Battery Recharging Blaster
+			[53] = 116139, -- Haunting Memento
+			[58] = 74637, -- Kiryn's Poison Vial
+			[63] = 32825, -- Soul Cannon
+			[73] = 41265, -- Eyesore Blaster
+			[83] = 35278, -- Reinforced Net
+			[93] = 133925, -- Fel Lash
+			[103] = 41058, -- Hyldnir Harpoon
+			[123] = 160988, -- Goblin Incendiary Rocket Launcher
+			[153] = 46954, -- Flaming Spears
+			[202] = 75208, -- Rancher's Lariat; observed transition: 202.49-202.74 yards; conservatively capped at 202.
+		}
+	elseif isClassic then
+		-- Eight shared items passed hostile discovery and friendly-player +/-0.5-yard calibration on Era and Forever.
+		-- Retain the legacy friendly-only 18-yard check and UnitInRange at 43 yards.
+		-- 53 yards omitted: its sole candidate (221315) returned nil on hostile units.
+		itemRanges = {
+			[8] = 8149, -- Voodoo Charm
+			[13] = 17626, -- Frostwolf Muzzle
+			[18] = 6450, -- Silk Bandage; legacy friendly-only check, not distance-calibrated here.
+			[23] = 17757, -- Amulet of Spirits
+			[28] = 13289, -- Egan's Blaster
+			[33] = 17202, -- Snowball
+			[38] = 18904, -- Zorbin's Ultra-Shrinker
+			[48] = 221316, -- Premo's Poise-Demanding Uniform
+			[103] = 5418, -- Weapon of Mass Destruction (test); Era: 102.75-103.00 yards; Forever: 102.76-102.96 yards.
+		}
+	elseif isTBC or isWrath then
+		-- TBC base: eleven items passed hostile discovery and friendly-player +/-0.5-yard calibration.
+		-- 11/43-yard discovery had earlier uncached candidates; these selected items passed calibration.
+		-- TBC's other diagnostic buckets remain unconfirmed due to cache failures; cap TBC at the verified 63 yards.
+		itemRanges = {
+			[8] = 8149, -- Voodoo Charm
+			[11] = 34368, -- Attuned Crystal Cores
+			[13] = 17626, -- Frostwolf Muzzle
+			[18] = 30651, -- Dertrok's First Wand
+			[23] = 17757, -- Amulet of Spirits
+			[28] = 13289, -- Egan's Blaster
+			[33] = 17202, -- Snowball
+			[38] = 18904, -- Zorbin's Ultra-Shrinker
+			[43] = 34255, -- Razorthorn Flayer Gland
+			[48] = 28369, -- Battery Recharging Blaster
+			[63] = 32825, -- Soul Cannon
+		}
+		if isWrath then
+			-- Provisional: Wrath is not directly testable. Inherit TBC's base and MoP-calibrated extensions.
+			-- Wowhead's added-in-patch metadata confirms each extension existed in Wrath; boundaries remain untested there.
+			itemRanges[6] = 42732 -- Everfrost Razor; added in 3.0.1.
+			itemRanges[73] = 41265 -- Eyesore Blaster; added in 3.0.2; MoP-calibrated range, Wrath tooltip says 95 yards.
+			itemRanges[83] = 35278 -- Reinforced Net; added in 3.0.1.
+			itemRanges[103] = 41058 -- Hyldnir Harpoon; added in 3.0.1.
+			itemRanges[153] = 46954 -- Flaming Spears; added in 3.2.0.
+		end
+	elseif isMop then
+		-- Nineteen items passed hostile discovery and friendly-player +/-0.5-yard calibration.
+		-- Other diagnostic buckets remain unconfirmed due to cache failures.
+		-- Unlike Retail's conservative 202-yard cap, MoP's nominal+3 203-yard check passed calibration.
+		itemRanges = {
+			[6] = 42732, -- Everfrost Razor
+			[8] = 8149, -- Voodoo Charm
+			[10] = 61323, -- Ruby Seeds
+			[11] = 33278, -- Burning Torch
+			[13] = 17626, -- Frostwolf Muzzle
+			[18] = 30651, -- Dertrok's First Wand
+			[23] = 17757, -- Amulet of Spirits
+			[28] = 13289, -- Egan's Blaster
+			[33] = 17202, -- Snowball
+			[38] = 18904, -- Zorbin's Ultra-Shrinker
+			[43] = 33581, -- Vrykul Insult
+			[48] = 28369, -- Battery Recharging Blaster
+			[58] = 74637, -- Kiryn's Poison Vial
+			[63] = 32825, -- Soul Cannon
+			[73] = 41265, -- Eyesore Blaster
+			[83] = 35278, -- Reinforced Net
+			[103] = 41058, -- Hyldnir Harpoon
+			[153] = 46954, -- Flaming Spears
+			[203] = 75208, -- Rancher's Lariat; calibrated transition: 202.80-203.47 yards.
+		}
+	elseif not isClassic then -- Remaining legacy clients retain their existing mappings.
 		itemRanges[6] = 16114 -- Foremans Blackjack (TBC)
 		itemRanges[43] = 34255 -- Razorthorn Flayer Gland (UnitInRange api alternate if item checks break)
 		itemRanges[48] = 32698 -- Wrangling Rope
 		itemRanges[60] = 32825 -- Soul Cannon
 		itemRanges[80] = 35278 -- Reinforced Net (WotLK)
 		itemRanges[100] = 41058 -- Hyldnir Harpoon (WotLK)
+	end
+
+	---Select this client's item for a distance, rounding up and capping at its highest mapped range.
+	---API-only ranges (such as Era/Forever's 43-yard UnitInRange check) are skipped.
+	---@param distance number? Desired distance in yards; defaults to 48.
+	---@return number itemId
+	---@return number range Actual item range in yards.
+	function rangeCheck:GetItemIdForRange(distance)
+		distance = distance or 48
+		for _, range in ipairs(itemCheckRanges) do
+			local itemId = itemRanges[range]
+			if itemId and distance <= range then
+				return itemId, range
+			end
+		end
+		local maxRange = itemCheckRanges[#itemCheckRanges]
+		return itemRanges[maxRange], maxRange
+	end
+
+	---Request this client's mapped items before starting recurring item range checks.
+	function rangeCheck:CacheItemsForRangeChecks()
+		local requestItem = C_Item and C_Item.RequestLoadItemDataByID or GetItemInfo
+		if not requestItem then return end
+		for _, itemId in pairs(itemRanges) do
+			requestItem(itemId)
+		end
+	end
+
+	---Estimate a unit's distance from the player using this client's item checks only.
+	---Friendly unit checks are permitted only out of combat; hostile unit checks are allowed in combat.
+	---Unavailable checks are skipped, not treated as out of range. No GUID inspection is performed.
+	---Returns 0, 0 for a missing unit, a friendly unit during combat, or no usable checks.
+	---With no upper bound, repeats the lower bound (not an exact distance).
+	---@param unit string Direct unit token or name accepted by the item API.
+	---@return number minRange Last confirmed out-of-range distance in yards, or 0.
+	---@return number maxRange First confirmed in-range distance in yards, or minRange when no upper bound is known.
+	function rangeCheck:GetUnitMinMaxRange(unit)
+		if not UnitExists(unit) or (InCombatLockdown() and UnitIsFriend("player", unit)) then return 0, 0 end
+		local minRange = 0
+		for _, range in ipairs(itemCheckRanges) do
+			local itemId = itemRanges[range]
+			if itemId then
+				local inRange = IsItemInRange(itemId, unit)
+				if inRange == true or inRange == 1 then
+					return minRange, range
+				elseif inRange == false or inRange == 0 then
+					minRange = range
+				end
+			end
+		end
+		return minRange, minRange
+	end
+
+	---Return item-based range bounds; see RangeCheck:GetUnitMinMaxRange for unknown/capped results.
+	---@param unit string Direct unit token or name.
+	---@return number minRange
+	---@return number maxRange
+	function DBM:GetUnitMinMaxRange(unit)
+		return rangeCheck:GetUnitMinMaxRange(unit)
 	end
 
 	local function itsDFBaby(uId)
@@ -103,28 +251,22 @@ do
 
 	function itsBCAgain(uId, checkrange)
 		if checkrange then -- Specified range, this check only cares whether unit is within specific range
-			if not isRetail and checkrange == 43 then -- Only classic/BCC uses UnitInRange so only classic has this check, TBC+ can use Vial of the Sunwell
+			if useUnitInRange and checkrange == 43 then -- Era/Forever and other legacy clients retain UnitInRange.
 				return UnitInRange(uId) and checkrange or 1000
 			elseif itemRanges[checkrange] then -- Only query item range for requested active range check
 				return IsItemInRange(itemRanges[checkrange], uId) and checkrange or 1000
 			else
 				return 1000 -- Just so it has a numeric value, even if it's unknown to protect from nil errors
 			end
-		else -- No range passed, this is being used by a getDistanceBetween function that needs to calculate precise distances of members of raid (well as precise as possible with a crappy api)
-			if isRetail and IsItemInRange(90175, uId) then return 4
-			elseif not isClassic and IsItemInRange(16114, uId) then return 6
-			elseif IsItemInRange(8149, uId) then return 8
-			elseif IsItemInRange(isClassic and 17626 or 32321, uId) then return 13
-			elseif IsItemInRange(6450, uId) then return 18
-			elseif IsItemInRange(21519, uId) then return 23
-			elseif IsItemInRange(13289, uId) then return 28
-			elseif IsItemInRange(1180, uId) then return 33
-			elseif UnitInRange and UnitInRange(uId) then return 43
-			elseif not isClassic and IsItemInRange(32698, uId) then return 48
-			elseif not isClassic and IsItemInRange(32825, uId) then return 60
-			elseif not isClassic and IsItemInRange(35278, uId) then return 80
-			elseif not isClassic and IsItemInRange(41058, uId) then return 100
-			else return 1000 end -- Just so it has a numeric value, even if it's unknown to protect from nil errors
+		else -- No requested range: scan this client's supported checks in ascending order.
+			for _, range in ipairs(itemCheckRanges) do
+				if useUnitInRange and range == 43 then
+					if UnitInRange(uId) then return range end
+				elseif IsItemInRange(itemRanges[range], uId) then
+					return range
+				end
+			end
+			return 1000
 		end
 	end
 
@@ -242,8 +384,7 @@ do
 		rootDescription:CreateCheckbox(LOCK_FRAME, isLocked, toggleLocked)
 
 		local range = rootDescription:CreateButton(L.RANGECHECK_SETRANGE)
-		local ranges = not isClassic and { 6, 8, 13, 18, 23, 33, 43 } or { 8, 13, 18, 23, 33 }
-		for _, v in ipairs(ranges) do
+		for _, v in ipairs(itemCheckRanges) do
 			range:CreateRadio(L.RANGECHECK_SETRANGE_TO:format(v), isRangeSelected, setRange, v)
 		end
 
@@ -319,8 +460,7 @@ do
 			}, 1)
 		elseif level == 2 then
 			if menu == "range" then
-				local ranges = not isClassic and { 6, 8, 13, 18, 23, 33, 43 } or { 8, 13, 18, 23, 33 }
-				for _, v in ipairs(ranges) do
+				for _, v in ipairs(wrathRanges) do
 					UIDropDownMenu_AddButton({
 						text = L.RANGECHECK_SETRANGE_TO:format(v),
 						func = setRange,

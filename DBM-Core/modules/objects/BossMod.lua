@@ -454,6 +454,7 @@ bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
 bossModPrototype.GetUnitIdFromCID = DBM.GetUnitIdFromCID
 bossModPrototype.GetUnitIdFromGUID = DBM.GetUnitIdFromGUID
 bossModPrototype.CheckNearby = DBM.CheckNearby
+bossModPrototype.GetUnitMinMaxRange = DBM.GetUnitMinMaxRange
 bossModPrototype.GetGossipID = DBM.GetGossipID
 bossModPrototype.SelectMatchingGossip = DBM.SelectMatchingGossip
 bossModPrototype.SelectGossip = DBM.SelectGossip
@@ -508,8 +509,8 @@ do
 	---Used when we want to alert or filter based on proximity to the casting boss
 	---@param cidOrGuid number|string? Creature ID, GUID, or direct unit token (such as "boss1").
 	---@param onlyBoss boolean? Used when you only need to check "boss" unitids
-	---@param itemId number? Used to define which item (range) is used. 32698 (48) is used if empty
-	---@param distance number? Used for tank distance fallback if item api is restricted (Deprecated)
+	---@param itemId number? Explicit item override; omit to select a client-appropriate item from RangeCheck.
+	---@param distance number? Desired range in yards when itemId is omitted; defaults to 48, rounds up to an item-backed range, and caps at the client's maximum.
 	---@param defaultReturn boolean? Fallback return if all checks fail (whether a failure returns true or false)
 	---@param restrictedCheck boolean? Requires a direct unit token and forbids CID/GUID lookups and tank-distance fallback.
 	---@return boolean
@@ -518,7 +519,8 @@ do
 		if restrictedCheck and (type(cidOrGuid) == "string" and UnitExists(cidOrGuid)) then
 			--IsItemInRange permits secret units. Pass the unit through without inspecting its identity.
 			--Direct tokens never enter the CID/GUID-based tank fallback, even outside restrictions.
-			local inRange = IsItemInRange(itemId or 32698, cidOrGuid)
+			itemId = itemId or DBM.RangeCheck:GetItemIdForRange(distance)
+			local inRange = IsItemInRange(itemId, cidOrGuid)
 			if inRange == nil then return (defaultReturn == nil) or defaultReturn end
 			return inRange
 		end
@@ -532,8 +534,7 @@ do
 		end
 		if uId then
 			if not UnitIsFriend("player", uId) then--API only allowed on hostile unit
-				itemId = itemId or 32698
-				--/dump IsItemInRange(32698, "target")
+				itemId = itemId or DBM.RangeCheck:GetItemIdForRange(distance)
 				local inRange = IsItemInRange(itemId, uId)
 				if inRange ~= nil then--IsItemInRange was a success if it returned true or false, if it failed it returns nil
 					return inRange

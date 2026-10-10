@@ -83,6 +83,20 @@ local displayGeneration = 0
 local directLines, directRows = {}, {}
 local directHeader, directLeftWidth, directRightWidth
 local updateDirectLayout
+local updateBossDistance
+local bossDistanceThreshold, bossDistanceRangeType
+
+local function stopBossDistance()
+	if currentEvent ~= "bossdistance" then return end
+	DBM:Unschedule(updateBossDistance)
+	if frame and frame.ticker then
+		frame.ticker:Cancel()
+		frame.ticker = nil
+	end
+	bossDistanceThreshold, bossDistanceRangeType = nil, nil
+	currentEvent = nil
+	displayGeneration = displayGeneration + 1
+end
 
 local function checkDirectNumber(number, optional, integer)
 	if DBM:issecretvalue(number) then
@@ -353,6 +367,7 @@ function createFrame()
 	frame.lines = {}
 	frame:SetScript("OnHide", function()
 		-- Includes ancestor hides: never retain text for a later OnShow.
+		stopBossDistance()
 		if directMode then clearDirectDisplay() end
 	end)
 end
@@ -369,7 +384,7 @@ function updateDirectLayout()
 	maxLines = getDirectLimit("InfoFrameLines", modLines)
 	maxCols = getDirectLimit("InfoFrameCols", modCols)
 	local font, size, style = getSafeInfoFrameFontSettings(frame.header)
-	local leftWidth, rightWidth = directLeftWidth or size * 12, directRightWidth or size * 8
+	local leftWidth, rightWidth = directLeftWidth or size * 10, directRightWidth or size * 8
 	local columnWidth = leftWidth + rightWidth + size * 1.5
 	local highestRow = 0
 	for row in pairs(directRows) do
@@ -417,6 +432,98 @@ function updateDirectLayout()
 		directHeader:SetWordWrap(false)
 		directHeader:SetSize(width, size)
 	end
+end
+
+-- This built-in type bypasses all legacy name processing and text measurement.
+---@param generation number? Public display identity for scheduled updates
+function updateBossDistance(generation)
+	if generation and generation ~= displayGeneration then return end
+	if currentEvent ~= "bossdistance" then return end
+	if not canUpdateDirect() then
+		stopBossDistance()
+		clearDirectDisplay()
+		return
+	end
+	clearDirectLines()
+	updateDirectLayout()
+	local row = 0
+	for i = 1, 10 do
+		if row >= maxLines * maxCols then break end
+		local unit = "boss" .. i
+		if UnitExists(unit) then
+			local minRange, maxRange = DBM:GetUnitMinMaxRange(unit)
+			local distanceText
+			if minRange == 0 and maxRange == 0 then
+				distanceText = DBM_COMMON_L.UNKNOWN
+			elseif minRange == maxRange then
+				distanceText = L.INFOFRAME_BOSS_DISTANCE_OVER:format(minRange)
+			else
+				distanceText = L.INFOFRAME_BOSS_DISTANCE_RANGE:format(minRange, maxRange)
+			end
+			local inSafeRange
+			if bossDistanceThreshold and maxRange > 0 then
+				if bossDistanceRangeType == "maxRange" then
+					if maxRange > bossDistanceThreshold or minRange >= bossDistanceThreshold then
+						inSafeRange = false
+					elseif maxRange > minRange then
+						inSafeRange = true
+					end
+				else
+					if minRange >= bossDistanceThreshold then
+						inSafeRange = true
+					elseif maxRange > minRange then
+						inSafeRange = false
+					end
+				end
+			end
+			local colorR, colorG, colorB
+			if inSafeRange ~= nil then
+				colorR, colorG, colorB = inSafeRange and 0 or 255, inSafeRange and 255 or 0, 0
+			end
+			row = row + 1
+			-- Never inspect or retain the possibly secret UnitName payload.
+			infoFrame:SetDirectLine(row, UnitName(unit), distanceText, nil, nil, nil, colorR, colorG, colorB)
+		end
+	end
+end
+
+---@param modMaxLines integer?
+---@param colorThreshold number? Public minimum/maximum safe distance; omitted disables coloring
+---@param rangeType "minRange"|"maxRange"|nil Minimum safe distance (default) or maximum safe distance
+---@return boolean visible
+local function showBossDistance(modMaxLines, colorThreshold, rangeType)
+	if DBM.Options.DontShowInfoFrame then
+		if directMode then infoFrame:Hide() end
+		return false
+	end
+	if colorThreshold ~= nil and (type(colorThreshold) ~= "number" or colorThreshold ~= colorThreshold or colorThreshold < 0 or colorThreshold == mhuge) then
+		error("DBM-InfoFrame: bossdistance color threshold must be a finite nonnegative number", 3)
+	end
+	if (rangeType ~= nil and rangeType ~= "minRange" and rangeType ~= "maxRange") then
+		error("DBM-InfoFrame: bossdistance range type must be public minRange or maxRange", 3)
+	end
+	if not infoFrame:ShowDirect(modMaxLines) then return false end
+	currentEvent = "bossdistance"
+	bossDistanceThreshold, bossDistanceRangeType = colorThreshold, rangeType or "minRange"
+	local generation = displayGeneration
+	infoFrame:SetDirectHeader(L.INFOFRAME_BOSS_DISTANCE)
+	DBM.RangeCheck:CacheItemsForRangeChecks()
+	updateBossDistance(generation)
+	if generation ~= displayGeneration then return false end
+	frame.ticker = C_Timer.NewTicker(0.5, function()
+		updateBossDistance(generation)
+	end)
+	return true
+end
+
+-- Static in-game layout preview; shares the production geometry without polling boss units.
+local function showBossDistanceTest(modMaxLines)
+	if not infoFrame:ShowDirect(modMaxLines or 2) then return false end
+	currentEvent = "testbossdistance"
+	infoFrame:SetDirectHeader(L.INFOFRAME_BOSS_DISTANCE)
+	infoFrame:SetDirectLine(1, "Breath of Ula'tek", L.INFOFRAME_BOSS_DISTANCE_RANGE:format(43, 48), nil, nil, nil, 0, 255, 0)
+	infoFrame:SetDirectLine(2, "Blood of Ula'tek", L.INFOFRAME_BOSS_DISTANCE_RANGE:format(0, 5), nil, nil, nil, 255, 0, 0)
+	return true
 end
 
 ------------------------
@@ -1301,13 +1408,21 @@ end
 --  Methods  --
 ---------------
 --Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate. Arg 5: sortmethod (playerpower)
+--bossdistance: Iterates boss1-boss10 using UnitExists; names are rendered directly without unit inspection.
+--Arg 1: optional color threshold. Arg 2: "minRange" (red below threshold, default) or "maxRange" (red above threshold).
 function infoFrame:Show(modMaxLines, event, ...)
+	if event == "bossdistance" then
+		return showBossDistance(modMaxLines, ...)
+	elseif event == "testbossdistance" then
+		return showBossDistanceTest(modMaxLines)
+	end
 	if DBM.Options.DontShowInfoFrame and not (event or ""):find("test") then
 		return
 	end
 	if midnightRestrictedEvents[event] and DBM:IsRestricted() then
 		return
 	end
+	stopBossDistance()
 	displayGeneration = displayGeneration + 1
 	local generation = displayGeneration
 	if directMode then
@@ -1417,6 +1532,7 @@ function infoFrame:ShowDirect(modMaxLines, leftWidth, rightWidth)
 	checkDirectNumber(rightWidth, true, false)
 	getDirectLimit("InfoFrameLines", modMaxLines or 5)
 	getDirectLimit("InfoFrameCols", 1)
+	stopBossDistance()
 	displayGeneration = displayGeneration + 1
 	if not frame then createFrame() end
 	DBM:Unschedule(onUpdate)
@@ -1519,6 +1635,15 @@ function infoFrame:RegisterCallback(cb)
 end
 
 function infoFrame:Update(time)
+	if currentEvent == "bossdistance" then
+		DBM:Unschedule(updateBossDistance)
+		if time then
+			DBM:Schedule(time, updateBossDistance, displayGeneration)
+		else
+			updateBossDistance()
+		end
+		return
+	end
 	if directMode then return end
 	if not frame then
 		createFrame()
@@ -1625,6 +1750,7 @@ function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB,
 end
 
 function infoFrame:Hide()
+	stopBossDistance()
 	displayGeneration = displayGeneration + 1
 	DBM:Unschedule(onUpdate)
 	clearDirectDisplay()
