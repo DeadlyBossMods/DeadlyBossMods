@@ -384,8 +384,7 @@ function updateDirectLayout()
 	maxLines = getDirectLimit("InfoFrameLines", modLines)
 	maxCols = getDirectLimit("InfoFrameCols", modCols)
 	local font, size, style = getSafeInfoFrameFontSettings(frame.header)
-	local bossDistance = currentEvent == "bossdistance"
-	local leftWidth, rightWidth = directLeftWidth or size * (bossDistance and 18 or 12), directRightWidth or size * (bossDistance and 12 or 8)
+	local leftWidth, rightWidth = directLeftWidth or size * 10, directRightWidth or size * 8
 	local columnWidth = leftWidth + rightWidth + size * 1.5
 	local highestRow = 0
 	for row in pairs(directRows) do
@@ -514,6 +513,16 @@ local function showBossDistance(modMaxLines, colorThreshold, rangeType)
 	frame.ticker = C_Timer.NewTicker(0.5, function()
 		updateBossDistance(generation)
 	end)
+	return true
+end
+
+-- Static in-game layout preview; shares the production geometry without polling boss units.
+local function showBossDistanceTest(modMaxLines)
+	if not infoFrame:ShowDirect(modMaxLines or 2) then return false end
+	currentEvent = "testbossdistance"
+	infoFrame:SetDirectHeader(L.INFOFRAME_BOSS_DISTANCE)
+	infoFrame:SetDirectLine(1, "Breath of Ula'tek", L.INFOFRAME_BOSS_DISTANCE_RANGE:format(43, 48), nil, nil, nil, 0, 255, 0)
+	infoFrame:SetDirectLine(2, "Blood of Ula'tek", L.INFOFRAME_BOSS_DISTANCE_RANGE:format(0, 5), nil, nil, nil, 255, 0, 0)
 	return true
 end
 
@@ -1404,6 +1413,8 @@ end
 function infoFrame:Show(modMaxLines, event, ...)
 	if event == "bossdistance" then
 		return showBossDistance(modMaxLines, ...)
+	elseif event == "testbossdistance" then
+		return showBossDistanceTest(modMaxLines)
 	end
 	if DBM.Options.DontShowInfoFrame and not (event or ""):find("test") then
 		return

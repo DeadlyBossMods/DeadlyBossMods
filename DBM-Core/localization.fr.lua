@@ -279,8 +279,8 @@ L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
 
 L.INFOFRAME_TITLE				= "Fenêtre d'info"
 L.INFOFRAME_BOSS_DISTANCE			= "Distance des boss"
-L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%d mètres - %d mètres"
-L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %d mètres"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %dm"
 L.INFOFRAME_SHOW_SELF			= "Toujours afficher votre puissance"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES 			= "Maximum de lignes"
 L.INFOFRAME_SETCOLS 			= "Maximum de colonnes"
