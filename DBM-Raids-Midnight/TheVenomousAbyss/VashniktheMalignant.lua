@@ -17,6 +17,8 @@ mod:RegisterCombat("combat")
 --TODO, maybe use https://www.wowhead.com/ptr/spell=1281910/plague-froth instead to pre warn Plague Froth?
 DBM:RegisterAltSpellName(1281907, DBM_COMMON_L.WAVES)--Plague Froth --> Waves
 DBM:RegisterAltSpellName(1282114, DBM_COMMON_L.DEBUFFS)--Adaptive Infection --> Debuffs
+DBM:RegisterAltSpellName(1280935, DBM_COMMON_L.TANKBUSTER)--Dripping Fangs --> Tank Buster
+--DBM:RegisterAltSpellName(1282509, DBM_COMMON_L.GROUPSOAK .. DBM_COMMON_L.CIRCLES)--Malignant Catalyst --> Soak Circles
 local warnAdaptiveInfection				= mod:NewCountAnnounce(1282114, 2)--Hardcode only
 --local warnToxicOutpouring				= mod:NewCountAnnounce(1280881, 2)--Hardcode only, likely not used
 local warnImbibeToxin					= mod:NewCountAnnounce(1283164, 2)--Hardcode only
