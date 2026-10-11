@@ -28,6 +28,8 @@ mod:RegisterSafeEventsInCombat(
 --TODO, better handle Cataclysmic Invocation and Empowered Ascension
 DBM:RegisterAltSpellName(1295854, DBM_COMMON_L.TANKDEBUFF)--Shredding Shards --> Tank Debuff
 DBM:RegisterAltSpellName(1286921, DBM_COMMON_L.INTERRUPT)--Icebound Flames --> Interrupt
+DBM:RegisterAltSpellName(1296092, DBM_COMMON_L.GROUPSOAKS)--Mighty Thud --> Group Soaks
+DBM:RegisterAltSpellName(1295935, DBM_COMMON_L.CIRCLES)--Frostfire Volley --> Circles
 --mod:AddCustomAlertSoundOption(1291390, true, 2)--Cataclysmic Invocation
 --mod:AddCustomAlertSoundOption(0, true, 2)--Relentless Escalation (no event ID?)
 --mod:AddCustomAlertSoundOption(0, true, 2)--Smashing Shovel (no event ID?)
