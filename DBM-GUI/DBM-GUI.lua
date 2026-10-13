@@ -1305,13 +1305,79 @@ do
 	local subTabId = 0
 
 	local currentSeasons = {}
+	local seasonCategory, seasonCategoryTab
+	local function createGenericTrashPanel(parent)
+		local panel = parent:CreateNewPanel("GenericTrash", "PARTY", false, L.GenericTrashTitle)
+		local area = panel:CreateArea(L.GenericTrashTitle)
+		area:CreateText(L.GenericTrashDescription, nil, true)
+		area:CreateCheckButton(L.GenericTrashEnabled, true, nil, "GenericTrashEnabled"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		local allDungeons = area:CreateCheckButton(L.GenericTrashAllDungeons, true, nil, "GenericTrashAllDungeons")
+		allDungeons:HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		local delves = area:CreateCheckButton(L.GenericTrashDelves, true, nil, "GenericTrashDelves")
+		delves:HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		area:CreateCheckButton(L.GenericTrashCast, true, nil, "GenericTrashCast"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		area:CreateCheckButton(L.GenericTrashLieutenant, true, nil, "GenericTrashLieutenant"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		area:CreateCheckButton(L.GenericTrashChannel, true, nil, "GenericTrashChannel"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		area:CreateCheckButton(L.GenericTrashShowTargets, true, nil, "GenericTrashShowTargets")
+		local filters = {
+			{ text = L.GenericTrashFilterTarget, value = "target" },
+			{ text = L.GenericTrashFilterSoundsTarget, value = "messagesAllSoundsTarget" },
+			{ text = L.GenericTrashFilterAll, value = "all" }
+		}
+		local customization = panel:CreateArea(L.GenericTrashThrottleType)
+		local function createDropdown(title, values, key, width, anchor)
+			local dropdown = customization:CreateDropdown(title, values, "DBM", key, function(value)
+				DBM.Options[key] = value
+			end, width)
+			dropdown.myheight = 60
+			if anchor then
+				dropdown:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -35)
+			else
+				dropdown:SetPoint("TOPLEFT", customization.frame, "TOPLEFT", 10, -30)
+			end
+			return dropdown
+		end
+		local standard = createDropdown(L.GenericTrashStandardFilter, filters, "GenericTrashStandardFilter", 350)
+		local lieutenant = createDropdown(L.GenericTrashLieutenantFilter, {filters[3], filters[2], filters[1]}, "GenericTrashLieutenantFilter", 350, standard)
+		local throttle = createDropdown(L.GenericTrashThrottleType, {
+			{ text = L.GenericTrashThrottleBoth, value = "both" },
+			{ text = L.GenericTrashThrottleSounds, value = "sounds" }
+		}, "GenericTrashThrottleType", 350, lieutenant)
+		local duration = createDropdown(L.GenericTrashThrottleDuration, {
+			{ text = "1", value = 1 }, { text = "2", value = 2 }, { text = "3", value = 3 }
+		}, "GenericTrashThrottleDuration", 120, throttle)
+		local reset = customization:CreateButton(L.Reset, 120, 20, function()
+			for key, value in pairs(DBM.DefaultOptions) do
+				if key:find("^GenericTrash") then
+					DBM.Options[key] = value
+				end
+			end
+			DBM:UpdateGenericTrashOptions()
+			for _, section in ipairs({area, customization}) do
+				for _, control in ipairs({section.frame:GetChildren()}) do
+					local onShow = control:GetScript("OnShow")
+					if onShow then onShow(control) end
+				end
+			end
+		end)
+		reset.myheight = 35
+		reset:SetPoint("TOPLEFT", duration, "BOTTOMLEFT", 0, -15)
+		panel.frame.isLoaded = true
+		return panel
+	end
+
 	function UpdateCurrentSeason()
 		if not C_ChallengeMode or not C_ChallengeMode.GetMapTable then
 			return
 		end
-		local seasonCategory = DBM_GUI:CreateNewPanel(L.TabCategory_CURRENT_SEASON, "PARTY")
-		local seasonCategoryTab = DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons[#DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons]
-		local hasAnyMod = false
+		if not seasonCategory then
+			seasonCategory = DBM_GUI:CreateNewPanel(L.TabCategory_CURRENT_SEASON, "PARTY")
+			seasonCategoryTab = DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons[#DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons]
+		end
+		if DBM:IsRetail() and DBM:IsPostMidnight() and not currentSeasons.GenericTrash then
+			currentSeasons.GenericTrash = createGenericTrashPanel(seasonCategory)
+		end
+		local hasAnyMod = currentSeasons.GenericTrash ~= nil
 		for _, challengeMap in ipairs(C_ChallengeMode.GetMapTable()) do
 			local challengeMode = challengeModeIds[challengeMap]
 			local id = challengeMode
@@ -1337,11 +1403,11 @@ do
 					currentSeasons[mapName] = seasonCategory:CreateNewPanel(mapName, "PARTY", false, nil, true, modId, true)
 					hasAnyMod = true
 				end
+			elseif currentSeasons[mapName] then
+				hasAnyMod = true
 			end
 		end
-		if not hasAnyMod then
-			seasonCategoryTab.hidden = true
-		end
+		seasonCategoryTab.hidden = not hasAnyMod
 	end
 
     local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT", "WARWITHIN", "MIDNIGHT"}

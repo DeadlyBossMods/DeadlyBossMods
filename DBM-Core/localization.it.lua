@@ -147,6 +147,7 @@ L.SEC_FMT	= "%s sec"
 
 L.GENERIC_WARNING_OTHERS	= "e un altro"
 L.GENERIC_WARNING_OTHERS2	= "e %d altri"
+L.GENERIC_TRASH_TARGET	= "%s: %s"
 L.GENERIC_WARNING_BERSERK	= "Furia tra %s %s"
 L.GENERIC_TIMER_BERSERK		= "Furia"
 L.OPTION_TIMER_BERSERK		= "Visualizza Temporizzatore $spell:26662"

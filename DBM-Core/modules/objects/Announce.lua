@@ -249,6 +249,7 @@ local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blan
 function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideDuration, customIcon)
 	if self.Options.DontShowBossAnnounces or self.Options.HideDBMWarnings then return end
 	local added = false
+	local hasCustomIcon = self:issecretvalue(customIcon) or (customIcon ~= nil and customIcon ~= false)
 	if prefix then
 		if self:issecretvalue(text) then
 			text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(L.DBM, text)
@@ -257,12 +258,19 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 		end
 	end
 	local formatedText
-	if C_StringUtil and customIcon then
-		formatedText = C_StringUtil.WrapString(text, self.Options.WarningIconLeft and customIcon and textureCode:format(customIcon) or "", self.Options.WarningIconRight and customIcon and textureCode:format(customIcon) or "")
+	if C_StringUtil and hasCustomIcon then
+		local left, right = "", ""
+		if self.Options.WarningIconLeft then
+			left = textureCode:format(customIcon)
+		end
+		if self.Options.WarningIconRight then
+			right = textureCode:format(customIcon)
+		end
+		formatedText = C_StringUtil.WrapString(text, left, right)
 	else
 		formatedText = text
 	end
-	local replaceLast = force or (frame.font1ticker and frame.font2ticker and frame.font3ticker and (font2Secret or font3Secret or customIcon))
+	local replaceLast = force or (frame.font1ticker and frame.font2ticker and frame.font3ticker and (font2Secret or font3Secret or hasCustomIcon))
 	if not frame.font1ticker then
 		font1elapsed = 0
 		font1.lastUpdate = GetTime()
@@ -292,7 +300,7 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 		frame.font3ticker = frame.font3ticker or C_Timer.NewTicker(0.05, function() fontHide3(overrideDuration) end)
 	end
 	if not added then
-		if not customIcon then
+		if not hasCustomIcon then
 			--Secret slots are replaced above instead of being read back for rotation.
 			local prevText1 = font2:GetText()
 			local prevText2 = font3:GetText()
@@ -300,15 +308,20 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 			font1elapsed = font2elapsed
 			font2:SetText(prevText2)
 			font2elapsed = font3elapsed
-			self:AddWarning(text, true, announceObject, useSound, prefix, overrideDuration, customIcon)
+			-- Prefix is already applied; let the recursive call own sound/chat output.
+			return self:AddWarning(text, true, announceObject, useSound, nil, overrideDuration, customIcon)
 		end
 	end
 	if useSound then
 		self:PlaySoundFile(self.Options.RaidWarningSound, nil, true)
 	end
 	--Only manually chat frame here for secrets api
-	if self.Options.ShowWarningsInChat and customIcon then
-		self:AddMsg(formatedText, nil, nil, nil, nil, 2)
+	if self.Options.ShowWarningsInChat and hasCustomIcon then
+		if self.Options.WarningIconChat then
+			self:AddMsg(formatedText, nil, nil, nil, nil, 2)
+		else
+			self:AddMsg(text, nil, nil, nil, nil, 2)
+		end
 	end
 end
 

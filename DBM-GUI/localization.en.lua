@@ -148,6 +148,26 @@ L.CustomOptions						= "This category contains custom options for an ability or 
 
 --
 
+-- Panel: Common Trash
+L.GenericTrashTitle					= "Common Trash"
+L.GenericTrashDescription			= "Generic trash warnings, limited to current-season keystones by default. Uses the normal warning sound and core profiles. Your target bypasses throttling."
+L.GenericTrashEnabled				= "Enable common trash warnings"
+L.GenericTrashAllDungeons			= "Also enable in all dungeons (all difficulties)"
+L.GenericTrashDelves					= "Also enable in delves"
+L.GenericTrashCast					= "Standard trash casts"
+L.GenericTrashLieutenant			= "Lieutenant trash casts"
+L.GenericTrashChannel				= "Trash channels"
+L.GenericTrashShowTargets			= "Show spell targets"
+L.GenericTrashStandardFilter		= "Standard mobs"
+L.GenericTrashLieutenantFilter		= "Lieutenants"
+L.GenericTrashFilterTarget			= "Your target only"
+L.GenericTrashFilterAll				= "All units: messages and sounds"
+L.GenericTrashFilterSoundsTarget	= "All units: messages; your target only: sounds"
+L.GenericTrashThrottleType			= "Throttle"
+L.GenericTrashThrottleBoth			= "Messages and sounds"
+L.GenericTrashThrottleSounds		= "Sounds only"
+L.GenericTrashThrottleDuration		= "Throttle duration (seconds)"
+
 -- Panel: Auto Logging
 L.Panel_AutoLogging					= "Auto Logging"
 

@@ -149,6 +149,7 @@ L.SEC_FMT							= "%s сек."
 
 L.GENERIC_WARNING_OTHERS			= "и ещё один"
 L.GENERIC_WARNING_OTHERS2			= "и %d других"
+L.GENERIC_TRASH_TARGET			= "%s: %s"
 L.GENERIC_WARNING_BERSERK			= "Берсерк через %s %s"
 L.GENERIC_TIMER_BERSERK				= "Берсерк"
 L.OPTION_TIMER_BERSERK				= "Отсчёт времени до $spell:26662"
