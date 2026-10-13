@@ -1374,7 +1374,7 @@ do
 			seasonCategory = DBM_GUI:CreateNewPanel(L.TabCategory_CURRENT_SEASON, "PARTY")
 			seasonCategoryTab = DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons[#DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons]
 		end
-		if DBM:IsRetail() and DBM:IsPostMidnight() and not currentSeasons.GenericTrash then
+		if DBM:IsRetail() and not currentSeasons.GenericTrash then
 			currentSeasons.GenericTrash = createGenericTrashPanel(seasonCategory)
 		end
 		local hasAnyMod = currentSeasons.GenericTrash ~= nil
