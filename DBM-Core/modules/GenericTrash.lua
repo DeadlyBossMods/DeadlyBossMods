@@ -181,7 +181,7 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	local now = GetTime()
 	local shouldAlert = unitIsTarget or now - (previous[category] or -math.huge) > duration
 	if not shouldAlert and DBM.Options.GenericTrashThrottleType ~= "sounds" then return end
-	if shouldAlert then
+	if shouldAlert and not unitIsTarget then
 		previous[category] = now
 	end
 	local useSound = shouldAlert and (unitIsTarget or filter ~= "messagesAllSoundsTarget")
