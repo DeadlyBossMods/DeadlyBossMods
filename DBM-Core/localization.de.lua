@@ -3,6 +3,7 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 L.AURA_FONT_RESET = "Ungültige Aura-Text-Schrifteinstellungen wurden erkannt und auf die Standardeinstellungen zurückgesetzt."
+L.MN_TEXT_TIMERS_HEADER = "Möchtest du Text-Timer verwenden?\n(Verwendet DBM-Balkendaten, auch wenn die Balken nicht angezeigt werden)"
 
 local dateTable = date("*t")
 if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
@@ -218,6 +219,32 @@ L.PIZZA_ERROR_USAGE				= "Benutzung: /dbm [broadcast] timer <Sekunden> <Text>. <
 
 L.MINIMAP_TOOLTIP_FOOTER		= "Shift gedrückt halten und Ziehen zum Bewegen"
 
+L.RANGE_TEST_READY			= "Gegenstandsreichweitentest (%s): Daten für %d Gegenstände werden angefordert. Behalte die Einheit ausgewählt und bleibe außerhalb des Kampfes."
+L.RANGE_TEST_INVALID		= "Der Gegenstandsreichweitentest benötigt eine lebende, sichtbare freundliche oder feindliche Einheit und muss außerhalb des Kampfes ausgeführt werden."
+L.RANGE_TEST_UNSUPPORTED	= "Gegenstandsreichweitentest: APIs für Gegenstandsreichweite oder Gegenstandscache sind auf diesem Client nicht verfügbar."
+L.RANGE_TEST_ABORTED		= "Gegenstandsreichweitentest abgebrochen: Die Einheit hat sich geändert, ist nicht mehr verfügbar oder ein Kampf/Ladevorgang hat begonnen."
+L.RANGE_TEST_PASS			= "%d Yards: Gegenstand %d (%s), IsItemInRange=%s%s"
+L.RANGE_TEST_FAIL			= "%d Yards: kein verwendbarer Gegenstand (nil trotz Cache: %d, Cache-Fehler/Zeitüberschreitungen: %d)."
+L.RANGE_TEST_INCOMPLETE	= "%d Yards: unvollständig (nil trotz Cache: %d, Cache-Fehler/Zeitüberschreitungen: %d)."
+L.RANGE_TEST_PARTIAL		= " (frühere Kandidaten konnten nicht zwischengespeichert werden)"
+L.RANGE_TEST_HEADER			= "DBM-Gegenstandsreichweitenergebnisse (%s). Kopiere diese Zeichenfolge; die Reichweiten enthalten +3 Yards."
+L.RANGE_TEST_NODATA			= "Es liegt kein abgeschlossener Gegenstandsreichweitentest vor. Führe zuerst DBM:TestRanges aus."
+L.RANGE_TEST_DONE			= "Gegenstandsreichweitentest abgeschlossen: %d bestanden, %d fehlgeschlagen, %d unvollständig. Verwende DBM:ShowRangeTestResults(), um die Ergebnisse zu kopieren."
+L.RANGE_TEST_SELF			= "Ein Test an dir selbst belegt nicht, dass diese Gegenstände bei einem anderen Spieler funktionieren."
+L.RANGE_DISTANCE_NOCANDIDATES	= "Führe zuerst DBM:TestRanges aus und warte auf verwendbare Gegenstände, bevor du ihre Entfernungen misst."
+L.RANGE_DISTANCE_INVALID		= "Die Kalibrierung benötigt eine andere lebende, sichtbare Einheit, außerhalb des Kampfes und auf uneingeschränkten Karten. Empfohlen: Gruppen-/Schlachtzugsspieler im Freien."
+L.RANGE_DISTANCE_UNAVAILABLE	= "Kalibrierung: Geprüfte, nicht geheime UnitDistanceSquared-Werte oder Gegenstandsreichweiten-APIs sind nicht verfügbar. Versuche einen Gruppen-/Schlachtzugsspieler im Freien."
+L.RANGE_DISTANCE_READY		= "%d Gegenstände werden gemessen (Toleranz +/-0,5 Yards). Der andere Spieler bleibt stehen; gehe langsam über die Grenzen hinaus und zurück. Stoppen/Export: DBM:StopRangeDistances(true)."
+L.RANGE_DISTANCE_REACQUIRE	= "Wähle bitte dein ursprüngliches Ziel erneut aus, um die Reichweitenkalibrierung fortzusetzen."
+L.RANGE_DISTANCE_ABORTED		= "Kalibrierung abgebrochen: Einheit, Kampf, Ladevorgang, Einschränkungen oder Entfernungsverfügbarkeit geändert. Teilmessungen behalten; keine bestandenen Ergebnisse."
+L.RANGE_DISTANCE_NODATA		= "Keine gestoppte Kalibrierung verfügbar. Führe DBM:TestRangeDistances und anschließend DBM:StopRangeDistances aus."
+L.RANGE_DISTANCE_HEADER		= "DBM-Entfernungskalibrierung. Kopiere diese Zeichenfolge; erwartete Reichweiten enthalten +3 Yards, mit +/-0,5 Yards Toleranz."
+L.RANGE_DISTANCE_ROW			= "%d Yards: Gegenstand %d (%s), %s; weitestes true=%s, nächstes false=%s; true/false=%d/%d, Abweichungen=%d, nicht verfügbar=%d%s"
+L.RANGE_DISTANCE_PASS		= "BESTANDEN"
+L.RANGE_DISTANCE_FAIL		= "FEHLGESCHLAGEN"
+L.RANGE_DISTANCE_INCOMPLETE	= "UNVOLLSTÄNDIG (Grenze unzureichend gemessen, widersprüchliche Werte, fehlende Messungen oder Abbruch)"
+L.RANGE_DISTANCE_DONE			= "Kalibrierung gestoppt: %d bestanden, %d fehlgeschlagen, %d unvollständig. Kopiere Ergebnisse mit DBM:ShowRangeDistanceResults()."
+
 L.RANGECHECK_HEADER			= "Abstandscheck (%dy)"
 L.RANGECHECK_HEADERT		= "Abstandscheck (%dy-%dP)"
 L.RANGECHECK_RHEADER		= "Radar-Abstandscheck (%dy)"
@@ -242,6 +269,9 @@ L.RANGECHECK_IN_RANGE_TEXT	= "%d in Reichweite"--Text based doesn't need (%dyd),
 L.RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"
 
 L.INFOFRAME_TITLE 			= "DBM-Infofenster"
+L.INFOFRAME_BOSS_DISTANCE			= "Bossentfernung"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %dm"
 L.INFOFRAME_SHOW_SELF		= "Eigene Stärke immer anzeigen" -- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES		= "Setze maximale Zeilenanzahl"
 L.INFOFRAME_SETCOLS			= "Setze maximale Spaltenanzahl"
@@ -391,7 +421,6 @@ L.AUTO_SPEC_WARN_TEXTS.blizztarget		= "%s (%%s) auf >%%s< "
 L.AUTO_SPEC_WARN_TEXTS.blizzyou			= "%s (%%s) auf dir"
 L.AUTO_SPEC_WARN_TEXTS.defensive		= "%s - Defensivfähigkeiten"
 L.AUTO_SPEC_WARN_TEXTS.taunt			= "%s auf >%%s< - jetzt spotten"
-L.AUTO_SPEC_WARN_TEXTS.tauntsecret	= "%s auf %%s - jetzt spotten"
 L.AUTO_SPEC_WARN_TEXTS.close			= "%s auf >%%s< in deiner Nähe"
 L.AUTO_SPEC_WARN_TEXTS.move				= "%s - geh weg"
 L.AUTO_SPEC_WARN_TEXTS.keepmove			= "%s - lauf weiter"
@@ -681,7 +710,6 @@ L.DBM_INSTALL_REMINDER_DL_CURSE	= "Kopieren um von Curse herunterzuladen"
 L.DBM_INSTALL_PACKAGE_VANILLA	= "Vanilla und Season of Discovery Paket"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "Dungeons, Delves und Events Paket"
 
-L.DBM_TAINTED_BY_TESTS			= "DBM wurde in der aktuellen Session im Test-Modus mit Time Warping benutzt. Es wird empfohlen das UI neu zu laden bevor DBM in einem echten Boss-Kampf benutzt wird. Normalerweise sollte das keine Probleme machen, aber wir können nichts garantieren!"
 
 -- Boss tooltip
 L.TOOLTIP_DBM					= L.DBM .. " Info"

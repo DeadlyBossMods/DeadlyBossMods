@@ -9,7 +9,6 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 
 local scheduler = private:GetModule("DBMScheduler")
 local tableUtils = private:GetPrototype("TableUtils")
-local test = private:GetPrototype("DBMTest")
 
 ---@type table<string, DBMMod>
 local modsById = setmetatable({}, {__mode = "v"})
@@ -107,10 +106,6 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 		},
 		mt
 	)
-	test:Trace(obj, "NewMod", name, modId)
-	if test.testRunning and test.Mocks and test.Mocks.SetModEnvironment then
-		test.Mocks:SetModEnvironment(2)
-	end
 
 	local encounterId = tonumber(name)
 	if encounterId and EJ_GetEncounterInfo and EJ_GetEncounterInfo(encounterId) then
@@ -278,7 +273,6 @@ function bossModPrototype:SetStage(stage)
 		DBM:FireEvent("DBM_SetStage", self, self.id, self.vb.phase, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, self.vb.stageTotality)--Mod, modId, Stage, Encounter Id (if available), total number of times SetStage has been called since combat start
 		--Note, some encounters have more than one encounter Id, for these encounters, the first ID from mod is always returned regardless of actual engage ID triggered fight
 		DBM:Debug("DBM_SetStage: " .. self.vb.phase .. "/" .. self.vb.stageTotality, nil, nil, nil, true)
-		test:Trace(self, "SetStage", self.vb.phase, self.vb.stageTotality)
 	end
 end
 
@@ -335,7 +329,6 @@ end
 
 ---@param ... DBMEvent|string
 function bossModPrototype:RegisterEventsInCombat(...)
-	test:Trace(self, "RegisterEvents", "InCombat", ...)
 	if self.inCombatOnlyEvents and select("#", ...) > 1 then
 		geterrorhandler()("combat events already set")
 	end
@@ -366,7 +359,6 @@ end
 
 ---@param ... DBMEvent|string
 function bossModPrototype:RegisterSafeEventsInCombat(...)
-	test:Trace(self, "RegisterEvents", "InCombat", ...)
 	if self.inCombatOnlySafeEvents and select("#", ...) > 1 then
 		geterrorhandler()("combat events already set")
 	end
@@ -462,6 +454,7 @@ bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
 bossModPrototype.GetUnitIdFromCID = DBM.GetUnitIdFromCID
 bossModPrototype.GetUnitIdFromGUID = DBM.GetUnitIdFromGUID
 bossModPrototype.CheckNearby = DBM.CheckNearby
+bossModPrototype.GetUnitMinMaxRange = DBM.GetUnitMinMaxRange
 bossModPrototype.GetGossipID = DBM.GetGossipID
 bossModPrototype.SelectMatchingGossip = DBM.SelectMatchingGossip
 bossModPrototype.SelectGossip = DBM.SelectGossip
@@ -514,15 +507,24 @@ do
 	local IsItemInRange = C_Item and C_Item.IsItemInRange or IsItemInRange
 
 	---Used when we want to alert or filter based on proximity to the casting boss
-	---@param cidOrGuid number|string
+	---@param cidOrGuid number|string? Creature ID, GUID, or direct unit token (such as "boss1").
 	---@param onlyBoss boolean? Used when you only need to check "boss" unitids
-	---@param itemId number? Used to define which item (range) is used. 32698 (48) is used if empty
-	---@param distance number? Used for tank distance fallback if item api is restricted (Deprecated)
+	---@param itemId number? Explicit item override; omit to select a client-appropriate item from RangeCheck.
+	---@param distance number? Desired range in yards when itemId is omitted; defaults to 48, rounds up to an item-backed range, and caps at the client's maximum.
 	---@param defaultReturn boolean? Fallback return if all checks fail (whether a failure returns true or false)
+	---@param restrictedCheck boolean? Requires a direct unit token and forbids CID/GUID lookups and tank-distance fallback.
 	---@return boolean
-	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
+	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn, restrictedCheck)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
-		if self:MidRestrictionsActive() then return true end--GUID checks not allowed in Midnight+ during combat
+		if restrictedCheck and (type(cidOrGuid) == "string" and UnitExists(cidOrGuid)) then
+			--IsItemInRange permits secret units. Pass the unit through without inspecting its identity.
+			--Direct tokens never enter the CID/GUID-based tank fallback, even outside restrictions.
+			itemId = itemId or DBM.RangeCheck:GetItemIdForRange(distance)
+			local inRange = IsItemInRange(itemId, cidOrGuid)
+			if inRange == nil then return (defaultReturn == nil) or defaultReturn end
+			return inRange
+		end
+		if self:MidRestrictionsActive() then return true end--CID/GUID checks and tank fallback are not allowed during restrictions.
 		cidOrGuid = cidOrGuid or self.creatureId
 		local uId
 		if type(cidOrGuid) == "number" then--CID passed
@@ -532,8 +534,7 @@ do
 		end
 		if uId then
 			if not UnitIsFriend("player", uId) then--API only allowed on hostile unit
-				itemId = itemId or 32698
-				--/dump IsItemInRange(32698, "target")
+				itemId = itemId or DBM.RangeCheck:GetItemIdForRange(distance)
 				local inRange = IsItemInRange(itemId, uId)
 				if inRange ~= nil then--IsItemInRange was a success if it returned true or false, if it failed it returns nil
 					return inRange
@@ -666,8 +667,7 @@ do
 		end
 
 		local unitID
-		-- Always assume we are currently targeting the unit in question in tests
-		if UnitGUID("target") == sourceGUID or test.testRunning then
+		if UnitGUID("target") == sourceGUID then
 			unitID = "target"
 		elseif not private.isClassic and (UnitGUID("focus") == sourceGUID) then
 			unitID = "focus"
@@ -1395,6 +1395,38 @@ do
 		return timer
 	end
 
+	---Handle generic terminal bookkeeping for ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED.
+	---
+	---Returns the current state without changing anything for active or paused events.
+	---For terminal state 2 (finished), releases any batch/active-event tracking and commits
+	---the count reservation. For terminal state 3 (canceled), releases the same tracking and
+	---cancels the count reservation without advancing its counter, unless state3Completes is
+	---true for a module-verified event that completes on state 3.
+	---
+	---Modules retain ownership of warnings, derived-timer cleanup, stage transitions, and any
+	---special ordering. Use the individual helpers instead when the return value of
+	---TLBatchUntrack is needed or cleanup must happen between these operations.
+	---@param eventID number? Encounter timeline runtime event ID.
+	---@param state3Completes boolean? True only when module-local evidence verifies this event's state 3 is completion.
+	---@return number? eventState Current timeline state, or nil when unavailable.
+	---@return string? eventType Finished, state-3-completed, or canceled event type from the count reservation.
+	---@return number? eventCount Finished or state-3-completed event's reserved count; nil for canceled events.
+	function bossModPrototype:TLHandleStateChanged(eventID, state3Completes)
+		if not eventID then return nil, nil, nil end
+		local eventState = C_EncounterTimeline.GetEventState(eventID)
+		if not eventState then return nil, nil, nil end
+		if eventState < 2 then return eventState, nil, nil end
+		self:TLBatchUntrack(eventID)
+		self:TLReleaseActiveEvent(eventID)
+		if eventState == 2 or (eventState == 3 and state3Completes) then
+			local eventType, eventCount = self:TLCountFinish(eventID)
+			return eventState, eventType, eventCount
+		elseif eventState == 3 then
+			return eventState, self:TLCountCancel(eventID), nil
+		end
+		return eventState, nil, nil
+	end
+
 	---Ignore initial timeline batch noise until a known unlock timer appears.
 	---
 	---Purpose:
@@ -1473,13 +1505,11 @@ do
 			soundInfo.soundFileName = media
 		end
 		--In patch 12.1.5, Blizzard added a new optional field to the soundInfo table called "throttleSeconds"
-		--that allows you to limit how often the sound can be played. Default is 3
-		local auraSoundId
+		--that allows you to limit how often the sound can be played. DBM defaults to 3 seconds.
 		if DBM:GetTOC() >= 120105 then
-			auraSoundId = AddAuraSound(soundType or 0, soundInfo, throttleSeconds or 3)
-		else
-			auraSoundId = AddAuraSound(soundType or 0, soundInfo)
+			soundInfo.throttleSeconds = throttleSeconds or 3
 		end
+		local auraSoundId = AddAuraSound(soundType or 0, soundInfo)
 		self.paSounds[optionId][#self.paSounds[optionId] + 1] = auraSoundId
 	end
 
@@ -1815,7 +1845,6 @@ function bossModPrototype:ScheduleMethod(t, method, ...)
 		error(("Method %s does not exist"):format(tostring(method)), 2)
 	end
 	local id = self:Schedule(t, self[method], self, ...)
-	test:Trace(self, "SetScheduleMethodName", id, self, method, ...)
 	return id
 end
 bossModPrototype.ScheduleEvent = bossModPrototype.ScheduleMethod
@@ -1863,11 +1892,4 @@ end
 function bossModPrototype:GetLocalizedStrings()
 	self.localization.miscStrings.name = self.localization.general.name
 	return self.localization.miscStrings
-end
-
-
--- Test support
-
-function bossModPrototype:TestTrace(...)
-	test:Trace(self, "ModTrace", ...)
 end

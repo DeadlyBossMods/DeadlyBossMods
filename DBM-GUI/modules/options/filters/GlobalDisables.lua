@@ -34,7 +34,7 @@ spamTimers:CreateCheckButton(L.SpamBlockNoShowBossTimers, true, nil, "DontShowBo
 spamTimers:CreateCheckButton(L.SpamBlockNoShowEventTimers, true, nil, "DontShowEventTimers")
 spamTimers:CreateCheckButton(L.SpamBlockNoShowUTimers, true, nil, "DontShowUserTimers")
 spamTimers:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountdowns")
-if DBM:IsPostMidnight() then
+if DBM:IsRetail() then
 	local NoTLButton = spamTimers:CreateCheckButton(L.SpamBlockNoTLColors, true, nil, "DontSetTimelineColors")
 	NoTLButton:SetScript("OnClick", function()
 		DBM.Options.DontSetTimelineColors = not DBM.Options.DontSetTimelineColors
@@ -43,16 +43,16 @@ if DBM:IsPostMidnight() then
 			local timerStartRed, timerStartGreen, timerStartBlue = DBT:GetColorForType(0)
 			local timerEndRed, timerEndGreen, timerEndBlue = DBT:GetColorForType(0, true)
 			--https://wago.tools/db2/EncounterEvent?page=25
-			for i = 1, 850 do
+			for i = 1, 1000 do
 				DBM:EE_SetEventColor(i, timerStartRed, timerStartGreen, timerStartBlue, timerEndRed, timerEndGreen, timerEndBlue)
 			end
 		else
-			for i = 1, 850 do
+			for i = 1, 1000 do
 				DBM:EE_UnsetEventColor(i)
 			end
 		end
 	end)
-else
+elseif not DBM:IsForever() then
 	spamTimers:CreateCheckButton(L.SpamBlockNoShowTrashTimers, true, nil, "DontShowTrashTimers")
 
 	local spamNameplates = spamPanel:CreateArea(L.Area_SpamFilter_Nameplates)

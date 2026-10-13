@@ -234,6 +234,32 @@ L.PIZZA_ERROR_USAGE					= "Использование: /dbm [broadcast] timer <�
 --L.MINIMAP_TOOLTIP_HEADER (Same as English locales)
 L.MINIMAP_TOOLTIP_FOOTER			= "[Shift+ЛКМ] - переместить значок " .. L.DBM
 
+L.RANGE_TEST_READY					= "Тест дальности предметов (%s): запрашиваются данные для %d предметов. Держите выбранную цель и оставайтесь вне боя."
+L.RANGE_TEST_INVALID				= "Для теста дальности предметов нужна живая и видимая дружественная или враждебная цель. Тест должен выполняться вне боя."
+L.RANGE_TEST_UNSUPPORTED			= "Тест дальности предметов: API дальности или кэша предметов недоступны в этом клиенте."
+L.RANGE_TEST_ABORTED				= "Тест дальности предметов отменён: цель изменилась, стала недоступна или начался бой/загрузка."
+L.RANGE_TEST_PASS					= "%d ярдов: предмет %d (%s), IsItemInRange=%s%s"
+L.RANGE_TEST_FAIL					= "%d ярдов: нет подходящего предмета (nil при наличии данных в кэше: %d, ошибки/тайм-ауты кэширования: %d)."
+L.RANGE_TEST_INCOMPLETE				= "%d ярдов: не завершено (nil при наличии данных в кэше: %d, ошибки/тайм-ауты кэширования: %d)."
+L.RANGE_TEST_PARTIAL				= " (предыдущие кандидаты не удалось кэшировать)"
+L.RANGE_TEST_HEADER					= "Результаты дальности предметов DBM (%s). Скопируйте эту строку; диапазоны включают +3 ярда."
+L.RANGE_TEST_NODATA					= "Нет завершённого теста дальности предметов. Сначала выполните DBM:TestRanges."
+L.RANGE_TEST_DONE					= "Тест дальности предметов завершён: успешно - %d, неудачно - %d, не завершено - %d. Используйте DBM:ShowRangeTestResults() для копирования результатов."
+L.RANGE_TEST_SELF					= "Тест на себе не доказывает, что эти предметы работают на другом игроке."
+L.RANGE_DISTANCE_NOCANDIDATES		= "Сначала запустите DBM:TestRanges и дождитесь подходящих предметов, затем измеряйте расстояния."
+L.RANGE_DISTANCE_INVALID			= "Калибровка требует другой живой и видимой цели, вне боя и на карте без ограничений. Рекомендуется игрок группы/рейда под открытым небом."
+L.RANGE_DISTANCE_UNAVAILABLE		= "Калибровка: проверенные несекретные данные UnitDistanceSquared или API дальности предметов недоступны. Попробуйте игрока группы/рейда под открытым небом."
+L.RANGE_DISTANCE_READY				= "Измерение %d предметов (допуск +/-0,5 ярда). Другой игрок должен стоять; медленно отходите и возвращайтесь через границы дальности. Остановка/экспорт: DBM:StopRangeDistances(true)."
+L.RANGE_DISTANCE_REACQUIRE			= "Снова выберите исходную цель, чтобы продолжить калибровку дальности."
+L.RANGE_DISTANCE_ABORTED			= "Калибровка прервана: изменились цель, бой, загрузка, ограничения или доступность расстояний. Частичные данные сохранены; успешных результатов нет."
+L.RANGE_DISTANCE_NODATA				= "Нет остановленной калибровки. Запустите DBM:TestRangeDistances, затем DBM:StopRangeDistances."
+L.RANGE_DISTANCE_HEADER				= "Калибровка расстояний DBM. Скопируйте строку; ожидаемые диапазоны включают +3 ярда, допуск +/-0,5 ярда."
+L.RANGE_DISTANCE_ROW				= "%d ярдов: предмет %d (%s), %s; самое дальнее true=%s, ближайшее false=%s; true/false=%d/%d, несовпадения=%d, недоступно=%d%s"
+L.RANGE_DISTANCE_PASS				= "УСПЕХ"
+L.RANGE_DISTANCE_FAIL				= "ОШИБКА"
+L.RANGE_DISTANCE_INCOMPLETE			= "НЕ ЗАВЕРШЕНО (граница недостаточно измерена, противоречивые данные, недоступные измерения или прерванный тест)"
+L.RANGE_DISTANCE_DONE				= "Калибровка остановлена: успешно - %d, ошибки - %d, не завершено - %d. Используйте DBM:ShowRangeDistanceResults() для копирования результатов."
+
 L.RANGECHECK_HEADER					= "Проверка дистанции (%dм)"
 L.RANGECHECK_HEADERT				= "Проверка дистанции (%dм-%dP)"
 L.RANGECHECK_RHEADER				= "R-Проверка дистанции (%dм)"
@@ -258,6 +284,9 @@ L.RANGECHECK_IN_RANGE_TEXT			= "%d в радиусе"
 L.RANGERADAR_IN_RANGE_TEXTONE		= "%s (%0.1fм)"
 
 L.INFOFRAME_TITLE					= "Инфофрейм DBM"
+L.INFOFRAME_BOSS_DISTANCE			= "Расстояние до боссов"
+L.INFOFRAME_BOSS_DISTANCE_RANGE		= "%dм - %dм"
+L.INFOFRAME_BOSS_DISTANCE_OVER		= "> %dм"
 L.INFOFRAME_SHOW_SELF				= "Всегда показывать свою энергию"
 L.INFOFRAME_SETLINES				= "Максимальное число строк"
 L.INFOFRAME_SETCOLS					= "Максимальное число столбцов"
@@ -273,7 +302,7 @@ L.INFOFRAME_ALT						= "Альтернативная:"--Альтернативн
 L.LFG_INVITE						= "Приглашение в подземелье"
 
 --Common slash commands
-L.SLASHCMD_HELP							= {--AI translated (it's fine)
+L.SLASHCMD_HELP							= {
 	"Доступные команды:",
 	"-----------------",
 	"/dbm unlock: Показывает перемещаемый таймер в строке состояния (псевдоним: move).",
@@ -287,12 +316,23 @@ L.SLASHCMD_HELP							= {--AI translated (it's fine)
 	"/dbm brez: Отображает фрейм таймера боевого воскрешения для позиционирования.",--AI translated (it's fine)
 	"/dbm help2: Показывает дополнительные команды"
 }
+L.SLASHCMD_HELP_CLASSIC							= {
+	"Available slash commands:",
+	"-----------------",
+	"/dbm unlock: Показывает перемещаемый таймер в строке состояния (псевдоним: move).",
+	"/dbm pull <sec>: Отправляет таймер атаки на <sec> секунд в рейд (требуются права лидера. псевдоним: pull).",
+	"/dbm break <min>: Отправляет таймер перерыва на <min> минут в рейд (требуются права лидера. псевдоним: break).",
+	"/dbm timer: Запускает пользовательский таймер " .. L.DBM .. ", подробности в разделе '/dbm timer'.",
+	"/dbm lag: Выполняет проверку задержки для всего рейда.",
+	"/dbm durability: Выполняет проверку прочности для всего рейда.",
+	"/dbm help2: Показывает дополнительные команды"
+}
 --Менее используемые команды
-L.SLASHCMD_HELP2						= {--AI translated (it's fine)
+L.SLASHCMD_HELP2						= {
 	"Доступные команды:",
 	"-----------------",
 	"/dbm version: Выполняет проверку версии босс-мода (псевдоним: ver).",
-	"/dbm version2: Выполняет проверку версии босс-мода, которая также шепчет игрокам, у которых устаревшая версия (псевдоним: ver2).",
+	"/dbm version2: Выполняет проверку версии босс-мода; шепчет игрокам, у которых устаревшая версия (псевдоним: ver2).",
 	"/range <number> или /distance <number>: Показывает фрейм диапазона. /rrange или /rdistance для изменения цветов.",
 	"/hudar <number>: Показывает HUD для определения расстояния.",
 	"/dbm arrow: Показывает стрелку " .. L.DBM .. ", подробности в разделе '/dbm arrow help'.",
@@ -413,7 +453,6 @@ L.AUTO_SPEC_WARN_TEXTS.blizzyou			= "%s (%%s) на Вас"
 L.AUTO_SPEC_WARN_TEXTS.link				= "%s связан с >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.defensive		= "%s - защититесь"
 L.AUTO_SPEC_WARN_TEXTS.taunt			= "%s на >%%s< - затаунти"
-L.AUTO_SPEC_WARN_TEXTS.tauntsecret		= "%s на %%s - затаунти"
 L.AUTO_SPEC_WARN_TEXTS.close 			= "%s на >%%s< около Вас"
 L.AUTO_SPEC_WARN_TEXTS.move 			= "%s - отбегите"
 L.AUTO_SPEC_WARN_TEXTS.keepmove			= "%s - продолжайте двигаться"
@@ -747,7 +786,6 @@ L.DBM_INSTALL_PACKAGE_MOP		= "Модуль 'Пандария'"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "Модуль 'Подземелья, вылазки, испытания и события'"
 
 -- Tests
-L.DBM_TAINTED_BY_TESTS			= "DBM использовался в тестовом режиме с временной деформацией в текущем сеансе, рекомендуется перезагрузить интерфейс перед использованием DBM в реальном бою с боссом. Все должно работать так, как и ожидалось, но никаких гарантий!"
 
 -- Boss tooltip
 L.TOOLTIP_DBM					= L.DBM .. " информация"
@@ -811,3 +849,4 @@ L.MN_DBM_TIMELINE		= "Полосы DBM"
 L.MN_WARNIGS_HEADER		= "Вы хотите использовать боевые предупреждения Blizzard или предупреждения DBM?"
 L.MN_BLIZZARD_WARNINGS	= "Предупреждения Blizzard"
 L.MN_DBM_WARNINGS		= "Предупреждения DBM"
+L.MN_TEXT_TIMERS_HEADER	= "Хотите использовать текстовые таймеры?\n(Используются данные полос DBM, даже если полосы не отображаются)"

@@ -1,5 +1,5 @@
 local L = DBM_GUI_L
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isRetail = DBM:IsRetail()
 
 local autoLogPanel	= DBM_GUI.Cat_General:CreateNewPanel(L.Panel_AutoLogging, "option")
 

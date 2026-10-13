@@ -7,8 +7,6 @@ local DBM = DBM
 
 local L = DBM_CORE_L
 
-local test = private:GetPrototype("DBMTest")
-
 local tinsert = table.insert
 
 do
@@ -107,6 +105,27 @@ SlashCmdList["DEADLYBOSSMODSRPULL"] = function()
 end
 
 local trackedHudMarkers = {}
+
+local function parseTimerSeconds(time)
+	local min, sec = string.split(":", time)
+	min = tonumber(min or "") or 0
+	sec = tonumber(sec or "")
+	if min and not sec then
+		sec = min
+		min = 0
+	end
+	return min * 60 + sec
+end
+
+local function hasBroadcastPermission()
+	local difficultyIndex = DBM:GetCurrentDifficulty()
+	if DBM:GetRaidRank() == 0 or difficultyIndex == 7 or difficultyIndex == 17 or IsTrialAccount() then
+		DBM:AddMsg(L.ERROR_NO_PERMISSION)
+		return false
+	end
+	return true
+end
+
 SLASH_DEADLYBOSSMODS1 = "/dbm"
 SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	if not DBM:IsEnabled() then
@@ -127,8 +146,14 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			DBM:AddMsg(v)
 		end
 	elseif cmd == "help" then
-		for _, v in ipairs(L.SLASHCMD_HELP) do
-			DBM:AddMsg(v)
+		if private.isRetail then
+			for _, v in ipairs(L.SLASHCMD_HELP) do
+				DBM:AddMsg(v)
+			end
+		else
+			for _, v in ipairs(L.SLASHCMD_HELP_CLASSIC) do
+				DBM:AddMsg(v)
+			end
 		end
 	elseif cmd:sub(1, 13) == "timer endloop" then
 		DBM:CreatePizzaTimer(0, "", nil, nil, nil, true)
@@ -140,68 +165,30 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			end
 			return
 		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		DBM:CreatePizzaTimer(min * 60 + sec, text)
+		DBM:CreatePizzaTimer(parseTimerSeconds(time), text)
 	elseif cmd:sub(1, 6) == "ltimer" then
 		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
 		if not time and not text then
 			DBM:AddMsg(L.PIZZA_ERROR_USAGE)
 			return
 		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		DBM:CreatePizzaTimer(min * 60 + sec, text, nil, nil, true)
+		DBM:CreatePizzaTimer(parseTimerSeconds(time), text, nil, nil, true)
 	elseif cmd:sub(1, 15) == "broadcast timer" then--Standard Timer
-		local difficultyIndex = DBM:GetCurrentDifficulty()
-		local permission = true
-		if DBM:GetRaidRank() == 0 or difficultyIndex == 7 or difficultyIndex == 17 or IsTrialAccount() then
-			DBM:AddMsg(L.ERROR_NO_PERMISSION)
-			permission = false
-		end
+		local permission = hasBroadcastPermission()
 		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if not time and not text then
 			DBM:AddMsg(L.PIZZA_ERROR_USAGE)
 			return
 		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		DBM:CreatePizzaTimer(min * 60 + sec, text, permission)
+		DBM:CreatePizzaTimer(parseTimerSeconds(time), text, permission)
 	elseif cmd:sub(1, 16) == "broadcast ltimer" then
-		local difficultyIndex = DBM:GetCurrentDifficulty()
-		local permission = true
-		if DBM:GetRaidRank() == 0 or difficultyIndex == 7 or difficultyIndex == 17 or IsTrialAccount() then
-			DBM:AddMsg(L.ERROR_NO_PERMISSION)
-			permission = false
-		end
+		local permission = hasBroadcastPermission()
 		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if not time and not text then
 			DBM:AddMsg(L.PIZZA_ERROR_USAGE)
 			return
 		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		DBM:CreatePizzaTimer(min * 60 + sec, text, permission, nil, true)
+		DBM:CreatePizzaTimer(parseTimerSeconds(time), text, permission, nil, true)
 	elseif cmd:sub(0,5) == "break" then
 		DBM:CreateBreakTimer(tonumber(cmd:sub(6)) or 5)
 	elseif cmd:sub(1, 4) == "pull" then
@@ -261,9 +248,9 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 				DBM:AddMsg(L.HUD_INVALID_SELF)
 				return
 			end
-			local targetName = UnitName(uId)
+			local targetName = private.isForever and GetUnitName(uId) or UnitName(uId)
 			if hudType == "arrow" then
-				local playerName = UnitName("player")
+				local playerName = private.playerName
 				local _, targetClass = UnitClass(uId)
 				local color2 = RAID_CLASS_COLORS[targetClass]
 				local m1 = DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "party", playerName, 0.1, hudDuration, 0, 1, 0, 1, nil):Appear()
@@ -366,13 +353,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM.Options.DebugMode = not DBM.Options.DebugMode
 		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
 		private:GetModule("DevToolsModule"):OnDebugToggle()
-	elseif cmd:sub(1, 4) == "test" then
-		local args = msg:sub(5):trim()
-		if args == "" then
-			DBM:DemoMode()
-		else
-			test:HandleCommand(string.split(" ", args))
-		end
+	elseif cmd == "test" then
+		DBM:DemoMode()
 	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 		local x, y, _, map = UnitPosition("player")
 		local mapID = C_Map.GetBestMapForUnit("player") or -1

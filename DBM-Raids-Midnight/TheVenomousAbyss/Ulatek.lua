@@ -2,12 +2,11 @@ local mod	= DBM:NewMod(2895, "DBM-Raids-Midnight", 1, 1320)
 --local L		= mod:GetLocalizedStrings()--Nothing to localize for blank mods
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(257758, 268956)--Ula'tek has two IDs?
+mod:SetCreatureID(257758)
 mod:SetEncounterID(3492)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
 mod:SetZone(3004)
-mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
@@ -15,11 +14,18 @@ mod:RegisterCombat("combat")
 --TODO, cull unused timers and warnings, like Fury Unleashed?
 --TODO, which Gore Rattle id does TL use, does it use both? https://www.wowhead.com/spell=1304527/gore-rattle
 --TODO, same with https://www.wowhead.com/spell=1311037/mothers-wrath and https://www.wowhead.com/spell=1287265/spectral-coils as gore rattle
---DBM:RegisterAltSpellName(1257717, DBM_COMMON_L.ADDS)--Alluring Bubble --> Adds
---local warnSerpentsBite					= mod:NewCountAnnounce(1295905, 2)--Hardcode only
+DBM:RegisterAltSpellName(1298367, DBM_COMMON_L.TANKBUSTER)--Mother's Wrath --> Tank Buster
+DBM:RegisterAltSpellName(1300530, DBM_COMMON_L.GROUPSOAKS)--Spectral Coils --> Group Soaks
+DBM:RegisterAltSpellName(1298559, 106239)--Gore Rattle --> Summon Tail
+DBM:RegisterAltSpellName(1300751, 179450)--Call of the Serpent --> Hatch Eggs
+DBM:RegisterAltSpellName(1301510, DBM_COMMON_L.PLATFORM_BREAK)--Circling Prey --> Platform Break
+DBM:RegisterAltSpellName(1296301, DBM_COMMON_L.BIG_CIRCLE)--Mephitic Thrash --> Big Circle
+DBM:RegisterAltSpellName(1295905, DBM_COMMON_L.GROUPSOAKS)--Serpent's Bite --> Group Soaks
+local warnSerpentsBite					= mod:NewCountAnnounce(1295905, 2)--Hardcode only
+local warnSubmerge						= mod:NewCountAnnounce(1292999, 2)
 
 local specWarnMothersWrath				= mod:NewSpecialWarningDefensive(1298367, nil, nil, nil, 1, 2, nil, nil, "defensive")
-local specWarnRageoftheShackled			= mod:NewSpecialWarningCount(1286860, nil, nil, nil, 2, 2, nil, nil, "aesoon")
+local specWarnRageoftheShackled			= mod:NewSpecialWarningCount(1286860, nil, nil, nil, 2, 16, nil, nil, "dpshard")
 local specWarnCausticWaves				= mod:NewSpecialWarningCount(1292188, nil, nil, nil, 2, 2, nil, nil, "watchwave")
 local specWarnFuryUnleashed				= mod:NewSpecialWarningCount(1286905, nil, nil, nil, 3, 2, nil, nil, "stilldanger")--Stage 3 berserk?
 local specWarnGoreRattle				= mod:NewSpecialWarningSwitchCount(1298559, nil, nil, nil, 1, 2, nil, nil, "bigmob")
@@ -29,7 +35,6 @@ local specWarnCalloftheSerpent			= mod:NewSpecialWarningCount(1300751, nil, nil,
 local specWarnCirclingPrey				= mod:NewSpecialWarningRunCount(1301510, nil, nil, nil, 2, 2, nil, nil, "justrun")
 local specWarnVirulentSpit				= mod:NewSpecialWarningDodgeCount(1302982, nil, nil, nil, 2, 2, nil, nil, "watchstep")
 local specWarnMephiticThrash			= mod:NewSpecialWarningDodgeCount(1296301, nil, nil, nil, 2, 2, nil, nil, "aesoon")--Used by Gore Rattle
-local specWarnSubmerge					= mod:NewSpecialWarningCount(1292999, nil, nil, nil, 2, 2, nil, nil, "phasechange")
 
 local timerMothersWrathCD				= mod:NewCDCountTimer(20.5, 1298367, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
 local timerRageoftheShackledCD			= mod:NewCDCountTimer(20.5, 1286860, nil, nil, nil, 2)
@@ -78,6 +83,8 @@ local lfrStage3FiftyCount = 0--LFR stage 3: Circling Prey then Submerge share th
 local heroicStage1FiftyTwoCount = 0--Heroic: Mephitic Thrash then Caustic Waves share the exact 52s opening slot
 local heroicStage3SixtyCount = 0--Heroic stage 3: Call of the Serpent then Submerge share the exact 60s slot
 local stage2Pending = false--Opening Rage completion arms the boss1 targetability-loss transition into stage 2
+local mephiticThrashScheduledEvents = {}
+local spectralCoilsScheduledEvents = {}
 local stage3ScheduledEvents = {}
 local lfrStage3Batch = {}
 local lfrStage3BatchScheduled = false
@@ -86,6 +93,8 @@ local heroicStage3BatchScheduled = false
 local resetLFRStage3Batch
 local resetHeroicStage3Batch
 local resetStage3ScheduledEvents
+local resetMephiticThrashScheduledEvents
+local resetSpectralCoilsScheduledEvents
 local lfrStage3BatchTimers = {
 	[5] = true,
 	[20] = true,
@@ -141,7 +150,7 @@ local function setFallback(self, dontSetAlerts)
 		if self:IsTank() then
 			specWarnMothersWrath:SetAlert({699,952}, "defensive", 2, 2)
 		end
-		specWarnRageoftheShackled:SetAlert(700, "aesoon", 2, 2)
+		specWarnRageoftheShackled:SetAlert(700, "dpshard", 16, 2)
 		specWarnCausticWaves:SetAlert(719, "watchwave", 2, 2)
 		specWarnFuryUnleashed:SetAlert({746,810}, "stilldanger", 3, 2, 0)
 		specWarnGoreRattle:SetAlert({799,847}, "bigmob", 2, 2)
@@ -151,7 +160,6 @@ local function setFallback(self, dontSetAlerts)
 		specWarnCirclingPrey:SetAlert(826, "justrun", 2, 2)
 		specWarnVirulentSpit:SetAlert(830, "watchstep", 2, 2)
 		specWarnMephiticThrash:SetAlert(912, "aesoon", 2, 2)
-		specWarnSubmerge:SetAlert(949, "phasechange", 2, 2)
 	end
 	--If user has DBM bars enabled, we only want to register colors to the blizz api so that the blizz bars are also colorized.
 	--If user has bars disabled, or we are in a bad state, onlyColor is false and we register countdowns as well.
@@ -183,6 +191,8 @@ function mod:OnLimitedCombatStart()
 	heroicStage1FiftyTwoCount = 0
 	heroicStage3SixtyCount = 0
 	stage2Pending = false
+	resetMephiticThrashScheduledEvents(self)
+	resetSpectralCoilsScheduledEvents(self)
 	resetStage3ScheduledEvents(self)
 	resetLFRStage3Batch(self)
 	resetHeroicStage3Batch(self)
@@ -225,6 +235,8 @@ function mod:OnCombatEnd()
 	heroicStage1FiftyTwoCount = 0
 	heroicStage3SixtyCount = 0
 	stage2Pending = false
+	resetMephiticThrashScheduledEvents(self)
+	resetSpectralCoilsScheduledEvents(self)
 	resetStage3ScheduledEvents(self)
 	resetLFRStage3Batch(self)
 	resetHeroicStage3Batch(self)
@@ -233,6 +245,8 @@ function mod:OnCombatEnd()
 end
 
 do
+	---comment
+	---@param self DBMMod
 	local function finishTimelineEvent(self, eventID)
 		local eventType, eventCount = self:TLCountFinish(eventID)
 		if not eventType then return end
@@ -252,7 +266,7 @@ do
 				stage2Pending = true
 			end
 			specWarnRageoftheShackled:Show(eventCount)
-			specWarnRageoftheShackled:Play("aesoon")
+			specWarnRageoftheShackled:Play("dpshard")
 		elseif eventType == "causticWaves" then
 			specWarnCausticWaves:Show(eventCount)
 			specWarnCausticWaves:Play("watchwave")
@@ -278,8 +292,9 @@ do
 			specWarnCirclingPrey:Show(eventCount)
 			specWarnCirclingPrey:Play("justrun")
 		elseif eventType == "submerge" then
-			specWarnSubmerge:Show(eventCount)
-			specWarnSubmerge:Play("phasechange")
+			warnSubmerge:Show(eventCount)
+		elseif eventType == "serpentsBite" then
+			warnSerpentsBite:Show(eventCount)
 		end
 	end
 
@@ -288,9 +303,43 @@ do
 		finishTimelineEvent(self, eventID)
 	end
 
+	local function finishScheduledMephiticThrash(self, eventID)
+		mephiticThrashScheduledEvents[eventID] = nil
+		finishTimelineEvent(self, eventID)
+	end
+
+	local function finishScheduledSpectralCoils(self, eventID)
+		spectralCoilsScheduledEvents[eventID] = nil
+		finishTimelineEvent(self, eventID)
+	end
+
 	resetStage3ScheduledEvents = function(self)
 		self:Unschedule(finishScheduledStage3Event)
 		stage3ScheduledEvents = {}
+	end
+
+	resetMephiticThrashScheduledEvents = function(self)
+		self:Unschedule(finishScheduledMephiticThrash)
+		mephiticThrashScheduledEvents = {}
+	end
+
+	resetSpectralCoilsScheduledEvents = function(self)
+		self:Unschedule(finishScheduledSpectralCoils)
+		spectralCoilsScheduledEvents = {}
+	end
+
+	local function startMephiticThrashTimer(self, timerExact, eventID)
+		-- Mephitic Thrash completes with state 3, so schedule its warning at the raw timeline finish.
+		timerMephiticThrashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mephiticThrash", "mephiticThrashCount"))
+		mephiticThrashScheduledEvents[eventID] = true
+		self:Schedule(timerExact, finishScheduledMephiticThrash, self, eventID)
+	end
+
+	local function startSpectralCoilsTimer(self, timerExact, eventID)
+		-- Spectral Coils completes with state 3, so schedule its warning at the raw timeline finish.
+		timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
+		spectralCoilsScheduledEvents[eventID] = true
+		self:Schedule(timerExact, finishScheduledSpectralCoils, self, eventID)
 	end
 
 	local function hardcodeFailed(self)
@@ -508,7 +557,7 @@ do
 				self:TLCountStart(eventID, "goreRattleInitial")
 				timerGoreRattleCD:TLStart(timerExact, eventID, 1)
 			elseif timer == 40 then
-				timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
+				startSpectralCoilsTimer(self, timerExact, eventID)
 			elseif timer == 7 or timer == 68 then
 				timerMothersWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mothersWrath", "mothersWrathCount"))
 			elseif timer == 20 then
@@ -520,7 +569,7 @@ do
 				if lfrStage1SeventyCount == 1 then
 					timerCalloftheSerpentCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "call", "callCount"))
 				elseif lfrStage1SeventyCount == 2 then
-					timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
+					startSpectralCoilsTimer(self, timerExact, eventID)
 				elseif lfrStage1SeventyCount == 3 then
 					timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
 				else
@@ -534,7 +583,7 @@ do
 			handled = true
 		elseif stage == 2 and timer == 10 then--LFR intermission begins with Spectral Coils
 			self:SetStage(2.5)
-			timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
+			startSpectralCoilsTimer(self, timerExact, eventID)
 			handled = true
 		elseif stage == 2.5 then
 			table.insert(lfrStage3Batch, {timer = timer, timerExact = timerExact, eventID = eventID})
@@ -573,15 +622,15 @@ do
 			elseif timer == 10 or timer == 37 or timer == 67 then
 				timerMothersWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mothersWrath", "mothersWrathCount"))
 			elseif timer == 20 or timer == 95 then
-				timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
+				startSpectralCoilsTimer(self, timerExact, eventID)
 			elseif timer == 35 then
-				timerMephiticThrashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mephiticThrash", "mephiticThrashCount"))
+				startMephiticThrashTimer(self, timerExact, eventID)
 			elseif timer == 42 then
 				timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
 			elseif timer == 52 then
 				heroicStage1FiftyTwoCount = heroicStage1FiftyTwoCount + 1
 				if heroicStage1FiftyTwoCount == 1 then
-					timerMephiticThrashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mephiticThrash", "mephiticThrashCount"))
+					startMephiticThrashTimer(self, timerExact, eventID)
 				elseif heroicStage1FiftyTwoCount == 2 then
 					timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
 				else
@@ -602,7 +651,7 @@ do
 		elseif stage == 2 then
 			if timer == 10 then--Heroic intermission begins with Spectral Coils
 				self:SetStage(2.5)
-				timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
+				startSpectralCoilsTimer(self, timerExact, eventID)
 			elseif timer == 118 then
 				timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
 			elseif timer == 30 or timer == 40 then
@@ -649,7 +698,7 @@ do
 				timerMothersWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mothersWrath", "mothersWrathCount"))
 				handled = true
 			elseif timer == 20 or timer == 84 then
-				timerSpectralCoilsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "spectralCoils", "spectralCoilsCount"))
+				startSpectralCoilsTimer(self, timerExact, eventID)
 				handled = true
 			elseif timer == 130 then
 				timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
@@ -659,7 +708,7 @@ do
 				timerGoreRattleCD:TLStart(timerExact, eventID, 1)
 				handled = true
 			elseif timer == 35 or timer == 41 then
-				timerMephiticThrashCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mephiticThrash", "mephiticThrashCount"))
+				startMephiticThrashTimer(self, timerExact, eventID)
 				handled = true
 			elseif timer == 62 then
 				stage1SixtyTwoCount = stage1SixtyTwoCount + 1
@@ -713,6 +762,20 @@ do
 				self:TLCountCancel(eventID)
 			end
 			return--Stage 3 cancel states are delayed or inaccurate; finish from the raw timeline duration instead
+		elseif mephiticThrashScheduledEvents[eventID] then
+			if eventState == 2 then--Unexpected, but avoid a duplicate scheduled warning if Blizzard fixes the state.
+				mephiticThrashScheduledEvents[eventID] = nil
+				self:Unschedule(finishScheduledMephiticThrash, self, eventID)
+				finishTimelineEvent(self, eventID)
+			end
+			return--Mephitic Thrash state 3 is its cast completion; its warning is scheduled above.
+		elseif spectralCoilsScheduledEvents[eventID] then
+			if eventState == 2 then--Unexpected, but avoid a duplicate scheduled warning if Blizzard fixes the state.
+				spectralCoilsScheduledEvents[eventID] = nil
+				self:Unschedule(finishScheduledSpectralCoils, self, eventID)
+				finishTimelineEvent(self, eventID)
+			end
+			return--Spectral Coils state 3 is its cast completion; its warning is scheduled above.
 		elseif eventState == 2 or (self:GetStage() == 3 and eventState == 3) then
 			finishTimelineEvent(self, eventID)
 		elseif eventState == 3 then

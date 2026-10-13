@@ -14,7 +14,6 @@ local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
-local test = private:GetPrototype("DBMTest")
 
 ---@class Yell
 local yellPrototype = private:GetPrototype("Yell")
@@ -69,7 +68,6 @@ local function newYell(self, yellType, spellId, yellText, optionDefault, optionN
 		mt
 	)
 	self.yells[#self.yells + 1] = obj
-	test:Trace(self, "NewYell", obj, "untyped")
 	if optionName then
 		obj.option = optionName
 		self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId, yellType)
@@ -93,7 +91,6 @@ function yellPrototype:Yell(...)
 		alteredText = L.AUTO_YELL_ANNOUNCE_TEXT[self.yellType.."noicon"]:format(self.spellName)
 	end
 	local text = stringUtils.pformat(alteredText or self.text, ...)
-	test:Trace(self.mod, "ShowYell", self, text) -- Trace before actually showing to not run into the IsInInstance() filter while testing
 	if DBM:IsRestricted() then
 		--Post midnight yell restrictions in instances
 		return
@@ -119,7 +116,6 @@ function yellPrototype:Say(...)
 		return self:Say(8)
 	end
 	local text = stringUtils.pformat(self.text, ...)
-	test:Trace(self.mod, "ShowYell", self, text) -- Trace before actually showing to not run into the IsInInstance() filter while testing
 	if DBM:IsRestricted() then
 		--Post midnight yell restrictions in instances
 		return
@@ -136,7 +132,6 @@ end
 
 function yellPrototype:Schedule(t, ...)
 	local id = DBMScheduler:Schedule(t, self.Yell, self.mod, self, ...)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "Schedule", ...)
 	return id
 end
 

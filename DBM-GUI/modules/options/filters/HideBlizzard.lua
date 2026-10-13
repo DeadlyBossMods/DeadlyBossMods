@@ -11,7 +11,7 @@ if private.isRetail then
 	hideToastArea:CreateCheckButton(L.HideGuildChallengeUpdates, true, nil, "HideGuildChallengeUpdates")
 end
 
-if not private.isClassic and not private.isBCC then
+if not private.isClassic and not private.isBCC and not private.isForever then
 	local hideMovieArea = hideBlizzPanel:CreateArea(L.Area_Cinematics)
 	hideMovieArea:CreateCheckButton(L.DuringFight, true, nil, "HideMovieDuringFight")
 	hideMovieArea:CreateCheckButton(L.InstanceAnywhere, true, nil, "HideMovieInstanceAnywhere")
@@ -26,7 +26,7 @@ blockSoundArea:CreateCheckButton(L.DisableMusic, true, nil, "DisableMusic")
 
 local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard)
 local hideBlizzRaidWarnings = hideBlizzArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame2")
-if DBM:IsPostMidnight() then
+if private.isRetail then
 	hideBlizzRaidWarnings:SetScript("OnClick", function()
 		DBM.Options.HideBossEmoteFrame2 = not DBM.Options.HideBossEmoteFrame2
 		if DBM.Options.HideBossEmoteFrame2 then
@@ -37,7 +37,7 @@ if DBM:IsPostMidnight() then
 	end)
 end
 
-if DBM:IsPostMidnight() then
+if private.isRetail then
 	local hideTLButton = hideBlizzArea:CreateCheckButton(L.HideBlizzardTimeline, true, nil, "HideBlizzardTimeline")
 	hideTLButton:SetScript("OnClick", function()
 		DBM.Options.HideBlizzardTimeline = not DBM.Options.HideBlizzardTimeline

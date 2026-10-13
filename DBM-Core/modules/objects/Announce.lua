@@ -16,7 +16,6 @@ local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
-local test = private:GetPrototype("DBMTest")
 private.blizzTargetQueue = private.blizzTargetQueue or setmetatable({}, {__mode = "k"})
 local blizzTargetQueue = private.blizzTargetQueue
 
@@ -101,6 +100,7 @@ font2u:Hide()
 font3u:Hide()
 
 local font1elapsed, font2elapsed, font3elapsed
+local font2Secret, font3Secret = false, false
 
 local function fontHide1(overrideDuration)
 	local duration = overrideDuration or DBM.Options.WarningDuration2
@@ -250,7 +250,11 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	if self.Options.DontShowBossAnnounces or self.Options.HideDBMWarnings then return end
 	local added = false
 	if prefix then
-		text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(L.DBM), tostring(text))
+		if self:issecretvalue(text) then
+			text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(L.DBM, text)
+		else
+			text = ("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(L.DBM), tostring(text))
+		end
 	end
 	local formatedText
 	if C_StringUtil and customIcon then
@@ -258,6 +262,7 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	else
 		formatedText = text
 	end
+	local replaceLast = force or (frame.font1ticker and frame.font2ticker and frame.font3ticker and (font2Secret or font3Secret or customIcon))
 	if not frame.font1ticker then
 		font1elapsed = 0
 		font1.lastUpdate = GetTime()
@@ -270,14 +275,16 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 		font2elapsed = 0
 		font2.lastUpdate = GetTime()
 		font2:SetText(formatedText)
+		font2Secret = self:issecretvalue(formatedText)
 		font2:Show()
 		font2u:Show()
 		added = true
 		frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, function() fontHide2(overrideDuration) end)
-	elseif not frame.font3ticker or force then
+	elseif not frame.font3ticker or replaceLast then
 		font3elapsed = 0
 		font3.lastUpdate = GetTime()
 		font3:SetText(formatedText)
+		font3Secret = self:issecretvalue(formatedText)
 		font3:Show()
 		font3u:Show()
 		fontHide3()
@@ -286,7 +293,7 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	end
 	if not added then
 		if not customIcon then
-			--GetText can't be called on secrets, so if customIcon exists this code path is skipped
+			--Secret slots are replaced above instead of being read back for rotation.
 			local prevText1 = font2:GetText()
 			local prevText2 = font3:GetText()
 			font1:SetText(prevText1)
@@ -295,8 +302,6 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 			font2elapsed = font3elapsed
 			self:AddWarning(text, true, announceObject, useSound, prefix, overrideDuration, customIcon)
 		end
-	else
-		test:Trace(announceObject and announceObject.mod or self, "ShowAnnounce", announceObject, text)
 	end
 	if useSound then
 		self:PlaySoundFile(self.Options.RaidWarningSound, nil, true)
@@ -472,7 +477,10 @@ function announcePrototype:SetAlert(encounterEventId, voice, voiceVersion, color
 end
 
 -- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
-function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
+---@param self Announce
+---@param secret boolean
+---@param ... any
+local function showAnnounce(self, secret, ...) -- todo: reduce amount of unneeded strings
 	if self.announceType == "blizztarget" then
 		local count, targetName = ...
 		if select("#", ...) < 2 or type(targetName) ~= "string" then
@@ -495,14 +503,14 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 			end
 			self.renameRevision = DBM:GetSpellRenameRevision()
 		end
-		local isSecretBlizzType = self.announceType == "blizztarget" or private.secretAnnounceConsuming
+		local isSecretBlizzType = secret or self.announceType == "blizztarget" or DBM:hasanysecretvalues(...)
 		local argTable
 		if not isSecretBlizzType then
 			--Don't create table out of args if it has secrets
 			argTable = {...}
 		end
 		local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
-		if #self.combinedtext > 0 then
+		if argTable and #self.combinedtext > 0 then
 			--Throttle spam.
 			if DBM.Options.WarningAlphabetical then
 				table.sort(self.combinedtext)
@@ -524,16 +532,16 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		--blizztarget purposely omited from here even though it's also a count warning, we don't want to perform any extra actions on secrets
 		if self.announceType and (self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" or self.announceType == "incomingcount") then--Don't use find "count" here, it'll match countdown
 			--Stage triggers don't pass count, but they do not need to, there is a stage callback and trigger option in WA that should be used
-			if argTable and type(argTable[1]) == "number" then
-				announceCount = argTable[1]
+			local count = select(1, ...)
+			if not DBM:issecretvalue(count) and type(count) == "number" then
+				announceCount = count
 			end
 		end
 		local message
 		if argTable then
 			message = stringUtils.pformat(self.text, unpack(argTable))
 		else
-			--Only time argTable is nil is if it's a blizztarget announce
-			message = string.format(self.text, ...)--Use native format (no pcall frame) to avoid secret args surfacing in error handlers
+			message = stringUtils.secretFormat(self.text, ...)
 		end
 		--This might still throw errors if we don't use C_StringUtil.WrapText instead. Will test
 		local text = ("%s%s%s|r%s"):format(
@@ -575,7 +583,9 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		end
 		DBM:AddWarning(text, nil, self)
 		if DBM.Options.ShowWarningsInChat then
-			if not DBM.Options.WarningIconChat and self.announceType ~= "blizztarget" then
+			if not DBM.Options.WarningIconChat and isSecretBlizzType then
+				text = ("%s%s|r"):format(colorCode, message)
+			elseif not DBM.Options.WarningIconChat then
 				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
 			end
 			self.mod:AddMsg(text, nil)
@@ -612,21 +622,26 @@ function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 	end
 end
 
+function announcePrototype:Show(...)
+	showAnnounce(self, false, ...)
+end
+
 ---Shows a secret player name without materializing it into a Lua table.
 ---@param self Announce
 ---@param className string|nil
 ---@param ... any
 local function secretShowByClass(self, className, ...)
 	local playerName = select(1, ...)
+	if not DBM:issecretvalue(playerName) and playerName == nil then
+		playerName = CL.UNKNOWN
+	end
 	if className then
 		local classColor = C_ClassColor.GetClassColor(className)
 		if classColor then
 			playerName = classColor:WrapTextInColorCode(playerName)
 		end
 	end
-	private.secretAnnounceConsuming = true
-	self:Show(playerName, select(2, ...))
-	private.secretAnnounceConsuming = false
+	showAnnounce(self, true, playerName, select(2, ...))
 end
 
 ---Shows a secret player name from an ENCOUNTER_WARNING target GUID without materializing it into a Lua table.
@@ -661,6 +676,11 @@ end
 ---@param delay number
 ---@param ... any
 function announcePrototype:CombinedShow(delay, ...)
+	if DBM:hasanysecretvalues(...) then
+		DBMScheduler:Unschedule(self.Show, self.mod, self)
+		self:Show(...)
+		return
+	end
 	if self.option and not self.mod.Options[self.option] then return end
 	if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
@@ -677,16 +697,18 @@ function announcePrototype:CombinedShow(delay, ...)
 		end
 	end
 	DBMScheduler:Unschedule(self.Show, self.mod, self)
-	local id = DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
-	test:Trace(self.mod, "SchedulerHideFromTraceIfUnscheduled", id)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "CombinedShow", ...)
+	DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
 end
 
 ---New object that allows defining count instead of scheduling for more efficient and immediate warnings when precise count is known
 ---@param maxTotal number
 ---@param ... any
 function announcePrototype:PreciseShow(maxTotal, ...)
-	test:Trace(self.mod, "CombinedWarningPreciseShow", self, maxTotal)
+	if DBM:hasanysecretvalues(...) then
+		DBMScheduler:Unschedule(self.Show, self.mod, self)
+		self:Show(...)
+		return
+	end
 	if self.option and not self.mod.Options[self.option] then return end
 	if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end	-- don't show the announces if the spam filter option is set
 	if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
@@ -706,11 +728,8 @@ function announcePrototype:PreciseShow(maxTotal, ...)
 	local viableTotal = DBM:NumRealAlivePlayers()
 	if (maxTotal <= #self.combinedtext + self.combinedcount) or (viableTotal <= #self.combinedtext + self.combinedcount) then--All targets gathered, show immediately
 		self:Show(...)--Does this need self or mod? will it have this bug? https://github.com/DeadlyBossMods/DBM-Unified/issues/153
-		test:Trace(self.mod, "CombinedWarningPreciseShowSuccess", self, maxTotal)
 	else--And even still, use scheduling backup in case counts still fail
-		local id = DBMScheduler:Schedule(1.2, self.Show, self.mod, self, ...)
-		test:Trace(self.mod, "SchedulerHideFromTraceIfUnscheduled", id, maxTotal)
-		test:Trace(self.mod, "SetScheduleMethodName", id, self, "PreciseShow", maxTotal, ...)
+		DBMScheduler:Schedule(1.2, self.Show, self.mod, self, ...)
 	end
 end
 
@@ -718,7 +737,6 @@ end
 ---@param ... any
 function announcePrototype:Schedule(t, ...)
 	local id = DBMScheduler:Schedule(t, self.Show, self.mod, self, ...)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "Schedule", ...)
 	return id
 end
 
@@ -761,7 +779,6 @@ function announcePrototype:ScheduleVoice(t, name, customPath)
 	if private.voiceSessionDisabled or DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) or not DBM.Options.VPReplacesAnnounce then return end
 	DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
 	local id = DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "ScheduleVoice", name, customPath)
 	return id
 end
 
@@ -772,7 +789,6 @@ end
 function announcePrototype:ScheduleVoiceOverLap(t, name, customPath)
 	if private.voiceSessionDisabled or DBM:IsNoneValue(DBM.Options.ChosenVoicePack2) or not DBM.Options.VPReplacesAnnounce then return end
 	local id = DBMScheduler:Schedule(t, self.Play, self.mod, self, name, customPath)
-	test:Trace(self.mod, "SetScheduleMethodName", id, self, "ScheduleVoiceOverLap", name, customPath)
 	return id
 end
 
@@ -832,7 +848,6 @@ function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionNa
 		},
 		mt
 	)
-	test:Trace(self, "NewAnnounce", obj, "untyped")
 	if optionName then
 		obj.option = optionName
 		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, waCustomName)
@@ -890,7 +905,6 @@ local function newAnnounce(self, announceType, spellId, color, icon, optionDefau
 		},
 		mt
 	)
-	test:Trace(self, "NewAnnounce", obj, announceType)
 	if optionName then
 		obj.option = optionName
 		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellId, announceType)

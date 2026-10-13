@@ -18,7 +18,6 @@ local unitMonitor = {}
 
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
-local test = private:GetPrototype("DBMTest")
 
 function module:OnModuleEnd()
 	twipe(targetScanCount)
@@ -50,7 +49,6 @@ do
 	}
 
 	local function debugLogBossTarget(bossGuid, targetUid)
-		-- Used for more accurate target reconstruction in tests
 		DBM:Debug(("GetBossTarget: %s#%s"):format(tostring(bossGuid), tostring(UnitGUID(targetUid)), 3, false, true))
 	end
 
@@ -332,9 +330,3 @@ do
 	end
 end
 
-
-test:RegisterLocalHook("UnitGUID", function(val)
-	local old = UnitGUID
-	UnitGUID = val
-	return old
-end)

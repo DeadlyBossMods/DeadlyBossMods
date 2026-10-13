@@ -3,14 +3,12 @@ local private = select(2, ...)
 
 local twipe, unpack = table.wipe, unpack
 local floor = math.floor
-local test = private:GetPrototype("DBMTest")
 local GetTime = GetTime
 local pairs = pairs
 local LastInstanceMapID = -1
 
 local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
 schedulerFrame:Hide()
-test:RegisterTimeWarpFrame(schedulerFrame)
 
 ---@class DBMScheduler: DBMModule
 local module = private:NewModule("DBMScheduler")
@@ -22,7 +20,6 @@ local module = private:NewModule("DBMScheduler")
 -- stack that stores a few tables (up to 8) which will be recycled
 local popCachedTable, pushCachedTable
 local numChachedTables = 0
-local scheduleTraceId = 0
 local activeUpdateMods = {}
 local activeUpdateFuncs = {}
 local activeUpdateCount = 0
@@ -138,9 +135,6 @@ do
 			end
 			if match then
 				foundMatch = true
-				if v.traceId then
-					test:Trace(v.mod, "UnscheduleTask", v.traceId, unpack(v, 1, v.n))
-				end
 			else
 				heap[writeIndex] = v
 				writeIndex = writeIndex + 1
@@ -181,13 +175,7 @@ local function onUpdate(self, elapsed)
 	local nextTask = getMin()
 	while nextTask and nextTask.func and nextTask.time <= time do
 		deleteMin()
-		if nextTask.traceId then
-			test:Trace(nextTask.mod, "ExecuteScheduledTaskPre", nextTask.traceId, unpack(nextTask, 1, nextTask.n))
-		end
 		nextTask.func(unpack(nextTask, 1, nextTask.n))
-		if nextTask.traceId then
-			test:Trace(nextTask.mod, "ExecuteScheduledTaskPost", nextTask.traceId, unpack(nextTask, 1, nextTask.n))
-		end
 		pushCachedTable(nextTask)
 		nextTask = getMin()
 	end
@@ -271,13 +259,7 @@ local function schedule(t, f, mod, ...)
 	else -- create a new table
 		v = {time = now + t, func = f, mod = mod, n = argCount, ...}
 	end
-	if test.testRunning then
-		scheduleTraceId = scheduleTraceId + 1
-		v.traceId = scheduleTraceId
-		test:Trace(mod, "ScheduleTask", scheduleTraceId, t, f, ...)
-	end
 	insert(v)
-	return test.testRunning and scheduleTraceId or nil
 end
 
 local function unschedule(f, mod, ...)
@@ -301,8 +283,7 @@ function module:ScheduleCountdown(time, numAnnounces, func, mod, prototype, ...)
 		--In event time is < numbmer of announces (ie 2 second time, with 3 announces)
 		local validTime = time - i
 		if validTime >= 1 then
-			local id = schedule(validTime, func, mod, prototype, i, ...)
-			test:Trace(mod, "SetScheduleMethodName", id, prototype, "ScheduleCountdown", i, ...)
+			schedule(validTime, func, mod, prototype, i, ...)
 		end
 	end
 end
@@ -356,7 +337,7 @@ do
 		if type(f) ~= "function" then
 			error("usage: DBM:Schedule(time, func, [args...])", 2)
 		end
-		return schedule(t, f, mod, ...)
+		schedule(t, f, mod, ...)
 	end
 
 	function module:Unschedule(f, mod, ...)
@@ -365,10 +346,3 @@ do
 	end
 end
 
--- Expose locals for testing.
-
-test:RegisterLocalHook("GetTime", function(val)
-	local old = GetTime
-	GetTime = val
-	return old
-end)

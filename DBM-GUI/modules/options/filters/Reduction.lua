@@ -1,4 +1,3 @@
-if DBM:IsRestricted() then return end--All options here useless in restricted mode
 local L = DBM_GUI_L
 
 local reducPanel = DBM_GUI.Cat_Filters:CreateNewPanel(L.Panel_ReducedInformation, "option")
@@ -7,6 +6,7 @@ local spamAnnounces = reducPanel:CreateArea(L.Area_SpamFilter_Anounces)
 spamAnnounces:CreateCheckButton(L.SpamBlockNoShowTgtAnnounce, true, nil, "DontShowTargetAnnouncements")
 spamAnnounces:CreateCheckButton(L.SpamBlockNoTrivialSpecWarnSound, true, nil, "DontPlayTrivialSpecialWarningSound")
 
+if DBM:IsRestricted() then return end--All options below here useless in restricted mode
 local spamArea = reducPanel:CreateArea(L.Area_SpamFilter)
 spamArea:CreateCheckButton(L.DontShowFarWarnings, true, nil, "DontShowFarWarnings")
 spamArea:CreateCheckButton(L.StripServerName, true, nil, "StripServerName")

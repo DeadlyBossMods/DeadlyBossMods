@@ -10,9 +10,6 @@
 	"diagnostics.neededFileStatus": {
 		"global-element": "Any"
 	},
-	"runtime.special": {
-		"DBM.Test.GetSharedModule": "require"
-	},
 	"diagnostics.globalsRegex": [
 		"SLASH_DEADLYBOSSMODS.*",
 		"SLASH_KEYSTONE.*",
@@ -24,6 +21,7 @@
 		"ChatFont.*"
 	],
 	"diagnostics.globals": [
+		"WOW_PROJECT_CAMELOT",
 		"---MIDNIGHT SHIT---",
 		"C_InstanceEncounter",
 		"C_InstanceEncounter.IsEncounterInProgress",

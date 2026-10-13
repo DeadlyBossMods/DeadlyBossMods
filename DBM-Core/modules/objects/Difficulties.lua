@@ -13,7 +13,7 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 local difficulties = private:GetPrototype("Difficulties")
 DBM.Difficulties = difficulties
 
-local test = private:GetPrototype("DBMTest")
+local GetInstanceInfo = GetInstanceInfo
 
 difficulties.savedDifficulty = nil
 difficulties.difficultyIndex = nil
@@ -225,9 +225,6 @@ end
 
 ---@param self DBM|DBMMod
 function DBM:IsTrivial(customLevel)
-	if test.testRunning then
-		return false
-	end
 	local lastInstanceMapId = DBM:GetCurrentArea()
 	--if timewalking or chromie time or challenge modes or titanforged raid. it's always non trivial content
 	if C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or self:IsRemix() or difficulties.difficultyIndex == 24 or difficulties.difficultyIndex == 33 or difficulties.difficultyIndex == 8 or difficulties.difficultyIndex == 244 then
@@ -411,7 +408,7 @@ difficulties.SOD_BWL_TRIAL_RED    = 16
 --TODO C_IslandsQueue.GetIslandDifficultyInfo(), if 38-40 don't work
 --TODO, not sure how to classify lairs yet. New category, world bosses, or main raid category since they are progression multi difficulty bosses
 function DBM:GetCurrentInstanceDifficulty()
-	local _, instanceType, difficulty, difficultyName, _, _, _, instanceID, instanceGroupSize = private.GetInstanceInfo()
+	local _, instanceType, difficulty, difficultyName, _, _, _, instanceID, instanceGroupSize = GetInstanceInfo()
 	if difficulty == 0 or difficulty == 172 or (difficulty == 1 and instanceType == "none") or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then--draenor field returns 1, causing world boss mod bug.
 		return "worldboss", RAID_INFO_WORLD_BOSS .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 250 then--instanced world boss/lair

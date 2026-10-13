@@ -14,7 +14,8 @@ local checkEntry, removeEntry = tableUtils.checkEntry, tableUtils.removeEntry
 local mrandom = math.random
 local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage -- Classic has C_ChatInfo but not C_ChatInfo.SendChatMessage, need to use global for classic
 local BNSendWhisper = C_BattleNet and C_BattleNet.SendWhisper or BNSendWhisper
-local playerName, playerRealm = UnitName("player"), GetRealmName()
+local playerName, playerRealm = private.playerName, GetRealmName()
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 local normalizedPlayerRealm = playerRealm:gsub("[%s-]+", "")
 local cSyncSender, eeSyncSender = {}, {}
 local eeSyncReceived, cSyncReceived, updateSubNotificationDisplayed = 0, 0, 0
@@ -61,6 +62,27 @@ function DBM:ResetVersionCheck(name)
 	end
 end
 
+local function getFullName()
+	if private.isForever then
+		return playerName--Realm names not used in forever
+	end
+	return playerName .. "-" .. normalizedPlayerRealm
+end
+
+local function getSendChannel()
+	if IsTrialAccount() then
+		return "SOLO"
+	end
+	if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+		return "INSTANCE_CHAT"
+	elseif IsInRaid() then
+		return "RAID"
+	elseif IsInGroup(1) then
+		return "PARTY"
+	end
+	return "SOLO"
+end
+
 ---Automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
 ---@param protocol number
 ---@param prefix string
@@ -71,19 +93,8 @@ local function sendSync(protocol, prefix, msg, priority, isLogged)
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	if DBM:IsEnabled() or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		local fullname = playerName .. "-" .. normalizedPlayerRealm
-		local sendChannel = "SOLO"
-		if not IsTrialAccount() then
-			if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-				sendChannel = "INSTANCE_CHAT"
-			else
-				if IsInRaid() then
-					sendChannel = "RAID"
-				elseif IsInGroup(1) then
-					sendChannel = "PARTY"
-				end
-			end
-		end
+		local fullname = getFullName()
+		local sendChannel = getSendChannel()
 		if sendChannel == "SOLO" then
 			handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
 		else
@@ -106,7 +117,7 @@ private.sendSync = sendSync
 ---@param isLogged boolean?
 local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
-	local fullname = playerName .. "-" .. normalizedPlayerRealm
+	local fullname = getFullName()
 	if isLogged then
 		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
 	else
@@ -123,8 +134,7 @@ local function sendGuildSync(protocol, prefix, msg)
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	if IsInGuild() and (DBM:IsEnabled() or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		local fullname = playerName .. "-" .. normalizedPlayerRealm
-		ChatThrottleLib:SendAddonMessage("NORMAL", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+		ChatThrottleLib:SendAddonMessage("NORMAL", DBMPrefix, getFullName() .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 	end
 end
 private.sendGuildSync = sendGuildSync
@@ -139,19 +149,8 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not DBM:IsEnabled() then return end--Block all world syncs if force disabled
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	DBM:Debug("SendWorldSync running for " .. prefix)
-	local fullname = playerName .. "-" .. normalizedPlayerRealm
-	local sendChannel = "SOLO"
-	if not IsTrialAccount() then
-		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-			sendChannel = "INSTANCE_CHAT"
-		else
-			if IsInRaid() then
-				sendChannel = "RAID"
-			elseif IsInGroup(1) then
-				sendChannel = "PARTY"
-			end
-		end
-	end
+	local fullname = getFullName()
+	local sendChannel = getSendChannel()
 	if sendChannel == "SOLO" then
 		handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
 	else

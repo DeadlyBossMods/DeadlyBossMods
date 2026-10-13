@@ -230,6 +230,32 @@ L.PIZZA_ERROR_USAGE					= "Uso: /dbm [broadcast] timer <tempo> <texto>"
 L.MINIMAP_TOOLTIP_HEADER			= L.DEADLY_BOSS_MODS --Technically redundant -- OPTIONAL
 L.MINIMAP_TOOLTIP_FOOTER			= "Mantenha Shift e arraste para mover"
 
+L.RANGE_TEST_READY					= "Teste de alcance de itens (%s): solicitando dados de %d itens. Mantenha a unidade selecionada e fique fora de combate."
+L.RANGE_TEST_INVALID				= "O teste de alcance de itens requer uma unidade viva e visível, amigável ou hostil, e deve ser executado fora de combate."
+L.RANGE_TEST_UNSUPPORTED			= "Teste de alcance de itens: as APIs de alcance ou de cache de itens não estão disponíveis neste cliente."
+L.RANGE_TEST_ABORTED				= "Teste de alcance de itens cancelado: a unidade mudou, ficou indisponível ou um combate/carregamento começou."
+L.RANGE_TEST_PASS					= "%d jardas: item %d (%s), IsItemInRange=%s%s"
+L.RANGE_TEST_FAIL					= "%d jardas: nenhum item utilizável (nil com dados em cache: %d, falhas/tempos limite de cache: %d)."
+L.RANGE_TEST_INCOMPLETE			= "%d jardas: incompleto (nil com dados em cache: %d, falhas/tempos limite de cache: %d)."
+L.RANGE_TEST_PARTIAL				= " (não foi possível armazenar em cache os candidatos anteriores)"
+L.RANGE_TEST_HEADER					= "Resultados de alcance de itens do DBM (%s). Copie esta string; os alcances incluem +3 jardas."
+L.RANGE_TEST_NODATA					= "Nenhum teste de alcance de itens concluído está disponível. Execute DBM:TestRanges primeiro."
+L.RANGE_TEST_DONE					= "Teste de alcance de itens concluído: %d aprovados, %d reprovados, %d incompletos. Use DBM:ShowRangeTestResults() para copiar os resultados."
+L.RANGE_TEST_SELF					= "Testar em você mesmo não comprova que estes itens funcionam em outro jogador."
+L.RANGE_DISTANCE_NOCANDIDATES		= "Execute DBM:TestRanges e aguarde itens utilizáveis antes de medir suas distâncias."
+L.RANGE_DISTANCE_INVALID			= "A calibração requer outra unidade viva e visível, fora de combate e em mapas sem restrições. Recomenda-se um jogador do grupo/raide ao ar livre."
+L.RANGE_DISTANCE_UNAVAILABLE		= "Calibração: leituras verificadas e não secretas de UnitDistanceSquared ou APIs de alcance de itens indisponíveis. Tente um jogador do grupo/raide ao ar livre."
+L.RANGE_DISTANCE_READY			= "Medindo %d itens (tolerância +/-0,5 jardas). O outro jogador deve ficar parado; afaste-se e retorne lentamente pelos limites. Pare/exporte com DBM:StopRangeDistances(true)."
+L.RANGE_DISTANCE_REACQUIRE		= "Selecione novamente seu alvo original para continuar a calibração de alcance."
+L.RANGE_DISTANCE_ABORTED			= "Calibração interrompida: unidade, combate, carregamento, restrições ou disponibilidade da distância mudou. Evidências parciais mantidas; nenhum resultado aprovado."
+L.RANGE_DISTANCE_NODATA			= "Nenhuma calibração encerrada disponível. Execute DBM:TestRangeDistances e depois DBM:StopRangeDistances."
+L.RANGE_DISTANCE_HEADER			= "Calibração de distância do DBM. Copie esta string; alcances esperados incluem +3 jardas, com tolerância de +/-0,5 jardas."
+L.RANGE_DISTANCE_ROW				= "%d jardas: item %d (%s), %s; maior distância true=%s, menor distância false=%s; true/false=%d/%d, divergências=%d, indisponíveis=%d%s"
+L.RANGE_DISTANCE_PASS			= "APROVADO"
+L.RANGE_DISTANCE_FAIL			= "REPROVADO"
+L.RANGE_DISTANCE_INCOMPLETE		= "INCOMPLETO (limite pouco observado, leituras contraditórias, amostras indisponíveis ou teste interrompido)"
+L.RANGE_DISTANCE_DONE			= "Calibração encerrada: %d aprovados, %d reprovados, %d incompletos. Use DBM:ShowRangeDistanceResults() para copiar os resultados."
+
 L.RANGECHECK_HEADER					= "Verificação de distância: (%d m)"
 L.RANGECHECK_HEADERT				= "Verificação de distância (%dy-%dP)"
 L.RANGECHECK_RHEADER				= "R-Verificação de distância (%dy)"
@@ -254,6 +280,9 @@ L.RANGECHECK_IN_RANGE_TEXT			= "%d em distância"--Text based doesn't need (%dyd
 L.RANGERADAR_IN_RANGE_TEXTONE		= "%s (%0.1fy)"--One target
 
 L.INFOFRAME_TITLE					= "Quadro de info"
+L.INFOFRAME_BOSS_DISTANCE				= "Distância dos chefes"
+L.INFOFRAME_BOSS_DISTANCE_RANGE			= "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER			= "> %dm"
 L.INFOFRAME_SHOW_SELF				= "Sempre exibir seu poder"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES				= "Linhas máximas"
 L.INFOFRAME_SETCOLS					= "Colunas máximas"
@@ -271,15 +300,15 @@ L.LFG_INVITE						= "Aceitar convite"
 L.SLASHCMD_HELP						= {
 	"Comandos disponíveis:",
 	"-----------------",
-	"/dbm unlock: Mostra um cronômetro de barra de status movível (alias: move).",--AI translated (check me)
+	"/dbm unlock: Mostra um cronômetro de barra de status movível (alias: move).",
 	"/dbm pull <seg>: Dispara um cronômetro para iniciar a luta em <seg> segundos. Dá a todos os integrantes da raide um cronômetro para iniciar a luta (requer status de líder/assistente).",
 	"/dbm break <min>: Inicia um cronômetro de intervalo de <min> minutos. Dá a todos os integrantes da raide um cronômetro de intervalo (requer status de líder/assistente).",
 	"/dbm timer: Inicia um cronômetro personalizado do " .. L.DBM .. ", veja '/dbm timer' para detalhes.",
-	"/dbm key: Realiza verificações de keystone e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keys, keystone)",--AI translated (check me)
+	"/dbm key: Realiza verificações de pedra-chave e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keys, keystone)",
 	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
 	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide.",
-	"/dbm brez: Exibe o quadro do cronômetro de ressurreição de batalha para posicionamento.",--AI translated (check me)
-	"/dbm help2: Mostra comandos de gerenciamento de raide."--AI translated (check me)
+	"/dbm brez: Exibe o quadro do cronômetro de ressurreição de batalha para posicionamento.",
+	"/dbm help2: Mostra comandos de gerenciamento de raide."
 }
 L.SLASHCMD_HELP2					= {
 	"Comandos disponíveis:",
@@ -408,7 +437,6 @@ L.AUTO_SPEC_WARN_TEXTS.blizzyou			= "%s (%%s) em você"
 L.AUTO_SPEC_WARN_TEXTS.link 			= "%s ligado a >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.defensive 		= "%s - Defensivo"
 L.AUTO_SPEC_WARN_TEXTS.taunt 			= "%s em >%%s< - Provoque agora"
-L.AUTO_SPEC_WARN_TEXTS.tauntsecret	= "%s em %%s - Provoque agora"
 L.AUTO_SPEC_WARN_TEXTS.close			= "%s em >%%s< perto de você"
 L.AUTO_SPEC_WARN_TEXTS.move				= "%s - Saia de perto"
 L.AUTO_SPEC_WARN_TEXTS.keepmove 		= "%s - Continue se movendo"
@@ -729,7 +757,6 @@ L.DBM_INSTALL_PACKAGE_MOP = "Pacote de Mists of Pandaria"
 L.DBM_INSTALL_PACKAGE_DUNGEON = "Pacote de Masmorras, Imersões e Eventos"
 
 -- Tests
-L.DBM_TAINTED_BY_TESTS = "O DBM foi usado em modo de teste com distorção temporal na sessão atual, é recomendável recarregar sua interface antes de usar o DBM em uma luta de chefe real. Tudo deve funcionar como esperado, mas sem garantias!"
 
 -- Boss tooltip
 L.TOOLTIP_DBM                 = L.DBM .. " informações"
@@ -761,3 +788,4 @@ L.MN_DBM_TIMELINE      = "Barras do DBM"
 L.MN_WARNIGS_HEADER   = "Deseja usar as alertas de encontro da Blizzard ou as alertas de encontro do DBM?"
 L.MN_BLIZZARD_WARNINGS= "Alertas da Blizzard"
 L.MN_DBM_WARNINGS     = "Alertas do DBM"
+L.MN_TEXT_TIMERS_HEADER = "Deseja usar temporizadores em texto?\n(Utiliza dados das barras do DBM, mesmo que não estejam visíveis)"

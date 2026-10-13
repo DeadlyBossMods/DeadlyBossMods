@@ -1,6 +1,15 @@
 local L
 
 ---------------------------
+--  Entombed Sentinels (3445) --
+---------------------------
+L= DBM:GetModLocalization(2874)
+
+L:SetOptionLocalization({
+	AdvancedBossFiltering	= "Actively scan distance to each boss and automatically hide certain alerts and fade timers for the boss you are NOT near (more than 48 yards)"
+})
+
+---------------------------
 --  LightblindedVanguard (3180) --
 ---------------------------
 L= DBM:GetModLocalization(2737)

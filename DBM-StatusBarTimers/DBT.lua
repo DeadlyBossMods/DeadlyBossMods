@@ -200,9 +200,28 @@ DBT.DefaultOptions = {
 ---@field hasVariance boolean
 local barPrototype = {}
 local unusedBarObjects = {}
+-- A FontString that has displayed protected timeline text remains protected.
+-- Never reuse that frame for a normal/hardcoded bar.
+local unusedSecretBarObjects = {}
 local smallBars, largeBars, hiddenBars = {}, {}, {}
 local debugHistory, debugHistoryIndex, debugHistoryCount = {}, 0, 0
 local debugHistorySize = 10
+
+local function acquireUnusedBar(isSecret)
+	local unusedPool = isSecret and unusedSecretBarObjects or unusedBarObjects
+	while true do
+		local bar = next(unusedPool)
+		if not bar then return end
+		unusedPool[bar] = nil
+		if isSecret then return bar end
+		local label = _G[bar.frame:GetName() .. "BarName"]
+		if label and DBM:issecretvalue(label:GetText()) then
+			unusedSecretBarObjects[bar] = bar
+		else
+			return bar
+		end
+	end
+end
 
 local dbtFontResetNotified = false
 
@@ -348,7 +367,6 @@ do
 		local frame = CreateFrame("Frame", "DBT_Bar_" .. fCounter, smallBarsAnchor)
 		frame:SetSize(195, 20)
 		frame:SetScript("OnUpdate", onUpdate)
-		DBM.Test:RegisterTimeWarpFrame(frame)
 		frame:SetScript("OnMouseDown", onMouseDown)
 		frame:SetScript("OnMouseUp", onMouseUp)
 		frame:SetScript("OnHide", onHide)
@@ -524,10 +542,9 @@ do
 				newBar:ResetAnimations()
 			end
 		else -- Create a new bar
-			newBar = next(unusedBarObjects)
+			newBar = acquireUnusedBar(isSecret)
 			if newBar then
 				newBar.lastUpdate = GetTime()
-				unusedBarObjects[newBar] = nil
 				newBar.dead = nil -- Resurrected it :)
 				newBar.id = id
 				newBar.timer = timer
@@ -638,13 +655,6 @@ do
 	end
 
 	function DBT:LoadOptions(id)
-		if id == "DBM" then
-			DBM.Test:RegisterLocalHook("GetTime", function(val)
-				local old = GetTime
-				GetTime = val
-				return old
-			end)
-		end
 		local profile = ensureProfileStructure()
 		profile[id] = profile[id] or {}
 		self:AddDefaultOptions(profile[id], self.DefaultOptions)
@@ -973,21 +983,25 @@ function DBT:SetAnnounceHook(f)
 	self.announceHook = f
 end
 
+local function sortLargeBars(x, y)
+	if DBT.Options.HugeSort == "Invert" then
+		return x.timer < y.timer
+	end
+	return x.timer > y.timer
+end
+
+local function sortSmallBars(x, y)
+	if DBT.Options.Sort == "Invert" then
+		return x.timer < y.timer
+	end
+	return x.timer > y.timer
+end
+
 function DBT:UpdateBars(sortBars)
 	local barOptions = self.Options
 	if sortBars and not DBM:IsNoneValue(barOptions.Sort) then
-		tsort(largeBars, function(x, y)
-			if barOptions.HugeSort == "Invert" then
-				return x.timer < y.timer
-			end
-			return x.timer > y.timer
-		end)
-		tsort(smallBars, function(x, y)
-			if barOptions.Sort == "Invert" then
-				return x.timer < y.timer
-			end
-			return x.timer > y.timer
-		end)
+		tsort(largeBars, sortLargeBars)
+		tsort(smallBars, sortSmallBars)
 	end
 	for i, bar in ipairs(largeBars) do
 		bar.frame:ClearAllPoints()
@@ -1225,18 +1239,26 @@ local colorVariables = {
 	[8] = "I2",--Important 2
 }
 
+local colorKeys = {}
+for colorType, colorVar in pairs(colorVariables) do
+	colorKeys[colorType] = {
+		startR = "StartColor" .. colorVar .. "R", startG = "StartColor" .. colorVar .. "G", startB = "StartColor" .. colorVar .. "B",
+		endR = "EndColor" .. colorVar .. "R", endG = "EndColor" .. colorVar .. "G", endB = "EndColor" .. colorVar .. "B",
+	}
+end
+
 ---@param colorType any LuaLS has problems if this is typecast correctly since LuaLs is unable to determine the value of stuff in Options table
 ---@param endColor boolean?
 function DBT:GetColorForType(colorType, endColor)
-	if not colorVariables[colorType] then
+	local keys = colorKeys[colorType]
+	if not keys then
 		DBM:Debug("GetColorForType failed for unknown colorType: "..tostring(colorType))
 		return nil
 	end
-	local colorVar = colorVariables[colorType]
 	if endColor then
-		return DBT.Options["EndColor"..colorVar.."R"], DBT.Options["EndColor"..colorVar.."G"], DBT.Options["EndColor"..colorVar.."B"]
+		return DBT.Options[keys.endR], DBT.Options[keys.endG], DBT.Options[keys.endB]
 	else
-		return DBT.Options["StartColor"..colorVar.."R"], DBT.Options["StartColor"..colorVar.."G"], DBT.Options["StartColor"..colorVar.."B"]
+		return DBT.Options[keys.startR], DBT.Options[keys.startG], DBT.Options[keys.startB]
 	end
 end
 
@@ -1282,15 +1304,17 @@ function barPrototype:Update(elapsed)
 	local r, g, b
 	local updateNeeded, sortingNeeded = false, false
 	if barOptions.DynamicColor and not self.color then
-		local colorVar = colorVariables[colorCount]
+		local keys = colorKeys[colorCount]
 		if barOptions.NoBarFade then
-			r = isEnlarged and barOptions["EndColor"..colorVar.."R"] or barOptions["StartColor"..colorVar.."R"]
-			g = isEnlarged and barOptions["EndColor"..colorVar.."G"] or barOptions["StartColor"..colorVar.."G"]
-			b = isEnlarged and barOptions["EndColor"..colorVar.."B"] or barOptions["StartColor"..colorVar.."B"]
+			r = isEnlarged and barOptions[keys.endR] or barOptions[keys.startR]
+			g = isEnlarged and barOptions[keys.endG] or barOptions[keys.startG]
+			b = isEnlarged and barOptions[keys.endB] or barOptions[keys.startB]
 		else
-			r = barOptions["StartColor"..colorVar.."R"] + (barOptions["EndColor"..colorVar.."R"] - barOptions["StartColor"..colorVar.."R"]) * (1 - timerValue/totaltimeValue)
-			g = barOptions["StartColor"..colorVar.."G"] + (barOptions["EndColor"..colorVar.."G"] - barOptions["StartColor"..colorVar.."G"]) * (1 - timerValue/totaltimeValue)
-			b = barOptions["StartColor"..colorVar.."B"] + (barOptions["EndColor"..colorVar.."B"] - barOptions["StartColor"..colorVar.."B"]) * (1 - timerValue/totaltimeValue)
+			local progress = 1 - timerValue/totaltimeValue
+			local startR, startG, startB = barOptions[keys.startR], barOptions[keys.startG], barOptions[keys.startB]
+			r = startR + (barOptions[keys.endR] - startR) * progress
+			g = startG + (barOptions[keys.endG] - startG) * progress
+			b = startB + (barOptions[keys.endB] - startB) * progress
 		end
 		if not enlargeEnabled and timerValue > enlargeTime then
 			r, g, b = barOptions.DesaturateValue * r, barOptions.DesaturateValue * g, barOptions.DesaturateValue * b
@@ -1465,7 +1489,10 @@ function barPrototype:Cancel()
 	self:RemoveFromList()
 	DBT.bars[self] = nil
 	barIDIndex[self.id] = nil
-	unusedBarObjects[self] = self
+	local label = _G[self.frame:GetName() .. "BarName"]
+	local hasSecretText = self.isSecret or label and DBM:issecretvalue(label:GetText())
+	local unusedPool = hasSecretText and unusedSecretBarObjects or unusedBarObjects
+	unusedPool[self] = self
 	self.dead = true
 	self.paused = nil
 	DBT.numBars = DBT.numBars - 1
@@ -1495,10 +1522,10 @@ function barPrototype:ApplyStyle(deferUpdate)
 			spark:SetVertexColor(self.color.r, self.color.g, self.color.b)
 		end
 	else
-		local colorVar = colorVariables[self.colorType or 0]
-		local barStartRed = barOptions["StartColor"..colorVar.."R"]
-		local barStartGreen = barOptions["StartColor"..colorVar.."G"]
-		local barStartBlue = barOptions["StartColor"..colorVar.."B"]
+		local keys = colorKeys[self.colorType or 0]
+		local barStartRed = barOptions[keys.startR]
+		local barStartGreen = barOptions[keys.startG]
+		local barStartBlue = barOptions[keys.startB]
 		bar:SetStatusBarColor(barStartRed, barStartGreen, barStartBlue)
 		if sparkEnabled then
 			spark:SetVertexColor(barStartRed, barStartGreen, barStartBlue)
@@ -1721,7 +1748,7 @@ do
 	local tostring, mfloor = tostring, math.floor
 	local ChatEdit_GetActiveWindow, SendChatMessage, IsInGroup, IsInRaid = ChatEdit_GetActiveWindow, C_ChatInfo.SendChatMessage or SendChatMessage, IsInGroup, IsInRaid
 	function barPrototype:Announce()
-		if DBM:IsPostMidnight() then return end--Don't announce if it's past midnight, secrets can't be shared
+		if DBM:IsRestricted() then return end--Don't announce if it's past midnight, secrets can't be shared
 		local msg
 		if DBT.announceHook then
 			msg = DBT.announceHook(self)
@@ -1731,7 +1758,7 @@ do
 		if chatWindow then
 			chatWindow:Insert(msg)
 		else
-			if not DBM:IsPostMidnight() then
+			if not DBM:IsRestricted() then
 				SendChatMessage(msg, (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY")
 			end
 		end

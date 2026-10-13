@@ -12,7 +12,6 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 local stringUtils = private:GetPrototype("StringUtils")
 local tableUtils = private:GetPrototype("TableUtils")
 local difficulties = private:GetPrototype("Difficulties")
-local test = private:GetPrototype("DBMTest")
 local checkEntry, removeEntry = tableUtils.checkEntry, tableUtils.removeEntry
 
 ---@class CombatDetection: DBMModule
@@ -36,7 +35,7 @@ local combatInitialized, healthCombatInitialized = false, false
 local watchFrameRestore, questieWatchRestore, bossuIdFound = false, false, false
 local delayedFunction
 
-local playerName = UnitName("player")
+local playerName = private.playerName
 local normalizedPlayerRealm = GetRealmName():gsub("[%s-]+", "")
 local tinsert, twipe = table.insert, table.wipe
 local pairs, ipairs, type, select = pairs, ipairs, type, select
@@ -79,6 +78,7 @@ end
 function module:SetPlayerName(name)
 	playerName = name
 end
+private:RegisterPlayerNameCallback(function(_, name) module:SetPlayerName(name) end)
 
 function module:ClearSpamTimers(time)
 	lastCombatStarted = time
@@ -86,7 +86,7 @@ function module:ClearSpamTimers(time)
 end
 
 function DBM:SCENARIO_COMPLETED()
-	if #inCombat > 0 and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) then
+	if #inCombat > 0 and C_Scenario.IsInScenario() then
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if v.inScenario then
@@ -340,26 +340,17 @@ do
 					return roundToHundredth(unitInfo.remainingHealthPercent)
 				end
 			end
+			return nil
 		end
-		if mod.highesthealth then
-			local highest
-			for i = 1, #encounterUnitStatus do
-				local unitInfo = encounterUnitStatus[i]
-				if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" and unitInfo.remainingHealthPercent > 0 then
-					highest = highest and mmax(highest, unitInfo.remainingHealthPercent) or unitInfo.remainingHealthPercent
-				end
-			end
-			if highest then
-				return roundToHundredth(highest)
-			end
-		end
+		local selectedHealth
 		for i = 1, #encounterUnitStatus do
 			local unitInfo = encounterUnitStatus[i]
-			if type(unitInfo) == "table" and type(unitInfo.remainingHealthPercent) == "number" and unitInfo.remainingHealthPercent > 0 then
-				return roundToHundredth(unitInfo.remainingHealthPercent)
+			if type(unitInfo) == "table" and (mod.multiMobPullDetection and checkEntry(mod.multiMobPullDetection, unitInfo.creatureID) or unitInfo.creatureID == mod.creatureId) and type(unitInfo.remainingHealthPercent) == "number" and unitInfo.remainingHealthPercent > 0 then
+				local health = unitInfo.remainingHealthPercent
+				selectedHealth = selectedHealth and (mod.highesthealth and mmax(selectedHealth, health) or mmin(selectedHealth, health)) or health
 			end
 		end
-		return nil
+		return selectedHealth and roundToHundredth(selectedHealth) or nil
 	end
 
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success, encounterUnitStatus)
@@ -377,7 +368,7 @@ do
 			if not v.combatInfo then return end
 			if v.noEEDetection then return end
 			--TODO, see if forever also sends respawn timer themselves
-			if not self:IsPostMidnight() and v.respawnTime and success == 0 then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
+			if not self:IsRetail() and v.respawnTime and success == 0 then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
 				local timerEnabled = self.Options.ShowRespawn and not self.Options.DontShowEventTimers
 				name = string.split(",", name)
 				if timerEnabled then
@@ -760,9 +751,6 @@ do
 		---@class DBMMod
 		mod = mod
 		if not checkEntry(inCombat, mod) then
-			if DBM.TaintedByTests then
-				self:AddMsg(L.DBM_TAINTED_BY_TESTS) -- Shows this early in case tests messed with some filters below
-			end
 			if not mod.Options.Enabled then return end
 			if not mod.combatInfo then return end
 			if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
@@ -789,7 +777,6 @@ do
 				event = ""
 			end
 			--check completed. starting combat
-			test:Trace(mod, "StartCombat", event)
 			tinsert(inCombat, mod)
 			-- Pull time is always considered as in combat, this makes sure checkWipe() triggers only after the minimum time without combat has passed since start.
 			lastValidCombat = GetTime()
@@ -813,7 +800,7 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if private.isRetail then
-				if mod.addon and mod.addon.type == "SCENARIO" and (C_Scenario.IsInScenario() or test.Mocks and test.Mocks.IsInScenario()) and not mod.soloChallenge then
+				if mod.addon and mod.addon.type == "SCENARIO" and C_Scenario.IsInScenario() and not mod.soloChallenge then
 					mod.inScenario = true
 				end
 				-- Cache timeline countdown duration once per pull.
@@ -894,7 +881,7 @@ do
 				trackedAchievements = (C_ContentTracking and C_ContentTracking.GetTrackedIDs(2)[1])
 			end
 			if self.Options.HideObjectivesFrame and mod.addon and mod.addon.type ~= "SCENARIO" and not trackedAchievements and difficulties.difficultyIndex ~= 8 and not InCombatLockdown() then
-				if private.isRetail or private.isCata or private.isMop then--Do nothing due to taint and breaking
+				if private.isRetail or private.isCata or private.isMop or private.isForever then--Do nothing due to taint and breaking
 					--if ObjectiveTrackerFrame:IsVisible() then
 					--	ObjectiveTracker_Collapse()
 					--	watchFrameRestore = true
@@ -905,7 +892,7 @@ do
 							WatchFrame:Hide()
 							watchFrameRestore = true
 						end
-					elseif QuestWatchFrame:IsVisible() then -- Classic Era / BCC
+					elseif QuestWatchFrame and QuestWatchFrame:IsVisible() then -- Classic Era / BCC
 						QuestWatchFrame:Hide()
 						watchFrameRestore = true
 					end
@@ -974,7 +961,7 @@ do
 						end
 						mod:OnLimitedCombatStart(nonZeroDelay, startEvent == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or startEvent == "SPELL_CAST_SUCCESS" or startEvent == "MONSTER_MESSAGE", startEvent == "ENCOUNTER_START")
 					end
-					if self.Options.HideBlizzardTimeline then
+					if private.isRetail and self.Options.HideBlizzardTimeline then
 						--Temporary. Will be removed in a future patch when api for supporting sounds works without forcing this
 						C_CVar.SetCVar("encounterTimelineEnabled", "1")
 						EncounterTimeline.TrackView:SetAlpha(0)
@@ -1124,7 +1111,6 @@ do
 		---@class DBMMod
 		mod = mod
 		if removeEntry(inCombat, mod) then
-			test:Trace(mod, "EndCombat", event)
 			local scenario = mod.addon and mod.addon.type == "SCENARIO" and not mod.soloChallenge
 			if (mod.inCombatOnlyEvents or mod.inCombatOnlySafeEvents) and mod.inCombatOnlyEventsRegistered then
 				if srmIncluded then
@@ -1201,6 +1187,7 @@ do
 				else
 					wipeHP = wipeHealthPct and tostring(wipeHealthPct) or CL.UNKNOWN
 				end
+				local wipeHPDisplay = self:IsRestricted() and wipeHealthPct and (wipeHP .. "%") or wipeHP
 				local totalPulls = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Pulls"]
 				local totalKills = mod.stats[difficulties.statVarTable[usedDifficulty] .. "Kills"]
 				if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.
@@ -1210,7 +1197,7 @@ do
 						if scenario then
 							self:AddMsg(L.SCENARIO_ENDED_AT:format(usedDifficultyText .. name, stringUtils.strFromTime(thisTime)))
 						else
-							self:AddMsg(L.COMBAT_ENDED_AT:format(usedDifficultyText .. name, wipeHP, stringUtils.strFromTime(thisTime)))
+							self:AddMsg(L.COMBAT_ENDED_AT:format(usedDifficultyText .. name, wipeHPDisplay, stringUtils.strFromTime(thisTime)))
 							--No reason to GCE it here, so omited on purpose.
 						end
 					end
@@ -1219,7 +1206,7 @@ do
 						if scenario then
 							self:AddMsg(L.SCENARIO_ENDED_AT_LONG:format(usedDifficultyText .. name, stringUtils.strFromTime(thisTime), totalPulls - totalKills))
 						else
-							self:AddMsg(L.COMBAT_ENDED_AT_LONG:format(usedDifficultyText .. name, wipeHP, stringUtils.strFromTime(thisTime), totalPulls - totalKills))
+							self:AddMsg(L.COMBAT_ENDED_AT_LONG:format(usedDifficultyText .. name, wipeHPDisplay, stringUtils.strFromTime(thisTime), totalPulls - totalKills))
 							local check = private.isRetail and
 								((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or
 								usedDifficultyIndex ~= 1 and self:GetNumGuildPlayersInZone() >= 10 -- Classic
@@ -1252,13 +1239,13 @@ do
 						if scenario then
 							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, usedDifficultyText .. (name or ""), totalPulls - totalKills)
 						else
-							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP, totalPulls - totalKills)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHPDisplay, totalPulls - totalKills)
 						end
 					else
 						if scenario then
 							msg = msg or private.chatPrefixShort .. L.WHISPER_SCENARIO_END_WIPE:format(playerName, usedDifficultyText .. (name or ""))
 						else
-							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHP)
+							msg = msg or private.chatPrefixShort .. L.WHISPER_COMBAT_END_WIPE_AT:format(playerName, usedDifficultyText .. (name or ""), wipeHPDisplay)
 						end
 					end
 					private.sendWhisper(k, msg)

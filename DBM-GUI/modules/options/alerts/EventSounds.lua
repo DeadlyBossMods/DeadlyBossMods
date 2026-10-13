@@ -1,4 +1,4 @@
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isRetail = DBM:IsRetail()
 
 local L = DBM_GUI_L
 

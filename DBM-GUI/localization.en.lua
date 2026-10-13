@@ -247,7 +247,8 @@ L.SpellRenamesImported				= "Spell renames imported."
 
 L.ImportErrorOn						= "Custom sounds missing for setting: %s"
 L.ImportVoiceMissing				= "Missing voice pack: %s"
-L.LegacyProfileImportNotice			= "Legacy profile imported. This format is deprecated; please re-export using the new format."
+L.ImportLegacyProfileFailed		= "This profile uses the old export format and cannot be imported. Obtain a fresh export from a recent version of DBM, or use a different profile."
+L.ImportProfileFreshExport		= "If this is an older profile, obtain a fresh export from a recent version of DBM, or use a different profile."
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 			= "Alerts"
@@ -500,6 +501,19 @@ L.CVoiceThree						= "Global Countdown 3"
 -- Panel: Bar Appearance
 L.Panel_Appearance	 				= "Bar Appearance"
 L.Panel_Behavior	 				= "Bar Behavior"
+L.Panel_TextTimers					= "Text Timers"
+L.Area_TextTimers					= "Upcoming timer text (data from DBM hardcoded bars, even if bars not visible)"
+L.TextTimersEnable					= "Show text timers near expiration (off by default)"
+L.TextTimersThreshold				= "Show when seconds remaining"
+L.TextTimersMaxLines				= "Maximum lines"
+L.TextTimersMaxNameLength			= "Maximum name length (0: unlimited)"
+L.TextTimersFontSize				= "Text size"
+L.TextTimersUrgentThreshold			= "Urgent below seconds (0: off)"
+L.TextTimersUrgentColor				= "Urgent color"
+L.TextTimersIcon					= "Show ability icon"
+L.TextTimersInheritBarColor			= "Inherit bar start and end color"
+L.TextTimersIconPosition			= "Icon position"
+L.TextTimersIconBoth				= "Icons on both sides"
 L.AreaTitle_BarSetup				= "Bar Appearance Options"
 L.AreaTitle_Behavior				= "Bar Behavior Options"
 L.AreaTitle_BarSetupSmall 			= "Small Bar Options"
@@ -561,7 +575,7 @@ L.Panel_SpamFilter					= "Disable DBM Features"
 
 L.Area_Global_Toggles				= "Feature Global Toggles"
 L.NoWarnings						= "Disable DBM Announce entirely"
-L.NoTimers							= "Disable DBM Timers entirely"
+L.NoTimers							= "Disable DBM timer bars (Text Timers still show if enabled)"
 
 L.Area_SpamFilter_SpecFeatures		= "Specific Announce Features (only applies if not disabled entirely above)"
 L.SpamBlockNoShowAnnounce			= "Do not show text or play sound for ANY general (non emphasized) announcements"
@@ -739,6 +753,7 @@ L.AuraStackFontColor				= "Stack font color"
 L.AuraShowStacks					= "Show stack text"
 L.AuraShowDispelBorder				= "Show dispel border"
 L.AuraShowCooldownSwipe				= "Show cooldown swipe"
+L.AuraShowGlow						= "Glow icons while auras are active"
 L.AuraSortOrder					= "Aura sort order"
 L.AuraSortDefault					= "Default Blizzard sorting"
 L.AuraSortShortDurationFirst		= "Short duration first"
@@ -773,68 +788,10 @@ L.FontHeight	= 16 -- OPTIONAL
 
 
 -- Testing
-L.DevPanel							= "Development & Testing"
-L.DevPanelArea						= "Development and Testing UI"
-L.DevPanelExplanation				= "This is a development and testing UI which validates that DBM is working as expected by playing back combat logs." -- Test UI panel under options
-L.DevModPanelExplanation			= [[Welcome to the development and testing playground for this mod.
-You can play back logs of boss fights here to see how the mod behaves and to test integrations with DBM callbacks. See DBM-Test/README.md for more details on integrations and callbacks. DBM comes with example logs for many raids, but you can also import your own logs from Transcriptor.
-]] -- Playground mode in mods
 
-L.TimewarpSetting					= "Time warp: %dx"
-L.TimewarpDynamic					= "Time warp: dynamic (fastest)"
-L.TestSupportArea					= "Mod loading options"
-L.ModNotLoadedWithTests				= "Warning: This mod is currently not loaded with full test support. If the mod directly calls API functions such as UnitHealth() or UnitName() these will not work correctly. This is often the case for functions related to unit health, power, or targets."
-L.ModLoadedWithTests				= "Mod is currently loaded with test support because at least one mod in the addon has tests enabled."
-L.AlwaysLoadModWithTests			= "Always load this mod with full test support (slows down loading slightly)"
-L.ModLoadRequiresReload				= ", requires UI reload to take effect" -- Appended to L.AlwaysLoadModWithTests
-L.TestSelectArea					= "Test data" -- Title of the UI area
-L.SelectTestLog						= L.TestSelectArea -- Title for the dropdown to select a  specific test
-L.SelectPerspective					= "Log perspective (simulated player)"
-L.ImportTranscriptor				= "Import Transcriptor log"
-L.ImportTranscriptorHeader			= [[
-Import a Transcriptor log by pasting it anywhere in the edit box below. Pasting speed is roughly 2 MiB/s, this means your game will freeze for several seconds when pasting very large log files.
-You can also import the current Transcriptor session from Transcriptor's saved variables with the import button to the right.]]
-L.PasteLogHere						= "Press " .. (IsMacClient() and "Cmd-V" or "Ctrl-V") .. " to paste a log here."
-L.LogPasted							= "Pasted %.2f MiB in %.1f seconds (%.2f MiB/s)."
-L.ImportLocalTranscriptor			= "Import current\nTranscriptor session"
-L.NoLocalTranscriptor				= "Could not find local Transcriptor data."
-L.LocalImportDone					= "Imported %d logs with %d encounters from Transcriptor."
-L.Parsing							= "Parsing..."
-L.SelectLogDropdown					= "Select encounter"
-L.CreateTest						= "Create Test"
-L.ExportTest						= "Export Test"
-L.ExportedTest						= "Exported test case with %d lines (%.1f%% filtered)."
-L.ExportedTestFailedAnon			= "WARNING: Log anonymization failed, %d non-anonymized strings found (details in chat frame and output)."
-L.ExportTestFailedNonAnonString		= "WARNING: String %q looks non-anonymized."
-L.CreatedTest						= "Created test with %d events in %.1f seconds."
-L.NoLogsFound						= "Transcriptor import contains no log data."
-L.NoTestDataAvailable				= "No test data available"
-L.TestDataLoading					= "Loading tests..."
-L.NoLogSelected						= "Test creation failed: No log selected."
-L.LogAlreadyImported				= "Test creation failed: Test already imported."
 
-L.RewriteAllToYou					= "All players at the same time"
-L.RealModOptionsBelow				= "Mod options below are synced between playground mode and your real settings."
 L.Test								= "Test"
-L.Tests								= "Tests"
-L.AllTests							= "All tests"
-L.RunTest							= "Run test"
-L.RunTestShort						= "Run" -- Same intend as RunTest, but a smaller button
-L.StopTest							= "Stop test"
-L.StopTests							= "Stop tests"
-L.RunAllTests						= "Run all tests"
-L.Queued							= "Queued"
-L.Running							= "Running"
-L.Failed							= "Failed"
-L.ShowReport						= "Show report"
-L.ShowErrors						= "Show errors"
-L.TestModEntry						= "[Playground] %s"
-L.EnterTestMode						= "Playground mode"
-L.SkipPhase							= "Skip to next phase"
 
-L.AnonymizeTest						= "Anonymize player names and GUIDs"
-L.ShowThisTestEverywhere			= "Show this test for all mods"
-L.SaveThisTest						= "Save this test log persistently"
 
 L.BossModTColor						= "Bar Color"
 L.BossModCVoice						= "Countdown Voice"

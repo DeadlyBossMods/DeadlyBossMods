@@ -244,7 +244,8 @@ L.SpellRenamesImported					= "변경된 주문 이름을 가져왔습니다."
 
 L.ImportErrorOn						= "프로필 설정에 빠져있는 사용자 지정 효과음: %s"
 L.ImportVoiceMissing				= "보이스팩 없음: %s"
-L.LegacyProfileImportNotice			= "구형 프로필을 가져왔습니다. 이 형식은 앞으로 사용할 수 없으므로 새 형식으로 다시 내보내기를 해주세요."
+L.ImportLegacyProfileFailed			= "이 프로필은 구형 내보내기 형식을 사용하고 있어서 가져올 수 없습니다. 최근 DBM 버전에서 신형 내보내기를 가져오거나 다른 프로필을 사용하세요."
+L.ImportProfileFreshExport			= "구형 프로필인 경우 최근 DBM 버전에서 신형 내보내기를 가져오거나 다른 프로필을 사용하세요."
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 			= "경고"
@@ -263,7 +264,6 @@ L.RaidWarnColor_4 					= "색상 4"
 L.RaidWarnColor 					= "색상"--Only one used in midnight
 L.InfoRaidWarning					= [[레이드 경고 프레임의 위치와 색상을 설정할 수 있습니다.
 본 프레임은 "플레이어 X가 Y에 걸렸습니다"와 같은 메시지를 표시하는데 사용됩니다.]]
-
 L.ColorResetted 					= "이 영역의 색상 설정을 초기화 합니다."
 L.ShowWarningsInChat 				= "대화창에서 알림 보기"
 L.WarningIconLeft 					= "왼쪽에 아이콘 표시"
@@ -302,7 +302,7 @@ L.SpecialWarnHeader1				= "SA 1: 당신이 뭔가 걸렸거나 취해야 할 행
 L.SpecialWarnHeader2				= "SA 2: 공격대 전체에 해당되는 보통 수준 알림 설정 세트"
 L.SpecialWarnHeader3				= "SA 3: 최우선 알림 설정 세트"
 L.SpecialWarnHeader4				= "SA 4: 최우선 도망 특수 알림 설정 세트"
-L.SpecialWarnHeader5				= "SA 5: 메모에 당신의 이름이 있을 때 알림 설정 세트"
+L.SpecialWarnHeader5				= "SA 5: 메모에 내 이름이 있을 때 알림 설정 세트 (하드코드 모드 전용)"
 --Post Midnight
 L.SpecialWarnHeaderMedium			= "SA 1: 블리자드에서 '중간' 등급으로 분류한 스킬 알림"
 L.SpecialWarnHeaderCritical			= "SA 2: 블리자드에서 '치명적' 등급으로 분류한 스킬 알림"
@@ -415,6 +415,7 @@ L.EventFilterMythicMusic			= "신화/신화+ 난이도에선 보스 전투 배�
 -- Tab: Timers
 L.TabCategory_Timers				= "타이머 바"
 L.Area_ColorBytype					= "속성별 바 색상 가이드"
+-- Panel: Color by Type
 L.Panel_ColorByType	 				= "바 색상"
 L.AreaTitle_BarColors				= "일반 바 색상 (기본값은 스킬 속성마다 지정)"
 L.AreaTitle_ImpBarColors			= "중요 바 색상 (사용자가 중요로 설정한 바)"
@@ -494,6 +495,19 @@ L.CVoiceThree						= "전역 초읽기 3"
 -- Panel: Bar Appearance
 L.Panel_Appearance	 				= "바 외형"
 L.Panel_Behavior	 				= "바 작동 방식"
+L.Panel_TextTimers					= "텍스트 타이머"
+L.Area_TextTimers					= "곧 종료될 타이머 텍스트 (하드코딩된 DBM 바 데이터를 사용하기 때문에 바가 보이지 않아도 표시됨)"
+L.TextTimersEnable					= "종료 직전에 타이머 텍스트 표시 (기본값은 꺼져 있음)"
+L.TextTimersThreshold				= "남은 시간 표시 시점 (초)"
+L.TextTimersMaxLines				= "최대 줄 수"
+L.TextTimersMaxNameLength			= "최대 이름 길이 (0: 무제한)"
+L.TextTimersFontSize				= "텍스트 크기"
+L.TextTimersUrgentThreshold			= "아래 시간보다 낮으면 긴급으로 표시 (0: 끔)"
+L.TextTimersUrgentColor				= "긴급 표시 색상"
+L.TextTimersIcon					= "스킬 아이콘 표시"
+L.TextTimersInheritBarColor			= "타이머 바의 시작과 종료 색상 가져오기"
+L.TextTimersIconPosition			= "아이콘 위치"
+L.TextTimersIconBoth				= "양쪽 면 모두 아이콘 배치"
 L.AreaTitle_BarSetup				= "바 외형 설정"
 L.AreaTitle_Behavior				= "바 작동 방식 설정"
 L.AreaTitle_BarSetupSmall 			= "작은 바 설정"
@@ -511,34 +525,34 @@ L.ZeroatWindowStartNeg				= "타이머 시작 지점을 0으로 하고 0에서 �
 L.BarIconLeft 						= "왼쪽 아이콘"
 L.BarIconRight 						= "오른쪽 아이콘"
 L.BarIconPosition					= "아이콘 위치"
-L.ExpandUpwards						= "위로 쌓기"
+L.ExpandUpwards						= "위로 확장"
 L.FillUpBars						= "채워나가기"
-L.ClickThrough						= "마우스 클릭 방지 (클릭 통과)"
-L.Bar_Decimal						= "남은시간 소수점 표시초 이하"
-L.Bar_Alpha							= "투명도"
-L.Bar_EnlargeTime					= "타이머 바 확대초 이하"
-L.Bar_AppearTime					= "타이머 바 숨김초 이상"--Used for when hidden bars show on the small bar anchor
-L.Bar_HideLongBars					= "위의 설정시간에 도달하지 않은 타이머 바 숨김"
-L.BarSpark							= "바 끝 강조"
+L.ClickThrough						= "마우스 동작 비활성화 (클릭 통과)"
+L.Bar_Decimal						= "아래 시간보다 적으면 소수점 표시"
+L.Bar_Alpha							= "불투명도"
+L.Bar_EnlargeTime					= "아래 시간보다 적으면 바가 커짐"
+L.Bar_AppearTime					= "아래보다 높은 시간의 바 숨김"--Used for when hidden bars show on the small bar anchor
+L.Bar_HideLongBars					= "위의 기준값 미만의 타이머 바 숨김"
+L.BarSpark							= "바 섬광 효과"
 L.BarFlash							= "만료 전에 바 점멸"
-L.BarSort							= "남은 시간 기준으로 정렬"
-L.BarColorByType					= "속성마다 색상 변경"
+L.BarSort							= "남은 시간 기준 정렬"
+L.BarColorByType					= "속성별 색상"
 L.Highest							= "가장 높은 순"
 L.Lowest							= "가장 낮은 순"
 L.NoBarFade							= "시작/종료시 색상 변화를 그라데이션 효과 대신 작은/큰 바 색을 사용"
-L.BarInlineIcons					= "바 안쪽에 아이콘 사용"
-L.DisableRightClickBar				= "우클릭으로 타이머 취소 기능 끄기"
-L.ShortTimerText					= "짧은 타이머 텍스트 사용 (사용 가능할 때만)"
-L.HardcodedTimer					= "하드코딩된 타이머를 사용하여 (사용 가능할 때만) 주문 이름 변경이나 타이머 바 숨김을 위한 비활성화 같은 없어진 기능 복구"
-L.KeepBar							= "스킬 시전 전까지 타이머 작동 중단"
-L.KeepBar2							= "(모드에서 지원할 경우에만)"
-L.FadeBar							= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
+L.BarInlineIcons					= "도감 아이콘 표시"--Deprecated
+L.DisableRightClickBar				= "우클릭으로 타이머 취소 기능 사용 안함"
+L.ShortTimerText					= "타이머 텍스트에 바꾼 주문 이름 사용"
+L.HardcodedTimer					= "하드코딩된 타이머를 사용해서 (사용 가능할 때만) 주문 이름 변경이나 보고 싶지 않은 타이머 끄기 같은 없어진 기능 복구"
+L.KeepBar							= "스킬 시전 전까지 타이머를 계속 활성화"
+L.KeepBar2							= "(모드에서 지원할 때만)"
+L.FadeBar							= "사정거리를 벗어난 스킬의 타이머 바 숨김"
 L.BarSkin							= "바 스킨"
 L.InlineIconsDropdown				= "도감 속성 아이콘 스타일"
 L.SingleLargeIcon					= "큰 아이콘 1개"
 L.DoubleLargeIcons					= "큰 아이콘 2개"
-L.DoubleInlineIcons					= "모든 큰 아이콘"
-L.StackedMiniIcons					= "작은 아이콘 모음"
+L.DoubleInlineIcons					= "전부 큰 아이콘으로"
+L.StackedMiniIcons					= "작은 아이콘 뭉치"
 
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat				= "풀링과 휴식"
@@ -555,7 +569,7 @@ L.Panel_SpamFilter					= "DBM 기능 끄기"
 
 L.Area_Global_Toggles				= "전체 기능 켜기/끄기"
 L.NoWarnings						= "모든 DBM 알림 끄기"
-L.NoTimers							= "모든 DBM 타이머 바 끄기"
+L.NoTimers							= "DBM 타이머 바 끄기 (이 옵션을 켰더라도 텍스트 타이머는 계속 표시됨)"
 
 L.Area_SpamFilter_SpecFeatures		= "세부 알림 기능 (위에서 전체 비활성화를 하지 않을 때만 적용)"
 L.SpamBlockNoShowAnnounce			= "모든 알림 및 효과음 재생 안함"
@@ -676,6 +690,7 @@ L.ReceivingFooter					= "공격대 징표와 말풍선 설정이 주변 다른 �
 L.ReceivingFooter2					= "이러한 설정을 활성화했을때 내 설정이 의도한 것과 충돌할 경우 당신과 공대장 둘만 조정하면 됩니다"--NYI
 L.ReceivingFooter3					= "'내 모드 설정을 대체'를 활성화하면 당신의 원래 설정은 강제 적용된 설정에 의해 지워질 것입니다"--NYI
 
+
 L.TabFooter							= "이 패널의 모든 설정은 당신이 공격대/공찾 공대장일때만 작동합니다"
 
 -- Panel: Privacy
@@ -725,7 +740,8 @@ L.AuraStackFontSize					= "중첩 글꼴 크기"
 L.AuraStackFontColor				= "중첩 글꼴 색상"
 L.AuraShowStacks						= "중첩 텍스트 표시"
 L.AuraShowDispelBorder				= "해제 속성 테두리 표시"
-L.AuraShowCooldownSwipe				= "쿨타임 애니메이션 표시"
+L.AuraShowCooldownSwipe				= "쿨타임 회전 표시"
+L.AuraShowGlow						= "오라가 활성화된 동안 아이콘 반짝임"
 L.AuraSortOrder						= "오라 정렬 순서"
 L.AuraSortDefault					= "기본 블리자드식 정렬"
 L.AuraSortShortDurationFirst		= "짧은 지속 시간 우선"
@@ -760,68 +776,10 @@ L.FontHeight	= 16
 
 
 -- Testing
-L.DevPanel							= "개발 및 테스트"
-L.DevPanelArea						= "개발 및 테스트 UI"
-L.DevPanelExplanation				= "DBM이 의도한 대로 작동하고 있는지 전투 로그를 재생해서 검증하는 개발 및 테스트 UI입니다." -- Test UI panel under options
-L.DevModPanelExplanation			= [[본 모듈의 개발 및 시험장에 오신 것을 환영합니다.
-이곳에선 보스 전투 로그를 재생해서 해당 모듈이 어떻게 작동하는지 관찰하고 DBM 콜백들의 통합을 테스트합니다. 통합과 콜백에 관한 자세한 사항은 DBM-Test/README.md를 참고하시기 바랍니다. DBM에서 제공하는 여러 레이드의 예제 로그가 있으며 Transcriptor로 작성된 로그를 가져올 수도 있습니다.
-]] -- Playground mode in mods
 
-L.TimewarpSetting					= "시간 흐름: %dx"
-L.TimewarpDynamic					= "시간 흐름: 동적 (가장 빠름)"
-L.TestSupportArea					= "모듈 로딩 설정"
-L.ModNotLoadedWithTests				= "경고: 이 모듈은 현재 완전한 테스트가 가능하게 로딩되지 않았습니다. 이 모듈이 UnitHealth()나 UnitName()같은 API 함수를 직접 호출할 경우 제대로 작동하지 않을 것입니다. 유닛의 생명력, 자원, 대상과 관련된 함수에서 자주 발생합니다."
-L.ModLoadedWithTests				= "모듈이 완전한 테스트가 가능하도록 로딩되지 않았습니다. 애드온에서 최소 1개 이상의 모듈은 테스트 모드를 활성화해야 합니다."
-L.AlwaysLoadModWithTests			= "이 모듈을 항상 완전한 테스트가 가능하도록 로드 (로딩 속도 약간 느려짐)"
-L.ModLoadRequiresReload				= ", UI 재시작 필요" -- Appended to L.AlwaysLoadModWithTests
-L.TestSelectArea					= "데이터 테스트" -- Title of the UI area
-L.SelectPerspective					= "로그 관점 (플레이어로 가정)"
-L.ImportTranscriptor				= "Transcriptor 로그 가져오기"
-L.ImportTranscriptorHeader			= [[
-아래 상자의 아무곳이나 붙여넣으면 Transcriptor 로그를 가져올 수 있습니다. 붙여넣기 속도는 대략 2 MiB/s 정도 되며, 이는 아주 큰 용량의 로그 파일을 붙여넣기하면 수 초 가량 게임이 멈춘다는 뜻입니다.
-우측의 가져오기 버튼으로 Transcriptor의 저장된 데이터 중에서 현재 세션만 가져올 수도 있습니다.]]
 
-L.PasteLogHere						= (IsMacClient() and "Cmd-V" or "Ctrl-V") .. "를 눌러서 이곳에 로그를 붙여넣기 하세요."
-L.LogPasted							= "%.2f MiB를 %.1f초간 붙여넣었습니다. (%.2f MiB/s)"
-L.ImportLocalTranscriptor			= "현재 Transcriptor\n세션 붙여넣기"
-L.NoLocalTranscriptor				= "로컬 Transcriptor 데이터를 찾을 수 없습니다."
-L.LocalImportDone					= "Transcriptor에서 로그 %d개 보스 전투 %d개를 가져왔습니다."
-L.Parsing							= "분석중..."
-L.SelectLogDropdown					= "보스 전투 선택"
-L.CreateTest						= "테스트 작성"
-L.ExportTest						= "테스트 내보내기"
-L.ExportedTest						= "테스트 케이스를 %d줄 내보냈습니다. (%.1f%% 걸러짐)"
-L.ExportedTestFailedAnon			= "경고: 로그 익명화에 실패했으며 %d개의 익명화가 안된 문자열이 있습니다. (대화창에 세부 내역과 출력)"
-L.ExportTestFailedNonAnonString		= "경고: 문자열 %q 익명화되지 않은 것으로 보입니다."
-L.CreatedTest						= "%d개의 이벤트로 테스트를 %.1f초에 걸쳐 작성했습니다."
-L.NoLogsFound						= "Transcriptor 가져오기에 로그 데이터가 들어있지 않습니다."
-L.NoTestDataAvailable				= "사용 가능한 테스트 데이터 없음"
-L.TestDataLoading					= "테스트 로딩 중..."
-L.NoLogSelected						= "테스트 작성 실패: 선택한 로그가 없습니다."
-L.LogAlreadyImported				= "테스트 작성 실패: 이미 가져온 것입니다."
-
-L.RewriteAllToYou					= "모든 플레이어를 동시에"
-L.RealModOptionsBelow				= "아래의 모듈 설정은 시험장 모드와 실제 설정간의 동기화에 관한 것입니다."
 L.Test								= "테스트"
-L.Tests								= "테스트"
-L.AllTests							= "모든 테스트"
-L.RunTest							= "테스트 실행"
-L.RunTestShort						= "실행" -- Same intend as RunTest, but a smaller button
-L.StopTest							= "테스트 중지"
-L.StopTests							= "테스트 중지"
-L.RunAllTests						= "모든 테스트 실행"
-L.Queued							= "대기중"
-L.Running							= "실행중"
-L.Failed							= "실패"
-L.ShowReport						= "보고서 보기"
-L.ShowErrors						= "오류 보기"
-L.TestModEntry						= "[시험장] %s"
-L.EnterTestMode						= "시험장 모드"
-L.SkipPhase							= "다음 단계로 넘어가기"
 
-L.AnonymizeTest						= "플레이어 이름과 GUID 익명 처리"
-L.ShowThisTestEverywhere			= "모든 모드에 이 테스트 표시"
-L.SaveThisTest						= "이 테스트 기록을 계속해서 저장"
 
 L.BossModTColor						= "바 색상"
 L.BossModCVoice						= "초읽기 음성"

@@ -1,7 +1,5 @@
 local L = DBM_GUI_L
 
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-
 local coreoptions = DBM_GUI.Cat_General:CreateNewPanel(L.Core_GUI, "option")
 
 local generaloptions = coreoptions:CreateArea(L.General)
@@ -13,7 +11,7 @@ miniMapIcon:SetScript("OnClick", function(self)
 end)
 miniMapIcon:SetChecked(not DBM_MinimapIcon.hide)
 
-if isRetail then
+if DBM:IsRestricted() then
 	local compartmentIcon = generaloptions:CreateCheckButton(L.EnableCompartmentIcon)
 	compartmentIcon:SetScript("OnClick", function(self)
 		DBM:ToggleCompartmentButton()
@@ -71,7 +69,7 @@ bmtestmode:SetScript("OnClick", function()
 	DBM_GUI:CollapseForPreview(DBM:DemoMode())
 end)
 
-if DBM:IsPostMidnight() then
+if DBM:IsRetail() then
 	local showMidnightWizard = generaloptions:CreateButton(L.Button_ShowMidnightWizard, 120, 30)
 	showMidnightWizard.myheight = 0
 	showMidnightWizard:SetPoint("LEFT", bmtestmode, "RIGHT", 6, 0)

@@ -46,7 +46,7 @@ shortTimerText:HookScript("OnClick", function()
 	DBM:RefreshSpellRenames()
 end)
 BarBehaviors:CreateCheckButton(L.KeepBar, true, nil, nil, "KeepBars")
-if not DBM:IsPostMidnight() then
+if not DBM:IsRestricted() then
 	--Only option we can't restore even with mod hardcodes
 	BarBehaviors:CreateCheckButton(L.FadeBar, true, nil, nil, "FadeBars")
 else

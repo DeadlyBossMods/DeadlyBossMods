@@ -1,6 +1,9 @@
 ---@class DBM
 local DBM = DBM
 
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 ---------------
 --  Globals  --
 ---------------
@@ -11,8 +14,8 @@ DBM.InfoFrame = infoFrame
 -------------------
 -- Local Globals --
 -------------------
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
+local isRetail = DBM:IsRetail()
+local isWrath = DBM:IsWrath()
 
 local DDM, UIDropDownMenu_AddButton, UIDropDownMenu_Initialize, ToggleDropDownMenu
 if isWrath then
@@ -29,18 +32,7 @@ local NORMAL_FONT_COLOR, SPELL_FAILED_OUT_OF_RANGE = NORMAL_FONT_COLOR, SPELL_FA
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
-local standardFont
-if LOCALE_koKR then
-	standardFont = "Fonts\\2002.TTF"
-elseif LOCALE_zhCN then
-	standardFont = "Fonts\\ARKai_T.ttf"
-elseif LOCALE_zhTW then
-	standardFont = "Fonts\\blei00d.TTF"
-elseif LOCALE_ruRU then
-	standardFont = "Fonts\\FRIZQT___CYR.TTF"
-else
-	standardFont = "Fonts\\FRIZQT__.TTF"
-end
+local standardFont = private.standardFont
 
 local infoFrameFontResetNotified = false
 local infoFrameStrataOptions = { "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG", "TOOLTIP" }
@@ -85,7 +77,74 @@ local frame, initializeDropdown, initializeDropdownLegacy, currentMapId, current
 local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
-local playerName = UnitName("player")
+-- Only UI handles and public geometry/occupancy belong here, never text payloads.
+local directMode = false
+local displayGeneration = 0
+local directLines, directRows = {}, {}
+local directHeader, directLeftWidth, directRightWidth
+local updateDirectLayout
+local updateBossDistance
+local bossDistanceThreshold, bossDistanceRangeType
+
+local function stopBossDistance()
+	if currentEvent ~= "bossdistance" then return end
+	DBM:Unschedule(updateBossDistance)
+	if frame and frame.ticker then
+		frame.ticker:Cancel()
+		frame.ticker = nil
+	end
+	bossDistanceThreshold, bossDistanceRangeType = nil, nil
+	currentEvent = nil
+	displayGeneration = displayGeneration + 1
+end
+
+local function checkDirectNumber(number, optional, integer)
+	if DBM:issecretvalue(number) then
+		error("DBM-InfoFrame: direct layout controls must not be secret", 3)
+	end
+	if optional and number == nil then return end
+	if type(number) ~= "number" or number ~= number or number <= 0 or number == mhuge or (integer and number % 1 ~= 0) then
+		error("DBM-InfoFrame: direct layout controls must be positive finite numbers (row counts must be integers)", 3)
+	end
+end
+
+local function getDirectLimit(option, fallback)
+	local limit = DBM.Options[option]
+	if not DBM:issecretvalue(limit) and type(limit) == "number" and limit >= 0 and limit < mhuge and limit % 1 == 0 then
+		return limit ~= 0 and limit or fallback
+	end
+	-- Corrupt saved preferences should not destroy an otherwise working display.
+	DBM.Options[option] = 0
+	return fallback
+end
+
+local function clearDirectLines()
+	for _, line in pairs(directLines) do
+		line:SetText("")
+		line:Hide()
+	end
+	twipe(directRows)
+end
+
+local function clearDirectDisplay()
+	clearDirectLines()
+	if directHeader then
+		directHeader:SetText("")
+		directHeader:Hide()
+	end
+end
+
+local function canUpdateDirect()
+	if not directMode or not frame then return false end
+	if DBM.Options.DontShowInfoFrame then
+		infoFrame:Hide()
+		return false
+	end
+	return frame:IsVisible()
+end
+
+local playerName = private.playerName
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 ---@cast playerName string
 
 ---------------------
@@ -117,6 +176,7 @@ do
 		else
 			maxLines = modLines or 5
 		end
+		if directMode then updateDirectLayout() end
 	end
 
 	local function isLinesSelected(line)
@@ -132,6 +192,7 @@ do
 		else
 			maxCols = modCols or 5
 		end
+		if directMode then updateDirectLayout() end
 	end
 
 	local function isColsSelected(col)
@@ -304,6 +365,165 @@ function createFrame()
 	infoFrame:SetHeader()
 
 	frame.lines = {}
+	frame:SetScript("OnHide", function()
+		-- Includes ancestor hides: never retain text for a later OnShow.
+		stopBossDistance()
+		if directMode then clearDirectDisplay() end
+	end)
+end
+
+--------------------------
+--  Direct-mode layout  --
+--------------------------
+function updateDirectLayout()
+	if not directMode or not frame then return end
+	if DBM.Options.DontShowInfoFrame then
+		infoFrame:Hide()
+		return
+	end
+	maxLines = getDirectLimit("InfoFrameLines", modLines)
+	maxCols = getDirectLimit("InfoFrameCols", modCols)
+	local font, size, style = getSafeInfoFrameFontSettings(frame.header)
+	local leftWidth, rightWidth = directLeftWidth or size * 10, directRightWidth or size * 8
+	local columnWidth = leftWidth + rightWidth + size * 1.5
+	local highestRow = 0
+	for row in pairs(directRows) do
+		if row > maxLines * maxCols then
+			local index = row * 2 - 1
+			directLines[index]:SetText("")
+			directLines[index + 1]:SetText("")
+			directLines[index]:Hide()
+			directLines[index + 1]:Hide()
+			directRows[row] = nil
+		else
+			highestRow = mmax(highestRow, row)
+		end
+	end
+	for row in pairs(directRows) do
+		local index = row * 2 - 1
+		if not directLines[index] then
+			-- Permanently separate from frame.lines: protected text can taint later queries.
+			directLines[index] = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+			directLines[index + 1] = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+		end
+		local column, offset = mfloor((row - 1) / maxLines), (row - 1) % maxLines
+		local left, right = directLines[index], directLines[index + 1]
+		left:SetFont(font, size, style)
+		right:SetFont(font, size, style)
+		left:SetWordWrap(false)
+		right:SetWordWrap(false)
+		left:SetJustifyH("LEFT")
+		right:SetJustifyH("RIGHT")
+		left:ClearAllPoints()
+		right:ClearAllPoints()
+		left:SetPoint("TOPLEFT", frame, "TOPLEFT", size / 2 + column * columnWidth, -size / 2 - offset * size)
+		right:SetPoint("TOPLEFT", frame, "TOPLEFT", size + leftWidth + column * columnWidth, -size / 2 - offset * size)
+		left:SetSize(leftWidth, size)
+		right:SetSize(rightWidth, size)
+		-- Show empty regions before callers send payloads to SetText.
+		left:Show()
+		right:Show()
+	end
+	local columns = mmax(1, mceil(highestRow / maxLines))
+	local width = columnWidth * columns
+	frame:SetSize(width, size * (1 + mmin(highestRow, maxLines)))
+	if directHeader then
+		directHeader:SetFont(font, size, style)
+		directHeader:SetWordWrap(false)
+		directHeader:SetSize(width, size)
+	end
+end
+
+-- This built-in type bypasses all legacy name processing and text measurement.
+---@param generation number? Public display identity for scheduled updates
+function updateBossDistance(generation)
+	if generation and generation ~= displayGeneration then return end
+	if currentEvent ~= "bossdistance" then return end
+	if not canUpdateDirect() then
+		stopBossDistance()
+		clearDirectDisplay()
+		return
+	end
+	clearDirectLines()
+	updateDirectLayout()
+	local row = 0
+	for i = 1, 10 do
+		if row >= maxLines * maxCols then break end
+		local unit = "boss" .. i
+		if UnitExists(unit) then
+			local minRange, maxRange = DBM:GetUnitMinMaxRange(unit)
+			local distanceText
+			if minRange == 0 and maxRange == 0 then
+				distanceText = DBM_COMMON_L.UNKNOWN
+			elseif minRange == maxRange then
+				distanceText = L.INFOFRAME_BOSS_DISTANCE_OVER:format(minRange)
+			else
+				distanceText = L.INFOFRAME_BOSS_DISTANCE_RANGE:format(minRange, maxRange)
+			end
+			local inSafeRange
+			if bossDistanceThreshold and maxRange > 0 then
+				if bossDistanceRangeType == "maxRange" then
+					if maxRange > bossDistanceThreshold or minRange >= bossDistanceThreshold then
+						inSafeRange = false
+					elseif maxRange > minRange then
+						inSafeRange = true
+					end
+				else
+					if minRange >= bossDistanceThreshold then
+						inSafeRange = true
+					elseif maxRange > minRange then
+						inSafeRange = false
+					end
+				end
+			end
+			local colorR, colorG, colorB
+			if inSafeRange ~= nil then
+				colorR, colorG, colorB = inSafeRange and 0 or 255, inSafeRange and 255 or 0, 0
+			end
+			row = row + 1
+			-- Never inspect or retain the possibly secret UnitName payload.
+			infoFrame:SetDirectLine(row, UnitName(unit), distanceText, nil, nil, nil, colorR, colorG, colorB)
+		end
+	end
+end
+
+---@param modMaxLines integer?
+---@param colorThreshold number? Public minimum/maximum safe distance; omitted disables coloring
+---@param rangeType "minRange"|"maxRange"|nil Minimum safe distance (default) or maximum safe distance
+---@return boolean visible
+local function showBossDistance(modMaxLines, colorThreshold, rangeType)
+	if DBM.Options.DontShowInfoFrame then
+		if directMode then infoFrame:Hide() end
+		return false
+	end
+	if colorThreshold ~= nil and (type(colorThreshold) ~= "number" or colorThreshold ~= colorThreshold or colorThreshold < 0 or colorThreshold == mhuge) then
+		error("DBM-InfoFrame: bossdistance color threshold must be a finite nonnegative number", 3)
+	end
+	if (rangeType ~= nil and rangeType ~= "minRange" and rangeType ~= "maxRange") then
+		error("DBM-InfoFrame: bossdistance range type must be public minRange or maxRange", 3)
+	end
+	if not infoFrame:ShowDirect(modMaxLines) then return false end
+	currentEvent = "bossdistance"
+	bossDistanceThreshold, bossDistanceRangeType = colorThreshold, rangeType or "minRange"
+	local generation = displayGeneration
+	infoFrame:SetDirectHeader(L.INFOFRAME_BOSS_DISTANCE)
+	DBM.RangeCheck:CacheItemsForRangeChecks()
+	updateBossDistance(generation)
+	if generation ~= displayGeneration then return false end
+	frame.ticker = C_Timer.NewTicker(0.5, function()
+		updateBossDistance(generation)
+	end)
+	return true
+end
+
+-- Static in-game layout preview; shares the production geometry without polling boss units.
+local function showBossDistanceTest(modMaxLines)
+	if not infoFrame:ShowDirect(modMaxLines or 2) then return false end
+	currentEvent = "testbossdistance"
+	infoFrame:SetDirectHeader(L.INFOFRAME_BOSS_DISTANCE)
+	infoFrame:SetDirectLine(1, "Breath of Ula'tek", L.INFOFRAME_BOSS_DISTANCE_RANGE:format(43, 48), nil, nil, nil, 0, 255, 0)
+	infoFrame:SetDirectLine(2, "Blood of Ula'tek", L.INFOFRAME_BOSS_DISTANCE_RANGE:format(0, 5), nil, nil, nil, 255, 0, 0)
+	return true
 end
 
 ------------------------
@@ -671,9 +891,9 @@ local function updateAllAbsorb()
 			local absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
 			if absorbAmount and absorbAmount > 0 then
 				if totalAbsorb then
-					lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
+					lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
 				else
-					lines[UnitName(uId)] = mfloor(absorbAmount)
+					lines[DBM:GetUnitFullName(uId)] = mfloor(absorbAmount)
 				end
 			end
 		end
@@ -695,9 +915,9 @@ local function updatePlayerAbsorb()
 		end
 		if absorbAmount and absorbAmount > 0 then
 			if totalAbsorb then
-				lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
+				lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
 			else
-				lines[UnitName(uId)] = mfloor(absorbAmount)
+				lines[DBM:GetUnitFullName(uId)] = mfloor(absorbAmount)
 			end
 		end
 	end
@@ -1033,6 +1253,8 @@ local friendlyEvents = {
 }
 
 local function onUpdate(frame, table)
+	if directMode or not currentEvent then return end
+	local generation = displayGeneration
 	if events[currentEvent] then
 		events[currentEvent](table)
 	else
@@ -1040,6 +1262,8 @@ local function onUpdate(frame, table)
 			frame:Hide()
 		end
 	end
+	-- A module callback may have opened another display during the update.
+	if generation ~= displayGeneration then return end
 	local color = NORMAL_FONT_COLOR
 	infoFrame:ClearLines()
 	local linesShown = 0
@@ -1184,12 +1408,27 @@ end
 --  Methods  --
 ---------------
 --Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate. Arg 5: sortmethod (playerpower)
+--bossdistance: Iterates boss1-boss10 using UnitExists; names are rendered directly without unit inspection.
+--Arg 1: optional color threshold. Arg 2: "minRange" (red below threshold, default) or "maxRange" (red above threshold).
 function infoFrame:Show(modMaxLines, event, ...)
+	if event == "bossdistance" then
+		return showBossDistance(modMaxLines, ...)
+	elseif event == "testbossdistance" then
+		return showBossDistanceTest(modMaxLines)
+	end
 	if DBM.Options.DontShowInfoFrame and not (event or ""):find("test") then
 		return
 	end
 	if midnightRestrictedEvents[event] and DBM:IsRestricted() then
 		return
+	end
+	stopBossDistance()
+	displayGeneration = displayGeneration + 1
+	local generation = displayGeneration
+	if directMode then
+		clearDirectDisplay()
+		directMode = false
+		frame.header:Show()
 	end
 	prevLines = 0
 	currentMapId = select(-1, UnitPosition("player"))
@@ -1261,11 +1500,13 @@ function infoFrame:Show(modMaxLines, event, ...)
 		error("DBM-InfoFrame: Unsupported event", 2)
 		return
 	end
+	if generation ~= displayGeneration then return end
 	if not friendlyEvents[currentEvent] then
 		twipe(icons)
 	end
 	frame:Show()
 	onUpdate(frame, value[1])
+	if generation ~= displayGeneration then return end
 	if not frame.ticker and not value[4] and event ~= "table" then
 		frame.ticker = C_Timer.NewTicker(0.5, function()
 			onUpdate(frame)
@@ -1276,11 +1517,134 @@ function infoFrame:Show(modMaxLines, event, ...)
 	end
 end
 
+-- Opens a fresh, blank direct display. All controls are public; payloads are sent separately.
+---@param modMaxLines integer? Rows per column (subject to user preferences)
+---@param leftWidth number? Public pixel width; defaults to 12 times font size
+---@param rightWidth number? Public pixel width; defaults to 8 times font size
+---@return boolean visible
+function infoFrame:ShowDirect(modMaxLines, leftWidth, rightWidth)
+	if DBM.Options.DontShowInfoFrame then
+		if directMode then self:Hide() end
+		return false
+	end
+	checkDirectNumber(modMaxLines, true, true)
+	checkDirectNumber(leftWidth, true, false)
+	checkDirectNumber(rightWidth, true, false)
+	getDirectLimit("InfoFrameLines", modMaxLines or 5)
+	getDirectLimit("InfoFrameCols", 1)
+	stopBossDistance()
+	displayGeneration = displayGeneration + 1
+	if not frame then createFrame() end
+	DBM:Unschedule(onUpdate)
+	if frame.ticker then
+		frame.ticker:Cancel()
+		frame.ticker = nil
+	end
+	clearDirectDisplay()
+	-- Detach instead of wiping: function-mode tables may belong to the module.
+	lines = {}
+	twipe(sortedLines)
+	twipe(icons)
+	twipe(value)
+	currentEvent = nil
+	for _, line in ipairs(frame.lines) do
+		line:SetText("")
+		line:Hide()
+	end
+	frame.header:Hide()
+	directMode = true
+	modLines = modMaxLines or 5
+	modCols = modMaxLines and modMaxLines >= 10 and 2 or 1
+	directLeftWidth, directRightWidth = leftWidth, rightWidth
+	if not directHeader then
+		directHeader = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+		directHeader:SetTextColor(1, 1, 1)
+		directHeader:SetJustifyH("LEFT")
+		directHeader:SetPoint("BOTTOMLEFT", frame, "TOPLEFT", 2, 2)
+	end
+	updateDirectLayout()
+	frame:Show()
+	if not frame:IsVisible() then return false end
+	directHeader:Show()
+	directHeader:SetText(L.INFOFRAME_TITLE)
+	return true
+end
+
+-- Text is forwarded verbatim, including nil. Never inspect, cache, or schedule either cell.
+-- Row/color controls must be public; colors use the same convention as SetLine.
+---@param row integer
+---@param leftText string|number|nil May be secret
+---@param rightText string|number|nil May be secret
+---@param colorR number?
+---@param colorG number?
+---@param colorB number?
+---@param color2R number?
+---@param color2G number?
+---@param color2B number?
+---@return boolean accepted
+function infoFrame:SetDirectLine(row, leftText, rightText, colorR, colorG, colorB, color2R, color2G, color2B)
+	if not canUpdateDirect() then return false end
+	checkDirectNumber(row, false, true)
+	if DBM:hasanysecretvalues(colorR, colorG, colorB, color2R, color2G, color2B) then
+		error("DBM-InfoFrame: direct color controls must not be secret", 2)
+	end
+	updateDirectLayout()
+	if row > maxLines * maxCols then return false end
+	directRows[row] = true
+	updateDirectLayout()
+	local index = row * 2 - 1
+	directLines[index]:SetTextColor(colorR or 255, colorG or 255, colorB or 255)
+	directLines[index + 1]:SetTextColor(color2R or 255, color2G or 255, color2B or 255)
+	directLines[index]:SetText(leftText)
+	directLines[index + 1]:SetText(rightText)
+	return true
+end
+
+-- Replaces all rows with ordered left/right pairs. An odd last argument has a blank right cell.
+-- No tables, sorting, callbacks, or delayed updates; overflow is discarded.
+---@param ... string|number|nil Cell text, possibly secret
+---@return boolean accepted
+function infoFrame:UpdateDirect(...)
+	if not canUpdateDirect() then return false end
+	clearDirectLines()
+	updateDirectLayout()
+	local rows = mmin(mceil(select("#", ...) / 2), maxLines * maxCols)
+	for row = 1, rows do directRows[row] = true end
+	updateDirectLayout()
+	for row = 1, rows do
+		local index = row * 2 - 1
+		directLines[index]:SetTextColor(255, 255, 255)
+		directLines[index + 1]:SetTextColor(255, 255, 255)
+		directLines[index]:SetText((select(index, ...)))
+		directLines[index + 1]:SetText((select(index + 1, ...)))
+	end
+	return true
+end
+
+---@param text string|number|nil Header text, possibly secret; nil clears
+---@return boolean accepted
+function infoFrame:SetDirectHeader(text)
+	if not canUpdateDirect() then return false end
+	directHeader:Show()
+	directHeader:SetText(text)
+	return true
+end
+
 function infoFrame:RegisterCallback(cb)
 	updateCallbacks[#updateCallbacks + 1] = cb
 end
 
 function infoFrame:Update(time)
+	if currentEvent == "bossdistance" then
+		DBM:Unschedule(updateBossDistance)
+		if time then
+			DBM:Schedule(time, updateBossDistance, displayGeneration)
+		else
+			updateBossDistance()
+		end
+		return
+	end
+	if directMode then return end
 	if not frame then
 		createFrame()
 	end
@@ -1295,6 +1659,7 @@ function infoFrame:Update(time)
 end
 
 function infoFrame:UpdateTable(table, time)
+	if directMode then return end
 	if not frame then
 		createFrame()
 	end
@@ -1309,6 +1674,7 @@ function infoFrame:UpdateTable(table, time)
 end
 
 function infoFrame:SetHeader(text)
+	if directMode or DBM:issecretvalue(text) then return false end
 	if not frame then
 		createFrame()
 	end
@@ -1316,6 +1682,11 @@ function infoFrame:SetHeader(text)
 end
 
 function infoFrame:ClearLines()
+	if directMode then
+		clearDirectLines()
+		updateDirectLayout()
+		return
+	end
 	if not frame then
 		createFrame()
 	end
@@ -1353,9 +1724,11 @@ function infoFrame:UpdateStyle()
 	for i = 1, #frame.lines do
 		frame.lines[i]:SetFont(font, size, style)
 	end
+	if directMode then updateDirectLayout() end
 end
 
 function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB, color2R, color2G, color2B)
+	if directMode or DBM:hasanysecretvalues(leftText, rightText) then return false end
 	if not frame then
 		createFrame()
 	end
@@ -1377,6 +1750,12 @@ function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB,
 end
 
 function infoFrame:Hide()
+	stopBossDistance()
+	displayGeneration = displayGeneration + 1
+	DBM:Unschedule(onUpdate)
+	clearDirectDisplay()
+	directMode = false
+	directLeftWidth, directRightWidth = nil, nil
 	twipe(lines)
 	twipe(icons)
 	twipe(sortedLines)
@@ -1389,23 +1768,28 @@ function infoFrame:Hide()
 			frame.ticker = nil
 		end
 		frame:Hide()
+		frame.header:Show()
 	end
 	currentEvent = nil
 	sortMethod = 1
 end
 
 function infoFrame:SetLines(lines)
+	if directMode then checkDirectNumber(lines, false, true) end
 	modLines = lines
 	if DBM.Options.InfoFrameLines == 0 then
 		maxLines = lines
 	end
+	if directMode then updateDirectLayout() end
 end
 
 function infoFrame:SetColumns(columns)
+	if directMode then checkDirectNumber(columns, false, true) end
 	modCols = columns
 	if DBM.Options.InfoFrameCols == 0 then
 		maxCols = columns
 	end
+	if directMode then updateDirectLayout() end
 end
 
 function infoFrame:SetStrata(strata)

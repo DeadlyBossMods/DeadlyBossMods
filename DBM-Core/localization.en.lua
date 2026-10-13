@@ -235,6 +235,32 @@ L.PIZZA_ERROR_USAGE						= "Usage: /dbm [broadcast] timer <time> <text>. <time> 
 L.MINIMAP_TOOLTIP_HEADER				= L.DEADLY_BOSS_MODS --Technically redundant -- OPTIONAL
 L.MINIMAP_TOOLTIP_FOOTER				= "Hold shift and drag to move"
 
+L.RANGE_TEST_READY						= "Item range test (%s): requesting data for %d items. Keep the unit selected and stay out of combat."
+L.RANGE_TEST_INVALID					= "Item range test requires a living, visible friendly or hostile unit and must run out of combat."
+L.RANGE_TEST_UNSUPPORTED				= "Item range test: item range or item cache APIs are unavailable on this client."
+L.RANGE_TEST_ABORTED					= "Item range test canceled: the unit changed, became unavailable, or combat/loading began."
+L.RANGE_TEST_PASS						= "%d yards: item %d (%s), IsItemInRange=%s%s"
+L.RANGE_TEST_FAIL						= "%d yards: no usable item (cached nil: %d, cache failures/timeouts: %d)."
+L.RANGE_TEST_INCOMPLETE					= "%d yards: incomplete (cached nil: %d, cache failures/timeouts: %d)."
+L.RANGE_TEST_PARTIAL					= " (earlier candidates could not be cached)"
+L.RANGE_TEST_HEADER						= "DBM item range results (%s). Copy this string; ranges include +3 yards."
+L.RANGE_TEST_NODATA						= "No completed item range test is available. Run DBM:TestRanges first."
+L.RANGE_TEST_DONE						= "Item range test complete: %d passed, %d failed, %d incomplete. Use DBM:ShowRangeTestResults() to copy results."
+L.RANGE_TEST_SELF						= "Testing yourself does not establish that these items work on another player."
+L.RANGE_DISTANCE_NOCANDIDATES			= "Run DBM:TestRanges first and wait for usable items before measuring their distances."
+L.RANGE_DISTANCE_INVALID				= "Distance calibration requires another living, visible unit, outside combat and unrestricted maps. A party/raid player outdoors is recommended."
+L.RANGE_DISTANCE_UNAVAILABLE			= "Distance calibration: checked, non-secret UnitDistanceSquared readings or item range APIs are unavailable. Try a party/raid player outdoors."
+L.RANGE_DISTANCE_READY					= "Measuring %d items (tolerance +/-0.5 yards). Keep the other player still; walk slowly outward and back through the boundaries. Stop/export with DBM:StopRangeDistances(true)."
+L.RANGE_DISTANCE_REACQUIRE				= "Please reacquire your original target to continue range calibration."
+L.RANGE_DISTANCE_ABORTED				= "Distance calibration aborted: unit, combat, loading, restrictions, or distance availability changed. Partial evidence retained; no PASS results."
+L.RANGE_DISTANCE_NODATA					= "No stopped distance calibration is available. Run DBM:TestRangeDistances, then DBM:StopRangeDistances."
+L.RANGE_DISTANCE_HEADER					= "DBM distance calibration. Copy this string; expected ranges include +3 yards, with +/-0.5 yards tolerance."
+L.RANGE_DISTANCE_ROW					= "%d yards: item %d (%s), %s; farthest true=%s, nearest false=%s; true/false=%d/%d, mismatches=%d, unavailable=%d%s"
+L.RANGE_DISTANCE_PASS					= "PASS"
+L.RANGE_DISTANCE_FAIL					= "FAIL"
+L.RANGE_DISTANCE_INCOMPLETE				= "INCOMPLETE (insufficient boundary coverage, contradictory readings, unavailable samples, or aborted run)"
+L.RANGE_DISTANCE_DONE					= "Distance calibration stopped: %d passed, %d failed, %d incomplete. Use DBM:ShowRangeDistanceResults() to copy results."
+
 L.RANGECHECK_HEADER						= "Range Check (%dy)"
 L.RANGECHECK_HEADERT					= "Range Check (%dy-%dP)"
 L.RANGECHECK_RHEADER					= "R-Range Check (%dy)"
@@ -259,6 +285,9 @@ L.RANGECHECK_IN_RANGE_TEXT				= "%d in range"--Text based doesn't need (%dyd), e
 L.RANGERADAR_IN_RANGE_TEXTONE			= "%s (%0.1fy)"--One target
 
 L.INFOFRAME_TITLE						= "DBM Info Frame"
+L.INFOFRAME_BOSS_DISTANCE				= "Boss Distance"
+L.INFOFRAME_BOSS_DISTANCE_RANGE			= GetLocale() == "enUS" and "%dy - %dy" or "%dm - %dm"
+L.INFOFRAME_BOSS_DISTANCE_OVER			= GetLocale() == "enUS" and "> %dy" or "> %dm"
 L.INFOFRAME_SHOW_SELF					= "Always show your power"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES					= "Set max lines"
 L.INFOFRAME_SETCOLS						= "Set max columns"
@@ -286,6 +315,17 @@ L.SLASHCMD_HELP							= {
 	"/dbm lag: Performs a raid-wide latency check.",
 	"/dbm durability: Performs a raid-wide durability check.",
 	"/dbm brez: Shows the battle resurrection timer frame for positioning.",
+	"/dbm help2: Shows additional slash commands"
+}
+L.SLASHCMD_HELP_CLASSIC							= {
+	"Available slash commands:",
+	"-----------------",
+	"/dbm unlock: Shows a movable status bar timer (alias: move).",
+	"/dbm pull <sec>: Sends a pull timer for <sec> seconds to the raid (requires promoted. alias: pull).",
+	"/dbm break <min>: Sends a break timer for <min> minutes to the raid (requires promoted. alias: break).",
+	"/dbm timer: Starts a custom " .. L.DBM .. " timer, see '/dbm timer' for details.",
+	"/dbm lag: Performs a raid-wide latency check.",
+	"/dbm durability: Performs a raid-wide durability check.",
 	"/dbm help2: Shows additional slash commands"
 }
 --Less used slash commands
@@ -419,7 +459,6 @@ L.AUTO_SPEC_WARN_TEXTS = {
 	link								= "%s linked with >%%s<",
 	defensive							= "%s - defensive",
 	taunt								= "%s on >%%s< - taunt now",
-	tauntsecret							= "%s on %%s - taunt now",
 	close								= "%s on >%%s< near you",
 	move								= "%s - move away",
 	keepmove							= "%s - keep moving",
@@ -766,7 +805,6 @@ L.DBM_INSTALL_PACKAGE_MOP		= "Mist of Pandaria package"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "Dungeons, Delves, Challenges, and Events package"
 
 -- Tests
-L.DBM_TAINTED_BY_TESTS			= "DBM was used in test mode with time warping in the current session, it is recommended to reload your UI prior to using DBM in a real boss fight. Everything should still work as expected, but no gurantees!"
 
 -- Boss tooltip
 L.TOOLTIP_DBM					= L.DBM .. " info"
@@ -832,3 +870,4 @@ L.MN_DBM_TIMELINE		= "DBM Bars"
 L.MN_WARNIGS_HEADER		= "Do you want to use Blizzard Encounter Warnings, or DBM Encounter Warnings?"
 L.MN_BLIZZARD_WARNINGS	= "Blizzard Warnings"
 L.MN_DBM_WARNINGS		= "DBM Warnings"
+L.MN_TEXT_TIMERS_HEADER	= "Do you want to use timer text?\n(Uses DBM bar data, even if not shown)"

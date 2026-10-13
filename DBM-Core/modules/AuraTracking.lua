@@ -19,6 +19,13 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 ---@field ClearDurationText fun(self: DBMAuraButton)
 ---@field SetApplicationCount fun(self: DBMAuraButton, region: FontString, options: table)
 ---@field ClearApplicationCount fun(self: DBMAuraButton)
+---@field AddAuraShownAnimation fun(self: DBMAuraButton, animation: AnimationGroup)
+---@field RemoveAuraShownAnimation fun(self: DBMAuraButton, animation: AnimationGroup)
+
+---@class DBMAuraGlow
+---@field frame Frame
+---@field animation AnimationGroup
+---@field registered boolean?
 
 ---@class DBMAuraContainer: Frame
 ---@field SetEnabled fun(self: DBMAuraContainer, enabled: boolean)
@@ -78,6 +85,7 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 ---@field StackYOffset number
 ---@field ShowStacks boolean
 ---@field ShowDispelBorder boolean
+---@field ShowAuraGlow boolean
 ---@field NameFontSize number
 ---@field NameXOffset number
 ---@field NameYOffset number
@@ -98,6 +106,7 @@ DBM.Auras = AuraTracking
 ---@field DurationColorCurves table<integer, table>
 ---@field DurationObjects table<integer, table>
 ---@field StackTexts table<integer, FontString>
+---@field Glows table<integer, DBMAuraGlow>?
 ---@field Border Frame?
 ---@field NameLabel FontString?
 
@@ -187,6 +196,7 @@ local function GetAuraSettings(prefix)
 		StackYOffset = DBM.Options[prefix .. "StackYOffset"] or DBM.DefaultOptions[prefix .. "StackYOffset"],
 		ShowStacks = DBM.Options[prefix .. "ShowStacks"],
 		ShowDispelBorder = DBM.Options[prefix .. "ShowDispelBorder"],
+		ShowAuraGlow = DBM:GetTOC() >= 120105 and DBM.Options[prefix .. "ShowAuraGlow"] == true,
 		NameFontSize = DBM.Options[prefix .. "NameFontSize"] or DBM.DefaultOptions[prefix .. "NameFontSize"],
 		NameXOffset = DBM.Options[prefix .. "NameXOffset"] or DBM.DefaultOptions[prefix .. "NameXOffset"],
 		NameYOffset = DBM.Options[prefix .. "NameYOffset"] or DBM.DefaultOptions[prefix .. "NameYOffset"],
@@ -224,6 +234,37 @@ end
 local function GetAuraDecimalThreshold(settings)
 	if not settings.ShowDecimalSeconds then return 0 end
 	return math.min(math.max(tonumber(settings.DecimalThreshold) or 3, 0.1), 59.9)
+end
+
+-- Settings snapshots are recreated on refresh; cache by the stable option prefix instead.
+local auraDurationFormatterCache = {}
+
+---@param settings DBMAuraSettings
+local function GetAuraDurationFormatter(settings)
+	local decimalThreshold = GetAuraDecimalThreshold(settings)
+	local prefix = settings.optionPrefix
+	local cached = auraDurationFormatterCache[prefix]
+	if cached and cached.decimalThreshold == decimalThreshold then
+		return cached.formatter
+	end
+
+	local formatter = C_StringUtil.CreateNumericRuleFormatter()
+	local breakpoints = {
+		{ threshold = 0.01, format = "" },
+	}
+	if decimalThreshold > 0 then
+		table.insert(breakpoints, { threshold = 0.011, format = "%0.1f" })
+		table.insert(breakpoints, { threshold = decimalThreshold, format = "%d" })
+	else
+		table.insert(breakpoints, { threshold = 0.011, format = "%d" })
+	end
+	formatter:SetBreakpoints(breakpoints)
+	-- Replace rather than mutate formatters that may still be attached to other bindings.
+	auraDurationFormatterCache[prefix] = {
+		decimalThreshold = decimalThreshold,
+		formatter = formatter,
+	}
+	return formatter
 end
 
 ---@param settings DBMAuraSettings
@@ -342,6 +383,65 @@ local function GetNameLabelOffsets(settings)
 	return xOffset, settings.NameYOffset
 end
 
+---@param parent Frame
+---@param icon Texture
+---@return DBMAuraGlow
+local function CreateAuraGlow(parent, icon)
+	local frame = CreateFrame("Frame", nil, parent)
+	frame:SetPoint("TOPLEFT", icon, "TOPLEFT", -3, 3)
+	frame:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 3, -3)
+	frame:SetFrameLevel(parent:GetFrameLevel() + 2)
+	local animation = frame:CreateAnimationGroup()
+	animation:SetLooping("BOUNCE")
+	-- Build every target and animation before native registration adopts them.
+	for i = 1, 4 do
+		local texture = frame:CreateTexture(nil, "OVERLAY")
+		texture:SetColorTexture(1, 0.8, 0, 1)
+		texture:SetBlendMode("ADD")
+		if i == 1 then
+			texture:SetPoint("TOPLEFT")
+			texture:SetPoint("TOPRIGHT")
+			texture:SetHeight(3)
+		elseif i == 2 then
+			texture:SetPoint("BOTTOMLEFT")
+			texture:SetPoint("BOTTOMRIGHT")
+			texture:SetHeight(3)
+		elseif i == 3 then
+			texture:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, -3)
+			texture:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 0, 3)
+			texture:SetWidth(3)
+		else
+			texture:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 0, -3)
+			texture:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 3)
+			texture:SetWidth(3)
+		end
+		local pulse = animation:CreateAnimation("Alpha")
+		pulse:SetTarget(texture)
+		pulse:SetOrder(1)
+		pulse:SetDuration(0.6)
+		pulse:SetFromAlpha(0.25)
+		pulse:SetToAlpha(1)
+	end
+	return { frame = frame, animation = animation }
+end
+
+---@param glow DBMAuraGlow?
+local function StopAuraGlow(glow)
+	if not glow then return end
+	glow.animation:Stop()
+	glow.frame:Hide()
+end
+
+---@param frame Frame?
+local function StopPreviewGlows(frame)
+	if not frame then return end
+	---@cast frame DBMAuraPreviewFrame
+	if not frame.Glows then return end
+	for _, glow in pairs(frame.Glows) do
+		StopAuraGlow(glow)
+	end
+end
+
 ---@param frame Frame
 ---@param settings table
 ---@param index integer
@@ -387,6 +487,17 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	overlayFrame:ClearAllPoints()
 	overlayFrame:SetAllPoints(icon)
 	overlayFrame:SetFrameLevel(frame:GetFrameLevel() + 3)
+
+	if settings.ShowAuraGlow then
+		frame.Glows = frame.Glows or {}
+		frame.Glows[index] = frame.Glows[index] or CreateAuraGlow(frame, icon)
+		local glow = frame.Glows[index]
+		glow.frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+		glow.frame:Show()
+		glow.animation:Play() -- Preview only; live playback belongs to Blizzard.
+	elseif frame.Glows then
+		StopAuraGlow(frame.Glows[index])
+	end
 
 	if settings.ShowDispelBorder and not settings.HideBorder then
 		if not frame.BorderTextures[index] then
@@ -446,20 +557,8 @@ local function ConfigurePreviewSlot(frame, settings, index, texture, dispelType,
 	end
 	local durationText = frame.DurationTexts[index]
 	durationText:SetFont(fontPath, settings.DurationFontSize, fontFlags)
-	local formatter = C_StringUtil.CreateNumericRuleFormatter()
-	local decimalThreshold = GetAuraDecimalThreshold(settings)
-	local breakpoints = {
-		{ threshold = 0.01, format = "" },
-	}
-	if decimalThreshold > 0 then
-		table.insert(breakpoints, { threshold = 0.011, format = "%0.1f" })
-		table.insert(breakpoints, { threshold = decimalThreshold, format = "%d" })
-	else
-		table.insert(breakpoints, { threshold = 0.011, format = "%d" })
-	end
-	formatter:SetBreakpoints(breakpoints)
 	local durationBinding = frame.DurationBindings[index]
-	durationBinding:SetFormatter(formatter)
+	durationBinding:SetFormatter(GetAuraDurationFormatter(settings))
 	local colorCurve = frame.DurationColorCurves[index]
 	colorCurve:ClearPoints()
 	local durationColor = settings.DurationColor
@@ -517,6 +616,23 @@ local function ConfigureButton(state, button, settings, unit)
 
 	button:SetSize(settings.Width, settings.Height)
 	regions.textOverlay:SetFrameLevel(button:GetFrameLevel() + 3)
+	if settings.ShowAuraGlow then
+		regions.glow = regions.glow or CreateAuraGlow(button, regions.icon)
+		local glow = regions.glow
+		glow.frame:SetFrameLevel(button:GetFrameLevel() + 2)
+		if not glow.registered then
+			button:AddAuraShownAnimation(glow.animation)
+			glow.registered = true
+		end
+		glow.frame:Show()
+	elseif regions.glow then
+		local glow = regions.glow
+		StopAuraGlow(glow)
+		if glow.registered then
+			button:RemoveAuraShownAnimation(glow.animation)
+			glow.registered = false
+		end
+	end
 	local fontPath, fontFlags = GetAuraTextFontSettings(settings)
 	local durationFontSize = tonumber(settings.DurationFontSize) or tonumber(DBM.DefaultOptions[prefix .. "DurationFontSize"]) or 12
 	local stackFontSize = tonumber(settings.StackFontSize) or tonumber(DBM.DefaultOptions[prefix .. "StackFontSize"]) or 12
@@ -585,19 +701,7 @@ local function ConfigureButton(state, button, settings, unit)
 	end
 	local durationText = regions.durationText
 	durationText:SetFont(fontPath, durationFontSize, fontFlags)
-	local formatter = C_StringUtil.CreateNumericRuleFormatter()
-	local decimalThreshold = GetAuraDecimalThreshold(settings)
-	local breakpoints = {
-		{ threshold = 0.01, format = "" },
-	}
-	if decimalThreshold > 0 then
-		table.insert(breakpoints, { threshold = 0.011, format = "%0.1f" })
-		table.insert(breakpoints, { threshold = decimalThreshold, format = "%d" })
-	else
-		table.insert(breakpoints, { threshold = 0.011, format = "%d" })
-	end
-	formatter:SetBreakpoints(breakpoints)
-	regions.durationBinding:SetFormatter(formatter)
+	regions.durationBinding:SetFormatter(GetAuraDurationFormatter(settings))
 	local colorCurve = regions.durationColorCurve
 	colorCurve:ClearPoints()
 	local durationColor = settings.DurationColor
@@ -784,6 +888,11 @@ local function HideContainerState(self, key)
 		state.container:SetEnabled(false)
 		state.container:Hide()
 	end
+	if state.buttonRegions then
+		for _, regions in pairs(state.buttonRegions) do
+			StopAuraGlow(regions.glow)
+		end
+	end
 	if state.anchor then
 		state.anchor:Hide()
 	end
@@ -812,6 +921,7 @@ local function stopMoving(self, player)
 	self.IsInPreview = false
 	if player == nil or player then
 		if self.PlayerPreview then
+			StopPreviewGlows(self.PlayerPreview)
 			self.PlayerPreview:Hide()
 			self.PlayerPreview:SetMovable(false)
 			self.PlayerPreview:EnableMouse(false)
@@ -819,11 +929,13 @@ local function stopMoving(self, player)
 	end
 	if player == nil or not player then
 		if self.CoTankPreview then
+			StopPreviewGlows(self.CoTankPreview)
 			self.CoTankPreview:Hide()
 			self.CoTankPreview:SetMovable(false)
 			self.CoTankPreview:EnableMouse(false)
 		end
 		if self.CoTankPreview2 then
+			StopPreviewGlows(self.CoTankPreview2)
 			self.CoTankPreview2:Hide()
 		end
 	end
@@ -867,6 +979,7 @@ local function UpdatePreviewFrame(frame, settings, texture, name)
 			ConfigurePreviewSlot(frame, settings, i, texture, AuraTrackingPreviewDispelTypes[((i - 1) % #AuraTrackingPreviewDispelTypes) + 1], previewOrder[i])
 		elseif frame.Textures[i] then
 			frame.Textures[i]:Hide()
+			if frame.Glows then StopAuraGlow(frame.Glows[i]) end
 			if frame.BorderTextures[i] then
 				frame.BorderTextures[i]:Hide()
 			end
@@ -1076,6 +1189,7 @@ function AuraTracking:OnSettingsChange(player)
 			UpdatePreviewFrame(self.CoTankPreview2, GetCoTankSettings(2), 236318, "Co-Tank 2")
 			self.CoTankPreview2:Show()
 		elseif self.CoTankPreview2 then
+			StopPreviewGlows(self.CoTankPreview2)
 			self.CoTankPreview2:Hide()
 		end
 	end
@@ -1174,6 +1288,7 @@ function AuraTracking:PreviewToggle()
 				UpdatePreviewFrame(self.CoTankPreview2, CoTankSettings2, 236318, "Co-Tank 2")
 				self.CoTankPreview2:Show()
 			elseif self.CoTankPreview2 then
+				StopPreviewGlows(self.CoTankPreview2)
 				self.CoTankPreview2:Hide()
 			end
 		end

@@ -300,7 +300,7 @@ do
 		text = text:sub(1, 16)
 		--No UnitName in instances at all in midnight
 		if not (DBM:IsRestricted() and IsInInstance()) then
-			text = text:gsub("%%t", UnitName("target") or "<no target>")
+			text = text:gsub("%%t", (private.isForever and GetUnitName("target") or UnitName("target")) or "<no target>")
 		end
 		return text
 	end

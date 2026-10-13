@@ -43,7 +43,6 @@ local CL = DBM_COMMON_L
 
 local tableUtils = private:GetPrototype("TableUtils")
 local difficulties = private:GetPrototype("Difficulties")
-local test = private:GetPrototype("DBMTest")
 
 -------------------------------
 --  Globals/Default Options  --
@@ -77,15 +76,13 @@ local function showRealDate(curseDate)
 end
 
 DBM.Revision = parseCurseDate("@project-date-integer@")
-DBM.TaintedByTests = false -- Tests may mess with some internal state, you probably don't want to rely on DBM for an important boss fight after running it in test mode
-
 private.fakeBWVersion, private.fakeBWHash = 424, "754bdce"--424.7
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.10 alpha"--Core version
+DBM.DisplayVersion = "12.1.14 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 9, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 10, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -134,7 +131,9 @@ private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDis
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
-local playerName = UnitName("player")
+local playerName = private.playerName
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
+local playerGUID = UnitGUID("player")
 private.playerLevel = UnitLevel("player")
 private.LastInstanceType = nil
 local playerRealm = GetRealmName()
@@ -287,8 +286,6 @@ local PlaySoundFile = PlaySoundFile
 local Ambiguate = Ambiguate
 local C_TimerAfter = C_Timer.After
 
--- Store globals that can be hooked/overriden by tests in private
-private.GetInstanceInfo = GetInstanceInfo
 private.IsEncounterInProgress = C_InstanceEncounter and C_InstanceEncounter.IsEncounterInProgress or IsEncounterInProgress
 
 -- this is not technically a lib and instead a standalone addon but the api is available via LibStub
@@ -377,53 +374,95 @@ function DBM:IsSeasonal(season)
 end
 
 
---Catch alls to basically allow encounter mods to use pre retail changes within mods
+---Catch alls to basically allow encounter mods to use pre retail changes within mods
+---Includes Vanilla, The Burning Crusade, Wrath of the Lich King, Cataclysm, Mists of Pandaria
 ---@param self DBMModOrDBM
 function DBM:IsClassic()
 	return not private.isRetail
 end
 bossModPrototype.IsClassic = DBM.IsClassic
 
+---Includes just the standard retail version of game
 ---@param self DBMModOrDBM
 function DBM:IsRetail()
 	return private.isRetail
 end
 bossModPrototype.IsRetail = DBM.IsRetail
 
+---Check if the game version is Vanilla Based
+---True for both Vanilla and Vanilla Forever
+---@param self DBMModOrDBM
+function DBM:IsVanilla()
+	return private.isClassic or private.isForever
+end
+bossModPrototype.IsVanilla = DBM.IsVanilla
+
+---Check if the game version is Vanilla Era
+---True only for the original Vanilla (Classic) version
+---@param self DBMModOrDBM
+function DBM:IsVanillaEra()
+	return private.isClassic
+end
+bossModPrototype.IsVanillaEra = DBM.IsVanillaEra
+
+---Check if the game version is Vanilla Forever
+---True only for the Vanilla Forever version
+---@param self DBMModOrDBM
+function DBM:IsForever()
+	return private.isForever
+end
+bossModPrototype.IsForever = DBM.IsForever
+
+---Check if the game version is The Burning Crusade (TBC)
+---@param self DBMModOrDBM
+function DBM:IsTBC()
+	return private.isBCC
+end
+bossModPrototype.IsTBC = DBM.IsTBC
+
+---Check if the game version is Wrath of the Lich King (WotLK)
+---@param self DBMModOrDBM
+function DBM:IsWrath()
+	return private.isWrath
+end
+bossModPrototype.IsWrath = DBM.IsWrath
+
+---Check if the game version is Cataclysm (Cata)
 ---@param self DBMModOrDBM
 function DBM:IsCata()
 	return private.isCata
 end
 bossModPrototype.IsCata = DBM.IsCata
 
+---Check if the game version is Mists of Pandaria (MoP)
 ---@param self DBMModOrDBM
 function DBM:IsMop()
 	return private.isMop
 end
 bossModPrototype.IsMop = DBM.IsMop
 
+---Check if the game version is Cataclysm (Cata) or later
 ---@param self DBMModOrDBM
 function DBM:IsPostCata()
 	return private.isCata or private.isMop or private.isRetail
 end
 bossModPrototype.IsPostCata = DBM.IsPostCata
 
+---Check if the game version is post-MoP (Mists of Pandaria) or later
+---@param self DBMModOrDBM
 function DBM:IsPostMoP()
 	return private.isRetail or private.isMop
 end
+bossModPrototype.IsPostMoP = DBM.IsPostMoP
 
----Currently same as isRetail check, but if restrictions ever come to classic we'll still have one function for checking addongeddon api
----@param self DBMModOrDBM
-function DBM:IsPostMidnight()
-	return private.isRetail
-end
-bossModPrototype.IsPostMidnight = DBM.IsPostMidnight
-
+---Check if the game version one of mainline clients that use restrictions
+---Includes standard retail and Vanilla Forever)
 ---@param self DBMModOrDBM
 function DBM:IsRestricted()
 	return private.isRetail or private.isForever
 end
 bossModPrototype.IsRestricted = DBM.IsRestricted
+DBM.IsPostMidnight = DBM.IsRestricted--Temp compat wrapper. Deprecated
 
 ---@param self DBMModOrDBM
 ---@param includeAuras boolean?
@@ -468,18 +507,25 @@ function DBM:ResumeBlizzardAPI()
 		DBM.Options.IgnoreBlizzAPI = false
 		fireEvent("DBM_ResumeBlizzAPI")
 	end
-	--Cancel any hardcoded bars that are still running to avoid duplicates once Blizzard bars are recovered
+	--Cancel hardcoded bars and their producer-owned text-only counterparts before
+	-- recovering Blizzard timers, so rejected predictions cannot keep counting down.
 	if private.hardCodedTimers then
 		for _, timerIds in pairs(private.hardCodedTimers) do
 			if type(timerIds) == "table" then
 				for _, timerId in ipairs(timerIds) do
 					DBT:CancelBar(timerId)
+					local owner = private.hardCodedTimerOwners and private.hardCodedTimerOwners[timerId]
+					if owner then owner:StopTextOnly(timerId) end
 				end
 			else
 				DBT:CancelBar(timerIds)
+				local owner = private.hardCodedTimerOwners and private.hardCodedTimerOwners[timerIds]
+				if owner then owner:StopTextOnly(timerIds) end
 			end
 		end
 		wipe(private.hardCodedTimers)
+		if private.hardCodedTimerOwners then wipe(private.hardCodedTimerOwners) end
+		if private.hardCodedTimerEvents then wipe(private.hardCodedTimerEvents) end
 	end
 	DBM:RecoverBlizzardTimers()
 end
@@ -1088,8 +1134,6 @@ do
 			end
 		end
 	end
-	private.mainEventHandler = handleEvent -- Only for testing.
-
 	local registerUnitEvent, unregisterUnitEvent, registerSpellId, unregisterSpellId, registerCLEUEvent, unregisterCLEUEvent
 	do
 		local frames = {} -- frames that are being used for unit events, one frame per unit id (this could be optimized, as it currently creates a new frame even for a different event, but that's not worth the effort as 90% of all calls are just boss1 anyways)
@@ -1199,7 +1243,6 @@ do
 
 		---@param mod DBMModOrDBM
 		function unregisterCLEUEvent(mod, event)
-			test:Trace(mod, "UnregisterEvents", "Regular", event)
 			local argTable = {strsplit(" ", event)}
 			local eventCleared = false
 			-- filtered cleu event. save information in registeredSpellIds table.
@@ -1263,7 +1306,6 @@ do
 	---@param self DBMModOrDBM
 	---@param ... DBMEvent|string
 	function DBM:RegisterEvents(...)
-		test:Trace(self, "RegisterEvents", "Regular", ...)
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
 			if not self:IsRestricted() or self:IsRestricted() and not (restrictedEvents[event] or event:sub(0, 5) == "UNIT_") then
@@ -1314,7 +1356,6 @@ do
 	---@param ... DBMEvent|string
 	--This is a custom handler used for midnight prepatch and later that does NOT restrict event but rather trusts module to only register safe events
 	function DBM:RegisterSafeEvents(...)
-		test:Trace(self, "RegisterEvents", "Regular", ...)
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
 			-- spell events with special care.
@@ -1360,7 +1401,6 @@ do
 	---@param mod DBMModOrDBM
 	local function unregisterUEvent(mod, event)
 		if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
-			test:Trace(mod, "UnregisterEvents", "Regular", event)
 			local eventName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 			if eventName:sub(-11) == "_UNFILTERED" then
 				mainFrame:UnregisterEvent(eventName:sub(0, -12))
@@ -1411,7 +1451,6 @@ do
 				local match = false
 				for i = #mods, 1, -1 do
 					if mods[i] == self and (self.inCombatOnlyEvents and checkEntry(self.inCombatOnlyEvents, event) or self.inCombatOnlySafeEvents and checkEntry(self.inCombatOnlySafeEvents, event)) then
-						test:Trace(self, "UnregisterEvents", "InCombat", event)
 						tremove(mods, i)
 						match = true
 					end
@@ -1430,7 +1469,6 @@ do
 	---@param ... DBMEvent|string
 	function DBM:RegisterShortTermEvents(...)
 		DBM:Debug("RegisterShortTermEvents fired", 3)
-		test:Trace(self, "RegisterEvents", "ShortTerm", ...)
 		local _shortTermRegisterEvents = {...}
 		for k, v in pairs(_shortTermRegisterEvents) do
 			if v:sub(0, 5) == "UNIT_" and v:sub(-11) ~= "_UNFILTERED" and not v:find(" ") and v ~= "UNIT_DIED" and v ~= "UNIT_DESTROYED" then
@@ -1472,7 +1510,6 @@ do
 					local match = false
 					for i = #mods, 1, -1 do
 						if mods[i] == self and checkEntry(self.shortTermRegisterEvents, event) then
-							test:Trace(self, "UnregisterEvents", "ShortTerm", event)
 							tremove(mods, i)
 							match = true
 						end
@@ -1496,7 +1533,6 @@ do
 	---Don't Use this to unregister short term events or "InCombat" events most mods use.
 	---This is strictly for Core events boss mods do NOT use.
 	function DBM:UnregisterEvents(...)
-		test:Trace(self, "UnregisterEvents", "Regular", ...)
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
 			-- spell events with special care.
@@ -1589,14 +1625,7 @@ do
 		end
 	end
 	mainFrame:SetScript("OnEvent", handleEvent)
-
-	test:RegisterLocalHook("CombatLogGetCurrentEventInfo", function(val)
-		local old = CombatLogGetCurrentEventInfo
-		CombatLogGetCurrentEventInfo = val
-		return old
-	end)
 end
-
 --------------
 --  OnLoad  --
 --------------
@@ -1771,24 +1800,29 @@ do
 				xpcall(v, geterrorhandler())
 			end
 			onLoadCallbacks = nil
+			local updatedPlayerName = private:ReadPlayerName()
+			if updatedPlayerName and updatedPlayerName ~= private.playerName then
+				private:UpdatePlayerName(updatedPlayerName)
+			end
+			private:ClearPlayerNameCallbacks()
 			self:LoadOptions()
-			DBM_ModsToLoadWithFullTestSupport = DBM_ModsToLoadWithFullTestSupport or {} -- Separate saved var because tests mess with the usual saved vars temporarily
-			DBM_ModsToLoadWithFullTestSupport.bossModsWithTests = DBM_ModsToLoadWithFullTestSupport.bossModsWithTests or {}
-			DBM_ModsToLoadWithFullTestSupport.addonsWithTests = DBM_ModsToLoadWithFullTestSupport.addonsWithTests or {}
 			DBT:LoadOptions("DBM")
+			if self.TextTimers then
+				self.TextTimers:SyncOptions()
+			end
 			self.AddOns = {}
 			private:OnModuleLoad()
-			if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("VEM-Core", playerGUID) >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infiniteLoopNotice, self, L.VEM)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerGUID) >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infiniteLoopNotice, self, L.OUTDATEDPROFILES)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerGUID) >= 1 then
 				---@type string|number
 				local version = C_AddOns.GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 				version = tonumber(string.sub(version, 2, 4)) or 0
@@ -1804,20 +1838,20 @@ do
 			if Plater and not Plater.db.profile.bossmod_support_bars_enabled and not DBM.Options.DontShowNameplateIconsCD then
 				C_TimerAfter(15, function() AddMsg(self, L.PLATER_NP_AURAS_MSG) end)
 			end
-			if C_AddOns.GetAddOnEnableState("DPMCore", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DPMCore", playerGUID) >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infiniteLoopNotice, self, L.DPMCORE)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerGUID) >= 1 then
 				self:Disable(true)
 				C_TimerAfter(15, function() AddMsg(self, L.VICTORYSOUND) end)
 				return
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-LDB", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-LDB", playerGUID) >= 1 then
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLDB) end)
 			end
-			if C_AddOns.GetAddOnEnableState("DBM-LootReminder", playerName) >= 1 then
+			if C_AddOns.GetAddOnEnableState("DBM-LootReminder", playerGUID) >= 1 then
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLOOTREMINDER) end)
 			end
 			self.Arrow:LoadPosition()
@@ -1834,7 +1868,7 @@ do
 				end
 			end
 			--Force show timeline or else we can't start timers because it won't fire events
-			if self:IsPostMidnight() then
+			if self:IsRetail() then
 				C_CVar.SetCVar("encounterTimelineShowSequenceCount", "1")--Enable count on timers
 				C_EncounterWarnings.SetPlayCustomSoundsWhenHidden(true)--Allows DBM sounds to play even when blizzard frames aren't shown
 				if not self.Options.DontSetTimelineColors then
@@ -1860,7 +1894,7 @@ do
 			self.VoiceVersions = {}
 			for i = 1, C_AddOns.GetNumAddOns() do
 				local addonName = C_AddOns.GetAddOnInfo(i)
-				local enabled = C_AddOns.GetAddOnEnableState(i, playerName)
+				local enabled = C_AddOns.GetAddOnEnableState(i, playerGUID)
 				if C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod") then
 					if enabled ~= 0 then
 						if checkEntry(deprecatedMods, addonName) then
@@ -2154,9 +2188,6 @@ do
 			private:GetModule("CombatDetection"):StartInitializationTimers()
 			self:Schedule(10, runDelayedFunctions, self)
 			self:ZONE_CHANGED_NEW_AREA()
-			playerName = UnitName("player")--In case it's unknown at login, we check it again
-			private:GetModule("CombatDetection"):SetPlayerName(playerName)
-			private.isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)--Can also fail to intialize on login on midnight alpha (Is this workaround still needed?)
 			self.Options.IgnoreBlizzAPI = false--In event it didn't get restored on combat end due to crash or reload
 			self.Options.fixBlizzApi = false
 			self.Options.DisableSWSound = false--In event it didn't get restored on combat end due to crash or reload
@@ -2213,14 +2244,14 @@ end
 --  Callbacks  --
 -----------------
 do
-	---@alias DBMCallbackEvent DBMTestEvent
-	--- |"BossMod_ShowNameplateAura"
+	---@alias DBMCallbackEvent "BossMod_ShowNameplateAura"
 	--- |"BossMod_HideNameplateAura"
 	--- |"BossMod_EnableHostileNameplates"
 	--- |"BossMod_EnableFriendlyNameplates"
 	--- |"BossMod_DisableFriendlyNameplates"
 	--- |"BossMod_DisableHostileNameplates"
 	--- |"DBM_Debug"
+	--- |"DBM_PlayerNameChanged"
 	--- |"DBM_SetStage"
 	--- |"DBM_AffixEvent"
 	--- |"DBM_EnemyEngaged"
@@ -2231,6 +2262,7 @@ do
 	--- |"DBM_TimerPause"
 	--- |"DBM_TimerResume"
 	--- |"DBM_TimerUpdateIcon"
+	--- |"DBM_TimerUpdateName"
 	--- |"DBM_NameplateBegin"
 	--- |"DBM_NameplateStart"
 	--- |"DBM_NameplateStop"
@@ -2306,6 +2338,7 @@ do
 		end
 	end
 end
+private:ActivatePlayerNameCallbacks()
 
 --------------------------
 --  OnUpdate/Scheduler  --
@@ -2337,15 +2370,15 @@ do
 	end
 
 	function DBM:LoadGUI()
-		if C_AddOns.GetAddOnEnableState("VEM-Core", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("VEM-Core", playerGUID) >= 1 then
 			self:AddMsg(L.VEM)
 			return
 		end
-		if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DBM-Profiles", playerGUID) >= 1 then
 			self:AddMsg(L.OUTDATEDPROFILES)
 			return
 		end
-		if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DBM-SpellTimers", playerGUID) >= 1 then
 			---@type number|string
 			local version = C_AddOns.GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 			version = tonumber(string.sub(version, 2, 4)) or 0
@@ -2354,11 +2387,11 @@ do
 				return
 			end
 		end
-		if C_AddOns.GetAddOnEnableState("DPMCore", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DPMCore", playerGUID) >= 1 then
 			self:AddMsg(L.DPMCORE)
 			return
 		end
-		if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerName) >= 1 then
+		if C_AddOns.GetAddOnEnableState("DBM-VictorySound", playerGUID) >= 1 then
 			self:AddMsg(L.VICTORYSOUND)
 			return
 		end
@@ -2381,7 +2414,7 @@ do
 		end
 		local firstLoad = false
 		if not C_AddOns.IsAddOnLoaded("DBM-GUI") then
-			local enabled = C_AddOns.GetAddOnEnableState("DBM-GUI", playerName)
+			local enabled = C_AddOns.GetAddOnEnableState("DBM-GUI", playerGUID)
 			if enabled == 0 then
 				C_AddOns.EnableAddOn("DBM-GUI")
 			end
@@ -2937,7 +2970,7 @@ do
 	end
 
 	function DBM:GetMyPlayerInfo()
-		return playerName, private.playerLevel, playerRealm, normalizedPlayerRealm
+		return playerName, private.playerLevel, playerRealm, normalizedPlayerRealm, playerGUID
 	end
 
 	---Intentionally grabs server name at all times, usually to make sure warning/infoframe target info can name match the combat log in the table
@@ -3430,6 +3463,22 @@ do
 				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 			end
 			DBM:Debug("Current specID set to: "..currentSpecID, 2)
+		elseif private.isForever then
+			local highestPointsSpent = 0
+			for i = 1, 3 do
+				local _, _, _, _, _, _, pointsSpent = GetSpecializationInfo(i)
+				if pointsSpent then
+					if pointsSpent > highestPointsSpent then
+						highestPointsSpent = pointsSpent
+						currentSpecGroup = i
+						currentSpecID = playerClass .. tostring(i)--Associate specID with class name and tabnumber (class is used because spec name is shared in some spots like "holy")
+						currentSpecName = currentSpecID
+					end
+				end
+			end
+			--If 0 talents are spent, then just set them to first spec to prevent nil errors
+			--This should only happen for a level 1 player or someone who's in middle of respecing
+			if not currentSpecID then currentSpecID = playerClass .. tostring(1) end
 		elseif private.isCata then
 			currentSpecGroup = GetPrimaryTalentTree()
 			if currentSpecGroup and GetTalentTabInfo(currentSpecGroup) then
@@ -3442,6 +3491,7 @@ do
 		else
 			local numTabs = GetNumTalentTabs()
 			local highestPointsSpent = 0
+			--FIX ME later on era client
 			if MAX_TALENT_TABS then
 				for i = 1, MAX_TALENT_TABS do
 					if i <= numTabs then
@@ -3584,7 +3634,6 @@ do
 			end
 			fireEvent("DBM_PlaySound", path)
 		end
-		test:Trace(self, "PlaySound", path)
 	end
 
 	local validFontFlags = {
@@ -4358,7 +4407,11 @@ function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug, custo
 		red, green, blue = 0.41, 0.8, 0.94
 	end
 	if prefix ~= false then
-		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), red, green, blue)
+		if DBM:issecretvalue(text) then
+			frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), text), red, green, blue)
+		else
+			frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), red, green, blue)
+		end
 	else
 		frame:AddMessage(text, red, green, blue)
 	end
@@ -4378,7 +4431,7 @@ do
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
 	local testSpecialWarning1, testSpecialWarning2, testSpecialWarning3
 	function DBM:DemoMode(forceOld)
-		if self:IsPostMidnight() and not forceOld then
+		if self:IsRetail() and not forceOld then
 			demoDuration = 26
 			--Run the encounter timeline demo mode instead of DBM test Bars
 			C_EncounterTimeline.AddEditModeEvents()
@@ -4462,7 +4515,7 @@ end)
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
 function DBM:RoleCheck(ignoreLoot)
 	local role
-	if private.isRetail then
+	if private.isRetail or private.isMop then
 		local spec = GetSpecialization()
 		if not spec then return end
 		role = GetSpecializationRole(spec)
@@ -4505,15 +4558,13 @@ function DBM:AntiSpam(time, id, targetName)
 	id = id or "(nil)"
 	if targetName then
 		-- Yes, mods could just piece together an id like this themselves
-		-- The actual point of this is tests: targetName may refer to the real player replaying the log due to combat log rewriting and hence needs to be filtered in the report.
+		-- Allow separate spam throttling for each target.
 		id = id .. " on " .. targetName
 	end
 	if GetTime() - (self["lastAntiSpam" .. tostring(id)] or -math.huge) > (time or 2.5) then
 		self["lastAntiSpam" .. tostring(id)] = GetTime()
-		test:Trace(self, "AntiSpam", id, targetName or false, true)
 		return true
 	end
-	test:Trace(self, "AntiSpam", id, targetName or false, false)
 	return false
 end
 
@@ -5282,32 +5333,3 @@ function bossModPrototype:SetHotfixNoticeRev(revision)
 	self.hotfixNoticeRev = (type(revision or "") == "number") and revision or parseCurseDate(revision)
 end
 
--- Expose some file-local data to private for testing purposes only.
-
---[[
-test:RegisterLocalHook("GetTime", function(val)
-	local old = GetTime
-	GetTime = val
-	return old
-end)
-
-test:RegisterLocalHook("UnitDetailedThreatSituation", function(val)
-	local old = UnitDetailedThreatSituation
-	UnitDetailedThreatSituation = val
-	return old
-end)
-
-test:RegisterLocalHook("UnitAffectingCombat", function(val)
-	local old = UnitAffectingCombat
-	UnitAffectingCombat = val
-	return old
-end)
-
-test:RegisterLocalHook("UnitGUID", function(val)
-	local old = UnitGUID
-	UnitGUID = val
-	return old
-end)
-
-private.mainFrame = mainFrame
---]]

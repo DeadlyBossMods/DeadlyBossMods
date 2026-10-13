@@ -1,6 +1,9 @@
 ---@class DBM
 local DBM = DBM
 
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 -- globals
 ---@class DBMNameplateFrame
 local nameplateFrame = {}
@@ -11,7 +14,8 @@ local units = {}
 local nameplateTimerBars = {}
 local num_units = 0
 local lastOptionsUpdateTime = GetTime()
-local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
+local playerName, playerGUID = private.playerName, UnitGUID("player")
+private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
 ---@cast GetNamePlates fun(): table[] -- https://github.com/Ketho/vscode-wow-api/issues/122
 local twipe, floor, strsub, strbyte= table.wipe, math.floor, _G.strsub, _G.strbyte
@@ -23,18 +27,7 @@ local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame, CreateRootFrame
 ---@field DBMAuraFrame DBMAuraFrame
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
-local standardFont
-if LOCALE_koKR then
-	standardFont = "Fonts\\2002.TTF"
-elseif LOCALE_zhCN then
-	standardFont = "Fonts\\ARKai_T.ttf"
-elseif LOCALE_zhTW then
-	standardFont = "Fonts\\blei00d.TTF"
-elseif LOCALE_ruRU then
-	standardFont = "Fonts\\FRIZQT___CYR.TTF"
-else
-	standardFont = "Fonts\\FRIZQT__.TTF"
-end
+local standardFont = private.standardFont
 
 local nameplateTimerFontResetNotified = false
 local nameplateTextFontResetNotified = false

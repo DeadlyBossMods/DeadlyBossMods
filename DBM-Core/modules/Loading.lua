@@ -9,7 +9,6 @@ local DBM = private:GetPrototype("DBM")
 -- Keep internal notices on the original function so replacing/hooking the public method cannot suppress them.
 local AddMsg = DBM.AddMsg
 local difficulties = private:GetPrototype("Difficulties")
-local test = private:GetPrototype("DBMTest")
 local tableUtils = private:GetPrototype("TableUtils")
 local checkEntry = tableUtils.checkEntry
 local loadcIds = private.loadcIds
@@ -23,6 +22,7 @@ local C_TimerAfter = C_Timer.After
 local GetCVar, SetCVar = GetCVar, SetCVar
 local PlayMusic, StopMusic = PlayMusic, StopMusic
 local GetRealZoneText = GetRealZoneText
+local GetInstanceInfo = GetInstanceInfo
 local fastrandom = fastrandom
 local inCombat = private.combatDetectionState.inCombat ---@type DBMMod[]
 local DBMScheduler = private:GetModule("DBMScheduler")
@@ -57,14 +57,6 @@ function DBM:UpdateZoneAuraAnchors(priority)
 	end
 end
 
---[[
-test:RegisterLocalHook("LastInstanceMapID", function(val)
-	local old = LastInstanceMapID
-	LastInstanceMapID = val
-	return old
-end)
-]]
-
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -82,7 +74,7 @@ do
 	local shadowlandsZones = {[2296] = true, [2450] = true, [2481] = true}
 	local dragonflightZones = {[2522] = true, [2569] = true, [2549] = true}
 --	local twwZones = {[2657] = true, [2792] = true, [2769] = true, [2810] = true}
-	local importantChallenges = {2827, 2828}--TWW visions revsited
+	local importantChallenges = {[2827] = true, [2828] = true}--TWW visions revsited
 	local pvpZones = {[30] = true, [489] = true, [529] = true, [559] = true, [562] = true, [566] = true, [572] = true, [617] = true, [618] = true, [628] = true, [726] = true, [727] = true, [761] = true, [968] = true, [980] = true, [998] = true, [1105] = true, [1134] = true, [1170] = true, [1504] = true, [1505] = true, [1552] = true, [1681] = true, [1672] = true, [1803] = true, [1825] = true, [1911] = true, [2106] = true, [2107] = true, [2118] = true, [2167] = true, [2177] = true, [2197] = true, [2245] = true, [2373] = true, [2509] = true, [2511] = true, [2547] = true, [2563] = true}
 	--This never wants to spam you to use mods for trivial content you don't need mods for.
 	--It's intended to suggest mods for content that's relevant to your level (TW, leveling up in dungeons, or even older raids you can't just roll over)
@@ -219,11 +211,11 @@ do
 	function DBM:LoadModsOnDemand(checkTable, checkValue, delay)
 		self:Debug("LoadModsOnDemand fired for table " .. checkTable .. " value " .. tostring(checkValue))
 		local dmfMod
-		local playerName = self:GetMyPlayerInfo()
+		local _, _, _, _, playerGUID = self:GetMyPlayerInfo()
 		local mapID = self:GetCurrentArea()
 		for _, v in ipairs(self.AddOns) do
 			local modTable = v[checkTable]
-			local enabled = C_AddOns.GetAddOnEnableState(v.modId, playerName)
+			local enabled = C_AddOns.GetAddOnEnableState(v.modId, playerGUID)
 			if v.modId == "DBM-WorldEvents" and enabled ~= 0 and not C_AddOns.IsAddOnLoaded(v.modId) then
 				dmfMod = v
 			end
@@ -255,8 +247,7 @@ do
 	end
 end
 
-function DBM:LoadMod(mod, force, enableTestSupport)
-	enableTestSupport = enableTestSupport or DBM_ModsToLoadWithFullTestSupport.addonsWithTests[mod.modId]
+function DBM:LoadMod(mod, force)
 	if type(mod) ~= "table" then
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
@@ -286,13 +277,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 	end
 	self:Debug("LoadAddOn should have fired for " .. mod.name, 2)
 	local loaded, reason
-	if enableTestSupport and test:Load() then
-		test:OnBeforeLoadAddOn()
-		loaded, reason = C_AddOns.LoadAddOn(mod.modId)
-		test:OnAfterLoadAddOn()
-	else
-		loaded, reason = C_AddOns.LoadAddOn(mod.modId)
-	end
+	loaded, reason = C_AddOns.LoadAddOn(mod.modId)
 	if not loaded then
 		if reason == "DISABLED" then
 			AddMsg(self, L.LOAD_MOD_DISABLED:format(mod.name))
@@ -308,7 +293,7 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 		if self.NewerVersion and private.showConstantReminder >= 1 then
 			AddMsg(self, L.UPDATEREMINDER_HEADER:format(self.NewerVersion, self:ShowRealDate(self.HighestRelease)))
 		end
-		self:LoadModOptions(mod.modId, InCombatLockdown(), true) -- Show the test UI immediately to make it clear that the mod is loaded with test support
+		self:LoadModOptions(mod.modId, InCombatLockdown(), true)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 			DBM_GUI:CreateBossModTab(mod, mod.panel)
@@ -341,10 +326,10 @@ function DBM:LoadMod(mod, force, enableTestSupport)
 	end
 end
 
-function DBM:LoadModByName(modName, force, enableTestSupport)
+function DBM:LoadModByName(modName, force)
 	for _, v in ipairs(self.AddOns) do
 		if v.modId == modName then
-			self:LoadMod(v, force, enableTestSupport)
+			self:LoadMod(v, force)
 		end
 	end
 end
@@ -355,9 +340,9 @@ do
 		local guid = UnitGUID(uId)
 		if guid and DBM:IsCreatureGUID(guid) then
 			local cId = DBM:GetCIDFromGUID(guid)
-			local playerName = DBM:GetMyPlayerInfo()
+			local _, _, _, _, playerGUID = DBM:GetMyPlayerInfo()
 			for bosscId, addon in pairs(loadcIds) do
-				local enabled = C_AddOns.GetAddOnEnableState(addon, playerName)
+				local enabled = C_AddOns.GetAddOnEnableState(addon, playerGUID)
 				if cId and bosscId and cId == bosscId and not C_AddOns.IsAddOnLoaded(addon) and enabled ~= 0 then
 					for _, v in ipairs(DBM.AddOns) do
 						if v.modId == addon then
@@ -488,7 +473,7 @@ do
 	---@param self DBM
 	---@param delay number?
 	local function SecondaryLoadCheck(self, delay)
-		local _, instanceType, difficulty, _, _, _, _, mapID = private.GetInstanceInfo()
+		local _, instanceType, difficulty, _, _, _, _, mapID = GetInstanceInfo()
 		difficulties:RefreshCache(true)
 		self:Debug("Instance Check fired with mapID " .. mapID .. " and difficulty " .. difficulty .. " and delay " .. (delay or 0), 2)
 		-- Difficulty index also checked because in challenge modes and M+, difficulty changes with no ID change

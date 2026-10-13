@@ -162,21 +162,26 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 	else
 		bar = DBT:GetBar(eventID)
 	end
+	-- A hardcoded module timer can have a text-only countdown when DBM bars are
+	-- globally hidden. This consults only the module's mapped timer ID, never
+	-- secret encounter event text, spell or duration fields.
+	local textOnly = not bar and not ignoredEventID and not staleHardcodedEvent and hardcodedTimerId and self.TextTimers and self.TextTimers:GetBarlessRemaining(hardcodedTimerId) ~= nil
+	local textOwner = textOnly and private.hardCodedTimerOwners and private.hardCodedTimerOwners[hardcodedTimerId]
 	local eventState = C_EncounterTimeline.GetEventState(eventID)
 	if eventState == 1 then
-		if bar then
-			bar:Pause()
+		if bar or textOnly then
+			if bar then bar:Pause() end
 			if hardcodedTimerId then
-				DBM:FireEvent("DBM_TimerPause", hardcodedTimerId)
+				if textOwner then textOwner:PauseTextOnly(hardcodedTimerId) else DBM:FireEvent("DBM_TimerPause", hardcodedTimerId) end
 			end
 		elseif staleHardcodedEvent then
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale pause for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 4, nil, nil, DBM.Options.DebugLevel >= 3, true)
 		end
 	elseif eventState == 0 then
-		if bar then
-			bar:Resume()
+		if bar or textOnly then
+			if bar then bar:Resume() end
 			if hardcodedTimerId then
-				DBM:FireEvent("DBM_TimerResume", hardcodedTimerId)
+				if textOwner then textOwner:ResumeTextOnly(hardcodedTimerId) else DBM:FireEvent("DBM_TimerResume", hardcodedTimerId) end
 			end
 		elseif staleHardcodedEvent then
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale resume for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 4, nil, nil, DBM.Options.DebugLevel >= 3, true)
@@ -187,10 +192,10 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 			self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring cancel for eventID: "..tostring(eventID).." (timerID belongs to a known bugged Blizzard timer)", 4, nil, nil, DBM.Options.DebugLevel >= 3, true)
 			--Don't clear buggedBlizzardTimers here; the module's handler still needs to check IsBuggedEventID and will call UnsetBuggedEventID itself
 		else
-			if bar then
-				bar:Cancel()
+			if bar or textOnly then
+				if bar then bar:Cancel() end
 				if hardcodedTimerId then
-					DBM:FireEvent("DBM_TimerStop", hardcodedTimerId)
+					if textOwner then textOwner:StopTextOnly(hardcodedTimerId) else DBM:FireEvent("DBM_TimerStop", hardcodedTimerId) end
 				end
 			elseif staleHardcodedEvent then
 				self:Debug("|cffffff00ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED: |r ignoring stale cancel for eventID: "..tostring(eventID).." (timerID now belongs to a newer event)", 4, nil, nil, DBM.Options.DebugLevel >= 3, true)
@@ -198,6 +203,7 @@ function DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 			if hardcodedTimerId then
 				if private.hardCodedTimerEvents[hardcodedTimerId] == eventID then
 					private.hardCodedTimerEvents[hardcodedTimerId] = nil
+					if private.hardCodedTimerOwners then private.hardCodedTimerOwners[hardcodedTimerId] = nil end
 				end
 				if type(hardcodedIds) == "table" then
 					table.remove(hardcodedIds, 1)
