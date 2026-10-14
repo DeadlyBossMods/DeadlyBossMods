@@ -47,6 +47,8 @@ local timerNegationCD					= mod:NewCDCountTimer(20.5, 1318467, nil, nil, nil, 5,
 local timerEightfoldEclipseCD			= mod:NewCDCountTimer(20.5, 1301479, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)
 
+mod:AddBoolOption("warnAddCasts", true, "announce")--Hardcode Only
+
 mod:AddAuraSoundOption(1304045, true, 1304045, 1, 1, "runout", 2)--Unbreakable Horror (pre debuff that leads to Overwhelming Fear
 mod:AddAuraSoundOption(1304046, true, 1304045, 1, 3, "fearyou", 2)--Overwhelming Fear
 mod:AddAuraSoundOption(1303406, true, 1302951, 1, 1, "absorbyou", 19)--Abyssal Grasp, part of Suffocating Darkness
@@ -97,6 +99,7 @@ do
 	local stage1FiftyTwoCount = 0
 	local stage1HundredNineCount = 0
 	local stage2TenCount = 0
+	local addWindowActive = false
 	---@type table<number, {timerObj: Timer, count: number?}>
 	local scheduledEvents = {}
 
@@ -110,9 +113,11 @@ do
 				specWarnDarkDevastation:Play("defensive")
 			end
 		elseif eventType == "voidswarm" then
+			addWindowActive = true
 			specWarnVoidswarm:Show(eventCount)
 			specWarnVoidswarm:Play("killmob")
 		elseif eventType == "darkness" then
+			addWindowActive = false
 			warnSuffocatingDarkness:Show(eventCount)
 			warnSuffocatingDarkness:Play("findshield")
 		elseif eventType == "extinguish" then
@@ -175,6 +180,7 @@ do
 	---@param self DBMMod
 	local function hardcodeFailed(self)
 		badStateDetected = true
+		addWindowActive = false
 		resetScheduledEvents(self)
 		self:Stop()
 		self:TLCountReset()
@@ -187,6 +193,7 @@ do
 	---@param self DBMMod
 	local function timersHeroic(self, timer, timerExact, eventID)
 		if timer == 3 and not self:GetStage(2) then--The first Null Gate identifies stage 2.
+			addWindowActive = false
 			resetScheduledEvents(self)
 			self:Stop()
 			self:TLCountReset()
@@ -259,6 +266,7 @@ do
 	end
 
 	function mod:OnLimitedCombatStart()
+		addWindowActive = false
 		resetScheduledEvents(self)
 		self:TLCountReset()
 		self:SetStage(1)
@@ -282,7 +290,9 @@ do
 			self:IgnoreBlizzardAPI()
 			self:RegisterShortTermEvents(
 				"ENCOUNTER_TIMELINE_EVENT_ADDED",
-				"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
+				"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+				"UNIT_SPELLCAST_START boss2 boss3 boss4",
+				"UNIT_SPELLCAST_CHANNEL_START boss2 boss3 boss4"
 			)
 			setFallback(self, true)
 		else
@@ -291,6 +301,7 @@ do
 	end
 
 	function mod:OnCombatEnd()
+		addWindowActive = false
 		resetScheduledEvents(self)
 		self:TLCountReset()
 		stage1TwentyNineCount = 0
@@ -299,6 +310,15 @@ do
 		stage2TenCount = 0
 		self:UnregisterShortTermEvents()
 	end
+
+	--Voidswarm completion arms these generic announcements; Darkness completion disarms them.
+	--Boss slots can become eggs during the wave, so never infer an ability from the unit token.
+	function mod:UNIT_SPELLCAST_START(unit, _, spellID)
+		if not addWindowActive or not self.Options.warnAddCasts then return end
+		DBM:AddSecretGenericWarning(unit, spellID)
+	end
+
+	mod.UNIT_SPELLCAST_CHANNEL_START = mod.UNIT_SPELLCAST_START
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
@@ -324,6 +344,7 @@ do
 			--Phase 1 cancels its active rows together on transition. Already-finished
 			--bugged rows never receive that cancel, so discard their schedules as well.
 			if eventType and self:GetStage(1) then
+				addWindowActive = false
 				resetScheduledEvents(self)
 			end
 		end

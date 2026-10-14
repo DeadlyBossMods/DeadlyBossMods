@@ -325,6 +325,43 @@ function DBM:AddWarning(text, force, announceObject, useSound, prefix, overrideD
 	end
 end
 
+---Displays a generic cast warning without caching, parsing or renaming secret spell metadata.
+---Callers own their options, event registration, filtering, throttling and encounter timing.
+---@param unit enemyUIDs|targetUIDs Public event unit token
+---@param spellID number May be secret; passed directly to C_Spell
+---@param color warningColorType? Warning color index; defaults to 3
+---@param useSound boolean? Defaults to true; false keeps the warning silent
+---@param showTargets boolean? Defaults to true; false skips target lookups
+function DBM:AddSecretGenericWarning(unit, spellID, color, useSound, showTargets)
+	if self.Options.DontShowBossAnnounces or self.Options.HideDBMWarnings then return end
+	local warningColor = self.Options.WarningColors[color or 3]
+	local colorCode = ("|cff%02x%02x%02x"):format(math.floor(warningColor.r * 255), math.floor(warningColor.g * 255), math.floor(warningColor.b * 255))
+	local text = C_Spell.GetSpellName(spellID)
+	if not self:issecretvalue(text) and text == nil then
+		text = CL.UNKNOWN
+	end
+	text = C_StringUtil.WrapString(text, colorCode, "|r")
+	if showTargets ~= false then
+		local targetName = UnitSpellTargetName(unit)
+		if self:issecretvalue(targetName) or targetName ~= nil then
+			local className = UnitSpellTargetClass(unit)
+			--Secret class tokens may be nil-checked and passed directly to the color API.
+			if className ~= nil then
+				local classColor = C_ClassColor.GetClassColor(className)
+				if classColor then
+					targetName = classColor:WrapTextInColorCode(targetName)
+				end
+			end
+			text = L.GENERIC_TRASH_TARGET:format(text, targetName)
+		end
+	end
+	local icon = C_Spell.GetSpellTexture(spellID)
+	if not self:issecretvalue(icon) and icon == nil then
+		icon = 136116
+	end
+	self:AddWarning(text, nil, nil, useSound ~= false, nil, nil, icon)
+end
+
 do
 	local anchorFrame
 	local function moveEnd(self)
