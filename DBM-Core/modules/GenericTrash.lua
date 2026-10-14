@@ -20,6 +20,7 @@ local IsEncounterInProgress = IsEncounterInProgress
 local floor = math.floor
 
 local registered, completed = false, false
+local difficulty, instanceId, instanceType = 0, 0, 0
 local zoneChecks, retries, previous = {}, {}, {}
 
 local function cancelTimers(timers)
@@ -30,8 +31,6 @@ local function cancelTimers(timers)
 end
 
 local function eligible()
-	local _, _, difficulty, _, _, _, _, instanceId = GetInstanceInfo()
-	local instanceType = difficulties:InstanceType(instanceId)
 	if difficulty == 8 then
 		-- A completed key can retain difficulty 8, including across a UI reload.
 		return not completed and C_ChallengeMode.IsChallengeModeActive() and (difficulties:IsSeasonalDungeon(instanceId) or (DBM.Options.GenericTrashAllDungeons and instanceType == 2))
@@ -61,6 +60,8 @@ function module:Deactivate()
 end
 
 function module:CheckZone()
+	local _, _, difficultyId, _, _, _, _, mapId = GetInstanceInfo()
+	difficulty, instanceId, instanceType = difficultyId, mapId, difficulties:InstanceType(mapId)
 	if not DBM.Options.GenericTrashEnabled or not (DBM.Options.GenericTrashCast or DBM.Options.GenericTrashLieutenant or DBM.Options.GenericTrashChannel) or not eligible() then
 		self:Deactivate()
 	elseif not registered then
@@ -150,6 +151,8 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	local level = UnitLevel(unit)
 	local isLieutenant = level == 91 or level == 92 or level == -1
 	if level ~= 90 and not isLieutenant then return end
+	-- Raid trash uses standard settings regardless of supported mob level.
+	isLieutenant = isLieutenant and instanceType ~= 3
 	local filter = resolveFilter(isLieutenant)
 	if filter == "target" then
 		if unit ~= "target" then return end
