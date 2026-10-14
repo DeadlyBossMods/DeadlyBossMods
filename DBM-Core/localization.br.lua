@@ -146,6 +146,7 @@ L.SEC_FMT							= "%s seg"
 
 L.GENERIC_WARNING_OTHERS			= "e mais um"
 L.GENERIC_WARNING_OTHERS2			= "e %d outros"
+L.GENERIC_TRASH_TARGET			= "%s: %s"
 L.GENERIC_WARNING_BERSERK			= "Frenético em %s %s"
 L.GENERIC_TIMER_BERSERK				= "Frenético"
 L.OPTION_TIMER_BERSERK				= "Exibir cronômetro para $spell:26662"

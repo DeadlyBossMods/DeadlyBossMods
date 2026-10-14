@@ -1,4 +1,4 @@
-## Interface: 120100
+## Interface: 120105
 ## AllowLoadGameType: standard
 ## Version: @project-version@
 ## Category: DBM
@@ -26,7 +26,6 @@
 ## X-DBM-Mod-Name-zhCN: 巢穴（至暗之夜）
 ## X-DBM-Mod-Sort: 91
 ## X-DBM-Mod-MapID: 3095, 2987, 1592
-## X-DBM-Mod-MapIDNameOverrides: 3095 = "Unbinding of Kithix"
 ## X-DBM-Mod-MinCoreRevision: 20260522000000
 ## X-DBM-Mod-MinExpansion: 11
 ## X-Curse-Project-ID: 3358

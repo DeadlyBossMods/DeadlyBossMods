@@ -1,4 +1,4 @@
-## Interface: 11509, 16001, 20506, 30405, 38002, 40402, 50504, 120100
+## Interface: 11509, 16001, 20506, 30405, 38002, 40402, 50504, 120100, 120105
 ## Category: DBM
 ## Group: DBM-Core
 ## Title:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Main Core|r
@@ -123,3 +123,4 @@ modules\objects\Sorting.lua
 DBM-TextTimers.lua
 modules\AuraTracking.lua [AllowLoadGameType mainline]
 modules\EncounterEvents.lua [AllowLoadGameType mainline]
+modules\GenericTrash.lua [AllowLoadGameType standard]

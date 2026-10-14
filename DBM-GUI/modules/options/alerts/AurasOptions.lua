@@ -164,6 +164,7 @@ local personalAuraStackXOffset
 local personalAuraStackYOffset
 local personalAuraShowStacks
 local personalAuraShowDispelBorder
+local personalAuraShowGlow
 local personalAuraSort
 
 personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "DBM", "PrivateAurasPlayerTextFont", function(value)
@@ -264,6 +265,16 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 	personalAuraShowDispelBorder:SetPoint("TOPLEFT", personalAuraShowStacks, "TOPLEFT", 200, 0)
 	personalAuraShowDispelBorder.myheight = 0
 
+	if DBM:GetTOC() >= 120105 then
+		personalAuraShowGlow = personalAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasPlayerShowAuraGlow")
+		personalAuraShowGlow:SetScript("OnClick", function()
+			DBM.Options.PrivateAurasPlayerShowAuraGlow = not DBM.Options.PrivateAurasPlayerShowAuraGlow
+			OnAuraSettingsChange(true)
+		end)
+		personalAuraShowGlow:SetPoint("TOPLEFT", personalAuraShowDispelBorder, "TOPLEFT", 200, 0)
+		personalAuraShowGlow.myheight = 0
+	end
+
 	personalAuraStackColor = personalAuraArea:CreateColorSelect(L.AuraStackFontColor, function(_, r, g, b)
 		DBM.Options.PrivateAurasPlayerStackColor.r = r
 		DBM.Options.PrivateAurasPlayerStackColor.g = g
@@ -290,17 +301,6 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 	personalAuraStackYOffset:SetPoint("TOPLEFT", personalAuraStackXOffset, "TOPLEFT", 180, 0)
 	personalAuraStackYOffset.myheight = 140
 	personalAuraStackColor.myheight = 50
-
-local personalAuraShowGlow
-if DBM:GetTOC() >= 120105 then
-	personalAuraShowGlow = personalAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasPlayerShowAuraGlow")
-	personalAuraShowGlow:SetScript("OnClick", function()
-		DBM.Options.PrivateAurasPlayerShowAuraGlow = not DBM.Options.PrivateAurasPlayerShowAuraGlow
-		OnAuraSettingsChange(true)
-	end)
-	personalAuraShowGlow:SetPoint("TOPLEFT", personalAuraStackColor, "TOPLEFT", 0, -85)
-	personalAuraShowGlow.myheight = 0
-end
 
 local personalMovemebutton = personalAuraArea:CreateButton(L.MoveMe, 100, 16)
 personalMovemebutton:SetPoint("TOPRIGHT", personalAuraArea.frame, "TOPRIGHT", -2, -4)
@@ -453,6 +453,7 @@ local coTankAuraStackXOffset
 local coTankAuraStackYOffset
 local coTankAuraShowStacks
 local coTankAuraShowDispelBorder
+local coTankAuraShowGlow
 local coTankAuraSort
 local coTankShowName
 local coTankNameFontSize
@@ -557,6 +558,16 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 	coTankAuraShowDispelBorder:SetPoint("TOPLEFT", coTankAuraShowStacks, "TOPLEFT", 200, 0)
 	coTankAuraShowDispelBorder.myheight = 0
 
+	if DBM:GetTOC() >= 120105 then
+		coTankAuraShowGlow = coTankAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasCoTankShowAuraGlow")
+		coTankAuraShowGlow:SetScript("OnClick", function()
+			DBM.Options.PrivateAurasCoTankShowAuraGlow = not DBM.Options.PrivateAurasCoTankShowAuraGlow
+			OnAuraSettingsChange(false)
+		end)
+		coTankAuraShowGlow:SetPoint("TOPLEFT", coTankAuraShowDispelBorder, "TOPLEFT", 200, 0)
+		coTankAuraShowGlow.myheight = 0
+	end
+
 	coTankAuraStackColor = coTankAuraArea:CreateColorSelect(L.AuraStackFontColor, function(_, r, g, b)
 		DBM.Options.PrivateAurasCoTankStackColor.r = r
 		DBM.Options.PrivateAurasCoTankStackColor.g = g
@@ -583,17 +594,6 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 	coTankAuraStackYOffset:SetPoint("TOPLEFT", coTankAuraStackXOffset, "TOPLEFT", 180, 0)
 	coTankAuraStackYOffset.myheight = 140
 	coTankAuraStackColor.myheight = 50
-
-local coTankAuraShowGlow
-if DBM:GetTOC() >= 120105 then
-	coTankAuraShowGlow = coTankAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasCoTankShowAuraGlow")
-	coTankAuraShowGlow:SetScript("OnClick", function()
-		DBM.Options.PrivateAurasCoTankShowAuraGlow = not DBM.Options.PrivateAurasCoTankShowAuraGlow
-		OnAuraSettingsChange(false)
-	end)
-	coTankAuraShowGlow:SetPoint("TOPLEFT", coTankAuraStackColor, "TOPLEFT", 0, -85)
-	coTankAuraShowGlow.myheight = 0
-end
 
 local coTankMovemebutton = coTankAuraArea:CreateButton(L.MoveMe, 100, 16)
 coTankMovemebutton:SetPoint("TOPRIGHT", coTankAuraArea.frame, "TOPRIGHT", -2, -4)
@@ -774,7 +774,7 @@ coTankSlot1Player:IsSelectedCallback(function(_, value)
 	end)
 
 coTankSlot1Player:SetPoint("TOPLEFT", coTankNameYOffset, "BOTTOMLEFT", 0, -35)
-coTankSlot1Player.myheight = 45
+coTankSlot1Player.myheight = 60
 
 
 local coTankSlot2Player = coTankAdvancedArea:CreateDropdown(L.CoTankSlot2Player, function()
