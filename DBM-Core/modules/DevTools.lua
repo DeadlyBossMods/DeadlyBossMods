@@ -367,34 +367,34 @@ do
 
 	function module:UNIT_SPELLCAST_START(uId, _, spellId)
 		if DBM.Options.DebugLevel < 3 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 	function module:UNIT_SPELLCAST_STOP(uId, _, spellId)
 		if DBM.Options.DebugLevel < 3 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if DBM.Options.DebugLevel < 3 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
 		if DBM.Options.DebugLevel < 2 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
 		if DBM.Options.DebugLevel < 2 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
 	end
