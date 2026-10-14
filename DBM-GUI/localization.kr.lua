@@ -290,7 +290,7 @@ L.WarningIconLeft 					= "왼쪽에 아이콘 표시"
 L.WarningIconRight 					= "오른쪽에 아이콘 표시"
 L.WarningIconChat 					= "대화창에 아이콘 표시"
 L.WarningAlphabetical				= "이름 순으로 정렬"
-L.Warn_Duration						= "알림 지속시간초"
+L.Warn_Duration						= "알림 지속시간"
 L.None								= "없음"
 L.Random							= "무작위"
 L.Outline							= "외곽선"
@@ -635,7 +635,7 @@ L.DontShowPTNoID					= "같은 지역에 없는 사용자가 보낸 DBM 풀링 �
 L.DontShowPT						= "풀링/휴식 타이머 표시 안함"
 L.DontShowPTText					= "풀링/휴식 알림 텍스트 표시 안함"
 L.DontPlayPTCountdown				= "풀링/휴식/사용자 지정 초읽기 전구간 음성 재생 안함"
-L.PT_Threshold						= "풀링/휴식/사용자 지정 타이머 초읽기 음성 재생 안함초 까지"
+L.PT_Threshold						= "풀링/휴식/사용자 지정 타이머 초읽기 기준"
 
 -- Panel: Reduce Information
 L.Panel_ReducedInformation			= "정보량 줄이기"
