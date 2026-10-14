@@ -1465,18 +1465,28 @@ do
 		end
 	end
 
+	---Pass true before the event list to use RegisterSafeEvents for audited, secret-safe handlers.
 	---@param self DBMModOrDBM
 	---@param ... DBMEvent|string
+	---@overload fun(self: DBMModOrDBM, safeEvents: boolean, ...: DBMEvent|string)
 	function DBM:RegisterShortTermEvents(...)
 		DBM:Debug("RegisterShortTermEvents fired", 3)
 		local _shortTermRegisterEvents = {...}
+		local safeEvents = false
+		if type(_shortTermRegisterEvents[1]) == "boolean" then
+			safeEvents = tremove(_shortTermRegisterEvents, 1)
+		end
 		for k, v in pairs(_shortTermRegisterEvents) do
 			if v:sub(0, 5) == "UNIT_" and v:sub(-11) ~= "_UNFILTERED" and not v:find(" ") and v ~= "UNIT_DIED" and v ~= "UNIT_DESTROYED" then
 				-- legacy event, oh noes
 				_shortTermRegisterEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus"
 			end
 		end
-		self:RegisterEvents(unpack(_shortTermRegisterEvents))
+		if safeEvents then
+			self:RegisterSafeEvents(unpack(_shortTermRegisterEvents))
+		else
+			self:RegisterEvents(unpack(_shortTermRegisterEvents))
+		end
 		-- Fix so we can register multiple short term events. Use at your own risk, as unsucribing will cause
 		-- all short term events to unregister.
 		if not self.shortTermRegisterEvents then

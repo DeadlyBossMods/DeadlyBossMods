@@ -1,7 +1,7 @@
 if DBM:GetTOC() < 120105 then return end
 local mod	= DBM:NewMod(2896, "DBM-Lairs-Midnight", 1, 1324)--Change order when 12.1.5 ships
 
-mod.statTypes = "lfr,normal,heroic,mythic"
+mod.statTypes = "story,normal,heroic,mythic"
 
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(267861)
@@ -99,6 +99,9 @@ do
 	local stage1FiftyTwoCount = 0
 	local stage1HundredNineCount = 0
 	local stage2TenCount = 0
+	local storyFortyFiveCount = 0
+	local storyFiftySevenCount = 0
+	local storyHundredNineteenCount = 0
 	local addWindowActive = false
 	---@type table<number, {timerObj: Timer, count: number?}>
 	local scheduledEvents = {}
@@ -191,6 +194,56 @@ do
 	end
 
 	---@param self DBMMod
+	local function timersStory(self, timer, timerExact, eventID)
+		if timer == 121 then--Story has no Null Gate; the Eclipse timer identifies stage 2.
+			if not self:GetStage(2) then
+				addWindowActive = false
+				resetScheduledEvents(self)
+				self:Stop()
+				self:TLCountReset()
+				self:SetStage(2)
+			end
+			timerEightfoldEclipseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eclipse", "eclipseCount"))
+		elseif self:GetStage(1) then
+			if timer == 5 then
+				timerVoidswarmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidswarm", "voidswarmCount"))
+			elseif timer == 15 or timer == 21 or timer == 34 then
+				timerTwistedAppendageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "appendage", "appendageCount"))
+			elseif timer == 20 or timer == 22 or timer == 77 then
+				timerDarkDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			elseif timer == 31 or timer == 62 then
+				timerExtinguishCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "extinguish", "extinguishCount"))
+			elseif timer == 45 then--Identical raw 45: opening Devastation, then Radiance.
+				storyFortyFiveCount = storyFortyFiveCount + 1
+				if storyFortyFiveCount == 1 then
+					timerDarkDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+				else
+					timerDivineRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiance", "radianceCount"))
+				end
+			elseif timer == 57 then--Identical raw 57: opening Darkness, then Extinguish.
+				storyFiftySevenCount = storyFiftySevenCount + 1
+				if storyFiftySevenCount == 1 then
+					timerSuffocatingDarknessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkness", "darknessCount"))
+				else
+					timerExtinguishCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "extinguish", "extinguishCount"))
+				end
+			elseif timer == 119 then--Raw 119 is shared; Voidswarm also has 118.999. Alternate in ADDED order.
+				storyHundredNineteenCount = storyHundredNineteenCount + 1
+				if storyHundredNineteenCount % 2 == 1 then
+					timerVoidswarmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidswarm", "voidswarmCount"))
+				else
+					timerSuffocatingDarknessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkness", "darknessCount"))
+				end
+			else
+				return false
+			end
+		else
+			return false
+		end
+		return true
+	end
+
+	---@param self DBMMod
 	local function timersHeroic(self, timer, timerExact, eventID)
 		if timer == 3 and not self:GetStage(2) then--The first Null Gate identifies stage 2.
 			addWindowActive = false
@@ -274,6 +327,9 @@ do
 		stage1FiftyTwoCount = 0
 		stage1HundredNineCount = 0
 		stage2TenCount = 0
+		storyFortyFiveCount = 0
+		storyFiftySevenCount = 0
+		storyHundredNineteenCount = 0
 		self.vb.horrorsCount = 1
 		self.vb.devastationCount = 1
 		self.vb.voidswarmCount = 1
@@ -285,10 +341,10 @@ do
 		self.vb.nullGateCount = 1
 		self.vb.negationCount = 1
 		self.vb.eclipseCount = 1
-		--Only Heroic has been verified against complete 12.1 Week9 pulls.
-		if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+		--Story and Heroic have been verified against complete 12.1 Week9 pulls.
+		if DBM.Options.HardcodedTimer and (self:IsStory() or self:IsHeroic()) and not badStateDetected then
 			self:IgnoreBlizzardAPI()
-			self:RegisterShortTermEvents(
+			self:RegisterShortTermEvents(true,
 				"ENCOUNTER_TIMELINE_EVENT_ADDED",
 				"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
 				"UNIT_SPELLCAST_START boss2 boss3 boss4",
@@ -308,6 +364,9 @@ do
 		stage1FiftyTwoCount = 0
 		stage1HundredNineCount = 0
 		stage2TenCount = 0
+		storyFortyFiveCount = 0
+		storyFiftySevenCount = 0
+		storyHundredNineteenCount = 0
 		self:UnregisterShortTermEvents()
 	end
 
@@ -326,7 +385,13 @@ do
 		if scheduledEvents[eventID] then return end--Don't reserve a second count for a still-running bugged event.
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
-		if not timersHeroic(self, timer, timerExact, eventID) then
+		local handled
+		if self:IsStory() then
+			handled = timersStory(self, timer, timerExact, eventID)
+		else
+			handled = timersHeroic(self, timer, timerExact, eventID)
+		end
+		if not handled then
 			hardcodeFailed(self)
 		end
 	end
