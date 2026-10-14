@@ -403,6 +403,7 @@ L.AUTO_ANNOUNCE_OPTIONS.moveto			= "Zeige Warnung für Bewegungen zu Spieler ode
 
 L.AUTO_SPEC_WARN_TEXTS.spell			= "%s!"
 L.AUTO_SPEC_WARN_TEXTS.ends				= "%s beendet"
+L.AUTO_SPEC_WARN_TEXTS.endtarget		= "%s beendet: >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.fades			= "%s beendet"
 L.AUTO_SPEC_WARN_TEXTS.soon				= "%s bald"
 L.AUTO_SPEC_WARN_TEXTS.sooncount		= "%s (%%s) bald"
@@ -453,6 +454,7 @@ L.AUTO_SPEC_WARN_TEXTS.targetchange		= "Zielwechsel - wechsel zu %%s"
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS.spell 			= "Spezialwarnung für $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.ends 			= "Spezialwarnung, wenn $spell:%s beendet ist"
+L.AUTO_SPEC_WARN_OPTIONS.endtarget		= "Spezialwarnung (mit Ziel), wenn $spell:%s beendet ist"
 L.AUTO_SPEC_WARN_OPTIONS.fades 			= "Spezialwarnung, wenn $spell:%s beendet ist"
 L.AUTO_SPEC_WARN_OPTIONS.soon 			= "Spezialvorwarnung für $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.sooncount		= "Spezialvorwarnung (mit Zähler) für $spell:%s"
