@@ -150,10 +150,11 @@ L.CustomOptions						= "This category contains custom options for an ability or 
 
 -- Panel: Common Trash
 L.GenericTrashTitle					= "Common Trash"
-L.GenericTrashDescription			= "Generic trash warnings, limited to current-season keystones by default. Uses the normal warning sound and core profiles. Your target bypasses throttling."
+L.GenericTrashDescription			= "Generic trash warnings, enabled in current-season keystones and max-level raids by default. Uses the normal warning sound and core profiles. Your target bypasses throttling."
 L.GenericTrashEnabled				= "Enable common trash warnings"
 L.GenericTrashAllDungeons			= "Also enable in all max-level dungeons (all difficulties)"
 L.GenericTrashDelves					= "Also enable in delves"
+L.GenericTrashRaids					= "Enable in max-level raids (all difficulties)"
 L.GenericTrashCast					= "Standard trash casts"
 L.GenericTrashLieutenant			= "Lieutenant trash casts"
 L.GenericTrashChannel				= "Trash channels"

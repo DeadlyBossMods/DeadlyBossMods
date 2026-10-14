@@ -1,6 +1,5 @@
 if DBM:GetTOC() < 120105 then return end
 local mod	= DBM:NewMod(2896, "DBM-Lairs-Midnight", 1, 1324)--Change order when 12.1.5 ships
-local L		= mod:GetLocalizedStrings()
 
 mod.statTypes = "lfr,normal,heroic,mythic"
 
@@ -17,30 +16,38 @@ mod:RegisterCombat("combat")
 --TODO, cleanup objects that don't have timeline events
 --TODO, gtfo for https://www.wowhead.com/ptr-2/spell=1304950/voidscar ?
 --TODO, more renames
-DBM:RegisterAltSpellName(1304930, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.FRONTAL)--Dark Devastation -> Tank Frontal
+DBM:RegisterAltSpellName(1304930, DBM_COMMON_L.TANK .. " " .. DBM_COMMON_L.BIG_CIRCLE)--Dark Devastation -> Tank Big Circle
+DBM:RegisterAltSpellName(1301511, DBM_COMMON_L.ADDS)--Voidswarm -> Adds
+DBM:RegisterAltSpellName(1304045, DBM_COMMON_L.FEAR .. " " .. DBM_COMMON_L.DEBUFFS)--Unspeakable Horrors -> Fear Debuffs
+DBM:RegisterAltSpellName(1302951, DBM_COMMON_L.INTERMISSION)--Suffocating Darkness -> Intermission
+DBM:RegisterAltSpellName(1303681, 61618)--Twisted Appendage -> Tentacles
+DBM:RegisterAltSpellName(1303406, DBM_COMMON_L.HEALABSORBS)--Abyssal Grasp -> Heal Absorbs
+DBM:RegisterAltSpellName(1303169, DBM_COMMON_L.INTERMISSION .. " " .. DBM_COMMON_L.OVER)--Divine Radiance -> Intermission Over
+DBM:RegisterAltSpellName(1318467, DBM_COMMON_L.TANKDEBUFF)--Negation -> Tank Debuff
 --Stage 1
---local warnUnspeakableHorrors			= mod:NewCountAnnounce(1304045, 3)--Hardcode Only
---local Nullgate						= mod:NewCountAnnounce(1308873, 3)--Hardcode Only
---local EightfoldEclipse				= mod:NewCountAnnounce(1301479, 4)--Hardcode Only
+local warnEightfoldEclipse				= mod:NewCountAnnounce(1301479, 4)--Hardcode Only
 
 local specWarnDarkDevastation			= mod:NewSpecialWarningDefensive(1304930, nil, nil, nil, 1, 2, nil, nil, "defensive")
-local specWarnVoidswarm					= mod:NewSpecialWarningCount(1301511, nil, nil, nil, 1, 2, nil, nil, "mobsoon")
-local warnSuffocatingDarkness			= mod:NewSpecialWarningCount(1302951, nil, nil, nil, 2, 2, nil, nil, "phasechange")
-local specWarnExtinguish				= mod:NewSpecialWarningCount(1304424, nil, nil, nil, 3, 2, nil, nil, "findshield")
+local specWarnVoidswarm					= mod:NewSpecialWarningCount(1301511, nil, nil, nil, 1, 2, nil, nil, "killmob")
+local warnSuffocatingDarkness			= mod:NewSpecialWarningCount(1302951, nil, nil, nil, 2, 2, nil, nil, "findshield")
+local specWarnExtinguish				= mod:NewSpecialWarningCount(1304424, nil, nil, nil, 3, 18, nil, nil, "movetoyelloworb")
 local specWarnTwistedAppendage			= mod:NewSpecialWarningDodgeCount(1303681, nil, nil, nil, 2, 2, nil, nil, "watchfeet")
-local specWarnDivineRadiance			= mod:NewSpecialWarningCount(1303406, nil, nil, nil, 2, 2, nil, nil, "phasechange")--Darkness ending
+local specWarnDivineRadiance			= mod:NewSpecialWarningCount(1303169, nil, nil, nil, 2, 2, nil, nil, "phasechange")
 
 local timerUnspeakableHorrorsCD			= mod:NewCDCountTimer(20.5, 1304045, nil, nil, nil, 3)
 local timerDarkDevastationCD			= mod:NewCDCountTimer(20.5, 1304930, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerVoidswarmCD					= mod:NewCDCountTimer(20.5, 1301511, nil, nil, nil, 1)
-local timerSuffocatingDarknessCD		= mod:NewCDCountTimer(20.5, 1302951, nil, nil, nil, 6)
+local timerVoidswarmCD					= mod:NewCDCountTimer(20.5, 1301511, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON..DBM_COMMON_L.HEALER_ICON)
+local timerSuffocatingDarknessCD		= mod:NewCDCountTimer(20.5, 1302951, nil, nil, nil, 2)
 local timerExtinguishCD					= mod:NewCDCountTimer(20.5, 1304424, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 local timerTwistedAppendageCD			= mod:NewCDCountTimer(20.5, 1303681, nil, nil, nil, 3)
 local timerNullgateCD					= mod:NewCDCountTimer(20.5, 1308873, nil, nil, nil, 3)
-local timerDivineRadianceCD				= mod:NewCDCountTimer(20.5, 1303406, nil, nil, nil, 6)
+local timerAbyssalGraspCD				= mod:NewCDCountTimer(20.5, 1303406, nil, nil, nil, 3, nil, DBM_COMMON_L.HEALER_ICON)
+local timerDivineRadianceCD				= mod:NewCDCountTimer(20.5, 1303169, nil, nil, nil, 6)--Technically not a cd but a buff active timer, but that doesn't use count
 local timerNegationCD					= mod:NewCDCountTimer(20.5, 1318467, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerEightfoldEclipseCD			= mod:NewCDCountTimer(20.5, 1301479, nil, nil, nil, 2)
+local timerEightfoldEclipseCD			= mod:NewCDCountTimer(20.5, 1301479, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
 --local timerBerserkCD					= mod:NewBerserkTimer(600)
+
+mod:AddBoolOption("warnAddCasts", true, "announce")--Hardcode Only
 
 mod:AddAuraSoundOption(1304045, true, 1304045, 1, 1, "runout", 2)--Unbreakable Horror (pre debuff that leads to Overwhelming Fear
 mod:AddAuraSoundOption(1304046, true, 1304045, 1, 3, "fearyou", 2)--Overwhelming Fear
@@ -50,7 +57,7 @@ mod:AddAuraSoundOption(1318467, true, 1318467, 1, 1, "movetogate", 20)--Negation
 mod:AddAuraSoundOption(1304040, true, 1301511, 1, 1, "stunyou", 19)--Mindsting
 mod:AddAuraSoundOption(1302334, true, 1301511, 1, 1, "beamyou", 19)--Voidweave
 mod:AddAuraSoundOption(1304434, true, 1301511, 1, 1, "fixateyou", 19)--Fixate (verify ID)
-mod:AddAuraSoundOption(1303257, true, 1302951, 1, 2, "findshelter", 2)--Suffocation (debuff from not being in barrier)
+--mod:AddAuraSoundOption(1303257, true, 1302951, 1, 2, "findshelter", 2)--Suffocation (debuff from not being in barrier)
 
 local badStateDetected = false
 
@@ -62,9 +69,9 @@ local function setFallback(self, dontSetAlerts)
 		if self:IsTank() then
 			specWarnDarkDevastation:SetAlert(858, "defensive", 2, 2)
 		end
-		specWarnVoidswarm:SetAlert(859, "mobsoon", 2, 3)
-		warnSuffocatingDarkness:SetAlert(860, "phasechange", 2, 2)
-		specWarnExtinguish:SetAlert(861, "findshield", 2, 4)
+		specWarnVoidswarm:SetAlert(859, "killmob", 2, 3)
+		warnSuffocatingDarkness:SetAlert(860, "findshield", 2, 2)
+		specWarnExtinguish:SetAlert(861, "movetoyelloworb", 18, 4)
 		specWarnTwistedAppendage:SetAlert(862, "watchstep", 2, 2)
 		specWarnDivineRadiance:SetAlert(951, "phasechange", 2, 2)
 	end
@@ -80,59 +87,266 @@ local function setFallback(self, dontSetAlerts)
 	timerSuffocatingDarknessCD:SetTimeline(860, onlyColor)
 	timerExtinguishCD:SetTimeline(861, onlyColor)
 	timerTwistedAppendageCD:SetTimeline(862, onlyColor)
+	timerAbyssalGraspCD:SetTimeline(864, onlyColor)
 	timerNullgateCD:SetTimeline(903, onlyColor)
 	timerDivineRadianceCD:SetTimeline(951, onlyColor)
 	timerNegationCD:SetTimeline(1002, onlyColor)
 	timerEightfoldEclipseCD:SetTimeline(1003, onlyColor)
 end
 
-function mod:OnLimitedCombatStart(delay)
-	self:TLCountReset()
-	--Hardcode features first
-	badStateDetected = true--TEMP, REMOVE ME IN HARDCODE
-	if DBM.Options.HardcodedTimer and not badStateDetected then
-		self:SetStage(1)
-		self:IgnoreBlizzardAPI()
---		self:RegisterShortTermEvents(
---			"ENCOUNTER_TIMELINE_EVENT_ADDED",
---			"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED"
---		)
-		--Even when using hardcodes, we still want to customize the timeline in certain ways
-		--Many use timeline in conjunction with DBM warnings
-		setFallback(self, true)
-	else
-		setFallback(self)
-	end
-end
-
-function mod:OnCombatEnd()
-	self:TLCountReset()
-	self:UnregisterShortTermEvents()
-end
-
---[[
 do
+	local stage1TwentyNineCount = 0
+	local stage1FiftyTwoCount = 0
+	local stage1HundredNineCount = 0
+	local stage2TenCount = 0
+	local addWindowActive = false
+	---@type table<number, {timerObj: Timer, count: number?}>
+	local scheduledEvents = {}
+
+	---@param self DBMMod
+	local function finishTimelineEvent(self, eventID)
+		local eventType, eventCount = self:TLCountFinish(eventID)
+		if not eventType or not eventCount then return end
+		if eventType == "devastation" then
+			if self:IsTanking("player", "boss1", nil, true) then
+				specWarnDarkDevastation:Show()
+				specWarnDarkDevastation:Play("defensive")
+			end
+		elseif eventType == "voidswarm" then
+			addWindowActive = true
+			specWarnVoidswarm:Show(eventCount)
+			specWarnVoidswarm:Play("killmob")
+		elseif eventType == "darkness" then
+			addWindowActive = false
+			warnSuffocatingDarkness:Show(eventCount)
+			warnSuffocatingDarkness:Play("findshield")
+		elseif eventType == "extinguish" then
+			specWarnExtinguish:Show(eventCount)
+			specWarnExtinguish:Play("movetoyelloworb")
+		elseif eventType == "appendage" then
+			specWarnTwistedAppendage:Show(eventCount)
+			specWarnTwistedAppendage:Play("watchfeet")
+		elseif eventType == "radiance" then
+			specWarnDivineRadiance:Show(eventCount)
+			specWarnDivineRadiance:Play("phasechange")
+		elseif eventType == "eclipse" then
+			warnEightfoldEclipse:Show(eventCount)
+		end
+		--Horrors, Grasp, Null Gate and Negation already have personal aura audio.
+	end
+
+	---@param self DBMMod
+	local function finishScheduledEvent(self, eventID)
+		local entry = scheduledEvents[eventID]
+		if not entry then return end
+		scheduledEvents[eventID] = nil
+		entry.timerObj:Stop(entry.count)
+		entry.timerObj:UnsetBuggedEventID(eventID)
+		--Let core release the timer mapping it retained for the premature terminal event.
+		DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		finishTimelineEvent(self, eventID)
+	end
+
+	---@param self DBMMod
+	local function cancelScheduledEvent(self, eventID)
+		local entry = scheduledEvents[eventID]
+		if not entry then return end
+		scheduledEvents[eventID] = nil
+		self:Unschedule(finishScheduledEvent, self, eventID)
+		entry.timerObj:Stop(entry.count)
+		entry.timerObj:UnsetBuggedEventID(eventID)
+		DBM:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		self:TLCountCancel(eventID)
+	end
+
+	---@param self DBMMod
+	local function resetScheduledEvents(self)
+		for eventID in pairs(scheduledEvents) do
+			cancelScheduledEvent(self, eventID)
+		end
+	end
+
+	---@param self DBMMod
+	---@param timerObj Timer
+	local function startScheduledEvent(self, timerObj, timerExact, eventID, eventType, countKey)
+		--These events report state 2 immediately; the raw duration is their real cooldown.
+		local count = self:TLCountStart(eventID, eventType, countKey)
+		timerObj:SetBuggedEventID(eventID)
+		timerObj:TLStart(timerExact, eventID, count)
+		scheduledEvents[eventID] = {timerObj = timerObj, count = count}
+		self:Schedule(timerExact, finishScheduledEvent, self, eventID)
+	end
+
+	---@param self DBMMod
+	local function hardcodeFailed(self)
+		badStateDetected = true
+		addWindowActive = false
+		resetScheduledEvents(self)
+		self:Stop()
+		self:TLCountReset()
+		self:ResumeBlizzardAPI()
+		self:UnregisterShortTermEvents()
+		setFallback(self)
+		DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+	end
+
+	---@param self DBMMod
+	local function timersHeroic(self, timer, timerExact, eventID)
+		if timer == 3 and not self:GetStage(2) then--The first Null Gate identifies stage 2.
+			addWindowActive = false
+			resetScheduledEvents(self)
+			self:Stop()
+			self:TLCountReset()
+			self:SetStage(2)
+		end
+		if self:GetStage(1) then
+			if timer == 5 then
+				timerVoidswarmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidswarm", "voidswarmCount"))
+			elseif timer == 12 or timer == 15 or timer == 18 or timer == 32 then
+				timerTwistedAppendageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "appendage", "appendageCount"))
+			elseif timer == 20 or timer == 22 or timer == 69 then
+				timerDarkDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
+			elseif timer == 57 then
+				timerExtinguishCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "extinguish", "extinguishCount"))
+			elseif timer == 37 then
+				timerUnspeakableHorrorsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "horrors", "horrorsCount"))
+			elseif timer == 33 or timer == 76 then
+				startScheduledEvent(self, timerUnspeakableHorrorsCD, timerExact, eventID, "horrors", "horrorsCount")
+			elseif timer == 62 then
+				timerAbyssalGraspCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspCount"))
+			elseif timer == 27 or timer == 82 then
+				startScheduledEvent(self, timerAbyssalGraspCD, timerExact, eventID, "grasp", "graspCount")
+			elseif timer == 40 then
+				timerDivineRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiance", "radianceCount"))
+			elseif timer == 29 then--Both abilities use raw 29: the opener is Extinguish, subsequent rows are Appendage.
+				stage1TwentyNineCount = stage1TwentyNineCount + 1
+				if stage1TwentyNineCount == 1 then
+					timerExtinguishCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "extinguish", "extinguishCount"))
+				else
+					timerTwistedAppendageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "appendage", "appendageCount"))
+				end
+			elseif timer == 52 then--Both abilities use raw 52: initial Darkness, then Extinguish.
+				stage1FiftyTwoCount = stage1FiftyTwoCount + 1
+				if stage1FiftyTwoCount == 1 then
+					timerSuffocatingDarknessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkness", "darknessCount"))
+				else
+					timerExtinguishCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "extinguish", "extinguishCount"))
+				end
+			elseif timer == 109 then--Voidswarm and Darkness share raw 109 (Darkness also 108.999); alternate in ADDED order.
+				stage1HundredNineCount = stage1HundredNineCount + 1
+				if stage1HundredNineCount % 2 == 1 then
+					timerVoidswarmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidswarm", "voidswarmCount"))
+				else
+					timerSuffocatingDarknessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkness", "darknessCount"))
+				end
+			else
+				return false
+			end
+		elseif self:GetStage(2) then
+			if timer == 3 then
+				timerNullgateCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullGate", "nullGateCount"))
+			elseif timer == 15 then
+				timerNegationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "negation", "negationCount"))
+			elseif timer == 10 then--Identical raw 10: opening Negation, then immediately-finished Null Gate recasts.
+				stage2TenCount = stage2TenCount + 1
+				if stage2TenCount == 1 then
+					timerNegationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "negation", "negationCount"))
+				else
+					startScheduledEvent(self, timerNullgateCD, timerExact, eventID, "nullGate", "nullGateCount")
+				end
+			elseif timer == 61 then
+				timerEightfoldEclipseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eclipse", "eclipseCount"))
+			else
+				return false
+			end
+		else
+			return false
+		end
+		return true
+	end
+
+	function mod:OnLimitedCombatStart()
+		addWindowActive = false
+		resetScheduledEvents(self)
+		self:TLCountReset()
+		self:SetStage(1)
+		stage1TwentyNineCount = 0
+		stage1FiftyTwoCount = 0
+		stage1HundredNineCount = 0
+		stage2TenCount = 0
+		self.vb.horrorsCount = 1
+		self.vb.devastationCount = 1
+		self.vb.voidswarmCount = 1
+		self.vb.darknessCount = 1
+		self.vb.extinguishCount = 1
+		self.vb.appendageCount = 1
+		self.vb.graspCount = 1
+		self.vb.radianceCount = 1
+		self.vb.nullGateCount = 1
+		self.vb.negationCount = 1
+		self.vb.eclipseCount = 1
+		--Only Heroic has been verified against complete 12.1 Week9 pulls.
+		if DBM.Options.HardcodedTimer and self:IsHeroic() and not badStateDetected then
+			self:IgnoreBlizzardAPI()
+			self:RegisterShortTermEvents(
+				"ENCOUNTER_TIMELINE_EVENT_ADDED",
+				"ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED",
+				"UNIT_SPELLCAST_START boss2 boss3 boss4",
+				"UNIT_SPELLCAST_CHANNEL_START boss2 boss3 boss4"
+			)
+			setFallback(self, true)
+		else
+			setFallback(self)
+		end
+	end
+
+	function mod:OnCombatEnd()
+		addWindowActive = false
+		resetScheduledEvents(self)
+		self:TLCountReset()
+		stage1TwentyNineCount = 0
+		stage1FiftyTwoCount = 0
+		stage1HundredNineCount = 0
+		stage2TenCount = 0
+		self:UnregisterShortTermEvents()
+	end
+
+	--Voidswarm completion arms these generic announcements; Darkness completion disarms them.
+	--Boss slots can become eggs during the wave, so never infer an ability from the unit token.
+	function mod:UNIT_SPELLCAST_START(unit, _, spellID)
+		if not addWindowActive or not self.Options.warnAddCasts then return end
+		DBM:AddSecretGenericWarning(unit, spellID)
+	end
+
+	mod.UNIT_SPELLCAST_CHANNEL_START = mod.UNIT_SPELLCAST_START
+
 	function mod:ENCOUNTER_TIMELINE_EVENT_ADDED(eventInfo)
 		if eventInfo.source ~= 0 then return end
 		local eventID = eventInfo.id
+		if scheduledEvents[eventID] then return end--Don't reserve a second count for a still-running bugged event.
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
-		if not badStateDetected then
-			--Do Stuff
+		if not timersHeroic(self, timer, timerExact, eventID) then
+			hardcodeFailed(self)
 		end
 	end
 
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
+		if not eventID then return end
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
-		if not eventID or not eventState then return end
+		if not eventState then return end
 		if eventState == 2 then
-			local eventType, eventCount = self:TLCountFinish(eventID)
-			if not eventType then return end
-			--Do Stuff
+			if scheduledEvents[eventID] then return end--Premature finish; raw duration is authoritative.
+			finishTimelineEvent(self, eventID)
 		elseif eventState == 3 then
 			local eventType = self:TLCountCancel(eventID)
-			--Do Stuff
+			cancelScheduledEvent(self, eventID)
+			--Phase 1 cancels its active rows together on transition. Already-finished
+			--bugged rows never receive that cancel, so discard their schedules as well.
+			if eventType and self:GetStage(1) then
+				addWindowActive = false
+				resetScheduledEvents(self)
+			end
 		end
 	end
 end
---]]

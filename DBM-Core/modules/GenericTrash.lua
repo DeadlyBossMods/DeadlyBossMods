@@ -10,16 +10,14 @@ local module = private:NewModule("GenericTrash")
 local difficulties = private:GetPrototype("Difficulties")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
-local L = DBM_CORE_L
-local CL = DBM_COMMON_L
 local inCombat = private.combatDetectionState.inCombat
 local GetTime, GetInstanceInfo = GetTime, GetInstanceInfo
 local UnitLevel, UnitClassification, UnitIsEnemy = UnitLevel, UnitClassification, UnitIsEnemy
 local UnitAffectingCombat, UnitIsUnit = UnitAffectingCombat, UnitIsUnit
 local IsEncounterInProgress = IsEncounterInProgress
-local floor = math.floor
 
 local registered, completed = false, false
+local difficulty, instanceId, instanceType = 0, 0, 0
 local zoneChecks, retries, previous = {}, {}, {}
 
 local function cancelTimers(timers)
@@ -30,13 +28,11 @@ local function cancelTimers(timers)
 end
 
 local function eligible()
-	local _, _, difficulty, _, _, _, _, instanceId = GetInstanceInfo()
-	local instanceType = difficulties:InstanceType(instanceId)
 	if difficulty == 8 then
 		-- A completed key can retain difficulty 8, including across a UI reload.
 		return not completed and C_ChallengeMode.IsChallengeModeActive() and (difficulties:IsSeasonalDungeon(instanceId) or (DBM.Options.GenericTrashAllDungeons and instanceType == 2))
 	end
-	return (DBM.Options.GenericTrashAllDungeons and instanceType == 2) or (DBM.Options.GenericTrashDelves and instanceType == 4)
+	return (DBM.Options.GenericTrashAllDungeons and instanceType == 2) or (DBM.Options.GenericTrashDelves and instanceType == 4) or (DBM.Options.GenericTrashRaids and instanceType == 3)
 end
 
 local function bossFight()
@@ -44,7 +40,7 @@ local function bossFight()
 		return true
 	end
 	for _, mod in ipairs(inCombat) do
-		if not mod.isTrashMod and mod.addon and mod.addon.type == "PARTY" then
+		if not mod.isTrashMod and mod.addon and (mod.addon.type == "PARTY" or mod.addon.type == "RAID") then
 			return true
 		end
 	end
@@ -61,6 +57,8 @@ function module:Deactivate()
 end
 
 function module:CheckZone()
+	local _, _, difficultyId, _, _, _, _, mapId = GetInstanceInfo()
+	difficulty, instanceId, instanceType = difficultyId, mapId, difficulties:InstanceType(mapId)
 	if not DBM.Options.GenericTrashEnabled or not (DBM.Options.GenericTrashCast or DBM.Options.GenericTrashLieutenant or DBM.Options.GenericTrashChannel) or not eligible() then
 		self:Deactivate()
 	elseif not registered then
@@ -150,6 +148,8 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	local level = UnitLevel(unit)
 	local isLieutenant = level == 91 or level == 92 or level == -1
 	if level ~= 90 and not isLieutenant then return end
+	-- Raid trash uses standard settings regardless of supported mob level.
+	isLieutenant = isLieutenant and instanceType ~= 3
 	local filter = resolveFilter(isLieutenant)
 	if filter == "target" then
 		if unit ~= "target" then return end
@@ -185,33 +185,7 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 		previous[category] = now
 	end
 	local useSound = shouldAlert and (unitIsTarget or filter ~= "messagesAllSoundsTarget")
-	local color = DBM.Options.WarningColors[channel and 2 or isLieutenant and 3 or 4]
-	local colorCode = ("|cff%02x%02x%02x"):format(floor(color.r * 255), floor(color.g * 255), floor(color.b * 255))
-	-- Pass secret metadata only to display APIs, never to caches/renames or table keys.
-	local text = C_Spell.GetSpellName(spellID)
-	if not DBM:issecretvalue(text) and text == nil then
-		text = CL.UNKNOWN
-	end
-	text = C_StringUtil.WrapString(text, colorCode, "|r")
-	if DBM.Options.GenericTrashShowTargets then
-		local targetName = UnitSpellTargetName(unit)
-		if DBM:issecretvalue(targetName) or targetName ~= nil then
-			local className = UnitSpellTargetClass(unit)
-			-- Secret class tokens may be nil-checked and passed directly to the color API.
-			if className ~= nil then
-				local classColor = C_ClassColor.GetClassColor(className)
-				if classColor then
-					targetName = classColor:WrapTextInColorCode(targetName)
-				end
-			end
-			text = L.GENERIC_TRASH_TARGET:format(text, targetName)
-		end
-	end
-	local icon = C_Spell.GetSpellTexture(spellID)
-	if not DBM:issecretvalue(icon) and icon == nil then
-		icon = 136116
-	end
-	DBM:AddWarning(text, nil, nil, useSound, nil, nil, icon)
+	DBM:AddSecretGenericWarning(unit, spellID, channel and 2 or isLieutenant and 3 or 4, useSound, DBM.Options.GenericTrashShowTargets)
 end
 
 function module:UNIT_SPELLCAST_START_UNFILTERED(unit, _, spellID)
