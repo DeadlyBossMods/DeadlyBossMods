@@ -415,6 +415,7 @@ L.AUTO_ANNOUNCE_OPTIONS.moveto			= "Afficher une annonce pour quand se déplacer
 
 L.AUTO_SPEC_WARN_TEXTS.spell			= "%s !"
 L.AUTO_SPEC_WARN_TEXTS.ends				= "%s s'est terminé"
+L.AUTO_SPEC_WARN_TEXTS.endtarget		= "%s s'est terminé : >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.fades		  	= "%s s'est dissipé"
 L.AUTO_SPEC_WARN_TEXTS.soon				= "%s bientôt"
 L.AUTO_SPEC_WARN_TEXTS.sooncount		= "%s (%%s) imminent"
@@ -466,6 +467,7 @@ L.AUTO_SPEC_WARN_TEXTS.targetchange 	= "Changement de cible - Passez à %%s !"
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS.spell 			= "Afficher une annonce spéciale pour $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.ends			= "Afficher une annonce spéciale lorsque $spell:%s se termine"
+L.AUTO_SPEC_WARN_OPTIONS.endtarget		= "Afficher une annonce spéciale (avec cible) lorsque $spell:%s se termine"
 L.AUTO_SPEC_WARN_OPTIONS.fades		   	= "Afficher une annonce spéciale lorsque $spell:%s se dissipe"
 L.AUTO_SPEC_WARN_OPTIONS.soon			= "Afficher une pré-annonce spéciale pour $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.sooncount		= "Afficher une pré-annonce spéciale (avec compte) pour $spell:%s"

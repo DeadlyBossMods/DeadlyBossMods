@@ -420,6 +420,7 @@ L.AUTO_ANNOUNCE_OPTIONS.moveto			= "警告：$spell:%s需要移动到某人或�
 
 L.AUTO_SPEC_WARN_TEXTS.spell			= "%s!"
 L.AUTO_SPEC_WARN_TEXTS.ends				= "%s 结束"
+L.AUTO_SPEC_WARN_TEXTS.endtarget		= "%s 结束: >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.fades			= "%s 消失"
 L.AUTO_SPEC_WARN_TEXTS.soon				= "%s 即将到来"
 L.AUTO_SPEC_WARN_TEXTS.sooncount		= "%s (%%s) 即将到来"
@@ -471,6 +472,7 @@ L.AUTO_SPEC_WARN_TEXTS.targetchange		= "更换目标 - 请选择 %%s"
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS.spell			= "特殊警告：$spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.ends			= "特殊警告：$spell:%s结束"
+L.AUTO_SPEC_WARN_OPTIONS.endtarget		= "特殊警告：$spell:%s结束（带目标）"
 L.AUTO_SPEC_WARN_OPTIONS.fades			= "特殊警告：$spell:%s消失"
 L.AUTO_SPEC_WARN_OPTIONS.soon			= "特殊警告：$spell:%s即将到来"
 L.AUTO_SPEC_WARN_OPTIONS.sooncount		= "特殊警告：$spell:%s即将到来(带计数)"
