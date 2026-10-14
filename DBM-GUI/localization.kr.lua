@@ -145,6 +145,26 @@ L.CustomOptions						= "이 카테고리엔 주문이나 도감(journal) ID가 �
 
 --
 
+-- Panel: Common Trash
+L.GenericTrashTitle					= "일반몹 공통 경고"
+L.GenericTrashDescription			= "기본적으로 현재 시즌 신화+ 쐐기돌 던전에서만 일반몹 공통 경고를 사용합니다. 일반 경고 효과음과 핵심 설정 프로필을 사용합니다. 내가 선택한 대상에는 반복 제한이 적용되지 않습니다."
+L.GenericTrashEnabled				= "일반몹 공통 경고 활성화"
+L.GenericTrashAllDungeons			= "모든 최고 레벨 던전에서도 활성화 (모든 난이도)"
+L.GenericTrashDelves					= "구렁에서도 활성화"
+L.GenericTrashCast					= "일반몹 주문 시전"
+L.GenericTrashLieutenant			= "부관 일반몹 주문 시전"
+L.GenericTrashChannel				= "일반몹 정신 집중 주문"
+L.GenericTrashShowTargets			= "주문 대상 표시"
+L.GenericTrashStandardFilter		= "일반몹"
+L.GenericTrashLieutenantFilter		= "부관"
+L.GenericTrashFilterTarget			= "내가 선택한 대상만"
+L.GenericTrashFilterAll				= "모든 유닛: 메시지와 효과음"
+L.GenericTrashFilterSoundsTarget	= "모든 유닛: 메시지; 내가 선택한 대상만: 효과음"
+L.GenericTrashThrottleType			= "반복 제한"
+L.GenericTrashThrottleBoth			= "메시지와 효과음"
+L.GenericTrashThrottleSounds		= "효과음만"
+L.GenericTrashThrottleDuration		= "반복 제한 시간 (초)"
+
 -- Panel: Auto Logging
 L.Panel_AutoLogging					= "자동 기록"
 

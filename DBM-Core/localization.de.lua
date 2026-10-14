@@ -137,6 +137,7 @@ L.SEC_FMT					= "%s Sek"
 
 L.GENERIC_WARNING_OTHERS	= "und einem anderen"
 L.GENERIC_WARNING_OTHERS2	= "und %d anderen"
+L.GENERIC_TRASH_TARGET	= "%s: %s"
 L.GENERIC_WARNING_BERSERK	= "Berserker in %s %s"
 L.GENERIC_TIMER_BERSERK		= "Berserker"
 L.OPTION_TIMER_BERSERK		= "Zeige Zeit bis $spell:26662"
