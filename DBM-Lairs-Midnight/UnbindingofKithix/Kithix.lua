@@ -374,7 +374,8 @@ do
 	--Boss slots can become eggs during the wave, so never infer an ability from the unit token.
 	function mod:UNIT_SPELLCAST_START(unit, _, spellID)
 		if not addWindowActive or not self.Options.warnAddCasts then return end
-		DBM:AddSecretGenericWarning(unit, spellID)
+		local unitIsTarget = UnitIsUnit("target", unit)
+		DBM:AddSecretGenericWarning(unit, spellID, nil, unitIsTarget)
 	end
 
 	mod.UNIT_SPELLCAST_CHANNEL_START = mod.UNIT_SPELLCAST_START
