@@ -36,7 +36,7 @@ local function eligible()
 		-- A completed key can retain difficulty 8, including across a UI reload.
 		return not completed and C_ChallengeMode.IsChallengeModeActive() and (difficulties:IsSeasonalDungeon(instanceId) or (DBM.Options.GenericTrashAllDungeons and instanceType == 2))
 	end
-	return (DBM.Options.GenericTrashAllDungeons and instanceType == 2) or (DBM.Options.GenericTrashDelves and instanceType == 4)
+	return (DBM.Options.GenericTrashAllDungeons and instanceType == 2) or (DBM.Options.GenericTrashDelves and instanceType == 4) or (DBM.Options.GenericTrashRaids and instanceType == 3)
 end
 
 local function bossFight()
@@ -44,7 +44,7 @@ local function bossFight()
 		return true
 	end
 	for _, mod in ipairs(inCombat) do
-		if not mod.isTrashMod and mod.addon and mod.addon.type == "PARTY" then
+		if not mod.isTrashMod and mod.addon and (mod.addon.type == "PARTY" or mod.addon.type == "RAID") then
 			return true
 		end
 	end

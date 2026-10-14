@@ -1306,8 +1306,8 @@ do
 
 	local currentSeasons = {}
 	local seasonCategory, seasonCategoryTab
-	local function createGenericTrashPanel(parent)
-		local panel = parent:CreateNewPanel("GenericTrash", "PARTY", false, L.GenericTrashTitle)
+	local function createGenericTrashPanel(parent, frameType, frameName)
+		local panel = parent:CreateNewPanel(frameName or "GenericTrash", frameType or "PARTY", false, L.GenericTrashTitle)
 		local area = panel:CreateArea(L.GenericTrashTitle)
 		area:CreateText(L.GenericTrashDescription, nil, true)
 		area:CreateCheckButton(L.GenericTrashEnabled, true, nil, "GenericTrashEnabled"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
@@ -1315,6 +1315,7 @@ do
 		allDungeons:HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
 		local delves = area:CreateCheckButton(L.GenericTrashDelves, true, nil, "GenericTrashDelves")
 		delves:HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		area:CreateCheckButton(L.GenericTrashRaids, true, nil, "GenericTrashRaids"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
 		area:CreateCheckButton(L.GenericTrashCast, true, nil, "GenericTrashCast"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
 		area:CreateCheckButton(L.GenericTrashLieutenant, true, nil, "GenericTrashLieutenant"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
 		area:CreateCheckButton(L.GenericTrashChannel, true, nil, "GenericTrashChannel"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
@@ -1423,6 +1424,9 @@ do
 				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)
+				if DBM:IsRetail() and addon.type == "RAID" and addon.category:upper() == "MIDNIGHT" then
+					createGenericTrashPanel(addon.panel, "RAID", "GenericTrashRaidsPanel")
+				end
 
 				if not addonLoaded then
 					local autoLoadFrame = CreateFrame("Frame", nil, addon.panel.frame)

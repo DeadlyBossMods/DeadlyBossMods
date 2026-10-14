@@ -194,10 +194,11 @@ DBM.DefaultOptions = {
 	FilterDispel = true,
 	FilterCrowdControl = true,
 	FilterTrashWarnings2 = true,
-	-- Generic current-season keystone trash warnings (core profile).
+	-- Generic max-level trash warnings (core profile).
 	GenericTrashEnabled = true,
 	GenericTrashAllDungeons = false,
 	GenericTrashDelves = false,
+	GenericTrashRaids = true,
 	GenericTrashCast = true,
 	GenericTrashLieutenant = true,
 	GenericTrashChannel = true,
