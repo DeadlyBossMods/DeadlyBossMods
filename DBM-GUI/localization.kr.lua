@@ -40,6 +40,9 @@ L.Tools_Duration					= "지속시간"
 L.Tools_Message						= "타이머 메시지"
 
 L.TabCategory_CURRENT_SEASON		= "현재 시즌"
+L.CurrentSeasonProfileInfo		= "현재 시즌은 서로 다른 확장팩 카테고리의 던전을 모아 보여주며, 각 카테고리는 별도의 프로필을 사용합니다. 던전 설정을 가져오기, 내보내기, 복사, 삭제 또는 초기화하려면 %s에서 해당 확장팩 카테고리를 선택하세요. 이 작업은 현재 시즌 던전뿐 아니라 해당 카테고리의 전체 모듈에 적용됩니다."
+L.CurrentSeasonProfileCategories	= "포함된 확장팩 카테고리:"
+L.CurrentSeasonCoreProfileInfo	= "%s 기능은 핵심 프로필을 사용하며, %s > %s에서 관리합니다."
 
 L.TabCategory_OTHER					= "기타 모드"
 L.TabCategory_AFFIXES				= "어픽스"

@@ -1305,7 +1305,13 @@ do
 	local subTabId = 0
 
 	local currentSeasons = {}
-	local seasonCategory, seasonCategoryTab
+	local seasonCategory, seasonCategoryTab, seasonProfileText
+	local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT", "WARWITHIN", "MIDNIGHT"}
+
+	local function getAddonCategoryName(addon)
+		return _G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1] or addon.name or addon.modId
+	end
+
 	local function createGenericTrashPanel(parent, frameType, frameName)
 		local panel = parent:CreateNewPanel(frameName or "GenericTrash", frameType or "PARTY", false, L.GenericTrashTitle)
 		local area = panel:CreateArea(L.GenericTrashTitle)
@@ -1374,11 +1380,17 @@ do
 		if not seasonCategory then
 			seasonCategory = DBM_GUI:CreateNewPanel(L.TabCategory_CURRENT_SEASON, "PARTY")
 			seasonCategoryTab = DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons[#DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons]
+			-- Give this grouping its own content instead of leaving the previous profile panel visible.
+			local area = seasonCategory:CreateArea(L.TabCategory_CURRENT_SEASON)
+			seasonProfileText = area:CreateText("", nil, true)
+			---@diagnostic disable-next-line: inject-field
+			seasonCategory.frame.isLoaded = true
 		end
 		if DBM:IsRetail() and not currentSeasons.GenericTrash then
 			currentSeasons.GenericTrash = createGenericTrashPanel(seasonCategory)
 		end
 		local hasAnyMod = currentSeasons.GenericTrash ~= nil
+		local categoryNames, seenCategories = {}, {}
 		for _, challengeMap in ipairs(C_ChallengeMode.GetMapTable()) do
 			local challengeMode = challengeModeIds[challengeMap]
 			local id = challengeMode
@@ -1388,18 +1400,23 @@ do
 			if splitName and splitName ~= "" then
 				mapName = splitName
 			end
-			if not currentSeasons[mapName] then
-				local modId
-				for _, addon in ipairs(DBM.AddOns) do
-					if addon.modId ~= "DBM-Affixes" and addon.type == "PARTY" then
-						for _, mapId in ipairs(addon.mapId) do
-							if mapId == id then
-								modId = addon.modId
-								break
+			local modId
+			for _, addon in ipairs(DBM.AddOns) do
+				if addon.modId ~= "DBM-Affixes" and addon.type == "PARTY" then
+					for _, mapId in ipairs(addon.mapId) do
+						if mapId == id then
+							modId = addon.modId
+							local categoryName = getAddonCategoryName(addon)
+							if not seenCategories[categoryName] then
+								seenCategories[categoryName] = true
+								tinsert(categoryNames, categoryName)
 							end
+							break
 						end
 					end
 				end
+			end
+			if not currentSeasons[mapName] then
 				if modId then
 					currentSeasons[mapName] = seasonCategory:CreateNewPanel(mapName, "PARTY", false, nil, true, modId, true)
 					hasAnyMod = true
@@ -1408,10 +1425,20 @@ do
 				hasAnyMod = true
 			end
 		end
+		tsort(categoryNames)
+		local profileInfo = L.CurrentSeasonProfileInfo:format(L.OTabDungeons)
+		if #categoryNames > 0 then
+			profileInfo = profileInfo .. "\n\n" .. L.CurrentSeasonProfileCategories .. "\n" .. table.concat(categoryNames, "\n")
+		end
+		if currentSeasons.GenericTrash then
+			profileInfo = profileInfo .. "\n\n" .. L.CurrentSeasonCoreProfileInfo:format(L.GenericTrashTitle, L.OTabOptions, L.Panel_Profile)
+		end
+		if seasonProfileText:GetText() ~= profileInfo then
+			seasonProfileText:SetText(profileInfo)
+			_G["DBM_GUI_OptionsFrame"]:InvalidateSearchCache(seasonCategory.frame)
+		end
 		seasonCategoryTab.hidden = not hasAnyMod
 	end
-
-    local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT", "WARWITHIN", "MIDNIGHT"}
 
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
@@ -1420,7 +1447,7 @@ do
 				local customName
 				--Auto truncate Raid, Dungeon, Lair, and World boss mods to only display expansion name in list
 				if addon.type == "RAID" or addon.type == "PARTY" or addon.type == "WORLDBOSS" or addon.type == "LAIR" then
-					customName = _G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1]
+					customName = getAddonCategoryName(addon)
 				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)

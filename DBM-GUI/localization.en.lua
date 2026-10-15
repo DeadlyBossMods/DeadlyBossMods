@@ -42,6 +42,9 @@ L.Tools_Duration					= "Duration"
 L.Tools_Message						= "Timer Message"
 
 L.TabCategory_CURRENT_SEASON		= "Current Season"
+L.CurrentSeasonProfileInfo		= "Current Season groups dungeons from different expansion categories, each with its own profiles. To import, export, copy, delete, or reset dungeon settings, select the corresponding expansion category under %s. These actions affect that category's entire module, not just its current-season dungeons."
+L.CurrentSeasonProfileCategories	= "Included expansion categories:"
+L.CurrentSeasonCoreProfileInfo	= "%s uses your core profile, managed under %s > %s."
 
 L.TabCategory_OTHER					= "Other Mods"
 L.TabCategory_AFFIXES				= "Affixes"
