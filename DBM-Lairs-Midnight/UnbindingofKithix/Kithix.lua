@@ -194,9 +194,9 @@ do
 	end
 
 	---@param self DBMMod
-	local function timersStoryLFR(self, timer, timerExact, eventID)
-		--Story transitions on Eclipse; LFR transitions on its first Null Gate.
-		if ((self:IsStory() and timer == 121) or (self:IsLFR() and timer == 3)) and not self:GetStage(2) then
+	local function timersEasy(self, timer, timerExact, eventID)
+		--Story transitions on Eclipse; LFR/Normal transition on their first Null Gate.
+		if ((self:IsStory() and timer == 121) or (not self:IsStory() and timer == 3)) and not self:GetStage(2) then
 			addWindowActive = false
 			resetScheduledEvents(self)
 			self:Stop()
@@ -210,13 +210,13 @@ do
 				timerVoidswarmCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "voidswarm", "voidswarmCount"))
 			elseif timer == 15 or timer == 21 or timer == 34 then
 				timerTwistedAppendageCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "appendage", "appendageCount"))
-			elseif timer == 20 or timer == 22 or timer == 77 then
+			elseif timer == 20 or timer == 22 or timer == 77 or (self:IsNormal() and (timer == 23 or timer == 54)) then
 				timerDarkDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 			elseif timer == 31 or timer == 62 then
 				timerExtinguishCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "extinguish", "extinguishCount"))
-			elseif timer == 45 then--Identical raw 45: opening Devastation, then Radiance.
+			elseif timer == 45 then--Story/LFR: opening Devastation, then Radiance. Normal: Radiance only.
 				storyFortyFiveCount = storyFortyFiveCount + 1
-				if storyFortyFiveCount == 1 then
+				if storyFortyFiveCount == 1 and not self:IsNormal() then
 					timerDarkDevastationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "devastation", "devastationCount"))
 				else
 					timerDivineRadianceCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "radiance", "radianceCount"))
@@ -235,22 +235,29 @@ do
 				else
 					timerSuffocatingDarknessCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "darkness", "darknessCount"))
 				end
-			elseif self:IsLFR() and timer == 40 then
+			elseif not self:IsStory() and timer == 40 then
 				timerUnspeakableHorrorsCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "horrors", "horrorsCount"))
-			elseif self:IsLFR() and (timer == 37 or timer == 82) then
+			elseif not self:IsStory() and (timer == 37 or timer == 82) then
 				startScheduledEvent(self, timerUnspeakableHorrorsCD, timerExact, eventID, "horrors", "horrorsCount")
-			elseif self:IsLFR() and timer == 67 then
+			elseif not self:IsStory() and timer == 67 then
 				timerAbyssalGraspCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grasp", "graspCount"))
-			elseif self:IsLFR() and (timer == 30 or timer == 89) then
+			elseif not self:IsStory() and (timer == 30 or timer == 89) then
 				startScheduledEvent(self, timerAbyssalGraspCD, timerExact, eventID, "grasp", "graspCount")
 			else
 				return false
 			end
-		elseif self:GetStage(2) and self:IsLFR() then
+		elseif self:GetStage(2) and not self:IsStory() then
 			if timer == 3 then
 				timerNullgateCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "nullGate", "nullGateCount"))
-			elseif timer == 10 then--LFR has no Negation; every raw 10 is a premature-finished Null Gate recast.
-				startScheduledEvent(self, timerNullgateCD, timerExact, eventID, "nullGate", "nullGateCount")
+			elseif timer == 15 and self:IsNormal() then
+				timerNegationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "negation", "negationCount"))
+			elseif timer == 10 then--Normal opens with Negation; LFR has only premature-finished Null Gate recasts.
+				stage2TenCount = stage2TenCount + 1
+				if self:IsNormal() and stage2TenCount == 1 then
+					timerNegationCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "negation", "negationCount"))
+				else
+					startScheduledEvent(self, timerNullgateCD, timerExact, eventID, "nullGate", "nullGateCount")
+				end
 			elseif timer == 61 then
 				timerEightfoldEclipseCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eclipse", "eclipseCount"))
 			else
@@ -360,8 +367,8 @@ do
 		self.vb.nullGateCount = 1
 		self.vb.negationCount = 1
 		self.vb.eclipseCount = 1
-		--Story, LFR and Heroic have been verified against complete 12.1 Week9 pulls.
-		if DBM.Options.HardcodedTimer and (self:IsStory() or self:IsLFR() or self:IsHeroic()) and not badStateDetected then
+		--Story, LFR, Normal and Heroic have been verified against complete 12.1 Week9 pulls.
+		if DBM.Options.HardcodedTimer and (self:IsStory() or self:IsLFR() or self:IsNormal() or self:IsHeroic()) and not badStateDetected then
 			self:IgnoreBlizzardAPI()
 			self:RegisterShortTermEvents(true,
 				"ENCOUNTER_TIMELINE_EVENT_ADDED",
@@ -406,8 +413,8 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		local handled
-		if self:IsStory() or self:IsLFR() then
-			handled = timersStoryLFR(self, timer, timerExact, eventID)
+		if self:IsStory() or self:IsLFR() or self:IsNormal() then
+			handled = timersEasy(self, timer, timerExact, eventID)
 		else
 			handled = timersHeroic(self, timer, timerExact, eventID)
 		end
