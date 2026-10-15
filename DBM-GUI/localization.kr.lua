@@ -147,10 +147,15 @@ L.CustomOptions						= "이 카테고리엔 주문이나 도감(journal) ID가 �
 
 -- Panel: Common Trash
 L.GenericTrashTitle					= "일반몹 공통 경고"
-L.GenericTrashDescription			= "기본적으로 현재 시즌 신화+ 쐐기돌 던전과 최고 레벨 공격대에서 일반몹 공통 경고를 사용합니다. 일반 경고 효과음과 핵심 설정 프로필을 사용합니다. 내가 선택한 대상에는 반복 제한이 적용되지 않습니다."
+L.GenericTrashDungeonDescription	= "던전 일반몹 경고는 현재 시즌 신화+ 쐐기돌 던전에서 기본적으로 활성화됩니다. 던전 설정은 독립적이며 핵심 설정 프로필에 저장됩니다. 일반 경고 효과음을 사용합니다. 내가 선택한 대상에는 반복 제한이 적용되지 않습니다."
+L.GenericTrashRaidDescription		= "공격대 일반몹 경고는 최고 레벨 공격대에서 기본적으로 활성화됩니다. 공격대 설정은 독립적이며 핵심 설정 프로필에 저장됩니다. 일반 경고 효과음을 사용합니다. 내가 선택한 대상에는 반복 제한이 적용되지 않습니다."
+L.GenericTrashDelveDescription		= "구렁 일반몹 경고는 기본적으로 활성화됩니다. 구렁 설정은 독립적이며 핵심 설정 프로필에 저장됩니다. 일반 경고 효과음을 사용합니다. 내가 선택한 대상에는 반복 제한이 적용되지 않습니다."
+L.GenericTrashRaidCast				= "일반몹 주문 시전"
+L.GenericTrashRaidFilter				= "일반몹"
 L.GenericTrashEnabled				= "일반몹 공통 경고 활성화"
 L.GenericTrashAllDungeons			= "모든 최고 레벨 던전에서도 활성화 (모든 난이도)"
-L.GenericTrashDelves					= "구렁에서도 활성화"
+L.GenericTrashDelves					= "구렁에서 활성화"
+L.GenericTrashDelveAllowBosses		= "구렁 보스에게도 허용"
 L.GenericTrashRaids					= "최고 레벨 공격대에서 활성화 (모든 난이도)"
 L.GenericTrashCast					= "일반몹 주문 시전"
 L.GenericTrashLieutenant			= "부관 일반몹 주문 시전"

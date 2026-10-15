@@ -195,18 +195,33 @@ DBM.DefaultOptions = {
 	FilterCrowdControl = true,
 	FilterTrashWarnings2 = true,
 	-- Generic max-level trash warnings (core profile).
-	GenericTrashEnabled = true,
-	GenericTrashAllDungeons = false,
-	GenericTrashDelves = false,
-	GenericTrashRaids = true,
-	GenericTrashCast = true,
-	GenericTrashLieutenant = true,
-	GenericTrashChannel = true,
-	GenericTrashShowTargets = true,
-	GenericTrashStandardFilter = "target",
-	GenericTrashLieutenantFilter = "all",
-	GenericTrashThrottleType = "both",
-	GenericTrashThrottleDuration = 3,
+	GenericTrashDungeonEnabled = true,
+	GenericTrashDungeonAllDungeons = false,
+	GenericTrashDungeonCast = true,
+	GenericTrashDungeonLieutenant = true,
+	GenericTrashDungeonChannel = true,
+	GenericTrashDungeonShowTargets = true,
+	GenericTrashDungeonStandardFilter = "target",
+	GenericTrashDungeonLieutenantFilter = "all",
+	GenericTrashDungeonThrottleType = "both",
+	GenericTrashDungeonThrottleDuration = 3,
+	GenericTrashRaidEnabled = true,
+	GenericTrashRaidCast = true,
+	GenericTrashRaidChannel = true,
+	GenericTrashRaidShowTargets = true,
+	GenericTrashRaidStandardFilter = "target",
+	GenericTrashRaidThrottleType = "both",
+	GenericTrashRaidThrottleDuration = 3,
+	GenericTrashDelveEnabled = true,
+	GenericTrashDelveAllowBosses = true,
+	GenericTrashDelveCast = true,
+	GenericTrashDelveLieutenant = true,
+	GenericTrashDelveChannel = true,
+	GenericTrashDelveShowTargets = true,
+	GenericTrashDelveStandardFilter = "target",
+	GenericTrashDelveLieutenantFilter = "all",
+	GenericTrashDelveThrottleType = "both",
+	GenericTrashDelveThrottleDuration = 3,
 	FilterVoidFormSay2 = false,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
@@ -617,6 +632,9 @@ function DBM:RepositionFrames()
 	-- rearrange position
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
+	if self.UpdateGenericTrashOptions then
+		self:UpdateGenericTrashOptions()
+	end
 	if self.TextTimers then
 		self.TextTimers:SyncOptions()
 	end

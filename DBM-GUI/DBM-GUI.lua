@@ -1306,20 +1306,25 @@ do
 
 	local currentSeasons = {}
 	local seasonCategory, seasonCategoryTab
-	local function createGenericTrashPanel(parent, frameType, frameName)
+	local function createGenericTrashPanel(parent, contentType, frameType, frameName)
+		local prefix = "GenericTrash" .. contentType
+		local isRaid = contentType == "Raid"
 		local panel = parent:CreateNewPanel(frameName or "GenericTrash", frameType or "PARTY", false, L.GenericTrashTitle)
 		local area = panel:CreateArea(L.GenericTrashTitle)
-		area:CreateText(L.GenericTrashDescription, nil, true)
-		area:CreateCheckButton(L.GenericTrashEnabled, true, nil, "GenericTrashEnabled"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		local allDungeons = area:CreateCheckButton(L.GenericTrashAllDungeons, true, nil, "GenericTrashAllDungeons")
-		allDungeons:HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		local delves = area:CreateCheckButton(L.GenericTrashDelves, true, nil, "GenericTrashDelves")
-		delves:HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		area:CreateCheckButton(L.GenericTrashRaids, true, nil, "GenericTrashRaids"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		area:CreateCheckButton(L.GenericTrashCast, true, nil, "GenericTrashCast"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		area:CreateCheckButton(L.GenericTrashLieutenant, true, nil, "GenericTrashLieutenant"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		area:CreateCheckButton(L.GenericTrashChannel, true, nil, "GenericTrashChannel"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		area:CreateCheckButton(L.GenericTrashShowTargets, true, nil, "GenericTrashShowTargets")
+		area:CreateText(L[prefix .. "Description"], nil, true)
+		local enabledLabel = isRaid and L.GenericTrashRaids or contentType == "Delve" and L.GenericTrashDelves or L.GenericTrashEnabled
+		area:CreateCheckButton(enabledLabel, true, nil, prefix .. "Enabled"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		if contentType == "Dungeon" then
+			area:CreateCheckButton(L.GenericTrashAllDungeons, true, nil, prefix .. "AllDungeons"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		elseif contentType == "Delve" then
+			area:CreateCheckButton(L.GenericTrashDelveAllowBosses, true, nil, prefix .. "AllowBosses")
+		end
+		area:CreateCheckButton(isRaid and L.GenericTrashRaidCast or L.GenericTrashCast, true, nil, prefix .. "Cast"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		if not isRaid then
+			area:CreateCheckButton(L.GenericTrashLieutenant, true, nil, prefix .. "Lieutenant"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		end
+		area:CreateCheckButton(L.GenericTrashChannel, true, nil, prefix .. "Channel"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		area:CreateCheckButton(L.GenericTrashShowTargets, true, nil, prefix .. "ShowTargets")
 		local filters = {
 			{ text = L.GenericTrashFilterTarget, value = "target" },
 			{ text = L.GenericTrashFilterSoundsTarget, value = "messagesAllSoundsTarget" },
@@ -1327,6 +1332,7 @@ do
 		}
 		local customization = panel:CreateArea(L.GenericTrashThrottleType)
 		local function createDropdown(title, values, key, width, anchor)
+			key = prefix .. key
 			local dropdown = customization:CreateDropdown(title, values, "DBM", key, function(value)
 				DBM.Options[key] = value
 			end, width)
@@ -1338,18 +1344,39 @@ do
 			end
 			return dropdown
 		end
-		local standard = createDropdown(L.GenericTrashStandardFilter, filters, "GenericTrashStandardFilter", 350)
-		local lieutenant = createDropdown(L.GenericTrashLieutenantFilter, {filters[3], filters[2], filters[1]}, "GenericTrashLieutenantFilter", 350, standard)
+		local lastFilter = createDropdown(isRaid and L.GenericTrashRaidFilter or L.GenericTrashStandardFilter, filters, "StandardFilter", 350)
+		if not isRaid then
+			lastFilter = createDropdown(L.GenericTrashLieutenantFilter, {filters[3], filters[2], filters[1]}, "LieutenantFilter", 350, lastFilter)
+		end
 		local throttle = createDropdown(L.GenericTrashThrottleType, {
 			{ text = L.GenericTrashThrottleBoth, value = "both" },
 			{ text = L.GenericTrashThrottleSounds, value = "sounds" }
-		}, "GenericTrashThrottleType", 350, lieutenant)
-		local duration = createDropdown(L.GenericTrashThrottleDuration, {
-			{ text = "1", value = 1 }, { text = "2", value = 2 }, { text = "3", value = 3 }
-		}, "GenericTrashThrottleDuration", 120, throttle)
+		}, "ThrottleType", 350, lastFilter)
+		local durationKey = prefix .. "ThrottleDuration"
+		local function normalizeDuration(value)
+			if type(value) ~= "number" or value ~= value then
+				value = DBM.DefaultOptions[durationKey]
+			end
+			return math.min(5, math.max(1, math.floor(value * 2 + 0.5) / 2))
+		end
+		local function updateDuration(slider, value)
+			slider.value = value
+			slider:SetValue(value)
+			slider.editbox:SetText(value)
+		end
+		local duration
+		duration = customization:CreateSlider(L.GenericTrashThrottleDuration, 1, 5, 0.5, 300, normalizeDuration(DBM.Options[durationKey]), function(value)
+			value = normalizeDuration(value)
+			DBM.Options[durationKey] = value
+			updateDuration(duration, value)
+		end)
+		duration:SetPoint("TOPLEFT", throttle, "BOTTOMLEFT", 20, -35)
+		duration:SetScript("OnShow", function(self)
+			updateDuration(self, normalizeDuration(DBM.Options[durationKey]))
+		end)
 		local reset = customization:CreateButton(L.Reset, 120, 20, function()
 			for key, value in pairs(DBM.DefaultOptions) do
-				if key:find("^GenericTrash") then
+				if key:find("^" .. prefix) then
 					DBM.Options[key] = value
 				end
 			end
@@ -1362,7 +1389,7 @@ do
 			end
 		end)
 		reset.myheight = 35
-		reset:SetPoint("TOPLEFT", duration, "BOTTOMLEFT", 0, -15)
+		reset:SetPoint("TOPLEFT", duration, "BOTTOMLEFT", -20, -35)
 		panel.frame.isLoaded = true
 		return panel
 	end
@@ -1376,7 +1403,7 @@ do
 			seasonCategoryTab = DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons[#DBM_GUI.tabs[DBM_GUI.Enums.Tabs.DUNGEONS].buttons]
 		end
 		if DBM:IsRetail() and not currentSeasons.GenericTrash then
-			currentSeasons.GenericTrash = createGenericTrashPanel(seasonCategory)
+			currentSeasons.GenericTrash = createGenericTrashPanel(seasonCategory, "Dungeon")
 		end
 		local hasAnyMod = currentSeasons.GenericTrash ~= nil
 		for _, challengeMap in ipairs(C_ChallengeMode.GetMapTable()) do
@@ -1425,7 +1452,9 @@ do
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)
 				if DBM:IsRetail() and addon.type == "RAID" and addon.category:upper() == "MIDNIGHT" then
-					createGenericTrashPanel(addon.panel, "RAID", "GenericTrashRaidsPanel")
+					createGenericTrashPanel(addon.panel, "Raid", "RAID", "GenericTrashRaidsPanel")
+				elseif DBM:IsRetail() and addon.type == "SCENARIO" and addon.modId == "DBM-Delves-Midnight" then
+					createGenericTrashPanel(addon.panel, "Delve", "SCENARIO", "GenericTrashDelvesPanel")
 				end
 
 				if not addonLoaded then

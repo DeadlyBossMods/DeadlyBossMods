@@ -18,6 +18,8 @@ local IsEncounterInProgress = IsEncounterInProgress
 
 local registered, completed = false, false
 local difficulty, instanceId, instanceType = 0, 0, 0
+local optionPrefix
+local optionPrefixes = {[2] = "GenericTrashDungeon", [3] = "GenericTrashRaid", [4] = "GenericTrashDelve"}
 local zoneChecks, retries, previous = {}, {}, {}
 
 local function cancelTimers(timers)
@@ -28,19 +30,24 @@ local function cancelTimers(timers)
 end
 
 local function eligible()
+	if not optionPrefix or not DBM.Options[optionPrefix .. "Enabled"] then return false end
 	if difficulty == 8 then
 		-- A completed key can retain difficulty 8, including across a UI reload.
-		return not completed and C_ChallengeMode.IsChallengeModeActive() and (difficulties:IsSeasonalDungeon(instanceId) or (DBM.Options.GenericTrashAllDungeons and instanceType == 2))
+		return instanceType == 2 and not completed and C_ChallengeMode.IsChallengeModeActive() and (difficulties:IsSeasonalDungeon(instanceId) or DBM.Options.GenericTrashDungeonAllDungeons)
 	end
-	return (DBM.Options.GenericTrashAllDungeons and instanceType == 2) or (DBM.Options.GenericTrashDelves and instanceType == 4) or (DBM.Options.GenericTrashRaids and instanceType == 3)
+	return instanceType ~= 2 or DBM.Options.GenericTrashDungeonAllDungeons
 end
 
 local function bossFight()
-	if IsEncounterInProgress() then
+	local allowBosses = instanceType == 4 and DBM.Options.GenericTrashDelveAllowBosses
+	if not allowBosses and IsEncounterInProgress() then
 		return true
 	end
 	for _, mod in ipairs(inCombat) do
-		if not mod.isTrashMod and mod.addon and (mod.addon.type == "PARTY" or mod.addon.type == "RAID") then
+		if mod.ignoreGenericTrash and mod.Options.Enabled then
+			return true
+		end
+		if not allowBosses and not mod.isTrashMod and mod.addon and (mod.addon.type == "PARTY" or mod.addon.type == "RAID") then
 			return true
 		end
 	end
@@ -58,8 +65,12 @@ end
 
 function module:CheckZone()
 	local _, _, difficultyId, _, _, _, _, mapId = GetInstanceInfo()
+	if mapId ~= instanceId or difficultyId ~= difficulty then
+		self:Deactivate()
+	end
 	difficulty, instanceId, instanceType = difficultyId, mapId, difficulties:InstanceType(mapId)
-	if not DBM.Options.GenericTrashEnabled or not (DBM.Options.GenericTrashCast or DBM.Options.GenericTrashLieutenant or DBM.Options.GenericTrashChannel) or not eligible() then
+	optionPrefix = optionPrefixes[instanceType]
+	if not eligible() or not (DBM.Options[optionPrefix .. "Cast"] or DBM.Options[optionPrefix .. "Channel"] or (instanceType ~= 3 and DBM.Options[optionPrefix .. "Lieutenant"])) then
 		self:Deactivate()
 	elseif not registered then
 		self:RegisterShortTermEvents(
@@ -129,7 +140,7 @@ function module:PLAYER_TARGET_CHANGED()
 end
 
 local function resolveFilter(isLieutenant)
-	local key = isLieutenant and "GenericTrashLieutenantFilter" or "GenericTrashStandardFilter"
+	local key = optionPrefix .. (isLieutenant and "LieutenantFilter" or "StandardFilter")
 	local value = DBM.Options[key]
 	if value ~= "target" and value ~= "all" and value ~= "messagesAllSoundsTarget" then
 		value = DBM.DefaultOptions[key]
@@ -138,7 +149,7 @@ local function resolveFilter(isLieutenant)
 end
 
 function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried)
-	if not registered or not DBM:IsEnabled() or not DBM.Options.Enabled or not DBM.Options.GenericTrashEnabled then return end
+	if not registered or not DBM:IsEnabled() or not DBM.Options.Enabled then return end
 	if not eligible() then
 		self:Deactivate()
 		return
@@ -156,7 +167,7 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	elseif not unit:find("^nameplate") then
 		return
 	end
-	local category = channel and "GenericTrashChannel" or isLieutenant and "GenericTrashLieutenant" or "GenericTrashCast"
+	local category = optionPrefix .. (channel and "Channel" or isLieutenant and "Lieutenant" or "Cast")
 	if not DBM.Options[category] or DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end
 	if not UnitIsEnemy("player", unit) or UnitClassification(unit) ~= "elite" then return end
 	-- Private core modules do not inherit DBMMod helpers; use its restricted unit-token path.
@@ -174,18 +185,19 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	end
 
 	local unitIsTarget = UnitIsUnit("target", unit)
-	local duration = DBM.Options.GenericTrashThrottleDuration
-	if duration ~= 1 and duration ~= 2 and duration ~= 3 then
-		duration = DBM.DefaultOptions.GenericTrashThrottleDuration
+	local durationKey = optionPrefix .. "ThrottleDuration"
+	local duration = DBM.Options[durationKey]
+	if type(duration) ~= "number" or duration < 1 or duration > 5 or duration % 0.5 ~= 0 then
+		duration = DBM.DefaultOptions[durationKey]
 	end
 	local now = GetTime()
 	local shouldAlert = unitIsTarget or now - (previous[category] or -math.huge) > duration
-	if not shouldAlert and DBM.Options.GenericTrashThrottleType ~= "sounds" then return end
+	if not shouldAlert and DBM.Options[optionPrefix .. "ThrottleType"] ~= "sounds" then return end
 	if shouldAlert and not unitIsTarget then
 		previous[category] = now
 	end
 	local useSound = shouldAlert and (unitIsTarget or filter ~= "messagesAllSoundsTarget")
-	DBM:AddSecretGenericWarning(unit, spellID, channel and 2 or isLieutenant and 3 or 4, useSound, DBM.Options.GenericTrashShowTargets)
+	DBM:AddSecretGenericWarning(unit, spellID, channel and 2 or isLieutenant and 3 or 4, useSound, DBM.Options[optionPrefix .. "ShowTargets"])
 end
 
 function module:UNIT_SPELLCAST_START_UNFILTERED(unit, _, spellID)
