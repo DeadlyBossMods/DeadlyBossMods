@@ -169,7 +169,9 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	end
 	local category = optionPrefix .. (channel and "Channel" or isLieutenant and "Lieutenant" or "Cast")
 	if not DBM.Options[category] or DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end
-	if not UnitIsEnemy("player", unit) or UnitClassification(unit) ~= "elite" then return end
+	if not UnitIsEnemy("player", unit) then return end
+	local classification = UnitClassification(unit)
+	if classification ~= "elite" and classification ~= "rareelite" then return end
 	-- Private core modules do not inherit DBMMod helpers; use its restricted unit-token path.
 	if not bossModPrototype:CheckBossDistance(unit, nil, nil, 48, false, true) or bossFight() then return end
 	if not UnitAffectingCombat(unit) then
