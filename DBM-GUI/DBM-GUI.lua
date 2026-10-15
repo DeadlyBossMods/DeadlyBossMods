@@ -1348,6 +1348,10 @@ do
 		if not isRaid then
 			lastFilter = createDropdown(L.GenericTrashLieutenantFilter, {filters[3], filters[2], filters[1]}, "LieutenantFilter", 350, lastFilter)
 		end
+		lastFilter = createDropdown(L.GenericTrashNonEliteFilter, {
+			{ text = L.GenericTrashFilterOff, value = "off" },
+			filters[1], filters[2], filters[3]
+		}, "NonEliteFilter", 350, lastFilter)
 		local throttle = createDropdown(L.GenericTrashThrottleType, {
 			{ text = L.GenericTrashThrottleBoth, value = "both" },
 			{ text = L.GenericTrashThrottleSounds, value = "sounds" }

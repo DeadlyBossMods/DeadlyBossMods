@@ -139,10 +139,10 @@ function module:PLAYER_TARGET_CHANGED()
 	self:NAME_PLATE_UNIT_REMOVED("target")
 end
 
-local function resolveFilter(isLieutenant)
-	local key = optionPrefix .. (isLieutenant and "LieutenantFilter" or "StandardFilter")
+local function resolveFilter(isLieutenant, isNonElite)
+	local key = optionPrefix .. (isNonElite and "NonEliteFilter" or isLieutenant and "LieutenantFilter" or "StandardFilter")
 	local value = DBM.Options[key]
-	if value ~= "target" and value ~= "all" and value ~= "messagesAllSoundsTarget" then
+	if value ~= "target" and value ~= "all" and value ~= "messagesAllSoundsTarget" and not (isNonElite and value == "off") then
 		value = DBM.DefaultOptions[key]
 	end
 	return value
@@ -161,7 +161,11 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	if level ~= 90 and not isLieutenant then return end
 	-- Raid trash uses standard settings regardless of supported mob level.
 	isLieutenant = isLieutenant and instanceType ~= 3
-	local filter = resolveFilter(isLieutenant)
+	local classification = UnitClassification(unit)
+	local isNonElite = classification == "normal" or classification == "rare" or classification == "minus"
+	if not isNonElite and classification ~= "elite" and classification ~= "rareelite" then return end
+	local filter = resolveFilter(isLieutenant, isNonElite)
+	if filter == "off" then return end
 	if filter == "target" then
 		if unit ~= "target" then return end
 	elseif not unit:find("^nameplate") then
@@ -170,8 +174,6 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	local category = optionPrefix .. (channel and "Channel" or isLieutenant and "Lieutenant" or "Cast")
 	if not DBM.Options[category] or DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end
 	if not UnitIsEnemy("player", unit) then return end
-	local classification = UnitClassification(unit)
-	if classification ~= "elite" and classification ~= "rareelite" then return end
 	-- Private core modules do not inherit DBMMod helpers; use its restricted unit-token path.
 	if not bossModPrototype:CheckBossDistance(unit, nil, nil, 48, false, true) or bossFight() then return end
 	if not UnitAffectingCombat(unit) then
