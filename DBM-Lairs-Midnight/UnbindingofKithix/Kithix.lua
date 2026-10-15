@@ -1,7 +1,7 @@
 if DBM:GetTOC() < 120105 then return end
 local mod	= DBM:NewMod(2896, "DBM-Lairs-Midnight", 1, 1324)--Change order when 12.1.5 ships
 
-mod.statTypes = "story,normal,heroic,mythic"
+mod.statTypes = "story,lfr,normal,heroic,mythic"
 
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(267861)
@@ -55,7 +55,7 @@ mod:AddAuraSoundOption(1303406, true, 1302951, 1, 1, "absorbyou", 19)--Abyssal G
 mod:AddAuraSoundOption(1308873, true, 1308873, 1, 1, "runout", 2)--Null gate (make custom audio later?)
 mod:AddAuraSoundOption(1318467, true, 1318467, 1, 1, "movetogate", 20)--Negation
 mod:AddAuraSoundOption(1304040, true, 1301511, 1, 1, "stunyou", 19)--Mindsting
-mod:AddAuraSoundOption(1302334, true, 1301511, 1, 1, "beamyou", 19)--Voidweave
+mod:AddAuraSoundOption(1302334, false, 1301511, 1, 1, "beamyou", 19)--Voidweave
 mod:AddAuraSoundOption(1304434, true, 1301511, 1, 1, "fixateyou", 19)--Fixate (verify ID)
 --mod:AddAuraSoundOption(1303257, true, 1302951, 1, 2, "findshelter", 2)--Suffocation (debuff from not being in barrier)
 
