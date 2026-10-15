@@ -1307,20 +1307,23 @@ do
 	local currentSeasons = {}
 	local seasonCategory, seasonCategoryTab
 	local function createGenericTrashPanel(parent, contentType, frameType, frameName)
-		local prefix = "GenericTrash" .. contentType
+		local isForever = DBM:IsForever()
+		local prefix = "GenericTrash" .. (isForever and "Forever" or "") .. contentType
 		local isRaid = contentType == "Raid"
 		local panel = parent:CreateNewPanel(frameName or "GenericTrash", frameType or "PARTY", false, L.GenericTrashTitle)
 		local area = panel:CreateArea(L.GenericTrashTitle)
 		area:CreateText(L[prefix .. "Description"], nil, true)
-		local enabledLabel = isRaid and L.GenericTrashRaids or contentType == "Delve" and L.GenericTrashDelves or L.GenericTrashEnabled
+		local enabledLabel = isForever and (isRaid and L.GenericTrashForeverRaids or L.GenericTrashForeverEnabled) or isRaid and L.GenericTrashRaids or contentType == "Delve" and L.GenericTrashDelves or L.GenericTrashEnabled
 		area:CreateCheckButton(enabledLabel, true, nil, prefix .. "Enabled"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		if contentType == "Dungeon" then
+		if contentType == "Dungeon" and not isForever then
 			area:CreateCheckButton(L.GenericTrashAllDungeons, true, nil, prefix .. "AllDungeons"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
 		elseif contentType == "Delve" then
 			area:CreateCheckButton(L.GenericTrashDelveAllowBosses, true, nil, prefix .. "AllowBosses")
 		end
-		area:CreateCheckButton(isRaid and L.GenericTrashRaidCast or L.GenericTrashCast, true, nil, prefix .. "Cast"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		if not isRaid then
+		area:CreateCheckButton(isForever and L.GenericTrashStandardCast or isRaid and L.GenericTrashRaidCast or L.GenericTrashCast, true, nil, prefix .. "Cast"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		if isForever then
+			area:CreateCheckButton(L.GenericTrashElite, true, nil, prefix .. "Elite"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
+		elseif not isRaid then
 			area:CreateCheckButton(L.GenericTrashLieutenant, true, nil, prefix .. "Lieutenant"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
 		end
 		area:CreateCheckButton(L.GenericTrashChannel, true, nil, prefix .. "Channel"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
@@ -1344,14 +1347,19 @@ do
 			end
 			return dropdown
 		end
-		local lastFilter = createDropdown(isRaid and L.GenericTrashRaidFilter or L.GenericTrashStandardFilter, filters, "StandardFilter", 350)
-		if not isRaid then
+		local standardFilters = isForever and {{ text = L.GenericTrashFilterOff, value = "off" }, filters[1], filters[2], filters[3]} or filters
+		local lastFilter = createDropdown(isForever and L.GenericTrashStandardMobs or isRaid and L.GenericTrashRaidFilter or L.GenericTrashStandardFilter, standardFilters, "StandardFilter", 350)
+		if isForever then
+			lastFilter = createDropdown(L.GenericTrashEliteFilter, filters, "EliteFilter", 350, lastFilter)
+		elseif not isRaid then
 			lastFilter = createDropdown(L.GenericTrashLieutenantFilter, {filters[3], filters[2], filters[1]}, "LieutenantFilter", 350, lastFilter)
 		end
-		lastFilter = createDropdown(L.GenericTrashNonEliteFilter, {
-			{ text = L.GenericTrashFilterOff, value = "off" },
-			filters[1], filters[2], filters[3]
-		}, "NonEliteFilter", 350, lastFilter)
+		if not isForever then
+			lastFilter = createDropdown(L.GenericTrashNonEliteFilter, {
+				{ text = L.GenericTrashFilterOff, value = "off" },
+				filters[1], filters[2], filters[3]
+			}, "NonEliteFilter", 350, lastFilter)
+		end
 		local throttle = createDropdown(L.GenericTrashThrottleType, {
 			{ text = L.GenericTrashThrottleBoth, value = "both" },
 			{ text = L.GenericTrashThrottleSounds, value = "sounds" }
@@ -1451,14 +1459,27 @@ do
 				local customName
 				--Auto truncate Raid, Dungeon, Lair, and World boss mods to only display expansion name in list
 				if addon.type == "RAID" or addon.type == "PARTY" or addon.type == "WORLDBOSS" or addon.type == "LAIR" then
-					customName = _G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1]
+					if addon.category:upper() == "FOREVER" then
+						customName = L.TabCategory_FOREVER
+					else
+						customName = _G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1]
+					end
 				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)
-				if DBM:IsRetail() and addon.type == "RAID" and addon.category:upper() == "MIDNIGHT" then
+				if DBM:IsRetail() and (addon.type == "RAID" or addon.type == "LAIR") and addon.category:upper() == "MIDNIGHT" then
 					createGenericTrashPanel(addon.panel, "Raid", "RAID", "GenericTrashRaidsPanel")
-				elseif DBM:IsRetail() and addon.type == "SCENARIO" and addon.modId == "DBM-Delves-Midnight" then
+				elseif DBM:IsRetail() and addon.modId == "DBM-Delves-Midnight" then
 					createGenericTrashPanel(addon.panel, "Delve", "SCENARIO", "GenericTrashDelvesPanel")
+				elseif DBM:IsForever() and addon.modId == "DBM-Party-Forever" then
+					createGenericTrashPanel(addon.panel, "Dungeon", "PARTY", "GenericTrashForeverDungeonsPanel")
+				elseif DBM:IsForever() and addon.modId == "DBM-Party-Vanilla" then
+					createGenericTrashPanel(addon.panel, "Dungeon", "PARTY", "GenericTrashForeverVanillaDungeonsPanel")
+				elseif DBM:IsForever() and addon.modId == "DBM-Raids-Vanilla" then
+					createGenericTrashPanel(addon.panel, "Raid", "RAID", "GenericTrashForeverVanillaRaidsPanel")
+				-- Enable when the Forever raid pack exists.
+				-- elseif DBM:IsForever() and addon.modId == "DBM-Raids-Forever" then
+				-- 	createGenericTrashPanel(addon.panel, "Raid", "RAID", "GenericTrashForeverRaidsPanel")
 				end
 
 				if not addonLoaded then

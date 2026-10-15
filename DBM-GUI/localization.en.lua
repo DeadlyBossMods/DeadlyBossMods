@@ -42,6 +42,7 @@ L.Tools_Duration					= "Duration"
 L.Tools_Message						= "Timer Message"
 
 L.TabCategory_CURRENT_SEASON		= "Current Season"
+L.TabCategory_FOREVER				= "Forever"
 
 L.TabCategory_OTHER					= "Other Mods"
 L.TabCategory_AFFIXES				= "Affixes"
@@ -149,6 +150,14 @@ L.CustomOptions						= "This category contains custom options for an ability or 
 --
 
 -- Panel: Common Trash
+L.GenericTrashForeverDungeonDescription = "Generic cast warnings, enabled by default in dungeons of all levels, including bosses unless their boss mod opts out. Dungeon and raid settings are independent and saved in core profiles. Uses the normal warning sound. Your selected target bypasses throttling."
+L.GenericTrashForeverRaidDescription = "Generic cast warnings, enabled by default in raids of all levels, including bosses unless their boss mod opts out. Dungeon and raid settings are independent and saved in core profiles. Uses the normal warning sound. Your selected target bypasses throttling."
+L.GenericTrashForeverEnabled		= "Enable in all dungeons"
+L.GenericTrashForeverRaids			= "Enable in all raids"
+L.GenericTrashStandardCast			= "Standard mob casts"
+L.GenericTrashElite					= "Elite mob casts"
+L.GenericTrashEliteFilter			= "Elite mobs"
+L.GenericTrashStandardMobs			= "Standard mobs"
 L.GenericTrashTitle					= "Common Trash"
 L.GenericTrashDungeonDescription	= "Dungeon trash warnings. Settings are independent for dungeons and saved in core profiles. Uses the normal warning sound. Your target bypasses throttling."
 L.GenericTrashRaidDescription		= "Raid trash warnings. Settings are independent for raids and saved in core profiles. Uses the normal warning sound. Your target bypasses throttling."
@@ -166,7 +175,7 @@ L.GenericTrashChannel				= "Enemy channels"
 L.GenericTrashShowTargets			= "Show spell targets"
 L.GenericTrashStandardFilter		= "Standard mobs"
 L.GenericTrashLieutenantFilter		= "Lieutenants"
-L.GenericTrashNonEliteFilter			= "Non-elite mobs"
+L.GenericTrashNonEliteFilter		= "Non-elite mobs"
 L.GenericTrashFilterOff				= "Off"
 L.GenericTrashFilterTarget			= "Your target only"
 L.GenericTrashFilterAll				= "All units: messages and sounds"

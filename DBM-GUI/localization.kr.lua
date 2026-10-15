@@ -40,6 +40,7 @@ L.Tools_Duration					= "지속시간"
 L.Tools_Message						= "타이머 메시지"
 
 L.TabCategory_CURRENT_SEASON		= "현재 시즌"
+L.TabCategory_FOREVER				= "포에버"
 
 L.TabCategory_OTHER					= "기타 모드"
 L.TabCategory_AFFIXES				= "어픽스"
@@ -146,6 +147,14 @@ L.CustomOptions						= "이 카테고리엔 주문이나 도감(journal) ID가 �
 --
 
 -- Panel: Common Trash
+L.GenericTrashForeverDungeonDescription = "모든 레벨의 던전에서 기본적으로 활성화되는 공통 주문 시전 경고입니다. 보스 모드에서 명시적으로 제외하지 않는 한 보스에게도 적용됩니다. 던전과 공격대 설정은 서로 독립적이며 핵심 설정 프로필에 저장됩니다. 일반 경고 효과음을 사용합니다. 내가 선택한 대상에는 반복 제한이 적용되지 않습니다."
+L.GenericTrashForeverRaidDescription = "모든 레벨의 공격대에서 기본적으로 활성화되는 공통 주문 시전 경고입니다. 보스 모드에서 명시적으로 제외하지 않는 한 보스에게도 적용됩니다. 던전과 공격대 설정은 서로 독립적이며 핵심 설정 프로필에 저장됩니다. 일반 경고 효과음을 사용합니다. 내가 선택한 대상에는 반복 제한이 적용되지 않습니다."
+L.GenericTrashForeverEnabled		= "모든 던전에서 활성화"
+L.GenericTrashForeverRaids			= "모든 공격대에서 활성화"
+L.GenericTrashStandardCast			= "일반 몹 주문 시전"
+L.GenericTrashElite					= "정예 몹 주문 시전"
+L.GenericTrashEliteFilter			= "정예 몹"
+L.GenericTrashStandardMobs			= "일반 몹"
 L.GenericTrashTitle					= "일반몹 공통 경고"
 L.GenericTrashDungeonDescription	= "던전 일반몹 경고는 현재 시즌 신화+ 쐐기돌 던전에서 기본적으로 활성화됩니다. 던전 설정은 독립적이며 핵심 설정 프로필에 저장됩니다. 일반 경고 효과음을 사용합니다. 내가 선택한 대상에는 반복 제한이 적용되지 않습니다."
 L.GenericTrashRaidDescription		= "공격대 일반몹 경고는 최고 레벨 공격대에서 기본적으로 활성화됩니다. 공격대 설정은 독립적이며 핵심 설정 프로필에 저장됩니다. 일반 경고 효과음을 사용합니다. 내가 선택한 대상에는 반복 제한이 적용되지 않습니다."
