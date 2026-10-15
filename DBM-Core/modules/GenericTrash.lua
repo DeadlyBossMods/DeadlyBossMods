@@ -228,7 +228,7 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 		previous[category] = now
 	end
 	local useSound = shouldAlert and (unitIsTarget or filter ~= "messagesAllSoundsTarget")
-	DBM:AddSecretGenericWarning(unit, spellID, channel and 2 or isLieutenant and 3 or 4, useSound, DBM.Options[optionPrefix .. "ShowTargets"])
+	DBM:AddSecretGenericWarning(unit, spellID, channel and 3 or isLieutenant and 4 or 2, useSound, DBM.Options[optionPrefix .. "ShowTargets"])
 end
 
 function module:UNIT_SPELLCAST_START_UNFILTERED(unit, _, spellID)
