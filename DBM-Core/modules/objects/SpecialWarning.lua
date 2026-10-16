@@ -701,10 +701,10 @@ local function showSpecialWarning(self, secret, ...)
 		--Text: Full message text
 		--Icon: Texture path/id for icon
 		--Type: Announce type
-		----Types: spell, ends, fades, soon, bait, dispel, interrupt, interruptcount, you, youcount, youpos, soakpos, target, targetcount, defensive, taunt, close, move, keepmove, stopmove,
+		----Types: spell, ends, endtarget, fades, soon, bait, dispel, interrupt, interruptcount, you, youcount, youpos, soakpos, target, targetcount, defensive, taunt, close, move, keepmove, stopmove,
 		----gtfo, dodge, dodgecount, dodgeloc, moveaway, moveawaycount, moveto, soak, jump, run, cast, lookaway, reflect, count, sooncount, stack, switch, switchcount, adds, addscount, addscustom, targetchange, prewarn
 		------General Target Messages (but since it's a special warning, it applies to you in some way): target, targetcount
-		------Fight Changes (Stages, adds, boss buff/debuff, etc): adds, addscount, addscustom, targetchange, switch, switchcount, ends
+		------Fight Changes (Stages, adds, boss buff/debuff, etc): adds, addscount, addscustom, targetchange, switch, switchcount, ends, endtarget
 		------General (can really apply to anything): spell, count, soon, sooncount, prewarn
 		------Personal/Role (Applies to you, or your job): Everything Else
 		--SpellId: Raw spell or encounter journal Id if available.
@@ -1081,6 +1081,12 @@ end
 function bossModPrototype:NewSpecialWarningEnd(spellId, optionDefault, ...)
 	---@type SpecAnnounce0
 	return newSpecialWarning(self, "ends", spellId, nil, optionDefault, ...)
+end
+
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: string|optionNumbers|boolean?, optionVersion: number?, runSound: acceptedSASounds?, hasVoice: number?, difficulty: number?, iconOverride: number|string?, voiceFile: VPSound?): SpecAnnounce1str
+function bossModPrototype:NewSpecialWarningEndTarget(spellId, optionDefault, ...)
+	---@type SpecAnnounce1str
+	return newSpecialWarning(self, "endtarget", spellId, nil, optionDefault, ...)
 end
 
 ---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: string|optionNumbers|boolean?, optionVersion: number?, runSound: acceptedSASounds?, hasVoice: number?, difficulty: number?, iconOverride: number|string?, voiceFile: VPSound?): SpecAnnounce0

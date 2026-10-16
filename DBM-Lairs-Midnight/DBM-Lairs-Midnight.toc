@@ -1,4 +1,4 @@
-## Interface: 120105
+## Interface: 120100, 120105
 ## AllowLoadGameType: standard
 ## Version: @project-version@
 ## Category: DBM
@@ -32,6 +32,8 @@
 ## X-Wago-ID: qv633o6b
 
 localization.en.lua
+localization.kr.lua
+localization.ru.lua
 
 UnbindingofKithix\Kithix.lua
 TideboundGrotto\NymrissaWavecaller.lua

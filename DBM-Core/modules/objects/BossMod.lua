@@ -44,6 +44,7 @@ local mt = {__index = bossModPrototype}
 ---@field upgradedMPlus boolean? Used to flag a dungeon that used to be a challenge mode in MoP or WoD but has since upgraded to M+
 ---@field onlyHighest boolean?
 ---@field soloChallenge boolean?
+---@field ignoreGenericTrash boolean? Suppresses generic warnings only while this enabled mod is in combat.
 ---@field disableHealthCombat boolean?
 ---@field isCustomMod boolean?
 ---@field lastKillTime number? Timestamp of the most recent completed combat.
@@ -174,6 +175,13 @@ bossModPrototype.UnregisterInCombatEvents = DBM.UnregisterInCombatEvents
 bossModPrototype.AddMsg = DBM.AddMsg
 bossModPrototype.RegisterShortTermEvents = DBM.RegisterShortTermEvents
 bossModPrototype.UnregisterShortTermEvents = DBM.UnregisterShortTermEvents
+
+---Opt this mod out of generic cast warnings while its encounter is active.
+---May be called at module load or combat start; does not change user options.
+---Suppression automatically stops when the mod leaves the active combat list.
+function bossModPrototype:IgnoreGenericTrash()
+	self.ignoreGenericTrash = true
+end
 
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then

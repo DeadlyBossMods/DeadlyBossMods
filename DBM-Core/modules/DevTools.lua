@@ -343,7 +343,7 @@ do
 	end
 
 	function module:UNIT_FLAGS(uId)
-		if DBM.Options.DebugLevel < 2 then return end
+		if not private.isForever and DBM.Options.DebugLevel < 2 then return end
 		local inCombat = private.getInCombat()
 		if #inCombat == 0 then return end
 		DBM:Debug("|c00D8B4FEUF|r fired for "..uId..": "..(UnitName(uId) or "?").." [CanAttack:"..tostring(UnitCanAttack("player", uId)).." IsFriend:"..tostring(UnitIsFriend("player", uId)).." Exists:"..tostring(UnitExists(uId)).." IsVisible:"..tostring(UnitIsVisible(uId)).."]", 3, nil, nil, true, true)
@@ -366,35 +366,35 @@ do
 	end
 
 	function module:UNIT_SPELLCAST_START(uId, _, spellId)
-		if DBM.Options.DebugLevel < 3 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if not private.isForever and DBM.Options.DebugLevel < 3 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 	function module:UNIT_SPELLCAST_STOP(uId, _, spellId)
-		if DBM.Options.DebugLevel < 3 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if not private.isForever and DBM.Options.DebugLevel < 3 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-		if DBM.Options.DebugLevel < 3 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if not private.isForever and DBM.Options.DebugLevel < 3 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_SUCCEEDED|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 4, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
-		if DBM.Options.DebugLevel < 2 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if not private.isForever and DBM.Options.DebugLevel < 2 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_START|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
 	end
 
 	function module:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
-		if DBM.Options.DebugLevel < 2 then return end
-		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3")) then return end
+		if not private.isForever and DBM.Options.DebugLevel < 2 then return end
+		if uId == "target" and (UnitIsUnit("target", "boss1") or UnitIsUnit("target", "boss2") or UnitIsUnit("target", "boss3") or UnitIsUnit("target", "boss4") or UnitIsUnit("target", "boss5")) then return end
 		local spellName = DBM:GetSpellName(spellId)
 		DBM:Debug("|c0069CCF0UNIT_SPELLCAST_CHANNEL_STOP|r fired for "..uId..": "..UnitName(uId).."'s "..spellName.." ("..spellId..")", 3, nil, nil, true, true)
 	end
@@ -436,7 +436,8 @@ do
 					eventsRegistered = true
 				end
 			else--No Boss unit Ids in classic, register backups
-				if DBM.Options.DebugLevel >= 3 then
+				-- Forever has no timeline events, so always capture its level-3 debug events.
+				if private.isForever or DBM.Options.DebugLevel >= 3 then
 					self:RegisterShortTermEvents(
 	--					"UNIT_SPELLCAST_START target focus",
 						"UNIT_SPELLCAST_SUCCEEDED target focus",

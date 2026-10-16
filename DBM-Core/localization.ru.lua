@@ -149,7 +149,7 @@ L.SEC_FMT							= "%s сек."
 
 L.GENERIC_WARNING_OTHERS			= "и ещё один"
 L.GENERIC_WARNING_OTHERS2			= "и %d других"
-L.GENERIC_TRASH_TARGET			= "%s: %s"
+L.GENERIC_TRASH_TARGET				= "%s: %s"
 L.GENERIC_WARNING_BERSERK			= "Берсерк через %s %s"
 L.GENERIC_TIMER_BERSERK				= "Берсерк"
 L.OPTION_TIMER_BERSERK				= "Отсчёт времени до $spell:26662"
@@ -434,6 +434,7 @@ L.AUTO_ANNOUNCE_OPTIONS.moveto			= "Объявлять, когда нужно п
 
 L.AUTO_SPEC_WARN_TEXTS.spell			= "%s!"
 L.AUTO_SPEC_WARN_TEXTS.ends				= "%s заканчивается"
+L.AUTO_SPEC_WARN_TEXTS.endtarget		= "%s заканчивается: >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.fades			= "%s спадает"
 L.AUTO_SPEC_WARN_TEXTS.soon				= "Скоро %s"
 L.AUTO_SPEC_WARN_TEXTS.sooncount		= "Скоро %s (%%s)"
@@ -487,6 +488,7 @@ L.AUTO_SPEC_WARN_TEXTS.targetchange		= "Смена цели - переключи
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS.spell 			= "Спецпредупреждение для $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.ends 			= "Спецпредупреждение об окончании $spell:%s"
+L.AUTO_SPEC_WARN_OPTIONS.endtarget		= "Спецпредупреждение об окончании $spell:%s (с целью)"
 L.AUTO_SPEC_WARN_OPTIONS.fades 			= "Спецпредупреждение о спадении $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.soon 			= "Спецпредупреждение, что скоро $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.sooncount		= "Спецпредупреждение, что скоро $spell:%s (со счётчиком)"
