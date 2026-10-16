@@ -931,8 +931,8 @@ do
 						bestTime = mod.stats[difficulties.statVarTable[difficulties.savedDifficulty] .. "BestTime"]
 					end
 					if bestTime and bestTime > 0 then
-						local speedTimer = mod:NewTimer(bestTime, L.SPEED_KILL_TIMER_TEXT, private.isRetail and "237538" or "136106", nil, false)
-						speedTimer:Start()
+						local speedTimer = mod:NewTimer(bestTime, mod.inScenario and L.SPEED_CLEAR_TIMER_TEXT or L.SPEED_KILL_TIMER_TEXT, private.isRetail and "237538" or "136106", nil, false)
+						speedTimer:Start(mod.id)
 					end
 				end
 				--update boss left
