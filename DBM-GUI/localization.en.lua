@@ -42,6 +42,9 @@ L.Tools_Duration					= "Duration"
 L.Tools_Message						= "Timer Message"
 
 L.TabCategory_CURRENT_SEASON		= "Current Season"
+L.CurrentSeasonProfileInfo		= "Current Season groups dungeons from different expansion categories, each with its own profiles. To import, export, copy, delete, or reset dungeon settings, select the corresponding expansion category under %s. These actions affect that category's entire module, not just its current-season dungeons."
+L.CurrentSeasonProfileCategories	= "Included expansion categories:"
+L.CurrentSeasonCoreProfileInfo	= "%s uses your core profile, managed under %s > %s."
 L.TabCategory_FOREVER				= "Forever"
 
 L.TabCategory_OTHER					= "Other Mods"
@@ -708,6 +711,7 @@ L.DisableMusic						= "Disable music channel during boss fights (Note: If enable
 L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
 L.HideBossEmoteFrame				= "Hide Blizzard Raid Warnings during boss fights"
 L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
+L.DebugOnlyNote						= " (Debug Only)"
 L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
 L.HideBlizzardTimeline				= "Hide the Blizzard Raid Timeline during boss fights"
 

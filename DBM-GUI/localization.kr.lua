@@ -40,6 +40,9 @@ L.Tools_Duration					= "지속시간"
 L.Tools_Message						= "타이머 메시지"
 
 L.TabCategory_CURRENT_SEASON		= "현재 시즌"
+L.CurrentSeasonProfileInfo		= "현재 시즌은 서로 다른 확장팩 카테고리의 던전을 모아 보여주며, 각 카테고리는 별도의 프로필을 사용합니다. 던전 설정을 가져오기, 내보내기, 복사, 삭제 또는 초기화하려면 %s에서 해당 확장팩 카테고리를 선택하세요. 이 작업은 현재 시즌 던전뿐 아니라 해당 카테고리의 전체 모듈에 적용됩니다."
+L.CurrentSeasonProfileCategories	= "포함된 확장팩 카테고리:"
+L.CurrentSeasonCoreProfileInfo	= "%s 기능은 핵심 프로필을 사용하며, %s > %s에서 관리합니다."
 L.TabCategory_FOREVER				= "포에버"
 
 L.TabCategory_OTHER					= "기타 모드"
@@ -700,6 +703,7 @@ L.DisableMusic						= "보스 전투 중 배경음악 음량 비활성화 (참�
 L.Area_HideBlizzard					= "그 외 성가신 블리자드 기본 UI 요소 비활성화 및 숨김"
 L.HideBossEmoteFrame				= "보스 전투 중 보스 경고 숨기기"
 L.HideWatchFrame					= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
+L.DebugOnlyNote						= " (디버그 전용)"
 L.HideQuestTooltips					= "보스 전투 중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
 L.HideBlizzardTimeline				= "보스 전투 중 블리자드 기본 공격대 타임라인 숨기기"
 
