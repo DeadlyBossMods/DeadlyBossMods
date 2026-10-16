@@ -48,6 +48,8 @@ local commReplyTimeoutSeconds = 3
 local inspectTimeoutSeconds = 4
 local inspectMaxRetries = 6
 local guildGearQuerySpamSeconds = 60
+local guildScanMaxRetries = 6
+local guildScanRetrySeconds = 0.5
 local maxReasonableItemLevel = 10000
 local guildUpdateDebounceSeconds = 0.2
 local inspectRetryWindowSeconds = 30
@@ -373,24 +375,45 @@ local function SendGearSyncRequest()
 	end)
 end
 
+-- Finish within four seconds, leaving time for the whisper before the five-second query closes.
+local function RetryGuildPlayerScan(onSuccess, isCurrent)
+	local deadline = GetTime() + commReplyTimeoutSeconds + 1
+	local retries = 0
+	local function AttemptScan()
+		if GetTime() > deadline or not IsInGuild() or not ShouldUseCommScan() or (isCurrent and not isCurrent()) then
+			return
+		end
+		local itemLevel, missingGems, missingEnchants = ScanGear("player")
+		if type(itemLevel) == "number" then
+			onSuccess(itemLevel, missingGems, missingEnchants)
+		elseif retries < guildScanMaxRetries then
+			retries = retries + 1
+			C_Timer.After(guildScanRetrySeconds, AttemptScan)
+		end
+	end
+	AttemptScan()
+end
+
 function SendGuildGearSyncRequest()
 	if not IsDisplayShown() or not private.sendGuildSync or not ShouldUseCommScan() or not IsInGuild() then
 		return
 	end
 	wipe(guildGearData)
 	guildGearQuerySent = true
+	guildSyncToken = guildSyncToken + 1
+	local requestToken = guildSyncToken
 	-- Seed our own data since self-sent GGR messages are filtered out in AddonComms.
 	-- The shared player name has no realm suffix, matching the key format GetCorrectSender produces
 	-- for same-realm WHISPER senders. Cross-realm peers arrive as "Name-Realm" via GetCorrectSender,
 	-- so there is no collision between the local player and any same-name cross-realm guild member.
 	local selfName = private.playerName
-	local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
-	if type(selfItemLevel) == "number" then
+	RetryGuildPlayerScan(function(selfItemLevel, selfMissingGems, selfMissingEnchants)
 		local selfClass = select(2, UnitClass("player"))
 		guildGearData[selfName] = {class = selfClass, itemLevel = selfItemLevel, missingGems = selfMissingGems, missingEnchants = selfMissingEnchants}
-	end
-	guildSyncToken = guildSyncToken + 1
-	local requestToken = guildSyncToken
+		Update()
+	end, function()
+		return requestToken == guildSyncToken and guildGearQuerySent and IsDisplayShown() and selectedTab == 2
+	end)
 	private.sendGuildSync(private.DBMSyncProtocol or 1, "GGQ", nil)
 	C_Timer.After(commReplyTimeoutSeconds + 2, function()
 		-- Guard staleness first: a rapid re-request increments guildSyncToken, making this timer stale.
@@ -462,7 +485,8 @@ function ScanGear(unit)
 	local useInspectItemLevel = C_PaperDollInfo and C_PaperDollInfo.GetInspectItemLevel
 	local calculateItemLevel = not isPlayer and not useInspectItemLevel
 	local totalItemLevel, itemLevelSlots = 0, hasRangedSlot and 17 or 16
-	local mainHandEquipLoc, hasMainHand, hasOffHand
+	local mainHandEquipLoc, hasOffHand
+	local mainHandItemLevel = 0
 	local averageItemLevel
 	local missingGems = checkMissingGems and 0 or nil
 	local missingEnchants = checkMissingEnchants and 0 or nil
@@ -511,7 +535,7 @@ function ScanGear(unit)
 				end
 				totalItemLevel = totalItemLevel + itemLevel
 				if i == 16 then
-					hasMainHand = true
+					mainHandItemLevel = itemLevel
 					mainHandEquipLoc = select(9, GetItemInfo(itemLink))
 					if not mainHandEquipLoc then return end
 				elseif i == 17 then
@@ -530,10 +554,10 @@ function ScanGear(unit)
 		--Unfortunately, this api does NOT return decimal precision
 		averageItemLevel = useInspectItemLevel(unit)
 	else
-		-- Empty armor slots count as zero. A two-handed loadout (including MoP
-		-- bows/guns/crossbows) has no offhand slot; dual-wield/Titan's Grip has both.
-		if not hasOffHand and (not hasMainHand or mainHandEquipLoc == "INVTYPE_2HWEAPON" or mainHandEquipLoc == "INVTYPE_RANGED" or mainHandEquipLoc == "INVTYPE_RANGEDRIGHT") then
-			itemLevelSlots = itemLevelSlots - 1
+		-- Empty slots count as zero. A lone two-hander fills both hand slots;
+		-- occupied offhands (including Titan's Grip) already contribute their own level.
+		if not hasOffHand and (mainHandEquipLoc == "INVTYPE_2HWEAPON" or mainHandEquipLoc == "INVTYPE_RANGED" or mainHandEquipLoc == "INVTYPE_RANGEDRIGHT") then
+			totalItemLevel = totalItemLevel + mainHandItemLevel
 		end
 		averageItemLevel = RoundItemLevel(totalItemLevel / itemLevelSlots)
 	end
@@ -808,6 +832,8 @@ function CreateDisplayFrame()
 		self:SetScript("OnUpdate", nil)
 		pendingRosterRefresh = false
 		inspectUpdateElapsed = 0
+		guildSyncToken = guildSyncToken + 1
+		guildGearQuerySent = false
 		ClearInspectQueue()
 	end)
 
@@ -977,11 +1003,10 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		if not DBM:AntiSpam(guildGearQuerySpamSeconds, "GGQ:" .. sender) then
 			return
 		end
-		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
-		if type(selfItemLevel) == "number" then
+		RetryGuildPlayerScan(function(selfItemLevel, selfMissingGems, selfMissingEnchants)
 			local selfClass = select(2, UnitClass("player")) or ""
 			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d\t%s"):format(selfItemLevel, selfMissingGems or 0, selfMissingEnchants or 0, selfClass), sender, "NORMAL")
-		end
+		end)
 	elseif event == "GGR" then
 		if sender == private.playerName then
 			return
