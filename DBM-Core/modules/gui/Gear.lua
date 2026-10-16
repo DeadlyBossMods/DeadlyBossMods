@@ -12,6 +12,16 @@ local tinsert, tremove, tsort, mmax, mfloor = table.insert, table.remove, table.
 
 local L = DBM_CORE_L
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
+local isRetail, isMop = DBM:IsRetail(), DBM:IsMop()
+local checkMissingGems = not DBM:IsVanilla()
+-- Ordinary enchants audited for Naxxramas, Zul'Aman and Siege of Orgrimmar.
+-- Forever and other Classic versions remain disabled until separately audited.
+local checkMissingEnchants = isRetail or DBM:IsVanillaEra() or DBM:IsTBC() or isMop
+local hasRangedSlot = not (isRetail or isMop or DBM:IsForever())
+local lastEquipmentSlot = hasRangedSlot and 18 or 17
+local GetItemStats = C_Item and C_Item.GetItemStats or _G["GetItemStats"]--Classic API, absent from Retail definitions
+local GetItemInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
+local GetDetailedItemLevelInfo = C_Item and C_Item.GetDetailedItemLevelInfo or GetDetailedItemLevelInfo
 
 ---@type DefaultPanelTemplate?
 local frame
@@ -129,8 +139,8 @@ local function SetPlayerGearState(name, itemLevel, missingGems, missingEnchants,
 		return
 	end
 	player.gearilvl = itemLevel
-	player.gearmissinggems = missingGems
-	player.gearmissingenchants = missingEnchants
+	player.gearmissinggems = checkMissingGems and missingGems or nil
+	player.gearmissingenchants = checkMissingEnchants and missingEnchants or nil
 	player.gearpending = pending or false
 	player.gearunavailable = unavailable or false
 end
@@ -168,6 +178,21 @@ local function GetGearCountText(player, key)
 	return "-"
 end
 
+local function AddGearCountText(player, offset)
+	if checkMissingGems then
+		local text = GetTextFrame()
+		text:SetText(GetGearCountText(player, "gearmissinggems"))
+		text:SetPoint("TOP", titleMissingGems, "BOTTOM", 0, offset)
+		text:SetWidth(missingGemsWidth)
+	end
+	if checkMissingEnchants then
+		local text = GetTextFrame()
+		text:SetText(GetGearCountText(player, "gearmissingenchants"))
+		text:SetPoint("TOP", titleMissingEnchants, "BOTTOM", 0, offset)
+		text:SetWidth(missingEnchantsWidth)
+	end
+end
+
 local function SortGear(v1, v2)
 	local v1State = type(v1.gearilvl) == "number" and 3 or v1.gearpending and 2 or v1.gearunavailable and 1 or 0
 	local v2State = type(v2.gearilvl) == "number" and 3 or v2.gearpending and 2 or v2.gearunavailable and 1 or 0
@@ -198,7 +223,7 @@ local function UpdateRaidTab()
 		end
 
 		local offset = -((i - 1) * 14) - 4
-		local textPlayer, textItemLevel, textMissingGems, textMissingEnchants = GetTextFrame(), GetTextFrame(), GetTextFrame(), GetTextFrame()
+		local textPlayer, textItemLevel = GetTextFrame(), GetTextFrame()
 
 		textPlayer:SetText(name)
 		textPlayer:SetPoint("TOP", titlePlayer, "BOTTOM", 0, offset)
@@ -208,13 +233,7 @@ local function UpdateRaidTab()
 		textItemLevel:SetPoint("TOP", titleItemLevel, "BOTTOM", 0, offset)
 		textItemLevel:SetWidth(itemLevelWidth)
 
-		textMissingGems:SetText(GetGearCountText(v, "gearmissinggems"))
-		textMissingGems:SetPoint("TOP", titleMissingGems, "BOTTOM", 0, offset)
-		textMissingGems:SetWidth(missingGemsWidth)
-
-		textMissingEnchants:SetText(GetGearCountText(v, "gearmissingenchants"))
-		textMissingEnchants:SetPoint("TOP", titleMissingEnchants, "BOTTOM", 0, offset)
-		textMissingEnchants:SetWidth(missingEnchantsWidth)
+		AddGearCountText(v, offset)
 	end
 
 	local scrollHeight = scroll:GetHeight()
@@ -241,7 +260,7 @@ local function UpdateGuildTab()
 		end
 
 		local offset = -((i - 1) * 14) - 4
-		local textPlayer, textItemLevel, textMissingGems, textMissingEnchants = GetTextFrame(), GetTextFrame(), GetTextFrame(), GetTextFrame()
+		local textPlayer, textItemLevel = GetTextFrame(), GetTextFrame()
 
 		textPlayer:SetText(name)
 		textPlayer:SetPoint("TOP", titlePlayer, "BOTTOM", 0, offset)
@@ -251,13 +270,7 @@ local function UpdateGuildTab()
 		textItemLevel:SetPoint("TOP", titleItemLevel, "BOTTOM", 0, offset)
 		textItemLevel:SetWidth(itemLevelWidth)
 
-		textMissingGems:SetText(tostring(v.gearmissinggems or 0))
-		textMissingGems:SetPoint("TOP", titleMissingGems, "BOTTOM", 0, offset)
-		textMissingGems:SetWidth(missingGemsWidth)
-
-		textMissingEnchants:SetText(tostring(v.gearmissingenchants or 0))
-		textMissingEnchants:SetPoint("TOP", titleMissingEnchants, "BOTTOM", 0, offset)
-		textMissingEnchants:SetWidth(missingEnchantsWidth)
+		AddGearCountText(v, offset)
 	end
 
 	local scrollHeight = scroll:GetHeight()
@@ -317,7 +330,7 @@ end
 
 function ShouldUseCommScan()
 	if not (C_ChatInfo and C_ChatInfo.InChatMessagingLockdown) then
-		return false
+		return true
 	end
 	return not C_ChatInfo.InChatMessagingLockdown()
 end
@@ -367,14 +380,14 @@ function SendGuildGearSyncRequest()
 	wipe(guildGearData)
 	guildGearQuerySent = true
 	-- Seed our own data since self-sent GGR messages are filtered out in AddonComms.
-	-- UnitName("player") has no realm suffix, matching the key format GetCorrectSender produces
+	-- The shared player name has no realm suffix, matching the key format GetCorrectSender produces
 	-- for same-realm WHISPER senders. Cross-realm peers arrive as "Name-Realm" via GetCorrectSender,
 	-- so there is no collision between the local player and any same-name cross-realm guild member.
-	local selfName = UnitName("player")
+	local selfName = private.playerName
 	local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
 	if type(selfItemLevel) == "number" then
 		local selfClass = select(2, UnitClass("player"))
-		guildGearData[selfName] = {class = selfClass, itemLevel = selfItemLevel, missingGems = selfMissingGems or 0, missingEnchants = selfMissingEnchants or 0}
+		guildGearData[selfName] = {class = selfClass, itemLevel = selfItemLevel, missingGems = selfMissingGems, missingEnchants = selfMissingEnchants}
 	end
 	guildSyncToken = guildSyncToken + 1
 	local requestToken = guildSyncToken
@@ -393,8 +406,8 @@ function SendGuildGearSyncRequest()
 	end)
 end
 
---Only valid for midnight. No classic flavors supported since I don't play those
-local enchantableSlots = {
+-- Retail retains its Midnight slot policy.
+local enchantableSlots = isRetail and {
 	[1] = true,--Helm
 --	[2] = true,--Neck
 	[3] = true,--Shoulder
@@ -410,7 +423,32 @@ local enchantableSlots = {
 --	[15] = true,--Back
 	[16] = true,--MainHand
 --	[17] = true,--OffHand
-}
+} or checkMissingEnchants and {
+	[1] = not isMop,--Head enchants were removed in MoP
+	[3] = true,--Shoulder inscriptions, including Vanilla reputation enchants
+	[5] = true,--Chest
+	[7] = true,--Leg armor, spellthread or Vanilla arcanums
+	[8] = true,--Feet
+	[9] = true,--Wrist
+	[10] = true,--Hands
+	[15] = true,--Back
+	[16] = true,--Weapon or MoP scope
+	[17] = true,--Weapon/shield; MoP also permits held-in-offhand items
+	[18] = hasRangedSlot,--Scopes only, not wands/thrown/relics
+	-- Rings and other profession-only enhancements are deliberately excluded.
+} or {}
+
+-- https://warcraft.wiki.gg/wiki/Enchantments_by_slot#Pre-6.0_enchants
+local function IsEnchantableClassicItem(itemLink)
+	local itemName, _, _, _, _, _, _, _, equipLoc, _, _, classID, subclassID = GetItemInfo(itemLink)
+	if not itemName then
+		return nil--Uncached: retry instead of claiming a complete count.
+	end
+	if classID == 2 then--Weapons: scopes cover bows/guns/crossbows as well.
+		return subclassID ~= 16 and subclassID ~= 20 and (subclassID ~= 19 or isMop)--Not thrown/fishing poles/pre-MoP wands
+	end
+	return equipLoc == "INVTYPE_SHIELD" or isMop and equipLoc == "INVTYPE_HOLDABLE"
+end
 
 --TODO, collect list of enchant Ids and show a () next to count showing number of cheap enchants in use
 function ScanGear(unit)
@@ -420,60 +458,96 @@ function ScanGear(unit)
 	if DBM:issecretunit(unit) then
 		return
 	end
+	local isPlayer = UnitIsUnit(unit, "player")
+	local useInspectItemLevel = C_PaperDollInfo and C_PaperDollInfo.GetInspectItemLevel
+	local calculateItemLevel = not isPlayer and not useInspectItemLevel
+	local totalItemLevel, itemLevelSlots = 0, hasRangedSlot and 17 or 16
+	local mainHandEquipLoc, hasMainHand, hasOffHand
 	local averageItemLevel
-	local missingGems, missingEnchants = 0, 0
-	for i = 1, 17 do
-		local itemLink = GetInventoryItemLink(unit, i)
+	local missingGems = checkMissingGems and 0 or nil
+	local missingEnchants = checkMissingEnchants and 0 or nil
+	for i = 1, lastEquipmentSlot do
+		local itemLink = i ~= 4 and GetInventoryItemLink(unit, i)--Never scan the shirt.
 		if itemLink then
-			--[1]="|cn|Q4:|Hitem:49812:8025:240894::::::90:73::16:5:12795:13440:6652:13668:12699:1:28:1279:::::|h[Purloined Wedding Ring]|h|r"
 			local enchant, gem1, gem2, gem3, gem4 = itemLink:match("item:%d+:(%d*):(%d*):(%d*):(%d*):(%d*):")
-			local expectedGems, filledSockets = 0, 0
-
-			--https://warcraft.wiki.gg/wiki/API_C_Item.GetItemStats
-			local statTable = C_Item.GetItemStats(itemLink)
-			if statTable then
+			if (checkMissingGems or checkMissingEnchants) and not enchant then
+				return--Incomplete item link.
+			end
+			if checkMissingGems then
+				local expectedGems, filledSockets = 0, 0
+				local statTable = GetItemStats(itemLink)
+				if not statTable then
+					return--Item data is still loading; use the bounded retry queue.
+				end
 				for mod, count in next, statTable do
-					--https://www.townlong-yak.com/framexml/10.2.0/GlobalStrings.lua#6196
 					if mod:find("EMPTY_SOCKET_", nil, true) then
 						expectedGems = expectedGems + count
 					end
 				end
-			end
-			if gem1 and gem1 ~= "" then
-				filledSockets = filledSockets + 1
-			end
-			if gem2 and gem2 ~= "" then
-				filledSockets = filledSockets + 1
-			end
-			if gem3 and gem3 ~= "" then
-				filledSockets = filledSockets + 1
-			end
-			if gem4 and gem4 ~= "" then
-				filledSockets = filledSockets + 1
-			end
-			local newMissing = expectedGems - filledSockets
-			if newMissing > 0 then
-				missingGems = missingGems + newMissing
+				if (tonumber(gem1) or 0) > 0 then filledSockets = filledSockets + 1 end
+				if (tonumber(gem2) or 0) > 0 then filledSockets = filledSockets + 1 end
+				if (tonumber(gem3) or 0) > 0 then filledSockets = filledSockets + 1 end
+				if (tonumber(gem4) or 0) > 0 then filledSockets = filledSockets + 1 end
+				missingGems = missingGems + mmax(0, expectedGems - filledSockets)
 			end
 
-			if enchantableSlots[i] and enchant == "" then
-				missingEnchants = missingEnchants + 1
+			if enchantableSlots[i] and (enchant == "" or enchant == "0") then
+				local eligible = true
+				if not isRetail and i >= 16 then
+					eligible = IsEnchantableClassicItem(itemLink)
+				end
+				if eligible == nil then
+					return
+				elseif eligible then
+					missingEnchants = missingEnchants + 1
+				end
 			end
+
+			if calculateItemLevel then
+				local itemLevel = GetDetailedItemLevelInfo and GetDetailedItemLevelInfo(itemLink)
+				if type(itemLevel) ~= "number" then
+					return--Do not substitute the base level for an upgraded MoP item.
+				end
+				totalItemLevel = totalItemLevel + itemLevel
+				if i == 16 then
+					hasMainHand = true
+					mainHandEquipLoc = select(9, GetItemInfo(itemLink))
+					if not mainHandEquipLoc then return end
+				elseif i == 17 then
+					hasOffHand = true
+				end
+			end
+		elseif i ~= 4 and GetInventoryItemTexture(unit, i) then
+			return--An equipped item whose link has not arrived is not an empty slot.
 		end
 	end
-	if UnitIsUnit(unit, "player") then
+	if isPlayer then
 		local _, equipped = GetAverageItemLevel()
 		--Player returns decimal precision
 		averageItemLevel = RoundItemLevel(equipped)
-	else
-		if not (C_PaperDollInfo and C_PaperDollInfo.GetInspectItemLevel) then
-			return
-		end
-		averageItemLevel = C_PaperDollInfo.GetInspectItemLevel(unit)
+	elseif useInspectItemLevel then
 		--Unfortunately, this api does NOT return decimal precision
---		averageItemLevel = RoundItemLevel(averageItemLevel)
+		averageItemLevel = useInspectItemLevel(unit)
+	else
+		-- Empty armor slots count as zero. A two-handed loadout (including MoP
+		-- bows/guns/crossbows) has no offhand slot; dual-wield/Titan's Grip has both.
+		if not hasOffHand and (not hasMainHand or mainHandEquipLoc == "INVTYPE_2HWEAPON" or mainHandEquipLoc == "INVTYPE_RANGED" or mainHandEquipLoc == "INVTYPE_RANGEDRIGHT") then
+			itemLevelSlots = itemLevelSlots - 1
+		end
+		averageItemLevel = RoundItemLevel(totalItemLevel / itemLevelSlots)
 	end
 	return averageItemLevel, missingGems, missingEnchants
+end
+
+local function ScanPlayerGear(name)
+	local itemLevel, missingGems, missingEnchants = ScanGear("player")
+	if type(itemLevel) == "number" then
+		inspectRetryCounts[name] = nil
+		inspectRetryDeadlines[name] = nil
+		SetPlayerGearState(name, itemLevel, missingGems, missingEnchants, false, false)
+	else
+		QueueInspectRetry(name)
+	end
 end
 
 local function FinishInspect(token, itemLevel, missingGems, missingEnchants)
@@ -530,6 +604,8 @@ function RequestNextInspect()
 		local unit = DBM:GetRaidUnitId(name, true)
 		if unit and DBM:issecretunit(unit) then
 			MarkInspectUnavailable(name)
+		elseif name == DBM:GetUnitFullName("player") then
+			ScanPlayerGear(name)
 		else
 			local canInspect = unit and UnitExists(unit) and UnitIsConnected(unit) and not UnitIsUnit(unit, "player") and CheckInteractDistance(unit, 1) and CanInspect(unit)
 			if canInspect then
@@ -562,7 +638,7 @@ local function SeedRaid()
 	for name in pairs(DBM:GetRaidRoster()) do
 		knownRosterMembers[name] = true
 		if name == playerName then
-			SetPlayerGearState(name, ScanGear("player"))
+			ScanPlayerGear(name)
 		else
 			local unit = DBM:GetRaidUnitId(name, true)
 			if unit and DBM:issecretunit(unit) then
@@ -621,7 +697,7 @@ function HandleRosterUpdate()
 		currentMembers[name] = true
 		if not knownRosterMembers[name] then
 			if name == playerName then
-				SetPlayerGearState(name, ScanGear("player"))
+				ScanPlayerGear(name)
 			else
 				local unit = DBM:GetRaidUnitId(name, true)
 				if unit and DBM:issecretunit(unit) then
@@ -781,21 +857,26 @@ function CreateDisplayFrame()
 	itemLevelWidth = mmax(75, titleItemLevel:GetStringWidth() + 20)
 	titleItemLevel:SetWidth(itemLevelWidth)
 
-	titleMissingGems = GetTextFrame()
-	titleMissingGems.Keep = true
-	titleMissingGems:SetFontObject(GameFontNormalLarge)
-	titleMissingGems:SetText(L.GEAR_MISSING_GEMS)
-	titleMissingGems:SetPoint("LEFT", titleItemLevel, "RIGHT", 0, 0)
-	missingGemsWidth = mmax(55, titleMissingGems:GetStringWidth() + 20)
-	titleMissingGems:SetWidth(missingGemsWidth)
+	missingGemsWidth, missingEnchantsWidth = 0, 0
+	if checkMissingGems then
+		titleMissingGems = GetTextFrame()
+		titleMissingGems.Keep = true
+		titleMissingGems:SetFontObject(GameFontNormalLarge)
+		titleMissingGems:SetText(L.GEAR_MISSING_GEMS)
+		titleMissingGems:SetPoint("LEFT", titleItemLevel, "RIGHT", 0, 0)
+		missingGemsWidth = mmax(55, titleMissingGems:GetStringWidth() + 20)
+		titleMissingGems:SetWidth(missingGemsWidth)
+	end
 
-	titleMissingEnchants = GetTextFrame()
-	titleMissingEnchants.Keep = true
-	titleMissingEnchants:SetFontObject(GameFontNormalLarge)
-	titleMissingEnchants:SetText(L.GEAR_MISSING_ENCHANTS)
-	titleMissingEnchants:SetPoint("LEFT", titleMissingGems, "RIGHT", 0, 0)
-	missingEnchantsWidth = mmax(55, titleMissingEnchants:GetStringWidth() + 20)
-	titleMissingEnchants:SetWidth(missingEnchantsWidth)
+	if checkMissingEnchants then
+		titleMissingEnchants = GetTextFrame()
+		titleMissingEnchants.Keep = true
+		titleMissingEnchants:SetFontObject(GameFontNormalLarge)
+		titleMissingEnchants:SetText(L.GEAR_MISSING_ENCHANTS)
+		titleMissingEnchants:SetPoint("LEFT", titleMissingGems or titleItemLevel, "RIGHT", 0, 0)
+		missingEnchantsWidth = mmax(55, titleMissingEnchants:GetStringWidth() + 20)
+		titleMissingEnchants:SetWidth(missingEnchantsWidth)
+	end
 
 	child:SetWidth(playerWidth + itemLevelWidth + missingGemsWidth + missingEnchantsWidth + 8)
 	frame:SetWidth(child:GetWidth() + 32)
@@ -846,7 +927,7 @@ end
 
 function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants, classToken)
 	if event == "GIQ" then
-		if not private.sendSync or sender == UnitName("player") or not DBM:GetRaidRoster(sender) then
+		if not private.sendSync or sender == private.playerName or not ShouldUseCommScan() or not DBM:GetRaidRoster(sender) then
 			return
 		end
 		local selfItemLevel, selfMissingGems, selfMissingEnchants = ScanGear("player")
@@ -872,7 +953,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		if type(itemLevel) == "number" then
 			inspectRetryCounts[sender] = nil
 			inspectRetryDeadlines[sender] = nil
-			SetPlayerGearState(sender, RoundItemLevel(itemLevel), missingGems or 0, missingEnchants or 0, false, false)
+			SetPlayerGearState(sender, RoundItemLevel(itemLevel), missingGems, missingEnchants, false, false)
 		else
 			SetPlayerGearState(sender, nil, nil, nil, true, false)
 			tinsert(pendingInspects, sender)
@@ -884,12 +965,12 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 			end
 		end
 	elseif event == "GGQ" then
-		-- Use UnitName (no realm) to match the ambiguated sender format from GetCorrectSender.
+		-- Use the shared player name to match GetCorrectSender, including Forever.
 		-- GetUnitFullName returns "Name-Realm" which never equals an ambiguated same-realm sender.
-		if not private.sendWhisperSync or sender == UnitName("player") or not IsInGuild() then
+		if not private.sendWhisperSync or sender == private.playerName or not IsInGuild() then
 			return
 		end
-		if C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown() then
+		if not ShouldUseCommScan() then
 			return
 		end
 		if not DBM:AntiSpam(guildGearQuerySpamSeconds, "GGQ:" .. sender) then
@@ -901,7 +982,7 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 			private.sendWhisperSync(private.DBMSyncProtocol or 1, "GGR", ("%s\t%d\t%d\t%s"):format(selfItemLevel, selfMissingGems or 0, selfMissingEnchants or 0, selfClass), sender, "NORMAL")
 		end
 	elseif event == "GGR" then
-		if sender == UnitName("player") then
+		if sender == private.playerName then
 			return
 		end
 		if not guildGearQuerySent or not IsInGuild() then
@@ -916,8 +997,8 @@ function GearCheck:OnSync(event, sender, itemLevel, missingGems, missingEnchants
 		if type(itemLevel) ~= "number" or itemLevel < 0 or itemLevel > maxReasonableItemLevel then
 			return
 		end
-		missingGems = mmax(0, mfloor(missingGems or 0))
-		missingEnchants = mmax(0, mfloor(missingEnchants or 0))
+		missingGems = checkMissingGems and missingGems and mmax(0, mfloor(missingGems)) or nil
+		missingEnchants = checkMissingEnchants and missingEnchants and mmax(0, mfloor(missingEnchants)) or nil
 		guildGearData[sender] = {class = classToken, itemLevel = itemLevel, missingGems = missingGems, missingEnchants = missingEnchants}
 		if IsDisplayShown() and selectedTab == 2 and not guildUpdatePending then
 			guildUpdatePending = true
