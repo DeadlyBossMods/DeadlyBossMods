@@ -63,7 +63,9 @@ if private.isRetail then
 		end
 	end)
 end
-if not private.isRetail then--Hiding it on retail causes taint, there are ways to work around it but involves modifying other addons like elvui first
+if private.isRetail then
+	hideBlizzArea:CreateCheckButton(L.HideWatchFrame .. L.DebugOnlyNote, true, nil, "HideObjectivesFrame")
+else
 	hideBlizzArea:CreateCheckButton(L.HideWatchFrame, true, nil, "HideObjectivesFrame")
 end
 --hideBlizzArea:CreateCheckButton(L.HideQuestTooltips, true, nil, "HideQuestTooltips")--Needs reimplimenting the way BW does it, not altering cvar but manually revising tooltips on fly

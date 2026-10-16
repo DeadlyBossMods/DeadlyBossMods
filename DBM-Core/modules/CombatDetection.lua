@@ -52,6 +52,39 @@ local C_TimerAfter = C_Timer.After
 
 local checkWipe, checkBossHealth, checkCustomBossHealth
 
+local suppressObjectiveTracker, restoreObjectiveTracker
+do
+	-- Use native methods from our own frame, not tracker methods another addon may replace.
+	local frameAPI = private.isRetail and CreateFrame("Frame")
+	local restoreFrame, restoreAlpha
+
+	function suppressObjectiveTracker()
+		if not frameAPI or restoreFrame then return end
+		local frame = ObjectiveTrackerFrame
+		if not frame or frameAPI.IsForbidden(frame) then return end
+		local protected = frameAPI.IsProtected(frame)
+		local shown = frameAPI.IsShown(frame)
+		if DBM:issecretvalue(protected) or DBM:issecretvalue(shown) or protected or not shown then return end
+		local alpha = frameAPI.GetAlpha(frame)
+		if DBM:issecretvalue(alpha) or alpha == 0 then return end
+		restoreFrame, restoreAlpha = frame, alpha
+		-- Presentation only: Hide/Show/collapse enter Blizzard's tracker and item-button logic.
+		-- Alpha zero leaves buttons interactable; keep this experiment gated by DebugMode.
+		frameAPI.SetAlpha(frame, 0)
+	end
+
+	function restoreObjectiveTracker()
+		if not frameAPI or not restoreFrame or frameAPI.IsForbidden(restoreFrame) then return end
+		local alpha = frameAPI.GetAlpha(restoreFrame)
+		if DBM:issecretvalue(alpha) then return end
+		-- Do not overwrite another owner's intervening alpha change.
+		if alpha == 0 then
+			frameAPI.SetAlpha(restoreFrame, restoreAlpha)
+		end
+		restoreFrame, restoreAlpha = nil, nil
+	end
+end
+
 function module:RegisterCoreEvents()
 	DBM:RegisterSafeEvents("PLAYER_REGEN_DISABLED", "ENCOUNTER_START", "ENCOUNTER_END", "BOSS_KILL")
 	if private.isRetail then
@@ -234,6 +267,9 @@ do
 		if delayedFunction then--Will throw error if not a function, purposely not doing and type(delayedFunction) == "function" for now to make sure code works though because it always should be function
 			delayedFunction()
 			delayedFunction = nil
+		end
+		if #inCombat == 0 then
+			restoreObjectiveTracker()
 		end
 		if watchFrameRestore then
 			if private.isRetail or private.isCata or private.isMop then
@@ -880,13 +916,12 @@ do
 			else
 				trackedAchievements = (C_ContentTracking and C_ContentTracking.GetTrackedIDs(2)[1])
 			end
-			if self.Options.HideObjectivesFrame and mod.addon and mod.addon.type ~= "SCENARIO" and not trackedAchievements and difficulties.difficultyIndex ~= 8 and not InCombatLockdown() then
-				if private.isRetail or private.isCata or private.isMop or private.isForever then--Do nothing due to taint and breaking
-					--if ObjectiveTrackerFrame:IsVisible() then
-					--	ObjectiveTracker_Collapse()
-					--	watchFrameRestore = true
-					--end
-				else
+			if self.Options.HideObjectivesFrame and mod.addon and mod.addon.type ~= "SCENARIO" and not trackedAchievements and difficulties.difficultyIndex ~= 8 then
+				if private.isRetail then
+					if self.Options.DebugMode then
+						suppressObjectiveTracker()
+					end
+				elseif not private.isCata and not private.isMop and not private.isForever and not InCombatLockdown() then
 					if WatchFrame then
 						if WatchFrame:IsVisible() then
 							WatchFrame:Hide()
@@ -1375,6 +1410,8 @@ do
 				if self.Options.RecordOnlyBosses then
 					self:Schedule(10, self.StopLogging, self)--small delay to catch kill/died combatlog events
 				end
+				-- Always restore our alpha, even if either option was disabled during the fight.
+				restoreObjectiveTracker()
 				self:HideBlizzardEvents(0)
 				self:Unschedule(checkBossHealth)
 				self:Unschedule(checkCustomBossHealth)
