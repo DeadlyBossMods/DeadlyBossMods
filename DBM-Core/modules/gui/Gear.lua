@@ -492,6 +492,7 @@ function ScanGear(unit)
 			end
 
 			if enchantableSlots[i] and (enchant == "" or enchant == "0") then
+				---@type boolean?
 				local eligible = true
 				if not isRetail and i >= 16 then
 					eligible = IsEnchantableClassicItem(itemLink)
