@@ -931,8 +931,8 @@ do
 						bestTime = mod.stats[difficulties.statVarTable[difficulties.savedDifficulty] .. "BestTime"]
 					end
 					if bestTime and bestTime > 0 then
-						local speedTimer = mod:NewTimer(bestTime, L.SPEED_KILL_TIMER_TEXT, private.isRetail and "237538" or "136106", nil, false)
-						speedTimer:Start()
+						local speedTimer = mod:NewTimer(bestTime, mod.inScenario and L.SPEED_CLEAR_TIMER_TEXT or L.SPEED_KILL_TIMER_TEXT, private.isRetail and "237538" or "136106", nil, false)
+						speedTimer:Start(mod.id)
 					end
 				end
 				--update boss left
@@ -1346,13 +1346,20 @@ do
 					private.SendWorldSync(self, 8, "WBD", modId .. "\t" .. normalizedPlayerRealm .. "\t" .. name)
 				end
 				if self.Options.EventSoundVictory2 and not self:IsNoneValue(self.Options.EventSoundVictory2) and self.Options.EventSoundVictory2 ~= "" and difficulties.difficultyIndex ~= 232 then--No victory in duos
-					if self.Options.EventSoundVictory2 == "Random" then
-						local victorySounds = self:GetVictorySounds()
-						if #victorySounds >= 3 then
-							self:PlaySoundFile(victorySounds[fastrandom(3, #victorySounds)].value)
+					local validVictroy = true
+					if mod.inScenario then
+						local scenarioType = C_Scenario.GetInfo()
+						if scenarioType and scenarioType == "Delves" then validVictroy = false end
+					end
+					if validVictroy then
+						if self.Options.EventSoundVictory2 == "Random" then
+							local victorySounds = self:GetVictorySounds()
+							if #victorySounds >= 3 then
+								self:PlaySoundFile(victorySounds[fastrandom(3, #victorySounds)].value)
+							end
+						else
+							self:PlaySoundFile(self.Options.EventSoundVictory2, nil, true)
 						end
-					else
-						self:PlaySoundFile(self.Options.EventSoundVictory2, nil, true)
 					end
 				end
 			end
