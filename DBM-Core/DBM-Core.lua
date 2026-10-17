@@ -4440,7 +4440,7 @@ do
 	local testWarning1, testWarning2, testWarning3
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
 	local testSpecialWarning1, testSpecialWarning2, testSpecialWarning3
-	function DBM:DemoMode(forceOld)
+	function DBM:DemoMode()--forceOld
 		--if self:IsRetail() and not forceOld then
 		--	demoDuration = 26
 		--	--Run the encounter timeline demo mode instead of DBM test Bars
