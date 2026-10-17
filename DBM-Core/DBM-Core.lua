@@ -4441,11 +4441,11 @@ do
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
 	local testSpecialWarning1, testSpecialWarning2, testSpecialWarning3
 	function DBM:DemoMode(forceOld)
-		if self:IsRetail() and not forceOld then
-			demoDuration = 26
-			--Run the encounter timeline demo mode instead of DBM test Bars
-			C_EncounterTimeline.AddEditModeEvents()
-		else
+		--if self:IsRetail() and not forceOld then
+		--	demoDuration = 26
+		--	--Run the encounter timeline demo mode instead of DBM test Bars
+		--	C_EncounterTimeline.AddEditModeEvents()
+		--else
 			demoDuration = 62
 			fireEvent("DBM_TestModStarted")
 			if not testMod then
@@ -4505,7 +4505,7 @@ do
 			testSpecialWarning2:ScheduleVoice(43, "fearsoon")
 			testSpecialWarning3:Schedule(60, "Boom!")
 			testSpecialWarning3:ScheduleVoice(60, "defensive")
-		end
+		--end
 		return demoDuration
 	end
 end
