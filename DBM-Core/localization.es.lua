@@ -416,8 +416,8 @@ L.AUTO_ANNOUNCE_OPTIONS.stack			= "Mostrar anuncio para acumulaciones de $spell:
 L.AUTO_ANNOUNCE_OPTIONS.moveto			= "Mostrar anuncio para juntarse con alguien o ir a algún sitio para $spell:%s"
 
 L.AUTO_SPEC_WARN_TEXTS.spell		= "¡%s!"
-L.AUTO_SPEC_WARN_TEXTS.ends			= "%s se ha terminado"
-L.AUTO_SPEC_WARN_TEXTS.endtarget	= "%s se ha terminado: >%%s<"
+L.AUTO_SPEC_WARN_TEXTS.ends			= "%s ha terminado"
+L.AUTO_SPEC_WARN_TEXTS.endtarget	= "%s ha terminado: >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.fades		= "%s se ha desvanecido"
 L.AUTO_SPEC_WARN_TEXTS.soon			= "%s en breve"
 L.AUTO_SPEC_WARN_TEXTS.sooncount	= "%s (%%s) en breve"

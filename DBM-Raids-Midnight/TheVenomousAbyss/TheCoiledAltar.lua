@@ -92,6 +92,7 @@ local badStateDetectedDuringWipeResend = false
 local seenTimelineEventIDs = {}
 local stage1FortyTwoCount = 0
 local stage1FortyThreeCount = 0
+local stage1FortyNineCount = 0
 local stage2ThirtyFourCount = 0
 local stage3ThirtyFourCount = 0
 local stage3ThirtyThreeCount = 0
@@ -161,6 +162,7 @@ function mod:OnLimitedCombatStart()
 	self:SetStage(1)
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
+	stage1FortyNineCount = 0
 	stage2ThirtyFourCount = 0
 	stage3ThirtyFourCount = 0
 	stage3ThirtyThreeCount = 0
@@ -211,6 +213,7 @@ function mod:OnCombatEnd()
 	seenTimelineEventIDs = {}
 	stage1FortyTwoCount = 0
 	stage1FortyThreeCount = 0
+	stage1FortyNineCount = 0
 	stage2ThirtyFourCount = 0
 	stage3ThirtyFourCount = 0
 	stage3ThirtyThreeCount = 0
@@ -498,6 +501,73 @@ do
 		end
 	end
 
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersLFR(self, timer, timerExact, eventID)
+		local handled
+		local stage = self:GetStage()
+		--LFR:World/Week9/CoiledAltarLFR (difficulty 17), not the Week2 Story capture.
+		if stage == 1 then
+			if timer == 38 or timer == 6 or timer == 82 then
+				enterStage2(self)
+				return timersLFR(self, timer, timerExact, eventID)
+			elseif timer == 2 then--Toxic Deluge
+				handled = true
+				timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
+			elseif timer == 14 then--Axegrinder
+				handled = true
+				timerAxegrinderCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "axegrinder", "AxegrinderCount"))
+			elseif timer == 19 or timer == 20 or timer == 24 or timer == 25 then--Sever
+				handled = true
+				timerSeverCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "sever", "SeverCount"))
+			elseif timer == 33 or timer == 41 then--Venomfang
+				handled = true
+				timerVenomfangCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "venomfang", "VenomfangCount"))
+			elseif timer == 100 then--Fangs of the Coiled Altar
+				handled = true
+				timerFangsoftheCoiledAlterCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "crucible", "CrucibleCount"))
+			elseif self:IsRoundedTimer(timerExact, 49.411, 0.1) then--Both abilities have the same raw duration.
+				handled = true
+				stage1FortyNineCount = stage1FortyNineCount + 1
+				if stage1FortyNineCount % 2 == 1 then--Guillotine, then Toxic Deluge
+					timerGuilotineCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "guilotine", "GuilotineCount"))
+				else
+					timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
+				end
+			end
+		elseif stage == 2 then
+			if isNormalStage3Timer(timer) and (GetTime() - lastTLEvent) > 20 then
+				enterStage3(self)
+				return timersNormal(self, timer, timerExact, eventID)
+			elseif timer == 6 or timer == 40 then--Dreadmarch
+				handled = true
+				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
+			elseif timer == 24 or timer == 47 then--Gloombomb
+				handled = true
+				timerGloombombCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloombomb", "GloombombCount"))
+			elseif timer == 38 or timer == 39 then--Soul Sever
+				handled = true
+				timerSoulSeveringCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "soulsevering", "SeverCount"))
+			elseif timer == 82 then--Eternal Nightfall
+				handled = true
+				timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
+			end
+		elseif stage == 3 then
+			--Week9 LFR stage 3 corroborates the Normal duration routes, including 53.5s Dreadmarch.
+			return timersNormal(self, timer, timerExact, eventID)
+		end
+
+		if not handled then
+			badStateDetected = true
+			self:ResumeBlizzardAPI()
+			self:UnregisterShortTermEvents()
+			setFallback(self)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+		end
+	end
+
 	--Note, bar state changing and canceling is handled by core
 
 	function mod:CHAT_MSG_MONSTER_YELL()
@@ -533,8 +603,10 @@ do
 			local wasBadStateDetected = badStateDetected
 			if self:IsHeroic() then
 				timersHeroic(self, timer, timerExact, eventID)
+			elseif self:IsLFR() then
+				timersLFR(self, timer, timerExact, eventID)
 			else
-				--LFR and Story share the verified Normal timer sequence (LFR:World/Week2/TheCoiledAltar).
+				--Story shares Normal routing; LFR:World/Week2/TheCoiledAltar is Story evidence, not LFR.
 				timersNormal(self, timer, timerExact, eventID)
 			end
 			if not wasBadStateDetected and badStateDetected then

@@ -88,7 +88,7 @@ DBM-Nameplate.lua [AllowLoadGameType classic]
 DBM-Nameplate-Mainline.lua [AllowLoadGameType mainline]
 
 # GUI Features
-modules\gui\Gear.lua [AllowLoadGameType standard]
+modules\gui\Gear.lua
 modules\gui\Latency.lua
 modules\gui\Durability.lua
 modules\gui\Keystones.lua [AllowLoadGameType standard]
