@@ -188,6 +188,10 @@ LibDurability:Register("DBM", function(percent, broken, sender)
 	if not sender then
 		return
 	end
+	-- LibDurability keeps only the first return from UnitNameUnmodified on Forever.
+	if private.isForever and sender == UnitNameUnmodified("player") then
+		sender = private.playerName
+	end
 	local player = DBM:GetRaidRoster()[sender]
 	if player then
 		player.durpercent = math.floor(percent)
