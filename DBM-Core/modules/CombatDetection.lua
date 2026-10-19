@@ -849,6 +849,9 @@ do
 			mod.engagedDiffIndex = difficulties.difficultyIndex
 			mod.engagedDiffModifier = difficulties.difficultyModifier
 			mod.inCombat = true
+			if self.UpdateGenericTrashOptions then
+				self:UpdateGenericTrashOptions(true)
+			end
 			---@class CombatInfo
 			local combatInfo = mod.combatInfo
 			combatInfo.pull = GetTime() - (delay or 0)
@@ -1190,6 +1193,9 @@ do
 				twipe(mod.iconRestore)
 			end
 			mod.inCombat = false
+			if self.UpdateGenericTrashOptions then
+				self:UpdateGenericTrashOptions(true)
+			end
 			if mod.combatInfo.killMobs then
 				for i, _ in pairs(mod.combatInfo.killMobs) do
 					mod.combatInfo.killMobs[i] = true

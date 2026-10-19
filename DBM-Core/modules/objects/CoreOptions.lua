@@ -194,7 +194,7 @@ DBM.DefaultOptions = {
 	FilterDispel = true,
 	FilterCrowdControl = true,
 	FilterTrashWarnings2 = true,
-	-- Generic max-level trash warnings (core profile).
+	-- Generic trash warnings (core profile).
 	GenericTrashDungeonEnabled = true,
 	GenericTrashDungeonAllDungeons = false,
 	GenericTrashDungeonCast = true,
@@ -215,7 +215,6 @@ DBM.DefaultOptions = {
 	GenericTrashRaidThrottleType = "both",
 	GenericTrashRaidThrottleDuration = 3,
 	GenericTrashDelveEnabled = true,
-	GenericTrashDelveAllowBosses = true,
 	GenericTrashDelveCast = true,
 	GenericTrashDelveLieutenant = true,
 	GenericTrashDelveChannel = false,

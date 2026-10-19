@@ -1326,8 +1326,6 @@ do
 		area:CreateCheckButton(enabledLabel, true, nil, prefix .. "Enabled"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
 		if contentType == "Dungeon" and not isForever then
 			area:CreateCheckButton(L.GenericTrashAllDungeons, true, nil, prefix .. "AllDungeons"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
-		elseif contentType == "Delve" then
-			area:CreateCheckButton(L.GenericTrashDelveAllowBosses, true, nil, prefix .. "AllowBosses")
 		end
 		area:CreateCheckButton(isForever and L.GenericTrashStandardCast or isRaid and L.GenericTrashRaidCast or L.GenericTrashCast, true, nil, prefix .. "Cast"):HookScript("OnClick", function() DBM:UpdateGenericTrashOptions() end)
 		if isForever then
