@@ -927,6 +927,9 @@ function GearCheck:Show()
 	end
 	DBM.Durability:Hide()
 	DBM.Latency:Hide()
+	if DBM.Consumables then
+		DBM.Consumables:Hide()
+	end
 	local displayFrame = CreateDisplayFrame()
 	if _G["DBM_GUI_OptionsFrame"] then
 		displayFrame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)

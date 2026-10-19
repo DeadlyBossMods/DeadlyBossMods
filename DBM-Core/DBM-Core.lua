@@ -3343,6 +3343,9 @@ function DBM:READY_CHECK()
 	end
 	self:TransitionToDungeonBGM(false, true)
 	self:Schedule(4, self.TransitionToDungeonBGM, self)
+	if self.Options.ShowConsumablesOnReadyCheck and self.Consumables then
+		self.Consumables:Show()
+	end
 end
 
 do

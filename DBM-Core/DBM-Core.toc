@@ -92,6 +92,7 @@ modules\gui\Gear.lua
 modules\gui\Latency.lua
 modules\gui\Durability.lua
 modules\gui\Keystones.lua [AllowLoadGameType standard]
+modules\gui\Consumables.lua [AllowLoadGameType standard]
 modules\gui\BattleRezTimer.lua [AllowLoadGameType standard]
 
 # Modules

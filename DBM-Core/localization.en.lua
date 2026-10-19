@@ -315,6 +315,7 @@ L.SLASHCMD_HELP							= {
 	"/dbm key: Performs M+ keystone and rating checks on party/guild and shortcuts to dungeon teleports. (alias: key, keys, keystone)",
 	"/dbm lag: Performs a raid-wide latency check.",
 	"/dbm durability: Performs a raid-wide durability check.",
+	"/dbm consumables: Performs a raid-wide consumables check (alias: cons, consumes).",
 	"/dbm brez: Shows the battle resurrection timer frame for positioning.",
 	"/dbm help2: Shows additional slash commands"
 }
@@ -771,6 +772,13 @@ L.KEYSTONES_HEADER						= L.DBM.. " - Keystones"
 L.GEAR_HEADER							= L.DBM.. " - Gear Check Results"
 L.GEAR_MISSING_GEMS						= "Missing Gems"
 L.GEAR_MISSING_ENCHANTS					= "Missing Enchants"
+L.CONSUMABLES_HEADER					= L.DBM.. " - Consumables Check"
+L.CONSUMABLES_FLASK						= "Flask"
+L.CONSUMABLES_FOOD						= "Food"
+L.CONSUMABLES_WEAPON					= "Weapon"
+L.CONSUMABLES_HS						= "HS"
+L.CONSUMABLES_RUNE						= "Rune"
+L.CONSUMABLES_NA						= "N/A"
 L.BREZ_HEADER							= "Battle Res"
 
 L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"

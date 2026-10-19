@@ -211,6 +211,9 @@ function Latency:Show()
 		DBM.GearCheck:Hide()
 	end
 	DBM.Durability:Hide()
+	if DBM.Consumables then
+		DBM.Consumables:Hide()
+	end
 	local displayFrame = CreateFrame()
 	if _G["DBM_GUI_OptionsFrame"] then
 		displayFrame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)

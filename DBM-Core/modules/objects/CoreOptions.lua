@@ -364,6 +364,7 @@ DBM.DefaultOptions = {
 	DurabilityPosition = {"RIGHT", -150, 0},
 	LatencyPosition = {"RIGHT", -150, 0},
 	KeystonesPosition = {"LEFT", 30, 0},
+	ConsumablesPosition = {"RIGHT", -150, 0},
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
 	DontShowTargetAnnouncements = true,
@@ -430,6 +431,7 @@ DBM.DefaultOptions = {
 	ShowKeystoneOnComplete = true,
 	AddChallengeTeleports = true,
 	OverrideKeystoneSlash = false,
+	ShowConsumablesOnReadyCheck = false,
 	BrezFont = "standardFont",
 	BrezFontSize = 18,
 	BattleRezPosition = {"TOPLEFT", 214, -29},

@@ -529,6 +529,9 @@ function Keystones:Show()
 	if DBM.GearCheck then
 		DBM.GearCheck:Hide()
 	end
+	if DBM.Consumables then
+		DBM.Consumables:Hide()
+	end
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
 	end
