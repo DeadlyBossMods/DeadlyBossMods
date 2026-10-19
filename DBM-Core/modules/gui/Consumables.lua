@@ -58,6 +58,16 @@ local healthstoneItems = {
 	224464,--Demonic Healthstone
 }
 
+-- Inspected weapons expose an oil only as a green tooltip line tagged with its profession quality atlas (no duration).
+local inspectEnchantAtlas = "Professions%-ChatIcon%-Quality%-"
+local inspectBestEnchantAtlas = "Professions%-ChatIcon%-Quality%-12%-Tier2"
+-- Class imbues (Windfury, Flametongue, Earthliving, Lightsmith rites) carry no quality atlas,
+-- so for these classes a missing oil line means unknown rather than No.
+local inspectImbueClasses = {
+	SHAMAN = true,
+	PALADIN = true,
+}
+
 -- Food is ranked against the best version of the stat family the player chose, never across families.
 -- Well Fed effects: points[9] = secondary rating (per stat), points[10] = stamina, points[11] = primary stat.
 local FOOD_PRIMARY, FOOD_SECONDARY, FOOD_DUAL, FOOD_STAM_PRIMARY, FOOD_STAM_SECONDARY = 1, 2, 3, 4, 5
@@ -265,6 +275,8 @@ local updateElapsed = 0
 local commToken = 0
 local lastQueryTime = -math.huge
 local queryScheduled, replyScheduled = false, false
+local nextInspectTime = 0
+local IsAwaitingInspect--Defined with the inspect fallback below
 
 local updateThrottleSeconds = 0.5
 local commReplyTimeoutSeconds = 3
@@ -284,7 +296,8 @@ local validAnchorPoints = {
 }
 
 local yesText, noText, naText = "|cff00ff00" .. YES .. "|r", "|cffff2020" .. NO .. "|r", "|cff808080" .. L.CONSUMABLES_NA .. "|r"
-local bestText = yesText .. " |TInterface\\COMMON\\FavoritesIcon:12:12|t"
+-- FavoritesIcon has heavy transparent padding, so the texture size runs larger than the visible star.
+local bestText = yesText .. " |TInterface\\COMMON\\FavoritesIcon:20:20:0:0|t"
 
 local function IsDisplayShown()
 	return frame and frame:IsShown()
@@ -432,7 +445,7 @@ local function Redraw()
 			if key == "hs" and not hasWarlock then
 				text:SetText(naText)
 			else
-				text:SetText(FormatTier(entry[key], entry.pending))
+				text:SetText(FormatTier(entry[key], entry.pending or (key == "weapon" and IsAwaitingInspect(fullName, entry))))
 			end
 			text:SetPoint("TOP", columnTitles[key], "BOTTOM", 0, offset)
 			text:SetWidth(columnWidths[key])
@@ -451,6 +464,8 @@ local function SendQuery()
 		return
 	end
 	local wait = queryThrottleSeconds - (GetTime() - lastQueryTime)
+	-- Hold inspects until the reply window closes (including any throttle wait) so DBM users aren't inspected for data they're about to send.
+	nextInspectTime = mmax(nextInspectTime, GetTime() + mmax(wait, 0) + commReplyTimeoutSeconds)
 	if wait > 0 then
 		if not queryScheduled then
 			queryScheduled = true
@@ -483,6 +498,172 @@ local function SendReply()
 	end
 	local flask, food, weapon, hs, rune = ScanSelf()
 	private.sendSync(private.DBMSyncProtocol or 1, "CCR", ("%s\t%s\t%s\t%s\t%s"):format(EncodeTier(flask), EncodeTier(food), EncodeTier(weapon), EncodeTier(hs), EncodeTier(rune)), "NORMAL")
+end
+
+------------------------
+-- Inspect fallback (Weapon column for members that don't answer CCR)
+------------------------
+local activeInspect = {}
+local inspectToken = 0
+local inspectRetryAt, inspectAttempts, inspectUnreachable = {}, {}, {}
+local inspectSpacingSeconds = 1
+local inspectTimeoutSeconds = 4
+local inspectRetrySeconds = 5
+local inspectMaxAttempts = 4
+local lineTypeEnchantPermanent = Enum.TooltipDataLineType and Enum.TooltipDataLineType.ItemEnchantmentPermanent
+local lineTypeCraftingQuality = Enum.TooltipDataLineType and Enum.TooltipDataLineType.ProfessionCraftingQuality
+
+local function IsGreen(color)
+	if type(color) ~= "table" or issecrettable(color) then
+		return false
+	end
+	local r, g, b = color.r, color.g, color.b
+	return type(r) == "number" and type(g) == "number" and type(b) == "number" and r < 0.2 and g > 0.9 and b < 0.2
+end
+
+---@return integer|false|nil tier false when no oil line exists; nil when tooltip data isn't ready
+local function GetInspectedSlotTier(unit, slot)
+	local data = C_TooltipInfo.GetInventoryItem(unit, slot)
+	if not data or issecrettable(data) or type(data.lines) ~= "table" or issecrettable(data.lines) then
+		return nil
+	end
+	local firstLine = data.lines[1]
+	if not firstLine or firstLine.leftText == _G["RETRIEVING_ITEM_INFO"] then
+		return nil
+	end
+	for _, line in ipairs(data.lines) do
+		local text, lineType = line.leftText, line.type
+		if type(text) == "string" and not DBM:issecretvalue(text) and not DBM:issecretvalue(lineType)
+			and lineType ~= lineTypeEnchantPermanent and lineType ~= lineTypeCraftingQuality
+			and text:find(inspectEnchantAtlas) and IsGreen(line.leftColor) then
+			return text:find(inspectBestEnchantAtlas) and TIER_BEST or TIER_YES
+		end
+	end
+	return false
+end
+
+---@return boolean isWeapon, boolean? notReady
+local function IsInspectedWeapon(unit, slot)
+	local itemId = GetInventoryItemID(unit, slot)
+	if not itemId then
+		return false, GetInventoryItemTexture(unit, slot) ~= nil--Equipped, but item data hasn't arrived
+	end
+	return select(6, GetItemInfoInstant(itemId)) == 2--Enum.ItemClass.Weapon
+end
+
+---Mirrors GetWeaponTier for an inspected unit
+---@return integer? tier, boolean? notReady
+local function ScanInspectedWeapon(unit, classToken)
+	local tier, anyWeapon = TIER_BEST, false
+	for slot = 16, 17 do
+		local isWeapon, notReady = IsInspectedWeapon(unit, slot)
+		if notReady then
+			return nil, true
+		end
+		if isWeapon then
+			anyWeapon = true
+			local slotTier = GetInspectedSlotTier(unit, slot)
+			if slotTier == nil then
+				return nil, true
+			elseif slotTier == false then
+				if inspectImbueClasses[classToken] then
+					return nil
+				end
+				return TIER_NO
+			end
+			tier = math.min(tier, slotTier)
+		end
+	end
+	return anyWeapon and tier or TIER_NO
+end
+
+local function FinishInspect()
+	wipe(activeInspect)
+	-- Never pull inspect data out from under Blizzard's Inspect window.
+	if not (InspectFrame and InspectFrame:IsShown()) then
+		ClearInspectPlayer()
+	end
+end
+
+local function ResetInspects()
+	inspectToken = inspectToken + 1
+	if activeInspect.name then
+		FinishInspect()
+	end
+	wipe(inspectRetryAt)
+	wipe(inspectAttempts)
+	wipe(inspectUnreachable)
+	nextInspectTime = 0
+end
+
+local function IsInspectCandidate(name, entry, now)
+	return entry.weapon == nil and not entry.pending and not IsSelf(name)
+		and (inspectAttempts[name] or 0) < inspectMaxAttempts and (inspectRetryAt[name] or 0) <= now
+end
+
+---Still expecting an inspect result, so the Weapon cell shows "..." rather than "?"
+function IsAwaitingInspect(name, entry)
+	return entry.weapon == nil and not IsSelf(name) and not inspectUnreachable[name]
+		and (inspectAttempts[name] or 0) < inspectMaxAttempts
+end
+
+local function RequestNextInspect(now)
+	if activeInspect.name or now < nextInspectTime then
+		return
+	end
+	if InCombatLockdown() or UnitAffectingCombat("player") or (InspectFrame and InspectFrame:IsShown()) then
+		return
+	end
+	for name, entry in pairs(entries) do
+		if IsInspectCandidate(name, entry, now) then
+			local unit = DBM:GetRaidUnitId(name, true)
+			local guid = unit and not DBM:issecretunit(unit) and UnitIsConnected(unit) and UnitIsVisible(unit)
+				and CanInspect(unit) and CheckInteractDistance(unit, 1) and UnitGUID(unit)
+			if guid and not DBM:issecretvalue(guid) then
+				inspectToken = inspectToken + 1
+				local token = inspectToken
+				activeInspect.name, activeInspect.guid, activeInspect.token = name, guid, token
+				inspectAttempts[name] = (inspectAttempts[name] or 0) + 1
+				inspectUnreachable[name] = nil
+				nextInspectTime = now + inspectSpacingSeconds
+				NotifyInspect(unit)
+				C_Timer.After(inspectTimeoutSeconds, function()
+					if activeInspect.token == token then
+						inspectRetryAt[name] = GetTime() + inspectRetrySeconds
+						FinishInspect()
+						needsRedraw = true
+					end
+				end)
+				return
+			end
+			-- Out of range or not visible: check again later without spending an attempt.
+			if not inspectUnreachable[name] then
+				inspectUnreachable[name] = true
+				needsRedraw = true
+			end
+			inspectRetryAt[name] = now + inspectRetrySeconds
+		end
+	end
+end
+
+local function OnInspectReady(guid)
+	if not activeInspect.name or DBM:issecretvalue(guid) or guid ~= activeInspect.guid then
+		return
+	end
+	local name = activeInspect.name
+	local entry = entries[name]
+	local unit = DBM:GetRaidUnitId(name, true)
+	if entry and entry.weapon == nil and unit and not DBM:issecretunit(unit) and UnitGUID(unit) == guid then
+		local tier, notReady = ScanInspectedWeapon(unit, (DBM:GetRaidClass(name)))
+		if notReady then
+			inspectRetryAt[name] = GetTime() + inspectSpacingSeconds
+		else
+			entry.weapon = tier
+			inspectAttempts[name] = inspectMaxAttempts--Settled (including unknown imbue classes); Refresh re-checks
+			needsRedraw = true
+		end
+	end
+	FinishInspect()
 end
 
 ---Adds new roster members and drops departed ones
@@ -531,6 +712,7 @@ local function Refresh()
 	commToken = commToken + 1
 	wipe(entries)
 	wipe(dirtyMembers)
+	ResetInspects()
 	if SyncRoster() then
 		SendQuery()
 	end
@@ -573,6 +755,8 @@ local function OnEvent(_, event, unit, updateInfo)
 		end
 	elseif event == "UNIT_INVENTORY_CHANGED" or event == "BAG_UPDATE_DELAYED" then
 		dirtyMembers[private.playerName] = true
+	elseif event == "INSPECT_READY" then
+		OnInspectReady(unit)--First arg is the inspected GUID
 	end
 end
 
@@ -605,6 +789,7 @@ local function OnUpdate(_, elapsed)
 			needsRedraw = true
 		end
 	end
+	RequestNextInspect(GetTime())
 	if needsRedraw then
 		needsRedraw = false
 		Redraw()
@@ -640,6 +825,7 @@ local function CreateDisplayFrame()
 		self:RegisterEvent("UNIT_AURA")
 		self:RegisterEvent("BAG_UPDATE_DELAYED")
 		self:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
+		self:RegisterEvent("INSPECT_READY")
 		self:SetScript("OnEvent", OnEvent)
 		self:SetScript("OnUpdate", OnUpdate)
 		if not DBM:IsCallbackRegistered("DBM_RosterUpdated", OnRosterUpdated) then
@@ -653,6 +839,7 @@ local function CreateDisplayFrame()
 		self:SetScript("OnUpdate", nil)
 		DBM:UnregisterCallback("DBM_RosterUpdated", OnRosterUpdated)
 		commToken = commToken + 1
+		ResetInspects()
 		updateElapsed = 0
 		needsRedraw = false
 		wipe(entries)
