@@ -190,6 +190,10 @@ LibLatency:Register("DBM", function(homelag, worldlag, sender)
 	if not sender then
 		return
 	end
+	-- LibLatency keeps only the first return from UnitNameUnmodified on Forever.
+	if private.isForever and sender == UnitNameUnmodified("player") then
+		sender = private.playerName
+	end
 	local player = DBM:GetRaidRoster()[sender]
 	if player then
 		player.homelag = homelag
