@@ -767,16 +767,19 @@ function Refresh()
 	RequestNextInspect()
 end
 
-local function OnEvent(_, event, arg1)
-	if event == "GROUP_ROSTER_UPDATE" then
-		if IsDisplayShown() then
-			if activeInspect.name then
-				pendingRosterRefresh = true
-			else
-				HandleRosterUpdate()
-			end
+-- DBM_RosterUpdated fires after core's throttled roster rebuild, so GetRaidRoster and unit IDs are current here.
+local function OnRosterUpdated()
+	if IsDisplayShown() then
+		if activeInspect.name then
+			pendingRosterRefresh = true
+		else
+			HandleRosterUpdate()
 		end
-	elseif event == "PLAYER_REGEN_ENABLED" then
+	end
+end
+
+local function OnEvent(_, event, arg1)
+	if event == "PLAYER_REGEN_ENABLED" then
 		if IsDisplayShown() and #pendingInspects > 0 and not activeInspect.name then
 			RequestNextInspect()
 		end
@@ -825,7 +828,7 @@ function CreateDisplayFrame()
 		DBM.Options.GearPosition = {point, x, y}
 	end)
 	frame:SetScript("OnHide", function(self)
-		self:UnregisterEvent("GROUP_ROSTER_UPDATE")
+		DBM:UnregisterCallback("DBM_RosterUpdated", OnRosterUpdated)
 		self:UnregisterEvent("INSPECT_READY")
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 		self:SetScript("OnEvent", nil)
@@ -940,7 +943,9 @@ function GearCheck:Show()
 		position = {"RIGHT", -150, 0}
 	end
 	displayFrame:SetPoint(position[1], position[2], position[3])
-	displayFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+	if not DBM:IsCallbackRegistered("DBM_RosterUpdated", OnRosterUpdated) then
+		DBM:RegisterCallback("DBM_RosterUpdated", OnRosterUpdated)
+	end
 	displayFrame:RegisterEvent("INSPECT_READY")
 	displayFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 	displayFrame:SetScript("OnEvent", OnEvent)

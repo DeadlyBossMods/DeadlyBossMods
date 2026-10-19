@@ -344,8 +344,11 @@ local function ScanSelfInto(entry)
 end
 
 local function ScanMemberAuras(name, entry)
+	-- A failed scan must not keep blocking CCR replies for the aura columns.
+	entry.liveAuras = false
 	local unit = DBM:GetRaidUnitId(name, true)
-	if not unit or DBM:issecretunit(unit) or not UnitIsConnected(unit) then
+	-- Out-of-visibility members (another instance/zone) report no auras rather than their real ones.
+	if not unit or DBM:issecretunit(unit) or not UnitIsConnected(unit) or not UnitIsVisible(unit) then
 		return
 	end
 	entry.trackedAuras = entry.trackedAuras or {}
@@ -511,9 +514,12 @@ local function SyncRoster()
 			else
 				ScanMemberAuras(name, entry)
 				local unit = DBM:GetRaidUnitId(name, true)
-				if useComms and DBM:CheckDBM(name) and unit and UnitIsConnected(unit) then
-					entry.pending = true
+				-- Query regardless of version discovery (version replies lag the roster); unanswered members simply stay "?".
+				if useComms and unit and UnitIsConnected(unit) then
 					needsQuery = true
+					if DBM:CheckDBM(name) then
+						entry.pending = true
+					end
 				end
 			end
 		end
@@ -567,12 +573,18 @@ local function OnEvent(_, event, unit, updateInfo)
 		end
 	elseif event == "UNIT_INVENTORY_CHANGED" or event == "BAG_UPDATE_DELAYED" then
 		dirtyMembers[private.playerName] = true
-	elseif event == "GROUP_ROSTER_UPDATE" then
-		if SyncRoster() then
-			SendQuery()
-		end
-		needsRedraw = true
 	end
+end
+
+-- DBM_RosterUpdated fires after core's throttled roster rebuild, so GetRaidRoster and unit IDs are current here.
+local function OnRosterUpdated()
+	if not IsDisplayShown() then
+		return
+	end
+	if SyncRoster() then
+		SendQuery()
+	end
+	needsRedraw = true
 end
 
 local function OnUpdate(_, elapsed)
@@ -625,18 +637,21 @@ local function CreateDisplayFrame()
 	end)
 	-- Register/unregister symmetrically in OnShow/OnHide so a UIParent hide (Alt-Z, cinematics) pauses and resumes cleanly.
 	frame:SetScript("OnShow", function(self)
-		self:RegisterEvent("GROUP_ROSTER_UPDATE")
 		self:RegisterEvent("UNIT_AURA")
 		self:RegisterEvent("BAG_UPDATE_DELAYED")
 		self:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
 		self:SetScript("OnEvent", OnEvent)
 		self:SetScript("OnUpdate", OnUpdate)
+		if not DBM:IsCallbackRegistered("DBM_RosterUpdated", OnRosterUpdated) then
+			DBM:RegisterCallback("DBM_RosterUpdated", OnRosterUpdated)
+		end
 		Refresh()
 	end)
 	frame:SetScript("OnHide", function(self)
 		self:UnregisterAllEvents()
 		self:SetScript("OnEvent", nil)
 		self:SetScript("OnUpdate", nil)
+		DBM:UnregisterCallback("DBM_RosterUpdated", OnRosterUpdated)
 		commToken = commToken + 1
 		updateElapsed = 0
 		needsRedraw = false
