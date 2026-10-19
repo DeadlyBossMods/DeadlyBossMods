@@ -524,13 +524,8 @@ function Keystones:Show()
 	if selectedTab == teleportTab and InCombatLockdown() then
 		return
 	end
-	DBM.Durability:Hide()
-	DBM.Latency:Hide()
-	if DBM.GearCheck then
-		DBM.GearCheck:Hide()
-	end
-	if DBM.Consumables then
-		DBM.Consumables:Hide()
+	if DBM.RaidChecks then
+		DBM.RaidChecks:Hide()
 	end
 	if _G["DBM_GUI_OptionsFrame"] then
 		frame:SetFrameLevel(_G["DBM_GUI_OptionsFrame"]:GetFrameLevel() + 10)
