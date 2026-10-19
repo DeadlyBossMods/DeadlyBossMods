@@ -361,7 +361,7 @@ DBM.DefaultOptions = {
 	ArrowPosY = -150,
 	ArrowPoint = "TOP",
 	KeystonesPosition = {"LEFT", 30, 0},
-	RaidChecksPosition = {"RIGHT", -150, 0},
+	RaidChecksPosition = {"CENTER", 0, 170},
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
 	DontShowTargetAnnouncements = true,

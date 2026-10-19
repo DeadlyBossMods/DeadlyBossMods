@@ -26,7 +26,7 @@ local rowHeight = 14
 local playerColumnWidth = 120
 local defaultTopInset = 30
 local minFrameWidth = 360
-local defaultPosition = {"RIGHT", -150, 0}
+local defaultPosition = {"CENTER", 0, 170}--Centered, just above the player character
 local validAnchorPoints = {
 	TOP = true,
 	BOTTOM = true,
@@ -238,7 +238,8 @@ local function SelectTab(key)
 	if not tab then
 		return
 	end
-	if frame and frame:IsShown() then
+	-- IsVisible, not IsShown: while UIParent is hidden the tab stays deferred until OnShow activates it.
+	if frame and frame:IsVisible() then
 		DeactivateTab()
 		activeTab = tab
 		ActivateTab()
@@ -683,6 +684,8 @@ if isRetail then
 			return
 		end
 		entry.trackedAuras = entry.trackedAuras or {}
+		-- Remember which unit was read, so a later roster rebuild can tell if it pointed at someone else.
+		entry.scannedUnit = unit
 		local flask, food, rune = ScanAuras(unit, entry.trackedAuras)
 		if flask then
 			entry.flask, entry.food, entry.rune = flask, food, rune
@@ -761,7 +764,15 @@ if isRetail then
 	-- Comms
 	------------------------
 	local function SendQuery()
-		if not IsDisplayShown() or not private.sendSync or not ShouldUseCommScan() then
+		if not IsDisplayShown() then
+			return
+		end
+		if not private.sendSync or not ShouldUseCommScan() then
+			-- Query abandoned (e.g. chat lockdown began during the throttle wait); stop waiting on replies so inspects can proceed.
+			for _, entry in pairs(entries) do
+				entry.pending = false
+			end
+			needsRedraw = true
 			return
 		end
 		local wait = queryThrottleSeconds - (GetTime() - lastQueryTime)
@@ -975,6 +986,11 @@ if isRetail then
 			if not roster[name] then
 				entries[name] = nil
 				dirtyMembers[name] = nil
+				-- A rejoining member must start fresh, and a pending inspect for them must not restore retry state.
+				inspectRetryAt[name], inspectAttempts[name], inspectUnreachable[name] = nil, nil, nil
+				if activeInspect.name == name then
+					FinishInspect()
+				end
 			end
 		end
 		-- Unit tokens shift on any roster change, so rebuild the reverse lookup used by UNIT_AURA.
@@ -983,6 +999,21 @@ if isRetail then
 			local unit = DBM:GetRaidUnitId(name, true)
 			if unit then
 				unitToName[unit] = name
+				-- Scans made through a stale unit ID (before core's rebuild) may have read another player's buffs.
+				local entry = entries[name]
+				if entry and entry.scannedUnit and entry.scannedUnit ~= unit then
+					if entry.liveAuras then
+						-- Those values came from the wrong unit; show unknown unless the rescan can read the right one.
+						entry.flask, entry.food, entry.rune = nil, nil, nil
+						entry.liveAuras = false
+					end
+					if entry.trackedAuras then
+						wipe(entry.trackedAuras)
+					end
+					entry.scannedUnit = nil
+					dirtyMembers[name] = true
+					needsRedraw = true
+				end
 			end
 		end
 		local useComms = private.sendSync and ShouldUseCommScan()
