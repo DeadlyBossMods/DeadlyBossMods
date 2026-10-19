@@ -2285,6 +2285,7 @@ do
 	--- |"DBM_raidLeave"
 	--- |"DBM_partyJoin"
 	--- |"DBM_partyLeave"
+	--- |"DBM_RosterUpdated"
 	--- |"DBM_MusicStart"
 	--- |"DBM_MusicStop"
 	--- |"DBM_UpdateZone"
@@ -2690,6 +2691,8 @@ do
 			private.lastGroupLeader = nil
 		end
 		DBM:UpdateZoneAuraAnchors(2)
+		--Fired after the throttled rebuild, so listeners always read current membership and unit IDs from GetRaidRoster
+		fireEvent("DBM_RosterUpdated")
 	end
 
 	function DBM:GROUP_ROSTER_UPDATE(force)
@@ -3343,6 +3346,9 @@ function DBM:READY_CHECK()
 	end
 	self:TransitionToDungeonBGM(false, true)
 	self:Schedule(4, self.TransitionToDungeonBGM, self)
+	if self.Options.ShowConsumablesOnReadyCheck and self.Consumables then
+		self.Consumables:Show()
+	end
 end
 
 do
