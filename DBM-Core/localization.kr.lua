@@ -303,6 +303,7 @@ L.SLASHCMD_HELP							= {
 	"/dbm key: 파티/길드의 신화+ 쐐기돌 및 평점 확인과 던전 순간이동 스킬 모음 창을 엽니다. (다른 명령어: key, keys, keystone)",
 	"/dbm lag: 공격대 전원의 지연 시간을 확인합니다.",
 	"/dbm durability: 공격대 전원의 내구도를 확인합니다.",
+	"/dbm consumables: 공격대 전원의 소모품을 확인합니다. (다른 명령어: cons, consumes)",
 	"/dbm brez: 전투 부활 타이머 창을 표시해서 위치를 조정합니다.",
 	"/dbm help2: 추가 슬래시 명령어를 표시합니다"
 }
@@ -703,6 +704,18 @@ L.KEYSTONES_HEADER						= L.DBM.. " - 쐐기돌"
 L.GEAR_HEADER					= L.DBM .. " - 장비 검사 결과"
 L.GEAR_MISSING_GEMS			= "보석 없음"
 L.GEAR_MISSING_ENCHANTS		= "마부 없음"
+L.GEAR_DURABILITY						= "내구도 %"
+L.GEAR_BROKEN							= "깨짐"
+L.RAIDCHECKS_TAB_CONSUMABLES			= "소모품"
+L.RAIDCHECKS_TAB_GEAR					= "장비"
+L.RAIDCHECKS_TAB_LATENCY				= "지연시간"
+L.CONSUMABLES_HEADER					= L.DBM.. " - 소모품 검사"
+L.CONSUMABLES_FLASK						= "영약"
+L.CONSUMABLES_FOOD						= "음식"
+L.CONSUMABLES_WEAPON					= "무기"
+L.CONSUMABLES_HS						= "생석"
+L.CONSUMABLES_RUNE						= "증강"
+L.CONSUMABLES_NA						= "N/A"
 L.BREZ_HEADER							= "전투 부활"
 
 L.OVERRIDE_ACTIVATED					= "이 전투에서 공대장에 의해 설정 강제 적용이 활성화되었습니다"
