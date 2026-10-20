@@ -253,6 +253,8 @@ do
 	-- GIR = Gear Inspect Reply (instance channel)
 	-- GGQ = Guild Gear Query (guild channel)
 	-- GGR = Guild Gear Reply (whisper back to requester)
+	-- CCQ = Consumables Check Query (instance channel)
+	-- CCR = Consumables Check Reply (instance channel)
 	-- RLO = Raid Leader Override
 	-- NS = Note Share
 
@@ -300,6 +302,24 @@ do
 		end
 		if DBM.GearCheck and DBM.GearCheck.OnSync then
 			DBM.GearCheck:OnSync("GIR", sender, itemLevel, missingGems, missingEnchants)
+		end
+	end
+
+	syncHandlers["CCQ"] = function(sender)
+		if sender == playerName then
+			return
+		end
+		if DBM.Consumables and DBM.Consumables.OnSync then
+			DBM.Consumables:OnSync("CCQ", sender)
+		end
+	end
+
+	syncHandlers["CCR"] = function(sender, _, flask, food, weapon, hs, rune)
+		if sender == playerName then
+			return
+		end
+		if DBM.Consumables and DBM.Consumables.OnSync then
+			DBM.Consumables:OnSync("CCR", sender, flask, food, weapon, hs, rune)
 		end
 	end
 
