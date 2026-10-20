@@ -307,9 +307,9 @@ L.SLASHCMD_HELP							= {
 	"/dbm break <min>: Envía un temporizador de descanso por <min> minutos a la banda (requiere ser promovido. alias: break).",
 	"/dbm timer: Inicia un temporizador personalizado de " .. L.DBM .. ", consulta '/dbm timer' para más detalles.",
 	"/dbm key: Realiza comprobaciones de piedra angular y índice de M+ en el grupo/la hermandad y accesos directos a teletransportes de mazmorras. (alias: key, keys, keystone)",
-	"/dbm lag: Realiza una comprobación de latencia en toda la banda.",
-	"/dbm durability: Realiza una comprobación de durabilidad en toda la banda.",
-	"/dbm consumibles: Realiza una comprobación de consumibles en banda (alias: cons, consumes).",
+	"/dbm lag: Realiza una verificación de latencia en toda la banda.",
+	"/dbm durability: Realiza una verificación de durabilidad en toda la banda.",
+	"/dbm consumibles: Realiza una verificación de consumibles en banda (alias: cons, consumes).",
 	"/dbm brez: Muestra el marco del temporizador de resurrección de combate para tu posicionamiento.",
 	"/dbm help2: Muestra comandos de barra adicionales"
 }
@@ -317,8 +317,8 @@ L.SLASHCMD_HELP							= {
 L.SLASHCMD_HELP2						= {
 	"Comandos de barra disponibles:",
 	"-----------------",
-	"/dbm version: Realiza una comprobación de versión del mod de jefe (alias: ver).",
-	"/dbm version2: Realiza una comprobación de versión del mod de jefe que también susurra a los usuarios desactualizados (alias: ver2).",
+	"/dbm version: Realiza una verificación de versión del mod de jefe (alias: ver).",
+	"/dbm version2: Realiza una verificación de versión del mod de jefe que también susurra a los usuarios desactualizados (alias: ver2).",
 	"/range <número> o /distance <número>: Muestra el marco de distancia. /rrange o /rdistance para invertir colores.",
 	"/hudar <número>: Muestra un buscador de distancia basado en HUD.",
 	"/dbm arrow: Muestra la flecha de " .. L.DBM .. ", consulta '/dbm arrow help' para más detalles.",
