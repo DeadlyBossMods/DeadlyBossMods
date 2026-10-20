@@ -307,6 +307,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: Effectue des vérifications de clé M+ et de notation sur le groupe/guilde et des raccourcis vers les téléportations de donjon. (alias : key, keys, keystone)",
 	"/dbm lag: Effectue une vérification de latence pour tout le raid.",
 	"/dbm durability: Effectue une vérification de durabilité pour tout le raid.",
+	"/dbm consumables: Performs a raid-wide consumables check (alias: cons, consumes).",
 	"/dbm brez: Affiche le cadre du chronomètre de résurrection de combat pour le positionnement.",--AI translated (check me)
 	"/dbm help2: Affiche des commandes slash supplémentaires"
 }
@@ -722,6 +723,18 @@ L.KEYSTONES_HEADER			= L.DBM .. " - Mythiques"
 L.GEAR_HEADER				= L.DBM .. " - Résultats d'équipement"
 L.GEAR_MISSING_GEMS			= "Gemmes manquantes"
 L.GEAR_MISSING_ENCHANTS		= "Enchantements manquants"
+L.GEAR_DURABILITY						= "Dur %"
+L.GEAR_BROKEN							= "Broken"
+L.RAIDCHECKS_TAB_CONSUMABLES			= "Consumables"
+L.RAIDCHECKS_TAB_GEAR					= "Gear"
+L.RAIDCHECKS_TAB_LATENCY				= "Latency"
+L.CONSUMABLES_HEADER					= L.DBM.. " - Consumables Check"
+L.CONSUMABLES_FLASK						= "Flask"
+L.CONSUMABLES_FOOD						= "Food"
+L.CONSUMABLES_WEAPON					= "Weapon"
+L.CONSUMABLES_HS						= "HS"
+L.CONSUMABLES_RUNE						= "Rune"
+L.CONSUMABLES_NA						= "N/A"
 L.BREZ_HEADER				= "Rés. de combat"
 
 L.OVERRIDE_ACTIVATED 		= "Les remplacements de configuration ont été activés pour cette rencontre par le responsable de raid"

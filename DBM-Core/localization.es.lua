@@ -309,6 +309,7 @@ L.SLASHCMD_HELP							= {
 	"/dbm key: Realiza comprobaciones de piedra angular y índice de M+ en el grupo/la hermandad y accesos directos a teletransportes de mazmorras. (alias: key, keys, keystone)",
 	"/dbm lag: Realiza una comprobación de latencia en toda la banda.",
 	"/dbm durability: Realiza una comprobación de durabilidad en toda la banda.",
+	"/dbm consumables: Performs a raid-wide consumables check (alias: cons, consumes).",
 	"/dbm brez: Muestra el marco del temporizador de resurrección de combate para tu posicionamiento.",
 	"/dbm help2: Muestra comandos de barra adicionales"
 }
@@ -722,6 +723,18 @@ L.KEYSTONES_HEADER			= L.DBM.. " - Piedras angulares"
 L.GEAR_HEADER				= L.DBM.. " - Resultados de equipo"
 L.GEAR_MISSING_GEMS		= "Gemas faltantes"
 L.GEAR_MISSING_ENCHANTS	= "Encantamientos faltantes"
+L.GEAR_DURABILITY						= "Dur %"
+L.GEAR_BROKEN							= "Broken"
+L.RAIDCHECKS_TAB_CONSUMABLES			= "Consumables"
+L.RAIDCHECKS_TAB_GEAR					= "Gear"
+L.RAIDCHECKS_TAB_LATENCY				= "Latency"
+L.CONSUMABLES_HEADER					= L.DBM.. " - Consumables Check"
+L.CONSUMABLES_FLASK						= "Flask"
+L.CONSUMABLES_FOOD						= "Food"
+L.CONSUMABLES_WEAPON					= "Weapon"
+L.CONSUMABLES_HS						= "HS"
+L.CONSUMABLES_RUNE						= "Rune"
+L.CONSUMABLES_NA						= "N/A"
 L.BREZ_HEADER				= "Res en combate"
 
 L.OVERRIDE_ACTIVATED		= "Líder de banda ha activado las anulaciones de configuración para este encuentro"

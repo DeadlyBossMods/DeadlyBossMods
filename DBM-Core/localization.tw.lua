@@ -311,6 +311,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: 在隊伍/公會上執行 M+ 鑰匙和評分檢查，並快捷方式到地下城傳送。 （別名：key，keys，keystone）",
 	"/dbm lag: 執行全團延遲檢查。",
 	"/dbm durability: 執行全團耐久度檢查。",
+	"/dbm consumables: Performs a raid-wide consumables check (alias: cons, consumes).",
 	"/dbm brez: 顯示戰鬥復活計時器框架以供定位。",--AI translated (check me)
 	"/dbm help2: 顯示其他斜線命令"
 }
@@ -727,6 +728,18 @@ L.KEYSTONES_HEADER				= L.DBM.. " - 鑰石"
 L.GEAR_HEADER					= L.DBM.. " - 裝備檢查結果"
 L.GEAR_MISSING_GEMS				= "缺少寶石"
 L.GEAR_MISSING_ENCHANTS			= "缺少附魔"
+L.GEAR_DURABILITY						= "Dur %"
+L.GEAR_BROKEN							= "Broken"
+L.RAIDCHECKS_TAB_CONSUMABLES			= "Consumables"
+L.RAIDCHECKS_TAB_GEAR					= "Gear"
+L.RAIDCHECKS_TAB_LATENCY				= "Latency"
+L.CONSUMABLES_HEADER					= L.DBM.. " - Consumables Check"
+L.CONSUMABLES_FLASK						= "Flask"
+L.CONSUMABLES_FOOD						= "Food"
+L.CONSUMABLES_WEAPON					= "Weapon"
+L.CONSUMABLES_HS						= "HS"
+L.CONSUMABLES_RUNE						= "Rune"
+L.CONSUMABLES_NA						= "N/A"
 L.BREZ_HEADER					= "戰鬥復活"
 
 L.OVERRIDE_ACTIVATED			= "領隊已啟用此首領的配置覆蓋"

@@ -322,6 +322,7 @@ L.SLASHCMD_HELP	= {--AI translated (check me)
 	"/dbm key: Esegue controlli delle chiavi M+ e delle valutazioni su party/gilda e scorciatoie per i teletrasporti delle dungeon. (alias: key, keys, keystone)",
 	"/dbm lag: Esegue un controllo della latenza per tutta l'incursione.",
 	"/dbm durability: Esegue un controllo della durabilità per tutta l'incursione.",
+	"/dbm consumables: Performs a raid-wide consumables check (alias: cons, consumes).",
 	"/dbm brez: Mostra il riquadro del temporizzatore di resurrezione da combattimento per il posizionamento.",--AI translated (check me)
 	"/dbm help2: Mostra comandi slash aggiuntivi"
 }
@@ -714,6 +715,18 @@ L.DUR_HEADER			= L.DBM.." - Risultati Stato Equipaggiamento"
 L.GEAR_HEADER			= L.DBM.. " - Controllo equipaggiamento"
 L.GEAR_MISSING_GEMS		= "Gemme mancanti"
 L.GEAR_MISSING_ENCHANTS	= "Incantamenti mancanti"
+L.GEAR_DURABILITY						= "Dur %"
+L.GEAR_BROKEN							= "Broken"
+L.RAIDCHECKS_TAB_CONSUMABLES			= "Consumables"
+L.RAIDCHECKS_TAB_GEAR					= "Gear"
+L.RAIDCHECKS_TAB_LATENCY				= "Latency"
+L.CONSUMABLES_HEADER					= L.DBM.. " - Consumables Check"
+L.CONSUMABLES_FLASK						= "Flask"
+L.CONSUMABLES_FOOD						= "Food"
+L.CONSUMABLES_WEAPON					= "Weapon"
+L.CONSUMABLES_HS						= "HS"
+L.CONSUMABLES_RUNE						= "Rune"
+L.CONSUMABLES_NA						= "N/A"
 L.BREZ_HEADER			= "Resurrezione in Combattimento"
 L.KEYSTONES_HEADER		= L.DBM .. " - Chiavi"
 
