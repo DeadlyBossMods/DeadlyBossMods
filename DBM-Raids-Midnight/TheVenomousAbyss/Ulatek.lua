@@ -76,26 +76,32 @@ mod:AddAuraSoundOption(1311602, true, -36292, 1, 3, "dotyou", 19, 0)--Blight Vei
 
 local badStateDetected = false--Used to track if hardcode features have failed and we need to fall back to blizz API
 local stage1SixtyTwoCount = 0--Normal: Call of the Serpent then Mother's Wrath share the exact 62s opening slot
-local lfrStage1SeventyCount = 0--LFR: Call of the Serpent, Spectral Coils, then Caustic Waves share the exact 70s slot
-local lfrStage3FortyCount = 0--LFR stage 3: Circling Prey, Submerge, then Circling Prey share the exact 40s slot
-local lfrStage3FortySixCount = 0--LFR stage 3: Call of the Serpent then Caustic Waves share the exact 46s slot
-local lfrStage3FiftyCount = 0--LFR stage 3: Circling Prey then Submerge share the exact 50s slot
+local storyStage1SeventyCount = 0--Story: Call of the Serpent, Spectral Coils, then Caustic Waves share the exact 70s slot
+local storyStage3FortyCount = 0--Story stage 3: Circling Prey, Submerge, then Circling Prey share the exact 40s slot
+local storyStage3FortySixCount = 0--Story stage 3: Call of the Serpent then Caustic Waves share the exact 46s slot
+local storyStage3FiftyCount = 0--Story stage 3: Circling Prey then Submerge share the exact 50s slot
+local lfrStage1SixtyCount = 0--LFR: Call of the Serpent then Mother's Wrath share the exact 60s slot
+local lfrStage3SixtyFiveCount = 0--LFR stage 3: Call of the Serpent then Mother's Wrath share the exact 65s slot
+local lfrStage3FiftySixCount = 0--LFR stage 3: Circling Prey then Submerge share the exact 56s slot
 local heroicStage1FiftyTwoCount = 0--Heroic: Mephitic Thrash then Caustic Waves share the exact 52s opening slot
 local heroicStage3SixtyCount = 0--Heroic stage 3: Call of the Serpent then Submerge share the exact 60s slot
 local stage2Pending = false--Opening Rage completion arms the boss1 targetability-loss transition into stage 2
 local mephiticThrashScheduledEvents = {}
 local spectralCoilsScheduledEvents = {}
 local stage3ScheduledEvents = {}
+local storyStage3Batch = {}
+local storyStage3BatchScheduled = false
 local lfrStage3Batch = {}
 local lfrStage3BatchScheduled = false
 local heroicStage3Batch = {}
 local heroicStage3BatchScheduled = false
+local resetStoryStage3Batch
 local resetLFRStage3Batch
 local resetHeroicStage3Batch
 local resetStage3ScheduledEvents
 local resetMephiticThrashScheduledEvents
 local resetSpectralCoilsScheduledEvents
-local lfrStage3BatchTimers = {
+local storyStage3BatchTimers = {
 	[5] = true,
 	[20] = true,
 	[30] = true,
@@ -105,6 +111,21 @@ local lfrStage3BatchTimers = {
 	[50] = true,
 	[141] = true,
 	[180] = true,
+}
+local lfrStage3BatchTimers = {
+	[5] = true,
+	[10] = true,
+	[25] = true,
+	[40] = true,
+	[50] = true,
+	[56] = true,
+	[57] = true,
+	[60] = true,
+	[61] = true,
+	[63] = true,
+	[65] = true,
+	[200] = true,
+	[230] = true,
 }
 local heroicStage3BatchTimers = {
 	[5] = true,
@@ -182,18 +203,23 @@ end
 function mod:OnLimitedCombatStart()
 	self:TLCountReset()
 	self:TLBatchReset()
+	self:TLActiveEventReset()
 	self:SetStage(1)
 	stage1SixtyTwoCount = 0
-	lfrStage1SeventyCount = 0
-	lfrStage3FortyCount = 0
-	lfrStage3FortySixCount = 0
-	lfrStage3FiftyCount = 0
+	storyStage1SeventyCount = 0
+	storyStage3FortyCount = 0
+	storyStage3FortySixCount = 0
+	storyStage3FiftyCount = 0
+	lfrStage1SixtyCount = 0
+	lfrStage3SixtyFiveCount = 0
+	lfrStage3FiftySixCount = 0
 	heroicStage1FiftyTwoCount = 0
 	heroicStage3SixtyCount = 0
 	stage2Pending = false
 	resetMephiticThrashScheduledEvents(self)
 	resetSpectralCoilsScheduledEvents(self)
 	resetStage3ScheduledEvents(self)
+	resetStoryStage3Batch(self)
 	resetLFRStage3Batch(self)
 	resetHeroicStage3Batch(self)
 	self.vb.mothersWrathCount = 1
@@ -227,17 +253,22 @@ end
 function mod:OnCombatEnd()
 	self:TLCountReset()
 	self:TLBatchReset()
+	self:TLActiveEventReset()
 	stage1SixtyTwoCount = 0
-	lfrStage1SeventyCount = 0
-	lfrStage3FortyCount = 0
-	lfrStage3FortySixCount = 0
-	lfrStage3FiftyCount = 0
+	storyStage1SeventyCount = 0
+	storyStage3FortyCount = 0
+	storyStage3FortySixCount = 0
+	storyStage3FiftyCount = 0
+	lfrStage1SixtyCount = 0
+	lfrStage3SixtyFiveCount = 0
+	lfrStage3FiftySixCount = 0
 	heroicStage1FiftyTwoCount = 0
 	heroicStage3SixtyCount = 0
 	stage2Pending = false
 	resetMephiticThrashScheduledEvents(self)
 	resetSpectralCoilsScheduledEvents(self)
 	resetStage3ScheduledEvents(self)
+	resetStoryStage3Batch(self)
 	resetLFRStage3Batch(self)
 	resetHeroicStage3Batch(self)
 	self:UnregisterShortTermEvents()
@@ -350,40 +381,40 @@ do
 		DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
 	end
 
-	local function resolveLFRStage3Collision(timer)
+	local function resolveStoryStage3Collision(timer)
 		if timer == 40 then
-			lfrStage3FortyCount = lfrStage3FortyCount + 1
-			if lfrStage3FortyCount == 1 or lfrStage3FortyCount == 3 then
+			storyStage3FortyCount = storyStage3FortyCount + 1
+			if storyStage3FortyCount == 1 or storyStage3FortyCount == 3 then
 				return timerCirclingPreyCD, "circlingPrey", "circlingPreyCount"
-			elseif lfrStage3FortyCount == 2 then
+			elseif storyStage3FortyCount == 2 then
 				return timerSubmergeCD, "submerge", "submergeCount"
 			end
 		elseif timer == 46 then
-			lfrStage3FortySixCount = lfrStage3FortySixCount + 1
-			if lfrStage3FortySixCount == 1 then
+			storyStage3FortySixCount = storyStage3FortySixCount + 1
+			if storyStage3FortySixCount == 1 then
 				return timerCalloftheSerpentCD, "call", "callCount"
-			elseif lfrStage3FortySixCount == 2 then
+			elseif storyStage3FortySixCount == 2 then
 				return timerCausticWavesCD, "causticWaves", "causticWavesCount"
 			end
 		elseif timer == 50 then
-			lfrStage3FiftyCount = lfrStage3FiftyCount + 1
-			if lfrStage3FiftyCount == 1 then
+			storyStage3FiftyCount = storyStage3FiftyCount + 1
+			if storyStage3FiftyCount == 1 then
 				return timerCirclingPreyCD, "circlingPrey", "circlingPreyCount"
-			elseif lfrStage3FiftyCount == 2 then
+			elseif storyStage3FiftyCount == 2 then
 				return timerSubmergeCD, "submerge", "submergeCount"
 			end
 		end
 	end
 
-	local function startLFRStage3Timer(self, timer, timerExact, eventID, isOpeningBatch)
+	local function startStoryStage3Timer(self, timer, timerExact, eventID, isOpeningBatch)
 		if not isOpeningBatch and (timer == 40 or timer == 46 or timer == 50) then
 			self:TLBatchStart(timer, function()
-				local timerObj, eventType, countKey = resolveLFRStage3Collision(timer)
+				local timerObj, eventType, countKey = resolveStoryStage3Collision(timer)
 				if not timerObj then
 					hardcodeFailed(self)
 				end
 				return timerObj, eventType, countKey
-			end, timerExact, eventID, nil, nil, lfrStage3BatchTimers)
+			end, timerExact, eventID, nil, nil, storyStage3BatchTimers)
 			stage3ScheduledEvents[eventID] = true
 			self:Schedule(timerExact, finishScheduledStage3Event, self, eventID)
 			return true
@@ -409,22 +440,119 @@ do
 		end
 		if not timerObj then return false end
 		if isOpeningBatch then
-			self:TLBatchStart(timer, timerObj, timerExact, eventID, eventType, countKey, lfrStage3BatchTimers)
+			self:TLBatchStart(timer, timerObj, timerExact, eventID, eventType, countKey, storyStage3BatchTimers)
 		else
-			self:TLBatchStart(timer, timerObj, timerExact, eventID, eventType, countKey, lfrStage3BatchTimers)
+			self:TLBatchStart(timer, timerObj, timerExact, eventID, eventType, countKey, storyStage3BatchTimers)
 		end
 		stage3ScheduledEvents[eventID] = true
 		self:Schedule(timerExact, finishScheduledStage3Event, self, eventID)
 		return true
 	end
 
+	local function startStoryStage3Batch(self)
+		storyStage3BatchScheduled = false
+		local batch = storyStage3Batch
+		storyStage3Batch = {}
+		local hasFuryUnleashed = false
+		for _, event in ipairs(batch) do
+			if event.timer == 180 then--Story Fury Unleashed duration; event order within the batch is not stable
+				hasFuryUnleashed = true
+				break
+			end
+		end
+		if not hasFuryUnleashed then
+			hardcodeFailed(self)
+			return
+		end
+		self:SetStage(3)
+		for _, event in ipairs(batch) do
+			if not startStoryStage3Timer(self, event.timer, event.timerExact, event.eventID, true) then
+				hardcodeFailed(self)
+				return
+			end
+		end
+	end
+
+	resetStoryStage3Batch = function(self)
+		self:Unschedule(startStoryStage3Batch)
+		storyStage3Batch = {}
+		storyStage3BatchScheduled = false
+	end
+
+	local function resolveLFRStage3Collision(timer)
+		if timer == 65 then
+			lfrStage3SixtyFiveCount = lfrStage3SixtyFiveCount + 1
+			if lfrStage3SixtyFiveCount == 1 then
+				return timerCalloftheSerpentCD, "call", "callCount"
+			elseif lfrStage3SixtyFiveCount == 2 then
+				return timerMothersWrathCD, "mothersWrath", "mothersWrathCount"
+			end
+		elseif timer == 56 then
+			lfrStage3FiftySixCount = lfrStage3FiftySixCount + 1
+			if lfrStage3FiftySixCount == 1 then
+				return timerCirclingPreyCD, "circlingPrey", "circlingPreyCount"
+			elseif lfrStage3FiftySixCount == 2 then
+				return timerSubmergeCD, "submerge", "submergeCount"
+			end
+		end
+	end
+
+	---@param self DBMMod
+	local function startLFRStage3Timer(self, timer, timerExact, eventID, isOpeningBatch)
+		if not isOpeningBatch and (timer == 65 or timer == 56) then
+			self:TLBatchStart(timer, function()
+				local timerObj, eventType, countKey = resolveLFRStage3Collision(timer)
+				if not timerObj then
+					hardcodeFailed(self)
+				end
+				return timerObj, eventType, countKey
+			end, timerExact, eventID, nil, nil, lfrStage3BatchTimers)
+			stage3ScheduledEvents[eventID] = true
+			self:Schedule(timerExact, finishScheduledStage3Event, self, eventID)
+			return true
+		end
+
+		local timerObj, eventType, countKey
+		if isOpeningBatch then
+			if timer == 5 then
+				timerObj, eventType, countKey = timerCalloftheSerpentCD, "call", "callCount"
+			elseif timer == 10 then
+				timerObj, eventType, countKey = timerMothersWrathCD, "mothersWrath", "mothersWrathCount"
+			elseif timer == 25 then
+				timerObj, eventType, countKey = timerSerpentsBiteCD, "serpentsBite", "serpentsBiteCount"
+			elseif timer == 40 then
+				timerObj, eventType, countKey = timerCausticWavesCD, "causticWaves", "causticWavesCount"
+			elseif timer == 50 then
+				timerObj, eventType, countKey = timerCirclingPreyCD, "circlingPrey", "circlingPreyCount"
+			elseif timer == 57 then
+				timerObj, eventType, countKey = timerSubmergeCD, "submerge", "submergeCount"
+			elseif timer == 200 then
+				timerObj, eventType, countKey = timerRageoftheShackledCD, "rage", "rageCount"
+			elseif timer == 230 then
+				timerObj, eventType, countKey = timerFuryUnleashedCD, "furyUnleashed", "furyUnleashedCount"
+			end
+		elseif timer == 63 then
+			timerObj, eventType, countKey = timerCalloftheSerpentCD, "call", "callCount"
+		elseif timer == 61 then
+			timerObj, eventType, countKey = timerSerpentsBiteCD, "serpentsBite", "serpentsBiteCount"
+		elseif timer == 60 then
+			timerObj, eventType, countKey = timerCausticWavesCD, "causticWaves", "causticWavesCount"
+		end
+		if not timerObj then return false end
+		self:TLBatchStart(timer, timerObj, timerExact, eventID, eventType, countKey, lfrStage3BatchTimers)
+		stage3ScheduledEvents[eventID] = true
+		self:Schedule(timerExact, finishScheduledStage3Event, self, eventID)
+		return true
+	end
+
+	---@param self DBMMod
 	local function startLFRStage3Batch(self)
 		lfrStage3BatchScheduled = false
 		local batch = lfrStage3Batch
 		lfrStage3Batch = {}
 		local hasFuryUnleashed = false
 		for _, event in ipairs(batch) do
-			if event.timer == 180 then--LFR Fury Unleashed duration; event order within the batch is not stable
+			if event.timer == 230 then--Week 9 LFR Fury Unleashed; opening event order is not stable
 				hasFuryUnleashed = true
 				break
 			end
@@ -444,6 +572,7 @@ do
 
 	resetLFRStage3Batch = function(self)
 		self:Unschedule(startLFRStage3Batch)
+		self:Unschedule(finishTimelineEvent)--LFR stage-1 Call and stage-2 Virulent Spit use raw-duration completion too
 		lfrStage3Batch = {}
 		lfrStage3BatchScheduled = false
 	end
@@ -546,8 +675,8 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	--LFR stages 2 and 3 use independent timer patterns and must not be reused for Normal or higher difficulties.
-	local function timersLFR(self, timer, timerExact, eventID)
+	--Story uses independent timer patterns and must not be reused for LFR or higher difficulties.
+	local function timersStory(self, timer, timerExact, eventID)
 		local handled = false
 		local stage = self:GetStage()
 		if stage == 1 then
@@ -565,12 +694,12 @@ do
 			elseif timer == 145 then
 				timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
 			elseif timer == 70 then
-				lfrStage1SeventyCount = lfrStage1SeventyCount + 1
-				if lfrStage1SeventyCount == 1 then
+				storyStage1SeventyCount = storyStage1SeventyCount + 1
+				if storyStage1SeventyCount == 1 then
 					timerCalloftheSerpentCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "call", "callCount"))
-				elseif lfrStage1SeventyCount == 2 then
+				elseif storyStage1SeventyCount == 2 then
 					startSpectralCoilsTimer(self, timerExact, eventID)
-				elseif lfrStage1SeventyCount == 3 then
+				elseif storyStage1SeventyCount == 3 then
 					timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
 				else
 					hardcodeFailed(self)
@@ -581,10 +710,79 @@ do
 				return
 			end
 			handled = true
-		elseif stage == 2 and timer == 10 then--LFR intermission begins with Spectral Coils
+		elseif stage == 2 and timer == 10 then--Story intermission begins with Spectral Coils
 			self:SetStage(2.5)
 			startSpectralCoilsTimer(self, timerExact, eventID)
 			handled = true
+		elseif stage == 2.5 then
+			table.insert(storyStage3Batch, {timer = timer, timerExact = timerExact, eventID = eventID})
+			if not storyStage3BatchScheduled then
+				storyStage3BatchScheduled = true
+				self:Schedule(0, startStoryStage3Batch, self)
+			end
+			handled = true
+		elseif stage == 3 then
+			handled = startStoryStage3Timer(self, timer, timerExact, eventID, false)
+		end
+
+		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+			hardcodeFailed(self)
+		end
+	end
+
+	---@param self DBMMod
+	---@param timer number
+	---@param timerExact number
+	---@param eventID number
+	local function timersLFR(self, timer, timerExact, eventID)
+		local handled = false
+		local stage = self:GetStage()
+		if stage == 1 and stage2Pending and timer == 118 then--Backup if boss1 targetability did not update
+			stage2Pending = false
+			self:SetStage(2)
+			timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
+			handled = true
+		elseif stage == 1 then
+			if timer == 40 or timer == 45 then
+				timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
+				handled = true
+			elseif timer == 10 then
+				timerMothersWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mothersWrath", "mothersWrathCount"))
+				handled = true
+			elseif timer == 20 or timer == 85 then
+				startSpectralCoilsTimer(self, timerExact, eventID)
+				handled = true
+			elseif timer == 5 then--1304527 initial Gore Rattle
+				self:TLCountStart(eventID, "goreRattleInitial")
+				timerGoreRattleCD:TLStart(timerExact, eventID, 1)
+				handled = true
+			elseif timer == 130 then
+				timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
+				handled = true
+			elseif timer == 60 then
+				lfrStage1SixtyCount = lfrStage1SixtyCount + 1
+				if lfrStage1SixtyCount == 1 then
+					timerCalloftheSerpentCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "call", "callCount"))
+					self:Schedule(timerExact, finishTimelineEvent, self, eventID)--State 3 arrives five seconds late
+					handled = true
+				elseif lfrStage1SixtyCount == 2 then
+					timerMothersWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mothersWrath", "mothersWrathCount"))
+					handled = true
+				end
+			end
+		elseif stage == 2 then
+			if timer == 10 then
+				self:SetStage(2.5)
+				startSpectralCoilsTimer(self, timerExact, eventID)
+				handled = true
+			elseif timer == 118 then
+				timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
+				handled = true
+			elseif timer == 30 or timer == 40 then
+				timerVirulentSpitCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "virulentSpit", "virulentSpitCount"))
+				self:Schedule(timerExact, finishTimelineEvent, self, eventID)--Both observed state-3 completions are five seconds late
+				handled = true
+			end
 		elseif stage == 2.5 then
 			table.insert(lfrStage3Batch, {timer = timer, timerExact = timerExact, eventID = eventID})
 			if not lfrStage3BatchScheduled then
@@ -595,8 +793,7 @@ do
 		elseif stage == 3 then
 			handled = startLFRStage3Timer(self, timer, timerExact, eventID, false)
 		end
-
-		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
+		if not handled then
 			hardcodeFailed(self)
 		end
 	end
@@ -741,7 +938,10 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
-			if self:IsStory() or self:IsLFR() then
+			if self:IsStory() then
+				timersStory(self, timer, timerExact, eventID)
+			elseif self:IsLFR() then
+				if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 				timersLFR(self, timer, timerExact, eventID)
 			elseif self:IsHeroic() then
 				timersHeroic(self, timer, timerExact, eventID)
@@ -754,6 +954,9 @@ do
 	function mod:ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED(eventID)
 		local eventState = C_EncounterTimeline.GetEventState(eventID)
 		if not eventID or not eventState then return end
+		if eventState == 2 or eventState == 3 then
+			self:TLReleaseActiveEvent(eventID)
+		end
 		local batchTimer = self:TLBatchUntrack(eventID)
 		if stage3ScheduledEvents[eventID] then
 			if eventState == 3 and batchTimer then--Superseded duplicate stage-3 event

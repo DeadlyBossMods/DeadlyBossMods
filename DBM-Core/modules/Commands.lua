@@ -199,6 +199,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM.Latency:Show()
 	elseif DBM.GearCheck and cmd:sub(1, 4) == "gear" then
 		DBM.GearCheck:Show()
+	elseif DBM.Consumables and cmd:sub(1, 4) == "cons" then--consumables, consumes, cons
+		DBM.Consumables:Show()
 	elseif cmd:sub(1, 10) == "durability" or cmd:sub(1, 3) == "dur" then
 		DBM.Durability:Show()
 	elseif DBM.Keystones and (cmd:sub(1, 3) == "key" or cmd:sub(1, 4) == "keys") then

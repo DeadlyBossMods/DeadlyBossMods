@@ -44,7 +44,7 @@ local mt = {__index = bossModPrototype}
 ---@field upgradedMPlus boolean? Used to flag a dungeon that used to be a challenge mode in MoP or WoD but has since upgraded to M+
 ---@field onlyHighest boolean?
 ---@field soloChallenge boolean?
----@field ignoreGenericTrash boolean? Suppresses generic warnings only while this enabled mod is in combat.
+---@field enableGenericTrash boolean? Permits generic warnings only while this enabled boss mod is in combat.
 ---@field disableHealthCombat boolean?
 ---@field isCustomMod boolean?
 ---@field lastKillTime number? Timestamp of the most recent completed combat.
@@ -176,11 +176,15 @@ bossModPrototype.AddMsg = DBM.AddMsg
 bossModPrototype.RegisterShortTermEvents = DBM.RegisterShortTermEvents
 bossModPrototype.UnregisterShortTermEvents = DBM.UnregisterShortTermEvents
 
----Opt this mod out of generic cast warnings while its encounter is active.
+---Opt this boss mod into generic cast warnings while its encounter is active and enabled.
 ---May be called at module load or combat start; does not change user options.
----Suppression automatically stops when the mod leaves the active combat list.
-function bossModPrototype:IgnoreGenericTrash()
-	self.ignoreGenericTrash = true
+---Permission automatically stops when the mod leaves the active combat list or is disabled.
+function bossModPrototype:EnableGenericTrash()
+	if self.enableGenericTrash then return end
+	self.enableGenericTrash = true
+	if self.inCombat and DBM.UpdateGenericTrashOptions then
+		DBM:UpdateGenericTrashOptions(true)
+	end
 end
 
 function bossModPrototype:SetZone(...)
@@ -216,12 +220,18 @@ function bossModPrototype:EnableMod()
 	if private.updateFunctions[self] then
 		scheduler:StartScheduler()
 	end
+	if self.inCombat and DBM.UpdateGenericTrashOptions then
+		DBM:UpdateGenericTrashOptions(true)
+	end
 end
 
 function bossModPrototype:DisableMod()
 	self:Stop()
 	self.Options.Enabled = false
 	private.updateFunctionsDirty = true
+	if self.inCombat and DBM.UpdateGenericTrashOptions then
+		DBM:UpdateGenericTrashOptions(true)
+	end
 end
 
 ---@param killNameplates boolean? Should only be called by trash mods. Bosses should never call this

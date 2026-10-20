@@ -194,7 +194,7 @@ DBM.DefaultOptions = {
 	FilterDispel = true,
 	FilterCrowdControl = true,
 	FilterTrashWarnings2 = true,
-	-- Generic max-level trash warnings (core profile).
+	-- Generic trash warnings (core profile).
 	GenericTrashDungeonEnabled = true,
 	GenericTrashDungeonAllDungeons = false,
 	GenericTrashDungeonCast = true,
@@ -215,7 +215,6 @@ DBM.DefaultOptions = {
 	GenericTrashRaidThrottleType = "both",
 	GenericTrashRaidThrottleDuration = 3,
 	GenericTrashDelveEnabled = true,
-	GenericTrashDelveAllowBosses = true,
 	GenericTrashDelveCast = true,
 	GenericTrashDelveLieutenant = true,
 	GenericTrashDelveChannel = false,
@@ -360,10 +359,8 @@ DBM.DefaultOptions = {
 	ArrowPosX = 0,
 	ArrowPosY = -150,
 	ArrowPoint = "TOP",
-	GearPosition = {"RIGHT", -150, 0},
-	DurabilityPosition = {"RIGHT", -150, 0},
-	LatencyPosition = {"RIGHT", -150, 0},
 	KeystonesPosition = {"LEFT", 30, 0},
+	RaidChecksPosition = {"CENTER", 0, 170},
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
 	DontShowTargetAnnouncements = true,
@@ -430,6 +427,7 @@ DBM.DefaultOptions = {
 	ShowKeystoneOnComplete = true,
 	AddChallengeTeleports = true,
 	OverrideKeystoneSlash = false,
+	ShowConsumablesOnReadyCheck = false,
 	BrezFont = "standardFont",
 	BrezFontSize = 18,
 	BattleRezPosition = {"TOPLEFT", 214, -29},

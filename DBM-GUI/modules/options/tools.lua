@@ -23,19 +23,29 @@ durability:SetScript("OnClick", function()
 	DBM.Durability:Show()
 end)
 
---TODO, when buffs is added, anchor keystones to buffs instead of durability.
+local gear = area:CreateButton(L.Tools_GearCheck, 120, 30)
+gear.myheight = 0
+gear:SetPoint("LEFT", durability, "RIGHT", 10, 0)
+gear:SetScript("OnClick", function()
+	DBM.GearCheck:Show()
+end)
+
+local lastToolButton = gear
+if DBM.Consumables then
+	local consumables = area:CreateButton(L.Tools_ConsumablesCheck, 120, 30)
+	consumables.myheight = 0
+	consumables:SetPoint("LEFT", gear, "RIGHT", 10, 0)
+	consumables:SetScript("OnClick", function()
+		DBM.Consumables:Show()
+	end)
+	lastToolButton = consumables
+end
+
 --we'll want it to be last button so it's easier to hide on classic
 if DBM:IsRetail() then
-	local gear = area:CreateButton(L.Tools_GearCheck, 120, 30)
-	gear.myheight = 0
-	gear:SetPoint("LEFT", durability, "RIGHT", 10, 0)
-	gear:SetScript("OnClick", function()
-		DBM.GearCheck:Show()
-	end)
-
 	local keystone = area:CreateButton(L.Tools_KeystoneCheck, 120, 30)
 	keystone.myheight = 0
-	keystone:SetPoint("LEFT", gear, "RIGHT", 10, 0)
+	keystone:SetPoint("LEFT", lastToolButton, "RIGHT", 10, 0)
 	keystone:SetScript("OnClick", function()
 		DBM.Keystones:Show()
 	end)
@@ -113,6 +123,11 @@ if DBM:IsRetail() then
 		end)
 	end
 	area1c:CreateCheckButton(L.Tools_OverrideKeystoneSlash, true, nil, "OverrideKeystoneSlash")
+end
+
+if DBM.Consumables then
+	local area1d = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_ConsumablesArea)
+	area1d:CreateCheckButton(L.Tools_ShowConsumablesOnReadyCheck, true, nil, "ShowConsumablesOnReadyCheck")
 end
 
 local area2 = DBM_GUI.CAT_TOOLS:CreateArea(L.Tools_BreakTimer)

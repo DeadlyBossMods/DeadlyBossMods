@@ -1089,15 +1089,17 @@ function timerPrototype:Resume(...)
 	end
 end
 
+-- Persists for future starts as well as updating the selected active timer.
 function timerPrototype:UpdateIcon(icon, ...)
+	icon = DBM:ParseSpellIcon(icon)
+	self.icon = icon
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
 	if not bar and textOnlyRemaining(id) then
-		DBM:FireEvent("DBM_TimerUpdateIcon", id, DBM:ParseSpellIcon(icon))
+		DBM:FireEvent("DBM_TimerUpdateIcon", id, icon)
 		return
 	end
 	if bar then
-		icon = DBM:ParseSpellIcon(icon)
 		DBM:FireEvent("DBM_TimerUpdateIcon", id, icon)
 		bar:SetIcon(icon)
 	end
@@ -1128,7 +1130,7 @@ function timerPrototype:UpdateInline(newInline, ...)
 	local id = self.id .. pformat((("\t%s"):rep(select("#", ...))), ...)
 	local bar = DBT:GetBar(id)
 	if bar then
-		local ttext = _G[bar.frame:GetName() .. "BarName"]:GetText() or ""
+		--local ttext = _G[bar.frame:GetName() .. "BarName"]:GetText() or ""
 		bar:SetIcon(self.icon, nil, newInline or self.inlineIcon)
 	end
 end

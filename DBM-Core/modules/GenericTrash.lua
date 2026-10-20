@@ -14,7 +14,8 @@ local inCombat = private.combatDetectionState.inCombat
 local GetTime, GetInstanceInfo = GetTime, GetInstanceInfo
 local UnitLevel, UnitClassification, UnitIsEnemy = UnitLevel, UnitClassification, UnitIsEnemy
 local UnitAffectingCombat, UnitIsUnit = UnitAffectingCombat, UnitIsUnit
-local IsEncounterInProgress = IsEncounterInProgress
+local UnitExists = UnitExists
+local IsEncounterInProgress = private.IsEncounterInProgress
 
 local registered, completed = false, false
 local difficulty, instanceId, instanceType = 0, 0, 0
@@ -29,30 +30,36 @@ local function cancelTimers(timers)
 	table.wipe(timers)
 end
 
-local function eligible()
+-- nil means ordinary trash; true/false means an enrolled/unenrolled boss encounter.
+local function bossPermission()
+	local enrolled = false
+	for _, mod in ipairs(inCombat) do
+		if not mod.isTrashMod and mod.combatInfo and mod.combatInfo.type ~= "scenario" then
+			if not mod.enableGenericTrash or not mod.Options.Enabled then
+				return false
+			end
+			enrolled = true
+		end
+	end
+	if enrolled then return true end
+	if private.isRetail and difficulty == 8 then
+		-- Blizzard treats the whole key as an encounter, not just its bosses.
+		for i = 1, 10 do
+			if UnitExists("boss" .. i) then return false end
+		end
+	elseif IsEncounterInProgress() then
+		return false
+	end
+end
+
+local function eligible(permission)
 	if not optionPrefix or not DBM.Options[optionPrefix .. "Enabled"] then return false end
 	if private.isForever then return true end
 	if difficulty == 8 then
 		-- A completed key can retain difficulty 8, including across a UI reload.
-		return instanceType == 2 and not completed and C_ChallengeMode.IsChallengeModeActive() and (difficulties:IsSeasonalDungeon(instanceId) or DBM.Options.GenericTrashDungeonAllDungeons)
+		return instanceType == 2 and not completed and C_ChallengeMode.IsChallengeModeActive() and (permission == true or difficulties:IsSeasonalDungeon(instanceId) or DBM.Options.GenericTrashDungeonAllDungeons)
 	end
-	return instanceType ~= 2 or DBM.Options.GenericTrashDungeonAllDungeons
-end
-
-local function bossFight()
-	local allowBosses = private.isForever or instanceType == 4 and DBM.Options.GenericTrashDelveAllowBosses
-	if not allowBosses and IsEncounterInProgress() then
-		return true
-	end
-	for _, mod in ipairs(inCombat) do
-		if mod.ignoreGenericTrash and mod.Options.Enabled then
-			return true
-		end
-		if not allowBosses and not mod.isTrashMod and mod.addon and (mod.addon.type == "PARTY" or mod.addon.type == "RAID") then
-			return true
-		end
-	end
-	return false
+	return permission == true or instanceType ~= 2 or DBM.Options.GenericTrashDungeonAllDungeons
 end
 
 function module:Deactivate()
@@ -81,7 +88,7 @@ function module:CheckZone()
 		optionPrefix = instanceType == 2 and "GenericTrashForeverDungeon" or "GenericTrashForeverRaid"
 	end
 	local extraCategory = private.isForever and "Elite" or instanceType ~= 3 and "Lieutenant"
-	if not eligible() or not (DBM.Options[optionPrefix .. "Cast"] or DBM.Options[optionPrefix .. "Channel"] or (extraCategory and DBM.Options[optionPrefix .. extraCategory])) then
+	if not eligible(bossPermission()) or not (DBM.Options[optionPrefix .. "Cast"] or DBM.Options[optionPrefix .. "Channel"] or (extraCategory and DBM.Options[optionPrefix .. extraCategory])) then
 		self:Deactivate()
 	elseif not registered then
 		self:RegisterShortTermEvents(
@@ -96,7 +103,12 @@ function module:CheckZone()
 	end
 end
 
-function DBM:UpdateGenericTrashOptions()
+---@param resetEncounter boolean? Clear pending casts and throttles after encounter/module state changes.
+function DBM:UpdateGenericTrashOptions(resetEncounter)
+	if resetEncounter then
+		cancelTimers(retries)
+		table.wipe(previous)
+	end
 	module:CheckZone()
 end
 
@@ -171,10 +183,12 @@ end
 
 function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried)
 	if not registered or not DBM:IsEnabled() or not DBM.Options.Enabled then return end
-	if not eligible() then
+	local permission = bossPermission()
+	if not eligible(permission) then
 		self:Deactivate()
 		return
 	end
+	if permission == false then return end
 	-- Event unit tokens are public; spell/cast identities may be opaque.
 	if succeeded and (DBM:issecretvalue(castBarID) or (castBarID ~= nil and castBarID ~= false)) then return end
 	local classification = UnitClassification(unit)
@@ -185,8 +199,9 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 		isLieutenant = not isNonElite
 	else
 		local level = UnitLevel(unit)
-		isLieutenant = level == 91 or level == 92 or level == -1
-		if level ~= 90 and not isLieutenant then return end
+		local playerLevel = private.playerLevel
+		isLieutenant = level == playerLevel + 1 or level == playerLevel + 2 or level == -1
+		if (level < playerLevel - 3 or level > playerLevel) and not isLieutenant then return end
 		-- Raid trash uses standard settings regardless of supported mob level.
 		isLieutenant = isLieutenant and instanceType ~= 3
 		if not isNonElite and classification ~= "elite" and classification ~= "rareelite" then return end
@@ -202,7 +217,7 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	if not DBM.Options[category] or DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end
 	if not UnitIsEnemy("player", unit) then return end
 	-- Private core modules do not inherit DBMMod helpers; use its restricted unit-token path.
-	if not bossModPrototype:CheckBossDistance(unit, nil, nil, 48, false, true) or bossFight() then return end
+	if not bossModPrototype:CheckBossDistance(unit, nil, nil, 48, false, true) then return end
 	if not UnitAffectingCombat(unit) then
 		if not retried then
 			local timer

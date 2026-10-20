@@ -79,10 +79,10 @@ DBM.Revision = parseCurseDate("@project-date-integer@")
 private.fakeBWVersion, private.fakeBWHash = 427, "fe75de4"--427.7
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.15 alpha"--Core version
+DBM.DisplayVersion = "12.1.17 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 10, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 10, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -2285,6 +2285,7 @@ do
 	--- |"DBM_raidLeave"
 	--- |"DBM_partyJoin"
 	--- |"DBM_partyLeave"
+	--- |"DBM_RosterUpdated"
 	--- |"DBM_MusicStart"
 	--- |"DBM_MusicStop"
 	--- |"DBM_UpdateZone"
@@ -2690,6 +2691,8 @@ do
 			private.lastGroupLeader = nil
 		end
 		DBM:UpdateZoneAuraAnchors(2)
+		--Fired after the throttled rebuild, so listeners always read current membership and unit IDs from GetRaidRoster
+		fireEvent("DBM_RosterUpdated")
 	end
 
 	function DBM:GROUP_ROSTER_UPDATE(force)
@@ -3343,6 +3346,9 @@ function DBM:READY_CHECK()
 	end
 	self:TransitionToDungeonBGM(false, true)
 	self:Schedule(4, self.TransitionToDungeonBGM, self)
+	if self.Options.ShowConsumablesOnReadyCheck and self.Consumables then
+		self.Consumables:Show()
+	end
 end
 
 do
@@ -4440,12 +4446,12 @@ do
 	local testWarning1, testWarning2, testWarning3
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
 	local testSpecialWarning1, testSpecialWarning2, testSpecialWarning3
-	function DBM:DemoMode(forceOld)
-		if self:IsRetail() and not forceOld then
-			demoDuration = 26
-			--Run the encounter timeline demo mode instead of DBM test Bars
-			C_EncounterTimeline.AddEditModeEvents()
-		else
+	function DBM:DemoMode()--forceOld
+		--if self:IsRetail() and not forceOld then
+		--	demoDuration = 26
+		--	--Run the encounter timeline demo mode instead of DBM test Bars
+		--	C_EncounterTimeline.AddEditModeEvents()
+		--else
 			demoDuration = 62
 			fireEvent("DBM_TestModStarted")
 			if not testMod then
@@ -4505,7 +4511,7 @@ do
 			testSpecialWarning2:ScheduleVoice(43, "fearsoon")
 			testSpecialWarning3:Schedule(60, "Boom!")
 			testSpecialWarning3:ScheduleVoice(60, "defensive")
-		end
+		--end
 		return demoDuration
 	end
 end
