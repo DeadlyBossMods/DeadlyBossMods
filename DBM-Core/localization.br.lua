@@ -308,7 +308,7 @@ L.SLASHCMD_HELP						= {
 	"/dbm key: Realiza verificações de pedra-chave e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keys, keystone)",
 	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
 	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide.",
-	"/dbm consumables: Performs a raid-wide consumables check (alias: cons, consumes).",
+	"/dbm consumiveis: Realiza uma verificação de consumíveis na raide (alias: cons, consumes).",
 	"/dbm brez: Exibe o quadro do cronômetro de ressurreição de batalha para posicionamento.",
 	"/dbm help2: Mostra comandos de gerenciamento de raide."
 }
@@ -723,21 +723,21 @@ L.LAG_HEADER						= L.DBM .. " - Resultados de latência"
 L.DUR_HEADER						= L.DBM .. " - Resultados de durabilidade"
 L.KEYSTONES_HEADER					= L.DBM.. " - Pedra-chaves"
 L.GEAR_HEADER						= L.DBM .. " - Resultados de equipamento"
-L.GEAR_MISSING_GEMS				= "Gemas faltando"
-L.GEAR_MISSING_ENCHANTS			= "Encantamentos faltando"
-L.GEAR_DURABILITY						= "Dur %"
-L.GEAR_BROKEN							= "Broken"
-L.RAIDCHECKS_TAB_CONSUMABLES			= "Consumables"
-L.RAIDCHECKS_TAB_GEAR					= "Gear"
-L.RAIDCHECKS_TAB_LATENCY				= "Latency"
-L.CONSUMABLES_HEADER					= L.DBM.. " - Consumables Check"
-L.CONSUMABLES_FLASK						= "Flask"
-L.CONSUMABLES_FOOD						= "Food"
-L.CONSUMABLES_WEAPON					= "Weapon"
-L.CONSUMABLES_HS						= "HS"
-L.CONSUMABLES_RUNE						= "Rune"
-L.CONSUMABLES_NA						= "N/A"
-L.BREZ_HEADER						= "Res em combate"
+L.GEAR_MISSING_GEMS					= "Gemas faltando"
+L.GEAR_MISSING_ENCHANTS				= "Encantamentos faltando"
+L.GEAR_DURABILITY					= "Dur. %" 
+L.GEAR_BROKEN						= "Quebrado"
+L.RAIDCHECKS_TAB_CONSUMABLES		= "Consumíveis"
+L.RAIDCHECKS_TAB_GEAR				= "Equipamento"
+L.RAIDCHECKS_TAB_LATENCY			= "Latência"
+L.CONSUMABLES_HEADER				= L.DBM.. " - Verificação de consumíveis"
+L.CONSUMABLES_FLASK					= "Frasco"
+L.CONSUMABLES_FOOD					= "Comida"
+L.CONSUMABLES_WEAPON				= "Arma"
+L.CONSUMABLES_HS					=						= "Pedra da Saúde"
+L.CONSUMABLES_RUNE					= "Runa"
+L.CONSUMABLES_NA					= "N/D"
+L.BREZ_HEADER						= "Reviver em combate"
 
 L.OVERRIDE_ACTIVATED				= "As configurações substituídas foram ativadas para este encontro pelo RL"
 
