@@ -1483,6 +1483,10 @@ do
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
 			local addonLoaded = C_AddOns.IsAddOnLoaded(addon.modId)
+			--Skip Forever party mod entirely outside of Forever
+			if not DBM:IsForever() and addon.modId == "DBM-Party-Forever" then
+				--Do nothing, this mod is only valid on Forever
+			else
 			if not addon.panel then
 				local customName
 				--Auto truncate Raid, Dungeon, Lair, and World boss mods to only display expansion name in list
@@ -1558,6 +1562,7 @@ do
 						end
 					end
 				end
+			end
 			end
 		end
 		local optionsFrame = _G["DBM_GUI_OptionsFrame"]

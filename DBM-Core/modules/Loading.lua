@@ -222,6 +222,10 @@ do
 			--self:Debug(v.modId .. " is " .. enabled, 2)
 			if not C_AddOns.IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				if enabled ~= 0 then
+					if not private.isForever and v.modId == "DBM-Party-Forever" then
+						--Don't load Forever party mod outside of Forever
+						return
+					end
 					if self:IsSeasonal("SeasonOfDiscovery") and sodLevelUpRaids[mapID] and v.modId == "DBM-Party-Vanilla" then
 						--Don't load dungeon mods in SoD Raids
 						return
