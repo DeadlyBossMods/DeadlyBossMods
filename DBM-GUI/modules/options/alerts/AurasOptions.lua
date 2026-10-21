@@ -265,15 +265,13 @@ personalAuraFontDropDown = personalAuraArea:CreateDropdown(L.FontType, Fonts, "D
 	personalAuraShowDispelBorder:SetPoint("TOPLEFT", personalAuraShowStacks, "TOPLEFT", 200, 0)
 	personalAuraShowDispelBorder.myheight = 0
 
-	if DBM:GetTOC() >= 120105 then
-		personalAuraShowGlow = personalAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasPlayerShowAuraGlow")
-		personalAuraShowGlow:SetScript("OnClick", function()
-			DBM.Options.PrivateAurasPlayerShowAuraGlow = not DBM.Options.PrivateAurasPlayerShowAuraGlow
-			OnAuraSettingsChange(true)
-		end)
-		personalAuraShowGlow:SetPoint("TOPLEFT", personalAuraShowDispelBorder, "TOPLEFT", 200, 0)
-		personalAuraShowGlow.myheight = 0
-	end
+	personalAuraShowGlow = personalAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasPlayerShowAuraGlow")
+	personalAuraShowGlow:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasPlayerShowAuraGlow = not DBM.Options.PrivateAurasPlayerShowAuraGlow
+		OnAuraSettingsChange(true)
+	end)
+	personalAuraShowGlow:SetPoint("TOPLEFT", personalAuraShowDispelBorder, "TOPLEFT", 200, 0)
+	personalAuraShowGlow.myheight = 0
 
 	personalAuraStackColor = personalAuraArea:CreateColorSelect(L.AuraStackFontColor, function(_, r, g, b)
 		DBM.Options.PrivateAurasPlayerStackColor.r = r
@@ -558,15 +556,13 @@ coTankAuraFontDropDown = coTankAuraArea:CreateDropdown(L.FontType, Fonts, "DBM",
 	coTankAuraShowDispelBorder:SetPoint("TOPLEFT", coTankAuraShowStacks, "TOPLEFT", 200, 0)
 	coTankAuraShowDispelBorder.myheight = 0
 
-	if DBM:GetTOC() >= 120105 then
-		coTankAuraShowGlow = coTankAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasCoTankShowAuraGlow")
-		coTankAuraShowGlow:SetScript("OnClick", function()
-			DBM.Options.PrivateAurasCoTankShowAuraGlow = not DBM.Options.PrivateAurasCoTankShowAuraGlow
-			OnAuraSettingsChange(false)
-		end)
-		coTankAuraShowGlow:SetPoint("TOPLEFT", coTankAuraShowDispelBorder, "TOPLEFT", 200, 0)
-		coTankAuraShowGlow.myheight = 0
-	end
+	coTankAuraShowGlow = coTankAuraArea:CreateCheckButton(L.AuraShowGlow, true, nil, "PrivateAurasCoTankShowAuraGlow")
+	coTankAuraShowGlow:SetScript("OnClick", function()
+		DBM.Options.PrivateAurasCoTankShowAuraGlow = not DBM.Options.PrivateAurasCoTankShowAuraGlow
+		OnAuraSettingsChange(false)
+	end)
+	coTankAuraShowGlow:SetPoint("TOPLEFT", coTankAuraShowDispelBorder, "TOPLEFT", 200, 0)
+	coTankAuraShowGlow.myheight = 0
 
 	coTankAuraStackColor = coTankAuraArea:CreateColorSelect(L.AuraStackFontColor, function(_, r, g, b)
 		DBM.Options.PrivateAurasCoTankStackColor.r = r
