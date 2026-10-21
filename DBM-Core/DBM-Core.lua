@@ -3347,7 +3347,7 @@ function DBM:READY_CHECK()
 	self:TransitionToDungeonBGM(false, true)
 	self:Schedule(4, self.TransitionToDungeonBGM, self)
 	if self.Options.ShowConsumablesOnReadyCheck and self.Consumables then
-		self.Consumables:Show()
+		self.Consumables:Show(true)
 	end
 end
 
@@ -5348,4 +5348,3 @@ end
 function bossModPrototype:SetHotfixNoticeRev(revision)
 	self.hotfixNoticeRev = (type(revision or "") == "number") and revision or parseCurseDate(revision)
 end
-

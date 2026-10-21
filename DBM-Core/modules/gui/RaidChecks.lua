@@ -199,6 +199,10 @@ local function RegisterTab(tab)
 	end
 end
 
+local function OnCombatStarted()
+	RaidChecks:Hide()
+end
+
 local function ActivateTab()
 	local tab = activeTab
 	if not frame or not tab or tabRunning then
@@ -214,6 +218,7 @@ local function ActivateTab()
 		end
 	end
 	tabRunning = true
+	DBM:RegisterCallback("DBM_Pull", OnCombatStarted)
 	ApplyLayout()
 	if tab.updateScript then
 		frame:SetScript("OnUpdate", tab.updateScript)
@@ -226,6 +231,7 @@ local function DeactivateTab()
 		return
 	end
 	tabRunning = false
+	DBM:UnregisterCallback("DBM_Pull", OnCombatStarted)
 	frame:UnregisterAllEvents()
 	frame:SetScript("OnUpdate", nil)
 	activeTab.OnDeactivate()
@@ -1040,7 +1046,9 @@ if isRetail then
 		return needsQuery
 	end
 
+	local lastCheckStarted
 	local function Refresh()
+		lastCheckStarted = GetTime()
 		commToken = commToken + 1
 		wipe(entries)
 		wipe(dirtyMembers)
@@ -1173,7 +1181,11 @@ if isRetail then
 		OnRefresh = Refresh,
 	})
 
-	function Consumables:Show()
+	---@param fromReadyCheck boolean?
+	function Consumables:Show(fromReadyCheck)
+		if fromReadyCheck and IsDisplayShown() and lastCheckStarted and GetTime() - lastCheckStarted < 10 then
+			return
+		end
 		RaidChecks:Show("consumables")
 	end
 
@@ -1573,12 +1585,14 @@ do
 			if itemLink then
 				local enchant, gem1, gem2, gem3, gem4 = itemLink:match("item:%d+:(%d*):(%d*):(%d*):(%d*):(%d*):")
 				if (checkMissingGems or checkMissingEnchants) and not enchant then
+					DBM:Debug("RaidChecks Gear: incomplete item link for " .. unit .. " slot " .. i, 2)
 					return--Incomplete item link.
 				end
 				if checkMissingGems then
 					local expectedGems, filledSockets = 0, 0
 					local statTable = GetItemStats(itemLink)
 					if not statTable then
+						DBM:Debug("RaidChecks Gear: item stats unavailable for " .. unit .. " slot " .. i, 2)
 						return--Item data is still loading; use the bounded retry queue.
 					end
 					for mod, count in next, statTable do
@@ -1621,6 +1635,7 @@ do
 					end
 				end
 			elseif i ~= 4 and GetInventoryItemTexture(unit, i) then
+				DBM:Debug("RaidChecks Gear: equipped item link unavailable for " .. unit .. " slot " .. i, 2)
 				return--An equipped item whose link has not arrived is not an empty slot.
 			end
 		end
@@ -1667,6 +1682,7 @@ do
 			return
 		end
 		if type(itemLevel) ~= "number" then
+			DBM:Debug("RaidChecks Gear: scan incomplete for " .. activeInspect.name .. "; retrying within the inspect limit", 2)
 			QueueInspectRetry(activeInspect.name)
 		else
 			pendingCommReplies[activeInspect.name] = nil
@@ -1717,16 +1733,19 @@ do
 						activeInspect.name = name
 						activeInspect.guid = guid
 						activeInspect.token = inspectToken
+						DBM:Debug("RaidChecks Gear: requesting inspect for " .. name .. " (" .. unit .. ")", 2)
 						NotifyInspect(unit)
 						local token = inspectToken
 						C_Timer.After(inspectTimeoutSeconds, function()
 							if activeInspect.name == name and activeInspect.guid == guid and activeInspect.token == token then
+								DBM:Debug("RaidChecks Gear: INSPECT_READY timeout for " .. name, 2)
 								FinishInspect(token)
 							end
 						end)
 						return
 					end
 				end
+				DBM:Debug("RaidChecks Gear: inspect unavailable for " .. name .. " (" .. (unit or "no unit") .. ")", 2)
 				MarkInspectUnavailable(name)
 			end
 		end
@@ -1862,11 +1881,15 @@ do
 				RequestNextInspect()
 			end
 		elseif event == "INSPECT_READY" then
+			DBM:Debug("RaidChecks Gear: INSPECT_READY received; active=" .. (activeInspect.name or "none") .. ", matched=" .. tostring(type(arg1) == "string" and arg1 == activeInspect.guid), 2)
 			if type(arg1) == "string" and arg1 == activeInspect.guid then
 				local unit = DBM:GetRaidUnitId(activeInspect.name, true)
 				local itemLevel, missingGems, missingEnchants
 				if unit and not DBM:issecretunit(unit) and UnitExists(unit) and UnitGUID(unit) == arg1 then
 					itemLevel, missingGems, missingEnchants = ScanGear(unit)
+					DBM:Debug("RaidChecks Gear: inspect scan item level=" .. tostring(itemLevel), 2)
+				else
+					DBM:Debug("RaidChecks Gear: inspect unit no longer matches the requested player", 2)
 				end
 				FinishInspect(activeInspect.token, itemLevel, missingGems, missingEnchants)
 			end

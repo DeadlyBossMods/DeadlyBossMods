@@ -78,6 +78,9 @@ do
 			end
 			dummyMod.text:Cancel()
 			if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
+			if self.RaidChecks then
+				self.RaidChecks:Hide()
+			end
 			self:FlashClientIcon()
 			if not self.Options.DontShowPT2 then
 				dummyMod.timer:Start(timer, L.TIMER_PULL)
