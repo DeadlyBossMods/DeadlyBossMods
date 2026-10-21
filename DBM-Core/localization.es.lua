@@ -309,7 +309,7 @@ L.SLASHCMD_HELP							= {
 	"/dbm key: Realiza comprobaciones de piedra angular y índice de M+ en el grupo/la hermandad y accesos directos a teletransportes de mazmorras. (alias: key, keys, keystone)",
 	"/dbm lag: Realiza una verificación de latencia en toda la banda.",
 	"/dbm durability: Realiza una verificación de durabilidad en toda la banda.",
-	"/dbm consumibles: Realiza una verificación de consumibles en banda (alias: cons, consumes).",
+	"/dbm consumables: Realiza una verificación de consumibles en banda (alias: cons, consumes).",
 	"/dbm brez: Muestra el marco del temporizador de resurrección de combate para tu posicionamiento.",
 	"/dbm help2: Muestra comandos de barra adicionales"
 }

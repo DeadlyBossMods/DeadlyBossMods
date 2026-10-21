@@ -322,7 +322,7 @@ L.SLASHCMD_HELP	= {--AI translated (check me)
 	"/dbm key: Esegue controlli delle chiavi M+ e delle valutazioni su party/gilda e scorciatoie per i teletrasporti delle dungeon. (alias: key, keys, keystone)",
 	"/dbm lag: Esegue un controllo della latenza per tutta l'incursione.",
 	"/dbm durability: Esegue un controllo della durabilità per tutta l'incursione.",
-	"/dbm consumabili: Esegue un controllo dei consumabili per tutta l'incursione (alias: cons, consumes).",
+	"/dbm consumables: Esegue un controllo dei consumabili per tutta l'incursione (alias: cons, consumes).",
 	"/dbm brez: Mostra il riquadro del temporizzatore di resurrezione da combattimento per il posizionamento.",--AI translated (check me)
 	"/dbm help2: Mostra comandi slash aggiuntivi"
 }

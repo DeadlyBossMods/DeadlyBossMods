@@ -308,7 +308,7 @@ L.SLASHCMD_HELP						= {
 	"/dbm key: Realiza verificações de pedra-chave e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keys, keystone)",
 	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
 	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide.",
-	"/dbm consumiveis: Realiza uma verificação de consumíveis na raide (alias: cons, consumes).",
+	"/dbm consumables: Realiza uma verificação de consumíveis na raide (alias: cons, consumes).",
 	"/dbm brez: Exibe o quadro do cronômetro de ressurreição de batalha para posicionamento.",
 	"/dbm help2: Mostra comandos de gerenciamento de raide."
 }
