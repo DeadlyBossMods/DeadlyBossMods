@@ -1064,15 +1064,24 @@ if isRetail then
 	------------------------
 	---Update-only aura events (stacks/durations) are only relevant if they touch an aura we classified
 	local function TouchesTrackedAura(entry, updateInfo)
-		if not updateInfo or updateInfo.isFullUpdate or updateInfo.addedAuras or updateInfo.removedAuraInstanceIDs or issecrettable(updateInfo) then
+		if not updateInfo or issecrettable(updateInfo) then
 			return true
 		end
-		local updated = updateInfo.updatedAuraInstanceIDs
+		local fullUpdate, added, removed, updated = updateInfo.isFullUpdate, updateInfo.addedAuras, updateInfo.removedAuraInstanceIDs, updateInfo.updatedAuraInstanceIDs
+		if DBM:hasanysecretvalues(fullUpdate, added, removed, updated) then
+			return true
+		end
+		if fullUpdate or added or removed then
+			return true
+		end
+		if updated and issecrettable(updated) then
+			return true
+		end
 		if not updated or not entry.trackedAuras then
 			return false
 		end
 		for _, auraInstanceId in ipairs(updated) do
-			if not DBM:issecretvalue(auraInstanceId) and entry.trackedAuras[auraInstanceId] then
+			if DBM:issecretvalue(auraInstanceId) or entry.trackedAuras[auraInstanceId] then
 				return true
 			end
 		end
