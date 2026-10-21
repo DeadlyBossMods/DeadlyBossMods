@@ -2,6 +2,8 @@ if GetLocale() ~= "frFR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"Furie des vents", "Langue de feu", "Viveterre"}
+L.CONSUMABLES_PALADIN_IMBUES = {"Rite de sanctification", "Rite de supplication"}
 L.AURA_FONT_RESET = "Des paramètres de police de texte d'aura invalides ont été détectés et réinitialisés par défaut."
 
 local dateTable = date("*t")

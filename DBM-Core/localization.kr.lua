@@ -2,6 +2,8 @@ if GetLocale() ~= "koKR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"질풍의 무기", "불꽃혓바닥", "대지생명"}
+L.CONSUMABLES_PALADIN_IMBUES = {"축성의 의식", "서원의 의식"}
 L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
 
 local dateTable = date("*t")

@@ -449,12 +449,14 @@ if isRetail then
 	-- Inspected weapons expose an oil only as a green tooltip line tagged with its profession quality atlas (no duration).
 	local inspectEnchantAtlas = "Professions%-ChatIcon%-Quality%-"
 	local inspectBestEnchantAtlas = "Professions%-ChatIcon%-Quality%-12%-Tier2"
-	-- Class imbues (Windfury, Flametongue, Earthliving, Lightsmith rites) carry no quality atlas,
-	-- so for these classes a missing oil line means unknown rather than No.
-	local inspectImbueClasses = {
-		SHAMAN = true,
-		PALADIN = true,
-	}
+	local inspectClassImbues = {}
+	for class, names in pairs({SHAMAN = L.CONSUMABLES_SHAMAN_IMBUES, PALADIN = L.CONSUMABLES_PALADIN_IMBUES}) do
+		local lookup = {}
+		for _, name in ipairs(names) do
+			lookup[name] = true
+		end
+		inspectClassImbues[class] = lookup
+	end
 
 	-- Food is ranked against the best version of the stat family the player chose, never across families.
 	-- Well Fed effects: points[9] = secondary rating (per stat), points[10] = stamina, points[11] = primary stat.
@@ -844,8 +846,9 @@ if isRetail then
 		return type(r) == "number" and type(g) == "number" and type(b) == "number" and r < 0.2 and g > 0.9 and b < 0.2
 	end
 
-	---@return integer|false|nil tier false when no oil line exists; nil when tooltip data isn't ready
-	local function GetInspectedSlotTier(unit, slot)
+	---@return integer|false|nil tier false when no recognized enhancement exists; nil when tooltip data isn't ready
+	local function GetInspectedSlotTier(unit, slot, classToken)
+		local classImbues = inspectClassImbues[classToken]
 		local data = C_TooltipInfo.GetInventoryItem(unit, slot)
 		if not data or issecrettable(data) or type(data.lines) ~= "table" or issecrettable(data.lines) then
 			return nil
@@ -858,8 +861,12 @@ if isRetail then
 			local text, lineType = line.leftText, line.type
 			if type(text) == "string" and not DBM:issecretvalue(text) and not DBM:issecretvalue(lineType)
 				and lineType ~= lineTypeEnchantPermanent and lineType ~= lineTypeCraftingQuality
-				and text:find(inspectEnchantAtlas) and IsGreen(line.leftColor) then
-				return text:find(inspectBestEnchantAtlas) and TIER_BEST or TIER_YES
+				and IsGreen(line.leftColor) then
+				if text:find(inspectEnchantAtlas) then
+					return text:find(inspectBestEnchantAtlas) and TIER_BEST or TIER_YES
+				elseif classImbues and lineType == 0 and classImbues[text] then
+					return TIER_YES
+				end
 			end
 		end
 		return false
@@ -885,11 +892,12 @@ if isRetail then
 			end
 			if isWeapon then
 				anyWeapon = true
-				local slotTier = GetInspectedSlotTier(unit, slot)
+				local slotTier = GetInspectedSlotTier(unit, slot, classToken)
 				if slotTier == nil then
 					return nil, true
 				elseif slotTier == false then
-					if inspectImbueClasses[classToken] then
+					if inspectClassImbues[classToken] then
+						-- An unrecognized class imbue remains unknown rather than No.
 						return nil
 					end
 					return TIER_NO
@@ -977,7 +985,8 @@ if isRetail then
 		local entry = entries[name]
 		local unit = DBM:GetRaidUnitId(name, true)
 		if entry and entry.weapon == nil and unit and not DBM:issecretunit(unit) and UnitGUID(unit) == guid then
-			local tier, notReady = ScanInspectedWeapon(unit, (DBM:GetRaidClass(name)))
+			local classToken = DBM:GetRaidClass(name)
+			local tier, notReady = ScanInspectedWeapon(unit, classToken)
 			if notReady then
 				inspectRetryAt[name] = GetTime() + inspectSpacingSeconds
 			else
@@ -1585,6 +1594,19 @@ do
 		if DBM:issecretunit(unit) then
 			return
 		end
+		-- Request every equipped link before returning so cold slots can load together.
+		local itemLinks, linksPending = {}, false
+		for slot = 1, lastEquipmentSlot do
+			if slot ~= 4 then
+				itemLinks[slot] = GetInventoryItemLink(unit, slot)
+				if not itemLinks[slot] and GetInventoryItemTexture(unit, slot) then
+					linksPending = true
+				end
+			end
+		end
+		if linksPending then
+			return
+		end
 		local isPlayer = UnitIsUnit(unit, "player")
 		local useInspectItemLevel = C_PaperDollInfo and C_PaperDollInfo.GetInspectItemLevel
 		local calculateItemLevel = not isPlayer and not useInspectItemLevel
@@ -1595,18 +1617,16 @@ do
 		local missingGems = checkMissingGems and 0 or nil
 		local missingEnchants = checkMissingEnchants and 0 or nil
 		for i = 1, lastEquipmentSlot do
-			local itemLink = i ~= 4 and GetInventoryItemLink(unit, i)--Never scan the shirt.
+			local itemLink = itemLinks[i]
 			if itemLink then
 				local enchant, gem1, gem2, gem3, gem4 = itemLink:match("item:%d+:(%d*):(%d*):(%d*):(%d*):(%d*):")
 				if (checkMissingGems or checkMissingEnchants) and not enchant then
-					DBM:Debug("RaidChecks Gear: incomplete item link for " .. unit .. " slot " .. i, 2)
 					return--Incomplete item link.
 				end
 				if checkMissingGems then
 					local expectedGems, filledSockets = 0, 0
 					local statTable = GetItemStats(itemLink)
 					if not statTable then
-						DBM:Debug("RaidChecks Gear: item stats unavailable for " .. unit .. " slot " .. i, 2)
 						return--Item data is still loading; use the bounded retry queue.
 					end
 					for mod, count in next, statTable do
@@ -1648,9 +1668,6 @@ do
 						hasOffHand = true
 					end
 				end
-			elseif i ~= 4 and GetInventoryItemTexture(unit, i) then
-				DBM:Debug("RaidChecks Gear: equipped item link unavailable for " .. unit .. " slot " .. i, 2)
-				return--An equipped item whose link has not arrived is not an empty slot.
 			end
 		end
 		if isPlayer then
@@ -1687,16 +1704,9 @@ do
 			return
 		end
 		if activeInspect.token ~= token then
-			wipe(activeInspect)
-			ClearInspectPlayer()
-			if pendingRosterRefresh and IsDisplayShown() then
-				pendingRosterRefresh = false
-				HandleRosterUpdate()
-			end
 			return
 		end
 		if type(itemLevel) ~= "number" then
-			DBM:Debug("RaidChecks Gear: scan incomplete for " .. activeInspect.name .. "; retrying within the inspect limit", 2)
 			QueueInspectRetry(activeInspect.name)
 		else
 			pendingCommReplies[activeInspect.name] = nil
@@ -1718,6 +1728,21 @@ do
 					RequestNextInspect()
 				end
 			end)
+		end
+	end
+
+	local function ScanActiveInspect()
+		if not activeInspect.name or not activeInspect.ready then
+			return
+		end
+		local unit = DBM:GetRaidUnitId(activeInspect.name, true)
+		if not unit or DBM:issecretunit(unit) or not UnitExists(unit) or UnitGUID(unit) ~= activeInspect.guid then
+			FinishInspect(activeInspect.token)
+			return
+		end
+		local itemLevel, missingGems, missingEnchants = ScanGear(unit)
+		if type(itemLevel) == "number" then
+			FinishInspect(activeInspect.token, itemLevel, missingGems, missingEnchants)
 		end
 	end
 
@@ -1744,22 +1769,20 @@ do
 				if canInspect then
 					local guid = UnitGUID(unit)
 					if guid then
+						inspectToken = inspectToken + 1
 						activeInspect.name = name
 						activeInspect.guid = guid
 						activeInspect.token = inspectToken
-						DBM:Debug("RaidChecks Gear: requesting inspect for " .. name .. " (" .. unit .. ")", 2)
 						NotifyInspect(unit)
 						local token = inspectToken
 						C_Timer.After(inspectTimeoutSeconds, function()
 							if activeInspect.name == name and activeInspect.guid == guid and activeInspect.token == token then
-								DBM:Debug("RaidChecks Gear: INSPECT_READY timeout for " .. name, 2)
 								FinishInspect(token)
 							end
 						end)
 						return
 					end
 				end
-				DBM:Debug("RaidChecks Gear: inspect unavailable for " .. name .. " (" .. (unit or "no unit") .. ")", 2)
 				MarkInspectUnavailable(name)
 			end
 		end
@@ -1895,17 +1918,9 @@ do
 				RequestNextInspect()
 			end
 		elseif event == "INSPECT_READY" then
-			DBM:Debug("RaidChecks Gear: INSPECT_READY received; active=" .. (activeInspect.name or "none") .. ", matched=" .. tostring(type(arg1) == "string" and arg1 == activeInspect.guid), 2)
 			if type(arg1) == "string" and arg1 == activeInspect.guid then
-				local unit = DBM:GetRaidUnitId(activeInspect.name, true)
-				local itemLevel, missingGems, missingEnchants
-				if unit and not DBM:issecretunit(unit) and UnitExists(unit) and UnitGUID(unit) == arg1 then
-					itemLevel, missingGems, missingEnchants = ScanGear(unit)
-					DBM:Debug("RaidChecks Gear: inspect scan item level=" .. tostring(itemLevel), 2)
-				else
-					DBM:Debug("RaidChecks Gear: inspect unit no longer matches the requested player", 2)
-				end
-				FinishInspect(activeInspect.token, itemLevel, missingGems, missingEnchants)
+				activeInspect.ready = true
+				ScanActiveInspect()
 			end
 		end
 	end
@@ -1916,6 +1931,7 @@ do
 			return
 		end
 		inspectUpdateElapsed = 0
+		ScanActiveInspect()
 		if IsDisplayShown() and #pendingInspects > 0 and not activeInspect.name then
 			RequestNextInspect()
 		end

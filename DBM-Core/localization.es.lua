@@ -2,6 +2,8 @@ if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {GetLocale() == "esMX" and "Viento Furioso" or "Viento furioso", "Lengua de Fuego", "Vida terrestre"}
+L.CONSUMABLES_PALADIN_IMBUES = {"Rito de santificación", GetLocale() == "esMX" and "Rito de adjuración" or "Rito de ruego"}
 L.AURA_FONT_RESET = "Se detectaron configuraciones de fuente de texto de aura no válidas y se restablecieron a los valores predeterminados."
 
 local dateTable = date("*t")
