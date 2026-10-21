@@ -16,6 +16,7 @@ local L = DBM_CORE_L
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 local LibStub = _G["LibStub"]
 local isRetail = DBM:IsRetail()
+local useModernTabs = isRetail or DBM:IsForever()
 local issecrettable = _G["issecrettable"] or function() return false end
 
 if not (LibStub and LibStub("LibDurability", true) and LibStub("LibLatency", true)) then
@@ -334,7 +335,8 @@ local function CreateDisplayFrame()
 		tab.index = i
 		---@class DBMRaidChecksTabButton: Button
 		---@field Text FontString
-		local button = CreateFrame("Button", nil, frame, "PanelTabButtonTemplate")
+		-- Classic uses legacy selected/disabled textures; Forever shares Mainline's tab helpers.
+		local button = CreateFrame("Button", frame:GetName() .. "Tab" .. i, frame, useModernTabs and "PanelTabButtonTemplate" or "TabButtonTemplate")
 		tab.button = button
 		PanelTemplates_SetNumTabs(frame, i)
 		if i == 1 then
@@ -343,6 +345,9 @@ local function CreateDisplayFrame()
 			button:SetPoint("TOPLEFT", tabList[i - 1].button, "TOPRIGHT", 1, 0)
 		end
 		button.Text:SetText(tab.tabText)
+		if not useModernTabs then
+			PanelTemplates_TabResize(button, 24)
+		end
 		button:SetScript("OnClick", function()
 			SelectTab(tab.key)
 		end)
