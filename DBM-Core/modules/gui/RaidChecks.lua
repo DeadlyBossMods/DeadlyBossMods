@@ -2053,6 +2053,13 @@ do
 			return {groupButton, guildButton}
 		end,
 		OnActivate = function()
+			local inGuild = IsInGuild()
+			viewButtons.guild:SetShown(inGuild)
+			if not inGuild and gearView == "guild" then
+				gearView = "group"
+				ApplyLayout()
+			end
+			UpdateViewButtons()
 			if not DBM:IsCallbackRegistered("DBM_RosterUpdated", OnRosterUpdated) then
 				DBM:RegisterCallback("DBM_RosterUpdated", OnRosterUpdated)
 			end
