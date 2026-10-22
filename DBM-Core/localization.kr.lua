@@ -4,7 +4,7 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 local L = DBM_CORE_L
 L.CONSUMABLES_SHAMAN_IMBUES = {"질풍의 무기", "불꽃혓바닥", "대지생명"}
 L.CONSUMABLES_PALADIN_IMBUES = {"축성의 의식", "서원의 의식"}
-L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
+L.AURA_FONT_RESET = "올바르지 않은 오라 텍스트 글꼴 설정이 감지되어 기본값으로 초기화합니다."
 
 local dateTable = date("*t")
 if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
