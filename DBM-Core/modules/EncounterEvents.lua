@@ -56,7 +56,7 @@ function DBM:ENCOUNTER_WARNING(encounterWarningInfo)
 	end
 	local consumedBlizzTargetAnnounce = self:ConsumeBlizzTargetAnnounce(formattedTargetName or UNKNOWN)
 	local consumedBlizzTargetSpecWarn = self:ConsumeBlizzTargetSpecialWarning(formattedTargetName or UNKNOWN)
-	local consumedBlizzYouSpecWarn = self:ConsumeBlizzYouSpecialWarning()
+	local consumedBlizzYouSpecWarn = self:ConsumeBlizzYouSpecialWarning(severity)
 	if consumedBlizzTargetAnnounce or consumedBlizzTargetSpecWarn or consumedBlizzYouSpecWarn then return end
 	if not self:AntiSpam(0.5, "ENCOUNTER_WARNING") then return end--Designers can't be assed to make sure event isn't buggy and spammy so we're forced to hard throttle
 	if self.Options.IgnoreBlizzAPI then

@@ -2,6 +2,8 @@ if GetLocale() ~= "ruRU" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"Неистовство ветра", "Язык пламени", "Жизнь Земли"}
+L.CONSUMABLES_PALADIN_IMBUES = {"Обряд освящения", "Обряд клятвы"}
 L.AURA_FONT_RESET = "Обнаружены некорректные настройки шрифта для ауры, они сброшены на стандартные."
 
 L.DEADLY_BOSS_MODS						= "Deadly Boss Mods"

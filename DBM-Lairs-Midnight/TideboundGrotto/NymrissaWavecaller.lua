@@ -211,7 +211,8 @@ do
 				specWarnAlluringBubble:Show(eventCount)
 				specWarnAlluringBubble:Play("killmob")
 			elseif eventType == "frost" then
-				specWarnChillingFrost:Show(eventCount, "orbrun")
+				--The personal warning arrives after the three-second cast; ignore competing severity-2 warnings.
+				specWarnChillingFrost:Show(eventCount, "orbrun", 4, 1)
 			elseif eventType == "rush" then
 				specWarnTidepiercersRush:Show(eventCount)
 				specWarnTidepiercersRush:Play("watchstep")

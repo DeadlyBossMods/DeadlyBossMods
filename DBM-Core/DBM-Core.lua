@@ -79,10 +79,10 @@ DBM.Revision = parseCurseDate("@project-date-integer@")
 private.fakeBWVersion, private.fakeBWHash = 427, "fe75de4"--427.7
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.17 alpha"--Core version
+DBM.DisplayVersion = "12.1.18 alpha"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 10, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 10, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -3347,7 +3347,7 @@ function DBM:READY_CHECK()
 	self:TransitionToDungeonBGM(false, true)
 	self:Schedule(4, self.TransitionToDungeonBGM, self)
 	if self.Options.ShowConsumablesOnReadyCheck and self.Consumables then
-		self.Consumables:Show()
+		self.Consumables:Show(true)
 	end
 end
 
@@ -5348,4 +5348,3 @@ end
 function bossModPrototype:SetHotfixNoticeRev(revision)
 	self.hotfixNoticeRev = (type(revision or "") == "number") and revision or parseCurseDate(revision)
 end
-

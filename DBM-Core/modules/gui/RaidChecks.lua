@@ -16,6 +16,7 @@ local L = DBM_CORE_L
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 local LibStub = _G["LibStub"]
 local isRetail = DBM:IsRetail()
+local useModernTabs = isRetail or DBM:IsForever()
 local issecrettable = _G["issecrettable"] or function() return false end
 
 if not (LibStub and LibStub("LibDurability", true) and LibStub("LibLatency", true)) then
@@ -199,6 +200,10 @@ local function RegisterTab(tab)
 	end
 end
 
+local function OnCombatStarted()
+	RaidChecks:Hide()
+end
+
 local function ActivateTab()
 	local tab = activeTab
 	if not frame or not tab or tabRunning then
@@ -214,6 +219,7 @@ local function ActivateTab()
 		end
 	end
 	tabRunning = true
+	DBM:RegisterCallback("DBM_Pull", OnCombatStarted)
 	ApplyLayout()
 	if tab.updateScript then
 		frame:SetScript("OnUpdate", tab.updateScript)
@@ -226,6 +232,7 @@ local function DeactivateTab()
 		return
 	end
 	tabRunning = false
+	DBM:UnregisterCallback("DBM_Pull", OnCombatStarted)
 	frame:UnregisterAllEvents()
 	frame:SetScript("OnUpdate", nil)
 	activeTab.OnDeactivate()
@@ -328,7 +335,8 @@ local function CreateDisplayFrame()
 		tab.index = i
 		---@class DBMRaidChecksTabButton: Button
 		---@field Text FontString
-		local button = CreateFrame("Button", nil, frame, "PanelTabButtonTemplate")
+		-- Classic uses legacy selected/disabled textures; Forever shares Mainline's tab helpers.
+		local button = CreateFrame("Button", frame:GetName() .. "Tab" .. i, frame, useModernTabs and "PanelTabButtonTemplate" or "TabButtonTemplate")
 		tab.button = button
 		PanelTemplates_SetNumTabs(frame, i)
 		if i == 1 then
@@ -337,6 +345,9 @@ local function CreateDisplayFrame()
 			button:SetPoint("TOPLEFT", tabList[i - 1].button, "TOPRIGHT", 1, 0)
 		end
 		button.Text:SetText(tab.tabText)
+		if not useModernTabs then
+			PanelTemplates_TabResize(button, 24)
+		end
 		button:SetScript("OnClick", function()
 			SelectTab(tab.key)
 		end)
@@ -438,12 +449,14 @@ if isRetail then
 	-- Inspected weapons expose an oil only as a green tooltip line tagged with its profession quality atlas (no duration).
 	local inspectEnchantAtlas = "Professions%-ChatIcon%-Quality%-"
 	local inspectBestEnchantAtlas = "Professions%-ChatIcon%-Quality%-12%-Tier2"
-	-- Class imbues (Windfury, Flametongue, Earthliving, Lightsmith rites) carry no quality atlas,
-	-- so for these classes a missing oil line means unknown rather than No.
-	local inspectImbueClasses = {
-		SHAMAN = true,
-		PALADIN = true,
-	}
+	local inspectClassImbues = {}
+	for class, names in pairs({SHAMAN = L.CONSUMABLES_SHAMAN_IMBUES, PALADIN = L.CONSUMABLES_PALADIN_IMBUES}) do
+		local lookup = {}
+		for _, name in ipairs(names) do
+			lookup[name] = true
+		end
+		inspectClassImbues[class] = lookup
+	end
 
 	-- Food is ranked against the best version of the stat family the player chose, never across families.
 	-- Well Fed effects: points[9] = secondary rating (per stat), points[10] = stamina, points[11] = primary stat.
@@ -833,8 +846,9 @@ if isRetail then
 		return type(r) == "number" and type(g) == "number" and type(b) == "number" and r < 0.2 and g > 0.9 and b < 0.2
 	end
 
-	---@return integer|false|nil tier false when no oil line exists; nil when tooltip data isn't ready
-	local function GetInspectedSlotTier(unit, slot)
+	---@return integer|false|nil tier false when no recognized enhancement exists; nil when tooltip data isn't ready
+	local function GetInspectedSlotTier(unit, slot, classToken)
+		local classImbues = inspectClassImbues[classToken]
 		local data = C_TooltipInfo.GetInventoryItem(unit, slot)
 		if not data or issecrettable(data) or type(data.lines) ~= "table" or issecrettable(data.lines) then
 			return nil
@@ -847,8 +861,12 @@ if isRetail then
 			local text, lineType = line.leftText, line.type
 			if type(text) == "string" and not DBM:issecretvalue(text) and not DBM:issecretvalue(lineType)
 				and lineType ~= lineTypeEnchantPermanent and lineType ~= lineTypeCraftingQuality
-				and text:find(inspectEnchantAtlas) and IsGreen(line.leftColor) then
-				return text:find(inspectBestEnchantAtlas) and TIER_BEST or TIER_YES
+				and IsGreen(line.leftColor) then
+				if text:find(inspectEnchantAtlas) then
+					return text:find(inspectBestEnchantAtlas) and TIER_BEST or TIER_YES
+				elseif classImbues and lineType == 0 and classImbues[text] then
+					return TIER_YES
+				end
 			end
 		end
 		return false
@@ -874,11 +892,12 @@ if isRetail then
 			end
 			if isWeapon then
 				anyWeapon = true
-				local slotTier = GetInspectedSlotTier(unit, slot)
+				local slotTier = GetInspectedSlotTier(unit, slot, classToken)
 				if slotTier == nil then
 					return nil, true
 				elseif slotTier == false then
-					if inspectImbueClasses[classToken] then
+					if inspectClassImbues[classToken] then
+						-- An unrecognized class imbue remains unknown rather than No.
 						return nil
 					end
 					return TIER_NO
@@ -966,7 +985,8 @@ if isRetail then
 		local entry = entries[name]
 		local unit = DBM:GetRaidUnitId(name, true)
 		if entry and entry.weapon == nil and unit and not DBM:issecretunit(unit) and UnitGUID(unit) == guid then
-			local tier, notReady = ScanInspectedWeapon(unit, (DBM:GetRaidClass(name)))
+			local classToken = DBM:GetRaidClass(name)
+			local tier, notReady = ScanInspectedWeapon(unit, classToken)
 			if notReady then
 				inspectRetryAt[name] = GetTime() + inspectSpacingSeconds
 			else
@@ -1040,7 +1060,9 @@ if isRetail then
 		return needsQuery
 	end
 
+	local lastCheckStarted
 	local function Refresh()
+		lastCheckStarted = GetTime()
 		commToken = commToken + 1
 		wipe(entries)
 		wipe(dirtyMembers)
@@ -1056,15 +1078,24 @@ if isRetail then
 	------------------------
 	---Update-only aura events (stacks/durations) are only relevant if they touch an aura we classified
 	local function TouchesTrackedAura(entry, updateInfo)
-		if not updateInfo or updateInfo.isFullUpdate or updateInfo.addedAuras or updateInfo.removedAuraInstanceIDs or issecrettable(updateInfo) then
+		if not updateInfo or issecrettable(updateInfo) then
 			return true
 		end
-		local updated = updateInfo.updatedAuraInstanceIDs
+		local fullUpdate, added, removed, updated = updateInfo.isFullUpdate, updateInfo.addedAuras, updateInfo.removedAuraInstanceIDs, updateInfo.updatedAuraInstanceIDs
+		if DBM:hasanysecretvalues(fullUpdate, added, removed, updated) then
+			return true
+		end
+		if fullUpdate or added or removed then
+			return true
+		end
+		if updated and issecrettable(updated) then
+			return true
+		end
 		if not updated or not entry.trackedAuras then
 			return false
 		end
 		for _, auraInstanceId in ipairs(updated) do
-			if not DBM:issecretvalue(auraInstanceId) and entry.trackedAuras[auraInstanceId] then
+			if DBM:issecretvalue(auraInstanceId) or entry.trackedAuras[auraInstanceId] then
 				return true
 			end
 		end
@@ -1173,7 +1204,11 @@ if isRetail then
 		OnRefresh = Refresh,
 	})
 
-	function Consumables:Show()
+	---@param fromReadyCheck boolean?
+	function Consumables:Show(fromReadyCheck)
+		if fromReadyCheck and IsDisplayShown() and lastCheckStarted and GetTime() - lastCheckStarted < 10 then
+			return
+		end
 		RaidChecks:Show("consumables")
 	end
 
@@ -1559,6 +1594,19 @@ do
 		if DBM:issecretunit(unit) then
 			return
 		end
+		-- Request every equipped link before returning so cold slots can load together.
+		local itemLinks, linksPending = {}, false
+		for slot = 1, lastEquipmentSlot do
+			if slot ~= 4 then
+				itemLinks[slot] = GetInventoryItemLink(unit, slot)
+				if not itemLinks[slot] and GetInventoryItemTexture(unit, slot) then
+					linksPending = true
+				end
+			end
+		end
+		if linksPending then
+			return
+		end
 		local isPlayer = UnitIsUnit(unit, "player")
 		local useInspectItemLevel = C_PaperDollInfo and C_PaperDollInfo.GetInspectItemLevel
 		local calculateItemLevel = not isPlayer and not useInspectItemLevel
@@ -1569,7 +1617,7 @@ do
 		local missingGems = checkMissingGems and 0 or nil
 		local missingEnchants = checkMissingEnchants and 0 or nil
 		for i = 1, lastEquipmentSlot do
-			local itemLink = i ~= 4 and GetInventoryItemLink(unit, i)--Never scan the shirt.
+			local itemLink = itemLinks[i]
 			if itemLink then
 				local enchant, gem1, gem2, gem3, gem4 = itemLink:match("item:%d+:(%d*):(%d*):(%d*):(%d*):(%d*):")
 				if (checkMissingGems or checkMissingEnchants) and not enchant then
@@ -1620,8 +1668,6 @@ do
 						hasOffHand = true
 					end
 				end
-			elseif i ~= 4 and GetInventoryItemTexture(unit, i) then
-				return--An equipped item whose link has not arrived is not an empty slot.
 			end
 		end
 		if isPlayer then
@@ -1658,12 +1704,6 @@ do
 			return
 		end
 		if activeInspect.token ~= token then
-			wipe(activeInspect)
-			ClearInspectPlayer()
-			if pendingRosterRefresh and IsDisplayShown() then
-				pendingRosterRefresh = false
-				HandleRosterUpdate()
-			end
 			return
 		end
 		if type(itemLevel) ~= "number" then
@@ -1691,6 +1731,21 @@ do
 		end
 	end
 
+	local function ScanActiveInspect()
+		if not activeInspect.name or not activeInspect.ready then
+			return
+		end
+		local unit = DBM:GetRaidUnitId(activeInspect.name, true)
+		if not unit or DBM:issecretunit(unit) or not UnitExists(unit) or UnitGUID(unit) ~= activeInspect.guid then
+			FinishInspect(activeInspect.token)
+			return
+		end
+		local itemLevel, missingGems, missingEnchants = ScanGear(unit)
+		if type(itemLevel) == "number" then
+			FinishInspect(activeInspect.token, itemLevel, missingGems, missingEnchants)
+		end
+	end
+
 	function RequestNextInspect()
 		if not IsDisplayShown() or activeInspect.name then
 			return
@@ -1714,6 +1769,7 @@ do
 				if canInspect then
 					local guid = UnitGUID(unit)
 					if guid then
+						inspectToken = inspectToken + 1
 						activeInspect.name = name
 						activeInspect.guid = guid
 						activeInspect.token = inspectToken
@@ -1863,12 +1919,8 @@ do
 			end
 		elseif event == "INSPECT_READY" then
 			if type(arg1) == "string" and arg1 == activeInspect.guid then
-				local unit = DBM:GetRaidUnitId(activeInspect.name, true)
-				local itemLevel, missingGems, missingEnchants
-				if unit and not DBM:issecretunit(unit) and UnitExists(unit) and UnitGUID(unit) == arg1 then
-					itemLevel, missingGems, missingEnchants = ScanGear(unit)
-				end
-				FinishInspect(activeInspect.token, itemLevel, missingGems, missingEnchants)
+				activeInspect.ready = true
+				ScanActiveInspect()
 			end
 		end
 	end
@@ -1879,6 +1931,7 @@ do
 			return
 		end
 		inspectUpdateElapsed = 0
+		ScanActiveInspect()
 		if IsDisplayShown() and #pendingInspects > 0 and not activeInspect.name then
 			RequestNextInspect()
 		end
@@ -2000,6 +2053,13 @@ do
 			return {groupButton, guildButton}
 		end,
 		OnActivate = function()
+			local inGuild = IsInGuild()
+			viewButtons.guild:SetShown(inGuild)
+			if not inGuild and gearView == "guild" then
+				gearView = "group"
+				ApplyLayout()
+			end
+			UpdateViewButtons()
 			if not DBM:IsCallbackRegistered("DBM_RosterUpdated", OnRosterUpdated) then
 				DBM:RegisterCallback("DBM_RosterUpdated", OnRosterUpdated)
 			end

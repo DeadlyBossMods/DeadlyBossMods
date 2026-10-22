@@ -107,7 +107,8 @@ end
 ---@param count number?
 ---@param voiceName string?
 ---@param expireOverride number?
-function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, expireOverride)
+---@param matchSeverity number? Only consume encounter warnings with this public severity; nil matches any severity.
+function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, expireOverride, matchSeverity)
 	if not specWarnObject or specWarnObject.announceType ~= "blizzyou" then return end
 	local mod = specWarnObject.mod
 	if not mod then return end
@@ -121,14 +122,16 @@ function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, expir
 		specWarn = specWarnObject,
 		count = count,
 		voiceName = voiceName,
+		matchSeverity = matchSeverity,
 		expireSeconds = expireSeconds,
 		queueTime = GetTime()
 	}
 	table.insert(queue.ordered, entry)
 end
 
+---@param severity number? Public ENCOUNTER_WARNING severity.
 ---@return boolean
-function DBM:ConsumeBlizzYouSpecialWarning()
+function DBM:ConsumeBlizzYouSpecialWarning(severity)
 	local now = GetTime()
 	local consumed = false
 	for mod, queue in pairs(blizzYouSpecialWarningQueue) do
@@ -139,7 +142,7 @@ function DBM:ConsumeBlizzYouSpecialWarning()
 			if now - entry.queueTime > (entry.expireSeconds or 1.5) then
 				-- Stale, discard
 				removeBlizzYouSpecialWarningQueueEntry(queue, entry)
-			elseif not found then
+			elseif not found and (entry.matchSeverity == nil or entry.matchSeverity == severity) then
 				removeBlizzYouSpecialWarningQueueEntry(queue, entry)
 				if entry.specWarn then
 					private.blizzYouConsuming = true
@@ -518,6 +521,8 @@ end
 ---@field Show fun(self: SpecAnnounce2numstr, arg1: number, arg2: string)
 ---@class SpecAnnounce3numstrnum: SpecialWarning
 ---@field Show fun(self: SpecAnnounce3numstrnum, arg1: number, arg2: string, arg3: number|nil)
+---@class SpecAnnounceBlizzYou: SpecialWarning
+---@field Show fun(self: SpecAnnounceBlizzYou, count: number?, voiceName: string?, expireOverride: number?, matchSeverity: number?)
 
 ---Used to set fallback options to blizzard encounter API for hardcoded warnings to fall back on
 ---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
@@ -543,8 +548,8 @@ local function showSpecialWarning(self, secret, ...)
 		end
 	elseif self.announceType == "blizzyou" then
 		if not private.blizzYouConsuming then
-			local count, voiceName, expireOverride = ...
-			DBM:QueueBlizzYouSpecialWarning(self, count, voiceName, expireOverride)
+			local count, voiceName, expireOverride, matchSeverity = ...
+			DBM:QueueBlizzYouSpecialWarning(self, count, voiceName, expireOverride, matchSeverity)
 			return
 		end
 	end
@@ -1180,10 +1185,11 @@ function bossModPrototype:NewSpecialWarningBlizzTarget(spellId, optionDefault, .
 	return newSpecialWarning(self, "blizztarget", spellId, nil, optionDefault, ...)
 end
 
----Special object used for "on you" announces triggered by next ENCOUNTER_WARNING within 1 second; mirrors youcount but consumes any ENCOUNTER_WARNING as trigger
----@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: string|optionNumbers|boolean?, optionVersion: number?, runSound: acceptedSASounds?, hasVoice: number?, difficulty: number?, iconOverride: number|string?, voiceFile: VPSound?): SpecAnnounce3numstrnum
+---Special object for "on you" announces triggered by the next matching ENCOUNTER_WARNING within the expiry window (default 1.5 seconds).
+---Show(count, voiceName, expireOverride, matchSeverity) optionally restricts interception to a public severity.
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: string|optionNumbers|boolean?, optionVersion: number?, runSound: acceptedSASounds?, hasVoice: number?, difficulty: number?, iconOverride: number|string?, voiceFile: VPSound?): SpecAnnounceBlizzYou
 function bossModPrototype:NewSpecialWarningBlizzYou(spellId, optionDefault, ...)
-	---@type SpecAnnounce3numstrnum
+	---@type SpecAnnounceBlizzYou
 	return newSpecialWarning(self, "blizzyou", spellId, nil, optionDefault, ...)
 end
 

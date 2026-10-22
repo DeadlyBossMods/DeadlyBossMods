@@ -2,6 +2,8 @@ if GetLocale() ~= "deDE" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"Windzorn", "Flammenzunge", "Lebensgeister"}
+L.CONSUMABLES_PALADIN_IMBUES = {"Ritus der Heiligung", "Ritus der Vereidigung"}
 L.AURA_FONT_RESET = "Ungültige Aura-Text-Schrifteinstellungen wurden erkannt und auf die Standardeinstellungen zurückgesetzt."
 L.MN_TEXT_TIMERS_HEADER = "Möchtest du Text-Timer verwenden?\n(Verwendet DBM-Balkendaten, auch wenn die Balken nicht angezeigt werden)"
 

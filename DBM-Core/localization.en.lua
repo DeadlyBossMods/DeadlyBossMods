@@ -3,6 +3,10 @@ local L = {}
 L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
 
 DBM_CORE_L = L
+-- SpellItemEnchantment.Name_lang: 5401, 5400, 6498 (wago.tools).
+L.CONSUMABLES_SHAMAN_IMBUES = {"Windfury", "Flametongue", "Earthliving"}
+-- SpellItemEnchantment.Name_lang: 7143, 7144 (wago.tools).
+L.CONSUMABLES_PALADIN_IMBUES = {"Rite of Sanctification", "Rite of Adjuration"}
 
 L.DEADLY_BOSS_MODS						= "Deadly Boss Mods" -- NO TRANSLATE
 L.DBM									= "DBM" -- NO TRANSLATE
