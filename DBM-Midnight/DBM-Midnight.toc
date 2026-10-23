@@ -1,4 +1,4 @@
-## Interface: 120100, 120105
+## Interface: 120105, 120107
 ## AllowLoadGameType: standard
 ## Version: @project-version@
 ## Category: DBM
