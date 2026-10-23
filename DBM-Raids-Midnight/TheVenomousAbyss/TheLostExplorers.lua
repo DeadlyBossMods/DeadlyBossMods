@@ -536,8 +536,8 @@ do
 					specWarnShreddingShards:Show()
 					specWarnShreddingShards:Play("defensive")
 				elseif self:IsTank() then
-					specWarnShreddingShardsTaunt:Schedule(3, DBM_COMMON_L.UNKNOWN)--Sadly, boss doesn't look at correct target, at all
-					specWarnShreddingShardsTaunt:ScheduleVoice(3, "tauntboss")
+					specWarnShreddingShardsTaunt:Schedule(4.5, DBM_COMMON_L.UNKNOWN)--Sadly, boss doesn't look at correct target, at all
+					specWarnShreddingShardsTaunt:ScheduleVoice(4.5, "tauntboss")
 				end
 			elseif eventType == "frostfire" then
 				warnFrostfireVolley:Show(eventCount)
