@@ -241,7 +241,7 @@ end
 -----------------
 local LibSpec
 do
-	if (private.isRetail or private.isCata or private.isMop) and LibStub then
+	if (private.isRetail or private.isCata or private.isMop or private.isForever) and LibStub then
 		LibSpec = LibStub("LibSpecialization", true)
 		if LibSpec then
 			local function update(specID, _, _, playerName)
@@ -251,6 +251,12 @@ do
 			end
 			---@diagnostic disable-next-line: undefined-field
 			LibSpec.RegisterGroup(DBM, update)
+			if private.isForever then
+				---@diagnostic disable-next-line: undefined-field
+				LibSpec.RegisterPlayerSpecChange(DBM, function()
+					DBM:CHARACTER_POINTS_CHANGED()
+				end)
+			end
 		end
 	end
 end
@@ -3466,6 +3472,19 @@ do
 		["WARLOCK"] = 871,--Affliction Warlock
 	}
 
+	--Forever uses talent group IDs, matching LibSpecialization, even before talents are spent.
+	local foreverFallbackClassToRole = {
+		["MAGE"] = 11582,
+		["PALADIN"] = 11486,
+		["WARRIOR"] = 11650,
+		["DRUID"] = 11328,
+		["HUNTER"] = 11372,
+		["PRIEST"] = 11608,
+		["ROGUE"] = 11580,
+		["SHAMAN"] = 11326,
+		["WARLOCK"] = 11629,
+	}
+
 	function DBM:SetCurrentSpecInfo()
 		if private.isRetail or private.isMop then
 			currentSpecGroup = GetSpecialization()
@@ -3480,21 +3499,10 @@ do
 			end
 			DBM:Debug("Current specID set to: "..currentSpecID, 2)
 		elseif private.isForever then
-			local highestPointsSpent = 0
-			for i = 1, 3 do
-				local _, _, _, _, _, _, pointsSpent = GetSpecializationInfo(i)
-				if pointsSpent then
-					if pointsSpent > highestPointsSpent then
-						highestPointsSpent = pointsSpent
-						currentSpecGroup = i
-						currentSpecID = playerClass .. tostring(i)--Associate specID with class name and tabnumber (class is used because spec name is shared in some spots like "holy")
-						currentSpecName = currentSpecID
-					end
-				end
-			end
-			--If 0 talents are spent, then just set them to first spec to prevent nil errors
-			--This should only happen for a level 1 player or someone who's in middle of respecing
-			if not currentSpecID then currentSpecID = playerClass .. tostring(1) end
+			--Each class has only one specialization; the library selects the talent group with the most points.
+			currentSpecGroup = GetSpecialization() or 1
+			currentSpecID = LibSpec and LibSpec.MySpecialization() or foreverFallbackClassToRole[playerClass]
+			currentSpecName = tostring(currentSpecID)
 		elseif private.isCata then
 			currentSpecGroup = GetPrimaryTalentTree()
 			if currentSpecGroup and GetTalentTabInfo(currentSpecGroup) then
@@ -4735,7 +4743,7 @@ do
 			end
 			local name = GetUnitName(uId, true)
 			--First we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MeleeDps"]
 			else
@@ -4789,7 +4797,7 @@ do
 				return true
 			end
 			--Now we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Melee"]
 			else
@@ -4825,7 +4833,7 @@ do
 	function DBM:IsRanged(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Ranged"]
 			else
@@ -4844,7 +4852,7 @@ do
 	function bossModPrototype:IsSpellCaster(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["SpellCaster"]
 			else
@@ -4862,7 +4870,7 @@ do
 	function bossModPrototype:IsMagicDispeller(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MagicDispeller"]
 			else
