@@ -9,8 +9,6 @@ local tableUtils = private:GetPrototype("TableUtils")
 
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
----@class Announce
-local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 

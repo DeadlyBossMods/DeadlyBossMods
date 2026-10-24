@@ -570,7 +570,8 @@ end
 local RegisterChallengesUI
 do
 	local initializedChallengesUI = false
-	local iconButtons = {}
+	local iconButtons
+	local buttonsActive = false
 
 	local function CreateChallengeIconButton(icon, spellID)
 		local button = CreateFrame('Button', nil, icon, 'InsecureActionButtonTemplate')
@@ -592,9 +593,13 @@ do
 	end
 
 	local function RefreshChallengesUI()
+		--Secure hooks cannot be removed; the approved disabled path is this single gate.
+		if not DBM.Options.AddChallengeTeleports then return end
 		if InCombatLockdown() then
-			for _, button in pairs(iconButtons) do
-				button:EnableMouse(false)
+			if iconButtons then
+				for _, button in pairs(iconButtons) do
+					button:EnableMouse(false)
+				end
 			end
 			return
 		end
@@ -603,33 +608,44 @@ do
 		end
 
 		for _, icon in pairs(ChallengesFrame.DungeonIcons) do
-			if not DBM.Options.AddChallengeTeleports then
+			local data = teleportMap[icon.mapID]
+			if data then
+				if not iconButtons[icon] then
+					iconButtons[icon] = CreateChallengeIconButton(icon, data[2])
+				elseif iconButtons[icon].spellID ~= data[2] then
+					iconButtons[icon]:SetAttribute('type', 'spell')
+					iconButtons[icon]:SetAttribute('spell', data[2])
+					iconButtons[icon].spellID = data[2]
+				end
+				iconButtons[icon]:EnableMouse(true)
+				iconButtons[icon]:Show()
+				buttonsActive = true
+			else
 				if iconButtons[icon] then
 					iconButtons[icon]:Hide()
 					iconButtons[icon]:ClearAttributes()
 					iconButtons[icon].spellID = nil
 				end
-			else
-				local data = teleportMap[icon.mapID]
-				if data then
-					if not iconButtons[icon] then
-						iconButtons[icon] = CreateChallengeIconButton(icon, data[2])
-					elseif iconButtons[icon].spellID ~= data[2] then
-						iconButtons[icon]:SetAttribute('spell', data[2])
-						iconButtons[icon].spellID = data[2]
-					end
-					iconButtons[icon]:EnableMouse(true)
-					iconButtons[icon]:Show()
-				elseif icon.mapID then
-					DBM:Debug("Missing keystone info for challengeMapID: " .. icon.mapID)
-				end
+				if icon.mapID then DBM:Debug("Missing keystone info for challengeMapID: " .. icon.mapID) end
 			end
 		end
 	end
-	Keystones.RefreshChallengesUI = RefreshChallengesUI
 
 	function RegisterChallengesUI()
-		if initializedChallengesUI then
+		if not DBM.Options.AddChallengeTeleports then
+			if buttonsActive then
+				local inCombat = InCombatLockdown()
+				for _, button in pairs(iconButtons) do
+					button:EnableMouse(false)
+					button:Hide()
+					if not inCombat then
+						button:ClearAttributes()
+						button.spellID = nil
+					end
+				end
+				--Defer attribute cleanup until combat ends, but disable interaction immediately.
+				buttonsActive = inCombat
+			end
 			return
 		end
 		if not C_AddOns.IsAddOnLoaded('Blizzard_ChallengesUI') then
@@ -638,10 +654,14 @@ do
 		if not ChallengesFrame then
 			return
 		end
-		hooksecurefunc(ChallengesFrame, 'Update', RefreshChallengesUI)
+		if not initializedChallengesUI then
+			iconButtons = {}
+			hooksecurefunc(ChallengesFrame, 'Update', RefreshChallengesUI)
+			initializedChallengesUI = true
+		end
 		RefreshChallengesUI()
-		initializedChallengesUI = true
 	end
+	Keystones.RefreshChallengesUI = RegisterChallengesUI
 end
 
 frame:SetScript('OnEvent', function(_, event, arg1, arg2)

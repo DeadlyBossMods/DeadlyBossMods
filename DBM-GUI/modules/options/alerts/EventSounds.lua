@@ -2,6 +2,35 @@ local isRetail = DBM:IsRetail()
 
 local L = DBM_GUI_L
 
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
+-- Preview state belongs to the GUI, not to a saved profile or runtime music.
+local musicPreviewPlaying, previousMusicSetting
+
+function DBM_GUI:StopMusicPreview()
+	if not musicPreviewPlaying then return end
+	musicPreviewPlaying = nil
+	StopMusic()
+	if previousMusicSetting then
+		SetCVar("Sound_EnableMusic", previousMusicSetting)
+		previousMusicSetting = nil
+	end
+end
+
+function DBM_GUI:PreviewMusic(value)
+	if value == "Random" or DBM:IsNoneValue(value) then
+		self:StopMusicPreview()
+		return
+	end
+	if not musicPreviewPlaying and tonumber(GetCVar("Sound_EnableMusic")) == 0 then
+		previousMusicSetting = 0
+		SetCVar("Sound_EnableMusic", 1)
+	end
+	PlayMusic(value)
+	musicPreviewPlaying = true
+end
+
 local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
 	{
 		text	= L.NoSound,
@@ -40,53 +69,13 @@ VictorySoundDropdown2:SetPoint("LEFT", VictorySoundDropdown, "RIGHT", isNewDropd
 local useCombined = DBM.Options.EventSoundMusicCombined
 local DungeonMusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventDungeonMusic, useCombined and DBM:GetMusic() or DBM:GetDungeonMusic(), "DBM", "EventSoundDungeonBGM", function(value)
 	DBM.Options.EventSoundDungeonBGM = value
-	if value == "Random" or DBM:IsNoneValue(value) then
-		if DBM.Options.tempMusicSetting then
-			SetCVar("Sound_EnableMusic", DBM.Options.tempMusicSetting)
-			DBM.Options.tempMusicSetting = nil
-		end
-		if DBM.Options.musicPlaying then
-			StopMusic()
-			DBM.Options.musicPlaying = nil
-		end
-	else
-		if not DBM.Options.tempMusicSetting then
-			DBM.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
-			if DBM.Options.tempMusicSetting == 0 then
-				SetCVar("Sound_EnableMusic", 1)
-			else
-				DBM.Options.tempMusicSetting = nil
-			end
-		end
-		PlayMusic(value)
-		DBM.Options.musicPlaying = true
-	end
+	DBM_GUI:PreviewMusic(value)
 end, 180)
 DungeonMusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown, "TOPLEFT", 0, -45)
 
 local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, useCombined and DBM:GetMusic() or DBM:GetBattleMusic(), "DBM", "EventSoundMusic", function(value)
 	DBM.Options.EventSoundMusic = value
-	if value == "Random" or DBM:IsNoneValue(value) then
-		if DBM.Options.tempMusicSetting then
-			SetCVar("Sound_EnableMusic", DBM.Options.tempMusicSetting)
-			DBM.Options.tempMusicSetting = nil
-		end
-		if DBM.Options.musicPlaying then
-			StopMusic()
-			DBM.Options.musicPlaying = nil
-		end
-	else
-		if not DBM.Options.tempMusicSetting then
-			DBM.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
-			if DBM.Options.tempMusicSetting == 0 then
-				SetCVar("Sound_EnableMusic", 1)
-			else
-				DBM.Options.tempMusicSetting = nil
-			end
-		end
-		PlayMusic(value)
-		DBM.Options.musicPlaying = true
-	end
+	DBM_GUI:PreviewMusic(value)
 end, 180)
 MusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown2, "TOPLEFT", 0, -45)
 MusicDropDown.myheight = 0

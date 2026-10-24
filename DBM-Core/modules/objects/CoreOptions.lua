@@ -658,6 +658,9 @@ function DBM:RepositionFrames()
 	if self.TextTimers then
 		self.TextTimers:SyncOptions()
 	end
+	if self.InfoFrame then
+		self.InfoFrame:SyncOptions()
+	end
 	if private.isRetail then
 		self:UpdateZoneAuraAnchors(1)
 	end

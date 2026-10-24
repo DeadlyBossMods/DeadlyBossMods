@@ -30,6 +30,7 @@ local iconVariables = {}
 --Player setting variables
 local iconUnitTable = {}
 local iconSet = {}
+local expireScan
 
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
@@ -38,6 +39,9 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 local module = private:NewModule("IconsModule")
 
 function module:OnModuleEnd()
+	for scanId in pairs(scanExpires) do
+		expireScan(scanId)
+	end
 	table.wipe(addsGUIDs)
 end
 
@@ -345,7 +349,9 @@ do
 end
 
 do
-	local function expireScan(scanId, wipeGUID)
+	function expireScan(scanId, wipeGUID)
+		DBM:Unschedule(expireScan, scanId)
+		if not iconVariables[scanId] then return end
 		--clear variables
 		scanExpires[scanId] = nil
 		addsIcon[scanId] = nil
@@ -462,7 +468,7 @@ do
 		for i = 1, 10 do
 			local unitId = "boss"..i
 			if UnitExists(unitId) and UnitIsVisible(unitId) then--Hopefully enough failsafe against icons failing
-				for _, scanId in ipairs(scanExpires) do
+				for scanId in pairs(scanExpires) do
 					executeMarking(scanId, unitId)
 				end
 			end
@@ -497,6 +503,11 @@ do
 	---@param allAllowed boolean? Bypasses elect feature and lets ANY assist set icons
 	---@param wipeGUID boolean? Allows ScanForMobs to be used on same unit multiple times during a single pull
 	function bossModPrototype:ScanForMobs(scanId, iconSetMethod, mobIcon, maxIcon, scanTable, scanningTime, optionName, allowFriendly, skipMarked, allAllowed, wipeGUID)
+		if iconSetMethod == 9 then--Cleanup must not depend on still being elected to mark.
+			if not scanId then error("DBM:ScanForMobs calld without scanId") end
+			expireScan(scanId, wipeGUID or iconVariables[scanId] and iconVariables[scanId].wipeGUID)
+			return
+		end
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if private.canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
 			--Declare variables.
@@ -506,7 +517,7 @@ do
 				return
 			end
 			--Initialize icon method variables for event handlers
-			scansActive = scansActive + 1
+			if not iconVariables[scanId] then scansActive = scansActive + 1 end
 			if not addsIcon[scanId] then addsIcon[scanId] = mobIcon or 8 end
 			if not addsIconSet[scanId] then addsIconSet[scanId] = 0 end
 			if not iconVariables[scanId] then iconVariables[scanId] = {} end
@@ -521,11 +532,6 @@ do
 			end
 			if scanTable and type(scanTable) == "table" then
 				iconVariables[scanId].scanTable = scanTable
-			end
-			if (iconSetMethod or 0) == 9 then--Force stop scanning
-				DBM:Unschedule(expireScan, scanId)
-				expireScan(scanId, iconVariables[scanId].wipeGUID)
-				return
 			end
 			--Do initial scan now to see if unit we're scaning for already exists (ie they wouldn't fire nameplate added or IEEU for example.
 			--Caveat, if all expected units are found before it finishes going over mobUids table, it'll still finish goingg through table

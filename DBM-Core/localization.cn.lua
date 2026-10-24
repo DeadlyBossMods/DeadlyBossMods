@@ -325,7 +325,6 @@ L.SLASHCMD_HELP2				= {
 	"/dbm version: 进行团队范围的" .. L.DBM .. "版本检测(也可使用: ver)",
 	"/dbm version2: 进行团队范围的" .. L.DBM .. "版本检测并密语那些过期版本用户(也可使用: ver2)",
 	"/range <码> 或者 /distance <码>: 显示距离雷达窗体。使用 /rrange 或者 /rdistance 翻转颜色。",
-	"/hudar <码>: 显示基于HUD的距离显示器提示器。",
 	"/dbm arrow: 显示" .. L.DBM .. "箭头，输入'/dbm arrow'查询更多信息。",
 	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。",
 	"/dbm dbtdebug: 显示用于错误报告的已净化计时条诊断信息。"

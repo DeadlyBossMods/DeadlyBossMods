@@ -14,6 +14,9 @@ local PTSlider = pbcPTArea:CreateSlider(L.PT_Threshold, 1, 10, 1, 300, math.floo
 	DBM.Options.PTCountThreshold2 = math.floor(value)
 end)
 PTSlider:SetPoint("BOTTOMLEFT", PTText, "BOTTOMLEFT", 80, -40)
+pbcPTArea.frame:HookScript("OnShow", function()
+	PTSlider:SetValueSilent(math.floor(DBM.Options.PTCountThreshold2))
+end)
 
 local pbcSoundsArea = pbcPanel:CreateArea(L.Area_SoundOptions)
 

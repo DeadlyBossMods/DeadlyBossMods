@@ -11,8 +11,6 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for P
 
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
----@class Announce
-local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 

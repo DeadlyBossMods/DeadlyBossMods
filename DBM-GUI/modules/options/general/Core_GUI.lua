@@ -88,6 +88,9 @@ local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 21
 	DBM.Options.LatencyThreshold = value
 end)
 latencySlider:SetPoint("TOPLEFT", bminfo, "BOTTOMLEFT", 4, -20)
+generaloptions.frame:HookScript("OnShow", function()
+	latencySlider:SetValueSilent(DBM.Options.LatencyThreshold)
+end)
 
 local resetbutton = generaloptions:CreateButton(L.Button_ResetInfoRange, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", generaloptions.frame, "BOTTOMRIGHT", -5, 5)
@@ -155,13 +158,8 @@ resizeWidth:SetScript("OnChar", function(self)
 end)
 resizeWidth:SetScript("OnEnterPressed", function(self)
 	local value = tonumber(self:GetText()) or 0
-	if value < minWidth then
-		self:SetText(minWidth)
-		return
-	end
-	if value > maxWidth then
-		self:SetText(maxWidth)
-	end
+	value = math.min(maxWidth, math.max(minWidth, value))
+	self:SetText(value)
 	DBM.Options.GUIWidth = value
 	optionsFrame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
 end)
@@ -174,13 +172,8 @@ resizeHeight:SetScript("OnChar", function(self)
 end)
 resizeHeight:SetScript("OnEnterPressed", function(self)
 	local value = tonumber(self:GetText()) or 0
-	if value < minHeight then
-		self:SetText(minHeight)
-		return
-	end
-	if value > maxHeight then
-		self:SetText(maxHeight)
-	end
+	value = math.min(maxHeight, math.max(minHeight, value))
+	self:SetText(value)
 	DBM.Options.GUIHeight = value
 	optionsFrame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
 end)

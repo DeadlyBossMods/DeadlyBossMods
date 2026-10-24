@@ -214,6 +214,16 @@ local iconTextMaxLenSlider = style:CreateSlider(L.NPIcon_MaxTextLen, 3, 40, 1, 1
 end)
 iconTextMaxLenSlider:SetPoint("TOPLEFT", textFontSizeSlider, "BOTTOMLEFT", 0, -35)
 
+style.frame:HookScript("OnShow", function()
+	auraSizeSlider:SetValueSilent(DBM.Options.NPIconSize)
+	iconOffsetXSlider:SetValueSilent(DBM.Options.NPIconOffsetX)
+	iconOffsetYSlider:SetValueSilent(DBM.Options.NPIconOffsetY)
+	iconSpacingSlider:SetValueSilent(DBM.Options.NPIconSpacing)
+	timerFontSizeSlider:SetValueSilent(DBM.Options.NPIconTimerFontSize)
+	textFontSizeSlider:SetValueSilent(DBM.Options.NPIconTextFontSize)
+	iconTextMaxLenSlider:SetValueSilent(DBM.Options.NPIconTextMaxLen)
+end)
+
 local styleResetbutton = style:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 styleResetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)
 styleResetbutton:SetNormalFontObject(GameFontNormalSmall)
@@ -340,7 +350,7 @@ glowResetbutton:SetScript("OnClick", function()
 	-- Set UI visuals
 	cooldownIconGlowBehavior:SetSelectedValue(DBM.DefaultOptions.NPIconGlowBehavior)
 	cooldownIconGlowType:SetSelectedValue(DBM.DefaultOptions.CDNPIconGlowType)
-	castIconGlowType:SetSelectedValue(DBM.DefaultOptions.CastNPIconGlowBehavior)
+	castIconGlowBehavior:SetSelectedValue(DBM.DefaultOptions.CastNPIconGlowBehavior)
 	castIconGlowType:SetSelectedValue(DBM.DefaultOptions.CastNPIconGlowType2)
 
 	DBM.Nameplate:UpdateIconOptions()

@@ -320,7 +320,6 @@ L.SLASHCMD_HELP2					= {
 	"/dbm version: Realiza uma verificação de versão de toda a raide. (ou: ver).",
 	"/dbm version2: Realiza uma verificação de versão de toda a raide e sussurra para avisando os membros que estão desatualizados (alias: ver2).",
 	"/range <número> ou /distance <número>: Mostra o quadro de distância. /rrange ou /rdistance para inverter as cores.",
-	"/hudar <número>: Mostra o buscador de distância baseado em HUD.",
 	"/dbm arrow: Mostra a seta do " .. L.DBM .. ", veja /dbm arrow help para detalhes.",
 	"/dbm hud: Mostra o HUD do " .. L.DBM .. ", veja '/dbm hud' para detalhes.",
 	"/dbm dbtdebug: Mostra diagnósticos sanitizados de barras de tempo para relatórios de erro."

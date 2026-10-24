@@ -848,13 +848,14 @@ do
 			tinsert(inCombat, mod)
 			-- Pull time is always considered as in combat, this makes sure checkWipe() triggers only after the minimum time without combat has passed since start.
 			lastValidCombat = GetTime()
-			if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
+			if not mod.inCombatOnlyEventsRegistered and (mod.inCombatOnlyEvents or mod.inCombatOnlySafeEvents) then
 				mod.inCombatOnlyEventsRegistered = 1
-				mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
-			end
-			if mod.inCombatOnlySafeEvents and not mod.inCombatOnlyEventsRegistered then
-				mod.inCombatOnlyEventsRegistered = 1
-				mod:RegisterSafeEvents(unpack(mod.inCombatOnlySafeEvents))
+				if mod.inCombatOnlyEvents then
+					mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
+				end
+				if mod.inCombatOnlySafeEvents then
+					mod:RegisterSafeEvents(unpack(mod.inCombatOnlySafeEvents))
+				end
 			end
 			--Fix for "attempt to perform arithmetic on field 'stats' (a nil value)"
 			if not mod.stats and not mod.noStatistics then
@@ -1088,6 +1089,7 @@ do
 					self:PlaySoundFile(self.Options.EventSoundEngage2, nil, true)
 				end
 				if not mod.inScenario and self.Options.EventSoundMusic and not self:IsNoneValue(self.Options.EventSoundMusic) and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) and not mod.noStatistics and not self.Options.RestoreSettingMusic then
+					if DBM_GUI and DBM_GUI.StopMusicPreview then DBM_GUI:StopMusicPreview() end
 					self:FireEvent("DBM_MusicStart", "BossEncounter")
 					if not self.Options.RestoreSettingCustomMusic then
 						self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
@@ -1312,7 +1314,7 @@ do
 					private.showConstantReminder = 1
 					--Show message any time this is a mod that has a newer hotfix revision and it's a wipe
 					--These people need to know the wipe could very well be their fault.
-					self:AddMsg(L.OUT_OF_DATE_NAG)
+					private.AddMsg(self, L.OUT_OF_DATE_NAG)
 				end
 				local msg
 				for k, _ in pairs(autoRespondSpam) do

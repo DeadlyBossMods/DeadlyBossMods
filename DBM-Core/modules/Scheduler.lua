@@ -124,7 +124,7 @@ do
 		local argCount = select("#", ...)
 		for i = 1, firstFree - 1 do
 			v = heap[i]
-			match = (not f or v.func == f) and (not mod or v.mod == mod)
+			match = (not f or v.func == f or v.loopFunc == f) and (not mod or v.mod == mod)
 			if match and argCount > 0 then
 				for j = 1, argCount do
 					if select(j, ...) ~= v[j] then
@@ -260,6 +260,7 @@ local function schedule(t, f, mod, ...)
 		v = {time = now + t, func = f, mod = mod, n = argCount, ...}
 	end
 	insert(v)
+	return v
 end
 
 local function unschedule(f, mod, ...)
@@ -289,10 +290,6 @@ function module:ScheduleCountdown(time, numAnnounces, func, mod, prototype, ...)
 end
 
 do
-	local function repeatScheduleLoop(time, func, mod, prototype, ...)
-		module:ScheduleLoop(time, func, mod, prototype, ...)
-	end
-
 	---@param time number|table
 	---@param func any
 	---@param mod DBMMod
@@ -301,35 +298,41 @@ do
 	---@param isTimer boolean?
 	---@param voiceString VPSound?
 	function module:ScheduleLoop(time, func, mod, prototype, count, isTimer, voiceString)
---		unschedule(func, mod, prototype, ...)
-		--Auto increment count if provided (should start at 0 to function as expected)
-		if count then
-			count = count + 1
-		end
 		if type(time) == "table" then
-			--Just schedule what's in table and nothing more or less
-			--Note, it's up to mods to cancel this if a sequence ends early (ie phase change)
-			if time[count] then
+			--Intervals are relative to the previous occurrence. Queue the finite
+			--sequence normally so cancellation cannot leave a rescheduler behind.
+			local delay = 0
+			for i = (count or 0) + 1, #time do
 				if isTimer then
-					if count == 1 then
-						schedule(0.0001, func, mod, prototype, time[count], count)
-					end
-					if time[count+1] then
-						schedule(time[count], func, mod, prototype, time[count+1], count+1)
-					end
+					schedule(delay == 0 and 0.0001 or delay, func, mod, prototype, time[i], i)
+					delay = delay + time[i]
 				else
-					if voiceString then--Voice pack sound
-						schedule(time[count], func, mod, prototype, voiceString)
-					else--Just a standard special warning schedule
-						schedule(time[count], func, mod, prototype, count)
-					end
+					delay = delay + time[i]
+					schedule(delay, func, mod, prototype, voiceString or i)
 				end
 			end
 		else
-			--Just schedule infinite loop with single loop time
-			--Note, it's up to mods to cancel this!
-			schedule(time, func, mod, prototype, count, isTimer, voiceString)
-			schedule(time, repeatScheduleLoop, time, func, mod, prototype, count, isTimer, voiceString)
+			if type(time) ~= "number" or time <= 0 then
+				error("usage: ScheduleLoop requires a positive interval or a table of intervals", 2)
+			end
+			local repeatScheduleLoop
+			local function queueNext(delay, nextCount)
+				local task
+				if isTimer then
+					task = schedule(delay, repeatScheduleLoop, mod, prototype, time, nextCount)
+				else
+					task = schedule(delay, repeatScheduleLoop, mod, prototype, voiceString or nextCount)
+				end
+				--Keep the public callback and arguments matchable by Unschedule.
+				task.loopFunc = func
+			end
+			repeatScheduleLoop = function(...)
+				if count or isTimer then count = (count or 0) + 1 end
+				--Queue before dispatch so cancellation inside func also cancels the loop.
+				queueNext(time, (count or isTimer) and (count or 0) + 1 or nil)
+				func(...)
+			end
+			queueNext(isTimer and 0.0001 or time, (count or isTimer) and (count or 0) + 1 or nil)
 		end
 	end
 
@@ -341,7 +344,6 @@ do
 	end
 
 	function module:Unschedule(f, mod, ...)
-		unschedule(repeatScheduleLoop, mod, f, mod)--Should work, but needs testing
 		return unschedule(f, mod, ...)
 	end
 end

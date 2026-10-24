@@ -324,7 +324,6 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/dbm version: 執行首領模組版本檢查（別名：ver）。",
 	"/dbm version2: 執行首領模組版本檢查，並私聊過期用戶（別名：ver2）。",
 	"/range <number> 或 /distance <number>: 顯示範圍框架。/rrange 或 /rdistance 反轉顏色。",
-	"/hudar <number>: 顯示基於 HUD 的範圍查找器。",
 	"/dbm arrow: 顯示 " .. L.DBM .. " 箭頭，詳情請參見 '/dbm arrow help'。",
 	"/dbm hud: 顯示 " .. L.DBM .. " hud，詳情請參見 '/dbm hud'。",
 	"/dbm dbtdebug: 顯示已清理的狀態條計時器診斷資訊以供錯誤回報。"

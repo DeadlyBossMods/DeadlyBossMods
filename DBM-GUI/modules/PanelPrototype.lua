@@ -200,6 +200,8 @@ function PanelPrototype:CreateButton(title, width, height, onclick, font, highli
 	return button
 end
 
+local colorPickerOwner
+
 function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	local colorSelect = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	colorSelect:SetSize(100, 24)
@@ -207,6 +209,7 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	colorSelect.r = 0
 	colorSelect.g = 0
 	colorSelect.b = 0
+	colorSelect.pickerGeneration = 0
 
 	local swatch = colorSelect:CreateTexture(nil, "OVERLAY")
 	swatch:SetSize(18, 18)
@@ -239,6 +242,7 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	end
 
 	colorSelect.SetColorRGB = function(self, r, g, b, save)
+		self.pickerGeneration = self.pickerGeneration + 1
 		colorSelect.r = r
 		colorSelect.g = g
 		colorSelect.b = b
@@ -258,23 +262,39 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		CallbackFn(self, r, g, b)
 	end
 	colorSelect:SetScript("OnClick", function(self)
-		local r1, g1, b1 = self.r, self.g, self.b
 		ColorPickerFrame:Hide()
+		local r1, g1, b1 = self.r, self.g, self.b
+		local options, barOptions = DBM.Options, DBT.Options
+		self.pickerGeneration = self.pickerGeneration + 1
+		local generation = self.pickerGeneration
+		colorPickerOwner = self
+		local function applyColor(r, g, b)
+			if colorPickerOwner ~= self or generation ~= self.pickerGeneration or options ~= DBM.Options or barOptions ~= DBT.Options then return end
+			colorCallback(self, r, g, b)
+			generation = self.pickerGeneration
+		end
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 		ColorPickerFrame:SetFrameLevel(self:GetFrameLevel() + 10)
 		ColorPickerFrame:SetClampedToScreen(true)
 		ColorPickerFrame:SetupColorPickerAndShow({
 			swatchFunc = function()
 				local r, g, b = ColorPickerFrame:GetColorRGB()
-				colorCallback(self, r, g, b)
+				applyColor(r, g, b)
 			end,
 			cancelFunc = function()
-				colorCallback(self, r1, g1, b1)
+				applyColor(r1, g1, b1)
+				if colorPickerOwner == self and generation == self.pickerGeneration then colorPickerOwner = nil end
 			end,
 			r = self.r,
 			g = self.g,
 			b = self.b
 		})
+	end)
+	colorSelect:SetScript("OnHide", function(self)
+		if colorPickerOwner == self then
+			colorPickerOwner = nil
+			ColorPickerFrame:Hide()
+		end
 	end)
 
 	self:SetLastObj(colorSelect)
@@ -364,6 +384,13 @@ function PanelPrototype:CreateSlider(text, low, high, step, width, value, callba
 	end)
 	slider.editbox = editbox
 
+	-- Reconcile visuals without invoking option writes or test previews.
+	function slider:SetValueSilent(newValue)
+		self.value = NormalizeSliderValue(newValue)
+		self:SetValue(self.value)
+		UpdateSliderText(self)
+	end
+
 	slider:SetValue(value)
 	slider.value = value
 	UpdateSliderText(slider)
@@ -450,6 +477,11 @@ function PanelPrototype:CreateFontDropdown(title, vartype, var, CallbackFn, widt
 	dropdown:IsSelectedCallback(function(_, v)
 		return GetSelectedFlags()[v.value] or false
 	end)
+	local SetSelectedValue = dropdown.SetSelectedValue
+	function dropdown:SetSelectedValue(selected)
+		SetSelectedValue(self, selected)
+		UpdateDisplayText()
+	end
 	dropdown:SetScript("OnShow", UpdateDisplayText)
 	---@diagnostic disable-next-line: undefined-field
 	dropdown:GenerateMenu()
@@ -528,8 +560,22 @@ function PanelPrototype:CreateLine(text, extraWidth)
 end
 
 do
-	local currActiveButton
+	local currActiveOwner
 	local updateFrame = CreateFrame("Frame")
+
+	local function stopTooltip(owner)
+		if currActiveOwner ~= owner then return end
+		currActiveOwner = nil
+		updateFrame:SetScript("OnUpdate", nil)
+		local button = owner:GetParent()
+		if button.fakeHighlight then
+			button.fakeHighlight = nil
+			button:UnlockHighlight()
+		end
+		if GameTooltip:IsOwned(owner) then
+			GameTooltip:Hide()
+		end
+	end
 
 	local function MixinCountTable(baseTable)
 		local result = baseTable
@@ -692,11 +738,14 @@ do
 			buttonText:SetFontObject("p", GameFontNormal)
 			buttonText:SetHyperlinksEnabled(true)
 			buttonText:SetScript("OnHyperlinkEnter", function(self, data)
-				GameTooltip:SetOwner(self, "ANCHOR_NONE")
+				if not self:IsVisible() then return end
 				local linkType = strsplit(":", data)
+				if currActiveOwner then stopTooltip(currActiveOwner) end
 				if linkType == "http" then
 					return
 				end
+				currActiveOwner = self
+				GameTooltip:SetOwner(self, "ANCHOR_NONE")
 				if linkType ~= "journal" then
 					GameTooltip:SetHyperlink(data)
 				else -- "journal:contentType:contentID:difficulty"
@@ -709,15 +758,21 @@ do
 					end
 				end
 				GameTooltip:Show()
-				currActiveButton = self:GetParent()
+				if currActiveOwner ~= self then return end
+				local button = self:GetParent()
 				updateFrame:SetScript("OnUpdate", function()
-					local inHitBox = GetCursorPosition() - currActiveButton:GetCenter() < -100
-					if currActiveButton.fakeHighlight and not inHitBox then
-						currActiveButton:UnlockHighlight()
-						currActiveButton.fakeHighlight = nil
-					elseif not currActiveButton.fakeHighlight and inHitBox then
-						currActiveButton:LockHighlight()
-						currActiveButton.fakeHighlight = true
+					if currActiveOwner ~= self then return end
+					if not self:IsVisible() or not GameTooltip:IsShown() or not GameTooltip:IsOwned(self) then
+						stopTooltip(self)
+						return
+					end
+					local inHitBox = GetCursorPosition() - button:GetCenter() < -100
+					if button.fakeHighlight and not inHitBox then
+						button:UnlockHighlight()
+						button.fakeHighlight = nil
+					elseif not button.fakeHighlight and inHitBox then
+						button:LockHighlight()
+						button.fakeHighlight = true
 					end
 					local x, y = GetCursorPosition()
 					local scale = UIParent:GetEffectiveScale()
@@ -729,14 +784,8 @@ do
 					self:GetParent():LockHighlight()
 				end
 			end)
-			buttonText:SetScript("OnHyperlinkLeave", function(self)
-				GameTooltip:Hide()
-				updateFrame:SetScript("OnUpdate", nil)
-				if self:GetParent().fakeHighlight then
-					self:GetParent().fakeHighlight = nil
-					self:GetParent():UnlockHighlight()
-				end
-			end)
+			buttonText:SetScript("OnHyperlinkLeave", stopTooltip)
+			buttonText:SetScript("OnHide", stopTooltip)
 			desc = "<html><body><p>" .. desc .. "</p></body></html>"
 		else
 			buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")

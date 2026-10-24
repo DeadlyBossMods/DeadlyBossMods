@@ -327,7 +327,6 @@ L.SLASHCMD_HELP2						= {
 	"/dbm version: 보스 모드 버전을 확인합니다 (다른 명령어: ver).",
 	"/dbm version2: 보스 모드 버전 확인하고 구버전 사용자에게 귓속말을 보냅니다 (다른 명령어: ver2).",
 	"/range <숫자> 또는 /distance <숫자>: 거리 창을 표시합니다. /rrange 또는 /rdistance로 색상을 반전시킵니다.",
-	"/hudar <숫자>: HUD 기반 거리 탐지기를 표시합니다.",
 	"/dbm arrow: " .. L.DBM .. " 화살표를 표시합니다. 자세한 내용은 '/dbm arrow help'를 참조하세요.",
 	"/dbm hud: " .. L.DBM .. " HUD를 표시합니다. 자세한 내용은 '/dbm hud'를 참조하세요.",
 	"/dbm dbtdebug: 버그 보고서 용으로 정제된 상태 바 타이머 진단 내역을 표시합니다."

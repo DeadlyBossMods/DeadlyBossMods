@@ -335,7 +335,6 @@ L.SLASHCMD_HELP2	= {--AI translated (check me)
 	"/dbm version: Controlla la versione del boss mod (alias: ver).",
 	"/dbm version2: Controlla la versione del boss mod e invia un messaggio agli utenti obsoleti (alias: ver2).",
 	"/range <numero> o /distance <numero>: Mostra il riquadro di distanza. /rrange o /rdistance per invertire i colori.",
-	"/hudar <numero>: Mostra il rilevatore di distanza HUD.",
 	"/dbm arrow: Mostra la freccia " .. L.DBM .. ", vedere '/dbm arrow help' per dettagli.",
 	"/dbm hud: Mostra l'HUD " .. L.DBM .. ", vedere '/dbm hud' per dettagli.",
 	"/dbm dbtdebug: Mostra diagnostica delle barre del tempo ripulita per le segnalazioni di errore."

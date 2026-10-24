@@ -3,6 +3,7 @@ if GetLocale() ~= "koKR" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
 local L = DBM_GUI_L
 
+L.MainFrame							= "Deadly Boss Mods" -- OPTIONAL
 L.TranslationByPrefix				= "번역: "
 L.TranslationBy 					= "Elnarfim"
 L.Website							= "최신 소식/업데이트 정보는 MysticalOS를 팔로우하면 볼 수 있습니다. |cFF73C2FBhttps://allmylinks.com/mysticalos|r 보내주신 성원에 감사드립니다!"
@@ -435,8 +436,11 @@ L.ReplacesAnnounce					= "알림 효과음 바꾸기 (참고: 페이즈 변경�
 L.ReplacesSADefault					= "기본 특수 알림 효과음 바꾸기 (사용자가 직접 지정한 효과음은 절대 바뀌지 않습니다)"
 L.Area_VoicePackAdvOptions			= "음성팩 고급 설정"
 L.Area_VPLearnMore					= "음성팩에 대한 정보 및 관련 설정 사용법 알아보기"
+L.VPLearnMore						= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r" -- OPTIONAL
 L.Area_BrowseOtherVP				= "Curse에 올라와있는 다른 음성팩 보기"
+L.BrowseOtherVPs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r" -- OPTIONAL
 L.Area_BrowseOtherCT				= "Curse에 올라와있는 카운트다운 팩 보기"
+L.BrowseOtherCTs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r" -- OPTIONAL
 
 -- Panel: Event Sounds
 L.Panel_EventSounds					= "이벤트 효과음 (승리, 전멸, 기타)"

@@ -811,16 +811,13 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
-		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
-		local guid = nameplateTimerBars[id] and nameplateTimerBars[id].guid
-		if not guid and barsTestMode then
-			for _, curGuid in pairs(getAllShownGUIDs()) do
-				for _,aura_tbl in ipairs(units[curGuid] or {}) do
-					if aura_tbl.id == id then
-						NameplateIcon_Hide(true, curGuid, aura_tbl.index, false)
-						break
+		if barsTestMode then
+			for guid, auras in pairs(units) do
+				for i = #auras, 1, -1 do
+					if auras[i].auraType == 2 and auras[i].id == id then
+						NameplateIcon_Hide(true, guid, auras[i].index, false)
 					end
 				end
 			end
@@ -904,7 +901,6 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
-		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id or not elapsed or not totalTime then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -927,7 +923,6 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
-		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -947,7 +942,6 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
-		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -968,7 +962,6 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
-		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local guid = nameplateTimerBars[id] and nameplateTimerBars[id].guid
@@ -990,9 +983,15 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
-		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
-
-		NameplateIcon_Hide(false, nil, nil, true)--Nil GUID force true basically triggers RemoveAll
+		-- Retire timer ownership only; ordinary nameplate auras remain independent.
+		for guid, auras in pairs(units) do
+			for i = #auras, 1, -1 do
+				if auras[i].auraType == 2 then
+					NameplateIcon_Hide(true, guid, auras[i].index, false)
+				end
+			end
+		end
+		twipe(nameplateTimerBars)
 	end
 	DBM:RegisterCallback("DBM_NameplateStopAll", timerEndAllCallback)
 end

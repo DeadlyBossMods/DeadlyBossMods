@@ -504,7 +504,6 @@ resetbutton:SetScript("OnClick", function()
 	flashdalphaSlider4:SetValue(DBM.Options.SpecialWarningFlashAlph4)
 	flashRepSlider:SetValue(DBM.Options.SpecialWarningFlashCount1)
 	flashRepSlider4:SetValue(DBM.Options.SpecialWarningFlashCount4)
-	check5:SetChecked(DBM.Options.SWarnNameInNote)
 	color5:SetColorRGB(DBM.Options.SpecialWarningFlashCol5[1], DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3])
 	flashCheck5:SetChecked(DBM.Options.SpecialWarningFlash5)
 	vibrateCheck5:SetChecked(DBM.Options.SpecialWarningVibrate5)
@@ -514,7 +513,32 @@ resetbutton:SetScript("OnClick", function()
 	if not DBM:IsRestricted() then
 		SpecialWarnSoundDropDown5:SetSelectedValue(DBM.Options.SpecialWarningSound5)
 		check4:SetChecked(DBM.Options.SWarningAlphabetical)
+		check5:SetChecked(DBM.Options.SWarnNameInNote)
 	end
 	DBM:UpdateSpecialWarningOptions()
 	DBM:RefreshSpellRenames()
+end)
+
+local sliders = {
+	{fontSizeSlider, "SpecialWarningFontSize2"}, {durationSlider, "SpecialWarningDuration2"},
+	{flashdurSlider1, "SpecialWarningFlashDura1"}, {flashdurSlider2, "SpecialWarningFlashDura2"},
+	{flashdurSlider3, "SpecialWarningFlashDura3"}, {flashdurSlider4, "SpecialWarningFlashDura4"}, {flashdurSlider5, "SpecialWarningFlashDura5"},
+	{flashdalphaSlider, "SpecialWarningFlashAlph1"}, {flashdalphaSlider2, "SpecialWarningFlashAlph2"},
+	{flashdalphaSlider3, "SpecialWarningFlashAlph3"}, {flashdalphaSlider4, "SpecialWarningFlashAlph4"}, {flashdalphaSlider5, "SpecialWarningFlashAlph5"},
+	{flashRepSlider, "SpecialWarningFlashCount1", true}, {flashRepSlider2, "SpecialWarningFlashCount2", true},
+	{flashRepSlider3, "SpecialWarningFlashCount3", true}, {flashRepSlider4, "SpecialWarningFlashCount4", true}, {flashRepSlider5, "SpecialWarningFlashCount5", true},
+}
+local colors = {
+	{color0, "SpecialWarningFontCol"}, {color1, "SpecialWarningFlashCol1"}, {color2, "SpecialWarningFlashCol2"},
+	{color3, "SpecialWarningFlashCol3"}, {color4, "SpecialWarningFlashCol4"}, {color5, "SpecialWarningFlashCol5"},
+}
+specPanel.frame:HookScript("OnShow", function()
+	for _, entry in ipairs(sliders) do
+		local value = DBM.Options[entry[2]]
+		entry[1]:SetValueSilent(entry[3] and math.floor(value) or value)
+	end
+	for _, entry in ipairs(colors) do
+		local color = DBM.Options[entry[2]]
+		entry[1]:SetColorRGB(color[1], color[2], color[3])
+	end
 end)

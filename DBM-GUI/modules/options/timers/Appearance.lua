@@ -414,6 +414,25 @@ barResetbutton:SetScript("OnClick", function()
 	DBT:ApplyStyle()
 end)
 
+local sliders = {
+	{FontSizeSlider, "FontSize"}, {VarianceAlphaSlider, "VarianceAlpha"},
+	{BarWidthSlider, "Width"}, {BarHeightSlider, "Height"}, {BarScaleSlider, "Scale"}, {saturateSlider, "DesaturateValue"},
+	{BackgroundAlphaSlider, "BackgroundAlpha"}, {BorderSizeSlider, "BorderSize"},
+	{TextOffsetXSlider, "TextXOffset"}, {TextOffsetYSlider, "TextYOffset"},
+	{BarOffsetXSlider, "BarXOffset"}, {BarOffsetYSlider, "BarYOffset"}, {AlphaSlider, "Alpha"},
+}
+local colors = {
+	{color1, "StartColor"}, {color2, "EndColor"}, {varcolor1, "VarColor"},
+	{BackgroundColorSmall, "BackgroundColor"}, {BorderColorSmall, "BorderColor"},
+}
+BarSetupPanel.frame:HookScript("OnShow", function()
+	for _, entry in ipairs(sliders) do entry[1]:SetValueSilent(DBT.Options[entry[2]]) end
+	for _, entry in ipairs(colors) do
+		local prefix = entry[2]
+		entry[1]:SetColorRGB(DBT.Options[prefix .. "R"], DBT.Options[prefix .. "G"], DBT.Options[prefix .. "B"])
+	end
+end)
+
 local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge)
 
 BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
@@ -502,6 +521,21 @@ HugeBarOffsetYSlider.myheight = 0
 local HugeAlphaSlider = BarSetupHuge:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1, 170, DBT.Options.HugeAlpha, createDBTOnValueChangedHandler("HugeAlpha"))
 HugeAlphaSlider:SetPoint("TOPLEFT", HugeBarOffsetYSlider, "BOTTOMLEFT", 0, -35)
 HugeAlphaSlider.myheight = 0
+
+BarSetupHuge.frame:HookScript("OnShow", function()
+	HugeBarWidthSlider:SetValueSilent(DBT.Options.HugeWidth)
+	HugeBarHeightSlider:SetValueSilent(DBT.Options.HugeHeight)
+	HugeBarScaleSlider:SetValueSilent(DBT.Options.HugeScale)
+	HugeBackgroundAlphaSlider:SetValueSilent(DBT.Options.HugeBackgroundAlpha)
+	HugeBorderSizeSlider:SetValueSilent(DBT.Options.HugeBorderSize)
+	HugeTextOffsetXSlider:SetValueSilent(DBT.Options.HugeTextXOffset)
+	HugeTextOffsetYSlider:SetValueSilent(DBT.Options.HugeTextYOffset)
+	HugeBarOffsetXSlider:SetValueSilent(DBT.Options.HugeBarXOffset)
+	HugeBarOffsetYSlider:SetValueSilent(DBT.Options.HugeBarYOffset)
+	HugeAlphaSlider:SetValueSilent(DBT.Options.HugeAlpha)
+	HugeBackgroundColorLarge:SetColorRGB(DBT.Options.HugeBackgroundColorR, DBT.Options.HugeBackgroundColorG, DBT.Options.HugeBackgroundColorB)
+	HugeBorderColorLarge:SetColorRGB(DBT.Options.HugeBorderColorR, DBT.Options.HugeBorderColorG, DBT.Options.HugeBorderColorB)
+end)
 
 local hugeBarResetbutton = BarSetupHuge:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 hugeBarResetbutton:SetPoint("BOTTOMRIGHT", BarSetupHuge.frame, "BOTTOMRIGHT", -2, 4)

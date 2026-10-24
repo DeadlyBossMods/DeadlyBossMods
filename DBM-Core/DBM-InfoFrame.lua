@@ -76,13 +76,15 @@ end
 local frame, initializeDropdown, initializeDropdownLegacy, currentMapId, currentEvent, createFrame
 local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
-local lines, sortedLines, icons, value = {}, {}, {}, {}
+local ownedLines, sortedLines, icons, value = {}, {}, {}, {}
+local lines = ownedLines--Function mode may temporarily borrow a module-owned table.
 -- Only UI handles and public geometry/occupancy belong here, never text payloads.
 local directMode = false
 local displayGeneration = 0
 local directLines, directRows = {}, {}
 local directHeader, directLeftWidth, directRightWidth
 local updateDirectLayout
+local showDirect
 local updateBossDistance
 local bossDistanceThreshold, bossDistanceRangeType
 
@@ -136,7 +138,7 @@ end
 
 local function canUpdateDirect()
 	if not directMode or not frame then return false end
-	if DBM.Options.DontShowInfoFrame then
+	if DBM.Options.DontShowInfoFrame and currentEvent ~= "testbossdistance" then
 		infoFrame:Hide()
 		return false
 	end
@@ -377,7 +379,7 @@ end
 --------------------------
 function updateDirectLayout()
 	if not directMode or not frame then return end
-	if DBM.Options.DontShowInfoFrame then
+	if DBM.Options.DontShowInfoFrame and currentEvent ~= "testbossdistance" then
 		infoFrame:Hide()
 		return
 	end
@@ -518,7 +520,7 @@ end
 
 -- Static in-game layout preview; shares the production geometry without polling boss units.
 local function showBossDistanceTest(modMaxLines)
-	if not infoFrame:ShowDirect(modMaxLines or 2) then return false end
+	if not showDirect(infoFrame, modMaxLines or 2, nil, nil, true) then return false end
 	currentEvent = "testbossdistance"
 	infoFrame:SetDirectHeader(L.INFOFRAME_BOSS_DISTANCE)
 	infoFrame:SetDirectLine(1, "Breath of Ula'tek", L.INFOFRAME_BOSS_DISTANCE_RANGE:format(43, 48), nil, nil, nil, 0, 255, 0)
@@ -597,6 +599,7 @@ end
 
 local function updateIcons()
 	twipe(icons)
+	if DBM:IsRestricted() then return end
 	for uId in DBM:GetGroupMembers() do
 		local icon = GetRaidTargetIndex(uId)
 		local icon2 = GetRaidTargetIndex(uId .. "target")
@@ -1104,8 +1107,10 @@ local function updateByFunction()
 	local func = value[1]
 	local sortFunc = value[2]
 	local useIcon = value[3]
-	local presortedLines
-	lines, presortedLines = func()
+	local generation = displayGeneration
+	local result, presortedLines = func()
+	if generation ~= displayGeneration then return end
+	lines = result
 	if sortFunc then
 		if type(sortFunc) == "function" then
 			updateLinesCustomSort(sortFunc)
@@ -1229,8 +1234,10 @@ local midnightRestrictedEvents = {
 	["playergooddebuff"] = true,
 	["playerbaddebuff"] = true,
 	["reverseplayerbaddebuff"] = true,
-	["playerdebuffstacks"] = true
-
+	["playerdebuffremaining"] = true,
+	["playerbuffstacks"] = true,
+	["playerdebuffstacks"] = true,
+	["playertargets"] = true
 }
 
 ----------------
@@ -1252,8 +1259,13 @@ local friendlyEvents = {
 	["playertargets"] = true
 }
 
-local function onUpdate(frame, table)
+local function onUpdate(frame, table, scheduledGeneration)
+	if scheduledGeneration and scheduledGeneration ~= displayGeneration then return end
 	if directMode or not currentEvent then return end
+	if DBM.Options.DontShowInfoFrame and not currentEvent:find("test") then
+		infoFrame:Hide()
+		return
+	end
 	local generation = displayGeneration
 	if events[currentEvent] then
 		events[currentEvent](table)
@@ -1419,12 +1431,24 @@ function infoFrame:Show(modMaxLines, event, ...)
 	if DBM.Options.DontShowInfoFrame and not (event or ""):find("test") then
 		return
 	end
+	-- Check aliases before refusing a mode or retiring the current display.
+	local bySpellId = event and event:find("byspellid")
+	if bySpellId then
+		event = event:gsub("byspellid", "")
+	end
 	if midnightRestrictedEvents[event] and DBM:IsRestricted() then
 		return
 	end
 	stopBossDistance()
 	displayGeneration = displayGeneration + 1
 	local generation = displayGeneration
+	DBM:Unschedule(onUpdate)
+	if frame and frame.ticker then
+		frame.ticker:Cancel()
+		frame.ticker = nil
+	end
+	lines = ownedLines
+	twipe(lines)
 	if directMode then
 		clearDirectDisplay()
 		directMode = false
@@ -1453,8 +1477,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 		createFrame()
 	end
 	-- Orders event to use spellID no matter what and not spell name
-	if event:find("byspellid") then
-		event = event:gsub("byspellid", "") -- Strip off the byspellid, it served it's purpose, it simply told infoframe to not convert to spellName
+	if bySpellId then
 		if type(value[1]) ~= "number" then
 			error("DBM-InfoFrame: byspellid method must use spellId", 2)
 			return
@@ -1509,7 +1532,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 	if generation ~= displayGeneration then return end
 	if not frame.ticker and not value[4] and event ~= "table" then
 		frame.ticker = C_Timer.NewTicker(0.5, function()
-			onUpdate(frame)
+			onUpdate(frame, nil, generation)
 		end)
 	elseif frame.ticker and value[4] then -- Redundancy, in event calling a non onupdate infoframe show without a hide event to unschedule ticker based infoframe
 		frame.ticker:Cancel()
@@ -1521,9 +1544,10 @@ end
 ---@param modMaxLines integer? Rows per column (subject to user preferences)
 ---@param leftWidth number? Public pixel width; defaults to 12 times font size
 ---@param rightWidth number? Public pixel width; defaults to 8 times font size
+---@param preview boolean? Only the built-in static preview may bypass disabling
 ---@return boolean visible
-function infoFrame:ShowDirect(modMaxLines, leftWidth, rightWidth)
-	if DBM.Options.DontShowInfoFrame then
+function showDirect(self, modMaxLines, leftWidth, rightWidth, preview)
+	if DBM.Options.DontShowInfoFrame and not preview then
 		if directMode then self:Hide() end
 		return false
 	end
@@ -1542,11 +1566,12 @@ function infoFrame:ShowDirect(modMaxLines, leftWidth, rightWidth)
 	end
 	clearDirectDisplay()
 	-- Detach instead of wiping: function-mode tables may belong to the module.
-	lines = {}
+	lines = ownedLines
+	twipe(lines)
 	twipe(sortedLines)
 	twipe(icons)
 	twipe(value)
-	currentEvent = nil
+	currentEvent = preview and "testbossdistance" or nil
 	for _, line in ipairs(frame.lines) do
 		line:SetText("")
 		line:Hide()
@@ -1568,6 +1593,14 @@ function infoFrame:ShowDirect(modMaxLines, leftWidth, rightWidth)
 	directHeader:Show()
 	directHeader:SetText(L.INFOFRAME_TITLE)
 	return true
+end
+
+---@param modMaxLines integer?
+---@param leftWidth number?
+---@param rightWidth number?
+---@return boolean visible
+function infoFrame:ShowDirect(modMaxLines, leftWidth, rightWidth)
+	return showDirect(self, modMaxLines, leftWidth, rightWidth)
 end
 
 -- Text is forwarded verbatim, including nil. Never inspect, cache, or schedule either cell.
@@ -1651,7 +1684,7 @@ function infoFrame:Update(time)
 	if frame:IsShown() then
 		if time then
 			DBM:Unschedule(onUpdate)
-			DBM:Schedule(time, onUpdate, frame)
+			DBM:Schedule(time, onUpdate, frame, nil, displayGeneration)
 		else
 			onUpdate(frame)
 		end
@@ -1666,7 +1699,7 @@ function infoFrame:UpdateTable(table, time)
 	if frame:IsShown() and table then
 		if time then
 			DBM:Unschedule(onUpdate)
-			DBM:Schedule(time, onUpdate, frame, table)
+			DBM:Schedule(time, onUpdate, frame, table, displayGeneration)
 		else
 			onUpdate(frame, table)
 		end
@@ -1756,6 +1789,7 @@ function infoFrame:Hide()
 	clearDirectDisplay()
 	directMode = false
 	directLeftWidth, directRightWidth = nil, nil
+	lines = ownedLines
 	twipe(lines)
 	twipe(icons)
 	twipe(sortedLines)
@@ -1772,6 +1806,12 @@ function infoFrame:Hide()
 	end
 	currentEvent = nil
 	sortMethod = 1
+end
+
+function infoFrame:SyncOptions()
+	if DBM.Options.DontShowInfoFrame and (directMode and not currentEvent or currentEvent and not currentEvent:find("test")) then
+		self:Hide()
+	end
 end
 
 function infoFrame:SetLines(lines)
