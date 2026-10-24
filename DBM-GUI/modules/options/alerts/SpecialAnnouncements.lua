@@ -14,8 +14,8 @@ local check2 = specArea:CreateCheckButton(L.SpecialWarningIcon, true, nil, "Spec
 local check4, check5, check6
 if not DBM:IsRestricted() then
 	check4 = specArea:CreateCheckButton(L.WarningAlphabetical, true, nil, "SWarningAlphabetical")
-	check5 = specArea:CreateCheckButton(L.SWarnNameInNote, true, nil, "SWarnNameInNote")
 end
+check5 = specArea:CreateCheckButton(L.SWarnNameInNote, true, nil, "SWarnNameInNote")
 check6 = specArea:CreateCheckButton(L.ShortTextSpellname, true, nil, "SpecialWarningShortText")
 check6:HookScript("OnClick", function()
 	DBM:RefreshSpellRenames()
@@ -471,6 +471,7 @@ resetbutton:SetScript("OnClick", function()
 	-- Set UI visuals
 	check1:SetChecked(DBM.Options.ShowSWarningsInChat)
 	check2:SetChecked(DBM.Options.SpecialWarningIcon)
+	check5:SetChecked(DBM.Options.SWarnNameInNote)
 	check6:SetChecked(DBM.Options.SpecialWarningShortText)
 	FontDropDown:SetSelectedValue(DBM.Options.SpecialWarningFont)
 	FontStyleDropDown:SetSelectedValue(DBM.Options.SpecialWarningFontStyle)
@@ -513,7 +514,6 @@ resetbutton:SetScript("OnClick", function()
 	if not DBM:IsRestricted() then
 		SpecialWarnSoundDropDown5:SetSelectedValue(DBM.Options.SpecialWarningSound5)
 		check4:SetChecked(DBM.Options.SWarningAlphabetical)
-		check5:SetChecked(DBM.Options.SWarnNameInNote)
 	end
 	DBM:UpdateSpecialWarningOptions()
 	DBM:RefreshSpellRenames()
