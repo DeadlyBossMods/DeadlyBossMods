@@ -1203,7 +1203,7 @@ end
 
 --Unused function?
 function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
-	if not self:Enable() then return rejectedMarker end
+	if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then return rejectedMarker end
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1219,7 +1219,7 @@ end
 
 --Unused function?
 function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
-	if not self:Enable() then return rejectedMarker end
+	if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then return rejectedMarker end
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1293,7 +1293,7 @@ end
 ---@param a number? Alpha 0-1
 ---@param blend texBlending|string|nil Blend mode in texBlending or string or nil to default to BLEND
 function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend)
-	if not self:Enable() then return rejectedMarker end
+	if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then return rejectedMarker end
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1325,7 +1325,7 @@ end
 ---@param a number? Alpha 0-1
 ---@param blend texBlending|string|nil Blend mode in texBlending or string or nil to default to BLEND
 function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend)
-	if not self:Enable() then return rejectedMarker end
+	if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then return rejectedMarker end
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then

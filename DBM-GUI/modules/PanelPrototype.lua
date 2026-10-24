@@ -200,7 +200,14 @@ function PanelPrototype:CreateButton(title, width, height, onclick, font, highli
 	return button
 end
 
-local colorPickerOwner
+local colorPickerSession
+local function releaseColorPicker(session)
+	if colorPickerSession ~= session then return end
+	colorPickerSession = nil
+	if ColorPickerFrame:GetScript("OnHide") == session.onHide then
+		ColorPickerFrame:SetScript("OnHide", session.previousOnHide)
+	end
+end
 
 function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	local colorSelect = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
@@ -267,33 +274,46 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 		local options, barOptions = DBM.Options, DBT.Options
 		self.pickerGeneration = self.pickerGeneration + 1
 		local generation = self.pickerGeneration
-		colorPickerOwner = self
+		local session = {owner = self, previousOnHide = ColorPickerFrame:GetScript("OnHide")}
+		colorPickerSession = session
 		local function applyColor(r, g, b)
-			if colorPickerOwner ~= self or generation ~= self.pickerGeneration or options ~= DBM.Options or barOptions ~= DBT.Options then return end
+			if colorPickerSession ~= session or ColorPickerFrame.swatchFunc ~= session.swatchFunc or ColorPickerFrame.cancelFunc ~= session.cancelFunc
+				or generation ~= self.pickerGeneration or options ~= DBM.Options or barOptions ~= DBT.Options then return end
 			colorCallback(self, r, g, b)
 			generation = self.pickerGeneration
 		end
+		session.swatchFunc = function()
+			local r, g, b = ColorPickerFrame:GetColorRGB()
+			applyColor(r, g, b)
+		end
+		session.cancelFunc = function()
+			applyColor(r1, g1, b1)
+			releaseColorPicker(session)
+		end
+		-- Okay also uses swatchFunc; completion is the subsequent native hide.
+		-- Restore the original handler rather than leaving an idle global hook.
+		session.onHide = function(...)
+			releaseColorPicker(session)
+			if session.previousOnHide then session.previousOnHide(...) end
+		end
+		ColorPickerFrame:SetScript("OnHide", session.onHide)
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 		ColorPickerFrame:SetFrameLevel(self:GetFrameLevel() + 10)
 		ColorPickerFrame:SetClampedToScreen(true)
 		ColorPickerFrame:SetupColorPickerAndShow({
-			swatchFunc = function()
-				local r, g, b = ColorPickerFrame:GetColorRGB()
-				applyColor(r, g, b)
-			end,
-			cancelFunc = function()
-				applyColor(r1, g1, b1)
-				if colorPickerOwner == self and generation == self.pickerGeneration then colorPickerOwner = nil end
-			end,
+			swatchFunc = session.swatchFunc,
+			cancelFunc = session.cancelFunc,
 			r = self.r,
 			g = self.g,
 			b = self.b
 		})
 	end)
 	colorSelect:SetScript("OnHide", function(self)
-		if colorPickerOwner == self then
-			colorPickerOwner = nil
-			ColorPickerFrame:Hide()
+		local session = colorPickerSession
+		if session and session.owner == self then
+			local ownsPicker = ColorPickerFrame.swatchFunc == session.swatchFunc and ColorPickerFrame.cancelFunc == session.cancelFunc
+			releaseColorPicker(session)
+			if ownsPicker then ColorPickerFrame:Hide() end
 		end
 	end)
 
