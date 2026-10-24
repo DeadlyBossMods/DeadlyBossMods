@@ -5008,7 +5008,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	--We have both units. No need to find unitID
 	if enemyUnitID then
 		--Check threat first
-		if private.isRetail then
+		if private.isRetail or private.isForever then
 			--UnitDetailedThreatSituation is secret on retail even if you only read bool value
 			status = UnitThreatSituation(playerUnitID, enemyUnitID)
 		else
@@ -5043,7 +5043,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 					--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
 					if not enemyGUID or (guid and guid == enemyGUID) then
 						--Check threat first
-						if private.isRetail then
+						if private.isRetail or private.isForever then
 							--UnitDetailedThreatSituation is secret on retail even if you only read bool value
 							status = UnitThreatSituation(playerUnitID, unitID)
 						else
