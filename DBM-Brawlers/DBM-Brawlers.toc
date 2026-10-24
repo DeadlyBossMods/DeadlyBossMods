@@ -1,4 +1,4 @@
-## Interface: 120100, 120105
+## Interface: 120105, 120107
 ## AllowLoadGameType: standard
 ## Category: DBM
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cff4565ffBrawlers|r

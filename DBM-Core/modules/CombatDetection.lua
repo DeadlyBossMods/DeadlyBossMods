@@ -671,6 +671,31 @@ do
 	---@param confirmTime number?
 	function checkWipe(self, confirm, confirmTime)
 		if #inCombat > 0 then
+			-- New-zone combat (especially delves) must not keep an old encounter armed.
+			local currentArea = self:GetCurrentArea()
+			local validArea = type(currentArea) == "number" and currentArea >= 0
+			local currentZoneCombat = false
+			for i = #inCombat, 1, -1 do
+				local mod = inCombat[i]
+				if mod.engagedArea and validArea and mod.engagedArea ~= currentArea then
+					if not mod.leftCombatAreaAt then
+						mod.leftCombatAreaAt = GetTime()
+					elseif GetTime() - mod.leftCombatAreaAt > mmax(5, mod.combatInfo.wipeTimer or 0) then
+						if not mod.noStatistics then
+							self:Debug("You wiped. Reason : Left encounter zone " .. mod.engagedArea .. " for " .. currentArea)
+						end
+						self:EndCombat(mod, true, nil, "checkWipe")
+					end
+				else
+					mod.leftCombatAreaAt = nil
+					currentZoneCombat = true
+				end
+			end
+			if #inCombat == 0 then return end
+			if not currentZoneCombat then
+				self:Schedule(3, checkWipe, self)
+				return
+			end
 			difficulties:RefreshCache()
 			--hack for no iEEU information is provided.
 			if not bossuIdFound then
@@ -715,10 +740,15 @@ do
 				if timeSinceValid > confirmTime then
 					for i = #inCombat, 1, -1 do
 						local mod = inCombat[i]
-						if not mod.noStatistics then
-							self:Debug("You wiped. Reason : " .. (wipe == 1 and "No combat unit found in your party." or "No boss found : " .. (wipe or "nil")))
+						if not mod.leftCombatAreaAt then
+							if not mod.noStatistics then
+								self:Debug("You wiped. Reason : " .. (wipe == 1 and "No combat unit found in your party." or "No boss found : " .. (wipe or "nil")))
+							end
+							self:EndCombat(mod, true, nil, "checkWipe")
 						end
-						self:EndCombat(mod, true, nil, "checkWipe")
+					end
+					if #inCombat > 0 then
+						self:Schedule(3, checkWipe, self)
 					end
 				else--Have not reached required out of combat time yet, check again every 3 seconds until we do
 					self:Schedule(3, checkWipe, self, true, confirmTime)
@@ -726,7 +756,9 @@ do
 			else
 				local maxDelayTime = (difficulties.savedDifficulty == "worldboss" and 15) or 5 --wait 10s more on worldboss do actual wipe.
 				for _, v in ipairs(inCombat) do
-					maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
+					if not v.leftCombatAreaAt then
+						maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
+					end
 				end
 				self:Schedule(3, checkWipe, self, true, maxDelayTime)
 			end
@@ -848,6 +880,14 @@ do
 			mod.engagedDiffText = difficulties.difficultyText
 			mod.engagedDiffIndex = difficulties.difficultyIndex
 			mod.engagedDiffModifier = difficulties.difficultyModifier
+			mod.engagedArea = nil
+			mod.leftCombatAreaAt = nil
+			if private.isRetail and (private.LastInstanceType == "raid" or private.LastInstanceType == "party") and difficulties.savedDifficulty ~= "worldboss" and not (mod.addon and mod.addon.type == "SCENARIO") then
+				local currentArea = self:GetCurrentArea()
+				if type(currentArea) == "number" and currentArea >= 0 then
+					mod.engagedArea = currentArea
+				end
+			end
 			mod.inCombat = true
 			if self.UpdateGenericTrashOptions then
 				self:UpdateGenericTrashOptions(true)
@@ -1410,6 +1450,8 @@ do
 			mod.engagedDiffText = nil
 			mod.engagedDiffIndex = nil
 			mod.engagedDiffModifier = nil
+			mod.engagedArea = nil
+			mod.leftCombatAreaAt = nil
 			mod.vb.stageTotality = nil
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDisabled, private.chatBubblesDisabled = false, false, false, false
