@@ -24,9 +24,9 @@ local UnitPosition, GetTime = UnitPosition, GetTime
 --------------------
 --  Create Frame  --
 --------------------
----@class DBMArrowFrame: Button
+---@type DBMArrowFrame
 local frame
----@class DBMArrowTextFrame: Frame
+---@type DBMArrowTextFrame
 local textframe
 local arrow
 
@@ -188,6 +188,7 @@ end
 
 local function ensureFrame()
 	if frame then return end
+	---@class DBMArrowFrame: Button
 	frame = CreateFrame("Button", "DBMArrow", UIParent)
 	frame:Hide()
 	frame:SetFrameStrata("HIGH")
@@ -205,6 +206,7 @@ local function ensureFrame()
 		DBM.Options.ArrowPosX = x
 		DBM.Options.ArrowPosY = y
 	end)
+	---@class DBMArrowTextFrame: Frame
 	textframe = CreateFrame("Frame", nil, frame)
 	frame.distance = textframe:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
 	frame.title = textframe:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")

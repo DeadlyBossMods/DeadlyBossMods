@@ -19,7 +19,7 @@ local abs, pow, sqrt, sin, cos, atan2, floor, ceil, min, max, pi2 = math.abs, ma
 local error, next = error, next
 
 local CallbackHandler = _G["LibStub"]:GetLibrary("CallbackHandler-1.0")
----@class DBMMHudMapUpdateFrame: Frame
+---@type DBMMHudMapUpdateFrame
 local updateFrame
 local fixedOnUpdateRate = 0.03
 local onUpdate, Point, Edge
@@ -158,6 +158,7 @@ local function ensureFrames()
 	canvas:SetSize(WorldFrame:GetWidth(), WorldFrame:GetHeight())
 	canvas:SetPoint("CENTER")
 	canvas:Hide()
+	---@class DBMMHudMapUpdateFrame: Frame
 	updateFrame = CreateFrame("Frame", "DBMHudMapUpdateFrame")
 	updateFrame:Hide()
 end
