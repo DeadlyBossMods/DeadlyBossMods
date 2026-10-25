@@ -679,7 +679,12 @@ do
 	local function timersStory(self, timer, timerExact, eventID)
 		local handled = false
 		local stage = self:GetStage()
-		if stage == 1 then
+		if stage == 1 and stage2Pending and timer == 10 then--The intermission event can arrive just before boss1 becomes untargetable
+			stage2Pending = false
+			self:SetStage(2.5)
+			startSpectralCoilsTimer(self, timerExact, eventID)
+			handled = true
+		elseif stage == 1 then
 			if timer == 55 then
 				timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
 			elseif timer == 3 then--1304527 initial Gore Rattle
@@ -938,10 +943,10 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
+			if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 			if self:IsStory() then
 				timersStory(self, timer, timerExact, eventID)
 			elseif self:IsLFR() then
-				if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 				timersLFR(self, timer, timerExact, eventID)
 			elseif self:IsHeroic() then
 				timersHeroic(self, timer, timerExact, eventID)
