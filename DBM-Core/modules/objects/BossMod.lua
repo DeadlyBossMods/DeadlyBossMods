@@ -35,7 +35,7 @@ local mt = {__index = bossModPrototype}
 ---@field Options table<string, any>
 ---@field DefaultOptions table<string, any>
 ---@field stats ModStats
----@field registeredUnitEvents table<string, boolean>?
+---@field registeredUnitEvents table<string, integer>?
 ---@field bossHealthUpdateTime number?
 ---@field isTrashModBossFightAllowed boolean? Used to flag a trash mod that is continue firing events during a boss fight (should be true in all M+ mods)
 ---@field respawnTime number? Time until the boss respawns after ENCOUNTER_END event

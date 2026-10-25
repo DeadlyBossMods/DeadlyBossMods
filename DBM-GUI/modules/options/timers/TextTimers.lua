@@ -113,7 +113,7 @@ local function refreshControls()
 	fontColor:SetColorRGB(options.TextTimersFontR, options.TextTimersFontG, options.TextTimersFontB)
 	urgent:SetColorRGB(options.TextTimersUrgentR, options.TextTimersUrgentG, options.TextTimersUrgentB)
 	for _, entry in ipairs(sliders) do
-		entry[1]:SetValue(options[entry[2]])
+		entry[1]:SetValueSilent(options[entry[2]])
 	end
 	iconPosition:SetSelectedValue(options.TextTimersIconPosition)
 	growDirection:SetSelectedValue(options.TextTimersGrowDirection)

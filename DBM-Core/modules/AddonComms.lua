@@ -3,6 +3,7 @@ local private = select(2, ...)
 
 ---@class DBM
 local DBM = DBM
+local AddMsg = private.AddMsg
 
 local L = DBM_CORE_L
 local CL = DBM_COMMON_L
@@ -372,11 +373,11 @@ do
 						if DBM.HighestRelease >= modHFRevision and DBM.ReleaseRevision < modHFRevision then
 							private.showConstantReminder = 2
 							if DBM:AntiSpam(3, "HOTFIX") then
-								DBM:AddMsg(L.UPDATEREMINDER_HOTFIX)
+								AddMsg(DBM, L.UPDATEREMINDER_HOTFIX)
 							end
 						else--This mods fixes are in an alpha version
 							if DBM:AntiSpam(3, "HOTFIX") then
-								DBM:AddMsg(L.UPDATEREMINDER_HOTFIX_ALPHA)
+								AddMsg(DBM, L.UPDATEREMINDER_HOTFIX_ALPHA)
 							end
 						end
 					end
@@ -537,8 +538,8 @@ do
 					end
 					--Find min revision.
 					private.updateNotificationDisplayed = 2
-					DBM:AddMsg(L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
-					DBM:AddMsg(L.UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, DBM:ShowRealDate(version)))
+					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
+					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, DBM:ShowRealDate(version)))
 					private.showConstantReminder = 1
 				elseif #newerVersionPerson >= 3 and private.updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adequate
 					--Disable if out of date and at least 3 players sent a higher forceDisable revision
@@ -583,7 +584,7 @@ do
 				if #newersubVersionPerson == 2 and updateSubNotificationDisplayed < 2 then--Only requires 2 for update notification.
 					updateSubNotificationDisplayed = 2
 					local checkedSubmodule = isMop and "DBM-Raids-MoP" or isCata and "DBM-Raids-Cata" or isWrath and "DBM-Raids-WoTLK" or isBCC and "DBM-Raids-BC" or "DBM-Raids-Vanilla"
-					DBM:AddMsg(L.UPDATEREMINDER_HEADER_SUBMODULE:match("\n(.*)"):format(checkedSubmodule, classicSubVers))
+					AddMsg(DBM, L.UPDATEREMINDER_HEADER_SUBMODULE:match("\n(.*)"):format(checkedSubmodule, classicSubVers))
 					private.showConstantReminder = 1
 				end
 			end

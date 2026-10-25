@@ -341,7 +341,6 @@ L.SLASHCMD_HELP2						= {
 	"/dbm version: Performs a boss mod version check (alias: ver).",
 	"/dbm version2: Performs a boss mod version check that also whispers out of date users (alias: ver2).",
 	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",
-	"/hudar <number>: Shows HUD based range finder.",
 	"/dbm arrow: Shows the " .. L.DBM .. " arrow, see '/dbm arrow help' for details.",
 	"/dbm hud: Shows the " .. L.DBM .. " hud, see '/dbm hud' for details.",
 	"/dbm dbtdebug: Shows sanitized status bar timer diagnostics for bug reports."

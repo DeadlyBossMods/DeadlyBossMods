@@ -309,7 +309,6 @@ L.SLASHCMD_HELP2				= {
 	"/dbm version: Führt eine Boss Mod Versionsprüfung durch (Alias: ver).",
 	"/dbm version2: Führt eine Boss Mod Versionsprüfung durch und flüstert Nutzer mit veralteten Versionen an (Alias: ver2).",
 	"/range <number> oder /distance <number>: Zeige Abstandsfenster. /rrange oder /rdistance um die Farben zu invertieren.",
-	"/hudar <number>: Zeige HudMap-basierenden Abstandssucher.",
 	"/dbm arrow: Zeigt den DBM-Pfeil, siehe '/dbm arrow help' für Details.",
 	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details.",
 	"/dbm dbtdebug: Zeigt bereinigte Statusleisten-Diagnosen für Fehlerberichte."

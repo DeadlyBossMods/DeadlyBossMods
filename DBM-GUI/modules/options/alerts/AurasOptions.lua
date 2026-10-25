@@ -380,6 +380,7 @@ local coTankAuraVisibility = coTankAuraArea:CreateDropdown(L.CoTankVisibility, c
 	DBM.Options.PrivateAurasCoTankEnabled3 = value
 	OnAuraSettingsChange(false)
 end)
+
 coTankAuraVisibility:SetPoint("TOPLEFT", coTankAuraArea.frame, "TOPLEFT", 15, -35)
 coTankAuraVisibility.myheight = 90
 local coTankAuraSecond	= coTankAuraArea:CreateCheckButton(L.ShowSecondCoTank, true, nil, "PrivateAurasCoTankShowSecond")
@@ -823,4 +824,35 @@ coTankAdvancedReset:SetScript("OnClick", function()
 		coTankSlot2Player:RefreshLazyValues()
 		coTankSlot2Player:SetSelectedValue(DBM.Options.PrivateAurasCoTankSlot2Player)
 	OnAuraSettingsChange(false)
+end)
+
+coTankAdvancedArea.frame:HookScript("OnShow", function()
+	coTankNameFontSize:SetValueSilent(DBM.Options.PrivateAurasCoTankNameFontSize)
+	coTankNameXOffset:SetValueSilent(DBM.Options.PrivateAurasCoTankNameXOffset)
+	coTankNameYOffset:SetValueSilent(DBM.Options.PrivateAurasCoTankNameYOffset)
+end)
+
+local sliders = {
+	{personalSpacing, "PrivateAurasPlayerSpacing2"}, {personalAuraIconScale, "PrivateAurasPlayerWidth"},
+	{personalAuraMaxIcons, "PrivateAurasPlayerLimit"}, {personalAuraIconZoom, "PrivateAurasPlayerIconZoom", 100},
+	{personalAuraDurationFontSize, "PrivateAurasPlayerDurationFontSize"}, {personalAuraDecimalThreshold, "PrivateAurasPlayerDecimalThreshold"},
+	{personalAuraDurationEmphasizeThreshold, "PrivateAurasPlayerDurationEmphasizeThreshold"}, {personalAuraStackFontSize, "PrivateAurasPlayerStackFontSize"},
+	{personalAuraStackXOffset, "PrivateAurasPlayerStackXOffset"}, {personalAuraStackYOffset, "PrivateAurasPlayerStackYOffset"},
+	{coTankSpacing, "PrivateAurasCoTankSpacing2"}, {coTankIconScale, "PrivateAurasCoTankWidth"},
+	{coTankAuraMaxIcons, "PrivateAurasCoTankLimit"}, {coTankAuraIconZoom, "PrivateAurasCoTankIconZoom", 100},
+	{coTankAuraDurationFontSize, "PrivateAurasCoTankDurationFontSize"}, {coTankAuraDecimalThreshold, "PrivateAurasCoTankDecimalThreshold"},
+	{coTankAuraDurationEmphasizeThreshold, "PrivateAurasCoTankDurationEmphasizeThreshold"}, {coTankAuraStackFontSize, "PrivateAurasCoTankStackFontSize"},
+	{coTankAuraStackXOffset, "PrivateAurasCoTankStackXOffset"}, {coTankAuraStackYOffset, "PrivateAurasCoTankStackYOffset"},
+}
+local colors = {
+	{personalAuraDurationColor, "PrivateAurasPlayerDurationColor"}, {personalAuraDurationEmphasizeColor, "PrivateAurasPlayerDurationEmphasizeColor"},
+	{personalAuraStackColor, "PrivateAurasPlayerStackColor"}, {coTankAuraDurationColor, "PrivateAurasCoTankDurationColor"},
+	{coTankAuraDurationEmphasizeColor, "PrivateAurasCoTankDurationEmphasizeColor"}, {coTankAuraStackColor, "PrivateAurasCoTankStackColor"},
+}
+auraPanel.frame:HookScript("OnShow", function()
+	for _, entry in ipairs(sliders) do entry[1]:SetValueSilent(DBM.Options[entry[2]] * (entry[3] or 1)) end
+	for _, entry in ipairs(colors) do
+		local color = DBM.Options[entry[2]]
+		entry[1]:SetColorRGB(color.r, color.g, color.b)
+	end
 end)

@@ -15,6 +15,8 @@ local bossuIdCache = {}
 --UNIT_TARGET scanning method table
 local unitScanCount = 0
 local unitMonitor = {}
+local eventsRegistered
+local repeatedScans = {}
 
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
@@ -23,8 +25,18 @@ function module:OnModuleEnd()
 	twipe(targetScanCount)
 	twipe(filteredTargetCache)
 	twipe(bossuIdCache)
+	for uId, monitor in pairs(unitMonitor) do
+		monitor.mod:UnscheduleMethod("BossUnitTargetScannerAbort", uId)
+	end
+	self:UnregisterShortTermEvents()
+	eventsRegistered = nil
 	unitScanCount = 0
 	twipe(unitMonitor)
+	for mod, scans in pairs(repeatedScans) do
+		for returnFunc in pairs(scans) do
+			mod:StopRepeatedScan(returnFunc)
+		end
+	end
 end
 
 do
@@ -166,12 +178,13 @@ do
 		end
 		--Hard return filter target, with no other checks like tank or hostility if final scan and cache exists
 		if filteredTargetCache[cidOrGuid] and isFinalScan then
+			local scanningTime = targetScanCount[cidOrGuid] * scanInterval
+			local result = filteredTargetCache[cidOrGuid]
 			targetScanCount[cidOrGuid] = nil
-			self:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)--Unschedule all checks just to be sure none are running, we are done.
-			local scanningTime = (targetScanCount[cidOrGuid] or 1) * scanInterval
-			self[returnFunc](self, filteredTargetCache[cidOrGuid].targetname, filteredTargetCache[cidOrGuid].targetuid, bossuid, scanningTime)--Return results to warning function with all variables.
-			DBM:Debug("BossTargetScanner has ended for "..cidOrGuid, 2)
 			filteredTargetCache[cidOrGuid] = nil
+			self:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)--Unschedule all checks just to be sure none are running, we are done.
+			self[returnFunc](self, result.target, result.targetuid, bossuid, scanningTime)--Return results to warning function with all variables.
+			DBM:Debug("BossTargetScanner has ended for "..cidOrGuid, 2)
 		--Perform normal scan criteria matching
 		elseif targetname and targetuid and targetname ~= CL.UNKNOWN and (not targetFilter or (targetFilter and targetFilter ~= targetname)) then
 			if not IsInGroup() then scanTimes = 1 end--Solo, no reason to keep scanning, give faster warning. But only if first scan is actually a valid target, which is why i have this check HERE
@@ -182,13 +195,13 @@ do
 					self:BossTargetScanner(cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, true, targetFilter, tankFilter, onlyPlayers, filterFallback)
 				end
 			else--Scan success. (or failed to detect right target.) But some spells can be used on tanks, anyway warns tank if player scan. (enemy scan block it)
+				local scanningTime = targetScanCount[cidOrGuid] * scanInterval
 				targetScanCount[cidOrGuid] = nil--Reset count for later use.
+				filteredTargetCache[cidOrGuid] = nil
 				self:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)--Unschedule all checks just to be sure none are running, we are done.
 				if (tankFilter and self:IsTanking(targetuid, bossuid, nil, true)) or (isFinalScan and isEnemyScan) or onlyPlayers and DBM:IsNonPlayableGUID(UnitGUID(targetuid)) then return end--If enemyScan and playerDetected, return nothing
-				local scanningTime = (targetScanCount[cidOrGuid] or 1) * scanInterval
 				self[returnFunc](self, targetname, targetuid, bossuid, scanningTime)--Return results to warning function with all variables.
 				DBM:Debug("BossTargetScanner has ended for "..cidOrGuid, 2)
-				filteredTargetCache[cidOrGuid] = nil
 			end
 		--target was nil, lets schedule a rescan here too.
 		else
@@ -207,7 +220,36 @@ end
 
 do
 	--UNIT_TARGET Target scanning method
-	local eventsRegistered = false
+	local function updateUnitTargetEvents()
+		local event
+		if unitScanCount > 0 then
+			event = "UNIT_TARGET boss1 boss2 boss3 boss4 boss5"
+			for _, monitor in pairs(unitMonitor) do
+				if not monitor.bossOnly then
+					event = "UNIT_TARGET_UNFILTERED"
+					break
+				end
+			end
+		end
+		if event ~= eventsRegistered then
+			module:UnregisterShortTermEvents()
+			eventsRegistered = event
+			if event then
+				module:RegisterShortTermEvents(event)
+			end
+		end
+	end
+
+	local function removeUnitMonitor(uId)
+		local monitor = unitMonitor[uId]
+		if monitor then
+			unitMonitor[uId] = nil
+			unitScanCount = unitScanCount - 1
+			monitor.mod:UnscheduleMethod("BossUnitTargetScannerAbort", uId)
+			updateUnitTargetEvents()
+		end
+		return monitor
+	end
 	--Validate target is in group (I'm not sure why i actually required this since I didn't comment code when I added requirement, so I leave it for now)
 	--If I determine this check isn't needed and it continues to be a problem i'll kill it off.
 	--For now, I'll have check be smart and switch between raid and party and just disable when solo
@@ -225,7 +267,8 @@ do
 		DBM:Debug("UNIT_TARGET_UNFILTERED fired for :"..uId, 3)
 		if unitMonitor[uId] and UnitExists(uId.."target") and validateGroupTarget(uId.."target") then
 			DBM:Debug("unitMonitor for this unit exists, target exists in group", 2)
-			local modId, returnFunc = unitMonitor[uId].modid, unitMonitor[uId].returnFunc
+			local mod, returnFunc = unitMonitor[uId].mod, unitMonitor[uId].returnFunc
+			local modId = mod.id
 			DBM:Debug("unitMonitor: "..modId..", "..uId..", "..returnFunc, 2)
 			if not unitMonitor[uId].allowTank then
 				local tanking, status = UnitDetailedThreatSituation(uId, uId.."target")--Tanking may return 0 if npc is temporarily looking at an NPC (IE fracture) but status will still be 3 on true tank
@@ -234,16 +277,9 @@ do
 					return
 				end
 			end
-			local mod = DBM:GetModByName(modId)--The whole reason we store modId in unitMonitor,
 			DBM:Debug("unitMonitor success for this unit, a valid target for returnFunc", 2)
+			removeUnitMonitor(uId)
 			mod[returnFunc](mod, DBM:GetUnitFullName(uId.."target"), uId.."target", uId)--Return results to warning function with all variables.
-			unitMonitor[uId] = nil
-			unitScanCount = unitScanCount - 1
-		end
-		if unitScanCount == 0 then--Out of scans
-			eventsRegistered = false
-			self:UnregisterShortTermEvents()
-			DBM:Debug("All target scans complete, unregistering events", 2)
 		end
 	end
 	module.UNIT_TARGET = module.UNIT_TARGET_UNFILTERED
@@ -252,21 +288,24 @@ do
 	---@param uId string?
 	function bossModPrototype:BossUnitTargetScannerAbort(uId)
 		if not uId then--Not called with unit, means mod requested to clear all used units
-			DBM:Debug("BossUnitTargetScannerAbort called without unit, clearing all unitMonitor units", 2)
-			twipe(unitMonitor)
-			unitScanCount = 0
+			for unit, monitor in pairs(unitMonitor) do
+				if monitor.mod == self then
+					removeUnitMonitor(unit)
+				end
+			end
 			return
 		end
+		local monitor = unitMonitor[uId]
+		if not monitor or monitor.mod ~= self then return end
+		removeUnitMonitor(uId)
 		--If tank is allowed, return current target when scan ends no matter what.
-		if unitMonitor[uId] and (unitMonitor[uId].allowTank or not IsInGroup()) and validateGroupTarget(uId.."target") then
+		if (monitor.allowTank or not IsInGroup()) and UnitExists(uId.."target") and validateGroupTarget(uId.."target") then
 			DBM:Debug("unitMonitor unit exists, allowTank target exists", 2)
-			local modId, returnFunc = unitMonitor[uId].modid, unitMonitor[uId].returnFunc
+			local modId, returnFunc = self.id, monitor.returnFunc
 			DBM:Debug("unitMonitor: "..modId..", "..uId..", "..returnFunc, 2)
 			DBM:Debug("unitMonitor found a target that probably is a tank", 2)
 			self[returnFunc](self, DBM:GetUnitFullName(uId.."target"), uId.."target", uId)--Return results to warning function with all variables.
 		end
-		unitMonitor[uId] = nil
-		unitScanCount = unitScanCount - 1
 		DBM:Debug("Boss unit target scan should be aborting for "..uId, 2)
 	end
 
@@ -277,39 +316,33 @@ do
 	---@param scanTime number?
 	---@param allowTank boolean? If allowTank is passed, it basically tells this scanner to return current target of unitId at time of failure/abort when scanTime is complete
 	function bossModPrototype:BossUnitTargetScanner(uId, returnFunc, scanTime, allowTank, bossOnly)
-		unitMonitor[uId] = {}
+		removeUnitMonitor(uId)
+		unitMonitor[uId] = {mod = self, returnFunc = returnFunc, allowTank = allowTank, bossOnly = bossOnly}
 		unitScanCount = unitScanCount + 1
-		unitMonitor[uId].modid, unitMonitor[uId].returnFunc, unitMonitor[uId].allowTank = self.id, returnFunc, allowTank
 		self:ScheduleMethod(scanTime or 1.5, "BossUnitTargetScannerAbort", uId)--In case of BossUnitTargetScanner firing too late, and boss already having changed target before monitor started, it needs to abort after x seconds
-		if not eventsRegistered then
-			eventsRegistered = true
-			if bossOnly then
-				self:RegisterShortTermEvents("UNIT_TARGET boss1 boss2 boss3 boss4 boss5")
-			else
-				self:RegisterShortTermEvents("UNIT_TARGET_UNFILTERED")
-			end
-			DBM:Debug("Registering UNIT_TARGET event for BossUnitTargetScanner", 2)
-		end
+		updateUnitTargetEvents()
 	end
 end
 
 do
-	local repeatedScanEnabled = {}
 	---@param mod DBMMod
-	---@param cidOrGuid number|string?
 	---@param returnFunc string
+	---@param scan table
+	---@param cidOrGuid number|string?
 	---@param scanInterval number?
 	---@param scanOnlyBoss boolean?
 	---@param includeTank boolean?
-	local function repeatedScanner(mod, cidOrGuid, returnFunc, scanInterval, scanOnlyBoss, includeTank)
-		if repeatedScanEnabled[returnFunc] then
+	local function repeatedScanner(mod, returnFunc, scan, cidOrGuid, scanInterval, scanOnlyBoss, includeTank)
+		if repeatedScans[mod] and repeatedScans[mod][returnFunc] == scan then
 			cidOrGuid = cidOrGuid or mod.creatureId
 			scanInterval = scanInterval or 0.1
 			local targetname, targetuid, bossuid = mod:GetBossTarget(cidOrGuid, scanOnlyBoss)
 			if targetname and (includeTank or not mod:IsTanking(targetuid, bossuid, nil, true)) then
 				mod[returnFunc](mod, targetname, targetuid, bossuid)
 			end
-			mod:Schedule(scanInterval, repeatedScanner, mod, cidOrGuid, returnFunc, scanInterval, scanOnlyBoss, includeTank)
+			if repeatedScans[mod] and repeatedScans[mod][returnFunc] == scan then
+				mod:Schedule(scanInterval, repeatedScanner, mod, returnFunc, scan, cidOrGuid, scanInterval, scanOnlyBoss, includeTank)
+			end
 		end
 	end
 
@@ -321,12 +354,20 @@ do
 	---@param scanOnlyBoss boolean?
 	---@param includeTank boolean?
 	function bossModPrototype:StartRepeatedScan(cidOrGuid, returnFunc, scanInterval, scanOnlyBoss, includeTank)
-		repeatedScanEnabled[returnFunc] = true
-		repeatedScanner(self, cidOrGuid, returnFunc, scanInterval, scanOnlyBoss, includeTank)
+		self:StopRepeatedScan(returnFunc)
+		local scan = {}
+		repeatedScans[self] = repeatedScans[self] or {}
+		repeatedScans[self][returnFunc] = scan
+		repeatedScanner(self, returnFunc, scan, cidOrGuid, scanInterval, scanOnlyBoss, includeTank)
 	end
 
 	function bossModPrototype:StopRepeatedScan(returnFunc)
-		repeatedScanEnabled[returnFunc] = nil
+		local scans = repeatedScans[self]
+		if scans then
+			scans[returnFunc] = nil
+			if not next(scans) then repeatedScans[self] = nil end
+		end
+		self:Unschedule(repeatedScanner, self, returnFunc)
 	end
 end
 

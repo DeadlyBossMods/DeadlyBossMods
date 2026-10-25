@@ -16,18 +16,30 @@ DBM.HudMap = mod
 
 local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, unpack = table.wipe, type, pairs, ipairs, table.insert, table.remove, tonumber, setmetatable, unpack
 local abs, pow, sqrt, sin, cos, atan2, floor, ceil, min, max, pi2 = math.abs, math.pow, math.sqrt, math.sin, math.cos, math.atan2, math.floor, math.ceil, math.min, math.max, math.pi * 2
-local error = error
+local error, next = error, next
 
 local CallbackHandler = _G["LibStub"]:GetLibrary("CallbackHandler-1.0")
----@class DBMMHudMapUpdateFrame: Frame
-local updateFrame = CreateFrame("Frame", "DBMHudMapUpdateFrame")
+---@type DBMMHudMapUpdateFrame
+local updateFrame
 local fixedOnUpdateRate = 0.03
 local onUpdate, Point, Edge
 local callbacks = CallbackHandler:New(mod)
 local activeMarkers = 0
-local hudarActive = false
-local playerName = private.playerName
-private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
+local disabling = false
+--Shared, stateless result for refused requests; fluent modifiers cannot revive UI.
+---@type table<string, any>
+local rejectedMarker = {freed = true}
+local function ignoreMarker(self) return self end
+local function ignoreCallback() end
+for _, method in ipairs({"Free", "Identify", "SetClipOffset", "Show", "Hide", "Stick", "Follow", "Update", "UpdateSize", "Pulse", "Rotate", "Appear", "SetTexCoords", "Alert", "RegisterForAlerts", "Persist", "AlwaysShow", "UpdateAlerts", "SetColor", "SetAlertColor", "SetTexture", "SetLabel", "SetSize", "EdgeFrom", "EdgeTo", "Broadcast", "TrackFrom", "TrackTo", "AttachEdge", "DetachEdge", "AttachPoint", "DetachPoint"}) do
+	rejectedMarker[method] = ignoreMarker
+end
+function rejectedMarker:Owned() return false end
+function rejectedMarker:Location() end
+function rejectedMarker:Distance() return -1 end
+rejectedMarker.RegisterCallback = ignoreCallback
+rejectedMarker.UnregisterCallback = ignoreCallback
+rejectedMarker.UnregisterAllCallbacks = ignoreCallback
 local encounterMarkers = {}
 
 local GetNumGroupMembers, IsInRaid = GetNumGroupMembers, IsInRaid
@@ -137,10 +149,19 @@ local frameScalars = {
 
 local HUDEnabled = false
 
-local canvas = CreateFrame("Frame", "DBMHudMapCanvas", WorldFrame)
-canvas:SetSize(WorldFrame:GetWidth(), WorldFrame:GetHeight())
-canvas:SetPoint("CENTER")
-canvas:Hide()
+-- Rendering paths run only after ensureFrames has constructed the canvas.
+---@type Frame
+local canvas
+local function ensureFrames()
+	if canvas then return end
+	canvas = CreateFrame("Frame", "DBMHudMapCanvas", WorldFrame)
+	canvas:SetSize(WorldFrame:GetWidth(), WorldFrame:GetHeight())
+	canvas:SetPoint("CENTER")
+	canvas:Hide()
+	---@class DBMMHudMapUpdateFrame: Frame
+	updateFrame = CreateFrame("Frame", "DBMHudMapUpdateFrame")
+	updateFrame:Hide()
+end
 
 local function UnregisterAllCallbacks(obj)
 	-- Cancel all registered callbacks. CBH doesn't seem to provide a method to do this.
@@ -290,9 +311,11 @@ do
 end
 
 function mod:Enable()
-	if DBM.Options.DontShowHudMap2 or HUDEnabled or DBM:HasMapRestrictions() then
-		return
+	if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then
+		return false
 	end
+	if HUDEnabled then return true end
+	ensureFrames()
 	DBM:Debug("HudMap Activating", 2)
 	if not supressCanvas then
 		canvas:Show()
@@ -309,18 +332,18 @@ function mod:Enable()
 			onUpdate(updateFrame, fixedOnUpdateRate)
 		end)
 	end
+	return true
 end
 
 function mod:Disable()
-	if not HUDEnabled then
-		return
-	end
+	if disabling or not canvas then return end
+	disabling = true
 	DBM:Debug("HudMap Deactivating", 2)
 	self:FreeEncounterMarkers()
-	Edge:ClearAll()
-	if hudarActive then -- Don't disable if hudar is open
-		return
+	for point in pairs(activePointList) do
+		point:Free()
 	end
+	Edge:ClearAll()
 	canvas:Hide()
 	updateFrame:Hide()
 	HUDEnabled = false
@@ -328,16 +351,7 @@ function mod:Disable()
 		updateFrame.ticker:Cancel()
 		updateFrame.ticker = nil
 	end
-end
-
-function mod:ToggleHudar(hide)
-	if hudarActive or hide then
-		hudarActive = false
-		self:FreeEncounterMarkerByTarget(143430, playerName)
-	else
-		hudarActive = true
-		self:RegisterRangeMarkerOnPartyMember(143430, "timer", playerName, 1.5, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts("all"):Rotate(360, 9.5)
-	end
+	disabling = false
 end
 
 function mod:PointExists(id)
@@ -350,6 +364,7 @@ function mod:PointExists(id)
 end
 
 function mod:UpdateCanvasPosition()
+	if not canvas then return end
 	canvas:ClearAllPoints()
 	canvas:SetPoint("CENTER", WorldFrame, "CENTER")
 	canvas:SetSize((WorldFrame:GetHeight() * 0.48) * 2, (WorldFrame:GetHeight() * 0.48) * 2)
@@ -533,7 +548,7 @@ Edge = setmetatable({
 		activeEdgeList[self] = nil
 		tinsert(edgeCache, self)
 		activeMarkers = activeMarkers - 1
-		if activeMarkers == 0 then
+		if activeMarkers == 0 and not next(activePointList) then
 			mod:Disable()
 		end
 	end,
@@ -552,6 +567,7 @@ Edge = setmetatable({
 	---@param w number? Width of line
 	---@param extend boolean? Extend line to edge of screen
 	New = function(self, r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, texfile, w, extend)
+		if not mod:Enable() then return rejectedMarker end
 		local t = tremove(edgeCache)
 		if not t then
 			t = setmetatable({}, edge_mt)
@@ -697,12 +713,6 @@ Edge = setmetatable({
 }, object_mt)
 
 function mod:AddEdge(r, g, b, a, lifetime, srcPlayer, dstPlayer, sx, sy, dx, dy, w, texfile, extend)
-	if DBM.Options.DontShowHudMap2 then
-		return
-	end
-	if not HUDEnabled then
-		self:Enable()
-	end
 	return Edge:New(r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, texfile, w, extend)
 end
 
@@ -728,6 +738,9 @@ do
 			self.lastRadius = nil
 			activePointList[self] = nil
 			tinsert(pointCache, self)
+			if activeMarkers == 0 and not next(activePointList) then
+				mod:Disable()
+			end
 		end,
 		AttachEdge = function(self, edge)
 			self.edges[edge] = true
@@ -1024,6 +1037,7 @@ do
 				y = to_y
 			end
 			local edge = Edge:New(r, g, b, a, fromPlayer, unit, self.stickX, self.stickY, x, y, lifetime, texfile, w, extend)
+			if edge == rejectedMarker then return edge end
 			self:AttachEdge(edge)
 			if type(point_or_unit_or_x) == "table" then
 				point_or_unit_or_x:AttachEdge(edge)
@@ -1046,6 +1060,7 @@ do
 				y = from_y
 			end
 			local edge = Edge:New(r, g, b, a, unit, toPlayer, x, y, self.stickX, self.stickY, lifetime, texfile, w, extend)
+			if edge == rejectedMarker then return edge end
 			self:AttachEdge(edge)
 			if type(point_or_unit_or_x) == "table" then
 				point_or_unit_or_x:AttachEdge(edge)
@@ -1091,6 +1106,7 @@ do
 		---@param b number? Blue color 0-1
 		---@param a number? alpha 0-1
 		New = function(self, map, x, y, follow, lifetime, texfile, size, blend, r, g, b, a)
+			if not mod:Enable() then return rejectedMarker end
 			local t = tremove(pointCache)
 			if not t then
 				t = setmetatable({}, point_mt)
@@ -1181,11 +1197,13 @@ edge_mt.__index = Edge
 point_mt.__index = Point
 
 function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend)
+	if not self:Enable() then return rejectedMarker end
 	return Point:New(DBM:GetCurrentArea(), x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
 --Unused function?
 function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
+	if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then return rejectedMarker end
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1201,6 +1219,7 @@ end
 
 --Unused function?
 function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
+	if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then return rejectedMarker end
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1217,13 +1236,17 @@ end
 ---@param spellid string|number Key used for tracking the marker
 ---@param name string|number Unique name for each tracked marker
 function mod:RegisterEncounterMarker(spellid, name, marker)
-	if DBM.Options.DontShowHudMap2 then return end
-	if not HUDEnabled then
-		self:Enable()
+	if marker == rejectedMarker then return marker end
+	if not self:Enable() then
+		if marker and not marker.freed then marker:Free(true) end
+		return rejectedMarker
 	end
+	if not marker or marker.freed then return rejectedMarker end
+	if encounterMarkers[spellid .. name] == marker then return marker end
 	encounterMarkers[spellid .. name] = marker
 	activeMarkers = activeMarkers + 1
 	marker.RegisterCallback(self, "Free", "FreeEncounterMarker", spellid .. name)
+	return marker
 end
 
 ---Used to to register a non moving position marker based on map coords
@@ -1242,6 +1265,7 @@ end
 ---@param localMap boolean? If true, x and y are local map coords and need to be converted to instance map coords
 ---@param AreaID number? Local mapid when local map coords need to be converted into instance map coords
 function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend, localMap, AreaID)
+	if not self:Enable() then return rejectedMarker end
 	if localMap then
 		if x >= 0 and x <= 100 and y >= 0 and y <= 100 then
 			local _, temptable = C_Map.GetWorldPosFromMapPos(tonumber(AreaID) or C_Map.GetBestMapForUnit("player") or 0, CreateVector2D(x / 100, y / 100))
@@ -1269,6 +1293,7 @@ end
 ---@param a number? Alpha 0-1
 ---@param blend texBlending|string|nil Blend mode in texBlending or string or nil to default to BLEND
 function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend)
+	if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then return rejectedMarker end
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1300,6 +1325,7 @@ end
 ---@param a number? Alpha 0-1
 ---@param blend texBlending|string|nil Blend mode in texBlending or string or nil to default to BLEND
 function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend)
+	if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then return rejectedMarker end
 	if not r and person then -- Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1320,34 +1346,25 @@ end
 
 ---@param key string|number
 function mod:FreeEncounterMarker(key)
-	if not HUDEnabled or not encounterMarkers[key] then
+	if not encounterMarkers[key] then
 		return
 	end
 	encounterMarkers[key] = nil
 	activeMarkers = activeMarkers - 1
-	if activeMarkers == 0 then
-		self:Disable()
-	end
 end
 
 ---@param spellid string|number Key used for tracking the marker
 ---@param name string|number Unique name for each tracked marker
 function mod:FreeEncounterMarkerByTarget(spellid, name)
-	if not HUDEnabled or not encounterMarkers[spellid .. name] then
+	if not encounterMarkers[spellid .. name] then
 		return
 	end
 	self:Free(encounterMarkers[spellid .. name])
 end
 
 function mod:FreeEncounterMarkers()
-	if not HUDEnabled then
-		return
-	end
-	for k, v in pairs(encounterMarkers) do
-		if encounterMarkers[k] == 143430 .. playerName then
-			break -- Don't deactivate Hudar in this call
-		end
-		encounterMarkers[k] = v:Free()
+	for _, v in pairs(encounterMarkers) do
+		v:Free()
 	end
 end
 
@@ -1480,6 +1497,10 @@ end
 -- Data --
 ----------
 function mod:ShowCanvas()
+	if not canvas then
+		if disabling or DBM.Options.DontShowHudMap2 or DBM:HasMapRestrictions() then return end
+		ensureFrames()
+	end
 	if not canvas:IsVisible() then
 		zoomScale = targetZoomScale
 		canvas:SetAlpha(0)
@@ -1508,7 +1529,7 @@ end
 
 function mod:Toggle(flag)
 	if flag == nil then
-		flag = not canvas:IsVisible() or targetCanvasAlpha == 0
+		flag = not canvas or not canvas:IsVisible() or targetCanvasAlpha == 0
 	end
 	if flag then
 		self:ShowCanvas()
@@ -1519,9 +1540,3 @@ function mod:Toggle(flag)
 	end
 end
 
-do
-	SLASH_DBMHUDAR1 = "/hudar"
-	SlashCmdList["DBMHUDAR"] = function()
-		DBM.HudMap:ToggleHudar()
-	end
-end

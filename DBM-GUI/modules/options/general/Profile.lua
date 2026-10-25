@@ -75,16 +75,16 @@ end)
 dualProfile:SetChecked(DBM_UseDualProfile)
 
 local function actuallyImport(importTable)
-	DBM.Options = importTable.DBM -- Cached options
 	DBM_AllSavedOptions[_G["DBM_UsedProfile"]] = importTable.DBM
 	DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] = importTable.DBT
 	DBM_MinimapIcon = importTable.minimap
+	DBM:ApplyProfile(DBM_UsedProfile)
+	LibStub("LibDBIcon-1.0"):Refresh("DBM", DBM_MinimapIcon)
 	if importTable.minimap.hide then
 		LibStub("LibDBIcon-1.0"):Hide("DBM")
 	else
 		LibStub("LibDBIcon-1.0"):Show("DBM")
 	end
-	DBT:SetOption("Skin", DBT.Options.Skin) -- Forces a hard update on bars.
 	DBM:AddMsg(L.ProfileImported)
 end
 
@@ -116,7 +116,7 @@ local localeTable = {
 ---@class DBMImportProfileButton: DBMPanelButton
 local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 	DBM_GUI:CreateImportProfile(function(importTable)
-		if type(importTable.DBM) ~= "table" or type(importTable.DBT) ~= "table" or type(importTable.minimap) ~= "table" then
+		if type(importTable.DBM) ~= "table" or type(importTable.DBT) ~= "table" or type(importTable.DBT.DBM) ~= "table" or type(importTable.minimap) ~= "table" then
 			DBM:AddMsg(L.ImportProfileFailed)
 			return false
 		end

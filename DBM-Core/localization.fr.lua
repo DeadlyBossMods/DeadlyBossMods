@@ -320,7 +320,6 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/dbm version : Vérifie la version du mod de boss (alias : ver).",
 	"/dbm version2 : Vérifie la version du mod de boss et envoie un message aux utilisateurs obsolètes (alias : ver2).",
 	"/range <nombre> ou /distance <nombre> : Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
-	"/hudar <nombre> : Affiche le détecteur de portée HUD.",
 	"/dbm arrow : Affiche la flèche " .. L.DBM .. ", voir '/dbm arrow help' pour plus de détails.",
 	"/dbm hud : Affiche le HUD " .. L.DBM .. ", voir '/dbm hud' pour plus de détails.",
 	"/dbm dbtdebug : Affiche des diagnostics de barres de temps nettoyés pour les rapports d'erreur."

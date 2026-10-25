@@ -828,11 +828,14 @@ do
 		end
 
 		local playerMapId = GetBestMapForUnit("player") or 0
-		if not restricted then
-			rotation = pi2 - (GetPlayerFacing() or 0)
+		local sinTheta, cosTheta
+		if rEnabled then
+			if not restricted then
+				rotation = pi2 - (GetPlayerFacing() or 0)
+			end
+			sinTheta, cosTheta = sin(rotation), cos(rotation)
 		end
-		local sinTheta = sin(rotation)
-		local cosTheta = cos(rotation)
+		local playerX, playerY
 		local closePlayer = 0
 		local closestRange
 		local closetName
@@ -871,7 +874,9 @@ do
 					textFrame:SetHeight((closePlayer * 12) + 12)
 				end
 				if rEnabled then
-					local playerX, playerY = UnitPosition("player")
+					if not playerX then
+						playerX, playerY = UnitPosition("player")
+					end
 					local x, y = UnitPosition(uId)
 					if not x and not y then
 						rangeCheck:Hide(true)

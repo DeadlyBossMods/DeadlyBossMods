@@ -322,7 +322,6 @@ L.SLASHCMD_HELP2						= {
 	"/dbm version: Realiza una verificación de versión del mod de jefe (alias: ver).",
 	"/dbm version2: Realiza una verificación de versión del mod de jefe que también susurra a los usuarios desactualizados (alias: ver2).",
 	"/range <número> o /distance <número>: Muestra el marco de distancia. /rrange o /rdistance para invertir colores.",
-	"/hudar <número>: Muestra un buscador de distancia basado en HUD.",
 	"/dbm arrow: Muestra la flecha de " .. L.DBM .. ", consulta '/dbm arrow help' para más detalles.",
 	"/dbm hud: Muestra el HUD de " .. L.DBM .. ", consulta '/dbm hud' para más detalles.",
 	"/dbm dbtdebug: Muestra diagnósticos de barras de tiempo depurados para informes de errores."
