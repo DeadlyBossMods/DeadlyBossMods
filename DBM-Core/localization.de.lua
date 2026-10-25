@@ -299,6 +299,7 @@ L.SLASHCMD_HELP				= {
 	"/dbm key: Führt M+ Schlüsselstein- und Bewertungsprüfungen für Gruppe/Gilde durch und bietet Abkürzungen zu Dungeon-Transporten an. (alias: key, keys, keystone)",--AI translated (check me)
 	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug.",
 	"/dbm durability: Prüft die Haltbarkeit im gesamten Schlachtzug.",
+	"/dbm consumables: Führt eine schlachtzugsweite Überprüfung der Verbrauchsgüter durch (alias: cons, consumes).",
 	"/dbm brez: Zeigt den Timer-Rahmen für die Kampfauferstehung zur Positionierung an.",--AI translated (check me)
 	"/dbm help2: Zeigt zusätzliche Slash-Kommandos an."--AI translated (check me)
 }
