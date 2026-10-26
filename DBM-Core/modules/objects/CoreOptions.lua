@@ -82,7 +82,7 @@ DBM.DefaultOptions = {
 					(locale == "ptBR" and "Anshlun") or
 					(locale == "ruRU" and "Alexander") or
 					(locale == "zhCN" and "Ruichen") or
-					(locale == "zhTW" and "Hao"),
+					(locale == "zhTW" and "Hao") or "Corsica",
 	CountdownVoice2 = ((locale == "enUS" or locale == "enGB") and "Kolt") or
 					(locale == "deDE" and "Franziska") or
 					(locale == "esES" and "Fernanda") or
@@ -92,7 +92,7 @@ DBM.DefaultOptions = {
 					(locale == "ptBR" and "Neryssa") or
 					(locale == "ruRU" and "Nadezhda") or
 					(locale == "zhCN" and "Chunru") or
-					(locale == "zhTW" and "Ling"),
+					(locale == "zhTW" and "Ling") or "Kolt",
 	CountdownVoice3 = ((locale == "enUS" or locale == "enGB") and "Smooth") or
 					(locale == "deDE" and "Franziska") or
 					(locale == "esES" and "Fernanda") or
@@ -102,7 +102,7 @@ DBM.DefaultOptions = {
 					(locale == "ptBR" and "Neryssa") or
 					(locale == "ruRU" and "Nadezhda") or
 					(locale == "zhCN" and "Chunru") or
-					(locale == "zhTW" and "Ling"),
+					(locale == "zhTW" and "Ling") or "Smooth",
 	CountSize = 5,
 	PullVoice = ((locale == "enUS" or locale == "enGB") and "Corsica") or
 					(locale == "deDE" and "Karl") or
@@ -113,7 +113,7 @@ DBM.DefaultOptions = {
 					(locale == "ptBR" and "Anshlun") or
 					(locale == "ruRU" and "Alexander") or
 					(locale == "zhCN" and "Ruichen") or
-					(locale == "zhTW" and "Hao"),
+					(locale == "zhTW" and "Hao") or "Corsica",
 	CountdownVoiceNamesMigrated = false,
 	ChosenVoicePack2 = (locale == "enUS" or locale == "enGB") and "VEM" or "None",
 	VPReplacesAnnounce = true,
@@ -1282,4 +1282,3 @@ do
 		end
 	end
 end
-
