@@ -38,7 +38,7 @@ L.COPY_WA_DIALOG 			= "Copier la clé de sort"
 L.TEXT_ONLY_RANGE 			= "La fenêtre de portée est limitée au texte uniquement en raison des restrictions de l'API dans cette zone."
 L.NO_RANGE 					= "La fenêtre de portée ne peut pas être utilisée en raison des restrictions de l'API dans cette zone."
 L.NO_ARROW 					= "La flèche ne peut pas être utilisée dans les instances."
-L.NO_HUD 					= "HUDMap ne peut pas être utilisé dans les instances."
+L.HUDMAP_NOT_INSTALLED		= "DBM-HudMap n'est pas installé ou n'est pas activé."
 L.NO_COMMS					= "La communication des addons ne peut pas être utilisée pendant les rencontres ou les donjons M+ actifs. Utilisez cette commande à nouveau après la fin de la rencontre ou du donjon."
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM .. " a désactivé la vérification du nombre de joueurs à portée sur ce combat pour cause de manque d'information sur le nombre de joueurs requis regroupés pour votre taille de raid."
@@ -657,8 +657,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}"--Doesn't n
 
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells) -- OPTIONAL
 L.AUTO_YELL_CUSTOM_FADE					= "%s disparaît"
-L.AUTO_HUD_OPTION_TEXT					= "Afficher HUD pour $spell:%s"
-L.AUTO_HUD_OPTION_TEXT_MULTI			= "Afficher HUD pour diverses activités"
 L.AUTO_NAMEPLATE_OPTION_TEXT 			= "Afficher les auras de la plaque de nom pour $spell:%s en utilisant un add-on de barre d'info compatible ou "..L.DBM
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED 	= "Afficher les auras de la plaque de nom pour $spell:%s en utilisant uniquement "..L.DBM
 L.AUTO_RANGE_OPTION_TEXT		 		= "Afficher la fenêtre de portée (%s) pour $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
@@ -685,21 +683,6 @@ L.MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
 
 L.MOVE_PRIVATE_AURA_TEXT 	= "<valeur secrète> vous cible avec le sort <valeur secrète>"
 L.MOVE_PRIVATE_AURA_DISABLED = "L’aperçu est désactivé car les cadres d'auras sont désactivés globalement dans les options."
-
-L.HUD_INVALID_TYPE			= "Type de HUD défini invalide"
-L.HUD_INVALID_TARGET		= "Pas de cible valide disponible pour le HUD"
-L.HUD_INVALID_SELF			= "Impossible de s'utiliser soi-même comme cible pour le HUD"
-L.HUD_INVALID_ICON			= "Impossible d'utiliser la méthode par icône pour le HUD sans cible avec l'icône"
-L.HUD_SUCCESS				= "Le HUD a démarré correctement avec vos paramètres. Ceci va s'arrêter dans %s, ou en tapant '/dbm hud hide'."
-L.HUD_USAGE	= {
-	"Utilisation de " .. L.DBM .. "-HudMap:",
-	"-----------------",
-	"/dbm hud <type> <cible> <durée>: Crée un HUD qui indique un joueur pour la durée choisie",
-	"Types valides : flèche, rouge, bleu, vert, jaune, icône (requiert une cible avec une icône de raid)",
-	"Cibles valides : cible, focus, <nom du joueur>",
-	"Durées valides : n'importe quel nombre (en secondes). Si laissé vide, il sera affiché pendant 20 min.",
-	"/dbm hud hide:  désactive et cache le HUD"
-}
 
 L.ARROW_MOVABLE				= "Flèche mobile"
 L.ARROW_WAY_USAGE			= "/dway <x> <y>: Crée une flèche pointant vers une position spécifique (en utilisant les coordonnées locales de la carte de zone)"

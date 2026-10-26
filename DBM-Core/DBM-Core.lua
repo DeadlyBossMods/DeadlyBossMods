@@ -29,7 +29,15 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
+---Core-facing interface of the optional DBM-HudMap addon
+---@class DBMHudMap
+---@field Disable fun(self: DBMHudMap)
+---@field SupressCanvas fun(self: DBMHudMap)
+---@field UnSupressCanvas fun(self: DBMHudMap)
+---@field HandleSlashCommand fun(self: DBMHudMap, cmd: string, msg: string)
+
 ---@class DBM
+---@field HudMap DBMHudMap? Provided by the optional DBM-HudMap addon
 local DBM = private:GetPrototype("DBM")
 _G.DBM = DBM
 
@@ -4664,7 +4672,9 @@ do
 		self:Debug("CINEMATIC_START fired", 2, nil, nil, true, true)
 		--Stop custom BG music during cut scenes regardless of block features
 		self:TransitionToDungeonBGM(false, true)
-		self.HudMap:SupressCanvas()
+		if self.HudMap then
+			self.HudMap:SupressCanvas()
+		end
 		local currentMapID = C_Map.GetBestMapForUnit("player")
 		local currentSubZone = GetSubZoneText() or ""
 		--Just abort if map is nil, don't want to touch it if can't map cinematic to an area
@@ -4676,7 +4686,9 @@ do
 	end
 	function DBM:CINEMATIC_STOP()
 		self:Debug("CINEMATIC_STOP fired", 2, nil, nil, nil, true)
-		self.HudMap:UnSupressCanvas()
+		if self.HudMap then
+			self.HudMap:UnSupressCanvas()
+		end
 	end
 end
 

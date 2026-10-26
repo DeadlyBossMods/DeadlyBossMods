@@ -39,7 +39,7 @@ L.COPY_WA_DIALOG				= "複製WA鍵"
 L.TEXT_ONLY_RANGE				= "範圍框架受限於該區域的API限制，只限於文字。"
 L.NO_RANGE						= "距離雷達不能在副本中使用，使用傳統文字距離框架取代"
 L.NO_ARROW						= "箭頭不能在副本中使用"
-L.NO_HUD						= "HUDMap不能在副本中使用"
+L.HUDMAP_NOT_INSTALLED			= "DBM-HudMap 未安裝或未啟用。"
 L.NO_COMMS						= "在遭遇戰或活躍的M+地下城中無法使用附加元件通信。請在遭遇戰或地下城結束後再次使用此命令。"
 
 L.DYNAMIC_DIFFICULTY_CLUMP		= L.DBM.."已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
@@ -657,8 +657,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}"
 
 --L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE					= "%s已消退"
-L.AUTO_HUD_OPTION_TEXT					= "為$spell:%s顯示HudMap(不再作用)"
-L.AUTO_HUD_OPTION_TEXT_MULTI			= "為不同的機制顯示HudMap(不再作用)"
 L.AUTO_NAMEPLATE_OPTION_TEXT			= "為$spell:%s顯示姓名版光環，使用在相容的名條插件或"..L.DBM..""
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED		= "為$spell:%s顯示姓名版光環，使用在"..L.DBM..""
 
@@ -690,21 +688,6 @@ L.MOVE_SPECIAL_WARNING_TEXT	= "特別警告"
 
 L.MOVE_PRIVATE_AURA_TEXT				= "<secret value> 瞄準你使用法術 <secret value>"
 L.MOVE_PRIVATE_AURA_DISABLED			= "預覽被禁用，因為光環框架在選項中全域禁用。"
-
-L.HUD_INVALID_TYPE			= "無效的HUD類型定義"
-L.HUD_INVALID_TARGET		= "無有效的HUD目標"
-L.HUD_INVALID_SELF			= "不能將HUD目标設定成自己"
-L.HUD_INVALID_ICON			= "不能設定對無團隊標記的目標"
-L.HUD_SUCCESS				= "HUD成功使用你的參數運作。這會在%s後取消，或是使用'/dbm hud hide'指令取消。"
-L.HUD_USAGE	= {
-	L.DBM .. "-HudMap 用法:",
-	"-----------------",
-	"/dbm hud <類型> <目標> <持續時間>: 建立一個指向玩家的HUD",
-	"有效類型: arrow, dot, red, blue, green, yellow, icon(需要團隊標記)",
-	"有效目標: target, focus, <玩家名字>",
-	"有效持續時間: 任何秒數。如果無輸入值則預設為20分鐘",
-	"/dbm hud hide  停用玩家生成的HUD物件"
-}
 
 L.ARROW_MOVABLE					= "可移動箭頭"
 L.ARROW_WAY_USAGE				= "/dway <x> <y>: 建立一個箭頭指向一個指定地點 (使用本地區域地圖座標)"

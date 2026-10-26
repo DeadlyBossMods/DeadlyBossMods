@@ -381,7 +381,6 @@ DBM.DefaultOptions = {
 	DontShowRangeFrame = false,
 	DontRestoreRange = false,
 	DontShowInfoFrame = false,
-	DontShowHudMap2 = false,
 	UseNameplateHandoff = true,--Power user setting, no longer shown in GUI
 	DontShowNameplateIcons = false,
 	DontShowNameplateIconsCD = false,

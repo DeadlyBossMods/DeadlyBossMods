@@ -44,7 +44,7 @@ L.COPY_WA_DIALOG						= "Copy Spell Key"
 L.TEXT_ONLY_RANGE						= "Range frame is limited to text only due to Blizzard disabling some functionality in this area."
 L.NO_RANGE								= "Range frame can not be used due to Blizzard disabling that functionality in this area."
 L.NO_ARROW								= "Arrow can not be used in instances"
-L.NO_HUD								= "HUDMap can not be used in instances"
+L.HUDMAP_NOT_INSTALLED					= "DBM-HudMap is not installed or not enabled."
 L.NO_COMMS								= "Addon communication can not be used during encounters or active M+ dungeons. Use this command again after encounter or dungeon ends."--Midnight+
 
 L.DYNAMIC_DIFFICULTY_CLUMP				= L.DBM .. " has disabled dynamic range frame on this fight do to insufficient information about number of players needed to affect clump check for a group of your size."
@@ -704,8 +704,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT = {
 }
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells) -- OPTIONAL
 L.AUTO_YELL_CUSTOM_FADE					= "%s faded"
-L.AUTO_HUD_OPTION_TEXT					= "Show HudMap for $spell:%s (Retired)"
-L.AUTO_HUD_OPTION_TEXT_MULTI			= "Show HudMap for various mechanics (Retired)"
 L.AUTO_NAMEPLATE_OPTION_TEXT			= "Show Nameplate Auras for $spell:%s using compatible nameplate addon or "..L.DBM
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED		= "Show Nameplate Auras for $spell:%s using only "..L.DBM
 L.AUTO_RANGE_OPTION_TEXT				= "Show range frame (%s) for $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
@@ -736,21 +734,6 @@ L.MOVE_SPECIAL_WARNING_TEXT				= "Special Warning"
 
 L.MOVE_PRIVATE_AURA_TEXT				= "<secret value> targets you with the spell <secret value>"
 L.MOVE_PRIVATE_AURA_DISABLED			= "Preview is disabled because Aura Frames are globally disabled in options."
-
-L.HUD_INVALID_TYPE						= "Invalid HUD type defined"
-L.HUD_INVALID_TARGET					= "No valid target given for HUD"
-L.HUD_INVALID_SELF						= "Cannot use self as target for HUD"
-L.HUD_INVALID_ICON						= "Cannot use icon method for HUD on a target with no icon"
-L.HUD_SUCCESS							= "HUD successful started with your parameters. This will cancel after %s, or by calling '/dbm hud hide'."
-L.HUD_USAGE								= {
-	L.DBM .. "-HudMap usage:",
-	"-----------------",
-	"/dbm hud <type> <target> <duration>: Creates a HUD that points to a player for the desired duration",
-	"Valid types: arrow, dot, red, blue, green, yellow, icon (requires a target with raid icon)",
-	"Valid targets: target, focus, <playername>",
-	"Valid durations: any number (in seconds). If left blank, 20min will be used.",
-	"/dbm hud hide: disables user generated HUD objects"
-}
 
 L.ARROW_MOVABLE							= "Arrow movable"
 L.ARROW_WAY_USAGE						= "/dway <x> <y>: Creates an arrow that points to a specific location (using local zone map coordinates)"

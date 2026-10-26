@@ -39,7 +39,7 @@ L.COPY_WA_DIALOG						= "주문 키 복사"
 L.TEXT_ONLY_RANGE					= "이 지역에서는 블리자드가 일부 기능을 막아서 거리 창을 텍스트 방식으로만 사용할 수 있습니다."
 L.NO_RANGE					= "이 지역에서는 블리자드가 일부 기능을 막아서 거리 창을 사용할 수 없습니다."
 L.NO_ARROW					= "화살표 기능을 인스턴스 던전에서 사용할 수 없습니다"
-L.NO_HUD						= "HUD 기능을 인스턴스 던전에서 사용할 수 없습니다"
+L.HUDMAP_NOT_INSTALLED			= "DBM-HudMap이 설치되지 않았거나 활성화되지 않았습니다."
 L.NO_COMMS								= "보스전 또는 신화+ 던전에선 애드온 통신을 사용할 수 없습니다. 보스전 또는 던전을 끝낸 후 다시 해당 명령어를 사용하세요."--Midnight+
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대 규모에 맞는 필요한 플레이어 숫자 관련 정보가 부족하여" .. L.DBM .. "이 이 전투에서 동적 거리 창을 비활성화 했습니다."
@@ -634,8 +634,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.positionnoicon	= "%s %%s: " ..UnitName("player")
 L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s랑 %%s"--Spell name (from option, plus spellname given in arg)
 
 L.AUTO_YELL_CUSTOM_FADE				= "%s 사라짐"
-L.AUTO_HUD_OPTION_TEXT				= "$spell:%s에 HUD 표시 (중단됨)"
-L.AUTO_HUD_OPTION_TEXT_MULTI		= "여러 보스 기술에 HUD 표시 (중단됨)"
 L.AUTO_NAMEPLATE_OPTION_TEXT		= "호환되는 이름표 애드온이나 "..L.DBM.."을 사용하여 $spell:%s 오라를 이름표에 표시"
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED	= ""..L.DBM.."만을 사용하여 $spell:%s 오라를 이름표에 표시"
 L.AUTO_RANGE_OPTION_TEXT		= "$spell:%2$s 범위에 대한 거리 창 보기 (%1$sm)"
@@ -666,21 +664,6 @@ L.MOVE_SPECIAL_WARNING_TEXT		= "특수 알림"
 
 L.MOVE_PRIVATE_AURA_TEXT				= "<secret value>가 당신에게 <secret value> 주문을 시전합니다"
 L.MOVE_PRIVATE_AURA_DISABLED			= "미리보기는 설정에서 오라 프레임이 비활성화되서 사용할 수 없습니다."
-
-L.HUD_INVALID_TYPE			= "올바르지 않은 HUD 형식이 정의되었습니다"
-L.HUD_INVALID_TARGET			= "HUD에 올바른 대상이 주어지지 않았습니다"
-L.HUD_INVALID_SELF			= "자신을 HUD 대상으로 설정할 수 없습니다"
-L.HUD_INVALID_ICON			= "공격대 징표가 없는 대상엔 징표 기반 HUD 기능을 사용할 수 없습니다"
-L.HUD_SUCCESS				= "HUD가 입력한 정보를 표시하기 시작합니다. %s 후 자동으로 사라지며 '/dbm hud hide'를 입력하면 즉시 숨길 수 있습니다."
-L.HUD_USAGE	= {
-	L.DBM .. " HUD 사용법:",
-	"--------------------",
-	"/dbm hud <형식> <대상> <지속 시간>: 지정한 시간 동안 대상을 가리키는 HUD를 생성",
-	"유효한 형식: arrow, red, blue, green, yellow, icon (대상에게 공격대 징표가 설정되어 있어야 함)",
-	"유효한 대상: target, focus, <대상이름>",
-	"유효한 시간: 아무 숫자(초단위). 지정하지 않으면 20분간 적용됩니다.",
-	"/dbm hud hide: 사용자가 생성한 HUD를 비활성화"
-}
 
 L.ARROW_MOVABLE						= "화살표 이동"
 L.ARROW_WAY_USAGE					= "/dway <x> <y>: 특정 지점을 가리키는 화살표를 생성합니다 (로컬 지역 지도 좌표 사용)"

@@ -552,7 +552,6 @@ L.Area_SpamFilter_Misc				= "Sonstige globale Deaktivierungen und Filteroptionen
 L.SpamBlockNoSetIcon				= "Keine Raidmarker setzen"
 L.SpamBlockNoRangeFrame				= "Kein Abstandsfenster anzeigen"
 L.SpamBlockNoInfoFrame				= "Kein Infofenster anzeigen"
-L.SpamBlockNoHudMap					= "Keine HudMap anzeigen"
 L.SpamBlockNoYells					= "Keine automatischen Schreie senden"
 L.SpamBlockNoNoteSync				= "Keine geteilten Notizen akzeptieren"
 L.SpamBlockAutoGossip				= "Keine automatischen Dialoge (Gossip) ausführen"

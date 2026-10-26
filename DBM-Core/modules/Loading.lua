@@ -530,7 +530,9 @@ do
 		private:GetModule("DevToolsModule"):OnDebugToggle()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
-			self.HudMap:Disable()
+			if self.HudMap then
+				self.HudMap:Disable()
+			end
 			if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
 				self.RangeCheck:Hide(true)
 			end
@@ -558,7 +560,9 @@ do
 		self:UpdateMapRestrictions()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
-			self.HudMap:Disable()
+			if self.HudMap then
+				self.HudMap:Disable()
+			end
 			if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
 				self.RangeCheck:Hide(true)
 			end
@@ -591,7 +595,9 @@ do
 			self:UpdateMapRestrictions()
 			if self:HasMapRestrictions() then
 				self.Arrow:Hide()
-				self.HudMap:Disable()
+				if self.HudMap then
+					self.HudMap:Disable()
+				end
 				if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
 					self.RangeCheck:Hide(true)
 				end

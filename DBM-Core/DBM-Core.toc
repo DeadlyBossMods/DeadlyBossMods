@@ -83,7 +83,6 @@ DBM-Arrow.lua
 DBM-Flash.lua
 DBM-RangeCheck.lua
 DBM-InfoFrame.lua
-DBM-HudMap.lua
 DBM-Nameplate.lua [AllowLoadGameType classic]
 DBM-Nameplate-Mainline.lua [AllowLoadGameType mainline]
 

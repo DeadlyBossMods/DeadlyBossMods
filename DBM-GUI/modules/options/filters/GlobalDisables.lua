@@ -96,7 +96,6 @@ if not DBM:IsRestricted() then
 	local disableInfoFrame = spamMisc:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
 	disableInfoFrame:HookScript("OnClick", function() DBM.InfoFrame:SyncOptions() end)
 end
-spamMisc:CreateCheckButton(L.SpamBlockNoHudMap, true, nil, "DontShowHudMap2")
 spamMisc:CreateCheckButton(L.SpamBlockNoNoteSync, true, nil, "BlockNoteShare")
 spamMisc:CreateCheckButton(L.SpamBlockAutoGossip, true, nil, "DontAutoGossip")
 

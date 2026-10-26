@@ -38,7 +38,7 @@ L.COPY_WA_DIALOG			= "Copiar clave de hechizo"
 L.TEXT_ONLY_RANGE			= "El marco de distancia está limitado a texto únicamente debido a restricciones de API en esta área."
 L.NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se procederá a usar el marco de distancia por texto."
 L.NO_ARROW					= "No se puede usar la flecha en estancias."
-L.NO_HUD					= "No se puede usar el indicador en pantalla en estancias."
+L.HUDMAP_NOT_INSTALLED		= "DBM-HudMap no está instalado o no está activado."
 L.NO_COMMS					= "La comunicación de addons no se puede usar durante encuentros o mazmorras M+ activas. Usa este comando nuevamente después de que termine el encuentro o la mazmorra."
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM .. " ha desactivado el marco de distancia dinámico para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
@@ -657,8 +657,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}"--Doesn't n
 
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE					= "%s ha expirado"
-L.AUTO_HUD_OPTION_TEXT					= "Mostrar indicador en pantalla para $spell:%s"
-L.AUTO_HUD_OPTION_TEXT_MULTI			= "Mostrar indicadores en pantalla para varias mecánicas"
 L.AUTO_NAMEPLATE_OPTION_TEXT			= "Mostrar auras en placas de nombres para $spell:%s"
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED		= "Mostrar auras en placas de nombres para $spell:%s solamente usando "..L.DBM
 L.AUTO_RANGE_OPTION_TEXT				= "Mostrar marco de distancia (%s m) para $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
@@ -685,21 +683,6 @@ L.MOVE_SPECIAL_WARNING_TEXT	= "Aviso especial"
 
 L.MOVE_PRIVATE_AURA_TEXT 		= "<valor secreto> te apunta con el hechizo <valor secreto>"
 L.MOVE_PRIVATE_AURA_DISABLED 	= "La vista previa está desactivada porque los marcos de auras están desactivados globalmente en las opciones."
-
-L.HUD_INVALID_TYPE			= "No se ha proporcionado un tipo de indicador en pantalla válido."
-L.HUD_INVALID_TARGET		= "No se ha proporcionado un objetivo válido."
-L.HUD_INVALID_SELF			= "No puedes usarte a ti mismo como objetivo."
-L.HUD_INVALID_ICON			= "No se puede usar el tipo icono en un objetivo sin icono."
-L.HUD_SUCCESS				= "Indicador en pantalla realizado con éxito. Expirará en %s o al escribir '/dbm hud hide'."
-L.HUD_USAGE	= {
-	"Uso de " .. L.DBM .. "-HudMap:",
-	"-----------------",
-	"/dbm hud <tipo> <objetivo> <duración>: Crea un indicador en pantalla que apunta al jugador objetivo durante el tiempo designado.",
-	"Tipos válidos: arrow, dot, red, blue, green, yellow, icon (requiere un objetivo con icono de banda)",
-	"Objetivos válidos: objetivo, enfoque, <nombre de jugador>",
-	"Duraciones válidas: cualquier número (en segundos). Si se deja en blanco, durará 20 minutos.",
-	"/dbm hud hide: cancela y oculta el indicador en pantalla."
-}
 
 L.ARROW_MOVABLE					= "Flecha desplazable"
 L.ARROW_WAY_USAGE				= "/dway <x> <y>: Crea una flecha que apunta a una ubicación designada mediante coordenadas locales."

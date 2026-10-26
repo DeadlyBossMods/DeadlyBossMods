@@ -40,7 +40,7 @@ L.COPY_WA_DIALOG	= "Copia Chiave Incantesimo"
 L.TEXT_ONLY_RANGE	= "Il distanziometro è limitato al solo testo, poiché Blizzard ha disabilitato alcune funzionalità in quest'area."
 L.NO_RANGE			= "Il Radar Distanziometro non può essere utilizzato nelle istanze. Verrà utilizzato il precedente riquadro testuale"
 L.NO_ARROW			= "La Freccia non può essere usata nelle istanze"
-L.NO_HUD			= "La HUDMap non può essere usata nelle istanze"
+L.HUDMAP_NOT_INSTALLED	= "DBM-HudMap non è installato o non è abilitato."
 L.NO_COMMS			= "La comunicazione degli addon non può essere utilizzata durante gli incontri o le istanze M+ attive. Utilizza nuovamente questo comando dopo la fine dell'incontro o dell'istanza."
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= ""..L.DBM.." ha disabilitato il riquadro distanziometro per questo combattimento per insufficienti informazioni sulle distanze richieste con un gruppo di queste dimensioni."
@@ -648,8 +648,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon	= "{rt%%1$d}" --Doesn't need translation. I
 
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings
 L.AUTO_YELL_CUSTOM_FADE					= "%s svanito"
-L.AUTO_HUD_OPTION_TEXT					= "Mostra la HudMap per l'abilità $spell:%s (Dismessa)"
-L.AUTO_HUD_OPTION_TEXT_MULTI			= "Mostra la HudMap per varie meccaniche (Dismessa)"
 L.AUTO_NAMEPLATE_OPTION_TEXT			= "Mostra l'Aura della Barra del Nome per $spell:%s"
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED		= "Mostra le Aure della Barra del Nome per $spell:%s usando solo " .. L.DBM
 L.AUTO_RANGE_OPTION_TEXT				= "Mostra distanziometro (%s) per $spell:%s" -- string used for range so we can use things like "5/2" as a value for that field
@@ -678,21 +676,6 @@ L.MOVE_SPECIAL_WARNING_BAR		= "Avvisi speciali mobili"
 L.MOVE_SPECIAL_WARNING_TEXT		= "Avvisi Speciali"
 L.MOVE_PRIVATE_AURA_TEXT		= "<valore segreto> ti bersaglia con l'incantesimo <valore segreto>"
 L.MOVE_PRIVATE_AURA_DISABLED	= "L'anteprima è disabilitata perché i Riquadri delle Aure sono disabilitati globalmente nelle opzioni."
-
-L.HUD_INVALID_TYPE		= "Tipo invalido di HUD definito"
-L.HUD_INVALID_TARGET	= "Nessun bersaglio valido dato per l'HUD"
-L.HUD_INVALID_SELF		= "Impossibile utilizzare se stessi come bersaglio HUD"
-L.HUD_INVALID_ICON		= "Impossibile utilizzare l'icona per HUD su un bersaglio senza icona"
-L.HUD_SUCCESS			= "HUD avviato con successo con i tuoi parametri. Verrà annullato dopo %s, o digitando '/dbm hud hide'."
-L.HUD_USAGE				= {
-	"Utilizzo di "..L.DBM.."-HudMap:",
-	"-----------------",
-	"/dbm hud <tipo> <bersaglio> <durata>: Crea un HUD che punta al giocatore per la durata desiderata",
-	"Tipi validi: arrow, dot, red, blue, green, yellow, icon (richiede un bersaglio con icona incursione)",
-	"Bersagli validi: target, focus, <nomegiocatore>",
-	"Durate valide: qualsiasi numero (in secondi). Se in bianco, verranno impostati 20 minuti.",
-	"/dbm hud hide:  disabilita e nasconde l'HUD"
-}
 
 L.ARROW_MOVABLE		= "Freccia mobile"
 L.ARROW_WAY_USAGE	= "/dway <x> <y>: Crea una freccia che punta in una posizione specifica (utilizzando coordinate zona locale)"
