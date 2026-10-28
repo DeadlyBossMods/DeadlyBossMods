@@ -177,11 +177,12 @@ end
 local function RenderRows(list, cellText)
 	WipeTextFrames()
 	for i, entry in ipairs(list) do
-		local offset = -((i - 1) * rowHeight) - 4
+		local offset = -((i - 1) * rowHeight) - 4 - rowHeight / 2
 		for _, def in ipairs(currentColumns) do
 			local text = GetTextFrame()
 			text:SetText(cellText(entry, def.key))
-			text:SetPoint("TOP", def.header, "BOTTOM", 0, offset)
+			-- Center cells on the row so inline icons cannot shift text below neighboring cells.
+			text:SetPoint("LEFT", def.header, "BOTTOMLEFT", 0, offset)
 			text:SetWidth(def.width)
 		end
 	end
