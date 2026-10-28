@@ -261,6 +261,16 @@ do
 	---@param countKey string
 	---@param addedAt number? Mythic stage-2 recurrence evidence; independent of the delayed bar start and bar visibility
 	local function queueStart(self, timerObj, timerExact, eventID, eventType, countKey, addedAt)
+		if eventType == "icebound" and math.floor(timerExact + 0.5) == 5 then
+			--The phase-opening five-second entry actually casts immediately.
+			self:TLCountStart(eventID, eventType, countKey)
+			local _, eventCount = self:TLCountFinish(eventID)
+			if eventCount then
+				specWarnIceboundFlames:Show(eventCount)
+				specWarnIceboundFlames:Play("kickcast")
+			end
+			return
+		end
 		if addedAt and self:IsMythic() then
 			mythicStage2Expected[eventType] = {
 				eventID = eventID,

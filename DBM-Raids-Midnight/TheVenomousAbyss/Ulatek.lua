@@ -58,7 +58,7 @@ mod:AddAuraSoundOption(1300685, true, 1300530, 1, 3, "debuffyou", 17, 0)--Soul C
 mod:AddAuraSoundOption(1293046, true, 1295905, 1, 1, "gathershare", 2, 0)--Serpent's Bite (targeted)
 --mod:AddAuraSoundOption(1288879, true, 1295905, 1, 1, "gathershare", 2, 0)--Serpent's Bite (dot) (use if pre target spell aura doesn't work)
 mod:AddAuraSoundOption(1306119, true, 1295905, 1, 3, "stunyou", 19, 0)--Calcified Corpse. Failed to clear Serpent's Bite
-mod:AddAuraSoundOption(1312967, true, 1295905, 1, 1, "runout", 2, 0)--Volatile Purge (serpent's bite share debuff)
+mod:AddAuraSoundOption(1312967, true, 1295905, 1, 1, "scatter", 2, 0)--Volatile Purge (serpent's bite share debuff)
 mod:AddAuraSoundOption(1302842, false, 1299757, 1, 3, "stackhigh", 6, 1)--Toxic Burn (may be spammy if rapid soaked, warns at 2+ stacks)
 mod:AddAuraSoundOption(1301800, "RemovePoison", 1300751, 1, 3, "poisonyou", 20, 0)--Acidic Burst (Blightscale Viper adds debuffs)
 mod:AddAuraSoundOption(1305163, true, 1300751, 1, 1, "runout", 2, 0)--Petrifying Sting (Target). Used by Blightscale Viper
