@@ -3,6 +3,7 @@ local L = DBM_GUI_L
 local spokenAlertsPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_SpokenAlerts, "option")
 
 local spokenGeneralArea = spokenAlertsPanel:CreateArea(L.Area_VoiceSelection)
+local refreshOverrideDropdown
 
 local countdownVoiceSize = {
 	{
@@ -52,6 +53,7 @@ local VoiceDropDown = spokenGeneralArea:CreateDropdown(L.VoicePackChoice, voices
 	DBM.Options.ChosenVoicePack2 = value
 	DBM:CheckVoicePackVersion(value)
 	DBM:PlayCountSound(1, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack2.."\\count\\")
+	if refreshOverrideDropdown then refreshOverrideDropdown() end
 end, 180)
 VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown3, "TOPLEFT", 0, -45)
 
@@ -81,7 +83,75 @@ resetbutton:SetScript("OnClick", function()
 	VPReplaceSADefault:SetChecked(DBM.Options.VPReplacesSADefault)
 end)
 
---local voiceAdvancedArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackAdvOptions)
+local voiceOverrideArea = spokenAlertsPanel:CreateArea(L.Area_VoiceOverrides)
+local overrideEnabled = voiceOverrideArea:CreateCheckButton(L.GTFOOverrideEnabled, true, nil, "GTFOOverrideEnabled")
+
+local function overrideValue(mediaType, media)
+	return mediaType == "voice" and "voice:" .. media or media
+end
+
+local function overrideChoices()
+	local sounds = DBM_GUI:MixinSharedMedia3("sound", {
+		{ text = "AirHorn (DBM)", value = DBM.DefaultOptions.GTFOOverrideSound, sound = true }
+	})
+	local voicesList = {}
+	for name in pairs(DBM:GetVoicePackSounds()) do
+		if DBM:IsVoiceOverrideSoundSupported(name) then
+			voicesList[#voicesList + 1] = {
+				text = name,
+				value = overrideValue("voice", name),
+				sound = true,
+				preview = DBM:GetVoiceOverrideSound("voice", name)
+			}
+		end
+	end
+	table.sort(voicesList, function(a, b) return a.text:lower() < b.text:lower() end)
+	return {
+		{ text = L.VoiceOverrideSounds, children = sounds },
+		{ text = L.VoiceOverrideVoicePack, children = voicesList }
+	}
+end
+
+local overrideDropdown = voiceOverrideArea:CreateDropdown(L.GTFOOverrideSound, overrideChoices, nil, nil, function(value)
+	local isVoice = type(value) == "string" and value:sub(1, 6) == "voice:"
+	DBM.Options.GTFOOverrideSoundType = isVoice and "voice" or "sound"
+	DBM.Options.GTFOOverrideSound = isVoice and value:sub(7) or value
+end, 180)
+overrideDropdown:SetPoint("TOPLEFT", overrideEnabled, "BOTTOMLEFT", 20, -20)
+overrideDropdown.myheight = 50
+overrideDropdown:IsSelectedCallback(function(self, entry) return entry.value == self.value end)
+
+refreshOverrideDropdown = function()
+	local mediaType, media = DBM.Options.GTFOOverrideSoundType, DBM.Options.GTFOOverrideSound
+	overrideDropdown:RefreshLazyValues()
+	local value = overrideValue(mediaType, media)
+	-- Clear stale display text before restoring a value that may no longer be available.
+	local text = tostring(media)
+	if not DBM:GetVoiceOverrideSound(mediaType, media) then
+		text = L.VoiceOverrideUnavailable:format(text)
+	else
+		for _, group in ipairs(overrideDropdown.values) do
+			for _, entry in ipairs(group.children) do
+				if entry.value == value then text = entry.text end
+			end
+		end
+	end
+	overrideDropdown:SetSelectedValue({value = value, text = text})
+end
+overrideDropdown:SetScript("OnShow", refreshOverrideDropdown)
+voiceOverrideArea:CreateText(L.VoiceOverrideNote, nil, true)
+
+local overrideReset = voiceOverrideArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+overrideReset:SetPoint("BOTTOMRIGHT", voiceOverrideArea.frame, "BOTTOMRIGHT", -2, 4)
+overrideReset:SetNormalFontObject(GameFontNormalSmall)
+overrideReset:SetHighlightFontObject(GameFontNormalSmall)
+overrideReset:SetScript("OnClick", function()
+	DBM.Options.GTFOOverrideEnabled = DBM.DefaultOptions.GTFOOverrideEnabled
+	DBM.Options.GTFOOverrideSoundType = DBM.DefaultOptions.GTFOOverrideSoundType
+	DBM.Options.GTFOOverrideSound = DBM.DefaultOptions.GTFOOverrideSound
+	overrideEnabled:SetChecked(DBM.Options.GTFOOverrideEnabled)
+	refreshOverrideDropdown()
+end)
 
 local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_VPLearnMore)
 VPUrlArea1:CreateText(L.VPLearnMore, nil, true)
