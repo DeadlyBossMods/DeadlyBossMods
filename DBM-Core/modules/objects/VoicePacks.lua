@@ -13,6 +13,46 @@ private.swFilterDisabled = 20
 
 local minVoicePackVersion = 20
 
+---@param name string
+---@return boolean
+function DBM:IsVoiceOverrideSoundSupported(name)
+	if name:match("^Thogar/") or name == "1695gorak" or name == "1695uktar" or name == "1695ukurogg" then
+		return false
+	end
+	local voice = self.Options.ChosenVoicePack2
+	local version = not self:IsNoneValue(voice) and self.VoiceVersions[voice]
+	if not version or private.voiceSessionDisabled then
+		return false
+	end
+	local requiredVersion = private:GetVoicePackSounds()[name]
+	return requiredVersion ~= nil and requiredVersion <= version
+		and self:ValidateSound("Interface\\AddOns\\DBM-VP" .. voice .. "\\" .. name .. ".ogg")
+end
+
+---@param mediaType string
+---@param media number|string
+---@return number|string|nil
+function DBM:GetVoiceOverrideSound(mediaType, media)
+	if mediaType == "sound" then
+		if not self:IsNoneValue(media) and self:ValidateSound(media) then
+			return media
+		end
+	elseif mediaType == "voice" and type(media) == "string" and self:IsVoiceOverrideSoundSupported(media) then
+		return "Interface\\AddOns\\DBM-VP" .. self.Options.ChosenVoicePack2 .. "\\" .. media .. ".ogg"
+	end
+end
+
+---@return number|string|nil
+function DBM:GetGTFOOverrideSound()
+	if not self.Options.GTFOOverrideEnabled then return end
+	return self:GetVoiceOverrideSound(self.Options.GTFOOverrideSoundType, self.Options.GTFOOverrideSound)
+end
+
+---@return table<VPSound, number>
+function DBM:GetVoicePackSounds()
+	return private:GetVoicePackSounds()
+end
+
 function DBM:CheckVoicePackVersion(value)
 	local activeVP = self.Options.ChosenVoicePack2
 	--Check if voice pack out of date

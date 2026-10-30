@@ -505,6 +505,17 @@ local function canVoiceReplace(self, soundId, isNote)
 	return isVoicePackUsed
 end
 
+---@param self SpecialWarning
+---@param soundId number|string|nil
+---@return number|string|nil
+local function getGTFOOverride(self, soundId)
+	if self.announceType ~= "gtfo" or not DBM.Options.GTFOOverrideEnabled then return end
+	if type(soundId) ~= "number" or soundId < 1 or soundId > 4 then return end
+	local note = self.option and self.mod.Options[self.option .. "SWNote"]
+	if DBM.Options.SWarnNameInNote and type(note) == "string" and note:find(playerName) then return end
+	return DBM:GetGTFOOverrideSound()
+end
+
 ---@class SpecAnnounce0: SpecialWarning
 ---@field Show fun(self: SpecAnnounce0)
 ---@class SpecAnnounce1num: SpecialWarning
@@ -725,8 +736,9 @@ local function showSpecialWarning(self, secret, ...)
 		if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or not DBM:IsNoneValue(self.mod.Options[self.option .. "SWSound"])) then
 			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 			if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
-			if self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
-			DBM:PlaySpecialWarningSound(soundId or 1)
+			local overrideSound = getGTFOOverride(self, soundId)
+			if not overrideSound and self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
+			DBM:PlaySpecialWarningSound(overrideSound or soundId or 1)
 		end
 	else
 		self.combinedcount = 0
@@ -896,6 +908,7 @@ end
 function specialWarningPrototype:Play(name, customPath)
 	local voice = DBM.Options.ChosenVoicePack2
 	local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+	if not DBM.Options.DontPlaySpecialWarningSound and getGTFOOverride(self, soundId) then return end
 	if not canVoiceReplace(self, soundId) then return end
 	if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 	if ((not self.option or self.mod.Options[self.option])) and self.hasVoice <= private.swFilterDisabled then

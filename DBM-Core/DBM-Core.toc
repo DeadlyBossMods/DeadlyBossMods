@@ -109,6 +109,7 @@ modules\objects\BossMod.lua
 modules\objects\BossModOptions.lua
 modules\objects\BossModEventDispatcher.lua
 modules\objects\Localization.lua
+VoicePackSounds.lua
 modules\objects\VoicePacks.lua
 modules\objects\Timer.lua
 modules\UserTimers.lua

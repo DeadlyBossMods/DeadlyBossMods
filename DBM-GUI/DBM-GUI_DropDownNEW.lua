@@ -15,6 +15,28 @@ local function resolveDropdownFontAsset(fontValue, fontSize, fontFlags)
 	return defaultFont
 end
 
+local function findEntry(entries, selected)
+	for _, entry in ipairs(entries) do
+		if entry.children then
+			local found = findEntry(entry.children, selected)
+			if found then return found end
+		elseif entry.value ~= nil and entry.value == selected or entry.text == selected then
+			return entry
+		end
+	end
+end
+
+local function normalizeEntries(entries)
+	for _, entry in ipairs(entries) do
+		entry.text = entry.text or "Missing entry.text"
+		if entry.children then
+			normalizeEntries(entry.children)
+		else
+			entry.value = entry.value or entry.text
+		end
+	end
+end
+
 ---@class DBMDropDownTmp: Button
 ---@field isSelectedCallbackFn function|nil
 ---@field onSelectionChangedCallback function|nil
@@ -35,15 +57,14 @@ function dropdownPrototype:SetSelectedValue(selected)
 			self:onSelectionChangedCallback(selected)
 		end
 	elseif selected and self.values and type(self.values) == "table" then
-		for _, v in next, self.values do
-			if v.value ~= nil and v.value == selected or v.text == selected then
-				self.value = v.value
-				self.text = v.text
-				---@diagnostic disable-next-line: undefined-field
-				self:GenerateMenu()
-				if self.onSelectionChangedCallback then
-					self:onSelectionChangedCallback(v)
-				end
+		local v = findEntry(self.values, selected)
+		if v then
+			self.value = v.value
+			self.text = v.text
+			---@diagnostic disable-next-line: undefined-field
+			self:GenerateMenu()
+			if self.onSelectionChangedCallback then
+				self:onSelectionChangedCallback(v)
 			end
 		end
 	end
@@ -81,10 +102,7 @@ end
 ---@return DBMDropDown
 function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent, overrideText, dropdownType)
 	if type(values) == "table" then
-		for _, entry in next, values do
-			entry.text = entry.text or "Missing entry.text"
-			entry.value = entry.value or entry.text
-		end
+		normalizeEntries(values)
 	end
 	---@class DBMDropDown: Button
 	---@field myheight number
@@ -126,7 +144,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 		dropdown.text = v.text
 		--Temp, it causes mod menu to play sounds twice, but without it special warning options menu doesn't play it at all on click
 		if v.sound then
-			DBM:PlaySoundFile(v.value)
+			DBM:PlaySoundFile(v.preview or v.value)
 		end
 		if v.func then
 			v.func(v.value)
@@ -150,68 +168,77 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 			dropdown:RefreshLazyValues()
 		end
 
-		for _, v in ipairs(dropdown.values) do
-			local radio
-			if dropdownType == 'checkbox' then
-				radio = rootDescription:CreateCheckbox(v.text, IsSelected, SetSelected, v)
-			else
-				radio = rootDescription:CreateRadio(v.text, IsSelected, SetSelected, v)
-			end
-			if v.font or v.flag then
-				local fontFlags = v.flag and v.value or ""
-				local fontSize = v.fontsize or defaultFontSize
-				local fontAsset = v.font and resolveDropdownFontAsset(v.value, fontSize, fontFlags) or defaultFont
-				radio.font = CreateFont("DBM_FONT_" .. v.text)
-				radio.font:SetFont(fontAsset, fontSize, fontFlags)
-				-- Do **NOT** call SetFont inside of the initializer function, or it will silently exit (Thanks blizzard)
-				radio:AddInitializer(function(button)
-					button.fontString:SetFontObject(radio.font)
-				end)
-			end
-			if v.texture then
-				radio:AddInitializer(function(button)
-					local t = button:AttachTexture()
-					t:SetPoint("TOPLEFT", 15, 0)
-					t:SetPoint("BOTTOMRIGHT")
-					t:SetTexture(v.value)
-					return 200, 25
-				end)
-			end
-			if v.sound then
-				radio:AddInitializer(function(button)
-					if button.playBtn then
-						button.playBtn:Hide()
+		local function addEntries(description, entries)
+			for _, v in ipairs(entries) do
+				if v.children then
+					local submenu = description:CreateButton(v.text)
+					submenu:SetScrollMode(200)
+					addEntries(submenu, v.children)
+				else
+					local radio
+					if dropdownType == 'checkbox' then
+						radio = description:CreateCheckbox(v.text, IsSelected, SetSelected, v)
+					else
+						radio = description:CreateRadio(v.text, IsSelected, SetSelected, v)
 					end
-					if not v.value or v.value == "" or v.value == "Random" then
-						return
-					end
-					if not button.playBtn then
-						button.playBtn = AttachBasicButton(button, 16, 16)
-						button.playBtn:SetPoint("RIGHT", -5, 0)
-						local tex = button.playBtn:AttachTexture()
-						tex:SetAllPoints()
-						tex:SetTexture(130979) -- interface/common/voicechat-speaker
-						tex:SetVertexColor(0.8, 0.8, 0.8)
-						button.playBtn:SetScript("OnEnter", function()
-							tex:SetVertexColor(1, 1, 1)
-						end)
-						button.playBtn:SetScript("OnLeave", function()
-							tex:SetVertexColor(0.8, 0.8, 0.8)
+					if v.font or v.flag then
+						local fontFlags = v.flag and v.value or ""
+						local fontSize = v.fontsize or defaultFontSize
+						local fontAsset = v.font and resolveDropdownFontAsset(v.value, fontSize, fontFlags) or defaultFont
+						radio.font = CreateFont("DBM_FONT_" .. v.text)
+						radio.font:SetFont(fontAsset, fontSize, fontFlags)
+						-- Do **NOT** call SetFont inside of the initializer function, or it will silently exit (Thanks blizzard)
+						radio:AddInitializer(function(button)
+							button.fontString:SetFontObject(radio.font)
 						end)
 					end
-					if MenuTemplates.SetUtilityButtonClickHandler then
-						MenuTemplates.SetUtilityButtonClickHandler(button.playBtn, function()
-							DBM:PlaySoundFile(v.value)
+					if v.texture then
+						radio:AddInitializer(function(button)
+							local t = button:AttachTexture()
+							t:SetPoint("TOPLEFT", 15, 0)
+							t:SetPoint("BOTTOMRIGHT")
+							t:SetTexture(v.value)
+							return 200, 25
 						end)
 					end
-					button.playBtn:Show()
-				end)
-			end
-			if IsSelected(v) then
-				dropdown.value = v.value
-				dropdown.text = v.text
+					if v.sound then
+						radio:AddInitializer(function(button)
+							if button.playBtn then
+								button.playBtn:Hide()
+							end
+							if not v.value or v.value == "" or v.value == "Random" then
+								return
+							end
+							if not button.playBtn then
+								button.playBtn = AttachBasicButton(button, 16, 16)
+								button.playBtn:SetPoint("RIGHT", -5, 0)
+								local tex = button.playBtn:AttachTexture()
+								tex:SetAllPoints()
+								tex:SetTexture(130979) -- interface/common/voicechat-speaker
+								tex:SetVertexColor(0.8, 0.8, 0.8)
+								button.playBtn:SetScript("OnEnter", function()
+									tex:SetVertexColor(1, 1, 1)
+								end)
+								button.playBtn:SetScript("OnLeave", function()
+									tex:SetVertexColor(0.8, 0.8, 0.8)
+								end)
+							end
+							if MenuTemplates.SetUtilityButtonClickHandler then
+								MenuTemplates.SetUtilityButtonClickHandler(button.playBtn, function()
+									DBM:PlaySoundFile(v.preview or v.value)
+								end)
+							end
+							button.playBtn:Show()
+						end)
+					end
+					if IsSelected(v) then
+						dropdown.value = v.value
+						dropdown.text = v.text
+					end
+				end
 			end
 		end
+		addEntries(rootDescription, dropdown.values)
 		if dropdown.text then
 			---@diagnostic disable-next-line: undefined-field
 			dropdown:SetTooltip(function(tooltip)
@@ -239,11 +266,10 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 			dropdown:SetSelectedValue(vartype.Options[var])
 		end)
 	elseif type(dropdown.values) == "table" then
-		for _, v in next, dropdown.values do
-			if v.value ~= nil and v.value == var or v.text == var then
-				dropdown.value = v.value
-				dropdown.text = v.text
-			end
+		local v = findEntry(dropdown.values, var)
+		if v then
+			dropdown.value = v.value
+			dropdown.text = v.text
 		end
 		---@diagnostic disable-next-line: undefined-field
 		dropdown:GenerateMenu()
