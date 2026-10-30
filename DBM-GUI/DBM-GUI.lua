@@ -212,6 +212,24 @@ do
 		end
 		return result
 	end
+
+	---@param useTokens boolean? Save voice tokens instead of fixed paths.
+	function DBM_GUI:GetVoicePackSoundChoices(useTokens)
+		local choices = {}
+		for name in pairs(DBM:GetVoicePackSounds()) do
+			local path = DBM:GetVoiceOverrideSound("voice", name)
+			if path then
+				choices[#choices + 1] = {
+					text = name,
+					value = useTokens and "voice:" .. name or path,
+					sound = true,
+					preview = path
+				}
+			end
+		end
+		tsort(choices, function(a, b) return a.text:lower() < b.text:lower() end)
+		return choices
+	end
 end
 
 do

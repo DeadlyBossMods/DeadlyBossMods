@@ -48,6 +48,9 @@ local dropdownPrototype = CreateFrame("DropdownButton")
 
 -- For lazily loaded dropdowns: pass a single dropdown entry, for normal dropdowns pass a single value or name
 function dropdownPrototype:SetSelectedValue(selected)
+	if self.valueGetter and type(selected) ~= "table" then
+		self:RefreshLazyValues()
+	end
 	if type(selected) == "table" then -- Force value to whatever was given no matter if it exists
 		self.value = selected.value
 		self.text = selected.text
@@ -58,6 +61,9 @@ function dropdownPrototype:SetSelectedValue(selected)
 		end
 	elseif selected and self.values and type(self.values) == "table" then
 		local v = findEntry(self.values, selected)
+		if not v and self.valueGetter then
+			v = {value = selected, text = tostring(selected)}
+		end
 		if v then
 			self.value = v.value
 			self.text = v.text
@@ -113,6 +119,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	---@field SetSelectedValue fun(self: DBMDropDown, selected: any)
 	---@field RefreshLazyValues fun(self: DBMDropDown)
 	---@field OverrideText fun(self: DBMDropDown, text: string)
+	---@field noSoundOnSelect boolean|nil
 	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
 	local dropdown = CreateFrame("DropdownButton", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "WowStyle1DropdownTemplate")
 	setmetatable(dropdown, {
@@ -142,8 +149,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	local SetSelected = function(v)
 		dropdown.value = v.value
 		dropdown.text = v.text
-		--Temp, it causes mod menu to play sounds twice, but without it special warning options menu doesn't play it at all on click
-		if v.sound then
+		if v.sound and not dropdown.noSoundOnSelect then
 			DBM:PlaySoundFile(v.preview or v.value)
 		end
 		if v.func then

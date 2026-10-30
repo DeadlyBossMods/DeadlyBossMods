@@ -94,21 +94,9 @@ local function overrideChoices()
 	local sounds = DBM_GUI:MixinSharedMedia3("sound", {
 		{ text = "AirHorn (DBM)", value = DBM.DefaultOptions.GTFOOverrideSound, sound = true }
 	})
-	local voicesList = {}
-	for name in pairs(DBM:GetVoicePackSounds()) do
-		if DBM:IsVoiceOverrideSoundSupported(name) then
-			voicesList[#voicesList + 1] = {
-				text = name,
-				value = overrideValue("voice", name),
-				sound = true,
-				preview = DBM:GetVoiceOverrideSound("voice", name)
-			}
-		end
-	end
-	table.sort(voicesList, function(a, b) return a.text:lower() < b.text:lower() end)
 	return {
 		{ text = L.VoiceOverrideSounds, children = sounds },
-		{ text = L.VoiceOverrideVoicePack, children = voicesList }
+		{ text = L.VoiceOverrideVoicePack, children = DBM_GUI:GetVoicePackSoundChoices(true) }
 	}
 end
 

@@ -609,12 +609,6 @@ do
 	end
 
 	local sounds = DBM_GUI:MixinSharedMedia3("sound", {
-		-- Inject basically dummy values for ordering special warnings to just use default SW sound assignments
-		{ text = L.None, value = "None" },
-		{ text = L.SAOne, value = 1 },
-		{ text = L.SATwo, value = 2 },
-		{ text = L.SAThree, value = 3 },
-		{ text = L.SAFour, value = 4 },
 		-- Inject DBMs custom media that's not available to LibSharedMedia because I haven't added it yet
 		--{ text = "AirHorn (DBM)", value = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg" },
 		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },
@@ -639,6 +633,18 @@ do
 			tinsert(sounds, { text = "Blizzard: Medium", value = 7670701, sound = true })
 			tinsert(sounds, { text = "Blizzard: Critical", value = 7670697, sound = true })
 		end
+	end
+
+	local function specialWarningSounds()
+		return {
+			{ text = L.None, value = "None" },
+			{ text = L.SAOne, value = 1 },
+			{ text = L.SATwo, value = 2 },
+			{ text = L.SAThree, value = 3 },
+			{ text = L.SAFour, value = 4 },
+			{ text = L.VoiceOverrideSounds, children = sounds },
+			{ text = L.VoiceOverrideVoicePack, children = DBM_GUI:GetVoicePackSoundChoices() }
+		}
 	end
 
 	local function RGBPercToHex(r, g, b)
@@ -714,7 +720,7 @@ do
 				frame:SetPoint("LEFT", button, "RIGHT", isNewDropdown and 2 or -20, 2)
 				frame2:SetPoint("LEFT", frame, "RIGHT", isNewDropdown and 4 or 18, 0)
 			else--Special warning option
-				frame = self:CreateDropdown(nil, sounds, mod, modvar .. "SWSound", function(value)
+				frame = self:CreateDropdown(nil, specialWarningSounds, mod, modvar .. "SWSound", function(value)
 					if modvar:match("^PrivateAuraSound%d+$") then
 						local optionId = tonumber(modvar:match("^PrivateAuraSound(%d+)$"))
 						if InCombatLockdown() then
@@ -732,6 +738,8 @@ do
 					mod.Options[modvar .. "SWSound"] = value
 					DBM:PlaySpecialWarningSound(value, true)
 				end, nil, nil, button, L.BossModSWSound)
+				frame.noSoundOnSelect = true
+				frame:IsSelectedCallback(function(self, entry) return entry.value == self.value end)
 				frame:ClearAllPoints()
 				frame:SetPoint("LEFT", button, "RIGHT", 2, 0)
 				if mod.Options[modvar .. "SWNote"] then -- Mod has note, insert note hack
