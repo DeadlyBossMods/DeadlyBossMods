@@ -908,7 +908,7 @@ end
 function specialWarningPrototype:Play(name, customPath)
 	local voice = DBM.Options.ChosenVoicePack2
 	local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
-	if getGTFOOverride(self, soundId) then return end
+	if not DBM.Options.DontPlaySpecialWarningSound and getGTFOOverride(self, soundId) then return end
 	if not canVoiceReplace(self, soundId) then return end
 	if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 	if ((not self.option or self.mod.Options[self.option])) and self.hasVoice <= private.swFilterDisabled then

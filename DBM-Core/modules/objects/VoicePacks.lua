@@ -26,6 +26,7 @@ function DBM:IsVoiceOverrideSoundSupported(name)
 	end
 	local requiredVersion = private:GetVoicePackSounds()[name]
 	return requiredVersion ~= nil and requiredVersion <= version
+		and self:ValidateSound("Interface\\AddOns\\DBM-VP" .. voice .. "\\" .. name .. ".ogg")
 end
 
 ---@param mediaType string
@@ -33,7 +34,7 @@ end
 ---@return number|string|nil
 function DBM:GetVoiceOverrideSound(mediaType, media)
 	if mediaType == "sound" then
-		if not self:IsNoneValue(media) then
+		if not self:IsNoneValue(media) and self:ValidateSound(media) then
 			return media
 		end
 	elseif mediaType == "voice" and type(media) == "string" and self:IsVoiceOverrideSoundSupported(media) then
