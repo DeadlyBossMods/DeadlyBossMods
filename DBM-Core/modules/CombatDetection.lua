@@ -957,14 +957,21 @@ do
 				trackedAchievements = false
 			elseif private.isWrath or private.isCata then
 				trackedAchievements = (GetNumTrackedAchievements() > 0)
+			elseif private.isRetail then
+				-- Match Blizzard's achievement tracker: earned-by-me entries remain stored but are not displayed.
+				for _, achievementID in ipairs(C_ContentTracking.GetTrackedIDs(Enum.ContentTrackingType.Achievement)) do
+					local wasEarnedByMe = select(13, GetAchievementInfo(achievementID))
+					if not wasEarnedByMe then
+						trackedAchievements = achievementID
+						break
+					end
+				end
 			else
 				trackedAchievements = (C_ContentTracking and C_ContentTracking.GetTrackedIDs(2)[1])
 			end
 			if self.Options.HideObjectivesFrame and mod.addon and mod.addon.type ~= "SCENARIO" and not trackedAchievements and difficulties.difficultyIndex ~= 8 then
 				if private.isRetail then
-					if self.Options.DebugMode then
-						suppressObjectiveTracker()
-					end
+					suppressObjectiveTracker()
 				elseif not private.isCata and not private.isMop and not private.isForever and not InCombatLockdown() then
 					if WatchFrame then
 						if WatchFrame:IsVisible() then

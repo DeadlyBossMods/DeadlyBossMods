@@ -607,7 +607,6 @@ L.DisableMusic						= "首領戰鬥時停用音樂頻道 (注意：如果啟用�
 L.Area_HideBlizzard					= "停用 & 隱藏其他暴雪提示"
 L.HideBossEmoteFrame				= "首領戰鬥時隱藏團隊首領表情框架"
 L.HideWatchFrame					= "首領戰鬥時隱追蹤框架(任務目標)，如果沒有追踪成就，或不是在傳奇+中"
-L.DebugOnlyNote						= " (僅限偵錯)"
 L.HideQuestTooltips					= "首領戰鬥時隱藏任務目標提示"--Currently hidden (NYI)
 L.HideBlizzardTimeline				= "首領戰鬥時隱藏暴雪團隊時間線"
 L.Tab_RLControls					= "團隊領隊控制項"

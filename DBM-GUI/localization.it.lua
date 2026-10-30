@@ -604,7 +604,6 @@ L.DisableMusic						= "Disabilita il canale musicale durante i combattimenti con
 L.Area_HideBlizzard					= "Disabilita e Nascondi altre Seccature Blizzard"
 L.HideBossEmoteFrame				= "Nascondi il riquadro delle emote del boss raid durante i combattimenti con i boss"
 L.HideWatchFrame					= "Nascondi il riquadro degli obiettivi durante i combattimenti con i boss se non vengono tracciati successi e se non sei in un Mythic+"
-L.DebugOnlyNote						= " (Solo debug)"
 L.HideQuestTooltips					= "Nascondi gli obiettivi delle missioni dai tooltip durante i combattimenti con i boss"--Attualmente nascosto (NYI)
 L.HideBlizzardTimeline				= "Nascondi la Timeline Raid di Blizzard durante i combattimenti con i boss"
 L.Tab_RLControls					= "Raid Leader Controls"

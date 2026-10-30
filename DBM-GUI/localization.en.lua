@@ -712,7 +712,6 @@ L.DisableMusic						= "Disable music channel during boss fights (Note: If enable
 L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
 L.HideBossEmoteFrame				= "Hide Blizzard Raid Warnings during boss fights"
 L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
-L.DebugOnlyNote						= " (Debug Only)"
 L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
 L.HideBlizzardTimeline				= "Hide the Blizzard Raid Timeline during boss fights"
 

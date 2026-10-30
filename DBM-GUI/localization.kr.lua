@@ -708,7 +708,6 @@ L.DisableMusic						= "보스 전투 중 배경음악 음량 비활성화 (참�
 L.Area_HideBlizzard					= "그 외 성가신 블리자드 기본 UI 요소 비활성화 및 숨김"
 L.HideBossEmoteFrame				= "보스 전투 중 보스 경고 숨기기"
 L.HideWatchFrame					= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
-L.DebugOnlyNote						= " (디버그 전용)"
 L.HideQuestTooltips					= "보스 전투 중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
 L.HideBlizzardTimeline				= "보스 전투 중 블리자드 기본 공격대 타임라인 숨기기"
 

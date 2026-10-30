@@ -607,7 +607,6 @@ L.DisableMusic						= "Desactivar canal de música durante encuentros de jefe"
 L.Area_HideBlizzard					= "Desactivar y ocultar otras molestias de Blizzard"
 L.HideBossEmoteFrame				= "Ocultar marco de emociones durante encuentros de jefe"
 L.HideWatchFrame					= "Ocultar marco de seguimiento en jefes si no se siguen logros ni en Mítico+"
-L.DebugOnlyNote						= " (Solo depuración)"
 L.HideQuestTooltips					= "Ocultar objetivos de misión de las descripciones emergentes durante encuentros de jefe" --Currently hidden (NYI)
 L.HideBlizzardTimeline				= "Ocultar la línea de tiempo de la banda de Blizzard durante los encuentros de jefe"
 L.Tab_RLControls					= "Controles de líder de banda"
