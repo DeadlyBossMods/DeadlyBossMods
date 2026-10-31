@@ -979,6 +979,7 @@ local function findFirstTimerAndAnnounceForSpellKey(mod, spellKey, fallbackSpell
 	return timerObject, announceObject
 end
 
+---@param object Timer
 local function triggerAbilityTestTimer(object)
 	if object and object.Start then
 		object:Start(5, 1)--short 5 second timer with a 1 count
@@ -987,12 +988,14 @@ local function triggerAbilityTestTimer(object)
 	return false
 end
 
+---@param object Announce|SpecialWarning
 local function triggerAbilityTestAnnounce(object)
 	if object and object.Show then
+		local show = object.ShowPreview or object.Show
 		if object.announceType == "gtfo" then
-			object:Show()
+			show(object)
 		else
-			object:Show(1)
+			show(object, 1)
 		end
 		if object.voiceFile and object.Play then
 			object:Play(object.voiceFile)
