@@ -547,8 +547,9 @@ end
 
 ---@param self SpecialWarning
 ---@param secret boolean
+---@param preview boolean
 ---@param ... any
-local function showSpecialWarning(self, secret, ...)
+local function showSpecialWarning(self, secret, preview, ...)
 	if self.announceType == "blizztarget" then
 		if not private.blizzTargetConsuming then
 			local count, voiceName, expireOverride = ...
@@ -738,7 +739,7 @@ local function showSpecialWarning(self, secret, ...)
 			if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
 			local overrideSound = getGTFOOverride(self, soundId)
 			if not overrideSound and self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
-			DBM:PlaySpecialWarningSound(overrideSound or soundId or 1)
+			DBM:PlaySpecialWarningSound(overrideSound or soundId or 1, preview)
 		end
 	else
 		self.combinedcount = 0
@@ -747,7 +748,12 @@ local function showSpecialWarning(self, secret, ...)
 end
 
 function specialWarningPrototype:Show(...)
-	showSpecialWarning(self, false, ...)
+	showSpecialWarning(self, false, false, ...)
+end
+
+---Previews the configured warning sound without the trivial-content audio substitution.
+function specialWarningPrototype:ShowPreview(...)
+	showSpecialWarning(self, false, true, ...)
 end
 
 ---Shows a secret player name without materializing it into a Lua table.
@@ -765,7 +771,7 @@ local function secretShowByClass(self, className, ...)
 			playerName = classColor:WrapTextInColorCode(playerName)
 		end
 	end
-	showSpecialWarning(self, true, playerName, select(2, ...))
+	showSpecialWarning(self, true, false, playerName, select(2, ...))
 end
 
 ---Shows a secret player name from an ENCOUNTER_WARNING target GUID without materializing it into a Lua table.

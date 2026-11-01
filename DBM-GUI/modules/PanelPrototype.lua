@@ -989,10 +989,11 @@ end
 
 local function triggerAbilityTestAnnounce(object)
 	if object and object.Show then
+		local show = object.ShowPreview or object.Show
 		if object.announceType == "gtfo" then
-			object:Show()
+			show(object)
 		else
-			object:Show(1)
+			show(object, 1)
 		end
 		if object.voiceFile and object.Play then
 			object:Play(object.voiceFile)
