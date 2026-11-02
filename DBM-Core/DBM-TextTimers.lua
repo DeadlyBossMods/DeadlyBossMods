@@ -156,11 +156,15 @@ local function showIcons(row, texture)
 	row.iconRight:SetShown(show and DBM.Options.TextTimersIconPosition ~= "LEFT")
 end
 
-local function setRowColor(row, time, colorType)
+local function setRowColor(row, time, colorType, customColor)
 	local urgent = DBM.Options.TextTimersUrgentThreshold > 0 and time <= DBM.Options.TextTimersUrgentThreshold
 	local r, g, b
-	if DBM.Options.TextTimersInheritBarColor and type(colorType) == "number" and colorType >= 0 and colorType <= 8 and colorType % 1 == 0 then
-		r, g, b = DBT:GetColorForType(colorType, urgent)
+	if DBM.Options.TextTimersInheritBarColor then
+		if customColor then
+			r, g, b = DBT:GetColorForType(customColor, urgent)
+		elseif type(colorType) == "number" and colorType >= 0 and colorType <= 8 and colorType % 1 == 0 then
+			r, g, b = DBT:GetColorForType(colorType, urgent)
+		end
 	end
 	if not r then
 		if urgent then
@@ -293,7 +297,7 @@ refresh = function()
 			local candidate = candidates[i]
 			local row = acquireRow(i)
 			setRowText(row, candidate.id, candidate.name, candidate.time)
-			setRowColor(row, candidate.time, candidate.data.colorType or candidate.bar and candidate.bar.colorType)
+			setRowColor(row, candidate.time, candidate.data.colorType or candidate.bar and candidate.bar.colorType, candidate.bar and candidate.bar.color or candidate.data.customColor)
 			local icon = candidate.data.icon
 			if not icon and candidate.bar then
 				local texture = _G[candidate.bar.frame:GetName() .. "BarIcon1"]
@@ -319,21 +323,21 @@ local function changed()
 	DBM:Schedule(0, wake)
 end
 
-local function began(_, id, name, duration, icon, _, _, colorType, _, keep, _, _, _, _, _, _, hasVariance, peak, enabled, textOnly)
+local function began(_, id, name, duration, icon, _, _, colorType, _, keep, _, _, _, _, _, _, hasVariance, peak, enabled, textOnly, customColor)
 	local bar = DBT:GetBar(id)
 	-- Encounter-timeline bars can contain protected text/icons. Check only DBT's
 	-- non-secret metadata before retaining callback data or reading bar fields.
 	if bar and bar.isSecret then
 		if tracked[id] then tracked[id] = nil; changed() end
 	elseif enabled and bar and not bar.dead and not bar.dummy then
-		tracked[id] = {name = name, icon = icon, colorType = colorType}
+		tracked[id] = {name = name, icon = icon, colorType = colorType, customColor = customColor}
 		changed()
 	elseif textOnly == true and not enabled and not bar and type(duration) == "number" and duration > 0 then
 		-- In variance mode DBT counts down from the peak; its 'zero at minimum'
 		-- option shifts the visible time back to the callback's minimum.
 		local time = hasVariance and DBT.Options.VarianceEnabled2 and type(peak) == "number" and peak or duration
 		local offset = hasVariance and DBT.Options.VarianceEnabled2 and DBT.Options.VarianceBehavior == "ZeroAtMinTimerAndNeg" and (time - duration) or 0
-		tracked[id] = {name = name, icon = icon, colorType = colorType, textOnly = true, expires = GetTime() + time, offset = offset, keep = keep}
+		tracked[id] = {name = name, icon = icon, colorType = colorType, customColor = customColor, textOnly = true, expires = GetTime() + time, offset = offset, keep = keep}
 		changed()
 	elseif tracked[id] then
 		tracked[id] = nil

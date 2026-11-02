@@ -751,7 +751,7 @@ end
 local barsTestMode = false --this is to handle the "non-guid" test bars. just turn on for testing.
 do
 	--test start
-	local testStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority)
+	local testStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority, _, _, _, _, _, customColor)
 		if event ~= "DBM_TimerBegin" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
@@ -767,7 +767,7 @@ do
 		if id and not guid and barsTestMode then
 			for _, curGuid in pairs(getAllShownGUIDs()) do
 				local tmpId = id .. curGuid
-				local color = {DBT:GetColorForType(colorType)}
+				local color = {DBT:GetColorForType(customColor or colorType)}
 				local display = CleanSubString(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, DBM.Options.NPIconTextMaxLen)
 				--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
 				local curTime =  GetTime()
@@ -844,7 +844,7 @@ do
 	DBM:RegisterCallback("DBM_TestModStarted", testModeStartCallback)
 
 	--timer start
-	local timerStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority)
+	local timerStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid, timerCount, isPriority, _, _, _, _, _, customColor)
 		if event ~= "DBM_NameplateStart" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
@@ -858,7 +858,7 @@ do
 		if DBM.Options.DontSendBossGUIDs and barType ~= "cdnp" and barType ~= "castnp" then return end--Basically all other bar types
 
 		if (id and guid) then
-			local color = {DBT:GetColorForType(colorType)}
+			local color = {DBT:GetColorForType(customColor or colorType)}
 			local display = CleanSubString(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, DBM.Options.NPIconTextMaxLen)
 			--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
 			local curTime =  GetTime()

@@ -513,6 +513,8 @@ do
 		end
 		local newBar = self:GetBar(id)
 		if newBar then -- Update an existing bar
+			newBar.color = color
+			newBar.colorType = colorType
 			newBar.isHidden = nil
 			newBar.lastUpdate = GetTime()
 			newBar.huge = huge
@@ -1250,6 +1252,12 @@ end
 ---@param colorType any LuaLS has problems if this is typecast correctly since LuaLs is unable to determine the value of stuff in Options table
 ---@param endColor boolean?
 function DBT:GetColorForType(colorType, endColor)
+	if type(colorType) == "table" then
+		if endColor and colorType.endColor then
+			colorType = colorType.endColor
+		end
+		return colorType.r, colorType.g, colorType.b
+	end
 	local keys = colorKeys[colorType]
 	if not keys then
 		DBM:Debug("GetColorForType failed for unknown colorType: "..tostring(colorType))
@@ -1303,18 +1311,25 @@ function barPrototype:Update(elapsed)
 	local timerCorrectedNegative = varianceBehaviorNeg and timerLowestValueFromVariance or timerValue
 	local r, g, b
 	local updateNeeded, sortingNeeded = false, false
-	if barOptions.DynamicColor and not self.color then
+	if barOptions.DynamicColor and (not self.color or self.color.endColor) then
 		local keys = colorKeys[colorCount]
+		local startR, startG, startB, endR, endG, endB
+		if self.color then
+			startR, startG, startB = DBT:GetColorForType(self.color)
+			endR, endG, endB = DBT:GetColorForType(self.color, true)
+		else
+			startR, startG, startB = barOptions[keys.startR], barOptions[keys.startG], barOptions[keys.startB]
+			endR, endG, endB = barOptions[keys.endR], barOptions[keys.endG], barOptions[keys.endB]
+		end
 		if barOptions.NoBarFade then
-			r = isEnlarged and barOptions[keys.endR] or barOptions[keys.startR]
-			g = isEnlarged and barOptions[keys.endG] or barOptions[keys.startG]
-			b = isEnlarged and barOptions[keys.endB] or barOptions[keys.startB]
+			r = isEnlarged and endR or startR
+			g = isEnlarged and endG or startG
+			b = isEnlarged and endB or startB
 		else
 			local progress = 1 - timerValue/totaltimeValue
-			local startR, startG, startB = barOptions[keys.startR], barOptions[keys.startG], barOptions[keys.startB]
-			r = startR + (barOptions[keys.endR] - startR) * progress
-			g = startG + (barOptions[keys.endG] - startG) * progress
-			b = startB + (barOptions[keys.endB] - startB) * progress
+			r = startR + (endR - startR) * progress
+			g = startG + (endG - startG) * progress
+			b = startB + (endB - startB) * progress
 		end
 		if not enlargeEnabled and timerValue > enlargeTime then
 			r, g, b = barOptions.DesaturateValue * r, barOptions.DesaturateValue * g, barOptions.DesaturateValue * b

@@ -273,10 +273,15 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 		formatedText = text
 	end
 	local replaceLast = force or (frame.font1ticker and frame.font2ticker and (font2Secret or customIcon))
+	local r, g, b = unpack(self.Options.SpecialWarningFontCol)
+	if specWarnObject then
+		r, g, b = specWarnObject:GetColor()
+	end
 	if not self.Options.DontShowSpecialWarningText then
 		if not frame.font1ticker then
 			font1elapsed = 0
 			font1.lastUpdate = GetTime()
+			font1:SetTextColor(r, g, b)
 			font1:SetText(formatedText)
 			font1:Show()
 			added = true
@@ -284,6 +289,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 		elseif not frame.font2ticker or replaceLast then
 			font2elapsed = 0
 			font2.lastUpdate = GetTime()
+			font2:SetTextColor(r, g, b)
 			font2:SetText(formatedText)
 			font2Secret = self:issecretvalue(formatedText)
 			font2:Show()
@@ -295,6 +301,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 				--Secret slots are replaced above instead of being read back for rotation.
 				local prevText1 = font2:GetText()
 				font1:SetText(prevText1)
+				font1:SetTextColor(font2:GetTextColor())
 				font1elapsed = font2elapsed
 				self:AddSpecialWarning(text, true, specWarnObject, number, customIcon, noSound)
 			end
@@ -318,7 +325,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 			end
 		end
 		if self.Options.ShowSWarningsInChat then
-			local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
+			local colorCode = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
 			local combinedText
 			if C_StringUtil then
 				combinedText = C_StringUtil.WrapString(formatedText, colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] ", "|r")
@@ -391,27 +398,54 @@ end
 local specialWarningPrototype = private:GetPrototype("SpecialWarning")
 local mt = {__index = specialWarningPrototype}
 
-local function classColoringFunction(cap)
-	cap = cap:sub(2, -2)
-	local noStrip = cap:match("noStrip ")
-	if not noStrip then
-		local name = cap
-		local playerClass, playerIcon = DBM:GetRaidClass(name)
-		if playerClass ~= "UNKNOWN" then
-			cap = DBM:GetShortServerName(cap)--Only run strip code on valid player classes
-			local playerColor = RAID_CLASS_COLORS[playerClass]
-			if playerColor then
-				if playerIcon > 0 and playerIcon <= 8 then
-					cap = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(playerIcon) .. ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-				else
-					cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-				end
-			end
-		end
-	else
-		cap = cap:sub(9)
+---@return number, number, number
+function specialWarningPrototype:GetColor()
+	local color = self.option and self.mod.Options[self.option .. "Color"]
+	if type(color) ~= "table" then
+		color = DBM.Options.WarningColors[color]
 	end
-	return cap
+	if color then
+		return color.r, color.g, color.b
+	end
+	local fontColor = DBM.Options.SpecialWarningFontCol
+	return fontColor[1], fontColor[2], fontColor[3]
+end
+
+-- Keyed by the restore color code (scalar), so in-place GUI color edits never reuse a stale closure.
+local classColoringFunctions = {}
+
+---@param r number
+---@param g number
+---@param b number
+local function getClassColoringFunction(r, g, b)
+	local restoreCode = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
+	local func = classColoringFunctions[restoreCode]
+	if not func then
+		func = function(cap)
+			cap = cap:sub(2, -2)
+			local noStrip = cap:match("noStrip ")
+			if not noStrip then
+				local name = cap
+				local playerClass, playerIcon = DBM:GetRaidClass(name)
+				if playerClass ~= "UNKNOWN" then
+					cap = DBM:GetShortServerName(cap)--Only run strip code on valid player classes
+					local playerColor = RAID_CLASS_COLORS[playerClass]
+					if playerColor then
+						if playerIcon > 0 and playerIcon <= 8 then
+							cap = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(playerIcon) .. ("|r|cff%.2x%.2x%.2x%s|r%s"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, restoreCode)
+						else
+							cap = ("|r|cff%.2x%.2x%.2x%s|r%s"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, restoreCode)
+						end
+					end
+				end
+			else
+				cap = cap:sub(9)
+			end
+			return cap
+		end
+		classColoringFunctions[restoreCode] = func
+	end
+	return func
 end
 
 local function setText(announceType, spellId, stacks, customName)
@@ -647,6 +681,7 @@ local function showSpecialWarning(self, secret, preview, ...)
 			(DBM.Options.SpecialWarningIcon and self.icon and textureCode:format(self.icon)) or ""
 		)
 		local noteHasName = nil
+		local classColoringFunction = getClassColoringFunction(self:GetColor())
 		if self.option and not secretCount then
 			local noteText = self.mod.Options[self.option .. "SWNote"]
 			if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
@@ -686,7 +721,8 @@ local function showSpecialWarning(self, secret, preview, ...)
 			end
 			DBM:AddSpecialWarning(text, nil, self)
 			if DBM.Options.ShowSWarningsInChat then
-				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
+				local r, g, b = self:GetColor()
+				local colorCode = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
 				self.mod:AddMsg(("%s[%s] %s|r"):format(colorCode, L.MOVE_SPECIAL_WARNING_TEXT, text), nil)
 			end
 		end
