@@ -1250,6 +1250,9 @@ end
 ---@param colorType any LuaLS has problems if this is typecast correctly since LuaLs is unable to determine the value of stuff in Options table
 ---@param endColor boolean?
 function DBT:GetColorForType(colorType, endColor)
+	if type(colorType) == "table" then
+		return colorType.r, colorType.g, colorType.b
+	end
 	local keys = colorKeys[colorType]
 	if not keys then
 		DBM:Debug("GetColorForType failed for unknown colorType: "..tostring(colorType))

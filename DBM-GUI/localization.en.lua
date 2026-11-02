@@ -842,5 +842,7 @@ L.Test								= "Test"
 
 
 L.BossModTColor						= "Bar Color"
+L.BossModColor						= "Text Color"
+L.ColorCustom						= "Custom"
 L.BossModCVoice						= "Countdown Voice"
 L.BossModSWSound					= "Announce Sound"

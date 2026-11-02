@@ -710,5 +710,7 @@ L.FontHeight	                    = 16
 --L.DiabledForBW = "Disable above features for only BW users"
 L.Test								= "Tester"
 L.BossModTColor						= "Couleur de la barre"
+L.BossModColor						= "Couleur du texte"
+L.ColorCustom						= "Personnalisée"
 L.BossModCVoice						= "Voix de décompte"
 L.BossModSWSound					= "Son d'annonce"

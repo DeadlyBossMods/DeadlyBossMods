@@ -704,5 +704,7 @@ L.FontHeight	= 16
 
 L.Test								= "Test"
 L.BossModTColor						= "Bar Color"
+L.BossModColor						= "Colore del testo"
+L.ColorCustom						= "Personalizzato"
 L.BossModCVoice						= "Countdown Voice"
 L.BossModSWSound					= "Announce Sound"

@@ -50,6 +50,7 @@ Right click on DBM itself in addon client list and set to preferred release type
 ## Features
 * Mods for raid, dungeon, special event and Brawlers Guild
 * Colored raid warnings (players will be colored according to their class) with icons and to the point messaging. DBM aims to let you know what to do for something, not just show you a spell name.
+* Per-ability color menus for announces, special announces, and timers offer presets and a custom color picker. The Custom entry shows the current color and opens the picker at that color; cancel restores the previous setting. Warning defaults retain the module's announce color or the global special-warning text color, and custom timer colors use a single color throughout the bar.
 * A big focus on filtering/hiding what you don't need to know for your role (or what you can't do anything about such as dispel/interrupt on cooldown), so you can focus on the information you do need, while also maintaining ability to disable these filters for leaders that do want a larger overview of fight events.
 * Auto-respond during boss fights. DBM will inform anyone who whispers you during a boss fight that you are busy. These messages contain the name and health of the boss as well as the raid's status. This feature is completely optional and can be disabled by player or even raid leader for the entire group.
 * Bars can be enlarged with custom effects when they are about to expire

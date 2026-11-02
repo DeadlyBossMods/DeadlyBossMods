@@ -699,5 +699,7 @@ L.FontHeight						= 16
 
 L.Test								= "Testen"
 L.BossModTColor						= "Balkenfarbe"
+L.BossModColor						= "Textfarbe"
+L.ColorCustom						= "Benutzerdefiniert"
 L.BossModCVoice						= "Countdown-Stimme"
 L.BossModSWSound					= "Ansage-Sound"

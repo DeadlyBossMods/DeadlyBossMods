@@ -711,5 +711,7 @@ L.FontHeight	= 16
 
 L.Test								= "Probar"
 L.BossModTColor						= "Color de la barra"
+L.BossModColor						= "Color del texto"
+L.ColorCustom						= "Personalizado"
 L.BossModCVoice						= "Voz para cuentas atrás"
 L.BossModSWSound					= "Sonido de anuncio"

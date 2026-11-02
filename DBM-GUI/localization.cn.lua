@@ -710,5 +710,7 @@ L.FontHeight	= 18
 
 L.Test								= "测试"
 L.BossModTColor						= "条颜色"
+L.BossModColor						= "文字颜色"
+L.ColorCustom						= "自定义"
 L.BossModCVoice						= "倒数语音"
 L.BossModSWSound					= "警报声音"

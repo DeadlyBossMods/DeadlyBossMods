@@ -705,5 +705,7 @@ L.FontHeight						= 16
 
 L.Test								= "Тест"
 L.BossModTColor						= "Цвет полосы"
+L.BossModColor						= "Цвет текста"
+L.ColorCustom						= "Свой цвет"
 L.BossModCVoice						= "Голос обратного отсчета"
 L.BossModSWSound					= "Звук предупреждений"

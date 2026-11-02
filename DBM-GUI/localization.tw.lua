@@ -707,5 +707,7 @@ L.FontHeight	= 16
 
 L.Test								= "測試"
 L.BossModTColor						= "計時條顏色"
+L.BossModColor						= "文字顏色"
+L.ColorCustom						= "自訂"
 L.BossModCVoice						= "倒數語音"
 L.BossModSWSound					= "警報聲音"
