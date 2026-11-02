@@ -339,6 +339,7 @@ end
 
 local function showTimerColorEditor(owner, value, apply, cancel, isCurrent)
 	if not timerColorEditor then
+		---@class DBMTimerColorEditor: Frame, TooltipBorderBackdropTemplate
 		local editor = CreateFrame("Frame", nil, UIParent, "TooltipBorderBackdropTemplate")
 		timerColorEditor = editor
 		editor:SetSize(340, 160)
