@@ -834,7 +834,7 @@ L.Test								= "테스트"
 
 
 L.BossModTColor						= "바 색상"
-L.BossModColor						= "글자 색상"
+L.BossModColor						= "텍스트 색상"
 L.ColorCustom						= "사용자 지정"
 L.BossModCVoice						= "초읽기 음성"
 L.BossModSWSound					= "알림 소리"
