@@ -564,7 +564,7 @@ local function addOptions(mod, catpanel, v)
 		elseif type(mod.Options[v]) == "boolean" then
 			if mod.Options[v .. "TColor"] then
 				catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v, nil, true)
-			elseif mod.Options[v .. "SWSound"] then
+			elseif mod.Options[v .. "SWSound"] or mod.Options[v .. "Color"] ~= nil then
 				catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v)
 			else
 				catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true)
@@ -658,7 +658,24 @@ local function normalizeModOptions(mod, importedOptions)
 		else
 			local ending = type(optionName) == "string" and optionName:sub(-6):lower()
 			local isSoundOption = ending == "cvoice" or ending == "wsound"
-			if (isSoundOption and type(importedValue) ~= "string" and type(importedValue) ~= "number") or (not isSoundOption and type(importedValue) ~= type(defaultValue)) then
+			local isColorOption = type(defaultValue) == "number" and type(optionName) == "string" and optionName:sub(-5) == "Color"
+			if isColorOption then
+				if type(importedValue) == "table" then
+					local colors = {importedValue}
+					if importedValue.endColor ~= nil then
+						if optionName:sub(-6) ~= "TColor" or type(importedValue.endColor) ~= "table" then return nil end
+						colors[2] = importedValue.endColor
+					end
+					for _, color in ipairs(colors) do
+						for _, component in ipairs({"r", "g", "b"}) do
+							local value = color[component]
+							if type(value) ~= "number" or not (value >= 0 and value <= 1) then return nil end
+						end
+					end
+				elseif type(importedValue) ~= "number" or importedValue % 1 ~= 0 or importedValue < 0 or importedValue > (optionName:sub(-6) == "TColor" and 8 or 4) then
+					return nil
+				end
+			elseif (isSoundOption and type(importedValue) ~= "string" and type(importedValue) ~= "number") or (not isSoundOption and type(importedValue) ~= type(defaultValue)) then
 				return nil
 			end
 			normalizedOptions[optionName] = importedValue
