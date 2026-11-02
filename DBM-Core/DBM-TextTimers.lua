@@ -161,7 +161,7 @@ local function setRowColor(row, time, colorType, customColor)
 	local r, g, b
 	if DBM.Options.TextTimersInheritBarColor then
 		if customColor then
-			r, g, b = customColor.r, customColor.g, customColor.b
+			r, g, b = DBT:GetColorForType(customColor, urgent)
 		elseif type(colorType) == "number" and colorType >= 0 and colorType <= 8 and colorType % 1 == 0 then
 			r, g, b = DBT:GetColorForType(colorType, urgent)
 		end

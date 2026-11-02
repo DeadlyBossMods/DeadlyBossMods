@@ -661,9 +661,16 @@ local function normalizeModOptions(mod, importedOptions)
 			local isColorOption = type(defaultValue) == "number" and type(optionName) == "string" and optionName:sub(-5) == "Color"
 			if isColorOption then
 				if type(importedValue) == "table" then
-					for _, component in ipairs({"r", "g", "b"}) do
-						local value = importedValue[component]
-						if type(value) ~= "number" or not (value >= 0 and value <= 1) then return nil end
+					local colors = {importedValue}
+					if importedValue.endColor ~= nil then
+						if optionName:sub(-6) ~= "TColor" or type(importedValue.endColor) ~= "table" then return nil end
+						colors[2] = importedValue.endColor
+					end
+					for _, color in ipairs(colors) do
+						for _, component in ipairs({"r", "g", "b"}) do
+							local value = color[component]
+							if type(value) ~= "number" or not (value >= 0 and value <= 1) then return nil end
+						end
 					end
 				elseif type(importedValue) ~= "number" or importedValue % 1 ~= 0 or importedValue < 0 or importedValue > (optionName:sub(-6) == "TColor" and 8 or 4) then
 					return nil

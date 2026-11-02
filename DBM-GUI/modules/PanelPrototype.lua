@@ -329,6 +329,83 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	return colorSelect
 end
 
+local timerColorEditor
+
+local function hideTimerColorEditor(owner)
+	if timerColorEditor and timerColorEditor.owner == owner then
+		timerColorEditor:Hide()
+	end
+end
+
+local function showTimerColorEditor(owner, value, apply, cancel, isCurrent)
+	if not timerColorEditor then
+		local editor = CreateFrame("Frame", nil, UIParent, "TooltipBorderBackdropTemplate")
+		timerColorEditor = editor
+		editor:SetSize(340, 160)
+		editor:SetPoint("CENTER")
+		editor:SetFrameStrata("DIALOG")
+		editor:SetClampedToScreen(true)
+		editor:EnableMouse(true)
+		editor:SetBackdropColor(0.05, 0.05, 0.05, 1)
+		local panel = setmetatable({frame = editor}, {__index = PanelPrototype})
+		local title = panel:CreateText(L.BossModTColor .. " - " .. L.ColorCustom, 300, false)
+		title:SetPoint("TOPLEFT", 20, -16)
+		local function changed()
+			if editor.isCurrent() then
+				editor.value = {
+					r = editor.startColor.r, g = editor.startColor.g, b = editor.startColor.b,
+					endColor = {r = editor.endColor.r, g = editor.endColor.g, b = editor.endColor.b}
+				}
+				editor.apply(editor.value)
+			end
+		end
+		editor.startColor = panel:CreateColorSelect(L.BarStartColor, changed)
+		editor.startColor:SetSize(300, 24)
+		editor.startColor:SetPoint("TOPLEFT", 20, -48)
+		editor.endColor = panel:CreateColorSelect(L.BarEndColor, changed)
+		editor.endColor:SetSize(300, 24)
+		editor.endColor:SetPoint("TOPLEFT", 20, -80)
+		for _, control in ipairs({editor.startColor, editor.endColor}) do
+			control:SetScript("OnClick", function(self)
+				if not editor.isCurrent() then return end
+				local previous = editor.value
+				local r, g, b = self.r, self.g, self.b
+				showColorPicker(self, r, g, b, function(red, green, blue)
+					self:SetColorRGB(red, green, blue)
+					changed()
+				end, function()
+					self:SetColorRGB(r, g, b)
+					editor.value = previous
+					editor.apply(previous)
+				end, function()
+					return editor.isCurrent and editor.isCurrent()
+				end)
+			end)
+		end
+		local okay = panel:CreateButton(OKAY, 120, 22, function() editor:Hide() end)
+		okay:SetPoint("BOTTOMLEFT", 30, 16)
+		local cancelButton = panel:CreateButton(CANCEL, 120, 22, function()
+			if editor.isCurrent() then editor.cancel() end
+			editor:Hide()
+		end)
+		cancelButton:SetPoint("BOTTOMRIGHT", -30, 16)
+		editor:SetScript("OnHide", function()
+			hideColorPicker(editor.startColor)
+			hideColorPicker(editor.endColor)
+			editor.owner = nil
+			editor.value, editor.apply, editor.cancel, editor.isCurrent = nil, nil, nil, nil
+		end)
+	end
+	local editor = timerColorEditor
+	editor:Hide()
+	editor.owner, editor.apply, editor.cancel, editor.isCurrent = owner, apply, cancel, isCurrent
+	editor.value = value
+	editor:SetFrameLevel(owner:GetFrameLevel() + 10)
+	editor.startColor:SetColorRGB(DBT:GetColorForType(value))
+	editor.endColor:SetColorRGB(DBT:GetColorForType(value, true))
+	editor:Show()
+end
+
 function PanelPrototype:CreateSlider(text, low, high, step, width, value, callbackFn)
 	value = value or 0
 	local function NormalizeSliderValue(newValue)
@@ -671,10 +748,10 @@ do
 			end
 		end
 		local function getRGB(value)
-			if type(value) == "table" then
-				return value.r, value.g, value.b
-			elseif isTimer then
+			if isTimer then
 				return DBT:GetColorForType(value, true)
+			elseif type(value) == "table" then
+				return value.r, value.g, value.b
 			end
 			local color = DBM.Options.WarningColors[value] or announce and announce.color
 			if color then return color.r, color.g, color.b end
@@ -687,6 +764,8 @@ do
 			local entries = {}
 			if isTimer then
 				local labels = {L.ColorDropGeneric, L.ColorDrop1, L.ColorDrop2, L.ColorDrop3, L.ColorDrop4, L.ColorDrop5, L.ColorDrop6, L.CDDImportant1, L.CDDImportant2}
+				local defaultColor = mod.DefaultOptions[option] or 0
+				tinsert(entries, entry(DEFAULT .. ": " .. labels[defaultColor + 1], "default", getRGB(defaultColor)))
 				for i, label in ipairs(labels) do
 					tinsert(entries, entry(label, i - 1, getRGB(i - 1)))
 				end
@@ -700,36 +779,56 @@ do
 			return entries
 		end
 		local dropdown
-		local function refreshSelection()
+		local function selectedValue()
 			local value = mod.Options[option]
-			dropdown:SetSelectedValue(type(value) == "table" and "custom" or value)
+			if type(value) == "table" then return "custom" end
+			if isTimer and value == (mod.DefaultOptions[option] or 0) then return "default" end
+			return value
+		end
+		local function refreshSelection()
+			dropdown:SetSelectedValue(selectedValue())
 		end
 		dropdown = panel:CreateDropdown(nil, values, nil, nil, function(value)
 			hideColorPicker(dropdown)
+			hideTimerColorEditor(dropdown)
 			if value ~= "custom" then
-				mod.Options[option] = value
+				mod.Options[option] = value == "default" and (mod.DefaultOptions[option] or 0) or value
+				refreshSelection()
 				return
 			end
 			local options = mod.Options
 			local original, current = options[option], options[option]
-			local r, g, b = getRGB(original)
-			showColorPicker(dropdown, r, g, b, function(red, green, blue)
-				current = {r = red, g = green, b = blue}
+			local globalOptions, barOptions = DBM.Options, DBT.Options
+			local function apply(color)
+				current = color
 				options[option] = current
 				refreshSelection()
-			end, function()
+			end
+			local function cancel()
 				options[option] = original
 				refreshSelection()
-			end, function()
+			end
+			local function isCurrent()
 				return mod.Options == options and options[option] == current
-			end)
+					and DBM.Options == globalOptions and DBT.Options == barOptions
+			end
+			if isTimer then
+				showTimerColorEditor(dropdown, original, apply, cancel, isCurrent)
+			else
+				local r, g, b = getRGB(original)
+				showColorPicker(dropdown, r, g, b, function(red, green, blue)
+					apply({r = red, g = green, b = blue})
+				end, cancel, isCurrent)
+			end
 		end, 70, nil, button, isTimer and L.BossModTColor or L.BossModColor)
 		dropdown:IsSelectedCallback(function(_, v)
-			local value = mod.Options[option]
-			return v.value == (type(value) == "table" and "custom" or value)
+			return v.value == selectedValue()
 		end)
 		dropdown:SetScript("OnShow", refreshSelection)
-		dropdown:SetScript("OnHide", hideColorPicker)
+		dropdown:SetScript("OnHide", function(self)
+			hideColorPicker(self)
+			hideTimerColorEditor(self)
+		end)
 		dropdown.myheight = 0
 		return dropdown
 	end
