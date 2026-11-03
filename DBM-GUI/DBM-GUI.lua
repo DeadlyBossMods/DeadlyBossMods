@@ -892,13 +892,18 @@ function DBM_GUI:CreateBossModPanel(mod)
 		end, {ModProfile = true, AddonProfile = true}, modProfileVersion, L.ModImportFailed:format(mod.localization.general.name), L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, L.ModProfileImportFooter)
 	end)
 	local modNameForHTML = mod.localization.general.name:gsub("&", "&amp;")
+	-- Created before the Enable button: the first ability area anchors to the panel child created immediately before it
+	local autoRelease
+	if mod.Options.AutoRelease ~= nil and not mod.isTrashMod then
+		autoRelease = panel:CreateCheckButton(L.Mod_AutoRelease:format("|n|cFFFFFFFF" .. L.Mod_AutoReleaseWipeOnly), false)
+	end
 	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. modNameForHTML), true)
 	button:SetChecked(mod.Options.Enabled)
 	button:SetPoint("TOPLEFT", exportMod, "BOTTOMLEFT", 0, -8)
 	button:SetScript("OnClick", function()
 		mod:Toggle()
 	end)
-	if mod.Options.AutoRelease ~= nil and not mod.isTrashMod then
+	if autoRelease then
 		-- Enable label spans to the panel edge and captures the mouse; shrink it to its text so the new checkbox is clickable
 		local measure = button:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 		measure:SetText(L.Mod_Enabled:format(""))
@@ -906,7 +911,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 		measure:SetText(mod.localization.general.name)
 		labelWidth = math.max(labelWidth, measure:GetStringWidth())
 		measure:Hide()
-		local autoRelease = panel:CreateCheckButton(L.Mod_AutoRelease:format("|n|cFFFFFFFF" .. L.Mod_AutoReleaseWipeOnly), false)
 		autoRelease:SetPoint("LEFT", button, "RIGHT", labelWidth + 24, 0)
 		autoRelease:SetChecked(mod.Options.AutoRelease)
 		autoRelease:SetScript("OnShow", function(self)
@@ -916,7 +920,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 			mod.Options.AutoRelease = self:GetChecked() and true or false
 		end)
 		button.textObj:SetPoint("RIGHT", autoRelease, "LEFT", -4, 0)
-		panel:SetLastObj(button)
 	end
 
 	if mod.addon then
