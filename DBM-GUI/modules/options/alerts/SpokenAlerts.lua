@@ -54,6 +54,7 @@ local VoiceDropDown = spokenGeneralArea:CreateDropdown(L.VoicePackChoice, voices
 	DBM:CheckVoicePackVersion(value)
 	DBM:PlayCountSound(1, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack2.."\\count\\")
 	if refreshOverrideDropdown then refreshOverrideDropdown() end
+	DBM:RefreshGTFOAuraSounds()
 end, 180)
 VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown3, "TOPLEFT", 0, -45)
 
@@ -85,6 +86,15 @@ end)
 
 local voiceOverrideArea = spokenAlertsPanel:CreateArea(L.Area_VoiceOverrides)
 local overrideEnabled = voiceOverrideArea:CreateCheckButton(L.GTFOOverrideEnabled, true, nil, "GTFOOverrideEnabled")
+overrideEnabled:SetScript("OnClick", function()
+	if InCombatLockdown() then
+		DBM:AddMsg(L.PrivateAuraSoundCombatLockdown, nil, true)
+		overrideEnabled:SetChecked(DBM.Options.GTFOOverrideEnabled)
+		return
+	end
+	DBM.Options.GTFOOverrideEnabled = not DBM.Options.GTFOOverrideEnabled
+	DBM:RefreshGTFOAuraSounds()
+end)
 
 local function overrideValue(mediaType, media)
 	return mediaType == "voice" and "voice:" .. media or media
@@ -101,9 +111,15 @@ local function overrideChoices()
 end
 
 local overrideDropdown = voiceOverrideArea:CreateDropdown(L.GTFOOverrideSound, overrideChoices, nil, nil, function(value)
+	if InCombatLockdown() then
+		DBM:AddMsg(L.PrivateAuraSoundCombatLockdown, nil, true)
+		refreshOverrideDropdown()
+		return
+	end
 	local isVoice = type(value) == "string" and value:sub(1, 6) == "voice:"
 	DBM.Options.GTFOOverrideSoundType = isVoice and "voice" or "sound"
 	DBM.Options.GTFOOverrideSound = isVoice and value:sub(7) or value
+	DBM:RefreshGTFOAuraSounds()
 end, 180)
 overrideDropdown:SetPoint("TOPLEFT", overrideEnabled, "BOTTOMLEFT", 20, -20)
 overrideDropdown.myheight = 50
@@ -134,11 +150,16 @@ overrideReset:SetPoint("BOTTOMRIGHT", voiceOverrideArea.frame, "BOTTOMRIGHT", -2
 overrideReset:SetNormalFontObject(GameFontNormalSmall)
 overrideReset:SetHighlightFontObject(GameFontNormalSmall)
 overrideReset:SetScript("OnClick", function()
+	if InCombatLockdown() then
+		DBM:AddMsg(L.PrivateAuraSoundCombatLockdown, nil, true)
+		return
+	end
 	DBM.Options.GTFOOverrideEnabled = DBM.DefaultOptions.GTFOOverrideEnabled
 	DBM.Options.GTFOOverrideSoundType = DBM.DefaultOptions.GTFOOverrideSoundType
 	DBM.Options.GTFOOverrideSound = DBM.DefaultOptions.GTFOOverrideSound
 	overrideEnabled:SetChecked(DBM.Options.GTFOOverrideEnabled)
 	refreshOverrideDropdown()
+	DBM:RefreshGTFOAuraSounds()
 end)
 
 local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_VPLearnMore)
