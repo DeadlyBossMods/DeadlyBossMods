@@ -42,6 +42,7 @@ end
 ---@field onSelectionChangedCallback function|nil
 ---@field valueGetter function|nil
 ---@field hasOverrideText boolean|nil
+---@field maxScrollExtent number|nil
 ---@field OnSelectionChanged fun(self: DBMDropDown, callback: function)
 ---@field IsSelectedCallback fun(self: DBMDropDown, callback: function)
 ---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
@@ -133,6 +134,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	---@field OverrideText fun(self: DBMDropDown, text: string)
 	---@field noSoundOnSelect boolean|nil
 	---@field hasOverrideText boolean|nil
+	---@field maxScrollExtent number|nil
 	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
 	local dropdown = CreateFrame("DropdownButton", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "WowStyle1DropdownTemplate")
 	setmetatable(dropdown, {
@@ -182,7 +184,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 		if not dropdown:IsVisible() then
 			return
 		end
-		rootDescription:SetScrollMode(200)
+		rootDescription:SetScrollMode(dropdown.maxScrollExtent or 200)
 
 		if dropdown.valueGetter then
 			dropdown:RefreshLazyValues()
