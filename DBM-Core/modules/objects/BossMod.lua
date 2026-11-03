@@ -107,6 +107,10 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 		},
 		mt
 	)
+	if addon and (addon.type == "RAID" or addon.type == "LAIR") and C_InstanceEncounter and C_InstanceEncounter.IsEncounterSuppressingRelease then
+		obj.Options.AutoRelease = false
+		obj.DefaultOptions.AutoRelease = false
+	end
 
 	local encounterId = tonumber(name)
 	if encounterId and EJ_GetEncounterInfo and EJ_GetEncounterInfo(encounterId) then
@@ -185,6 +189,14 @@ function bossModPrototype:EnableGenericTrash()
 	if self.inCombat and DBM.UpdateGenericTrashOptions then
 		DBM:UpdateGenericTrashOptions(true)
 	end
+end
+
+---Default this raid/lair boss mod's per-boss "Auto Release" (on wipe) option to enabled.
+---No-op for mods that don't support the option (other addon types or clients without the release API).
+function bossModPrototype:SetAutoReleaseDefault()
+	if self.DefaultOptions.AutoRelease == nil then return end
+	self.DefaultOptions.AutoRelease = true
+	self.Options.AutoRelease = true
 end
 
 function bossModPrototype:SetZone(...)

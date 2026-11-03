@@ -898,6 +898,26 @@ function DBM_GUI:CreateBossModPanel(mod)
 	button:SetScript("OnClick", function()
 		mod:Toggle()
 	end)
+	if mod.Options.AutoRelease ~= nil and not mod.isTrashMod then
+		-- Enable label spans to the panel edge and captures the mouse; shrink it to its text so the new checkbox is clickable
+		local measure = button:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+		measure:SetText(L.Mod_Enabled:format(""))
+		local labelWidth = measure:GetStringWidth()
+		measure:SetText(mod.localization.general.name)
+		labelWidth = math.max(labelWidth, measure:GetStringWidth())
+		measure:Hide()
+		local autoRelease = panel:CreateCheckButton(L.Mod_AutoRelease:format("|n|cFFFFFFFF" .. L.Mod_AutoReleaseWipeOnly), false)
+		autoRelease:SetPoint("LEFT", button, "RIGHT", labelWidth + 24, 0)
+		autoRelease:SetChecked(mod.Options.AutoRelease)
+		autoRelease:SetScript("OnShow", function(self)
+			self:SetChecked(mod.Options.AutoRelease)
+		end)
+		autoRelease:SetScript("OnClick", function(self)
+			mod.Options.AutoRelease = self:GetChecked() and true or false
+		end)
+		button.textObj:SetPoint("RIGHT", autoRelease, "LEFT", -4, 0)
+		panel:SetLastObj(button)
+	end
 
 	if mod.addon then
 		for spellID, options in getmetatable(mod.groupOptions).__pairs(mod.groupOptions) do
