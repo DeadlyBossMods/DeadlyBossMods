@@ -381,6 +381,7 @@ L.GTFOOverrideEnabled				= "Заменять звуки и голос преду
 L.GTFOOverrideSound					= "Звук замены GTFO"
 L.VoiceOverrideSounds				= "Звуки"
 L.VoiceOverrideVoicePack				= "Голосовой пакет"
+L.VoiceOverrideNoVoicePack			= "Голосовой пакет не выбран или не включен"
 L.VoiceOverrideUnavailable			= "%s (недоступно)"
 L.VoiceOverrideNote					= "Индивидуальные звуки предупреждений и выбор «Нет» имеют приоритет. Если голосовой файл недоступен, используется обычный звук предупреждения."
 L.Area_VPLearnMore					= "Узнать больше о голосовых пакетах и о том, как использовать эти опции"

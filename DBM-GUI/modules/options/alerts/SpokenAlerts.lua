@@ -96,7 +96,7 @@ local function overrideChoices()
 	})
 	return {
 		{ text = L.VoiceOverrideSounds, children = sounds },
-		{ text = L.VoiceOverrideVoicePack, children = DBM_GUI:GetVoicePackSoundChoices(true) }
+		DBM_GUI:GetVoicePackSoundEntry(true)
 	}
 end
 

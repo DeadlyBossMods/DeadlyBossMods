@@ -213,8 +213,20 @@ do
 		return result
 	end
 
+	-- Building choices validates hundreds of files, so cache per voice pack/version (which also determine session-disabled state)
+	local voiceChoiceCache, voiceChoiceCacheKey = {}, nil
+
 	---@param useTokens boolean? Save voice tokens instead of fixed paths.
 	function DBM_GUI:GetVoicePackSoundChoices(useTokens)
+		local voice = DBM.Options.ChosenVoicePack2
+		local cacheKey = tostring(voice) .. ":" .. tostring(DBM.VoiceVersions[voice])
+		if cacheKey ~= voiceChoiceCacheKey then
+			voiceChoiceCache, voiceChoiceCacheKey = {}, cacheKey
+		end
+		local cacheIndex = useTokens and "tokens" or "paths"
+		if voiceChoiceCache[cacheIndex] then
+			return voiceChoiceCache[cacheIndex]
+		end
 		local choices = {}
 		for name in pairs(DBM:GetVoicePackSounds()) do
 			local path = DBM:GetVoiceOverrideSound("voice", name)
@@ -228,7 +240,18 @@ do
 			end
 		end
 		tsort(choices, function(a, b) return a.text:lower() < b.text:lower() end)
+		voiceChoiceCache[cacheIndex] = choices
 		return choices
+	end
+
+	---@param useTokens boolean? Save voice tokens instead of fixed paths.
+	function DBM_GUI:GetVoicePackSoundEntry(useTokens)
+		local choices = self:GetVoicePackSoundChoices(useTokens)
+		return {
+			text = L.VoiceOverrideVoicePack,
+			children = choices,
+			disabledTooltip = #choices == 0 and L.VoiceOverrideNoVoicePack or nil
+		}
 	end
 end
 
