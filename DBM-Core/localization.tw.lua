@@ -2,6 +2,8 @@ if GetLocale() ~= "zhTW" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"風怒", "火舌", "大地生命武器"}
+L.CONSUMABLES_PALADIN_IMBUES = {"聖化儀式", "裁決儀式"}
 L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
 
 local dateTable = date("*t")
@@ -37,7 +39,7 @@ L.COPY_WA_DIALOG				= "複製WA鍵"
 L.TEXT_ONLY_RANGE				= "範圍框架受限於該區域的API限制，只限於文字。"
 L.NO_RANGE						= "距離雷達不能在副本中使用，使用傳統文字距離框架取代"
 L.NO_ARROW						= "箭頭不能在副本中使用"
-L.NO_HUD						= "HUDMap不能在副本中使用"
+L.HUDMAP_NOT_INSTALLED			= "DBM-HudMap 未安裝或未啟用。"
 L.NO_COMMS						= "在遭遇戰或活躍的M+地下城中無法使用附加元件通信。請在遭遇戰或地下城結束後再次使用此命令。"
 
 L.DYNAMIC_DIFFICULTY_CLUMP		= L.DBM.."已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
@@ -311,6 +313,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: 在隊伍/公會上執行 M+ 鑰匙和評分檢查，並快捷方式到地下城傳送。 （別名：key，keys，keystone）",
 	"/dbm lag: 執行全團延遲檢查。",
 	"/dbm durability: 執行全團耐久度檢查。",
+	"/dbm consumables: 進行團隊消耗品檢查 (alias: cons, consumes).",
 	"/dbm brez: 顯示戰鬥復活計時器框架以供定位。",--AI translated (check me)
 	"/dbm help2: 顯示其他斜線命令"
 }
@@ -321,7 +324,6 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/dbm version: 執行首領模組版本檢查（別名：ver）。",
 	"/dbm version2: 執行首領模組版本檢查，並私聊過期用戶（別名：ver2）。",
 	"/range <number> 或 /distance <number>: 顯示範圍框架。/rrange 或 /rdistance 反轉顏色。",
-	"/hudar <number>: 顯示基於 HUD 的範圍查找器。",
 	"/dbm arrow: 顯示 " .. L.DBM .. " 箭頭，詳情請參見 '/dbm arrow help'。",
 	"/dbm hud: 顯示 " .. L.DBM .. " hud，詳情請參見 '/dbm hud'。",
 	"/dbm dbtdebug: 顯示已清理的狀態條計時器診斷資訊以供錯誤回報。"
@@ -655,8 +657,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}"
 
 --L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE					= "%s已消退"
-L.AUTO_HUD_OPTION_TEXT					= "為$spell:%s顯示HudMap(不再作用)"
-L.AUTO_HUD_OPTION_TEXT_MULTI			= "為不同的機制顯示HudMap(不再作用)"
 L.AUTO_NAMEPLATE_OPTION_TEXT			= "為$spell:%s顯示姓名版光環，使用在相容的名條插件或"..L.DBM..""
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED		= "為$spell:%s顯示姓名版光環，使用在"..L.DBM..""
 
@@ -689,21 +689,6 @@ L.MOVE_SPECIAL_WARNING_TEXT	= "特別警告"
 L.MOVE_PRIVATE_AURA_TEXT				= "<secret value> 瞄準你使用法術 <secret value>"
 L.MOVE_PRIVATE_AURA_DISABLED			= "預覽被禁用，因為光環框架在選項中全域禁用。"
 
-L.HUD_INVALID_TYPE			= "無效的HUD類型定義"
-L.HUD_INVALID_TARGET		= "無有效的HUD目標"
-L.HUD_INVALID_SELF			= "不能將HUD目标設定成自己"
-L.HUD_INVALID_ICON			= "不能設定對無團隊標記的目標"
-L.HUD_SUCCESS				= "HUD成功使用你的參數運作。這會在%s後取消，或是使用'/dbm hud hide'指令取消。"
-L.HUD_USAGE	= {
-	L.DBM .. "-HudMap 用法:",
-	"-----------------",
-	"/dbm hud <類型> <目標> <持續時間>: 建立一個指向玩家的HUD",
-	"有效類型: arrow, dot, red, blue, green, yellow, icon(需要團隊標記)",
-	"有效目標: target, focus, <玩家名字>",
-	"有效持續時間: 任何秒數。如果無輸入值則預設為20分鐘",
-	"/dbm hud hide  停用玩家生成的HUD物件"
-}
-
 L.ARROW_MOVABLE					= "可移動箭頭"
 L.ARROW_WAY_USAGE				= "/dway <x> <y>: 建立一個箭頭指向一個指定地點 (使用本地區域地圖座標)"
 L.ARROW_WAY_SUCCESS				= "要隱藏箭頭，鍵入 '/dbm arrow hide' 或到達箭頭"
@@ -727,6 +712,18 @@ L.KEYSTONES_HEADER				= L.DBM.. " - 鑰石"
 L.GEAR_HEADER					= L.DBM.. " - 裝備檢查結果"
 L.GEAR_MISSING_GEMS				= "缺少寶石"
 L.GEAR_MISSING_ENCHANTS			= "缺少附魔"
+L.GEAR_DURABILITY				= "耐久度 %"
+L.GEAR_BROKEN					= "損壣"
+L.RAIDCHECKS_TAB_CONSUMABLES	= "消耗品"
+L.RAIDCHECKS_TAB_GEAR			= "裝備"
+L.RAIDCHECKS_TAB_LATENCY		= "延遲"
+L.CONSUMABLES_HEADER			= L.DBM.. " - 消耗品檢查"
+L.CONSUMABLES_FLASK				= "精鍊藥劑"
+L.CONSUMABLES_FOOD				= "食物"
+L.CONSUMABLES_WEAPON			= "武器"
+L.CONSUMABLES_HS				= "治療石"
+L.CONSUMABLES_RUNE				= "符文"
+L.CONSUMABLES_NA				= "N/A"
 L.BREZ_HEADER					= "戰鬥復活"
 
 L.OVERRIDE_ACTIVATED			= "領隊已啟用此首領的配置覆蓋"

@@ -385,14 +385,14 @@ do
 				self:ResumeBlizzardAPI()
 				self:UnregisterShortTermEvents()
 				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			badStateDetected = true
 			self:ResumeBlizzardAPI()
 			self:UnregisterShortTermEvents()
 			setFallback(self)
-			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 		end
 	end
 
@@ -600,14 +600,14 @@ do
 				self:ResumeBlizzardAPI()
 				self:UnregisterShortTermEvents()
 				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			badStateDetected = true
 			self:ResumeBlizzardAPI()
 			self:UnregisterShortTermEvents()
 			setFallback(self)
-			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 		end
 	end
 
@@ -743,7 +743,7 @@ do
 				self:ResumeBlizzardAPI()
 				self:UnregisterShortTermEvents()
 				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 			end
 		elseif timer == 54 then
 			--Observed sequence: JS, JF, JS, JF, ST, JS, JF, JS, JF, ST, JS, JF
@@ -759,7 +759,7 @@ do
 				self:ResumeBlizzardAPI()
 				self:UnregisterShortTermEvents()
 				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 			end
 		elseif timer == 159 then
 			--Observed sequence variants:
@@ -844,7 +844,7 @@ do
 					self:ResumeBlizzardAPI()
 					self:UnregisterShortTermEvents()
 					setFallback(self)
-					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 				end
 			elseif timer159Uses156Variant then
 				if timer159Count == 1 or timer159Count == 4 or timer159Count == 7 or timer159Count == 10 then
@@ -881,7 +881,7 @@ do
 					self:ResumeBlizzardAPI()
 					self:UnregisterShortTermEvents()
 					setFallback(self)
-					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 				end
 			else
 				if timer159Count == 1 or timer159Count == 4 or timer159Count == 7 then
@@ -931,7 +931,7 @@ do
 						self:ResumeBlizzardAPI()
 						self:UnregisterShortTermEvents()
 						setFallback(self)
-						DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+						DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 					end
 				else
 					if timer159Count == 9 or timer159Count == 13 or timer159Count == 17 then
@@ -954,7 +954,7 @@ do
 						self:ResumeBlizzardAPI()
 						self:UnregisterShortTermEvents()
 						setFallback(self)
-						DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+						DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 					end
 				end
 			end
@@ -990,7 +990,7 @@ do
 					self:ResumeBlizzardAPI()
 					self:UnregisterShortTermEvents()
 					setFallback(self)
-					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 				end
 			elseif timer18UsesLateTwelveVariant and timer18Count >= 12 and timer18Count <= 21 then
 				if timer18Count == 12 or timer18Count == 14 or timer18Count == 16 or timer18Count == 18 then
@@ -1004,7 +1004,7 @@ do
 					self:ResumeBlizzardAPI()
 					self:UnregisterShortTermEvents()
 					setFallback(self)
-					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+					DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 				end
 			elseif timer18Count == 1 or timer18Count == 3 or timer18Count == 5 or timer18Count == 9 or timer18Count == 13 or timer18Count == 15 or timer18Count == 17 or timer18Count == 19 or timer18Count == 22 or timer18Count == 26 or timer18Count == 28 or timer18Count == 30 or timer18Count == 32 then
 				timerDivineStormCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "divineStorm", "divineStormCount"))
@@ -1021,14 +1021,14 @@ do
 				self:ResumeBlizzardAPI()
 				self:UnregisterShortTermEvents()
 				setFallback(self)
-				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+				DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 			end
 		else--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			badStateDetected = true
 			self:ResumeBlizzardAPI()
 			self:UnregisterShortTermEvents()
 			setFallback(self)
-			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 		end
 	end
 	--Note, bar state changing and canceling is handled by core

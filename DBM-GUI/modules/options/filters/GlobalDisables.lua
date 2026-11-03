@@ -93,9 +93,9 @@ if not DBM:IsRestricted() then
 	spamMisc:CreateCheckButton(L.SpamBlockNoYells, true, nil, "DontSendYells")
 	spamMisc:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
 	spamMisc:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
-	spamMisc:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
+	local disableInfoFrame = spamMisc:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
+	disableInfoFrame:HookScript("OnClick", function() DBM.InfoFrame:SyncOptions() end)
 end
-spamMisc:CreateCheckButton(L.SpamBlockNoHudMap, true, nil, "DontShowHudMap2")
 spamMisc:CreateCheckButton(L.SpamBlockNoNoteSync, true, nil, "BlockNoteShare")
 spamMisc:CreateCheckButton(L.SpamBlockAutoGossip, true, nil, "DontAutoGossip")
 
@@ -115,3 +115,6 @@ local PTSlider = spamPTArea:CreateSlider(L.PT_Threshold, 1, 10, 1, 300, math.flo
 	DBM.Options.PTCountThreshold2 = math.floor(value)
 end)
 PTSlider:SetPoint("BOTTOMLEFT", SPTCDA, "BOTTOMLEFT", 80, -40)
+spamPTArea.frame:HookScript("OnShow", function()
+	PTSlider:SetValueSilent(math.floor(DBM.Options.PTCountThreshold2))
+end)

@@ -99,6 +99,9 @@ if DBM:IsRetail() then
 	end)
 	fontSizeSlider:SetPoint("TOPLEFT", BrezFontDropDown, "TOPRIGHT", 50, 0)
 	fontSizeSlider.myheight = 0
+	area1b.frame:HookScript("OnShow", function()
+		fontSizeSlider:SetValueSilent(DBM.Options.BrezFontSize or 18)
+	end)
 
 	local movemebutton = area1b:CreateButton(L.MoveMe, 100, 16)
 	movemebutton:SetPoint("TOPRIGHT", area1b.frame, "TOPRIGHT", -2, -4)

@@ -396,6 +396,7 @@ do
 		end
 		if private.LastInstanceType ~= "raid" and private.LastInstanceType ~= "party" and not force then return end
 		if self.Options.RestoreSettingMusic then return end--Music was disabled by the music disable override, abort here
+		if DBM_GUI and DBM_GUI.StopMusicPreview then DBM_GUI:StopMusicPreview() end
 		self:FireEvent("DBM_MusicStart", "RaidOrDungeon")
 		if self.Options.EventSoundDungeonBGM and not self:IsNoneValue(self.Options.EventSoundDungeonBGM) and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (difficulties.savedDifficulty == "mythic" or difficulties.savedDifficulty == "challenge")) then
 			if not self.Options.RestoreSettingCustomMusic then
@@ -529,7 +530,9 @@ do
 		private:GetModule("DevToolsModule"):OnDebugToggle()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
-			self.HudMap:Disable()
+			if self.HudMap then
+				self.HudMap:Disable()
+			end
 			if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
 				self.RangeCheck:Hide(true)
 			end
@@ -557,7 +560,9 @@ do
 		self:UpdateMapRestrictions()
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
-			self.HudMap:Disable()
+			if self.HudMap then
+				self.HudMap:Disable()
+			end
 			if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
 				self.RangeCheck:Hide(true)
 			end
@@ -590,7 +595,9 @@ do
 			self:UpdateMapRestrictions()
 			if self:HasMapRestrictions() then
 				self.Arrow:Hide()
-				self.HudMap:Disable()
+				if self.HudMap then
+					self.HudMap:Disable()
+				end
 				if (private.isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
 					self.RangeCheck:Hide(true)
 				end

@@ -11,8 +11,6 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for P
 
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
----@class Announce
-local announcePrototype = private:GetPrototype("Announce")
 ---@class DBMMod
 local bossModPrototype = private:GetPrototype("DBMMod")
 
@@ -107,7 +105,8 @@ end
 ---@param count number?
 ---@param voiceName string?
 ---@param expireOverride number?
-function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, expireOverride)
+---@param matchSeverity number? Only consume encounter warnings with this public severity; nil matches any severity.
+function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, expireOverride, matchSeverity)
 	if not specWarnObject or specWarnObject.announceType ~= "blizzyou" then return end
 	local mod = specWarnObject.mod
 	if not mod then return end
@@ -121,14 +120,16 @@ function DBM:QueueBlizzYouSpecialWarning(specWarnObject, count, voiceName, expir
 		specWarn = specWarnObject,
 		count = count,
 		voiceName = voiceName,
+		matchSeverity = matchSeverity,
 		expireSeconds = expireSeconds,
 		queueTime = GetTime()
 	}
 	table.insert(queue.ordered, entry)
 end
 
+---@param severity number? Public ENCOUNTER_WARNING severity.
 ---@return boolean
-function DBM:ConsumeBlizzYouSpecialWarning()
+function DBM:ConsumeBlizzYouSpecialWarning(severity)
 	local now = GetTime()
 	local consumed = false
 	for mod, queue in pairs(blizzYouSpecialWarningQueue) do
@@ -139,7 +140,7 @@ function DBM:ConsumeBlizzYouSpecialWarning()
 			if now - entry.queueTime > (entry.expireSeconds or 1.5) then
 				-- Stale, discard
 				removeBlizzYouSpecialWarningQueueEntry(queue, entry)
-			elseif not found then
+			elseif not found and (entry.matchSeverity == nil or entry.matchSeverity == severity) then
 				removeBlizzYouSpecialWarningQueueEntry(queue, entry)
 				if entry.specWarn then
 					private.blizzYouConsuming = true
@@ -272,10 +273,15 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 		formatedText = text
 	end
 	local replaceLast = force or (frame.font1ticker and frame.font2ticker and (font2Secret or customIcon))
+	local r, g, b = unpack(self.Options.SpecialWarningFontCol)
+	if specWarnObject then
+		r, g, b = specWarnObject:GetColor()
+	end
 	if not self.Options.DontShowSpecialWarningText then
 		if not frame.font1ticker then
 			font1elapsed = 0
 			font1.lastUpdate = GetTime()
+			font1:SetTextColor(r, g, b)
 			font1:SetText(formatedText)
 			font1:Show()
 			added = true
@@ -283,6 +289,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 		elseif not frame.font2ticker or replaceLast then
 			font2elapsed = 0
 			font2.lastUpdate = GetTime()
+			font2:SetTextColor(r, g, b)
 			font2:SetText(formatedText)
 			font2Secret = self:issecretvalue(formatedText)
 			font2:Show()
@@ -294,6 +301,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 				--Secret slots are replaced above instead of being read back for rotation.
 				local prevText1 = font2:GetText()
 				font1:SetText(prevText1)
+				font1:SetTextColor(font2:GetTextColor())
 				font1elapsed = font2elapsed
 				self:AddSpecialWarning(text, true, specWarnObject, number, customIcon, noSound)
 			end
@@ -317,7 +325,7 @@ function DBM:AddSpecialWarning(text, force, specWarnObject, number, customIcon, 
 			end
 		end
 		if self.Options.ShowSWarningsInChat then
-			local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
+			local colorCode = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
 			local combinedText
 			if C_StringUtil then
 				combinedText = C_StringUtil.WrapString(formatedText, colorCode .. "[" .. L.MOVE_SPECIAL_WARNING_TEXT .. "] ", "|r")
@@ -390,27 +398,54 @@ end
 local specialWarningPrototype = private:GetPrototype("SpecialWarning")
 local mt = {__index = specialWarningPrototype}
 
-local function classColoringFunction(cap)
-	cap = cap:sub(2, -2)
-	local noStrip = cap:match("noStrip ")
-	if not noStrip then
-		local name = cap
-		local playerClass, playerIcon = DBM:GetRaidClass(name)
-		if playerClass ~= "UNKNOWN" then
-			cap = DBM:GetShortServerName(cap)--Only run strip code on valid player classes
-			local playerColor = RAID_CLASS_COLORS[playerClass]
-			if playerColor then
-				if playerIcon > 0 and playerIcon <= 8 then
-					cap = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(playerIcon) .. ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-				else
-					cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-				end
-			end
-		end
-	else
-		cap = cap:sub(9)
+---@return number, number, number
+function specialWarningPrototype:GetColor()
+	local color = self.option and self.mod.Options[self.option .. "Color"]
+	if type(color) ~= "table" then
+		color = DBM.Options.WarningColors[color]
 	end
-	return cap
+	if color then
+		return color.r, color.g, color.b
+	end
+	local fontColor = DBM.Options.SpecialWarningFontCol
+	return fontColor[1], fontColor[2], fontColor[3]
+end
+
+-- Keyed by the restore color code (scalar), so in-place GUI color edits never reuse a stale closure.
+local classColoringFunctions = {}
+
+---@param r number
+---@param g number
+---@param b number
+local function getClassColoringFunction(r, g, b)
+	local restoreCode = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
+	local func = classColoringFunctions[restoreCode]
+	if not func then
+		func = function(cap)
+			cap = cap:sub(2, -2)
+			local noStrip = cap:match("noStrip ")
+			if not noStrip then
+				local name = cap
+				local playerClass, playerIcon = DBM:GetRaidClass(name)
+				if playerClass ~= "UNKNOWN" then
+					cap = DBM:GetShortServerName(cap)--Only run strip code on valid player classes
+					local playerColor = RAID_CLASS_COLORS[playerClass]
+					if playerColor then
+						if playerIcon > 0 and playerIcon <= 8 then
+							cap = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(playerIcon) .. ("|r|cff%.2x%.2x%.2x%s|r%s"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, restoreCode)
+						else
+							cap = ("|r|cff%.2x%.2x%.2x%s|r%s"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, restoreCode)
+						end
+					end
+				end
+			else
+				cap = cap:sub(9)
+			end
+			return cap
+		end
+		classColoringFunctions[restoreCode] = func
+	end
+	return func
 end
 
 local function setText(announceType, spellId, stacks, customName)
@@ -504,6 +539,17 @@ local function canVoiceReplace(self, soundId, isNote)
 	return isVoicePackUsed
 end
 
+---@param self SpecialWarning
+---@param soundId number|string|nil
+---@return number|string|nil
+local function getGTFOOverride(self, soundId)
+	if self.announceType ~= "gtfo" or not DBM.Options.GTFOOverrideEnabled then return end
+	if type(soundId) ~= "number" or soundId < 1 or soundId > 4 then return end
+	local note = self.option and self.mod.Options[self.option .. "SWNote"]
+	if DBM.Options.SWarnNameInNote and type(note) == "string" and note:find(playerName) then return end
+	return DBM:GetGTFOOverrideSound()
+end
+
 ---@class SpecAnnounce0: SpecialWarning
 ---@field Show fun(self: SpecAnnounce0)
 ---@class SpecAnnounce1num: SpecialWarning
@@ -518,6 +564,8 @@ end
 ---@field Show fun(self: SpecAnnounce2numstr, arg1: number, arg2: string)
 ---@class SpecAnnounce3numstrnum: SpecialWarning
 ---@field Show fun(self: SpecAnnounce3numstrnum, arg1: number, arg2: string, arg3: number|nil)
+---@class SpecAnnounceBlizzYou: SpecialWarning
+---@field Show fun(self: SpecAnnounceBlizzYou, count: number?, voiceName: string?, expireOverride: number?, matchSeverity: number?)
 
 ---Used to set fallback options to blizzard encounter API for hardcoded warnings to fall back on
 ---@param encounterEventId number|table EncounterEventID from EncounterEvent.db2 that matches event we're targetting
@@ -533,8 +581,9 @@ end
 
 ---@param self SpecialWarning
 ---@param secret boolean
+---@param preview boolean
 ---@param ... any
-local function showSpecialWarning(self, secret, ...)
+local function showSpecialWarning(self, secret, preview, ...)
 	if self.announceType == "blizztarget" then
 		if not private.blizzTargetConsuming then
 			local count, voiceName, expireOverride = ...
@@ -543,8 +592,8 @@ local function showSpecialWarning(self, secret, ...)
 		end
 	elseif self.announceType == "blizzyou" then
 		if not private.blizzYouConsuming then
-			local count, voiceName, expireOverride = ...
-			DBM:QueueBlizzYouSpecialWarning(self, count, voiceName, expireOverride)
+			local count, voiceName, expireOverride, matchSeverity = ...
+			DBM:QueueBlizzYouSpecialWarning(self, count, voiceName, expireOverride, matchSeverity)
 			return
 		end
 	end
@@ -632,6 +681,7 @@ local function showSpecialWarning(self, secret, ...)
 			(DBM.Options.SpecialWarningIcon and self.icon and textureCode:format(self.icon)) or ""
 		)
 		local noteHasName = nil
+		local classColoringFunction = getClassColoringFunction(self:GetColor())
 		if self.option and not secretCount then
 			local noteText = self.mod.Options[self.option .. "SWNote"]
 			if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
@@ -671,7 +721,8 @@ local function showSpecialWarning(self, secret, ...)
 			end
 			DBM:AddSpecialWarning(text, nil, self)
 			if DBM.Options.ShowSWarningsInChat then
-				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
+				local r, g, b = self:GetColor()
+				local colorCode = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
 				self.mod:AddMsg(("%s[%s] %s|r"):format(colorCode, L.MOVE_SPECIAL_WARNING_TEXT, text), nil)
 			end
 		end
@@ -722,8 +773,9 @@ local function showSpecialWarning(self, secret, ...)
 		if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or not DBM:IsNoneValue(self.mod.Options[self.option .. "SWSound"])) then
 			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 			if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
-			if self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
-			DBM:PlaySpecialWarningSound(soundId or 1)
+			local overrideSound = getGTFOOverride(self, soundId)
+			if not overrideSound and self.hasVoice and canVoiceReplace(self, soundId, noteHasName and true) and self.hasVoice <= private.swFilterDisabled then return end
+			DBM:PlaySpecialWarningSound(overrideSound or soundId or 1, preview)
 		end
 	else
 		self.combinedcount = 0
@@ -732,7 +784,12 @@ local function showSpecialWarning(self, secret, ...)
 end
 
 function specialWarningPrototype:Show(...)
-	showSpecialWarning(self, false, ...)
+	showSpecialWarning(self, false, false, ...)
+end
+
+---Previews the configured warning sound without the trivial-content audio substitution.
+function specialWarningPrototype:ShowPreview(...)
+	showSpecialWarning(self, false, true, ...)
 end
 
 ---Shows a secret player name without materializing it into a Lua table.
@@ -750,7 +807,7 @@ local function secretShowByClass(self, className, ...)
 			playerName = classColor:WrapTextInColorCode(playerName)
 		end
 	end
-	showSpecialWarning(self, true, playerName, select(2, ...))
+	showSpecialWarning(self, true, false, playerName, select(2, ...))
 end
 
 ---Shows a secret player name from an ENCOUNTER_WARNING target GUID without materializing it into a Lua table.
@@ -893,6 +950,7 @@ end
 function specialWarningPrototype:Play(name, customPath)
 	local voice = DBM.Options.ChosenVoicePack2
 	local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+	if not DBM.Options.DontPlaySpecialWarningSound and getGTFOOverride(self, soundId) then return end
 	if not canVoiceReplace(self, soundId) then return end
 	if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 	if ((not self.option or self.mod.Options[self.option])) and self.hasVoice <= private.swFilterDisabled then
@@ -1180,10 +1238,11 @@ function bossModPrototype:NewSpecialWarningBlizzTarget(spellId, optionDefault, .
 	return newSpecialWarning(self, "blizztarget", spellId, nil, optionDefault, ...)
 end
 
----Special object used for "on you" announces triggered by next ENCOUNTER_WARNING within 1 second; mirrors youcount but consumes any ENCOUNTER_WARNING as trigger
----@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: string|optionNumbers|boolean?, optionVersion: number?, runSound: acceptedSASounds?, hasVoice: number?, difficulty: number?, iconOverride: number|string?, voiceFile: VPSound?): SpecAnnounce3numstrnum
+---Special object for "on you" announces triggered by the next matching ENCOUNTER_WARNING within the expiry window (default 1.5 seconds).
+---Show(count, voiceName, expireOverride, matchSeverity) optionally restricts interception to a public severity.
+---@overload fun(self: DBMMod, spellId: number|string, optionDefault: SpecFlags|boolean?, optionName: string|optionNumbers|boolean?, optionVersion: number?, runSound: acceptedSASounds?, hasVoice: number?, difficulty: number?, iconOverride: number|string?, voiceFile: VPSound?): SpecAnnounceBlizzYou
 function bossModPrototype:NewSpecialWarningBlizzYou(spellId, optionDefault, ...)
-	---@type SpecAnnounce3numstrnum
+	---@type SpecAnnounceBlizzYou
 	return newSpecialWarning(self, "blizzyou", spellId, nil, optionDefault, ...)
 end
 

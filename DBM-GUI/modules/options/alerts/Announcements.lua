@@ -212,3 +212,13 @@ end
 
 local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, nil, false, GameFontNormalSmall)
 infotext:SetPoint("BOTTOMLEFT", raidwarncolors.frame, "BOTTOMLEFT", 10, 10)
+
+RaidWarningPanel.frame:HookScript("OnShow", function()
+	fontSizeSlider:SetValueSilent(DBM.Options.WarningFontSize)
+	durationSlider:SetValueSilent(DBM.Options.WarningDuration2)
+	local colors = {color1, color2, color3, color4}
+	for i, control in pairs(colors) do
+		local color = DBM.Options.WarningColors[i]
+		control:SetColorRGB(color.r, color.g, color.b)
+	end
+end)

@@ -261,6 +261,16 @@ do
 	---@param countKey string
 	---@param addedAt number? Mythic stage-2 recurrence evidence; independent of the delayed bar start and bar visibility
 	local function queueStart(self, timerObj, timerExact, eventID, eventType, countKey, addedAt)
+		if eventType == "icebound" and math.floor(timerExact + 0.5) == 5 then
+			--The phase-opening five-second entry actually casts immediately.
+			self:TLCountStart(eventID, eventType, countKey)
+			local _, eventCount = self:TLCountFinish(eventID)
+			if eventCount then
+				specWarnIceboundFlames:Show(eventCount)
+				specWarnIceboundFlames:Play("kickcast")
+			end
+			return
+		end
 		if addedAt and self:IsMythic() then
 			mythicStage2Expected[eventType] = {
 				eventID = eventID,
@@ -536,8 +546,8 @@ do
 					specWarnShreddingShards:Show()
 					specWarnShreddingShards:Play("defensive")
 				elseif self:IsTank() then
-					specWarnShreddingShardsTaunt:Schedule(3, DBM_COMMON_L.UNKNOWN)--Sadly, boss doesn't look at correct target, at all
-					specWarnShreddingShardsTaunt:ScheduleVoice(3, "tauntboss")
+					specWarnShreddingShardsTaunt:Schedule(4.5, DBM_COMMON_L.UNKNOWN)--Sadly, boss doesn't look at correct target, at all
+					specWarnShreddingShardsTaunt:ScheduleVoice(4.5, "tauntboss")
 				end
 			elseif eventType == "frostfire" then
 				warnFrostfireVolley:Show(eventCount)

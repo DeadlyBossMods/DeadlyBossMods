@@ -2,6 +2,8 @@ if GetLocale() ~= "itIT" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"Furia del Vento", "Lingua di Fuoco", "Terra Benefica"}
+L.CONSUMABLES_PALADIN_IMBUES = {"Rito della Santificazione", "Rito del Giuramento"}
 L.AURA_FONT_RESET	= "Sono state rilevate impostazioni non valide per il carattere del testo delle aure; sono state ripristinate a quelle predefinite."
 
 local dateTable = date("*t")
@@ -38,7 +40,7 @@ L.COPY_WA_DIALOG	= "Copia Chiave Incantesimo"
 L.TEXT_ONLY_RANGE	= "Il distanziometro è limitato al solo testo, poiché Blizzard ha disabilitato alcune funzionalità in quest'area."
 L.NO_RANGE			= "Il Radar Distanziometro non può essere utilizzato nelle istanze. Verrà utilizzato il precedente riquadro testuale"
 L.NO_ARROW			= "La Freccia non può essere usata nelle istanze"
-L.NO_HUD			= "La HUDMap non può essere usata nelle istanze"
+L.HUDMAP_NOT_INSTALLED	= "DBM-HudMap non è installato o non è abilitato."
 L.NO_COMMS			= "La comunicazione degli addon non può essere utilizzata durante gli incontri o le istanze M+ attive. Utilizza nuovamente questo comando dopo la fine dell'incontro o dell'istanza."
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= ""..L.DBM.." ha disabilitato il riquadro distanziometro per questo combattimento per insufficienti informazioni sulle distanze richieste con un gruppo di queste dimensioni."
@@ -322,6 +324,7 @@ L.SLASHCMD_HELP	= {--AI translated (check me)
 	"/dbm key: Esegue controlli delle chiavi M+ e delle valutazioni su party/gilda e scorciatoie per i teletrasporti delle dungeon. (alias: key, keys, keystone)",
 	"/dbm lag: Esegue un controllo della latenza per tutta l'incursione.",
 	"/dbm durability: Esegue un controllo della durabilità per tutta l'incursione.",
+	"/dbm consumables: Esegue un controllo dei consumabili per tutta l'incursione (alias: cons, consumes).",
 	"/dbm brez: Mostra il riquadro del temporizzatore di resurrezione da combattimento per il posizionamento.",--AI translated (check me)
 	"/dbm help2: Mostra comandi slash aggiuntivi"
 }
@@ -332,7 +335,6 @@ L.SLASHCMD_HELP2	= {--AI translated (check me)
 	"/dbm version: Controlla la versione del boss mod (alias: ver).",
 	"/dbm version2: Controlla la versione del boss mod e invia un messaggio agli utenti obsoleti (alias: ver2).",
 	"/range <numero> o /distance <numero>: Mostra il riquadro di distanza. /rrange o /rdistance per invertire i colori.",
-	"/hudar <numero>: Mostra il rilevatore di distanza HUD.",
 	"/dbm arrow: Mostra la freccia " .. L.DBM .. ", vedere '/dbm arrow help' per dettagli.",
 	"/dbm hud: Mostra l'HUD " .. L.DBM .. ", vedere '/dbm hud' per dettagli.",
 	"/dbm dbtdebug: Mostra diagnostica delle barre del tempo ripulita per le segnalazioni di errore."
@@ -646,8 +648,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon	= "{rt%%1$d}" --Doesn't need translation. I
 
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings
 L.AUTO_YELL_CUSTOM_FADE					= "%s svanito"
-L.AUTO_HUD_OPTION_TEXT					= "Mostra la HudMap per l'abilità $spell:%s (Dismessa)"
-L.AUTO_HUD_OPTION_TEXT_MULTI			= "Mostra la HudMap per varie meccaniche (Dismessa)"
 L.AUTO_NAMEPLATE_OPTION_TEXT			= "Mostra l'Aura della Barra del Nome per $spell:%s"
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED		= "Mostra le Aure della Barra del Nome per $spell:%s usando solo " .. L.DBM
 L.AUTO_RANGE_OPTION_TEXT				= "Mostra distanziometro (%s) per $spell:%s" -- string used for range so we can use things like "5/2" as a value for that field
@@ -677,21 +677,6 @@ L.MOVE_SPECIAL_WARNING_TEXT		= "Avvisi Speciali"
 L.MOVE_PRIVATE_AURA_TEXT		= "<valore segreto> ti bersaglia con l'incantesimo <valore segreto>"
 L.MOVE_PRIVATE_AURA_DISABLED	= "L'anteprima è disabilitata perché i Riquadri delle Aure sono disabilitati globalmente nelle opzioni."
 
-L.HUD_INVALID_TYPE		= "Tipo invalido di HUD definito"
-L.HUD_INVALID_TARGET	= "Nessun bersaglio valido dato per l'HUD"
-L.HUD_INVALID_SELF		= "Impossibile utilizzare se stessi come bersaglio HUD"
-L.HUD_INVALID_ICON		= "Impossibile utilizzare l'icona per HUD su un bersaglio senza icona"
-L.HUD_SUCCESS			= "HUD avviato con successo con i tuoi parametri. Verrà annullato dopo %s, o digitando '/dbm hud hide'."
-L.HUD_USAGE				= {
-	"Utilizzo di "..L.DBM.."-HudMap:",
-	"-----------------",
-	"/dbm hud <tipo> <bersaglio> <durata>: Crea un HUD che punta al giocatore per la durata desiderata",
-	"Tipi validi: arrow, dot, red, blue, green, yellow, icon (richiede un bersaglio con icona incursione)",
-	"Bersagli validi: target, focus, <nomegiocatore>",
-	"Durate valide: qualsiasi numero (in secondi). Se in bianco, verranno impostati 20 minuti.",
-	"/dbm hud hide:  disabilita e nasconde l'HUD"
-}
-
 L.ARROW_MOVABLE		= "Freccia mobile"
 L.ARROW_WAY_USAGE	= "/dway <x> <y>: Crea una freccia che punta in una posizione specifica (utilizzando coordinate zona locale)"
 L.ARROW_WAY_SUCCESS	= "Per nascondere la freccia, scrivi '/dbm arrow hide' o raggiungi la freccia"
@@ -714,7 +699,19 @@ L.DUR_HEADER			= L.DBM.." - Risultati Stato Equipaggiamento"
 L.GEAR_HEADER			= L.DBM.. " - Controllo equipaggiamento"
 L.GEAR_MISSING_GEMS		= "Gemme mancanti"
 L.GEAR_MISSING_ENCHANTS	= "Incantamenti mancanti"
-L.BREZ_HEADER			= "Resurrezione in Combattimento"
+L.GEAR_DURABILITY					= "Dur. %"
+L.GEAR_BROKEN						= "Rotto"
+L.RAIDCHECKS_TAB_CONSUMABLES		= "Consumabili"
+L.RAIDCHECKS_TAB_GEAR				= "Equipaggiamento"
+L.RAIDCHECKS_TAB_LATENCY			= "Latenza"
+L.CONSUMABLES_HEADER				= L.DBM.. " - Controllo consumabili"
+L.CONSUMABLES_FLASK					= "Tonico"
+L.CONSUMABLES_FOOD					= "Cibo"
+L.CONSUMABLES_WEAPON				= "Arma"
+L.CONSUMABLES_HS					= "Pietra della salute"
+L.CONSUMABLES_RUNE					= "Runa"
+L.CONSUMABLES_NA					= "N/D"
+L.BREZ_HEADER						= "Resurrezione in combattimento"
 L.KEYSTONES_HEADER		= L.DBM .. " - Chiavi"
 
 L.OVERRIDE_ACTIVATED	= "Le sostituzioni di configurazione sono state attivate per questo incontro dal RL"

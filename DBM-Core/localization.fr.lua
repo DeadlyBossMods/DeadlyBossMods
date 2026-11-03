@@ -2,6 +2,8 @@ if GetLocale() ~= "frFR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"Furie des vents", "Langue de feu", "Viveterre"}
+L.CONSUMABLES_PALADIN_IMBUES = {"Rite de sanctification", "Rite de supplication"}
 L.AURA_FONT_RESET = "Des paramètres de police de texte d'aura invalides ont été détectés et réinitialisés par défaut."
 
 local dateTable = date("*t")
@@ -36,7 +38,7 @@ L.COPY_WA_DIALOG 			= "Copier la clé de sort"
 L.TEXT_ONLY_RANGE 			= "La fenêtre de portée est limitée au texte uniquement en raison des restrictions de l'API dans cette zone."
 L.NO_RANGE 					= "La fenêtre de portée ne peut pas être utilisée en raison des restrictions de l'API dans cette zone."
 L.NO_ARROW 					= "La flèche ne peut pas être utilisée dans les instances."
-L.NO_HUD 					= "HUDMap ne peut pas être utilisé dans les instances."
+L.HUDMAP_NOT_INSTALLED		= "DBM-HudMap n'est pas installé ou n'est pas activé."
 L.NO_COMMS					= "La communication des addons ne peut pas être utilisée pendant les rencontres ou les donjons M+ actifs. Utilisez cette commande à nouveau après la fin de la rencontre ou du donjon."
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM .. " a désactivé la vérification du nombre de joueurs à portée sur ce combat pour cause de manque d'information sur le nombre de joueurs requis regroupés pour votre taille de raid."
@@ -307,6 +309,7 @@ L.SLASHCMD_HELP							= {--AI translated (check me)
 	"/dbm key: Effectue des vérifications de clé M+ et de notation sur le groupe/guilde et des raccourcis vers les téléportations de donjon. (alias : key, keys, keystone)",
 	"/dbm lag: Effectue une vérification de latence pour tout le raid.",
 	"/dbm durability: Effectue une vérification de durabilité pour tout le raid.",
+	"/dbm consumables: Effectue une vérification des consommables pour le raid (alias : cons, consumes).",
 	"/dbm brez: Affiche le cadre du chronomètre de résurrection de combat pour le positionnement.",--AI translated (check me)
 	"/dbm help2: Affiche des commandes slash supplémentaires"
 }
@@ -317,7 +320,6 @@ L.SLASHCMD_HELP2						= {--AI translated (check me)
 	"/dbm version : Vérifie la version du mod de boss (alias : ver).",
 	"/dbm version2 : Vérifie la version du mod de boss et envoie un message aux utilisateurs obsolètes (alias : ver2).",
 	"/range <nombre> ou /distance <nombre> : Affiche la fenêtre de portée. /rrange ou /rdistance pour inverser les couleurs.",
-	"/hudar <nombre> : Affiche le détecteur de portée HUD.",
 	"/dbm arrow : Affiche la flèche " .. L.DBM .. ", voir '/dbm arrow help' pour plus de détails.",
 	"/dbm hud : Affiche le HUD " .. L.DBM .. ", voir '/dbm hud' pour plus de détails.",
 	"/dbm dbtdebug : Affiche des diagnostics de barres de temps nettoyés pour les rapports d'erreur."
@@ -655,8 +657,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}"--Doesn't n
 
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells) -- OPTIONAL
 L.AUTO_YELL_CUSTOM_FADE					= "%s disparaît"
-L.AUTO_HUD_OPTION_TEXT					= "Afficher HUD pour $spell:%s"
-L.AUTO_HUD_OPTION_TEXT_MULTI			= "Afficher HUD pour diverses activités"
 L.AUTO_NAMEPLATE_OPTION_TEXT 			= "Afficher les auras de la plaque de nom pour $spell:%s en utilisant un add-on de barre d'info compatible ou "..L.DBM
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED 	= "Afficher les auras de la plaque de nom pour $spell:%s en utilisant uniquement "..L.DBM
 L.AUTO_RANGE_OPTION_TEXT		 		= "Afficher la fenêtre de portée (%s) pour $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
@@ -684,21 +684,6 @@ L.MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
 L.MOVE_PRIVATE_AURA_TEXT 	= "<valeur secrète> vous cible avec le sort <valeur secrète>"
 L.MOVE_PRIVATE_AURA_DISABLED = "L’aperçu est désactivé car les cadres d'auras sont désactivés globalement dans les options."
 
-L.HUD_INVALID_TYPE			= "Type de HUD défini invalide"
-L.HUD_INVALID_TARGET		= "Pas de cible valide disponible pour le HUD"
-L.HUD_INVALID_SELF			= "Impossible de s'utiliser soi-même comme cible pour le HUD"
-L.HUD_INVALID_ICON			= "Impossible d'utiliser la méthode par icône pour le HUD sans cible avec l'icône"
-L.HUD_SUCCESS				= "Le HUD a démarré correctement avec vos paramètres. Ceci va s'arrêter dans %s, ou en tapant '/dbm hud hide'."
-L.HUD_USAGE	= {
-	"Utilisation de " .. L.DBM .. "-HudMap:",
-	"-----------------",
-	"/dbm hud <type> <cible> <durée>: Crée un HUD qui indique un joueur pour la durée choisie",
-	"Types valides : flèche, rouge, bleu, vert, jaune, icône (requiert une cible avec une icône de raid)",
-	"Cibles valides : cible, focus, <nom du joueur>",
-	"Durées valides : n'importe quel nombre (en secondes). Si laissé vide, il sera affiché pendant 20 min.",
-	"/dbm hud hide:  désactive et cache le HUD"
-}
-
 L.ARROW_MOVABLE				= "Flèche mobile"
 L.ARROW_WAY_USAGE			= "/dway <x> <y>: Crée une flèche pointant vers une position spécifique (en utilisant les coordonnées locales de la carte de zone)"
 L.ARROW_WAY_SUCCESS			= "Pour cacher la flèche, faites '/dbm arrow hide' ou atteignez la flèche"
@@ -722,7 +707,19 @@ L.KEYSTONES_HEADER			= L.DBM .. " - Mythiques"
 L.GEAR_HEADER				= L.DBM .. " - Résultats d'équipement"
 L.GEAR_MISSING_GEMS			= "Gemmes manquantes"
 L.GEAR_MISSING_ENCHANTS		= "Enchantements manquants"
-L.BREZ_HEADER				= "Rés. de combat"
+L.GEAR_DURABILITY					= "Dur. %"
+L.GEAR_BROKEN						= "Cassé"
+L.RAIDCHECKS_TAB_CONSUMABLES		= "Consommables"
+L.RAIDCHECKS_TAB_GEAR				= "Équipement"
+L.RAIDCHECKS_TAB_LATENCY			= "Latence"
+L.CONSUMABLES_HEADER				= L.DBM.. " - Vérification des consommables"
+L.CONSUMABLES_FLASK					= "Flacon"
+L.CONSUMABLES_FOOD					= "Nourriture"
+L.CONSUMABLES_WEAPON				= "Arme"
+L.CONSUMABLES_HS					= "Pierre de soins"
+L.CONSUMABLES_RUNE					= "Rune"
+L.CONSUMABLES_NA					= "N/A"
+L.BREZ_HEADER						= "Résurrection de combat"
 
 L.OVERRIDE_ACTIVATED 		= "Les remplacements de configuration ont été activés pour cette rencontre par le responsable de raid"
 

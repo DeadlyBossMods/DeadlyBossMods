@@ -200,6 +200,56 @@ function PanelPrototype:CreateButton(title, width, height, onclick, font, highli
 	return button
 end
 
+local colorPickerSession
+local function releaseColorPicker(session)
+	if colorPickerSession ~= session then return end
+	colorPickerSession = nil
+	if ColorPickerFrame:GetScript("OnHide") == session.onHide then
+		ColorPickerFrame:SetScript("OnHide", session.previousOnHide)
+	end
+end
+
+local function hideColorPicker(owner)
+	local session = colorPickerSession
+	if session and session.owner == owner then
+		local ownsPicker = ColorPickerFrame.swatchFunc == session.swatchFunc and ColorPickerFrame.cancelFunc == session.cancelFunc
+		releaseColorPicker(session)
+		if ownsPicker then ColorPickerFrame:Hide() end
+	end
+end
+
+local function showColorPicker(owner, r, g, b, apply, cancel, isCurrent)
+	ColorPickerFrame:Hide()
+	local options, barOptions = DBM.Options, DBT.Options
+	local session = {owner = owner, previousOnHide = ColorPickerFrame:GetScript("OnHide")}
+	colorPickerSession = session
+	local function current()
+		return colorPickerSession == session and ColorPickerFrame.swatchFunc == session.swatchFunc and ColorPickerFrame.cancelFunc == session.cancelFunc
+			and options == DBM.Options and barOptions == DBT.Options and isCurrent()
+	end
+	session.swatchFunc = function()
+		if current() then apply(ColorPickerFrame:GetColorRGB()) end
+	end
+	session.cancelFunc = function()
+		if current() then cancel() end
+		releaseColorPicker(session)
+	end
+	-- Okay also uses swatchFunc; completion is the subsequent native hide.
+	session.onHide = function(...)
+		releaseColorPicker(session)
+		if session.previousOnHide then session.previousOnHide(...) end
+	end
+	ColorPickerFrame:SetScript("OnHide", session.onHide)
+	ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
+	ColorPickerFrame:SetFrameLevel(owner:GetFrameLevel() + 10)
+	ColorPickerFrame:SetClampedToScreen(true)
+	ColorPickerFrame:SetupColorPickerAndShow({
+		swatchFunc = session.swatchFunc,
+		cancelFunc = session.cancelFunc,
+		r = r, g = g, b = b
+	})
+end
+
 function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	local colorSelect = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	colorSelect:SetSize(100, 24)
@@ -207,6 +257,7 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	colorSelect.r = 0
 	colorSelect.g = 0
 	colorSelect.b = 0
+	colorSelect.pickerGeneration = 0
 
 	local swatch = colorSelect:CreateTexture(nil, "OVERLAY")
 	swatch:SetSize(18, 18)
@@ -239,6 +290,7 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	end
 
 	colorSelect.SetColorRGB = function(self, r, g, b, save)
+		self.pickerGeneration = self.pickerGeneration + 1
 		colorSelect.r = r
 		colorSelect.g = g
 		colorSelect.b = b
@@ -259,26 +311,100 @@ function PanelPrototype:CreateColorSelect(title, CallbackFn, ResetFn)
 	end
 	colorSelect:SetScript("OnClick", function(self)
 		local r1, g1, b1 = self.r, self.g, self.b
-		ColorPickerFrame:Hide()
-		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
-		ColorPickerFrame:SetFrameLevel(self:GetFrameLevel() + 10)
-		ColorPickerFrame:SetClampedToScreen(true)
-		ColorPickerFrame:SetupColorPickerAndShow({
-			swatchFunc = function()
-				local r, g, b = ColorPickerFrame:GetColorRGB()
-				colorCallback(self, r, g, b)
-			end,
-			cancelFunc = function()
-				colorCallback(self, r1, g1, b1)
-			end,
-			r = self.r,
-			g = self.g,
-			b = self.b
-		})
+		self.pickerGeneration = self.pickerGeneration + 1
+		local generation = self.pickerGeneration
+		local function applyColor(r, g, b)
+			colorCallback(self, r, g, b)
+			generation = self.pickerGeneration
+		end
+		showColorPicker(self, r1, g1, b1, applyColor, function()
+			applyColor(r1, g1, b1)
+		end, function()
+			return generation == self.pickerGeneration
+		end)
 	end)
+	colorSelect:SetScript("OnHide", hideColorPicker)
 
 	self:SetLastObj(colorSelect)
 	return colorSelect
+end
+
+local timerColorEditor
+
+local function hideTimerColorEditor(owner)
+	if timerColorEditor and timerColorEditor.owner == owner then
+		timerColorEditor:Hide()
+	end
+end
+
+local function showTimerColorEditor(owner, value, apply, cancel, isCurrent)
+	if not timerColorEditor then
+		---@class DBMTimerColorEditor: Frame, TooltipBorderBackdropTemplate
+		local editor = CreateFrame("Frame", nil, UIParent, "TooltipBorderBackdropTemplate")
+		timerColorEditor = editor
+		editor:SetSize(340, 160)
+		editor:SetPoint("CENTER")
+		editor:SetFrameStrata("DIALOG")
+		editor:SetClampedToScreen(true)
+		editor:EnableMouse(true)
+		editor:SetBackdropColor(0.05, 0.05, 0.05, 1)
+		local panel = setmetatable({frame = editor}, {__index = PanelPrototype})
+		local title = panel:CreateText(L.BossModTColor .. " - " .. L.ColorCustom, 300, false)
+		title:SetPoint("TOPLEFT", 20, -16)
+		local function changed()
+			if editor.isCurrent() then
+				editor.value = {
+					r = editor.startColor.r, g = editor.startColor.g, b = editor.startColor.b,
+					endColor = {r = editor.endColor.r, g = editor.endColor.g, b = editor.endColor.b}
+				}
+				editor.apply(editor.value)
+			end
+		end
+		editor.startColor = panel:CreateColorSelect(L.BarStartColor, changed)
+		editor.startColor:SetSize(300, 24)
+		editor.startColor:SetPoint("TOPLEFT", 20, -48)
+		editor.endColor = panel:CreateColorSelect(L.BarEndColor, changed)
+		editor.endColor:SetSize(300, 24)
+		editor.endColor:SetPoint("TOPLEFT", 20, -80)
+		for _, control in ipairs({editor.startColor, editor.endColor}) do
+			control:SetScript("OnClick", function(self)
+				if not editor.isCurrent() then return end
+				local previous = editor.value
+				local r, g, b = self.r, self.g, self.b
+				showColorPicker(self, r, g, b, function(red, green, blue)
+					self:SetColorRGB(red, green, blue)
+					changed()
+				end, function()
+					self:SetColorRGB(r, g, b)
+					editor.value = previous
+					editor.apply(previous)
+				end, function()
+					return editor.isCurrent and editor.isCurrent()
+				end)
+			end)
+		end
+		local okay = panel:CreateButton(OKAY, 120, 22, function() editor:Hide() end)
+		okay:SetPoint("BOTTOMLEFT", 30, 16)
+		local cancelButton = panel:CreateButton(CANCEL, 120, 22, function()
+			if editor.isCurrent() then editor.cancel() end
+			editor:Hide()
+		end)
+		cancelButton:SetPoint("BOTTOMRIGHT", -30, 16)
+		editor:SetScript("OnHide", function()
+			hideColorPicker(editor.startColor)
+			hideColorPicker(editor.endColor)
+			editor.owner = nil
+			editor.value, editor.apply, editor.cancel, editor.isCurrent = nil, nil, nil, nil
+		end)
+	end
+	local editor = timerColorEditor
+	editor:Hide()
+	editor.owner, editor.apply, editor.cancel, editor.isCurrent = owner, apply, cancel, isCurrent
+	editor.value = value
+	editor:SetFrameLevel(owner:GetFrameLevel() + 10)
+	editor.startColor:SetColorRGB(DBT:GetColorForType(value))
+	editor.endColor:SetColorRGB(DBT:GetColorForType(value, true))
+	editor:Show()
 end
 
 function PanelPrototype:CreateSlider(text, low, high, step, width, value, callbackFn)
@@ -363,6 +489,13 @@ function PanelPrototype:CreateSlider(text, low, high, step, width, value, callba
 		end
 	end)
 	slider.editbox = editbox
+
+	-- Reconcile visuals without invoking option writes or test previews.
+	function slider:SetValueSilent(newValue)
+		self.value = NormalizeSliderValue(newValue)
+		self:SetValue(self.value)
+		UpdateSliderText(self)
+	end
 
 	slider:SetValue(value)
 	slider.value = value
@@ -450,6 +583,11 @@ function PanelPrototype:CreateFontDropdown(title, vartype, var, CallbackFn, widt
 	dropdown:IsSelectedCallback(function(_, v)
 		return GetSelectedFlags()[v.value] or false
 	end)
+	local SetSelectedValue = dropdown.SetSelectedValue
+	function dropdown:SetSelectedValue(selected)
+		SetSelectedValue(self, selected)
+		UpdateDisplayText()
+	end
 	dropdown:SetScript("OnShow", UpdateDisplayText)
 	---@diagnostic disable-next-line: undefined-field
 	dropdown:GenerateMenu()
@@ -528,8 +666,22 @@ function PanelPrototype:CreateLine(text, extraWidth)
 end
 
 do
-	local currActiveButton
+	local currActiveOwner
 	local updateFrame = CreateFrame("Frame")
+
+	local function stopTooltip(owner)
+		if currActiveOwner ~= owner then return end
+		currActiveOwner = nil
+		updateFrame:SetScript("OnUpdate", nil)
+		local button = owner:GetParent()
+		if button.fakeHighlight then
+			button.fakeHighlight = nil
+			button:UnlockHighlight()
+		end
+		if GameTooltip:IsOwned(owner) then
+			GameTooltip:Hide()
+		end
+	end
 
 	local function MixinCountTable(baseTable)
 		local result = baseTable
@@ -543,12 +695,6 @@ do
 	end
 
 	local sounds = DBM_GUI:MixinSharedMedia3("sound", {
-		-- Inject basically dummy values for ordering special warnings to just use default SW sound assignments
-		{ text = L.None, value = "None" },
-		{ text = L.SAOne, value = 1 },
-		{ text = L.SATwo, value = 2 },
-		{ text = L.SAThree, value = 3 },
-		{ text = L.SAFour, value = 4 },
 		-- Inject DBMs custom media that's not available to LibSharedMedia because I haven't added it yet
 		--{ text = "AirHorn (DBM)", value = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg" },
 		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },
@@ -575,6 +721,18 @@ do
 		end
 	end
 
+	local function specialWarningSounds()
+		return {
+			{ text = L.None, value = "None" },
+			{ text = L.SAOne, value = 1 },
+			{ text = L.SATwo, value = 2 },
+			{ text = L.SAThree, value = 3 },
+			{ text = L.SAFour, value = 4 },
+			{ text = L.VoiceOverrideSounds, children = sounds },
+			DBM_GUI:GetVoicePackSoundEntry()
+		}
+	end
+
 	local function RGBPercToHex(r, g, b)
 		r = r <= 1 and r >= 0 and r or 0
 		g = g <= 1 and g >= 0 and g or 0
@@ -582,17 +740,99 @@ do
 		return string.format("%02x%02x%02x", r*255, g*255, b*255)
 	end
 
-	local tcolors = {
-		{ text = "|cff"..RGBPercToHex(DBT.Options.EndColorR or 1, DBT.Options.StartColorG or 1, DBT.Options.StartColorB or 1)..L.ColorDropGeneric.."|r", value = 0 },
-		{ text = "|cff"..RGBPercToHex(DBT.Options.EndColorAR or 1, DBT.Options.EndColorAG or 1, DBT.Options.EndColorAB or 1)..L.ColorDrop1.."|r", value = 1 },
-		{ text = "|cff"..RGBPercToHex(DBT.Options.EndColorAER or 1, DBT.Options.EndColorAEG or 1, DBT.Options.StartColorAEB or 1)..L.ColorDrop2.."|r", value = 2 },
-		{ text = "|cff"..RGBPercToHex(DBT.Options.EndColorDR or 1, DBT.Options.EndColorDG or 1, DBT.Options.EndColorDB or 1)..L.ColorDrop3.."|r", value = 3 },
-		{ text = "|cff"..RGBPercToHex(DBT.Options.EndColorIR or 1, DBT.Options.EndColorIG or 1, DBT.Options.EndColorIB or 1)..L.ColorDrop4.."|r", value = 4 },
-		{ text = "|cff"..RGBPercToHex(DBT.Options.EndColorRR or 1, DBT.Options.EndColorRG or 1, DBT.Options.EndColorRB or 1)..L.ColorDrop5.."|r", value = 5 },
-		{ text = "|cff"..RGBPercToHex(DBT.Options.EndColorPR or 1, DBT.Options.EndColorPG or 1, DBT.Options.EndColorPB or 1)..L.ColorDrop6.."|r", value = 6 },
-		{ text = "|cff"..RGBPercToHex(DBT.Options.EndColorUIR or 1, DBT.Options.EndColorUIG or 1, DBT.Options.EndColorUIB or 1)..L.CDDImportant1.."|r", value = 7 },
-		{ text = "|cff"..RGBPercToHex(DBT.Options.EndColorI2R or 1, DBT.Options.EndColorI2G or 1, DBT.Options.EndColorI2B or 1)..L.CDDImportant2.."|r", value = 8 }
-	}
+	local function createObjectColorDropdown(panel, button, mod, modvar, isTimer)
+		local option = modvar .. (isTimer and "TColor" or "Color")
+		local announce
+		if not isTimer then
+			for _, object in ipairs(mod.announces) do
+				if object.option == modvar then announce = object; break end
+			end
+		end
+		local function getRGB(value)
+			if isTimer then
+				return DBT:GetColorForType(value, true)
+			elseif type(value) == "table" then
+				return value.r, value.g, value.b
+			end
+			local color = DBM.Options.WarningColors[value] or announce and announce.color
+			if color then return color.r, color.g, color.b end
+			return unpack(DBM.Options.SpecialWarningFontCol)
+		end
+		local function entry(text, value, r, g, b)
+			return {text = "|cff" .. RGBPercToHex(r, g, b) .. text .. "|r", value = value}
+		end
+		local function values()
+			local entries = {}
+			if isTimer then
+				local labels = {L.ColorDropGeneric, L.ColorDrop1, L.ColorDrop2, L.ColorDrop3, L.ColorDrop4, L.ColorDrop5, L.ColorDrop6, L.CDDImportant1, L.CDDImportant2}
+				local defaultColor = mod.DefaultOptions[option] or 0
+				tinsert(entries, entry(DEFAULT .. ": " .. labels[defaultColor + 1], "default", getRGB(defaultColor)))
+				for i, label in ipairs(labels) do
+					tinsert(entries, entry(label, i - 1, getRGB(i - 1)))
+				end
+			else
+				tinsert(entries, entry(DEFAULT, 0, getRGB(0)))
+				for i = 1, 4 do
+					tinsert(entries, entry(L["RaidWarnColor_" .. i], i, getRGB(i)))
+				end
+			end
+			tinsert(entries, entry(L.ColorCustom, "custom", getRGB(mod.Options[option])))
+			return entries
+		end
+		local dropdown
+		local function selectedValue()
+			local value = mod.Options[option]
+			if type(value) == "table" then return "custom" end
+			if isTimer and value == (mod.DefaultOptions[option] or 0) then return "default" end
+			return value
+		end
+		local function refreshSelection()
+			dropdown:SetSelectedValue(selectedValue())
+		end
+		dropdown = panel:CreateDropdown(nil, values, nil, nil, function(value)
+			hideColorPicker(dropdown)
+			hideTimerColorEditor(dropdown)
+			if value ~= "custom" then
+				mod.Options[option] = value == "default" and (mod.DefaultOptions[option] or 0) or value
+				refreshSelection()
+				return
+			end
+			local options = mod.Options
+			local original, current = options[option], options[option]
+			local globalOptions, barOptions = DBM.Options, DBT.Options
+			local function apply(color)
+				current = color
+				options[option] = current
+				refreshSelection()
+			end
+			local function cancel()
+				options[option] = original
+				refreshSelection()
+			end
+			local function isCurrent()
+				return mod.Options == options and options[option] == current
+					and DBM.Options == globalOptions and DBT.Options == barOptions
+			end
+			if isTimer then
+				showTimerColorEditor(dropdown, original, apply, cancel, isCurrent)
+			else
+				local r, g, b = getRGB(original)
+				showColorPicker(dropdown, r, g, b, function(red, green, blue)
+					apply({r = red, g = green, b = blue})
+				end, cancel, isCurrent)
+			end
+		end, 70, nil, button, isTimer and L.BossModTColor or L.BossModColor)
+		dropdown:IsSelectedCallback(function(_, v)
+			return v.value == selectedValue()
+		end)
+		dropdown:SetScript("OnShow", refreshSelection)
+		dropdown:SetScript("OnHide", function(self)
+			hideColorPicker(self)
+			hideTimerColorEditor(self)
+		end)
+		dropdown.myheight = 0
+		return dropdown
+	end
 	local cvoice = MixinCountTable({
 		{ text = L.None, value = 0 },
 		{ text = L.CVoiceOne, value = 1 },
@@ -630,9 +870,7 @@ do
 		local frame, frame2
 		if modvar then -- Special warning, has modvar for sound and note
 			if isTimer then
-				frame = self:CreateDropdown(nil, tcolors, mod, modvar .. "TColor", function(value)
-					mod.Options[modvar .. "TColor"] = value
-				end, 70, nil, button, L.BossModTColor)
+				frame = createObjectColorDropdown(self, button, mod, modvar, true)
 				frame.myheight = 0
 				frame2 = self:CreateDropdown(nil, cvoice, mod, modvar .. "CVoice", function(value)
 					mod.Options[modvar.."CVoice"] = value
@@ -647,8 +885,13 @@ do
 				local isNewDropdown = frame.mytype == "dropdown2"
 				frame:SetPoint("LEFT", button, "RIGHT", isNewDropdown and 2 or -20, 2)
 				frame2:SetPoint("LEFT", frame, "RIGHT", isNewDropdown and 4 or 18, 0)
-			else--Special warning option
-				frame = self:CreateDropdown(nil, sounds, mod, modvar .. "SWSound", function(value)
+			elseif mod.Options[modvar .. "SWSound"] ~= nil then
+				local colorDropdown
+				if mod.Options[modvar .. "Color"] ~= nil then
+					colorDropdown = createObjectColorDropdown(self, button, mod, modvar)
+					colorDropdown:SetPoint("LEFT", button, "RIGHT", 2, 0)
+				end
+				frame = self:CreateDropdown(nil, specialWarningSounds, mod, modvar .. "SWSound", function(value)
 					if modvar:match("^PrivateAuraSound%d+$") then
 						local optionId = tonumber(modvar:match("^PrivateAuraSound(%d+)$"))
 						if InCombatLockdown() then
@@ -666,8 +909,10 @@ do
 					mod.Options[modvar .. "SWSound"] = value
 					DBM:PlaySpecialWarningSound(value, true)
 				end, nil, nil, button, L.BossModSWSound)
+				frame.noSoundOnSelect = true
+				frame:IsSelectedCallback(function(self, entry) return entry.value == self.value end)
 				frame:ClearAllPoints()
-				frame:SetPoint("LEFT", button, "RIGHT", 2, 0)
+				frame:SetPoint("LEFT", colorDropdown or button, "RIGHT", 2, 0)
 				if mod.Options[modvar .. "SWNote"] then -- Mod has note, insert note hack
 					---@class DBMPanelButtonWithNote: Button
 					frame2 = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "UIPanelButtonTemplate")
@@ -680,6 +925,9 @@ do
 						DBM:ShowNoteEditor(mod, modvar, noteSpellName)
 					end)
 				end
+			else
+				frame = createObjectColorDropdown(self, button, mod, modvar)
+				frame:SetPoint("LEFT", button, "RIGHT", 2, 0)
 			end
 			frame.myheight = 0
 			if frame2 then
@@ -692,11 +940,14 @@ do
 			buttonText:SetFontObject("p", GameFontNormal)
 			buttonText:SetHyperlinksEnabled(true)
 			buttonText:SetScript("OnHyperlinkEnter", function(self, data)
-				GameTooltip:SetOwner(self, "ANCHOR_NONE")
+				if not self:IsVisible() then return end
 				local linkType = strsplit(":", data)
+				if currActiveOwner then stopTooltip(currActiveOwner) end
 				if linkType == "http" then
 					return
 				end
+				currActiveOwner = self
+				GameTooltip:SetOwner(self, "ANCHOR_NONE")
 				if linkType ~= "journal" then
 					GameTooltip:SetHyperlink(data)
 				else -- "journal:contentType:contentID:difficulty"
@@ -709,15 +960,21 @@ do
 					end
 				end
 				GameTooltip:Show()
-				currActiveButton = self:GetParent()
+				if currActiveOwner ~= self then return end
+				local button = self:GetParent()
 				updateFrame:SetScript("OnUpdate", function()
-					local inHitBox = GetCursorPosition() - currActiveButton:GetCenter() < -100
-					if currActiveButton.fakeHighlight and not inHitBox then
-						currActiveButton:UnlockHighlight()
-						currActiveButton.fakeHighlight = nil
-					elseif not currActiveButton.fakeHighlight and inHitBox then
-						currActiveButton:LockHighlight()
-						currActiveButton.fakeHighlight = true
+					if currActiveOwner ~= self then return end
+					if not self:IsVisible() or not GameTooltip:IsShown() or not GameTooltip:IsOwned(self) then
+						stopTooltip(self)
+						return
+					end
+					local inHitBox = GetCursorPosition() - button:GetCenter() < -100
+					if button.fakeHighlight and not inHitBox then
+						button:UnlockHighlight()
+						button.fakeHighlight = nil
+					elseif not button.fakeHighlight and inHitBox then
+						button:LockHighlight()
+						button.fakeHighlight = true
 					end
 					local x, y = GetCursorPosition()
 					local scale = UIParent:GetEffectiveScale()
@@ -729,14 +986,8 @@ do
 					self:GetParent():LockHighlight()
 				end
 			end)
-			buttonText:SetScript("OnHyperlinkLeave", function(self)
-				GameTooltip:Hide()
-				updateFrame:SetScript("OnUpdate", nil)
-				if self:GetParent().fakeHighlight then
-					self:GetParent().fakeHighlight = nil
-					self:GetParent():UnlockHighlight()
-				end
-			end)
+			buttonText:SetScript("OnHyperlinkLeave", stopTooltip)
+			buttonText:SetScript("OnHide", stopTooltip)
 			desc = "<html><body><p>" .. desc .. "</p></body></html>"
 		else
 			buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
@@ -912,10 +1163,11 @@ end
 
 local function triggerAbilityTestAnnounce(object)
 	if object and object.Show then
+		local show = object.ShowPreview or object.Show
 		if object.announceType == "gtfo" then
-			object:Show()
+			show(object)
 		else
-			object:Show(1)
+			show(object, 1)
 		end
 		if object.voiceFile and object.Play then
 			object:Play(object.voiceFile)

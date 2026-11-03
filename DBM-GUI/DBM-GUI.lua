@@ -212,6 +212,47 @@ do
 		end
 		return result
 	end
+
+	-- Building choices validates hundreds of files, so cache per voice pack/version (which also determine session-disabled state)
+	local voiceChoiceCache, voiceChoiceCacheKey = {}, nil
+
+	---@param useTokens boolean? Save voice tokens instead of fixed paths.
+	function DBM_GUI:GetVoicePackSoundChoices(useTokens)
+		local voice = DBM.Options.ChosenVoicePack2
+		local cacheKey = tostring(voice) .. ":" .. tostring(DBM.VoiceVersions[voice])
+		if cacheKey ~= voiceChoiceCacheKey then
+			voiceChoiceCache, voiceChoiceCacheKey = {}, cacheKey
+		end
+		local cacheIndex = useTokens and "tokens" or "paths"
+		if voiceChoiceCache[cacheIndex] then
+			return voiceChoiceCache[cacheIndex]
+		end
+		local choices = {}
+		for name in pairs(DBM:GetVoicePackSounds()) do
+			local path = DBM:GetVoiceOverrideSound("voice", name)
+			if path then
+				choices[#choices + 1] = {
+					text = name,
+					value = useTokens and "voice:" .. name or path,
+					sound = true,
+					preview = path
+				}
+			end
+		end
+		tsort(choices, function(a, b) return a.text:lower() < b.text:lower() end)
+		voiceChoiceCache[cacheIndex] = choices
+		return choices
+	end
+
+	---@param useTokens boolean? Save voice tokens instead of fixed paths.
+	function DBM_GUI:GetVoicePackSoundEntry(useTokens)
+		local choices = self:GetVoicePackSoundChoices(useTokens)
+		return {
+			text = L.VoiceOverrideVoicePack,
+			children = choices,
+			disabledTooltip = #choices == 0 and L.VoiceOverrideNoVoicePack or nil
+		}
+	end
 end
 
 do
@@ -546,7 +587,7 @@ local function addOptions(mod, catpanel, v)
 		elseif type(mod.Options[v]) == "boolean" then
 			if mod.Options[v .. "TColor"] then
 				catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v, nil, true)
-			elseif mod.Options[v .. "SWSound"] then
+			elseif mod.Options[v .. "SWSound"] or mod.Options[v .. "Color"] ~= nil then
 				catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v)
 			else
 				catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true)
@@ -640,7 +681,24 @@ local function normalizeModOptions(mod, importedOptions)
 		else
 			local ending = type(optionName) == "string" and optionName:sub(-6):lower()
 			local isSoundOption = ending == "cvoice" or ending == "wsound"
-			if (isSoundOption and type(importedValue) ~= "string" and type(importedValue) ~= "number") or (not isSoundOption and type(importedValue) ~= type(defaultValue)) then
+			local isColorOption = type(defaultValue) == "number" and type(optionName) == "string" and optionName:sub(-5) == "Color"
+			if isColorOption then
+				if type(importedValue) == "table" then
+					local colors = {importedValue}
+					if importedValue.endColor ~= nil then
+						if optionName:sub(-6) ~= "TColor" or type(importedValue.endColor) ~= "table" then return nil end
+						colors[2] = importedValue.endColor
+					end
+					for _, color in ipairs(colors) do
+						for _, component in ipairs({"r", "g", "b"}) do
+							local value = color[component]
+							if type(value) ~= "number" or not (value >= 0 and value <= 1) then return nil end
+						end
+					end
+				elseif type(importedValue) ~= "number" or importedValue % 1 ~= 0 or importedValue < 0 or importedValue > (optionName:sub(-6) == "TColor" and 8 or 4) then
+					return nil
+				end
+			elseif (isSoundOption and type(importedValue) ~= "string" and type(importedValue) ~= "number") or (not isSoundOption and type(importedValue) ~= type(defaultValue)) then
 				return nil
 			end
 			normalizedOptions[optionName] = importedValue
@@ -857,12 +915,35 @@ function DBM_GUI:CreateBossModPanel(mod)
 		end, {ModProfile = true, AddonProfile = true}, modProfileVersion, L.ModImportFailed:format(mod.localization.general.name), L.ImportProfileWrongType, L.ImportProfileUnsupportedVersion, L.ModProfileImportFooter)
 	end)
 	local modNameForHTML = mod.localization.general.name:gsub("&", "&amp;")
+	-- Created before the Enable button: the first ability area anchors to the panel child created immediately before it
+	local autoRelease
+	if mod.Options.AutoRelease ~= nil and not mod.isTrashMod then
+		autoRelease = panel:CreateCheckButton(L.Mod_AutoRelease:format("|n|cFFFFFFFF" .. L.Mod_AutoReleaseWipeOnly), false)
+	end
 	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. modNameForHTML), true)
 	button:SetChecked(mod.Options.Enabled)
 	button:SetPoint("TOPLEFT", exportMod, "BOTTOMLEFT", 0, -8)
 	button:SetScript("OnClick", function()
 		mod:Toggle()
 	end)
+	if autoRelease then
+		-- Enable label spans to the panel edge and captures the mouse; shrink it to its text so the new checkbox is clickable
+		local measure = button:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+		measure:SetText(L.Mod_Enabled:format(""))
+		local labelWidth = measure:GetStringWidth()
+		measure:SetText(mod.localization.general.name)
+		labelWidth = math.max(labelWidth, measure:GetStringWidth())
+		measure:Hide()
+		autoRelease:SetPoint("LEFT", button, "RIGHT", labelWidth + 24, 0)
+		autoRelease:SetChecked(mod.Options.AutoRelease)
+		autoRelease:SetScript("OnShow", function(self)
+			self:SetChecked(mod.Options.AutoRelease)
+		end)
+		autoRelease:SetScript("OnClick", function(self)
+			mod.Options.AutoRelease = self:GetChecked() and true or false
+		end)
+		button.textObj:SetPoint("RIGHT", autoRelease, "LEFT", -4, 0)
+	end
 
 	if mod.addon then
 		for spellID, options in getmetatable(mod.groupOptions).__pairs(mod.groupOptions) do

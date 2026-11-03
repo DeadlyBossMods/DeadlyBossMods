@@ -167,7 +167,7 @@ do
 			self:ResumeBlizzardAPI()
 			self:UnregisterShortTermEvents()
 			setFallback(self)
-			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+			DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 		end
 	end
 
@@ -211,7 +211,8 @@ do
 				specWarnAlluringBubble:Show(eventCount)
 				specWarnAlluringBubble:Play("killmob")
 			elseif eventType == "frost" then
-				specWarnChillingFrost:Show(eventCount, "orbrun")
+				--The personal warning arrives after the three-second cast; ignore competing severity-2 warnings.
+				specWarnChillingFrost:Show(eventCount, "orbrun", 4, 1)
 			elseif eventType == "rush" then
 				specWarnTidepiercersRush:Show(eventCount)
 				specWarnTidepiercersRush:Play("watchstep")

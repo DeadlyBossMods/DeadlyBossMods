@@ -6,6 +6,8 @@ if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"风怒", "火舌", "大地生命"}
+L.CONSUMABLES_PALADIN_IMBUES = {"圣言祭礼", "恳求祭礼"}
 L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
 
 local dateTable = date("*t")
@@ -40,7 +42,7 @@ L.COPY_WA_DIALOG					= "复制WA代码"
 L.TEXT_ONLY_RANGE			= "因API限制，距离窗体只能显示绝对距离值。"
 L.NO_RANGE					= "距离窗体已无法使用。本命令将会被移除。"
 L.NO_ARROW					= "箭头在副本中无法使用"
-L.NO_HUD					= "HUDMap 在副本中无法使用"
+L.HUDMAP_NOT_INSTALLED		= "DBM-HudMap 未安装或未启用。"
 L.NO_COMMS					= "插件之间的通信在战斗或激活的大秘中无法使用。战斗或地下城结束后，请再次使用此命令。"
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，" .. L.DBM .. " 无法开启动态距离检测。"
@@ -313,6 +315,7 @@ L.SLASHCMD_HELP				= {
 	"/dbm key: 执行大秘钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (也可使用: key, keys, keystone)",
 	"/dbm lag: 检测全团网络延时",
 	"/dbm durability: 检测全团装备耐久度",
+	"/dbm consumables: 进行团队消耗品检查 (alias: cons, consumes).",
 	"/dbm brez: 显示战复计时器框架以供定位。",
 	"/dbm help2: 显示额外的/命令"
 }
@@ -322,7 +325,6 @@ L.SLASHCMD_HELP2				= {
 	"/dbm version: 进行团队范围的" .. L.DBM .. "版本检测(也可使用: ver)",
 	"/dbm version2: 进行团队范围的" .. L.DBM .. "版本检测并密语那些过期版本用户(也可使用: ver2)",
 	"/range <码> 或者 /distance <码>: 显示距离雷达窗体。使用 /rrange 或者 /rdistance 翻转颜色。",
-	"/hudar <码>: 显示基于HUD的距离显示器提示器。",
 	"/dbm arrow: 显示" .. L.DBM .. "箭头，输入'/dbm arrow'查询更多信息。",
 	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。",
 	"/dbm dbtdebug: 显示用于错误报告的已净化计时条诊断信息。"
@@ -651,8 +653,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s, %%s"
 --
 --L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE				= "%s 消失"
-L.AUTO_HUD_OPTION_TEXT				= "为$spell:%s显示HudMap(退休了)"
-L.AUTO_HUD_OPTION_TEXT_MULTI			= "为多个机制显示HudMap(退休了)"
 L.AUTO_NAMEPLATE_OPTION_TEXT			= "为$spell:%s显示姓名面板光环，包括兼容插件和"..L.DBM
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED		= "为$spell:%s显示姓名面板光环，只包括"..L.DBM
 L.AUTO_RANGE_OPTION_TEXT				= "距离监视(%s码)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
@@ -674,21 +674,6 @@ L.MOVE_WARNING_BAR				= "可拖动的团队警告"
 L.MOVE_WARNING_MESSAGE			= "感谢您使用" .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR		= "可拖动的特别警告"
 L.MOVE_SPECIAL_WARNING_TEXT		= "特别警告"
-
-L.HUD_INVALID_TYPE				= "无效的HUD类型"
-L.HUD_INVALID_TARGET				= "没有给定HUD目标"
-L.HUD_INVALID_SELF				= "不能把自己设定成HUD目标"
-L.HUD_INVALID_ICON				= "当使用团队标记作为HUD目标定义时，不能定义一个没有团队标记的目标"
-L.HUD_SUCCESS					= "HUD成功地使用了你的参数启动了。HUD会在%s关闭, 或者输入 '/dbm hud hide'来关闭"
-L.HUD_USAGE	= {
-	L.DBM .. "-HudMap 可用命令：",
-	"-----------------",
-	"/dbm hud <类型> <目标> <持续时间> 新建一个指向玩家的HUD指示器",
-	"变量-类型: arrow, dot, red, blue, green, yellow, icon (请输入英语。需要相应的带团队标记的目标。)",
-	"变量-目标: target, focus, <玩家名字> (如果是玩家名字是拉丁字母请区分大小写)",
-	"变量-持续时间: 秒数. 如果这个参数留空, 默认为20分钟",
-	"/dbm hud hide: 清空并关闭HUD"
-}
 
 L.ARROW_MOVABLE				= "可移动箭头"
 L.ARROW_WAY_USAGE				= "/dway <x> <y>: 新建一个箭头到指定位置 (使用区域地图坐标系)"

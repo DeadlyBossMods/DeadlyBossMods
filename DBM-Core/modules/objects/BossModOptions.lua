@@ -21,7 +21,7 @@ local checkDuplicateObjects = {}
 ---@param default SpecFlags|boolean?
 ---@param cat string? category type: ie "timer", "announce", "misc", "sound", etc
 ---@param func any? Custom function to call when option is changed
----@param extraOption string|number? Used for attached options such as timer color or special warning sound
+---@param extraOption string|number? Timer color; pass 0 for announce objects to enable per-object color options
 ---@param extraOptionTwo string|number? Used for attached options such as countdown voice or special warning note
 ---@param spellId any? spellId to group with other options for same spell
 ---@param optionSubType string? ie "gtfo", "adds", "achievement", "stage", etc
@@ -37,6 +37,8 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 	if cat == "timer" then
 		self.DefaultOptions[name .. "TColor"] = extraOption or 0
 		self.DefaultOptions[name .. "CVoice"] = extraOptionTwo or 0
+	elseif cat == "announce" and extraOption ~= nil then
+		self.DefaultOptions[name .. "Color"] = 0
 	end
 	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
@@ -45,6 +47,8 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 	if cat == "timer" then
 		self.Options[name .. "TColor"] = extraOption or 0
 		self.Options[name .. "CVoice"] = extraOptionTwo or 0
+	elseif cat == "announce" and extraOption ~= nil then
+		self.Options[name .. "Color"] = 0
 	end
 	if self.noHardcodedOptions and (cat == "announce" or cat == "timer" or cat == "icon" or cat == "nameplate" or cat == "yell") and optionSubType ~= "roleplay" then return end
 	if spellId then
@@ -84,12 +88,14 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self.DefaultOptions[name] = (default == nil) or default
 	self.DefaultOptions[name .. "SWSound"] = defaultSound or 1
 	self.DefaultOptions[name .. "SWNote"] = true
+	self.DefaultOptions[name .. "Color"] = 0
 	if type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
 	self.Options[name .. "SWSound"] = defaultSound or 1
 	self.Options[name .. "SWNote"] = true
+	self.Options[name .. "Color"] = 0
 	if self.noHardcodedOptions then return end
 	if spellId then
 		if waCustomName then--Do custom shit for options using invalid spellIds as weak auras keys
@@ -111,7 +117,7 @@ end
 ---@param default SpecFlags|boolean?
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 ---@param defaultSound acceptedSASounds? is used to set default Special announce sound (1-4) just like regular special announce objects
----@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo, 3: post debuff. Also accepts a voice string as shorthand for migrated 6-arg calls.
+---@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo (eligible for the global voice override unless individually customized), 3: post debuff. Also accepts a voice string as shorthand for migrated 6-arg calls.
 ---@param voice VPSound|VPSound[]|number? voice pack media path(s) for zone-based aura sound registration. Tables are paired by index with voiceVersion and soundType; scalar values broadcast to every table entry. Also accepts the shorthand voiceVersion number when subType is passed as a voice string.
 ---@param voiceVersion number|number[]? required voice pack version(s); if voice pack version is below this value, falls back to default sound
 ---@param soundType number|number[]? UnitAuraSoundTrigger(s): 0 = added, 1 = applications increased, 2 = removed; defaults to 0
@@ -189,7 +195,7 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 					if not self.pendingPASoundsByZone then self.pendingPASoundsByZone = {} end
 					for zoneID in pairs(self.zones) do
 						self.pendingPASoundsByZone[zoneID] = self.pendingPASoundsByZone[zoneID] or {}
-						self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, pairedVoice, pairedVoiceVersion, pairedSoundType, difficultyVoices, throttleSeconds}
+						self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, pairedVoice, pairedVoiceVersion, pairedSoundType, difficultyVoices, throttleSeconds, subType}
 					end
 				else
 					invalidRegistration = true

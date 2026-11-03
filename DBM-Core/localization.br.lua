@@ -2,6 +2,8 @@ if GetLocale() ~= "ptBR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"Fúria dos Ventos", "Labaredas", "Terraviva"}
+L.CONSUMABLES_PALADIN_IMBUES = {"Rito da Santificação", "Rito da Adjuração"}
 L.AURA_FONT_RESET = "Configurações de fonte de texto de aura inválidas detectadas e redefinidas para os padrões."
 
 local dateTable = date("*t")
@@ -36,7 +38,7 @@ L.COPY_WA_DIALOG 					= "Copiar chave de feitiço"
 L.TEXT_ONLY_RANGE 					= "O quadro de distância está limitado apenas a texto devido a restrições de API nesta área."
 L.NO_RANGE 							= "O quadro de distância não pode ser usado devido a restrições de API nesta área."
 L.NO_ARROW 							= "A seta não pode ser usada em instâncias."
-L.NO_HUD 							= "O HUDMap não pode ser usado em instâncias."
+L.HUDMAP_NOT_INSTALLED				= "O DBM-HudMap não está instalado ou não está ativado."
 L.NO_COMMS							= "A comunicação do addon não pode ser usada durante encontros ou masmorras M+ ativas. Use este comando novamente após o término do encontro ou masmorra."
 
 L.DYNAMIC_DIFFICULTY_CLUMP			= L.DBM .. " desativou o quadro de distância dinâmico nesta luta, por falta de informação sobre o número de jogadores à ficarem amontoados para um grupo desse tamanho."
@@ -308,6 +310,7 @@ L.SLASHCMD_HELP						= {
 	"/dbm key: Realiza verificações de pedra-chave e classificação de M+ no grupo/guarda e atalhos para teletransportes de masmorras. (alias: key, keys, keystone)",
 	"/dbm lag: Realiza uma verificação de latência em toda a raide.",
 	"/dbm durability: Realiza uma verificação de durabilidade em toda a raide.",
+	"/dbm consumables: Realiza uma verificação de consumíveis na raide (alias: cons, consumes).",
 	"/dbm brez: Exibe o quadro do cronômetro de ressurreição de batalha para posicionamento.",
 	"/dbm help2: Mostra comandos de gerenciamento de raide."
 }
@@ -317,7 +320,6 @@ L.SLASHCMD_HELP2					= {
 	"/dbm version: Realiza uma verificação de versão de toda a raide. (ou: ver).",
 	"/dbm version2: Realiza uma verificação de versão de toda a raide e sussurra para avisando os membros que estão desatualizados (alias: ver2).",
 	"/range <número> ou /distance <número>: Mostra o quadro de distância. /rrange ou /rdistance para inverter as cores.",
-	"/hudar <número>: Mostra o buscador de distância baseado em HUD.",
 	"/dbm arrow: Mostra a seta do " .. L.DBM .. ", veja /dbm arrow help para detalhes.",
 	"/dbm hud: Mostra o HUD do " .. L.DBM .. ", veja '/dbm hud' para detalhes.",
 	"/dbm dbtdebug: Mostra diagnósticos sanitizados de barras de tempo para relatórios de erro."
@@ -657,8 +659,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}"--Doesn't n
 
 L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells) -- OPTIONAL
 L.AUTO_YELL_CUSTOM_FADE 				= "%s desaparecido"
-L.AUTO_HUD_OPTION_TEXT 					= "Exibir HudMap para $spell:%s (Descontinuado)"
-L.AUTO_HUD_OPTION_TEXT_MULTI 			= "Exibir HudMap para vários mecanismos (Descontinuado)"
 L.AUTO_NAMEPLATE_OPTION_TEXT 			= "Exibir auras na placa de nome para $spell:%s usando um addon de placa de nome compatível ou "..L.DBM
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED 	= "Exibir auras na placa de nome apenas para $spell:%s usando apenas "..L.DBM
 L.AUTO_RANGE_OPTION_TEXT 				= "Exibir quadro de distância (%s) para $spell:%s" -- string usado para a distância, para que possamos usar coisas como "5/2" como um valor para esse campo
@@ -686,21 +686,6 @@ L.MOVE_SPECIAL_WARNING_TEXT				= "Aviso especial"
 L.MOVE_PRIVATE_AURA_TEXT 				= "<valor secreto> tem você como alvo com o feitiço <valor secreto>"
 L.MOVE_PRIVATE_AURA_DISABLED 			= "A pré-visualização está desativada porque os quadros de auras estão desativados globalmente nas opções."
 
-L.HUD_INVALID_TYPE 						= "Tipo de HUD definido inválido"
-L.HUD_INVALID_TARGET 					= "Nenhum alvo válido fornecido para o HUD"
-L.HUD_INVALID_SELF 						= "Não é possível usar o próprio jogador como alvo para o HUD"
-L.HUD_INVALID_ICON 						= "Não é possível usar o método de ícone para o HUD em um alvo sem ícone"
-L.HUD_SUCCESS 							= "HUD iniciado com sucesso com seus parâmetros. Isso será cancelado após %s, ou digite '/dbm hud hide'."
-L.HUD_USAGE								= {
-	L.DBM .. "-HudMap uso:",
-	"-----------------",
-"/dbm hud <tipo> <alvo> <duração>: Cria um HUD que aponta para um jogador pelo tempo desejado",
- "Tipos válidos: seta, ponto, vermelho, azul, verde, amarelo, ícone (requer um alvo com ícone de raide)",
- "Alvos válidos: alvo, foco, <nome do jogador>",
- "Durações válidas: qualquer número (em segundos). Se deixado em branco, será utilizado 20 minutos.",
- "/dbm hud hide: desativa objetos de HUD gerados pelo usuário"
-}
-
 L.ARROW_MOVABLE						= "Seta móvel"
 L.ARROW_WAY_USAGE 					= "/dway <x> <y>: Cria uma seta que aponta para uma localização específica (usando coordenadas locais do mapa da zona)"
 L.ARROW_WAY_SUCCESS 				= "Para ocultar a seta, digite '/dbm arrow hide' ou chegue perto da seta"
@@ -722,9 +707,21 @@ L.LAG_HEADER						= L.DBM .. " - Resultados de latência"
 L.DUR_HEADER						= L.DBM .. " - Resultados de durabilidade"
 L.KEYSTONES_HEADER					= L.DBM.. " - Pedra-chaves"
 L.GEAR_HEADER						= L.DBM .. " - Resultados de equipamento"
-L.GEAR_MISSING_GEMS				= "Gemas faltando"
-L.GEAR_MISSING_ENCHANTS			= "Encantamentos faltando"
-L.BREZ_HEADER						= "Res em combate"
+L.GEAR_MISSING_GEMS					= "Gemas faltando"
+L.GEAR_MISSING_ENCHANTS				= "Encantamentos faltando"
+L.GEAR_DURABILITY					= "Dur. %"
+L.GEAR_BROKEN						= "Quebrado"
+L.RAIDCHECKS_TAB_CONSUMABLES		= "Consumíveis"
+L.RAIDCHECKS_TAB_GEAR				= "Equipamento"
+L.RAIDCHECKS_TAB_LATENCY			= "Latência"
+L.CONSUMABLES_HEADER				= L.DBM.. " - Verificação de consumíveis"
+L.CONSUMABLES_FLASK					= "Frasco"
+L.CONSUMABLES_FOOD					= "Comida"
+L.CONSUMABLES_WEAPON				= "Arma"
+L.CONSUMABLES_HS					= "Pedra da Saúde"
+L.CONSUMABLES_RUNE					= "Runa"
+L.CONSUMABLES_NA					= "N/D"
+L.BREZ_HEADER						= "Reviver em combate"
 
 L.OVERRIDE_ACTIVATED				= "As configurações substituídas foram ativadas para este encontro pelo RL"
 

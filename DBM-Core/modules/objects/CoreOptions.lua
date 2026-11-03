@@ -82,7 +82,7 @@ DBM.DefaultOptions = {
 					(locale == "ptBR" and "Anshlun") or
 					(locale == "ruRU" and "Alexander") or
 					(locale == "zhCN" and "Ruichen") or
-					(locale == "zhTW" and "Hao"),
+					(locale == "zhTW" and "Hao") or "Corsica",
 	CountdownVoice2 = ((locale == "enUS" or locale == "enGB") and "Kolt") or
 					(locale == "deDE" and "Franziska") or
 					(locale == "esES" and "Fernanda") or
@@ -92,7 +92,7 @@ DBM.DefaultOptions = {
 					(locale == "ptBR" and "Neryssa") or
 					(locale == "ruRU" and "Nadezhda") or
 					(locale == "zhCN" and "Chunru") or
-					(locale == "zhTW" and "Ling"),
+					(locale == "zhTW" and "Ling") or "Kolt",
 	CountdownVoice3 = ((locale == "enUS" or locale == "enGB") and "Smooth") or
 					(locale == "deDE" and "Franziska") or
 					(locale == "esES" and "Fernanda") or
@@ -102,7 +102,7 @@ DBM.DefaultOptions = {
 					(locale == "ptBR" and "Neryssa") or
 					(locale == "ruRU" and "Nadezhda") or
 					(locale == "zhCN" and "Chunru") or
-					(locale == "zhTW" and "Ling"),
+					(locale == "zhTW" and "Ling") or "Smooth",
 	CountSize = 5,
 	PullVoice = ((locale == "enUS" or locale == "enGB") and "Corsica") or
 					(locale == "deDE" and "Karl") or
@@ -113,11 +113,14 @@ DBM.DefaultOptions = {
 					(locale == "ptBR" and "Anshlun") or
 					(locale == "ruRU" and "Alexander") or
 					(locale == "zhCN" and "Ruichen") or
-					(locale == "zhTW" and "Hao"),
+					(locale == "zhTW" and "Hao") or "Corsica",
 	CountdownVoiceNamesMigrated = false,
 	ChosenVoicePack2 = (locale == "enUS" or locale == "enGB") and "VEM" or "None",
 	VPReplacesAnnounce = true,
 	VPReplacesSADefault = true,
+	GTFOOverrideEnabled = false,
+	GTFOOverrideSoundType = "sound",
+	GTFOOverrideSound = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg",
 	EventSoundVictory2 = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",
 	EventSoundWipe = "None",
 	EventSoundPullTimer = "None",
@@ -381,7 +384,6 @@ DBM.DefaultOptions = {
 	DontShowRangeFrame = false,
 	DontRestoreRange = false,
 	DontShowInfoFrame = false,
-	DontShowHudMap2 = false,
 	UseNameplateHandoff = true,--Power user setting, no longer shown in GUI
 	DontShowNameplateIcons = false,
 	DontShowNameplateIconsCD = false,
@@ -657,6 +659,9 @@ function DBM:RepositionFrames()
 	end
 	if self.TextTimers then
 		self.TextTimers:SyncOptions()
+	end
+	if self.InfoFrame then
+		self.InfoFrame:SyncOptions()
 	end
 	if private.isRetail then
 		self:UpdateZoneAuraAnchors(1)
@@ -1279,4 +1284,3 @@ do
 		end
 	end
 end
-

@@ -35,6 +35,11 @@ EnlargeTimeSlider.myheight = 0
 
 local BarsHiddenSlider = BarBehaviors:CreateSlider(L.Bar_AppearTime, 30, 300, 1, nil, DBT.Options.HiddenBarTime, createDBTOnValueChangedHandler("HiddenBarTime"))
 BarsHiddenSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -75)
+BarBehaviors.frame:HookScript("OnShow", function()
+	DecimalSlider:SetValueSilent(DBT.Options.TDecimal)
+	EnlargeTimeSlider:SetValueSilent(DBT.Options.EnlargeBarTime)
+	BarsHiddenSlider:SetValueSilent(DBT.Options.HiddenBarTime)
+end)
 
 local HiddenBarsToggle = BarBehaviors:CreateCheckButton(L.Bar_HideLongBars, true, nil, nil, "HideLongBars")
 HiddenBarsToggle:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -65)

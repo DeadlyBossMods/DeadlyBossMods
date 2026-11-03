@@ -48,6 +48,9 @@ frame:SetScript("OnShow", function(self)
 	end
 end)
 frame:SetScript("OnHide", function()
+	if DBM_GUI.StopMusicPreview then
+		DBM_GUI:StopMusicPreview()
+	end
 	if _G["DBM_GUI_DropDown"] then
 		_G["DBM_GUI_DropDown"]:Hide()
 	end
@@ -145,14 +148,6 @@ frameOkay:SetPoint("BOTTOMRIGHT", -16, 14)
 frameOkay:SetText(CLOSE)
 frameOkay:SetScript("OnClick", function()
 	frame:Hide()
-	if DBM.Options.tempMusicSetting then
-		SetCVar("Sound_EnableMusic", DBM.Options.tempMusicSetting)
-		DBM.Options.tempMusicSetting = nil
-	end
-	if DBM.Options.musicPlaying then
-		StopMusic()
-		DBM.Options.musicPlaying = nil
-	end
 end)
 
 local frameWebsiteButton = CreateFrame("Button", "$parentWebsiteButton", frame, "UIPanelButtonTemplate")

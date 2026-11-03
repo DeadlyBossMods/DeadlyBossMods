@@ -7,6 +7,7 @@ mod:SetEncounterID(3492)
 --mod:SetHotfixNoticeRev(20250823000000)
 --mod:SetMinSyncRevision(20250823000000)
 mod:SetZone(3004)
+mod:SetAutoReleaseDefault()
 
 mod:RegisterCombat("combat")
 
@@ -58,7 +59,7 @@ mod:AddAuraSoundOption(1300685, true, 1300530, 1, 3, "debuffyou", 17, 0)--Soul C
 mod:AddAuraSoundOption(1293046, true, 1295905, 1, 1, "gathershare", 2, 0)--Serpent's Bite (targeted)
 --mod:AddAuraSoundOption(1288879, true, 1295905, 1, 1, "gathershare", 2, 0)--Serpent's Bite (dot) (use if pre target spell aura doesn't work)
 mod:AddAuraSoundOption(1306119, true, 1295905, 1, 3, "stunyou", 19, 0)--Calcified Corpse. Failed to clear Serpent's Bite
-mod:AddAuraSoundOption(1312967, true, 1295905, 1, 1, "runout", 2, 0)--Volatile Purge (serpent's bite share debuff)
+mod:AddAuraSoundOption(1312967, true, 1295905, 1, 1, "scatter", 2, 0)--Volatile Purge (serpent's bite share debuff)
 mod:AddAuraSoundOption(1302842, false, 1299757, 1, 3, "stackhigh", 6, 1)--Toxic Burn (may be spammy if rapid soaked, warns at 2+ stacks)
 mod:AddAuraSoundOption(1301800, "RemovePoison", 1300751, 1, 3, "poisonyou", 20, 0)--Acidic Burst (Blightscale Viper adds debuffs)
 mod:AddAuraSoundOption(1305163, true, 1300751, 1, 1, "runout", 2, 0)--Petrifying Sting (Target). Used by Blightscale Viper
@@ -378,7 +379,7 @@ do
 		self:ResumeBlizzardAPI()
 		self:UnregisterShortTermEvents()
 		setFallback(self)
-		DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, nil, nil, true)
+		DBM:Debug("|cffff0000Failed to match encounter timeline events to expected timers, falling back to Blizzard API|r", nil, true, nil, true)
 	end
 
 	local function resolveStoryStage3Collision(timer)
@@ -679,7 +680,12 @@ do
 	local function timersStory(self, timer, timerExact, eventID)
 		local handled = false
 		local stage = self:GetStage()
-		if stage == 1 then
+		if stage == 1 and stage2Pending and timer == 10 then--The intermission event can arrive just before boss1 becomes untargetable
+			stage2Pending = false
+			self:SetStage(2.5)
+			startSpectralCoilsTimer(self, timerExact, eventID)
+			handled = true
+		elseif stage == 1 then
 			if timer == 55 then
 				timerCausticWavesCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "causticWaves", "causticWavesCount"))
 			elseif timer == 3 then--1304527 initial Gore Rattle
@@ -938,10 +944,10 @@ do
 		local timerExact = eventInfo.duration
 		local timer = math.floor(timerExact + 0.5)
 		if not badStateDetected then
+			if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 			if self:IsStory() then
 				timersStory(self, timer, timerExact, eventID)
 			elseif self:IsLFR() then
-				if C_EncounterTimeline.GetEventState(eventID) ~= 0 or not self:TLTrackActiveEvent(eventID) then return end
 				timersLFR(self, timer, timerExact, eventID)
 			elseif self:IsHeroic() then
 				timersHeroic(self, timer, timerExact, eventID)

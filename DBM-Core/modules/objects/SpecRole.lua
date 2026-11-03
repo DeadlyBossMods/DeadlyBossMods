@@ -694,7 +694,187 @@ function DBMExtraGlobal:rebuildSpecTable()
 		specRoleTable[183] = specRoleTable[182]--Subtlety Rogue same as Assassination
 		specRoleTable[867] = specRoleTable[871]--Demonology Warlock same as Affliction
 		specRoleTable[865] = specRoleTable[871]--Destruction Warlock same as Affliction
-	else--Vanilla and Wrath and forever
+	elseif private.isForever then--Talent group IDs sent by LibSpecialization
+		specRoleTable = {
+			[11582] = { --Arcane Mage
+				["Dps"] = true,
+				["Ranged"] = true,
+				["RangedDps"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["CasterDps"] = true,
+				["HasInterrupt"] = true,
+				["HasImmunity"] = true,
+				["RemoveCurse"] = true,
+				["MagicDispeller"] = DBMExtraGlobal:IsSpellKnown(30449),--Spellsteal
+			},
+			[11486] = { --Holy Paladin
+				["Healer"] = true,
+				["Ranged"] = true,
+				["CasterDps"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["RaidCooldown"] = true,
+				["RemovePoison"] = true,
+				["RemoveDisease"] = true,
+				["RemoveMagic"] = true,
+				["HasImmunity"] = true,
+			},
+			[11541] = { --Protection Paladin
+				["Tank"] = true,
+				["Melee"] = true,
+				["ManaUser"] = true,
+				["Physical"] = true,
+				["CasterDps"] = true,
+				["RemovePoison"] = true,
+				["RemoveDisease"] = true,
+				["RemoveMagic"] = true,
+				["HasImmunity"] = true,
+			},
+			[11559] = { --Retribution Paladin
+				["Dps"] = true,
+				["Melee"] = true,
+				["MeleeDps"] = true,
+				["CasterDps"] = true,
+				["ManaUser"] = true,
+				["Physical"] = true,
+				["RemovePoison"] = true,
+				["RemoveDisease"] = true,
+				["RemoveMagic"] = true,
+				["HasImmunity"] = true,
+			},
+			[11650] = { --Arms Warrior
+				["Dps"] = true,
+				["Melee"] = true,
+				["MeleeDps"] = true,
+				["Physical"] = true,
+				["HasInterrupt"] = true,
+			},
+			[11670] = { --Protection Warrior
+				["Tank"] = true,
+				["Melee"] = true,
+				["Physical"] = true,
+				["HasInterrupt"] = true,
+				["MagicDispeller"] = (DBMExtraGlobal:IsSpellKnown(23922) or DBMExtraGlobal:IsSpellKnown(23923) or DBMExtraGlobal:IsSpellKnown(23924) or DBMExtraGlobal:IsSpellKnown(23925) or DBMExtraGlobal:IsSpellKnown(25258) or DBMExtraGlobal:IsSpellKnown(30356) or DBMExtraGlobal:IsSpellKnown(47487) or DBMExtraGlobal:IsSpellKnown(47488)),--Shield Slam
+			},
+			[11328] = { --Balance Druid
+				["Dps"] = true,
+				["Ranged"] = true,
+				["RangedDps"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["CasterDps"] = true,
+				["RemoveCurse"] = true,
+				["RemovePoison"] = true,
+			},
+			[11347] = { --Feral Druid; bear/cat talent distinction is not yet defined by LibSpecialization
+				["Dps"] = true,
+				["Tank"] = true,
+				["Melee"] = true,
+				["MeleeDps"] = true,
+				["Physical"] = true,
+				["RemoveCurse"] = true,
+			},
+			[11340] = { --Restoration Druid
+				["Healer"] = true,
+				["Ranged"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["RaidCooldown"] = true,
+				["RemoveCurse"] = true,
+				["RemovePoison"] = true,
+			},
+			[11372] = { --Beastmaster Hunter
+				["Dps"] = true,
+				["Ranged"] = true,
+				["RangedDps"] = true,
+				["Physical"] = true,
+				["RemoveEnrage"] = true,
+				["ManaUser"] = true,
+			},
+			[11608] = { --Discipline Priest
+				["Healer"] = true,
+				["Ranged"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["CasterDps"] = true,
+				["RaidCooldown"] = true,
+				["MagicDispeller"] = true,
+				["RemoveDisease"] = true,
+				["RemoveMagic"] = true,
+			},
+			[11622] = { --Shadow Priest
+				["Dps"] = true,
+				["Ranged"] = true,
+				["RangedDps"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["CasterDps"] = true,
+				["MagicDispeller"] = true,
+				["RemoveMagic"] = true,
+				["RemoveDisease"] = true,
+			},
+			[11580] = { --Assassination Rogue
+				["Dps"] = true,
+				["Melee"] = true,
+				["MeleeDps"] = true,
+				["Physical"] = true,
+				["HasInterrupt"] = true,
+			},
+			[11326] = { --Elemental Shaman
+				["Dps"] = true,
+				["Ranged"] = true,
+				["RangedDps"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["CasterDps"] = true,
+				["HasInterrupt"] = true,
+				["MagicDispeller"] = true,
+				["RemovePoison"] = true,
+				["RemoveDisease"] = true,
+			},
+			[11363] = { --Enhancement Shaman
+				["Dps"] = true,
+				["Melee"] = true,
+				["MeleeDps"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["Physical"] = true,
+				["HasInterrupt"] = true,
+				["MagicDispeller"] = true,
+				["RemovePoison"] = true,
+				["RemoveDisease"] = true,
+			},
+			[11362] = { --Restoration Shaman
+				["Healer"] = true,
+				["Ranged"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["HasInterrupt"] = true,
+				["MagicDispeller"] = true,
+				["RemovePoison"] = true,
+				["RemoveDisease"] = true,
+			},
+			[11629] = { --Affliction Warlock
+				["Dps"] = true,
+				["Ranged"] = true,
+				["RangedDps"] = true,
+				["ManaUser"] = true,
+				["SpellCaster"] = true,
+				["CasterDps"] = true,
+			},
+		}
+		specRoleTable[11594] = specRoleTable[11582]--Fire Mage same as arcane
+		specRoleTable[11601] = specRoleTable[11582]--Frost Mage same as arcane
+		specRoleTable[11657] = specRoleTable[11650]--Fury Warrior same as Arms
+		specRoleTable[11371] = specRoleTable[11372]--Marksmanship Hunter same as Beastmaster
+		specRoleTable[11370] = specRoleTable[11372]--Survival Hunter same as Beastmaster
+		specRoleTable[11615] = specRoleTable[11608]--Holy Priest same as disc
+		specRoleTable[11573] = specRoleTable[11580]--Combat Rogue same as Assassination
+		specRoleTable[11572] = specRoleTable[11580]--Subtlety Rogue same as Assassination
+		specRoleTable[11636] = specRoleTable[11629]--Demonology Warlock same as Affliction
+		specRoleTable[11637] = specRoleTable[11629]--Destruction Warlock same as Affliction
+	else--Vanilla and Wrath
 		specRoleTable = {
 			["MAGE1"] = {	--Arcane Mage
 				["Dps"] = true,

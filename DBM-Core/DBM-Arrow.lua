@@ -10,7 +10,7 @@ local L = DBM_CORE_L
 --------------
 ---@class DBMArrow
 local arrowFrame = {}
-local frame, runAwayArrow, targetType, targetPlayer, targetX, targetY, targetMapId, hideTime, hideDistance
+local runAwayArrow, targetType, targetPlayer, targetX, targetY, targetMapId, hideTime, hideDistance
 
 DBM.Arrow = arrowFrame
 
@@ -24,36 +24,11 @@ local UnitPosition, GetTime = UnitPosition, GetTime
 --------------------
 --  Create Frame  --
 --------------------
----@class DBMArrowFrame: Button
-frame = CreateFrame("Button", "DBMArrow", UIParent)
-frame:Hide()
-frame:SetFrameStrata("HIGH")
-frame:SetSize(56, 42)
-frame:SetMovable(true)
-frame:EnableMouse(false)
-frame:RegisterForDrag("LeftButton", "RightButton")
-frame:SetScript("OnDragStart", function(self)
-	self:StartMoving()
-end)
-frame:SetScript("OnDragStop", function(self)
-	self:StopMovingOrSizing()
-	local point, _, _, x, y = self:GetPoint(1)
-	DBM.Options.ArrowPoint = point
-	DBM.Options.ArrowPosX = x
-	DBM.Options.ArrowPosY = y
-end)
-
----@class DBMArrowTextFrame: Frame
-local textframe = CreateFrame("Frame", nil, frame)
-frame.distance = textframe:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-frame.title = textframe:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-frame.title:SetPoint("TOP", frame, "BOTTOM")
-frame.distance:SetPoint("TOP", frame.title, "BOTTOM")
-textframe:Hide()
-
-local arrow = frame:CreateTexture(nil, "OVERLAY")
-arrow:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\arrows\\Arrow.blp")
-arrow:SetAllPoints(frame)
+---@type DBMArrowFrame
+local frame
+---@type DBMArrowTextFrame
+local textframe
+local arrow
 
 ---------------------
 --  Map Utilities  --
@@ -124,19 +99,15 @@ end
 ------------------------
 --  OnUpdate Handler  --
 ------------------------
+local onUpdate
 do
 	local rotateState = 0
 
-	frame:SetScript("OnUpdate", function(self, elapsed)
+	onUpdate = function(self, elapsed)
 		if hideTime and GetTime() > hideTime then
 			frame:Hide()
 		end
 		arrow:Show()
-		-- the static arrow type is special because it doesn't depend on the player's orientation or position
-		if targetType == "static" then
-			return updateArrow(targetX) -- targetX contains the static angle to show
-		end
-
 		local x, y, _, mapId = UnitPosition("player")
 		--New bug in 8.2.5, unit position returns nil for position in areas there aren't restrictions for first few frames in that new area
 		--this just has the arrow skip some onupdates during that
@@ -174,7 +145,7 @@ do
 			end
 		end
 		updateArrow(angle - GetPlayerFacing(), calculateDistance(x, y, targetX, targetY))
-	end)
+	end
 end
 
 
@@ -182,13 +153,83 @@ end
 --  Public Methods  --
 ----------------------
 
+local moving, moveGeneration = false, 0
+local function endMove(generation)
+	if moving and generation == moveGeneration then
+		arrowFrame:Hide()
+	end
+end
+
+local function stopMoving()
+	if not moving then return end
+	moving = false
+	moveGeneration = moveGeneration + 1
+	DBM:Unschedule(endMove)
+	frame:StopMovingOrSizing()
+	frame:EnableMouse(false)
+	DBT:CancelBar(L.ARROW_MOVABLE)
+end
+
+local staticTimed, staticGeneration = false, 0
+local function endStatic(generation)
+	if staticTimed and generation == staticGeneration then
+		arrowFrame:Hide()
+	end
+end
+
+local function stopDisplay()
+	stopMoving()
+	if staticTimed then
+		staticTimed = false
+		DBM:Unschedule(endStatic)
+	end
+	frame:SetScript("OnUpdate", nil)
+end
+
+local function ensureFrame()
+	if frame then return end
+	---@class DBMArrowFrame: Button
+	frame = CreateFrame("Button", "DBMArrow", UIParent)
+	frame:Hide()
+	frame:SetFrameStrata("HIGH")
+	frame:SetSize(56, 42)
+	frame:SetMovable(true)
+	frame:EnableMouse(false)
+	frame:RegisterForDrag("LeftButton", "RightButton")
+	frame:SetScript("OnDragStart", function(self)
+		self:StartMoving()
+	end)
+	frame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+		local point, _, _, x, y = self:GetPoint(1)
+		DBM.Options.ArrowPoint = point
+		DBM.Options.ArrowPosX = x
+		DBM.Options.ArrowPosY = y
+	end)
+	---@class DBMArrowTextFrame: Frame
+	textframe = CreateFrame("Frame", nil, frame)
+	frame.distance = textframe:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+	frame.title = textframe:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+	frame.title:SetPoint("TOP", frame, "BOTTOM")
+	frame.distance:SetPoint("TOP", frame.title, "BOTTOM")
+	textframe:Hide()
+	arrow = frame:CreateTexture(nil, "OVERLAY")
+	arrow:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\arrows\\Arrow.blp")
+	arrow:SetAllPoints(frame)
+	frame:SetScript("OnHide", stopDisplay)
+	arrowFrame:LoadPosition()
+end
+
 --/run DBM.Arrow:ShowRunTo(50, 50, 1, nil, true, true, "Waypoint", custom local mapID)
 local function show(runAway, x, y, distance, time, legacy, _, title, customAreaID)
 	if DBM:HasMapRestrictions() then return end
+	ensureFrame()
+	stopDisplay()
 	local player
 	if type(x) == "string" then
 		player, hideDistance, hideTime = x, y, hideDistance
 	end
+	frame:SetScript("OnUpdate", onUpdate)
 	frame:Show()
 	textframe:Show()
 	if title then
@@ -233,45 +274,53 @@ end
 -- shows a static arrow
 function arrowFrame:ShowStatic(angle, time)
 	--Static arrows do not need restrictions, and are still permitted even in 7.1
+	ensureFrame()
+	stopDisplay()
 	runAwayArrow = false
 	hideDistance = 0
 	targetType = "static"
 	targetX = angle * pi2 / 360
-	if time then
-		hideTime = time + GetTime()
-	else
-		hideTime = nil
-	end
+	hideTime = nil
 	frame:Show()
 	textframe:Hide()--just in case they call static while a non static was already showing
+	arrow:Show()
+	updateArrow(targetX)
+	if time then
+		staticTimed = true
+		staticGeneration = staticGeneration + 1
+		DBM:Schedule(time, endStatic, staticGeneration)
+	end
 end
 
 function arrowFrame:IsShown()
-	return frame and frame:IsShown()
+	return frame ~= nil and frame:IsShown()
 end
 
 function arrowFrame:Hide()
+	if not frame then return end
+	stopDisplay()
 	textframe:Hide()
 	frame:Hide()
 end
 
-local function endMove()
-	frame:EnableMouse(false)
-	arrowFrame:Hide()
-end
-
 function arrowFrame:Move()
+	ensureFrame()
+	stopDisplay()
+	moving = true
+	moveGeneration = moveGeneration + 1
+	hideTime = nil
 	targetType = "rotate"
 	runAwayArrow = false
 	hideDistance = 0
 	frame:EnableMouse(true)
+	frame:SetScript("OnUpdate", onUpdate)
 	frame:Show()
 	DBT:CreateBar(25, L.ARROW_MOVABLE, 237538)
-	DBM:Unschedule(endMove)
-	DBM:Schedule(25, endMove)
+	DBM:Schedule(25, endMove, moveGeneration)
 end
 
 function arrowFrame:LoadPosition()
+	if not frame then return end
 	frame:SetPoint(DBM.Options.ArrowPoint, DBM.Options.ArrowPosX, DBM.Options.ArrowPosY)
 end
 

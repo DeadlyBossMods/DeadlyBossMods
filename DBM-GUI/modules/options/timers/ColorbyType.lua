@@ -57,6 +57,12 @@ local function createColorTypeOption(area, colorType, info)
 
 	startColor:SetColorRGB(DBT.Options[startR], DBT.Options[startG], DBT.Options[startB])
 	endColor:SetColorRGB(DBT.Options[endR], DBT.Options[endG], DBT.Options[endB])
+	startColor:HookScript("OnShow", function(self)
+		self:SetColorRGB(DBT.Options[startR], DBT.Options[startG], DBT.Options[startB])
+	end)
+	endColor:HookScript("OnShow", function(self)
+		self:SetColorRGB(DBT.Options[endR], DBT.Options[endG], DBT.Options[endB])
+	end)
 
 	local dummyBar = DBT:CreateDummyBar(colorType, nil, info.barLabel)
 	dummyBar.frame:SetParent(area.frame)

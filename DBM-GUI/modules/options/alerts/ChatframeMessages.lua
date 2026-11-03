@@ -10,19 +10,12 @@ local selectFrameInfo = selectChatFrameArea:CreateText(nil, nil, nil, nil, nil, 
 selectFrameInfo:SetPoint("LEFT", selectFrameButton, "RIGHT", 10, 0)
 
 local function findChatFrameUnderCursor()
-	local f = EnumerateFrames()
-	while f do
-		if not f:IsProtected() and not f:IsForbidden() then
-			local name = f:GetName()
-			if name and type(name) == 'string' and name:match("^ChatFrame") and f:IsMouseOver() and f:IsVisible() then
-				local id = name:match("ChatFrame(%d+)")
-				id = tonumber(id)
-				if id and _G["ChatFrame" .. id] then
-					return "ChatFrame" .. id
-				end
-			end
+	for i = 1, CHAT_FRAMES and #CHAT_FRAMES or NUM_CHAT_WINDOWS do
+		local name = CHAT_FRAMES and CHAT_FRAMES[i] or "ChatFrame" .. i
+		local f = _G[name]
+		if f and not f:IsForbidden() and not f:IsProtected() and f:IsVisible() and f:IsMouseOver() then
+			return name
 		end
-		f = EnumerateFrames(f)
 	end
 end
 local function updateChatInfoText()
@@ -36,22 +29,28 @@ end
 updateChatInfoText()
 
 local selectingChatFrame = false
+local lastText
+local function stopSelectingChatFrame()
+	selectingChatFrame = false
+	lastText = nil
+	selectFrameButton:UnregisterEvent("GLOBAL_MOUSE_DOWN")
+	selectFrameButton:SetScript("OnEvent", nil)
+	selectFrameButton:SetScript("OnUpdate", nil)
+end
 selectFrameButton:SetScript("OnShow", updateChatInfoText)
-selectFrameButton:SetScript("OnHide", function() selectingChatFrame = false end)
-selectFrameButton:SetScript("OnClick", function() selectingChatFrame = true end)
-selectFrameButton:SetScript("OnEvent", function(self, event)
+selectFrameButton:SetScript("OnHide", stopSelectingChatFrame)
+local function onSelectionEvent(_, event)
 	if selectingChatFrame and event == "GLOBAL_MOUSE_DOWN" then
 		local newFrame = findChatFrameUnderCursor()
 		if newFrame then
+			stopSelectingChatFrame()
 			DBM.Options.ChatFrame = newFrame
 			DBM:AddMsg(L.SelectChatFrameInfoDone, nil, nil, true)
 			updateChatInfoText()
-			selectingChatFrame = false
 		end
 	end
-end)
-local lastText
-selectFrameButton:SetScript("OnUpdate", function()
+end
+local function updateSelection()
 	if not selectingChatFrame then return end
 	local newFrame = findChatFrameUnderCursor()
 	local newText
@@ -65,14 +64,23 @@ selectFrameButton:SetScript("OnUpdate", function()
 		selectFrameInfo:SetText(newText)
 		selectFrameInfo:GetWidth() -- this somehow fixes a bug that the updated text sometimes doesn't show
 	end
+end
+selectFrameButton:SetScript("OnClick", function()
+	if selectingChatFrame then return end
+	selectingChatFrame = true
+	lastText = nil
+	selectFrameButton:SetScript("OnEvent", onSelectionEvent)
+	selectFrameButton:SetScript("OnUpdate", updateSelection)
+	selectFrameButton:RegisterEvent("GLOBAL_MOUSE_DOWN")
+	updateSelection()
 end)
-selectFrameButton:RegisterEvent("GLOBAL_MOUSE_DOWN")
 
 local resetbutton = selectChatFrameArea:CreateButton(L.Reset, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", selectChatFrameArea.frame, "BOTTOMRIGHT", -2, 4)
 resetbutton:SetNormalFontObject(GameFontNormalSmall)
 resetbutton:SetHighlightFontObject(GameFontNormalSmall)
 resetbutton:SetScript("OnClick", function()
+	stopSelectingChatFrame()
 	-- Set Options
 	DBM.Options.ChatFrame = DBM.DefaultOptions.ChatFrame
 	-- Set UI visuals

@@ -501,6 +501,15 @@ function announcePrototype:UpdateColor(color)
 	self.color = DBM.Options.WarningColors[color or 1]
 end
 
+---@return table
+function announcePrototype:GetColor()
+	local color = self.option and self.mod.Options[self.option .. "Color"]
+	if type(color) == "table" then
+		return color
+	end
+	return DBM.Options.WarningColors[color] or self.color
+end
+
 ---@class Announce0: Announce
 ---@field Show fun(self: Announce0)
 ---@class Announce1: Announce
@@ -559,7 +568,8 @@ local function showAnnounce(self, secret, ...) -- todo: reduce amount of unneede
 			--Don't create table out of args if it has secrets
 			argTable = {...}
 		end
-		local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
+		local warningColor = self:GetColor()
+		local colorCode = ("|cff%.2x%.2x%.2x"):format(warningColor.r * 255, warningColor.g * 255, warningColor.b * 255)
 		if argTable and #self.combinedtext > 0 then
 			--Throttle spam.
 			if DBM.Options.WarningAlphabetical then
@@ -604,8 +614,8 @@ local function showAnnounce(self, secret, ...) -- todo: reduce amount of unneede
 		self.combinedtext = {}
 		--Avoid computational actions on secret passthrough warnings
 		if not isSecretBlizzType then
-			if not cachedColorFunctions[self.color] then
-				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
+			if not cachedColorFunctions[warningColor] then
+				local color = warningColor
 				cachedColorFunctions[color] = function(cap)
 					cap = cap:sub(2, -2)
 					local noStrip = cap:match("noStrip ")
@@ -629,7 +639,7 @@ local function showAnnounce(self, secret, ...) -- todo: reduce amount of unneede
 					return cap
 				end
 			end
-			text = text:gsub(">.-<", cachedColorFunctions[self.color])
+			text = text:gsub(">.-<", cachedColorFunctions[warningColor])
 		end
 		DBM:AddWarning(text, nil, self)
 		if DBM.Options.ShowWarningsInChat then
@@ -900,10 +910,10 @@ function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionNa
 	)
 	if optionName then
 		obj.option = optionName
-		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, waCustomName)
+		self:AddBoolOption(obj.option, optionDefault, "announce", nil, 0, nil, spellID, nil, waCustomName)
 	elseif optionName ~= false then
 		obj.option = text
-		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, waCustomName)
+		self:AddBoolOption(obj.option, optionDefault, "announce", nil, 0, nil, spellID, nil, waCustomName)
 	end
 	tinsert(self.announces, obj)
 	return obj
@@ -957,10 +967,10 @@ local function newAnnounce(self, announceType, spellId, color, icon, optionDefau
 	)
 	if optionName then
 		obj.option = optionName
-		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellId, announceType)
+		self:AddBoolOption(obj.option, optionDefault, "announce", nil, 0, nil, spellId, announceType)
 	elseif optionName ~= false then
 		obj.option = "announce" .. spellId .. announceType .. (optionVersion or "")
-		self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellId, announceType)
+		self:AddBoolOption(obj.option, optionDefault, "announce", nil, 0, nil, spellId, announceType)
 		if noFilter and announceType == "target" then
 			self.localization.options[obj.option] = L.AUTO_ANNOUNCE_OPTIONS["targetNF"]:format(spellId)
 		else

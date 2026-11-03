@@ -2,6 +2,8 @@ if GetLocale() ~= "deDE" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.CONSUMABLES_SHAMAN_IMBUES = {"Windzorn", "Flammenzunge", "Lebensgeister"}
+L.CONSUMABLES_PALADIN_IMBUES = {"Ritus der Heiligung", "Ritus der Vereidigung"}
 L.AURA_FONT_RESET = "Ungültige Aura-Text-Schrifteinstellungen wurden erkannt und auf die Standardeinstellungen zurückgesetzt."
 L.MN_TEXT_TIMERS_HEADER = "Möchtest du Text-Timer verwenden?\n(Verwendet DBM-Balkendaten, auch wenn die Balken nicht angezeigt werden)"
 
@@ -35,7 +37,7 @@ L.COPY_WA_DIALOG					= "Zauberschlüssel kopieren"
 L.TEXT_ONLY_RANGE			= "Das Reichweitenfenster ist aufgrund von API-Einschränkungen in diesem Bereich auf reinen Text beschränkt."
 L.NO_RANGE					= "Das Abstandsradar kann in Instanzen nicht genutzt werden. Es wird stattdessen die alte textbasierte Abstandsanzeige verwendet."
 L.NO_ARROW					= "Der Pfeil kann in Instanzen nicht genutzt werden."
-L.NO_HUD					= "Die HudMap kann in Instanzen nicht genutzt werden."
+L.HUDMAP_NOT_INSTALLED		= "DBM-HudMap ist nicht installiert oder nicht aktiviert."
 L.NO_COMMS					= "Addon-Kommunikation kann während Begegnungen oder aktiven M+ Dungeons nicht verwendet werden. Verwende diesen Befehl erneut, nachdem die Begegnung oder der Dungeon endet."
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM.." hat das dynamische Abstandsfenster für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, auf wieviel versammelte Spieler bei deiner Gruppengröße geprüft werden muss."
@@ -297,6 +299,7 @@ L.SLASHCMD_HELP				= {
 	"/dbm key: Führt M+ Schlüsselstein- und Bewertungsprüfungen für Gruppe/Gilde durch und bietet Abkürzungen zu Dungeon-Transporten an. (alias: key, keys, keystone)",--AI translated (check me)
 	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug.",
 	"/dbm durability: Prüft die Haltbarkeit im gesamten Schlachtzug.",
+	"/dbm consumables: Führt eine schlachtzugsweite Überprüfung der Verbrauchsgüter durch (alias: cons, consumes).",
 	"/dbm brez: Zeigt den Timer-Rahmen für die Kampfauferstehung zur Positionierung an.",--AI translated (check me)
 	"/dbm help2: Zeigt zusätzliche Slash-Kommandos an."--AI translated (check me)
 }
@@ -306,7 +309,6 @@ L.SLASHCMD_HELP2				= {
 	"/dbm version: Führt eine Boss Mod Versionsprüfung durch (Alias: ver).",
 	"/dbm version2: Führt eine Boss Mod Versionsprüfung durch und flüstert Nutzer mit veralteten Versionen an (Alias: ver2).",
 	"/range <number> oder /distance <number>: Zeige Abstandsfenster. /rrange oder /rdistance um die Farben zu invertieren.",
-	"/hudar <number>: Zeige HudMap-basierenden Abstandssucher.",
 	"/dbm arrow: Zeigt den DBM-Pfeil, siehe '/dbm arrow help' für Details.",
 	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details.",
 	"/dbm dbtdebug: Zeigt bereinigte Statusleisten-Diagnosen für Fehlerberichte."
@@ -626,8 +628,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon	= "{rt%%1$d}"--Doesn't need translation. It
 
 L.AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells) -- OPTIONAL
 L.AUTO_YELL_CUSTOM_FADE			= "%s beendet"
-L.AUTO_HUD_OPTION_TEXT			= "Zeige HudMap für $spell:%s (außer Betrieb)"
-L.AUTO_HUD_OPTION_TEXT_MULTI	= "Zeige HudMap für diverse Mechaniken (außer Betrieb)"
 L.AUTO_NAMEPLATE_OPTION_TEXT	= "Zeige Namensplakettenaura für $spell:%s"
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED		= "Zeige Namensplaketten-Auren für $spell:%s ausschließlich mit " .. L.DBM
 L.AUTO_RANGE_OPTION_TEXT		= "Zeige Abstandsfenster (%sm) für $spell:%s"
@@ -646,21 +646,6 @@ L.MOVE_WARNING_BAR			= "bewegbare Schlachtzugwarnung"
 L.MOVE_WARNING_MESSAGE		= "Danke, dass du "..L.DEADLY_BOSS_MODS.." verwendest"
 L.MOVE_SPECIAL_WARNING_BAR	= "bewegbare Spezialwarnung"
 L.MOVE_SPECIAL_WARNING_TEXT	= "Spezialwarnung"
-
-L.HUD_INVALID_TYPE			= "Der angegebene Typ für die HudMap ist ungültig."
-L.HUD_INVALID_TARGET			= "Es wurde kein gültiges Ziel für die HudMap angegeben."
-L.HUD_INVALID_SELF			= "Die HudMap kann nicht auf dich selbst zeigen."
-L.HUD_INVALID_ICON			= "Der Typ 'icon' für die HudMap kann nicht auf Ziele ohne gesetztem Schlachtzugzeichen angewendet werden."
-L.HUD_SUCCESS				= "Die HudMap wurde erfolgreich mit deinen Parametern gestartet. Sie läuft nach %s aus oder zuvor durch Aufruf von '/dbm hud hide'."
-L.HUD_USAGE	= {
-	"Benutzung der "..L.DBM.."-HudMap:",
-	"-----------------",
-	"/dbm hud <Typ> <Ziel> <Dauer>: Erzeugt eine HudMap, die für die gewünschte Dauer auf einen Spieler zeigt",
-	"gültige Typen: arrow, dot, red, blue, green, yellow, icon (benötigt ein Ziel mit gesetztem Schlachtzugzeichen)",
-	"gültige Ziele: target, focus, <Spielername>",
-	"gültige Dauer: beliebige Zahl (in Sekunden). 20 Minuten, falls Dauer nicht angegeben.",
-	"/dbm hud hide: Deaktiviert und versteckt die HudMap"
-}
 
 L.ARROW_MOVABLE					= "Pfeil (bewegbar)"
 L.ARROW_WAY_USAGE					= "/dway <x> <y>: Erzeugt einen Pfeil, der auf einen bestimmten Ort zeigt (benutzt lokale Kartenkoordinaten der Zone)"

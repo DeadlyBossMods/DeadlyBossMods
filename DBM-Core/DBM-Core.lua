@@ -29,7 +29,15 @@
 ---@class DBMCoreNamespace
 local private = select(2, ...)
 
+---Core-facing interface of the optional DBM-HudMap addon
+---@class DBMHudMap
+---@field Disable fun(self: DBMHudMap)
+---@field SupressCanvas fun(self: DBMHudMap)
+---@field UnSupressCanvas fun(self: DBMHudMap)
+---@field HandleSlashCommand fun(self: DBMHudMap, cmd: string, msg: string)
+
 ---@class DBM
+---@field HudMap DBMHudMap? Provided by the optional DBM-HudMap addon
 local DBM = private:GetPrototype("DBM")
 _G.DBM = DBM
 
@@ -79,10 +87,10 @@ DBM.Revision = parseCurseDate("@project-date-integer@")
 private.fakeBWVersion, private.fakeBWHash = 427, "fe75de4"--427.7
 
 -- The string that is shown as version
-DBM.DisplayVersion = "12.1.17 alpha"--Core version
+DBM.DisplayVersion = "12.1.19"--Core version
 DBM.classicSubVersion = 0
 DBM.dungeonSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2026, 10, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2026, 11, 2) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for github downloads, which doesn't support curse keyword expansion
@@ -241,7 +249,7 @@ end
 -----------------
 local LibSpec
 do
-	if (private.isRetail or private.isCata or private.isMop) and LibStub then
+	if (private.isRetail or private.isCata or private.isMop or private.isForever) and LibStub then
 		LibSpec = LibStub("LibSpecialization", true)
 		if LibSpec then
 			local function update(specID, _, _, playerName)
@@ -251,6 +259,12 @@ do
 			end
 			---@diagnostic disable-next-line: undefined-field
 			LibSpec.RegisterGroup(DBM, update)
+			if private.isForever then
+				---@diagnostic disable-next-line: undefined-field
+				LibSpec.RegisterPlayerSpecChange(DBM, function()
+					DBM:CHARACTER_POINTS_CHANGED()
+				end)
+			end
 		end
 	end
 end
@@ -294,7 +308,7 @@ local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub and LibStu
 ---------------------------------
 --  General (local) functions  --
 ---------------------------------
-local checkEntry, removeEntry = tableUtils.checkEntry, tableUtils.removeEntry
+local checkEntry = tableUtils.checkEntry
 
 ---Whisper/Whisper Sync filter function
 ---@param sender any string for non realId and number for realId. Pass to true for realID
@@ -967,6 +981,8 @@ do
 	local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 	---@type table<DBMEvent, DBMModOrDBM[]>
 	local registeredEvents = {}
+	--Exact non-CLEU registrations own references; dispatch lists contain each owner once.
+	local registeredEventRefs = {}
 	---@type table<string, table<integer, integer>>
 	local registeredSpellIds = {}
 	---@type table<string, table<integer, integer>>
@@ -1151,7 +1167,8 @@ do
 					frames[uId] = frame
 				end
 				registeredUnitEventIds[event .. uId] = (registeredUnitEventIds[event .. uId] or 0) + 1
-				mod.registeredUnitEvents[event .. uId] = true
+				mod.registeredUnitEvents[event .. uId] = (mod.registeredUnitEvents[event .. uId] or 0) + 1
+				mod.registeredUnitEvents[event] = (mod.registeredUnitEvents[event] or 0) + 1
 				frame:RegisterUnitEvent(event, uId)
 			end
 		end
@@ -1162,25 +1179,27 @@ do
 				local uId = select(i, ...)
 				if not uId then break end
 				local frame = frames[uId]
-				local refs = (registeredUnitEventIds[event .. uId] or 1) - 1
-				registeredUnitEventIds[event .. uId] = refs
-				if refs <= 0 then
-					registeredUnitEventIds[event .. uId] = nil
-					if frame then
+				if mod.registeredUnitEvents and mod.registeredUnitEvents[event .. uId] then
+					local refs = registeredUnitEventIds[event .. uId] - 1
+					registeredUnitEventIds[event .. uId] = refs > 0 and refs or nil
+					if refs == 0 and frame then
 						frame:UnregisterEvent(event)
 					end
-				end
-				if mod.registeredUnitEvents and mod.registeredUnitEvents[event .. uId] then
-					mod.registeredUnitEvents[event .. uId] = nil
-				end
-			end
-			for i = #registeredEvents[event], 1, -1 do
-				if registeredEvents[event][i] == mod then
-					tremove(registeredEvents[event], i)
+					local modRefs = mod.registeredUnitEvents[event .. uId] - 1
+					mod.registeredUnitEvents[event .. uId] = modRefs > 0 and modRefs or nil
+					local eventRefs = mod.registeredUnitEvents[event] - 1
+					mod.registeredUnitEvents[event] = eventRefs > 0 and eventRefs or nil
 				end
 			end
-			if #registeredEvents[event] == 0 then
-				registeredEvents[event] = nil
+			if registeredEvents[event] and not (mod.registeredUnitEvents and mod.registeredUnitEvents[event]) then
+				for i = #registeredEvents[event], 1, -1 do
+					if registeredEvents[event][i] == mod then
+						tremove(registeredEvents[event], i)
+					end
+				end
+				if #registeredEvents[event] == 0 then
+					registeredEvents[event] = nil
+				end
 			end
 		end
 
@@ -1302,15 +1321,40 @@ do
 		RAID_BOSS_WHISPER						= true,
 	}
 
+	local function isCLEUEvent(event)
+		event = strsplit(" ", event)
+		return event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 6) == "SWING_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "PARTY_KILL" or event:sub(0, 13) == "DAMAGE_SHIELD"
+	end
+
+	local function canRegisterEvent(mod, event, safeEvents)
+		if isCLEUEvent(event) then
+			return not safeEvents and not mod:IsRestricted()
+		end
+		return safeEvents or not mod:IsRestricted() or not (restrictedEvents[event] or event:sub(0, 5) == "UNIT_")
+	end
+
 	-- UNIT_* events are special: they can take 'parameters' like this: "UNIT_HEALTH boss1 boss2" which only trigger the event for the given unit ids
+	local function registerEventReference(mod, event)
+		local refs = registeredEventRefs[event]
+		if not refs then
+			refs = {}
+			registeredEventRefs[event] = refs
+		end
+		if not refs[mod] then
+			registeredEvents[event] = registeredEvents[event] or {}
+			tinsert(registeredEvents[event], mod)
+		end
+		refs[mod] = (refs[mod] or 0) + 1
+	end
+
 	---@param self DBMModOrDBM
 	---@param ... DBMEvent|string
 	function DBM:RegisterEvents(...)
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
-			if not self:IsRestricted() or self:IsRestricted() and not (restrictedEvents[event] or event:sub(0, 5) == "UNIT_") then
+			if canRegisterEvent(self, event) then
 				-- spell events with special care.
-				if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 6) == "SWING_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "PARTY_KILL" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
+				if isCLEUEvent(event) then
 					--CLEU is completely gone in Midnight+
 					if not self:IsRestricted() then
 						registerCLEUEvent(self, event)
@@ -1341,11 +1385,12 @@ do
 						-- normal events
 						mainFrame:RegisterEvent(event)
 					end
-					registeredEvents[eventWithArgs] = registeredEvents[eventWithArgs] or {}
-					tinsert(registeredEvents[eventWithArgs], self)
+					registerEventReference(self, eventWithArgs)
 					if event ~= eventWithArgs then
 						registeredEvents[event] = registeredEvents[event] or {}
-						tinsert(registeredEvents[event], self)
+						if not checkEntry(registeredEvents[event], self) then
+							tinsert(registeredEvents[event], self)
+						end
 					end
 				end
 			end
@@ -1359,7 +1404,7 @@ do
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
 			-- spell events with special care.
-			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 6) == "SWING_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "PARTY_KILL" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
+			if isCLEUEvent(event) then
 				--CLEU is completely gone in Midnight+
 				--So do nothing
 			else
@@ -1388,11 +1433,12 @@ do
 					-- normal events
 					mainFrame:RegisterEvent(event)
 				end
-				registeredEvents[eventWithArgs] = registeredEvents[eventWithArgs] or {}
-				tinsert(registeredEvents[eventWithArgs], self)
+				registerEventReference(self, eventWithArgs)
 				if event ~= eventWithArgs then
 					registeredEvents[event] = registeredEvents[event] or {}
-					tinsert(registeredEvents[event], self)
+					if not checkEntry(registeredEvents[event], self) then
+						tinsert(registeredEvents[event], self)
+					end
 				end
 			end
 		end
@@ -1403,63 +1449,55 @@ do
 		if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
 			local eventName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 			if eventName:sub(-11) == "_UNFILTERED" then
-				mainFrame:UnregisterEvent(eventName:sub(0, -12))
+				if not registeredEvents[eventName] then
+					mainFrame:UnregisterEvent(eventName:sub(0, -12))
+				end
 			else
 				unregisterUnitEvent(mod, eventName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 			end
 		end
 	end
 
-	local function findRealEvent(t, val)
-		for _, v in ipairs(t) do
-			local event = strsplit(" ", v)
-			if event == val then
-				return v
+	local function unregisterEventReference(mod, event)
+		local eventName = strsplit(" ", event)
+		if isCLEUEvent(event) then
+			if registeredEvents[eventName] and not mod:IsRestricted() then
+				unregisterCLEUEvent(mod, event)
 			end
+			return
+		end
+		if event == eventName and eventName:sub(0, 5) == "UNIT_" and eventName:sub(-11) ~= "_UNFILTERED" then
+			event = event .. (private.isClassic and " target mouseover targettarget mouseovertarget nameplate1 nameplate2 nameplate3 nameplate4" or " target focus boss1 boss2 boss3 boss4 boss5")
+		end
+		local refs = registeredEventRefs[event]
+		if not refs or not refs[mod] then return end
+		refs[mod] = refs[mod] - 1
+		if refs[mod] == 0 then
+			refs[mod] = nil
+			local mods = registeredEvents[event]
+			for i = #mods, 1, -1 do
+				if mods[i] == mod then tremove(mods, i) end
+			end
+			if #mods == 0 then
+				registeredEvents[event] = nil
+				registeredEventRefs[event] = nil
+			end
+		end
+		if eventName:sub(0, 5) == "UNIT_" then
+			unregisterUEvent(mod, event)
+		elseif not registeredEvents[event] then
+			mainFrame:UnregisterEvent(event)
 		end
 	end
 
 	---@param self DBMModOrDBM
 	---@param srmIncluded boolean?
 	function DBM:UnregisterInCombatEvents(srmOnly, srmIncluded)
-		for event, mods in pairs(registeredEvents) do
-			if srmOnly then
-				local i = 1
-				while mods[i] do
-					if mods[i] == self and event == "SPELL_AURA_REMOVED" then
-						local findEvent = self.inCombatOnlyEvents and findRealEvent(self.inCombatOnlyEvents, "SPELL_AURA_REMOVED")
-						if findEvent then
-							unregisterCLEUEvent(self, findEvent)
-							break
-						end
-					end
-					i = i + 1
-				end
-			elseif (event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED") then
-				local i = 1
-				while mods[i] do
-					if mods[i] == self and (srmIncluded or event ~= "SPELL_AURA_REMOVED") then
-						local findEvent = self.inCombatOnlyEvents and findRealEvent(self.inCombatOnlyEvents, event)
-						if findEvent then
-							unregisterCLEUEvent(self, findEvent)
-							break
-						end
-					end
-					i = i + 1
-				end
-			else
-				local match = false
-				for i = #mods, 1, -1 do
-					if mods[i] == self and (self.inCombatOnlyEvents and checkEntry(self.inCombatOnlyEvents, event) or self.inCombatOnlySafeEvents and checkEntry(self.inCombatOnlySafeEvents, event)) then
-						tremove(mods, i)
-						match = true
-					end
-				end
-				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then -- unit events have their own reference count
-					unregisterUEvent(self, event)
-				end
-				if #mods == 0 then
-					registeredEvents[event] = nil
+		for index, events in ipairs({self.inCombatOnlyEvents or {}, self.inCombatOnlySafeEvents or {}}) do
+			for _, event in ipairs(events) do
+				local isSRM = strsplit(" ", event) == "SPELL_AURA_REMOVED"
+				if canRegisterEvent(self, event, index == 2) and (srmOnly and isSRM or not srmOnly and (srmIncluded or not isSRM)) then
+					unregisterEventReference(self, event)
 				end
 			end
 		end
@@ -1492,8 +1530,10 @@ do
 		if not self.shortTermRegisterEvents then
 			self.shortTermRegisterEvents = {}
 		end
-		for k, v in pairs(_shortTermRegisterEvents) do
-			self.shortTermRegisterEvents[k] = v
+		for _, v in ipairs(_shortTermRegisterEvents) do
+			if canRegisterEvent(self, v, safeEvents) then
+				tinsert(self.shortTermRegisterEvents, v)
+			end
 		end
 		-- End fix
 	end
@@ -1503,36 +1543,8 @@ do
 		DBM:Debug("UnregisterShortTermEvents fired", 3, nil, nil, nil, true)
 		if self.shortTermRegisterEvents then
 			DBM:Debug("UnregisterShortTermEvents found registered shortTermRegisterEvents", 2)
-			for event, mods in pairs(registeredEvents) do
-				if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
-					local i = 1
-					while mods[i] do
-						if mods[i] == self then
-							local findEvent = findRealEvent(self.shortTermRegisterEvents, event)
-							if findEvent then
-								unregisterCLEUEvent(self, findEvent)
-								break
-							end
-						end
-						i = i + 1
-					end
-				else
-					local match = false
-					for i = #mods, 1, -1 do
-						if mods[i] == self and checkEntry(self.shortTermRegisterEvents, event) then
-							tremove(mods, i)
-							match = true
-						end
-					end
-					if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
-						unregisterUEvent(self, event)
-						--DBM:Debug("unregisterUEvent for unit event " .. event .. " unregistered", 3)
-					end
-					if #mods == 0 then
-						registeredEvents[event] = nil
-						--DBM:Debug("registeredEvents for event " .. event .. " nilled", 3)
-					end
-				end
+			for _, event in ipairs(self.shortTermRegisterEvents) do
+				unregisterEventReference(self, event)
 			end
 			self.shortTermRegisterEvents = nil
 		end
@@ -1545,19 +1557,7 @@ do
 	function DBM:UnregisterEvents(...)
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
-			-- spell events with special care.
-			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 13) == "DAMAGE_SHIELD" or event:sub(0, 20) == "DAMAGE_SHIELD_MISSED" then
-				unregisterCLEUEvent(self, event)
-			else
-				if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
-					unregisterUEvent(self, event)
-					--DBM:Debug("unregisterUEvent for unit event " .. event .. " unregistered", 3)
-				else
-					registeredEvents[event] = nil
-					mainFrame:UnregisterEvent(event)
-					--DBM:Debug("UnregisteredEvents for event " .. event .. " nilled", 3)
-				end
-			end
+			unregisterEventReference(self, event)
 		end
 	end
 
@@ -3347,7 +3347,7 @@ function DBM:READY_CHECK()
 	self:TransitionToDungeonBGM(false, true)
 	self:Schedule(4, self.TransitionToDungeonBGM, self)
 	if self.Options.ShowConsumablesOnReadyCheck and self.Consumables then
-		self.Consumables:Show()
+		self.Consumables:Show(true)
 	end
 end
 
@@ -3402,7 +3402,7 @@ do
 		--First off, if you are in queue for something, lets not allow guildies or friends boot you from it.
 		if IsInInstance() or GetLFGMode(1) or GetLFGMode(2) or GetLFGMode(3) or GetLFGMode(4) or GetLFGMode(5) then return end
 		--Checks friends and guildies
-		if self.Options.AutoAcceptFriendInvite then
+		if self.Options.AutoAcceptFriendInvite or self.Options.AutoAcceptGuildInvite then
 			if checkForSafeSender(sender, self.Options.AutoAcceptFriendInvite, self.Options.AutoAcceptGuildInvite, nil, type(sender) == "number") then
 				AcceptPartyInvite()
 			end
@@ -3466,6 +3466,19 @@ do
 		["WARLOCK"] = 871,--Affliction Warlock
 	}
 
+	--Forever uses talent group IDs, matching LibSpecialization, even before talents are spent.
+	local foreverFallbackClassToRole = {
+		["MAGE"] = 11582,
+		["PALADIN"] = 11486,
+		["WARRIOR"] = 11650,
+		["DRUID"] = 11328,
+		["HUNTER"] = 11372,
+		["PRIEST"] = 11608,
+		["ROGUE"] = 11580,
+		["SHAMAN"] = 11326,
+		["WARLOCK"] = 11629,
+	}
+
 	function DBM:SetCurrentSpecInfo()
 		if private.isRetail or private.isMop then
 			currentSpecGroup = GetSpecialization()
@@ -3480,21 +3493,10 @@ do
 			end
 			DBM:Debug("Current specID set to: "..currentSpecID, 2)
 		elseif private.isForever then
-			local highestPointsSpent = 0
-			for i = 1, 3 do
-				local _, _, _, _, _, _, pointsSpent = GetSpecializationInfo(i)
-				if pointsSpent then
-					if pointsSpent > highestPointsSpent then
-						highestPointsSpent = pointsSpent
-						currentSpecGroup = i
-						currentSpecID = playerClass .. tostring(i)--Associate specID with class name and tabnumber (class is used because spec name is shared in some spots like "holy")
-						currentSpecName = currentSpecID
-					end
-				end
-			end
-			--If 0 talents are spent, then just set them to first spec to prevent nil errors
-			--This should only happen for a level 1 player or someone who's in middle of respecing
-			if not currentSpecID then currentSpecID = playerClass .. tostring(1) end
+			--Each class has only one specialization; the library selects the talent group with the most points.
+			currentSpecGroup = GetSpecialization() or 1
+			currentSpecID = LibSpec and LibSpec.MySpecialization() or foreverFallbackClassToRole[playerClass]
+			currentSpecName = tostring(currentSpecID)
 		elseif private.isCata then
 			currentSpecGroup = GetPrimaryTalentTree()
 			if currentSpecGroup and GetTalentTabInfo(currentSpecGroup) then
@@ -4366,9 +4368,9 @@ do
 
 	local forceDisabled = false
 	function DBM:Disable(forceDisable)
-		for _, mod in ipairs(inCombat) do
+		for i = #inCombat, 1, -1 do
 			-- force combat end if anything is active because :Unschedule below breaks wipe detection leaving you in a weird state
-			DBM:EndCombat(mod, true, true, "DBM:Disable() called")
+			DBM:EndCombat(inCombat[i], true, true, "DBM:Disable() called")
 		end
 		for _, mod in ipairs(DBM.Mods) do
 			mod:UnregisterShortTermEvents()
@@ -4393,9 +4395,9 @@ do
 
 	function DBM:ForceDisableSpam()
 		if private.testBuild then
-			DBM:AddMsg(L.UPDATEREMINDER_DISABLETEST)
+			AddMsg(self, L.UPDATEREMINDER_DISABLETEST)
 		else
-			DBM:AddMsg(L.UPDATEREMINDER_DISABLE)
+			AddMsg(self, L.UPDATEREMINDER_DISABLE)
 		end
 	end
 end
@@ -4439,6 +4441,8 @@ function DBM:AddMsg(text, prefix, useSound, allowHiddenChatFrame, isDebug, custo
 	end
 end
 AddMsg = DBM.AddMsg
+--Pre-core modules cannot cache this method until its definition has executed.
+private.AddMsg = AddMsg
 
 do
 	local demoDuration
@@ -4668,7 +4672,9 @@ do
 		self:Debug("CINEMATIC_START fired", 2, nil, nil, true, true)
 		--Stop custom BG music during cut scenes regardless of block features
 		self:TransitionToDungeonBGM(false, true)
-		self.HudMap:SupressCanvas()
+		if self.HudMap then
+			self.HudMap:SupressCanvas()
+		end
 		local currentMapID = C_Map.GetBestMapForUnit("player")
 		local currentSubZone = GetSubZoneText() or ""
 		--Just abort if map is nil, don't want to touch it if can't map cinematic to an area
@@ -4680,7 +4686,9 @@ do
 	end
 	function DBM:CINEMATIC_STOP()
 		self:Debug("CINEMATIC_STOP fired", 2, nil, nil, nil, true)
-		self.HudMap:UnSupressCanvas()
+		if self.HudMap then
+			self.HudMap:UnSupressCanvas()
+		end
 	end
 end
 
@@ -4735,7 +4743,7 @@ do
 			end
 			local name = GetUnitName(uId, true)
 			--First we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MeleeDps"]
 			else
@@ -4789,7 +4797,7 @@ do
 				return true
 			end
 			--Now we check if we have acccess to specID (ie remote player is using DBM or Bigwigs)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Melee"]
 			else
@@ -4825,7 +4833,7 @@ do
 	function DBM:IsRanged(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["Ranged"]
 			else
@@ -4844,7 +4852,7 @@ do
 	function bossModPrototype:IsSpellCaster(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["SpellCaster"]
 			else
@@ -4862,7 +4870,7 @@ do
 	function bossModPrototype:IsMagicDispeller(uId)
 		if uId then
 			local name = GetUnitName(uId, true)
-			if (private.isRetail or private.isCata or private.isMop) and raid[name] and raid[name].specID then--We know their specId
+			if (private.isRetail or private.isCata or private.isMop or private.isForever) and raid[name] and raid[name].specID then--We know their specId
 				local specID = raid[name].specID
 				return private.specRoleTable[specID]["MagicDispeller"]
 			else
@@ -5000,7 +5008,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	--We have both units. No need to find unitID
 	if enemyUnitID then
 		--Check threat first
-		if private.isRetail then
+		if private.isRetail or private.isForever then
 			--UnitDetailedThreatSituation is secret on retail even if you only read bool value
 			status = UnitThreatSituation(playerUnitID, enemyUnitID)
 		else
@@ -5035,7 +5043,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 					--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
 					if not enemyGUID or (guid and guid == enemyGUID) then
 						--Check threat first
-						if private.isRetail then
+						if private.isRetail or private.isForever then
 							--UnitDetailedThreatSituation is secret on retail even if you only read bool value
 							status = UnitThreatSituation(playerUnitID, unitID)
 						else
@@ -5348,4 +5356,3 @@ end
 function bossModPrototype:SetHotfixNoticeRev(revision)
 	self.hotfixNoticeRev = (type(revision or "") == "number") and revision or parseCurseDate(revision)
 end
-
