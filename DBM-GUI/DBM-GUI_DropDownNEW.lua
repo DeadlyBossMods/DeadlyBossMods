@@ -41,6 +41,7 @@ end
 ---@field isSelectedCallbackFn function|nil
 ---@field onSelectionChangedCallback function|nil
 ---@field valueGetter function|nil
+---@field hasOverrideText boolean|nil
 ---@field OnSelectionChanged fun(self: DBMDropDown, callback: function)
 ---@field IsSelectedCallback fun(self: DBMDropDown, callback: function)
 ---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
@@ -48,6 +49,17 @@ local dropdownPrototype = CreateFrame("DropdownButton")
 
 -- For lazily loaded dropdowns: pass a single dropdown entry, for normal dropdowns pass a single value or name
 function dropdownPrototype:SetSelectedValue(selected)
+	-- Fixed-text dropdowns never display the selection, and selection state is evaluated when the menu opens,
+	-- so skip rebuilding (possibly large) lazy value lists and the menu.
+	if self.hasOverrideText and selected ~= nil and type(selected) ~= "table" then
+		local v = type(self.values) == "table" and not self.valueGetter and findEntry(self.values, selected)
+		self.value = v and v.value or selected
+		self.text = v and v.text or nil
+		if self.onSelectionChangedCallback then
+			self:onSelectionChangedCallback(v or {value = selected, text = tostring(selected)})
+		end
+		return
+	end
 	if self.valueGetter and type(selected) ~= "table" then
 		self:RefreshLazyValues()
 	end
@@ -120,6 +132,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	---@field RefreshLazyValues fun(self: DBMDropDown)
 	---@field OverrideText fun(self: DBMDropDown, text: string)
 	---@field noSoundOnSelect boolean|nil
+	---@field hasOverrideText boolean|nil
 	---@diagnostic disable-next-line: undefined-field, assign-type-mismatch -- self.frame comes from a subclass of DBM_GUI, DropdownButton isn't defined in ketho.wow-api
 	local dropdown = CreateFrame("DropdownButton", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "WowStyle1DropdownTemplate")
 	setmetatable(dropdown, {
@@ -138,6 +151,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	if overrideText then
 		---@diagnostic disable-next-line: undefined-field
 		dropdown:OverrideText(overrideText)
+		dropdown.hasOverrideText = true
 	end
 
 	local IsSelected = function(v)
@@ -179,6 +193,13 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 				if v.children then
 					local submenu = description:CreateButton(v.text)
 					submenu:SetScrollMode(200)
+					if v.disabledTooltip then
+						submenu:SetEnabled(false)
+						submenu:SetTooltip(function(tooltip)
+							GameTooltip_SetTitle(tooltip, v.text)
+							GameTooltip_AddNormalLine(tooltip, v.disabledTooltip, true)
+						end)
+					end
 					addEntries(submenu, v.children)
 				else
 					local radio

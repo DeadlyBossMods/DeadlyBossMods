@@ -729,7 +729,7 @@ do
 			{ text = L.SAThree, value = 3 },
 			{ text = L.SAFour, value = 4 },
 			{ text = L.VoiceOverrideSounds, children = sounds },
-			{ text = L.VoiceOverrideVoicePack, children = DBM_GUI:GetVoicePackSoundChoices() }
+			DBM_GUI:GetVoicePackSoundEntry()
 		}
 	end
 

@@ -117,7 +117,7 @@ end
 ---@param default SpecFlags|boolean?
 ---@param groupSpellId number? is used if a diff option key is used in all other options with spell (will be quite common)
 ---@param defaultSound acceptedSASounds? is used to set default Special announce sound (1-4) just like regular special announce objects
----@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo, 3: post debuff. Also accepts a voice string as shorthand for migrated 6-arg calls.
+---@param subType paSubTypes? 0/nil: default, 1: targetted, 2: gtfo (eligible for the global voice override unless individually customized), 3: post debuff. Also accepts a voice string as shorthand for migrated 6-arg calls.
 ---@param voice VPSound|VPSound[]|number? voice pack media path(s) for zone-based aura sound registration. Tables are paired by index with voiceVersion and soundType; scalar values broadcast to every table entry. Also accepts the shorthand voiceVersion number when subType is passed as a voice string.
 ---@param voiceVersion number|number[]? required voice pack version(s); if voice pack version is below this value, falls back to default sound
 ---@param soundType number|number[]? UnitAuraSoundTrigger(s): 0 = added, 1 = applications increased, 2 = removed; defaults to 0
@@ -195,7 +195,7 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 					if not self.pendingPASoundsByZone then self.pendingPASoundsByZone = {} end
 					for zoneID in pairs(self.zones) do
 						self.pendingPASoundsByZone[zoneID] = self.pendingPASoundsByZone[zoneID] or {}
-						self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, pairedVoice, pairedVoiceVersion, pairedSoundType, difficultyVoices, throttleSeconds}
+						self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, pairedVoice, pairedVoiceVersion, pairedSoundType, difficultyVoices, throttleSeconds, subType}
 					end
 				else
 					invalidRegistration = true

@@ -107,6 +107,10 @@ function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 		},
 		mt
 	)
+	if addon and (addon.type == "RAID" or addon.type == "LAIR") and C_InstanceEncounter and C_InstanceEncounter.IsEncounterSuppressingRelease then
+		obj.Options.AutoRelease = false
+		obj.DefaultOptions.AutoRelease = false
+	end
 
 	local encounterId = tonumber(name)
 	if encounterId and EJ_GetEncounterInfo and EJ_GetEncounterInfo(encounterId) then
@@ -185,6 +189,14 @@ function bossModPrototype:EnableGenericTrash()
 	if self.inCombat and DBM.UpdateGenericTrashOptions then
 		DBM:UpdateGenericTrashOptions(true)
 	end
+end
+
+---Default this raid/lair boss mod's per-boss "Auto Release" (on wipe) option to enabled.
+---No-op for mods that don't support the option (other addon types or clients without the release API).
+function bossModPrototype:SetAutoReleaseDefault()
+	if self.DefaultOptions.AutoRelease == nil then return end
+	self.DefaultOptions.AutoRelease = true
+	self.Options.AutoRelease = true
 end
 
 function bossModPrototype:SetZone(...)
@@ -1584,7 +1596,8 @@ do
 	---@param soundType number? UnitAuraSoundTrigger: 0 = added, 1 = applications increased, 2 = removed
 	---@param difficultyVoices table<number, VPSound>? voice pack media path overrides keyed by Blizzard difficulty index
 	---@param throttleSeconds number? Optional throttle time in seconds to limit sound spam
-	local function enableAuraSound(mod, auraspellId, voice, voiceVersion, soundType, difficultyVoices, throttleSeconds)
+	---@param subType paSubTypes? Only subtype 2 permits the global GTFO override.
+	local function enableAuraSound(mod, auraspellId, voice, voiceVersion, soundType, difficultyVoices, throttleSeconds, subType)
 		local optionId
 		if type(auraspellId) == "table" then
 			optionId = auraspellId[1]
@@ -1609,7 +1622,14 @@ do
 			if difficulty and difficultyVoices and difficultyVoices[difficulty] then
 				voice = difficultyVoices[difficulty]
 			end
-			local mediaPath = checkValidVPSound(mod, "PrivateAuraSound", optionId, voice, voiceVersion)
+			local overrideSound
+			if subType == 2 and DBM.Options.GTFOOverrideEnabled then
+				local soundId = mod.Options["PrivateAuraSound" .. optionId .. "SWSound"]
+				if type(soundId) == "number" and soundId >= 1 and soundId <= 4 then
+					overrideSound = DBM:GetGTFOOverrideSound()
+				end
+			end
+			local mediaPath = overrideSound or checkValidVPSound(mod, "PrivateAuraSound", optionId, voice, voiceVersion)
 			if DBM:IsNoneValue(mediaPath) then return end--Don't register if media path is none, even if option is enabled
 			if type(auraspellId) == "table" then
 				for _, spellId in ipairs(auraspellId) do
@@ -1629,7 +1649,7 @@ do
 		local zoneEntries = self.pendingPASoundsByZone[mapID]
 		if not zoneEntries then return end
 		for _, entry in ipairs(zoneEntries) do
-			enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6])
+			enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7])
 		end
 	end
 
@@ -1652,7 +1672,7 @@ do
 		for _, entry in ipairs(zoneEntries) do
 			local entryOptionId = type(entry[1]) == "table" and entry[1][1] or entry[1]
 			if entryOptionId == optionId then
-				enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6])
+				enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7])
 			end
 		end
 		return true
@@ -1669,6 +1689,37 @@ do
 		local mapID = DBM:GetCurrentArea()
 		if mapID and mapID > 0 then
 			self:RegisterZoneAuraSounds(mapID)
+		end
+		return true
+	end
+
+	---Refresh active GTFO aura options without disturbing other registered aura sounds.
+	---@return boolean refreshed
+	function DBM:RefreshGTFOAuraSounds()
+		if C_ChatInfo.InChatMessagingLockdown() then
+			self:Debug("GTFO aura sound refresh deferred by combat restriction; new settings apply on the next zone registration.", 2)
+			return false
+		end
+		local mapID = self:GetCurrentArea()
+		for _, mod in ipairs(self.Mods) do
+			local entries = mod.pendingPASoundsByZone and mod.pendingPASoundsByZone[mapID]
+			if entries and mod.paSounds then
+				local refreshed = {}
+				for _, entry in ipairs(entries) do
+					---@type number|number[]
+					local auraIds = entry[1]
+					local optionId
+					if type(auraIds) == "table" then
+						optionId = auraIds[1]
+					else
+						optionId = auraIds
+					end
+					if entry[7] == 2 and mod.paSounds[optionId] and not refreshed[optionId] then
+						refreshed[optionId] = true
+						mod:RefreshAuraSound(optionId)
+					end
+				end
+			end
 		end
 		return true
 	end

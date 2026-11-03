@@ -577,8 +577,9 @@ do
 		return self:FilterRaidBossEmote(msg, sender, ...)
 	end
 
-	function DBM:RAID_BOSS_EMOTE(msg, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
+	function DBM:RAID_BOSS_EMOTE(msg, sender, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
 		if self:issecretvalue(msg) then
+			self:Debug("|cffffff00RAID_BOSS_EMOTE: |r fired: " .. msg .. " with sender of " .. sender, 3, nil, nil, true, true)
 			return
 		end
 		module.OnMonsterMessage("emote", msg)
@@ -1176,6 +1177,19 @@ do
 	end
 	DBM.UNIT_HEALTH_FREQUENT = DBM.UNIT_HEALTH
 
+	-- Stops once the player is no longer dead (released, resurrected, or survived the wipe) or 3 seconds after EndCombat
+	---@param deadline number GetTime() after which no further checks are scheduled
+	local function autoReleaseCheck(deadline)
+		if not UnitIsDead("player") then return end
+		if C_InstanceEncounter.IsEncounterSuppressingRelease() then
+			if GetTime() < deadline then
+				DBM:Schedule(0.1, autoReleaseCheck, deadline)
+			end
+			return
+		end
+		RepopMe()
+	end
+
 	---@param mod DBMMod
 	---@param wipe boolean?
 	---@param srmIncluded boolean? unregister all events including SPELL_AURA_REMOVED events
@@ -1229,6 +1243,10 @@ do
 				twipe(mod.iconRestore)
 			end
 			mod.inCombat = false
+			if wipe and mod.Options.AutoRelease then
+				self:Unschedule(autoReleaseCheck)
+				autoReleaseCheck(GetTime() + 3)
+			end
 			if self.UpdateGenericTrashOptions then
 				self:UpdateGenericTrashOptions(true)
 			end
