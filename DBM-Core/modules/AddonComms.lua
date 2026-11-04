@@ -86,8 +86,11 @@ end
 
 local function getLocalizedBossName(modId, name)
 	local encounterId = tonumber(modId)
+	local mod
 	if not encounterId and modId then
-		local mod = DBM:GetModByName(modId)
+		mod = DBM:GetModByName(modId)
+	end
+	if not encounterId then
 		encounterId = mod and mod.encounterId
 		if type(encounterId) == "table" then
 			encounterId = encounterId[1]
