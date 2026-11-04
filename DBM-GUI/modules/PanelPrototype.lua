@@ -822,6 +822,7 @@ do
 				end, cancel, isCurrent)
 			end
 		end, 70, nil, button, isTimer and L.BossModTColor or L.BossModColor)
+		if isTimer then dropdown.maxScrollExtent = 220 end
 		dropdown:IsSelectedCallback(function(_, v)
 			return v.value == selectedValue()
 		end)
