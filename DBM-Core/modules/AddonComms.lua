@@ -84,6 +84,18 @@ local function getSendChannel()
 	return "SOLO"
 end
 
+local function getLocalizedBossName(modId, name)
+	local encounterId = tonumber(modId)
+	if not encounterId and modId then
+		local mod = DBM:GetModByName(modId)
+		encounterId = mod and mod.encounterId
+		if type(encounterId) == "table" then
+			encounterId = encounterId[1]
+		end
+	end
+	return encounterId and (DBM:GetGeneratedLocales("encounter")[encounterId] or EJ_GetEncounterInfo and EJ_GetEncounterInfo(encounterId)) or name or CL.UNKNOWN
+end
+
 ---Automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
 ---@param protocol number
 ---@param prefix string
@@ -705,8 +717,7 @@ do
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
-			modId = tonumber(modId)
-			local bossName = modId and (DBM:GetGeneratedLocales("encounter")[modId] or EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId)) or name or CL.UNKNOWN
+			local bossName = getLocalizedBossName(modId, name)
 			if not isClassic and not isBCC then
 				local difficultyName
 				if difficulty == 8 then
@@ -745,8 +756,7 @@ do
 			difficulty = tonumber(difficulty)
 			time = DBM:strFromTime(tonumber(time))
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
-			modId = tonumber(modId)
-			local bossName = modId and (DBM:GetGeneratedLocales("encounter")[modId] or EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId)) or name or CL.UNKNOWN
+			local bossName = getLocalizedBossName(modId, name)
 			if not isClassic and not isBCC then
 				local difficultyName
 				if difficulty == 8 then
@@ -798,8 +808,7 @@ do
 		if private.lastBossEngage[modId .. realm] and (GetTime() - private.lastBossEngage[modId .. realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
 		private.lastBossEngage[modId .. realm] = GetTime()
 		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-			local bossName = modId and (DBM:GetGeneratedLocales("encounter")[modId] or EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId)) or name or CL.UNKNOWN
+			local bossName = getLocalizedBossName(modId, name)
 			DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), sender))
 		end
 	end
@@ -809,8 +818,7 @@ do
 		if private.lastBossDefeat[modId .. realm] and (GetTime() - private.lastBossDefeat[modId .. realm] < 30) then return end
 		private.lastBossDefeat[modId .. realm] = GetTime()
 		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-			local bossName = modId and (DBM:GetGeneratedLocales("encounter")[modId] or EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId)) or name or CL.UNKNOWN
+			local bossName = getLocalizedBossName(modId, name)
 			DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, sender))
 		end
 	end
@@ -838,8 +846,7 @@ do
 		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and (isRetail and not IsEncounterInProgress() or not DBM:InCombat()) then
 			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
 			local toonName = gameAccountInfo and gameAccountInfo.characterName or CL.UNKNOWN
-			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-			local bossName = modId and (DBM:GetGeneratedLocales("encounter")[modId] or EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId)) or name or CL.UNKNOWN
+			local bossName = getLocalizedBossName(modId, name)
 			DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), toonName))
 		end
 	end
@@ -851,8 +858,7 @@ do
 		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and (isRetail and not IsEncounterInProgress() or not DBM:InCombat()) then
 			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
 			local toonName = gameAccountInfo and gameAccountInfo.characterName or CL.UNKNOWN
-			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-			local bossName = modId and (DBM:GetGeneratedLocales("encounter")[modId] or EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId)) or name or CL.UNKNOWN
+			local bossName = getLocalizedBossName(modId, name)
 			DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, toonName))
 		end
 	end
