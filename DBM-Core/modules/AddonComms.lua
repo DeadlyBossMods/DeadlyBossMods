@@ -96,7 +96,7 @@ local function getLocalizedBossName(modId, name)
 			encounterId = encounterId[1]
 		end
 	end
-	return encounterId and (DBM:GetGeneratedLocales("encounter")[encounterId] or EJ_GetEncounterInfo and EJ_GetEncounterInfo(encounterId)) or name or CL.UNKNOWN
+	return encounterId and ((EJ_GetEncounterInfo and EJ_GetEncounterInfo(encounterId)) or DBM:GetGeneratedLocales("encounter")[encounterId]) or name or CL.UNKNOWN
 end
 
 ---Automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
