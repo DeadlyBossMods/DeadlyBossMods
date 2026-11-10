@@ -1794,7 +1794,7 @@ do
 		if modname == "DBM-Core" and not isLoaded then
 			--Establish a classic sub mod version for version checks and out of date notification/checking
 			if not private.isRetail then
-				local checkedRaidmodule = private.isMop and "DBM-Raids-MoP" or private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or private.isClassic and "DBM-Raids-Vanilla"
+				local checkedRaidmodule = private.isMop and "DBM-Raids-MoP" or private.isCata and "DBM-Raids-Cata" or private.isWrath and "DBM-Raids-WoTLK" or private.isBCC and "DBM-Raids-BC" or (private.isClassic or private.isForever) and "DBM-Raids-Vanilla"
 				if checkedRaidmodule and C_AddOns.DoesAddOnExist(checkedRaidmodule) then
 					local version = C_AddOns.GetAddOnMetadata(checkedRaidmodule, "Version") or "r0"
 					DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
