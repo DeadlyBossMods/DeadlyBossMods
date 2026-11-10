@@ -69,7 +69,7 @@ L.SCENARIO_COMPLETE_L		= "%s abgeschlossen nach %s! Dein letzter Abschluss hat %
 L.SCENARIO_COMPLETE_NR		= "%s abgeschlossen nach %s! Das ist ein neuer Rekord! (Der alte Rekord war %s.) Das war dein %d. Abschluss."
 L.COMBAT_ENDED_AT			= "Kampf gegen %s (%s) hat nach %s aufgehört."
 L.COMBAT_ENDED_AT_LONG		= "Kampf gegen %s (%s) hat nach %s aufgehört. Das war deine %d. Niederlage auf diesem Schwierigkeitsgrad."
-L.GUILD_COMBAT_ENDED_AT		= "Die Gildengruppe von %s ist bei %s (%s) nach %s gewiped."
+L.GUILD_COMBAT_ENDED_AT		= "Die Gildengruppe von %s erlitt bei %s (%s) nach %s eine Niederlage."
 L.SCENARIO_ENDED_AT			= "%s abgebrochen nach %s."
 L.SCENARIO_ENDED_AT_LONG	= "%s abgebrochen nach %s. Das war dein %d. Abbruch auf diesem Schwierigkeitsgrad."
 L.COMBAT_STATE_RECOVERED	= "Kampf gegen %s hat vor %s begonnen, Neukalibrierung der Timer erfolgt..."
@@ -703,7 +703,7 @@ L.DBM_INSTALL_PACKAGE_DUNGEON	= "Dungeons, Delves und Events Paket"
 L.TOOLTIP_DBM					= L.DBM .. " Info"
 L.TOOLTIP_ENRAGE_TIMER			= "Enrage Timer"
 L.TOOLTIP_KILLS					= "Kills (%s)"
-L.TOOLTIP_WIPES					= "Wipes (%s)"
+L.TOOLTIP_WIPES					= "Niederlagen (%s)"
 L.TOOLTIP_FASTEST				= "Schnellster Kill (%s)"
 
 -- Difficulty info not found in normal globals, used by both GUI and tooltip
