@@ -663,7 +663,7 @@ function DBM:RepositionFrames()
 	if self.InfoFrame then
 		self.InfoFrame:SyncOptions()
 	end
-	if private.isRetail then
+	if private.isRetail or private.isForever then
 		self:UpdateZoneAuraAnchors(1)
 	end
 	self.Arrow:LoadPosition()
@@ -892,7 +892,7 @@ end
 function DBM:SpecChanged(force)
 	-- Co-tank aura visibility in Auto mode depends on the live player specialization.
 	-- Refresh it even when dual profiles are disabled; combat-restricted updates defer to PLAYER_REGEN_ENABLED.
-	if private.isRetail then
+	if private.isRetail or private.isForever then
 		self:UpdateZoneAuraAnchors(2)
 	end
 	if not force and not DBM_UseDualProfile then return end

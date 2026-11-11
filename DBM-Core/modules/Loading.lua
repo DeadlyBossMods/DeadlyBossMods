@@ -42,7 +42,7 @@ end
 
 ---@param priority number?
 function DBM:UpdateZoneAuraAnchors(priority)
-	if not private.isRetail then
+	if not private.isRetail and not private.isForever then
 		return
 	end
 	local auraHandler = DBM.Auras
@@ -429,7 +429,7 @@ do
 	---@param self DBM
 	---@param mapID number
 	local function syncZoneAuraSounds(self, mapID)
-		if not private.isRetail then
+		if not private.isRetail and not private.isForever then
 			return
 		end
 		if InCombatLockdown() or #inCombat > 0 then
@@ -453,7 +453,7 @@ do
 
 	---@param self DBM
 	function private.onZonePlayerRegenEnabled(self)
-		if not private.isRetail then
+		if not private.isRetail and not private.isForever then
 			return
 		end
 		if pendingPASoundZoneSync then
@@ -521,7 +521,7 @@ do
 		if self.BattleRezTimer then
 			self.BattleRezTimer:CheckSupported()
 		end
-		if private.isRetail then
+		if private.isRetail or private.isForever then
 			--Handle private aura sounds and anchors
 			syncZoneAuraSounds(self, mapID)
 			self:UpdateZoneAuraAnchors(1)
