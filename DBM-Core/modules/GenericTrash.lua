@@ -73,11 +73,10 @@ end
 
 function module:CheckZone()
 	local _, nativeType, difficultyId, _, _, _, _, mapId = GetInstanceInfo()
-	local contentType
-	if private.isForever then
+	local contentType = difficulties:InstanceType(mapId)
+	--Try to fill it in if it's still missing from data
+	if not contentType then
 		contentType = nativeType == "party" and 2 or nativeType == "raid" and 3 or 0
-	else
-		contentType = difficulties:InstanceType(mapId)
 	end
 	if mapId ~= instanceId or difficultyId ~= difficulty or contentType ~= instanceType then
 		self:Deactivate()
