@@ -181,7 +181,7 @@ local function resolveFilter(isLieutenant, isNonElite)
 end
 
 function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried)
-	if not registered or not DBM:IsEnabled() or not DBM.Options.Enabled then return end
+	if not registered or not DBM:IsEnabled() then return end
 	local permission = bossPermission()
 	if not eligible(permission) then
 		self:Deactivate()
