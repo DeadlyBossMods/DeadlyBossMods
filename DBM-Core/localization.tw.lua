@@ -2,6 +2,9 @@ if GetLocale() ~= "zhTW" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.DEBUG_LOG_BINARY = "二進位擷取字型"
+L.DEBUG_LOG_TEXT = "一般可讀字型"
+L.DEBUG_LOG_FONT_ERROR = "無法載入二進位除錯字型，已還原一般可讀字型。"
 L.CONSUMABLES_SHAMAN_IMBUES = {"風怒", "火舌", "大地生命武器"}
 L.CONSUMABLES_PALADIN_IMBUES = {"聖化儀式", "裁決儀式"}
 L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."

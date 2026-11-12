@@ -2,6 +2,9 @@ if GetLocale() ~= "deDE" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.DEBUG_LOG_BINARY = "Binäre Aufnahmeschrift"
+L.DEBUG_LOG_TEXT = "Menschenlesbare Schrift"
+L.DEBUG_LOG_FONT_ERROR = "Die binäre Debug-Schrift konnte nicht geladen werden. Die lesbare Schrift wurde wiederhergestellt."
 L.CONSUMABLES_SHAMAN_IMBUES = {"Windzorn", "Flammenzunge", "Lebensgeister"}
 L.CONSUMABLES_PALADIN_IMBUES = {"Ritus der Heiligung", "Ritus der Vereidigung"}
 L.AURA_FONT_RESET = "Ungültige Aura-Text-Schrifteinstellungen wurden erkannt und auf die Standardeinstellungen zurückgesetzt."

@@ -2,6 +2,9 @@ if GetLocale() ~= "ruRU" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.DEBUG_LOG_BINARY = "Двоичный шрифт записи"
+L.DEBUG_LOG_TEXT = "Обычный шрифт"
+L.DEBUG_LOG_FONT_ERROR = "Не удалось загрузить двоичный шрифт отладки. Восстановлен обычный шрифт."
 L.CONSUMABLES_SHAMAN_IMBUES = {"Неистовство ветра", "Язык пламени", "Жизнь Земли"}
 L.CONSUMABLES_PALADIN_IMBUES = {"Обряд освящения", "Обряд клятвы"}
 L.AURA_FONT_RESET = "Обнаружены некорректные настройки шрифта для ауры, они сброшены на стандартные."

@@ -2,6 +2,9 @@ if GetLocale() ~= "ptBR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.DEBUG_LOG_BINARY = "Fonte de captura binária"
+L.DEBUG_LOG_TEXT = "Fonte legível"
+L.DEBUG_LOG_FONT_ERROR = "Não foi possível carregar a fonte binária de depuração. A fonte legível foi restaurada."
 L.CONSUMABLES_SHAMAN_IMBUES = {"Fúria dos Ventos", "Labaredas", "Terraviva"}
 L.CONSUMABLES_PALADIN_IMBUES = {"Rito da Santificação", "Rito da Adjuração"}
 L.AURA_FONT_RESET = "Configurações de fonte de texto de aura inválidas detectadas e redefinidas para os padrões."

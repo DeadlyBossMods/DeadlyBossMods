@@ -2,6 +2,9 @@ if GetLocale() ~= "koKR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.DEBUG_LOG_BINARY = "이진 캡처 글꼴"
+L.DEBUG_LOG_TEXT = "일반 글꼴"
+L.DEBUG_LOG_FONT_ERROR = "이진 디버그 글꼴을 불러올 수 없어 일반 글꼴로 복원했습니다."
 L.CONSUMABLES_SHAMAN_IMBUES = {"질풍의 무기", "불꽃혓바닥", "대지생명"}
 L.CONSUMABLES_PALADIN_IMBUES = {"축성의 의식", "서원의 의식"}
 L.AURA_FONT_RESET = "올바르지 않은 오라 텍스트 글꼴 설정이 감지되어 기본값으로 초기화합니다."

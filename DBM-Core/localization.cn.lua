@@ -6,6 +6,9 @@ if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
+L.DEBUG_LOG_BINARY = "二进制截图字体"
+L.DEBUG_LOG_TEXT = "普通可读字体"
+L.DEBUG_LOG_FONT_ERROR = "无法加载二进制调试字体，已恢复普通可读字体。"
 L.CONSUMABLES_SHAMAN_IMBUES = {"风怒", "火舌", "大地生命"}
 L.CONSUMABLES_PALADIN_IMBUES = {"圣言祭礼", "恳求祭礼"}
 L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."

@@ -1,5 +1,8 @@
 ---@class DBMLocale
 local L = {}
+L.DEBUG_LOG_BINARY = "Binary capture font"
+L.DEBUG_LOG_TEXT = "Human-readable font"
+L.DEBUG_LOG_FONT_ERROR = "The binary debug font could not be loaded. Restored the human-readable font."
 L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
 
 DBM_CORE_L = L

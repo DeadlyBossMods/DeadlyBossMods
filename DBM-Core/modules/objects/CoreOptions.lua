@@ -444,6 +444,7 @@ DBM.DefaultOptions = {
 	HideMovieOnlyAfterSeen = true,
 	LastRevision = 0,
 	DebugMode = false,
+	DebugLogBinaryFont = false,
 	DebugLevel = 1,
 	DebugSound = true,
 	RoleSpecAlert = true,
