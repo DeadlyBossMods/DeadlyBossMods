@@ -194,6 +194,9 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	local isNonElite = classification == "normal" or classification == "rare" or classification == "minus"
 	local isLieutenant
 	if private.isForever then
+		local level = UnitLevel(unit)
+		--Filter alerts for mobs that are 10 or more levels less than player, to avoid spam when farming low level dungeons
+		if level ~= -1 and level <= private.playerLevel - 15 then return end
 		if not isNonElite and classification ~= "elite" and classification ~= "rareelite" and classification ~= "worldboss" then return end
 		isLieutenant = not isNonElite
 	else
