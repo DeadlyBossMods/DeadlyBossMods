@@ -74,8 +74,8 @@ end
 function module:CheckZone()
 	local _, nativeType, difficultyId, _, _, _, _, mapId = GetInstanceInfo()
 	local contentType = difficulties:InstanceType(mapId)
-	--Try to fill it in if it's still missing from data
-	if not contentType then
+	--Try to fill it in if it's still missing from data (InstanceType returns 0, not nil, when missing)
+	if contentType == 0 then
 		contentType = nativeType == "party" and 2 or nativeType == "raid" and 3 or 0
 	end
 	if mapId ~= instanceId or difficultyId ~= difficulty or contentType ~= instanceType then
