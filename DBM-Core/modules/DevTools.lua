@@ -34,6 +34,7 @@ do
 	local debugLogNormalPoint, debugLogNormalRelativeTo, debugLogNormalX, debugLogNormalY
 	local ensureLineFrame, getPhysicalIndex, updateDebugLogFont
 	local binaryFont = "Interface\\AddOns\\DBM-Core\\fonts\\DBMBinary.ttf"
+	local binaryFontObject
 
 	local function getVisibleLineCount()
 		if not debugLogViewport then return 1 end
@@ -135,6 +136,7 @@ do
 		line:SetWordWrap(false)
 		line:SetMaxLines(1)
 		if DBM.Options.DebugLogBinaryFont then
+			line:SetFontObject(binaryFontObject)
 			line:SetFont(binaryFont, 12 / debugLogFrame:GetEffectiveScale(), "")
 		end
 		line:SetPoint("TOPLEFT", debugLogViewport, "TOPLEFT", 0, -((index - 1) * lineHeight))
@@ -149,10 +151,17 @@ do
 		local binary = DBM.Options.DebugLogBinaryFont
 		local scale = binary and debugLogFrame:GetEffectiveScale() or 1
 		lineHeight = binary and math.ceil(14 / scale) or 14
+		if binary then
+			if not binaryFontObject then
+				binaryFontObject = CreateFont("DBMDebugLogBinaryFont")
+			end
+			binaryFontObject:SetFont(binaryFont, 12 / scale, "")
+		end
 		ensureLineFrame(1)
 		for i = 1, #debugLogLineFrames do
 			local line = debugLogLineFrames[i]
 			if binary then
+				line:SetFontObject(binaryFontObject)
 				if not line:SetFont(binaryFont, 12 / scale, "") then
 					DBM:AddMsg(DBM_CORE_L.DEBUG_LOG_FONT_ERROR)
 					DBM.Options.DebugLogBinaryFont = false
@@ -161,6 +170,7 @@ do
 				end
 			else
 				line:SetFontObject(GameFontHighlightSmall)
+				line:SetFont(GameFontHighlightSmall:GetFont())
 			end
 			line:SetPoint("TOPLEFT", debugLogViewport, "TOPLEFT", 0, -((i - 1) * lineHeight))
 		end
@@ -170,6 +180,7 @@ do
 				binaryFontHeader:SetPoint("TOPLEFT", debugLogFrame, "TOPLEFT", 12, -38)
 				binaryFontHeader:SetTextColor(1, 1, 1)
 			end
+			binaryFontHeader:SetFontObject(binaryFontObject)
 			binaryFontHeader:SetFont(binaryFont, 12 / scale, "")
 			binaryFontHeader:Show()
 		elseif binaryFontHeader then
@@ -178,7 +189,6 @@ do
 		appliedBinaryFont = binary
 		appliedBinaryScale = scale
 		debugLogViewport:SetPoint("TOPLEFT", debugLogFrame, "TOPLEFT", 12, binary and -38 - math.ceil(16 / scale) or -38)
-		debugLogFrame:SetWidth(binary and mmax(1200, UIParent:GetWidth() - 24) or 1200)
 		binaryFontButton:SetText(binary and DBM_CORE_L.DEBUG_LOG_TEXT or DBM_CORE_L.DEBUG_LOG_BINARY)
 		refreshDebugLog(wasAtBottom)
 	end

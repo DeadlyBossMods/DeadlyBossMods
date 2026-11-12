@@ -4,8 +4,14 @@ The debug log (`/dbm debug`, then `/dbm dlog`) uses its usual human-readable fon
 by default. **Binary capture font** switches only the capture panel; clicking
 **Human-readable font** restores it. The choice is saved in `DebugLogBinaryFont`.
 It does not change logging, callbacks, event registrations, or stored text.
+On first enable, DBM registers the file through a native `Font` object before
+applying it to the capture FontStrings. This load sequence was confirmed on
+Forever/macOS; it does not read any displayed text. The object is reused on
+later toggles and scale changes.
 
-Binary mode widens the panel to the UI width and adds a binary page header.
+Both font modes preserve the panel's size. Binary mode adds a binary page header.
+Switching back explicitly restores the human font's file, size, and flags as
+well as its Font object; this reads only font configuration, not displayed text.
 Capture the **entire panel**, including the header and both ends of every line.
 Keep screenshots at their original resolution, preferably PNG. The usual page
 buttons still advance by fully visible rows, with a bottom safety row.
@@ -14,6 +20,9 @@ buttons still advance by fully visible rows, with a bottom safety row.
 
 `DBMBinary.ttf` is an original geometric TrueType font. No source font or copied
 letter outlines are used. It is distributed under the project's license.
+The font explicitly declares its Windows Latin code page, regular style, and
+unrestricted embedding metadata. Client acceptance must still be verified;
+successful FreeType/CoreText loading alone does not establish WoW compatibility.
 
 Each printable ASCII character (32 through 126, including space) has:
 
@@ -49,6 +58,10 @@ original English/Tesseract path. Existing reviewed caches are still preserved.
 
 Raster tests cover all printable ASCII at 12/24/36/48 pixel font sizes, native
 debug colors, PNG/JPEG, corruption, clipping, page counts, and mixed English OCR.
+Row detection tolerates a one-pixel locator-edge difference across colored spans
+while retaining shared data-cell geometry and all three threshold/parity checks.
+One Forever/macOS capture with white framing and cyan text has passed these
+checks; this is not broad in-game capture validation.
 Fractional pixel sizing/resampling can fail; capture without resizing. Binary
 mode compensates for the frame's effective UI scale to target a 12-pixel font
 and adjusts row spacing/pagination accordingly. Render scaling and the native
