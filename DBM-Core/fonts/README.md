@@ -6,12 +6,12 @@ by default. **Binary capture font** switches only the capture panel; clicking
 It does not change logging, callbacks, event registrations, or stored text.
 On first enable, DBM registers the file through a native `Font` object before
 applying it to the capture FontStrings. This load sequence was confirmed on
-Forever/macOS; it does not read any displayed text. The object is reused on
-later toggles and scale changes. FontStrings receive the registered object's
-`GetFont()` configuration rather than resubmitting the original path. A Windows
-probe confirmed this sequence loads successfully after a failed toggle; the
-updated toggle still requires a fresh-launch in-game retest there. `GetFont()`
-reads only font configuration, never the debug log's displayed text.
+Forever/macOS, and one Windows user confirmed that the updated separate-pool
+toggle works in game. This is not broad compatibility validation and does not
+read any displayed text. The object is reused on later toggles and scale
+changes. FontStrings receive the registered object's `GetFont()` configuration
+rather than resubmitting the original path. `GetFont()` reads only font
+configuration, never the debug log's displayed text.
 
 Both font modes preserve the panel's size. Binary mode adds a binary page header.
 Switching back explicitly restores the human font's file, size, and flags as
@@ -71,9 +71,9 @@ mode compensates for the frame's effective UI scale to target a 12-pixel font
 and adjusts row spacing/pagination accordingly. Render scaling and the native
 font backend still need verification on the capture client.
 Cells need sufficient physical pixels; a successful desktop test does not
-certify WoW's renderer or secret-value handling. In-game verification is required
-before relying on this experimental capture method. No near-100% accuracy claim
-is made.
+certify WoW's renderer or secret-value handling. In-game verification on the
+target client is required before relying on this experimental capture method.
+No near-100% accuracy claim is made.
 
 The font is reproducibly generated from the workspace tool:
 
