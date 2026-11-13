@@ -170,7 +170,8 @@ else--TBC, Vanilla, Forever
 		[429] = {45, 2}, [389] = {18, 2}, [349] = {52, 2}, [329] = {60, 2}, [289] = {60, 2}, [230] = {60, 2}, [229] = {60, 2}, [209] = {54, 2}, [189] = {45, 2}, [129] = {47, 2}, [109] = {60, 2}, [90] = {34, 2}, [70] = {52, 2}, [48] = {32, 2}, [47] = {42, 2}, [43] = {27, 2}, [36] = {25, 2}, [34] = {32, 2}, [33] = {30, 2},--Classic Dungeons
 		[540] = {70, 2}, [558] = {70, 2}, [556] = {70, 2}, [555] = {70, 2}, [542] = {70, 2}, [546] = {70, 2}, [545] = {70, 2}, [547] = {70, 2}, [553] = {70, 2}, [554] = {70, 2}, [552] = {70, 2}, [557] = {70, 2}, [269] = {70, 2}, [560] = {70, 2}, [543] = {70, 2}, [585] = {70, 2},--BC Dungeons
 		[3065] = {18, 2}, [2999] = {20, 2}, [2998] = {29, 2}, [2959] = {30, 2}, [2970] = {40, 2}, [3039] = {45, 2}, [2994] = {53, 2}, [2974] = {60, 2}, [3001] = {60, 2},--Forever Dungeons
-		--Forever Raids (none in data yet)
+		--Forever Raids (none in data yet, only Scarlet Enclave confirmed ID)
+		[2856] = {60, 3},--Forever Raids
 	}
 	seasonalDungeons = {}--None
 	-- Season of Discovery
@@ -187,7 +188,6 @@ else--TBC, Vanilla, Forever
 		instanceDifficultyBylevel[2807] = {60, 2} -- Burning of Andorhal
 		instanceDifficultyBylevel[2817] = {60, 2} -- Starfall Barrow Den
 		instanceDifficultyBylevel[2832] = {60, 3} -- Nightmare Grove
-		instanceDifficultyBylevel[2856] = {60, 3} -- Scarlet Enclave
 		instanceDifficultyBylevel[2875] = {60, 2} -- Karazhan Crypts
 	end
 end

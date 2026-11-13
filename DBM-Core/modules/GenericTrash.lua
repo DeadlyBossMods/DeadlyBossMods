@@ -68,7 +68,7 @@ end
 
 function module:Deactivate()
 	if registered then
-		if DBM.Options.DebugMode then
+		if private.isForever and DBM.Options.DebugMode then
 			DBM:Debug("GenericTrash: unregistering cast events", 3, nil, nil, true, true)
 		end
 		self:UnregisterShortTermEvents()
@@ -106,7 +106,7 @@ function module:CheckZone()
 			"NAME_PLATE_UNIT_REMOVED"
 		)
 		registered = true
-		if DBM.Options.DebugMode then
+		if private.isForever and DBM.Options.DebugMode then
 			DBM:Debug("GenericTrash: registering cast events (" .. optionPrefix .. ")", 3, nil, nil, true, true)
 		end
 	end
@@ -191,7 +191,7 @@ local function resolveFilter(isLieutenant, isNonElite)
 end
 
 function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried)
-	local debug = DBM.Options.DebugMode
+	local debug = private.isForever and DBM.Options.DebugMode
 	if debug then
 		debugCast(unit, (succeeded and "succeeded" or channel and "channel" or "cast") .. (retried and " retry received" or " received"))
 	end
@@ -224,7 +224,7 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	local isLieutenant
 	if private.isForever then
 		local level = UnitLevel(unit)
-		--Filter alerts for mobs that are 10 or more levels less than player, to avoid spam when farming low level dungeons
+		--Filter alerts for mobs that are 15 or more levels less than player, to avoid spam when farming low level dungeons
 		if level ~= -1 and level <= private.playerLevel - 15 then
 			if debug then debugCast(unit, "rejected: unit level too low") end
 			return
