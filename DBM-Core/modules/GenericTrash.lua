@@ -22,6 +22,8 @@ local difficulty, instanceId, instanceType = 0, 0, 0
 local optionPrefix
 local optionPrefixes = {[2] = "GenericTrashDungeon", [3] = "GenericTrashRaid", [4] = "GenericTrashDelve"}
 local zoneChecks, retries, previous = {}, {}, {}
+local lastTargetTime, lastTargetKind, lastTargetUnit
+local warnedCasts, warnedCastOrder, warnedCastIndex
 
 local function debugCast(unit, reason)
 	DBM:Debug("GenericTrash " .. unit .. ": " .. reason, 3, nil, nil, true, true)
@@ -76,6 +78,8 @@ function module:Deactivate()
 	end
 	cancelTimers(retries)
 	table.wipe(previous)
+	lastTargetTime = nil
+	warnedCasts, warnedCastOrder, warnedCastIndex = nil, nil, nil
 end
 
 function module:CheckZone()
@@ -117,6 +121,8 @@ function DBM:UpdateGenericTrashOptions(resetEncounter)
 	if resetEncounter then
 		cancelTimers(retries)
 		table.wipe(previous)
+		lastTargetTime = nil
+		warnedCasts, warnedCastOrder, warnedCastIndex = nil, nil, nil
 	end
 	module:CheckZone()
 end
@@ -191,7 +197,7 @@ local function resolveFilter(isLieutenant, isNonElite)
 end
 
 function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried)
-	local debug = private.isForever and DBM.Options.DebugMode
+	local debug = private.isForever and DBM.Options.DebugMode and (unit == "target" or unit == "softenemy")
 	if debug then
 		debugCast(unit, (succeeded and "succeeded" or channel and "channel" or "cast") .. (retried and " retry received" or " received"))
 	end
@@ -215,8 +221,15 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 		return
 	end
 	-- Event unit tokens are public; spell/cast identities may be opaque.
-	if succeeded and (DBM:issecretvalue(castBarID) or (castBarID ~= nil and castBarID ~= false)) then
+	local secretCastBarID = DBM:issecretvalue(castBarID)
+	if succeeded and (secretCastBarID or (not private.isForever and castBarID ~= nil and castBarID ~= false)) then
 		if debug then debugCast(unit, "rejected: succeeded event has a cast bar ID") end
+		return
+	end
+	-- Forever exposes public cast-bar IDs even for casts with no START/CHANNEL event.
+	local trackCast = private.isForever and not secretCastBarID and castBarID ~= nil and castBarID ~= false
+	if trackCast and warnedCasts and warnedCasts[castBarID] then
+		if debug then debugCast(unit, "rejected: cast already announced") end
 		return
 	end
 	local classification = UnitClassification(unit)
@@ -254,13 +267,15 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 		if debug then debugCast(unit, "rejected: unit filter off") end
 		return
 	end
+	-- Unfiltered cast events report a soft-targeted unit as softenemy instead of target/nameplate.
+	local softEnemy = unit == "softenemy"
 	if not (permission == true and unit:find("^boss%d+$")) then
 		if filter == "target" then
-			if unit ~= "target" then
+			if unit ~= "target" and not (softEnemy and UnitIsUnit("target", unit)) then
 				if debug then debugCast(unit, "rejected: target-only unit filter") end
 				return
 			end
-		elseif not unit:find("^nameplate") then
+		elseif not softEnemy and not unit:find("^nameplate") then
 			if debug then debugCast(unit, "rejected: nameplate-only unit filter") end
 			return
 		end
@@ -303,6 +318,15 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 		duration = DBM.DefaultOptions[durationKey]
 	end
 	local now = GetTime()
+	local castKind = succeeded and "succeeded" or channel and "channel" or "cast"
+	if unitIsTarget and not trackCast then
+		-- The target may also arrive as softenemy; suppress the second token's report of the same cast.
+		if lastTargetTime == now and lastTargetKind == castKind and lastTargetUnit ~= unit then
+			if debug then debugCast(unit, "rejected: duplicate target token") end
+			return
+		end
+		lastTargetTime, lastTargetKind, lastTargetUnit = now, castKind, unit
+	end
 	local shouldAlert = unitIsTarget or now - (previous[category] or -math.huge) > duration
 	if not shouldAlert and DBM.Options[optionPrefix .. "ThrottleType"] ~= "sounds" then
 		if debug then debugCast(unit, "rejected: message throttle") end
@@ -314,17 +338,28 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	local useSound = shouldAlert and (unitIsTarget or filter ~= "messagesAllSoundsTarget")
 	if debug then debugCast(unit, useSound and "warning dispatch: with sound" or "warning dispatch: silent") end
 	DBM:AddSecretGenericWarning(unit, spellID, channel and 3 or isLieutenant and 4 or 2, useSound, DBM.Options[optionPrefix .. "ShowTargets"])
+	if trackCast then
+		if not warnedCasts then
+			warnedCasts, warnedCastOrder, warnedCastIndex = {}, {}, 0
+		end
+		-- Retain recent casts across token changes without accumulating IDs for the whole zone.
+		warnedCastIndex = warnedCastIndex % 64 + 1
+		local oldID = warnedCastOrder[warnedCastIndex]
+		if oldID then warnedCasts[oldID] = nil end
+		warnedCastOrder[warnedCastIndex] = castBarID
+		warnedCasts[castBarID] = true
+	end
 	if debug then debugCast(unit, "warning dispatch completed") end
 end
 
-function module:UNIT_SPELLCAST_START_UNFILTERED(unit, _, spellID)
-	self:HandleCast(unit, spellID, false)
+function module:UNIT_SPELLCAST_START_UNFILTERED(unit, _, spellID, castBarID)
+	self:HandleCast(unit, spellID, false, castBarID)
 end
 
 function module:UNIT_SPELLCAST_SUCCEEDED_UNFILTERED(unit, _, spellID, castBarID)
 	self:HandleCast(unit, spellID, false, castBarID, true)
 end
 
-function module:UNIT_SPELLCAST_CHANNEL_START_UNFILTERED(unit, _, spellID)
-	self:HandleCast(unit, spellID, true)
+function module:UNIT_SPELLCAST_CHANNEL_START_UNFILTERED(unit, _, spellID, castBarID)
+	self:HandleCast(unit, spellID, true, castBarID)
 end

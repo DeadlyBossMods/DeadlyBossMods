@@ -137,7 +137,7 @@ do
 		line:SetMaxLines(1)
 		if DBM.Options.DebugLogBinaryFont then
 			line:SetFontObject(binaryFontObject)
-			line:SetFont(binaryFont, 12 / debugLogFrame:GetEffectiveScale(), "")
+			line:SetFont(binaryFontObject:GetFont())
 		end
 		line:SetPoint("TOPLEFT", debugLogViewport, "TOPLEFT", 0, -((index - 1) * lineHeight))
 		line:SetPoint("RIGHT", debugLogViewport, "RIGHT", 0, 0)
@@ -162,7 +162,7 @@ do
 			local line = debugLogLineFrames[i]
 			if binary then
 				line:SetFontObject(binaryFontObject)
-				if not line:SetFont(binaryFont, 12 / scale, "") then
+				if not line:SetFont(binaryFontObject:GetFont()) then
 					DBM:AddMsg(DBM_CORE_L.DEBUG_LOG_FONT_ERROR)
 					DBM.Options.DebugLogBinaryFont = false
 					updateDebugLogFont()
@@ -181,7 +181,7 @@ do
 				binaryFontHeader:SetTextColor(1, 1, 1)
 			end
 			binaryFontHeader:SetFontObject(binaryFontObject)
-			binaryFontHeader:SetFont(binaryFont, 12 / scale, "")
+			binaryFontHeader:SetFont(binaryFontObject:GetFont())
 			binaryFontHeader:Show()
 		elseif binaryFontHeader then
 			binaryFontHeader:Hide()

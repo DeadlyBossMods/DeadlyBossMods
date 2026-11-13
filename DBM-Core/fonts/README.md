@@ -7,7 +7,11 @@ It does not change logging, callbacks, event registrations, or stored text.
 On first enable, DBM registers the file through a native `Font` object before
 applying it to the capture FontStrings. This load sequence was confirmed on
 Forever/macOS; it does not read any displayed text. The object is reused on
-later toggles and scale changes.
+later toggles and scale changes. FontStrings receive the registered object's
+`GetFont()` configuration rather than resubmitting the original path. A Windows
+probe confirmed this sequence loads successfully after a failed toggle; the
+updated toggle still requires a fresh-launch in-game retest there. `GetFont()`
+reads only font configuration, never the debug log's displayed text.
 
 Both font modes preserve the panel's size. Binary mode adds a binary page header.
 Switching back explicitly restores the human font's file, size, and flags as
