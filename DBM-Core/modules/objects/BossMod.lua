@@ -182,6 +182,7 @@ bossModPrototype.UnregisterShortTermEvents = DBM.UnregisterShortTermEvents
 
 ---Opt this boss mod into generic cast warnings while its encounter is active and enabled.
 ---May be called at module load or combat start; does not change user options.
+---Enrolled boss unit tokens bypass target/nameplate selection, not category or safety filters.
 ---Permission automatically stops when the mod leaves the active combat list or is disabled.
 function bossModPrototype:EnableGenericTrash()
 	if self.enableGenericTrash then return end

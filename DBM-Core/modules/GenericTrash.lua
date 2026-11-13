@@ -23,6 +23,10 @@ local optionPrefix
 local optionPrefixes = {[2] = "GenericTrashDungeon", [3] = "GenericTrashRaid", [4] = "GenericTrashDelve"}
 local zoneChecks, retries, previous = {}, {}, {}
 
+local function debugCast(unit, reason)
+	DBM:Debug("GenericTrash " .. unit .. ": " .. reason, 3, nil, nil, true, true)
+end
+
 local function cancelTimers(timers)
 	for timer in pairs(timers) do
 		timer:Cancel()
@@ -64,6 +68,9 @@ end
 
 function module:Deactivate()
 	if registered then
+		if DBM.Options.DebugMode then
+			DBM:Debug("GenericTrash: unregistering cast events", 3, nil, nil, true, true)
+		end
 		self:UnregisterShortTermEvents()
 		registered = false
 	end
@@ -99,6 +106,9 @@ function module:CheckZone()
 			"NAME_PLATE_UNIT_REMOVED"
 		)
 		registered = true
+		if DBM.Options.DebugMode then
+			DBM:Debug("GenericTrash: registering cast events (" .. optionPrefix .. ")", 3, nil, nil, true, true)
+		end
 	end
 end
 
@@ -181,46 +191,100 @@ local function resolveFilter(isLieutenant, isNonElite)
 end
 
 function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried)
-	if not registered or not DBM:IsEnabled() then return end
+	local debug = DBM.Options.DebugMode
+	if debug then
+		debugCast(unit, (succeeded and "succeeded" or channel and "channel" or "cast") .. (retried and " retry received" or " received"))
+	end
+	if not registered then
+		if debug then debugCast(unit, "rejected: events inactive") end
+		return
+	end
+	if not DBM:IsEnabled() then
+		if debug then debugCast(unit, "rejected: DBM disabled") end
+		return
+	end
 	local permission = bossPermission()
+	if debug then debugCast(unit, "boss permission: " .. tostring(permission)) end
 	if not eligible(permission) then
+		if debug then debugCast(unit, "rejected: zone/options ineligible") end
 		self:Deactivate()
 		return
 	end
-	if permission == false then return end
+	if permission == false then
+		if debug then debugCast(unit, "rejected: boss permission denied") end
+		return
+	end
 	-- Event unit tokens are public; spell/cast identities may be opaque.
-	if succeeded and (DBM:issecretvalue(castBarID) or (castBarID ~= nil and castBarID ~= false)) then return end
+	if succeeded and (DBM:issecretvalue(castBarID) or (castBarID ~= nil and castBarID ~= false)) then
+		if debug then debugCast(unit, "rejected: succeeded event has a cast bar ID") end
+		return
+	end
 	local classification = UnitClassification(unit)
 	local isNonElite = classification == "normal" or classification == "rare" or classification == "minus"
 	local isLieutenant
 	if private.isForever then
 		local level = UnitLevel(unit)
 		--Filter alerts for mobs that are 10 or more levels less than player, to avoid spam when farming low level dungeons
-		if level ~= -1 and level <= private.playerLevel - 15 then return end
-		if not isNonElite and classification ~= "elite" and classification ~= "rareelite" and classification ~= "worldboss" then return end
+		if level ~= -1 and level <= private.playerLevel - 15 then
+			if debug then debugCast(unit, "rejected: unit level too low") end
+			return
+		end
+		if not isNonElite and classification ~= "elite" and classification ~= "rareelite" and classification ~= "worldboss" then
+			if debug then debugCast(unit, "rejected: unsupported classification") end
+			return
+		end
 		isLieutenant = not isNonElite
 	else
 		local level = UnitLevel(unit)
 		local playerLevel = private.playerLevel
 		isLieutenant = level == playerLevel + 1 or level == playerLevel + 2 or level == -1
-		if (level < playerLevel - 3 or level > playerLevel) and not isLieutenant then return end
+		if (level < playerLevel - 3 or level > playerLevel) and not isLieutenant then
+			if debug then debugCast(unit, "rejected: unsupported unit level") end
+			return
+		end
 		-- Raid trash uses standard settings regardless of supported mob level.
 		isLieutenant = isLieutenant and instanceType ~= 3
-		if not isNonElite and classification ~= "elite" and classification ~= "rareelite" then return end
+		if not isNonElite and classification ~= "elite" and classification ~= "rareelite" then
+			if debug then debugCast(unit, "rejected: unsupported classification") end
+			return
+		end
 	end
 	local filter = resolveFilter(isLieutenant, isNonElite)
-	if filter == "off" then return end
-	if filter == "target" then
-		if unit ~= "target" then return end
-	elseif not unit:find("^nameplate") then
+	if filter == "off" then
+		if debug then debugCast(unit, "rejected: unit filter off") end
 		return
 	end
+	if not (permission == true and unit:find("^boss%d+$")) then
+		if filter == "target" then
+			if unit ~= "target" then
+				if debug then debugCast(unit, "rejected: target-only unit filter") end
+				return
+			end
+		elseif not unit:find("^nameplate") then
+			if debug then debugCast(unit, "rejected: nameplate-only unit filter") end
+			return
+		end
+	end
 	local category = optionPrefix .. (channel and "Channel" or isLieutenant and (private.isForever and "Elite" or "Lieutenant") or "Cast")
-	if not DBM.Options[category] or DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then return end
-	if not UnitIsEnemy("player", unit) then return end
+	if not DBM.Options[category] then
+		if debug then debugCast(unit, "rejected: category disabled (" .. category .. ")") end
+		return
+	end
+	if DBM.Options.DontShowBossAnnounces or DBM.Options.HideDBMWarnings then
+		if debug then debugCast(unit, "rejected: global warnings disabled") end
+		return
+	end
+	if not UnitIsEnemy("player", unit) then
+		if debug then debugCast(unit, "rejected: unit is not an enemy") end
+		return
+	end
 	-- Private core modules do not inherit DBMMod helpers; use its restricted unit-token path.
-	if not bossModPrototype:CheckBossDistance(unit, nil, nil, 48, false, true) then return end
+	if not bossModPrototype:CheckBossDistance(unit, nil, nil, 48, false, true) then
+		if debug then debugCast(unit, "rejected: range check failed") end
+		return
+	end
 	if not UnitAffectingCombat(unit) then
+		if debug then debugCast(unit, retried and "rejected: unit still not in combat after retry" or "deferred: unit not in combat; queuing retry") end
 		if not retried then
 			local timer
 			timer = C_Timer.NewTimer(0.05, function()
@@ -240,12 +304,17 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	end
 	local now = GetTime()
 	local shouldAlert = unitIsTarget or now - (previous[category] or -math.huge) > duration
-	if not shouldAlert and DBM.Options[optionPrefix .. "ThrottleType"] ~= "sounds" then return end
+	if not shouldAlert and DBM.Options[optionPrefix .. "ThrottleType"] ~= "sounds" then
+		if debug then debugCast(unit, "rejected: message throttle") end
+		return
+	end
 	if shouldAlert and not unitIsTarget then
 		previous[category] = now
 	end
 	local useSound = shouldAlert and (unitIsTarget or filter ~= "messagesAllSoundsTarget")
+	if debug then debugCast(unit, useSound and "warning dispatch: with sound" or "warning dispatch: silent") end
 	DBM:AddSecretGenericWarning(unit, spellID, channel and 3 or isLieutenant and 4 or 2, useSound, DBM.Options[optionPrefix .. "ShowTargets"])
+	if debug then debugCast(unit, "warning dispatch completed") end
 end
 
 function module:UNIT_SPELLCAST_START_UNFILTERED(unit, _, spellID)
