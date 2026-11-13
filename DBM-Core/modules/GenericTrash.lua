@@ -240,8 +240,8 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 		return
 	end
 	-- Event unit tokens are public; spell/cast identities may be opaque.
-	-- Forever SUCCEEDED events reaching here with a cast bar had no START/CHANNEL on this token.
-	if succeeded and (DBM:issecretvalue(castBarID) or (not private.isForever and castBarID ~= nil and castBarID ~= false)) then
+	-- During enrolled Forever bosses, SUCCEEDED events reaching here with a cast bar had no START/CHANNEL on this token.
+	if succeeded and (DBM:issecretvalue(castBarID) or (not (private.isForever and permission == true) and castBarID ~= nil and castBarID ~= false)) then
 		if debug then debugCast(unit, "rejected: succeeded event has a cast bar ID") end
 		return
 	end
@@ -378,7 +378,8 @@ function module:UNIT_SPELLCAST_START_UNFILTERED(unit, _, spellID, castBarID)
 end
 
 function module:UNIT_SPELLCAST_SUCCEEDED_UNFILTERED(unit, _, spellID, castBarID)
-	if private.isForever and not DBM:issecretvalue(castBarID) and castBarID ~= nil and castBarID ~= false then
+	-- Bosses rarely change tokens mid-cast; trash target swaps would split a cast across tokens.
+	if private.isForever and not DBM:issecretvalue(castBarID) and castBarID ~= nil and castBarID ~= false and bossPermission() == true then
 		local now = GetTime()
 		local state = castStates and castStates[unit]
 		-- STOP can precede SUCCEEDED in the same frame when a cast completes.
