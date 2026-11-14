@@ -1,17 +1,16 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 ----Mini Dragon <流浪者酒馆-Brilla@金色平原(The Golden Plains-CN)> projecteurs@gmail.NOSPAM.com 20260626
+-- 泰坦重铸时光服-时光2-法师-旺仔芒果/椰奶冻-2026.11.13--
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
-L.DEBUG_LOG_BINARY = "二进制截图字体"
-L.DEBUG_LOG_TEXT = "普通可读字体"
-L.DEBUG_LOG_FONT_ERROR = "无法加载二进制调试字体，已恢复普通可读字体。"
-L.CONSUMABLES_SHAMAN_IMBUES = {"风怒", "火舌", "大地生命"}
-L.CONSUMABLES_PALADIN_IMBUES = {"圣言祭礼", "恳求祭礼"}
-L.AURA_FONT_RESET = "Invalid aura text font settings were detected and reset to defaults."
+L.AURA_FONT_RESET = "检测到无效的光环文本字体设置，已重置为默认值。"
+	L.DEBUG_LOG_BINARY					= "二进制捕获字体"
+	L.DEBUG_LOG_TEXT					= "普通可读字体"
+	L.DEBUG_LOG_FONT_ERROR				= "无法加载二进制调试字体，已还原为普通可读字体。"
 
 local dateTable = date("*t")
 if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
@@ -19,10 +18,10 @@ if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month 
 	L.DBM								= "HMM"
 end
 
-L.HOW_TO_USE_MOD					= "欢迎使用" .. L.DBM .. "。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口。手动按需加载区域模块可对任意Boss进行设置，也可以浏览首领击杀记录。"..L.DBM.." 会自动按你的专精做出相应配置，但是你可以进行微调。"
+L.HOW_TO_USE_MOD					= "欢迎使用" .. L.DBM .. "。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口。手动按需加载区域模块可对任意首领进行设置，也可以浏览首领击杀记录。"..L.DBM.." 会自动按你的专精做出相应配置，但是你可以进行微调。"
 L.SILENT_REMINDER					= "提示：" .. L.DBM .. " 正处于静音模式。"
 L.NEWS_UPDATE						= "|h|c11ff1111新闻|r|h: DBM 已更新并加入了技能重命名功能。输入 /dbm，前往模块分类（团队副本、地下城等），然后进入你想重命名技能的模块即可。"
-L.NEWS_UPDATE_REPEAT				= "|h|c11ff1111News|r|h: 此次更新主要重做了DBM的结构。无论正式服、还是各个版本的怀旧服都使用相同版本的DBM内核和模组。你当前进入的团队缺少相应模组，无法提供战斗警告。本信息将持续显示，直到你安装了正确的模组。"
+L.NEWS_UPDATE_REPEAT				= "|h|c11ff1111新闻|r|h: 此次更新主要重做了DBM的结构。无论正式服、还是各个版本的怀旧服都使用相同版本的DBM内核和模组。你当前进入的团队缺少相应模组，无法提供战斗警告。本信息将持续显示，直到你安装了正确的模组。"
 
 L.COPY_URL_DIALOG_NEWS				= "阅读最新新闻，请点击下方连接"
 
@@ -45,7 +44,8 @@ L.COPY_WA_DIALOG					= "复制WA代码"
 L.TEXT_ONLY_RANGE			= "因API限制，距离窗体只能显示绝对距离值。"
 L.NO_RANGE					= "距离窗体已无法使用。本命令将会被移除。"
 L.NO_ARROW					= "箭头在副本中无法使用"
-L.HUDMAP_NOT_INSTALLED		= "DBM-HudMap 未安装或未启用。"
+L.HUDMAP_NOT_INSTALLED			= "DBM-HudMap 未安装或未启用。"
+L.NO_HUD					= "HUDMap 在副本中无法使用"
 L.NO_COMMS					= "插件之间的通信在战斗或激活的大秘中无法使用。战斗或地下城结束后，请再次使用此命令。"
 
 L.DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，" .. L.DBM .. " 无法开启动态距离检测。"
@@ -71,7 +71,7 @@ L.BOSS_DOWN_L				= "%s战斗胜利！用时%s！上次用时%s，最快用时%s�
 L.BOSS_DOWN_NR				= "%s战斗胜利！用时%s！新的纪录诞生了！原纪录为%s。总计%d次胜利。"
 L.RAID_DOWN					= "%s目标达成，用时%s！"
 L.RAID_DOWN_L				= "%s目标达成，用时%s！最快用时%s！"
-L.RAID_DOWN_NR				= "%s目标达成，用时%s！新的纪录诞生了！原纪录为%s！"
+L.RAID_DOWN_NR				= "%s目标达成，用时%s！最快用时%s！新的纪录诞生了！原纪录为%s！"
 L.GUILD_BOSS_DOWN			= "%2$s开组的公会版%1$s战斗胜利！用时%3$s！"
 L.SCENARIO_COMPLETE			= "场景战役-%s战斗胜利！用时%s!"
 L.SCENARIO_COMPLETE_I		= "场景战役-%s战斗胜利！总计%d次胜利。"
@@ -121,7 +121,7 @@ L.MPROFILE_COPYS_SELF_ERROR	= "无法自己复制自己的声音及自定义文�
 L.MPROFILE_COPYS_S_ERROR		= "复制的源出错. 源声音及自定义文本配置文件可能被篡改."
 L.MPROFILE_DELETE_SUCCESS	= "%s(%d专精)的模块设置已经被删除."
 L.MPROFILE_DELETE_SELF_ERROR	= "无法删除一个正在使用的模块配置文件."
-L.MPROFILE_DELETE_S_ERROR	= "删除的源出错. 配置文件可能被篡改."
+L.MPROFILE_DELETE_S_ERROR		= "删除的源出错. 配置文件可能被篡改."
 
 L.NOTE_SHARE_SUCCESS		= "%s向你分享了他的%s的自定义注记"
 L.NOTE_SHARE_LINK			= "点击这里打开注记"
@@ -140,8 +140,8 @@ L.ALLMOD_DEFAULT_LOADED		= "本副本里的所有Boss配置已经被初始化"
 L.ALLMOD_STATS_RESETED		= "所有模组的状态已被重置"
 L.MOD_DEFAULT_LOADED			= "将会使用默认设置来进行本场战斗"
 
-L.WORLDBOSS_ENGAGED			= "世界Boss-%s可能正在作战。当前还有%s的生命值。 (由 %s 的" .. L.DBM .. "发送)"
-L.WORLDBOSS_DEFEATED		= "世界Boss-%s可能战斗结束了。 (由 %s 的" .. L.DBM .. "发送)"
+L.WORLDBOSS_ENGAGED			= "世界首领-%s可能正在作战。当前还有%s的生命值。 (由 %s 的" .. L.DBM .. "发送)"
+L.WORLDBOSS_DEFEATED		= "世界首领-%s可能战斗结束了。 (由 %s 的" .. L.DBM .. "发送)"
 L.WORLDBUFF_STARTED			= "世界增益 %s 已开始释放，阵营- %s (由%s的" .. L.DBM .. "发送)."
 
 L.TIMER_FORMAT_SECS			= "%.2f秒"
@@ -186,7 +186,7 @@ L.WHISPER_COMBAT_END_KILL_STATS		= "%s已在%s的战斗中取得胜利！总计%
 L.WHISPER_COMBAT_END_WIPE_AT			= "%s在%s（%s）的战斗中灭团了。"
 L.WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s在%s（%s）的战斗中灭团了。该难度下总共失败%d次。"
 --Scenarios (no percents. words like "fighting" or "wipe" changed to better fit scenarios)
-L.AUTO_RESPOND_WHISPER_SCENARIO		= "%s正在与场景战役-%s交战，（当前%s，%d/%d存活）"
+L.AUTO_RESPOND_WHISPER_SCENARIO		= "%s正在与场景战役-%s交战，（%d/%d存活）"
 L.WHISPER_SCENARIO_END_KILL			= "%s已在场景战役-%s的战斗中取得胜利！"
 L.WHISPER_SCENARIO_END_KILL_STATS	= "%s已在场景战役-%s的战斗中取得胜利！总计%d次胜利。"
 L.WHISPER_SCENARIO_END_WIPE			= "%s在场景战役-%s的战斗中灭团了。"
@@ -206,6 +206,7 @@ L.VOICE_DISABLED				= "你安装了语音包但是没有启动它。请在选项
 L.VOICE_COUNT_MISSING		= "在 %d 语音包中找不到倒计时语音。倒计时已恢复为默认值"
 L.BIG_WIGS								= "BigWigs"
 L.WEAKAURA_KEY							= " (|cff308530WA 代码:|r %s)"
+L.RENAME						= " (|cff359030重命名:|r |cff71d5ff%s|r)"
 
 L.UPDATEREMINDER_HEADER			= "您的 " .. L.DEADLY_BOSS_MODS .. " 版本已过期。\n您可以在Curse, Wago, WOWI或者到GitHub Releases页面下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
 L.UPDATEREMINDER_HEADER_SUBMODULE = "您的 %s 模组版本已过期。\n您可以在Curse, Wago, WOWI或者到GitHub Releases页面下载到新版本：%s。如果您使用整合包，请使用更新器更新。"
@@ -230,6 +231,7 @@ L.PLATER_NP_AURAS_MSG					= L.DBM .. "现在提供可以在敌人姓名版提供
 L.HARDCODED_FALLBACK				= L.DBM .. "检测到硬编码模组出现异常结果。" .. L.DBM .. "将在这场战斗中回退为暴雪计时器和警告。"
 
 L.MOVABLE_BAR				= "拖动我！"
+L.MOVABLE_FRAMES			= "框架可拖动"
 
 L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你发送了一个" .. L.DBM .. " 计时条: '%2$s'\n|Haddon:DBM:cancel:%2$s:nil|h|cff3588ff[取消此倒计时]|r|h |Haddon:DBM:ignore:%2$s:%1$s|h|cff3588ff[忽略来自%1$s的计时条]|r|h"
 --L.PIZZA_SYNC_INFO
@@ -283,7 +285,7 @@ L.RANGECHECK_OPTION_RADAR	= "显示距离雷达框体"
 L.RANGECHECK_OPTION_TEXT		= "显示文本框体"
 L.RANGECHECK_OPTION_BOTH		= "同时显示距离雷达框体和文本框体"
 L.RANGERADAR_HEADER			= "距离%d码 %d人"
-L.RANGERADAR_RHEADER			= "反向距离%码 %d人"
+L.RANGERADAR_RHEADER			= "反向距离%d码 %d人"
 L.RANGERADAR_IN_RANGE_TEXT	= "%d人在监视距离内（%0.1f码）"
 L.RANGECHECK_IN_RANGE_TEXT	= "%d人在监视距离内"
 L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1f码)"--One target
@@ -318,8 +320,18 @@ L.SLASHCMD_HELP				= {
 	"/dbm key: 执行大秘钥石和评级检查，适用于队伍/公会，并提供副本传送的快捷方式。 (也可使用: key, keys, keystone)",
 	"/dbm lag: 检测全团网络延时",
 	"/dbm durability: 检测全团装备耐久度",
-	"/dbm consumables: 进行团队消耗品检查 (alias: cons, consumes).",
 	"/dbm brez: 显示战复计时器框架以供定位。",
+	"/dbm help2: 显示额外的/命令"
+}
+L.SLASHCMD_HELP_CLASSIC					= {
+	"可用/命令:",
+	"-----------------",
+	"/dbm unlock: 显示一个可移动的计时条，可通过对它来移动所有" .. L.DBM .. "计时条的位置(也可使用: move)。",
+	"/dbm pull <秒>: 向所有团队成员发送一个长度为<秒>的开怪计时条(需要队长或助理权限)。",
+	"/dbm break <分钟>: 向所有团队成员发送一个长度为<分钟的狂暴计时条(需要队长或助理权限)。",
+	"/dbm timer: 启动一个" .. L.DBM .. "计时器，输入'/dbm timer'查询更多信息。",
+	"/dbm lag: 检测全团网络延时",
+	"/dbm durability: 检测全团装备耐久度",
 	"/dbm help2: 显示额外的/命令"
 }
 L.SLASHCMD_HELP2				= {
@@ -328,6 +340,7 @@ L.SLASHCMD_HELP2				= {
 	"/dbm version: 进行团队范围的" .. L.DBM .. "版本检测(也可使用: ver)",
 	"/dbm version2: 进行团队范围的" .. L.DBM .. "版本检测并密语那些过期版本用户(也可使用: ver2)",
 	"/range <码> 或者 /distance <码>: 显示距离雷达窗体。使用 /rrange 或者 /rdistance 翻转颜色。",
+	"/hudar <码>: 显示基于HUD的距离显示器提示器。",
 	"/dbm arrow: 显示" .. L.DBM .. "箭头，输入'/dbm arrow'查询更多信息。",
 	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。",
 	"/dbm dbtdebug: 显示用于错误报告的已净化计时条诊断信息。"
@@ -355,7 +368,7 @@ L.BREAK_START				= "开始休息 - %s分钟！（由 %s 发送）"
 L.BREAK_MIN					= "%s分钟后休息结束！"
 L.BREAK_SEC					= "%s秒后休息结束！"
 L.TIMER_BREAK				= "休息时间！"
-L.ANNOUNCE_BREAK_OVER		= "休息已结束"
+L.ANNOUNCE_BREAK_OVER		= "休息已于 %s 结束"
 
 L.TIMER_PULL				= "开怪倒计时"
 L.ANNOUNCE_PULL				= "%d秒后开怪 （由 %s 发送）"
@@ -446,6 +459,7 @@ L.AUTO_SPEC_WARN_TEXTS.blizzyou			= "你中了%s (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.link				= "%s 与 >%%s< 连线"
 L.AUTO_SPEC_WARN_TEXTS.defensive		= "%s - 快开自保技能"
 L.AUTO_SPEC_WARN_TEXTS.taunt			= ">%%s<中了%s - 快嘲讽"
+L.AUTO_SPEC_WARN_TEXTS.tauntsecret	= "%%s中了%s - 快嘲讽"
 L.AUTO_SPEC_WARN_TEXTS.close			= "你附近的>%%s<中了%s"
 L.AUTO_SPEC_WARN_TEXTS.move				= "%s - 快躲开"
 L.AUTO_SPEC_WARN_TEXTS.keepmove			= "%s - 保持移动"
@@ -455,6 +469,7 @@ L.AUTO_SPEC_WARN_TEXTS.dodgecount		= "%s (%%s) - 躲开攻击"
 L.AUTO_SPEC_WARN_TEXTS.dodgeloc			= "%s - 躲开%%s"
 L.AUTO_SPEC_WARN_TEXTS.moveaway			= "%s - 离开人群"
 L.AUTO_SPEC_WARN_TEXTS.moveawaycount	= "%s (%%s) - 离开人群"
+L.AUTO_SPEC_WARN_TEXTS.moveawaytarget	= "%s - 远离 %%s"
 L.AUTO_SPEC_WARN_TEXTS.moveto			= "%s - 靠近 >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.soak				= "%s - 快分担伤害"
 L.AUTO_SPEC_WARN_TEXTS.soakcount		= "%s - 快分担伤害 (%%s)"
@@ -468,6 +483,7 @@ L.AUTO_SPEC_WARN_TEXTS.count			= "%s! (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.stack			= "你叠加了%%d层%s"
 L.AUTO_SPEC_WARN_TEXTS.switch			= "%s - 转换目标"
 L.AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - 转换目标 (%%s)"
+L.AUTO_SPEC_WARN_TEXTS.switchcustom		= "%s - 转换目标 (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.gtfo				= "注意%%s - 快躲开"
 L.AUTO_SPEC_WARN_TEXTS.adds				= "小怪出现 - 转换目标"
 L.AUTO_SPEC_WARN_TEXTS.addscount		= "小怪出现 - 转换目标 (%%s)"
@@ -507,6 +523,7 @@ L.AUTO_SPEC_WARN_OPTIONS.dodgecount		= "特殊警告：当你受到$spell:%s影�
 L.AUTO_SPEC_WARN_OPTIONS.dodgeloc		= "特殊警告：当你受到$spell:%s影响并需要朝某个方向躲开攻击"
 L.AUTO_SPEC_WARN_OPTIONS.moveaway		= "特殊警告：当你受到$spell:%s影响并需要跑开人群时"
 L.AUTO_SPEC_WARN_OPTIONS.moveawaycount	= "特殊警告：当你受到$spell:%s影响并需要跑开人群时(带计数)"
+L.AUTO_SPEC_WARN_OPTIONS.moveawaytarget	= "特殊警告：当你受到$spell:%s影响并需要远离某人时(带目标)"
 L.AUTO_SPEC_WARN_OPTIONS.moveto			= "特殊警告：当他人中了$spell:%s并需要你去靠近时"
 L.AUTO_SPEC_WARN_OPTIONS.soak			= "特殊警告：当你需要分担$spell:%s伤害时"
 L.AUTO_SPEC_WARN_OPTIONS.soakcount		= "特殊警告：当你需要分担$spell:%s伤害时（带计数）"
@@ -520,6 +537,7 @@ L.AUTO_SPEC_WARN_OPTIONS.count 			= "特殊警告：$spell:%s(带计数)"
 L.AUTO_SPEC_WARN_OPTIONS.stack			= "特殊警告：当叠加了>=%d层$spell:%s时"
 L.AUTO_SPEC_WARN_OPTIONS.switch 		= "特殊警告：针对$spell:%s需要转换目标"
 L.AUTO_SPEC_WARN_OPTIONS.switchcount	= "特殊警告：针对$spell:%s需要转换目标(带计数)"
+L.AUTO_SPEC_WARN_OPTIONS.switchcustom	= "特殊警告：针对$spell:%s需要转换目标(带信息)"
 L.AUTO_SPEC_WARN_OPTIONS.gtfo			= "特殊警告：需要躲开地上的有害技能"
 L.AUTO_SPEC_WARN_OPTIONS.adds			= "特殊警告：需要攻击小怪"
 L.AUTO_SPEC_WARN_OPTIONS.addscount		= "特殊警告：需要攻击小怪(带计数)"
@@ -540,11 +558,19 @@ L.AUTO_TIMER_TEXTS.cd					= "%s"
 L.AUTO_TIMER_TEXTS.cdcount				= "%s（%%s）"
 L.AUTO_TIMER_TEXTS.cdsource				= "%s：>%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial			= "特殊技能冷却"
+L.AUTO_TIMER_TEXTS.cdcombo				= "%%1$s + %%2$s"
 
 L.AUTO_TIMER_TEXTS.next 				= "%s"
 L.AUTO_TIMER_TEXTS.nextcount			= "%s（%%s）"
 L.AUTO_TIMER_TEXTS.nextsource			= "%s：>%%s<"
 L.AUTO_TIMER_TEXTS.nextspecial			= "下一次特殊技能"
+L.AUTO_TIMER_TEXTS.nextcombo			= "%%1$s + %%2$s"
+
+L.AUTO_TIMER_TEXTS.var					= "%s"
+L.AUTO_TIMER_TEXTS.varcount				= "%s（%%s）"
+L.AUTO_TIMER_TEXTS.varsource			= "%s：>%%s<"
+L.AUTO_TIMER_TEXTS.varspecial			= "特殊技能"
+L.AUTO_TIMER_TEXTS.varcombo				= "%%1$s + %%2$s"
 
 L.AUTO_TIMER_TEXTS.achievement 			= "%s"
 L.AUTO_TIMER_TEXTS.stage				= "阶段"
@@ -595,7 +621,7 @@ L.AUTO_TIMER_OPTIONS.varcount			= "计时条：$spell:%s冷却时间（带可变
 L.AUTO_TIMER_OPTIONS.varnp				= "姓名版计时条：$spell:%s冷却时间（带可变范围）"
 L.AUTO_TIMER_OPTIONS.varpnp				= "优先姓名版计时条：$spell:%s冷却时间（带可变范围）"
 L.AUTO_TIMER_OPTIONS.varsource			= "计时条：$spell:%s冷却时间及来源（带可变范围）"
-L.AUTO_TIMER_OPTIONS.varspecial			= "计时条：$下一次特殊技能（带可变范围）"
+L.AUTO_TIMER_OPTIONS.varspecial			= "计时条：下一次特殊技能（带可变范围）"
 L.AUTO_TIMER_OPTIONS.varcombo			= "计时条：下一次技能冷却（带可变范围）"
 L.AUTO_TIMER_OPTIONS.achievement		= "计时条：成就-%s"
 L.AUTO_TIMER_OPTIONS.stage				= "计时条：下一阶段"
@@ -640,22 +666,29 @@ L.AUTO_YELL_OPTION_TEXT.shortposition	= "当你受到$spell:%s影响时大喊（
 L.AUTO_YELL_OPTION_TEXT.combo		= "当你受到$spell:%s影响时大喊（带一个自定义文本）"
 L.AUTO_YELL_OPTION_TEXT.repeatplayer	= "当你受到$spell:%s影响时重复大喊（带名字）"
 L.AUTO_YELL_OPTION_TEXT.repeaticon		= "当你受到$spell:%s影响时重复大喊（带标记）"
+L.AUTO_YELL_OPTION_TEXT.icontarget			= "当你被$spell:%s点名时大喊图标以警告他人"
 --
-L.AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
-L.AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了%s"
-L.AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. " 中了%s (%%d)"
-L.AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s 剩%%d秒"
-L.AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d秒"
-L.AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d秒"
-L.AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").. " ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})"
-L.AUTO_YELL_ANNOUNCE_TEXT.shortposition	= "{rt%%1$d}%s" --Icon, Spellname
-L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s, %%s"
+L.AUTO_YELL_ANNOUNCE_TEXT.shortyell			= "%s"
+L.AUTO_YELL_ANNOUNCE_TEXT.yell				= UnitName("player") .. " 中了%s"
+L.AUTO_YELL_ANNOUNCE_TEXT.count				= UnitName("player") .. " 中了%s (%%d)"
+L.AUTO_YELL_ANNOUNCE_TEXT.fade				= "%s 剩%%d秒"
+L.AUTO_YELL_ANNOUNCE_TEXT.shortfade			= "%%d秒"
+L.AUTO_YELL_ANNOUNCE_TEXT.iconfade			= "{rt%%2$d}%%1$d秒"
+L.AUTO_YELL_ANNOUNCE_TEXT.iconfadenoicon	= "%%1$d"
+L.AUTO_YELL_ANNOUNCE_TEXT.position			= UnitName("player").. " ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})"
+L.AUTO_YELL_ANNOUNCE_TEXT.positionnoIcon	= "%s %%s 在 " ..UnitName("player")
+L.AUTO_YELL_ANNOUNCE_TEXT.shortposition		= "{rt%%1$d}%s" --Icon, Spellname
+L.AUTO_YELL_ANNOUNCE_TEXT.shortpositionnoicon	= "%s"
+L.AUTO_YELL_ANNOUNCE_TEXT.combo				= "%s, %%s"
+L.AUTO_YELL_ANNOUNCE_TEXT.icontarget		= "{rt%%1$d}{rt%%1$d}{rt%%1$d}"
 --L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer						= UnitName("player")--Doesn't need translation, it's just player name spam
 --L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon							= "{rt%%1$d}"--Doesn't need translation. It's just icon spam
 
 --
---L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
+L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE				= "%s 消失"
+L.AUTO_HUD_OPTION_TEXT				= "为$spell:%s显示HudMap(退休了)"
+L.AUTO_HUD_OPTION_TEXT_MULTI			= "为多个机制显示HudMap(退休了)"
 L.AUTO_NAMEPLATE_OPTION_TEXT			= "为$spell:%s显示姓名面板光环，包括兼容插件和"..L.DBM
 L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED		= "为$spell:%s显示姓名面板光环，只包括"..L.DBM
 L.AUTO_RANGE_OPTION_TEXT				= "距离监视(%s码)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
@@ -668,6 +701,11 @@ L.AUTO_INFO_FRAME_OPTION_TEXT3		= "信息框：$spell:%s （当%%s阈值达到�
 L.AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时播放准备检查的音效（即使没有选定目标）"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "显示该区域的最快通关计时器"
 L.AUTO_PRIVATEAURA_OPTION_TEXT		= "在这场战斗中，为DBM的私人光环$spell:%s播放音效"
+L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT	= "当你成为$spell:%s的目标时，播放DBM的光环音效警报。"
+L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "当你需要远离$spell:%s时，播放DBM的光环音效警报。"
+L.AUTO_PRIVATEAURA_OPTION_POST_TEXT		= "对于$spell:%s的持续影响，播放DBM的光环音效警报。"
+L.AUTO_CUSTOMTIMER_OPTION_TEXT			= "显示$spell:%s的计时器"
+L.AUTO_CUSTOMALERT_OPTION_TEXT			= "设置$spell:%s即将施放时的警报音效"
 L.AUTO_GOSSIP_BUFFS					= "自动选择NPC对话来开启专业增益"
 L.AUTO_GOSSIP_PERFORM_ACTION		= "自动选择NPC对话来执行动作（例如传送）"
 L.AUTO_GOSSIP_START_ENCOUNTER		= "自动选择NPC对话来开始战斗"--This will never need to be plural, since it won't be in a trash mod like other two
@@ -677,6 +715,23 @@ L.MOVE_WARNING_BAR				= "可拖动的团队警告"
 L.MOVE_WARNING_MESSAGE			= "感谢您使用" .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR		= "可拖动的特别警告"
 L.MOVE_SPECIAL_WARNING_TEXT		= "特别警告"
+L.MOVE_PRIVATE_AURA_TEXT				= "<secret value> 瞄准你使用法术 <secret value>"
+L.MOVE_PRIVATE_AURA_DISABLED			= "预览被禁用，因为光环框架在选项中全局禁用。"
+
+L.HUD_INVALID_TYPE				= "无效的HUD类型"
+L.HUD_INVALID_TARGET				= "没有给定HUD目标"
+L.HUD_INVALID_SELF				= "不能把自己设定成HUD目标"
+L.HUD_INVALID_ICON				= "当使用团队标记作为HUD目标定义时，不能定义一个没有团队标记的目标"
+L.HUD_SUCCESS					= "HUD成功地使用了你的参数启动了。HUD会在%s关闭, 或者输入 '/dbm hud hide'来关闭"
+L.HUD_USAGE	= {
+	L.DBM .. "-HudMap 可用命令：",
+	"-----------------",
+	"/dbm hud <类型> <目标> <持续时间> 新建一个指向玩家的HUD指示器",
+	"变量-类型: arrow, dot, red, blue, green, yellow, icon (请输入英语。需要相应的带团队标记的目标。)",
+	"变量-目标: target, focus, <玩家名字> (如果是玩家名字是拉丁字母请区分大小写)",
+	"变量-持续时间: 秒数. 如果这个参数留空, 默认为20分钟",
+	"/dbm hud hide: 清空并关闭HUD"
+}
 
 L.ARROW_MOVABLE				= "可移动箭头"
 L.ARROW_WAY_USAGE				= "/dway <x> <y>: 新建一个箭头到指定位置 (使用区域地图坐标系)"
@@ -697,10 +752,25 @@ L.TIMER_RESPAWN		= "%s 刷新"
 
 L.LAG_HEADER					= L.DBM .. " - 延时检测"
 L.DUR_HEADER					= L.DBM .. "- 装备耐久度检测结果"
+L.KEYSTONES_HEADER				= L.DBM .. " - 钥石"
 L.GEAR_HEADER					= L.DBM .. " - 装备检测结果"
 L.GEAR_MISSING_GEMS			= "缺失宝石"
 L.GEAR_MISSING_ENCHANTS		= "缺失附魔"
---L.KEYSTONES_HEADER					= L.DBM.. " - Keystones"
+L.GEAR_DURABILITY				= "耐久度 %"
+L.GEAR_BROKEN					= "损坏"
+L.RAIDCHECKS_TAB_CONSUMABLES	= "消耗品"
+L.RAIDCHECKS_TAB_GEAR			= "装备"
+L.RAIDCHECKS_TAB_LATENCY		= "延迟"
+L.CONSUMABLES_HEADER			= L.DBM .. " - 消耗品检查"
+L.CONSUMABLES_FLASK				= "合剂"
+L.CONSUMABLES_FOOD				= "食物"
+L.CONSUMABLES_WEAPON			= "武器"
+L.CONSUMABLES_HS				= "治疗石"
+L.CONSUMABLES_RUNE				= "符文"
+L.CONSUMABLES_NA				= "N/A"
+L.CONSUMABLES_SHAMAN_IMBUES	= "风怒火舌大地生命武器"
+L.CONSUMABLES_PALADIN_IMBUES	= "圣化仪式裁决仪式"
+L.BREZ_HEADER					= "战斗复活"
 
 L.OVERRIDE_ACTIVATED			= "本次战斗的配置已经被队长的配置覆盖"
 
@@ -734,6 +804,7 @@ L.DBM_INSTALL_PACKAGE_MOP		= "熊猫人之谜模块"
 L.DBM_INSTALL_PACKAGE_DUNGEON	= "五人本与事件模块"
 
 -- Tests
+L.DBM_TAINTED_BY_TESTS			= "DBM曾经在当前进程中使用过测试模式的时间卷曲功能，建议你在正式战斗前 /reload 界面以防止DBM出现奇怪的问题。"
 
 -- Boss tooltip
 L.TOOLTIP_DBM					= L.DBM .. " 信息"
