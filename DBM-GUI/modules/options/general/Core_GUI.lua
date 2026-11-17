@@ -109,6 +109,12 @@ resetbutton:SetScript("OnClick", function()
 	DBM:RepositionFrames()
 end)
 
+if DBM:IsVanilla() or DBM:IsTBC() or DBM:IsWrath() then
+	local roleSettingsArea = coreoptions:CreateArea(L.GroupRoleSettings)
+	roleSettingsArea:CreateCheckButton(L.AutoSetRole, true, nil, "AutoSetRole")
+	roleSettingsArea:CreateText(L.AutoSetRoleNote, nil, true, GameFontNormalSmall)
+end
+
 local modelarea = coreoptions:CreateArea(L.ModelOptions)
 
 modelarea:CreateCheckButton(L.EnableModels, true, nil, "EnableModels")
