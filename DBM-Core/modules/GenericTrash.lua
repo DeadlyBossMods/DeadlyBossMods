@@ -34,6 +34,10 @@ local function debugUnit(unit)
 	return private.isForever and DBM.Options.DebugMode and (unit == "target" or unit == "softenemy")
 end
 
+local function debugBarID(castBarID)
+	return DBM:issecretvalue(castBarID) and "secret" or tostring(castBarID)
+end
+
 local function cancelTimers(timers)
 	for timer in pairs(timers) do
 		timer:Cancel()
@@ -218,7 +222,7 @@ end
 function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried)
 	local debug = debugUnit(unit)
 	if debug then
-		debugCast(unit, (succeeded and "succeeded" or channel and "channel" or "cast") .. (retried and " retry received" or " received"))
+		debugCast(unit, (succeeded and "succeeded" or channel and "channel" or "cast") .. (retried and " retry received" or " received") .. " (cast bar ID: " .. debugBarID(castBarID) .. ")")
 	end
 	if not registered then
 		if debug then debugCast(unit, "rejected: events inactive") end
@@ -354,14 +358,14 @@ function module:HandleCast(unit, spellID, channel, castBarID, succeeded, retried
 	if debug then debugCast(unit, "warning dispatch completed") end
 end
 
--- Forever cast-bar IDs are not stable identities; correlate a cast's events by token and receipt frame instead.
+-- Track events by token and receipt frame without comparing cast-bar IDs.
 -- Returns true when a START/CHANNEL reports a cast whose SUCCEEDED already arrived this frame.
-local function beginCast(unit)
+local function beginCast(unit, castBarID)
 	local now = GetTime()
 	castStates = castStates or {}
 	castStates[unit] = true
 	if succeededTimes and succeededTimes[unit] == now then
-		if debugUnit(unit) then debugCast(unit, "rejected: start follows same-frame succeeded") end
+		if debugUnit(unit) then debugCast(unit, "rejected: start follows same-frame succeeded (cast bar ID: " .. debugBarID(castBarID) .. ")") end
 		return true
 	end
 end
@@ -373,7 +377,7 @@ local function endCast(unit)
 end
 
 function module:UNIT_SPELLCAST_START_UNFILTERED(unit, _, spellID, castBarID)
-	if private.isForever and beginCast(unit) then return end
+	if private.isForever and beginCast(unit, castBarID) then return end
 	self:HandleCast(unit, spellID, false, castBarID)
 end
 
@@ -385,7 +389,7 @@ function module:UNIT_SPELLCAST_SUCCEEDED_UNFILTERED(unit, _, spellID, castBarID)
 		-- STOP can precede SUCCEEDED in the same frame when a cast completes.
 		if state == true or state == now then
 			castStates[unit] = nil
-			if debugUnit(unit) then debugCast(unit, "rejected: succeeded completes a reported cast") end
+			if debugUnit(unit) then debugCast(unit, "rejected: succeeded completes a reported cast (cast bar ID: " .. debugBarID(castBarID) .. ")") end
 			return
 		end
 		succeededTimes = succeededTimes or {}
@@ -395,13 +399,27 @@ function module:UNIT_SPELLCAST_SUCCEEDED_UNFILTERED(unit, _, spellID, castBarID)
 end
 
 function module:UNIT_SPELLCAST_CHANNEL_START_UNFILTERED(unit, _, spellID, castBarID)
-	if private.isForever and beginCast(unit) then return end
+	if private.isForever and beginCast(unit, castBarID) then return end
 	self:HandleCast(unit, spellID, true, castBarID)
 end
 
-function module:UNIT_SPELLCAST_STOP_UNFILTERED(unit)
+function module:UNIT_SPELLCAST_STOP_UNFILTERED(unit, _, _, castBarID)
+	if debugUnit(unit) and castStates and castStates[unit] == true and bossPermission() == true then
+		debugCast(unit, "stop received (cast bar ID: " .. debugBarID(castBarID) .. ")")
+	end
 	endCast(unit)
 end
 
-module.UNIT_SPELLCAST_INTERRUPTED_UNFILTERED = module.UNIT_SPELLCAST_STOP_UNFILTERED
-module.UNIT_SPELLCAST_CHANNEL_STOP_UNFILTERED = module.UNIT_SPELLCAST_STOP_UNFILTERED
+function module:UNIT_SPELLCAST_INTERRUPTED_UNFILTERED(unit, _, _, _, castBarID)
+	if debugUnit(unit) and castStates and castStates[unit] == true and bossPermission() == true then
+		debugCast(unit, "interrupted received (cast bar ID: " .. debugBarID(castBarID) .. ")")
+	end
+	endCast(unit)
+end
+
+function module:UNIT_SPELLCAST_CHANNEL_STOP_UNFILTERED(unit, _, _, _, castBarID)
+	if debugUnit(unit) and castStates and castStates[unit] == true and bossPermission() == true then
+		debugCast(unit, "channel stop received (cast bar ID: " .. debugBarID(castBarID) .. ")")
+	end
+	endCast(unit)
+end
