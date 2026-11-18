@@ -2510,7 +2510,7 @@ do
 					private.sendBWSync("Q", ("%d^%s"):format(0, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata or private.isMop or private.isForever then
-					self:Schedule(2, self.RoleCheck, false, self)
+					self:Schedule(2, self.RoleCheck, self, false)
 				end
 				fireEvent("DBM_raidJoin", playerName)
 			end
@@ -2600,7 +2600,7 @@ do
 					private.sendBWSync("Q", ("%d^%s"):format(0, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata or private.isMop or private.isForever then
-					self:Schedule(2, self.RoleCheck, false, self)
+					self:Schedule(2, self.RoleCheck, self, false)
 				end
 				fireEvent("DBM_partyJoin", playerName)
 			end
