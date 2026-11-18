@@ -409,9 +409,9 @@ L.ShowGuildMessages 				= "대화창에 길드 레이드 전투 시작/보스 �
 L.ShowGuildMessagesPlus				= "길드팟 신화+ 전투 시작/보스 처치/전멸 메시지도 표시 (길드 레이드 옵션 체크 필요)"
 
 L.Area_ChatAlerts					= "기타 알림 설정"
-L.AutoSetRole						= "파티 역할 자동 설정"
-L.AutoSetRoleNote					= "DBM이 전문화에 맞는 역할을 잘못 감지하는 경우가 아니라면 이 옵션을 켜 두세요. 다른 애드온이 일관된 결정을 내리기 위해 이 역할에 의존할 수 있습니다."
-L.GroupRoleSettings					= "파티 역할 설정"
+L.AutoSetRole						= "내 그룹 역할 자동 설정"
+L.AutoSetRoleNote					= "DBM이 내 전문화에 맞는 역할을 잘못 감지하는 경우가 아니라면 이 옵션을 켜놓으세요. 자동으로 설정된 역할을 다른 애드온이 확인해서 일관된 결정을 내릴 수 있기 때문입니다."
+L.GroupRoleSettings					= "그룹 역할 설정"
 L.RoleSpecAlert						= "공격대에 들어왔을 때 현재 전문화와 설정된 전리품 전문화가 맞지 않으면 알림 메시지 표시"
 L.CheckGear							= "풀링 타이머가 나오면 착용 장비 알림 메시지 표시 (착용 아이템 레벨이 소지한 아이템 레벨보다 40 이상 낮거나 주무기가 없을 경우)"
 L.WorldBossAlert					= "같은 서버의 길드원이나 친구가 필드 보스 전투를 시작하면 알림 메시지 표시 (전송자가 연합 서버에 있다면 부정확합니다)"
