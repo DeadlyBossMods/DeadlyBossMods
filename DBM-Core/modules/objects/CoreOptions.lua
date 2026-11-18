@@ -447,6 +447,7 @@ DBM.DefaultOptions = {
 	DebugLogBinaryFont = false,
 	DebugLevel = 1,
 	DebugSound = true,
+	AutoSetRole = playerClass ~= "DRUID",
 	RoleSpecAlert = true,
 	CheckGear = true,
 	WorldBossAlert = not private.isRetail,

@@ -2510,7 +2510,7 @@ do
 					private.sendBWSync("Q", ("%d^%s"):format(0, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata or private.isMop or private.isForever then
-					self:Schedule(2, self.RoleCheck, false, self)
+					self:Schedule(2, self.RoleCheck, self, false)
 				end
 				fireEvent("DBM_raidJoin", playerName)
 			end
@@ -2600,7 +2600,7 @@ do
 					private.sendBWSync("Q", ("%d^%s"):format(0, private.fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID", "NORMAL")
 				end
 				if private.isRetail or private.isCata or private.isMop or private.isForever then
-					self:Schedule(2, self.RoleCheck, false, self)
+					self:Schedule(2, self.RoleCheck, self, false)
 				end
 				fireEvent("DBM_partyJoin", playerName)
 			end
@@ -4535,6 +4535,9 @@ DBT:SetAnnounceHook(function(bar)
 end)
 
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
+local roleSetByDBM = false
+local lastRoleSetByDBM
+
 function DBM:RoleCheck(ignoreLoot)
 	local role
 	if private.isRetail or private.isMop then
@@ -4566,8 +4569,20 @@ function DBM:RoleCheck(ignoreLoot)
 		end
 	end
 	if not InCombatLockdown() and not IsFalling() and ((IsPartyLFG() and (difficulties.difficultyIndex == 14 or difficulties.difficultyIndex == 15)) or not IsPartyLFG()) then
-		if UnitGroupRolesAssigned("player") ~= role then
+		local currentRole = UnitGroupRolesAssigned("player")
+		local lessAccurateRoleClient = private.isForever or private.isClassic or private.isBCC or private.isWrath
+		local roleWasSetByDBM = roleSetByDBM and currentRole == lastRoleSetByDBM
+		if roleSetByDBM and not roleWasSetByDBM then
+			roleSetByDBM = false
+			lastRoleSetByDBM = nil
+		end
+		local roleCanBeUpdated = not lessAccurateRoleClient or (self.Options.AutoSetRole and (currentRole == "NONE" or roleWasSetByDBM))
+		if roleCanBeUpdated and currentRole ~= role then
 			UnitSetRole("player", role)
+			if lessAccurateRoleClient then
+				roleSetByDBM = true
+				lastRoleSetByDBM = role
+			end
 		end
 	end
 end
