@@ -32,8 +32,8 @@
 ## X-Wago-ID: qv633o6b
 
 localization.en.lua
-localization.kr.lua
-localization.ru.lua
+localization.kr.lua [AllowLoadTextLocale koKR]
+localization.ru.lua [AllowLoadTextLocale ruRU]
 
 UnbindingofKithix\Kithix.lua
 TideboundGrotto\NymrissaWavecaller.lua

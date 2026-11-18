@@ -32,9 +32,9 @@
 ## X-Wago-ID: qv633o6b
 
 localization.en.lua
-localization.kr.lua
-localization.ru.lua
-localization.cn.lua
+localization.kr.lua [AllowLoadTextLocale koKR]
+localization.ru.lua [AllowLoadTextLocale ruRU]
+localization.cn.lua [AllowLoadTextLocale zhCN]
 
 TheVenomousAbyss\NekzalitheSoulcoiler.lua
 TheVenomousAbyss\EntombedSentinels.lua

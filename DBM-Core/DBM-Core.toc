@@ -39,26 +39,26 @@ Libs\LibDropDownMenu\LibDropDownMenu.xml [AllowLoadGameType tbc, wrath]
 Libs\LibCustomGlow-1.0\LibCustomGlow-1.0.xml
 
 localization.en.lua
-localization.br.lua
-localization.cn.lua
-localization.de.lua
-localization.es.lua
-localization.fr.lua
-localization.it.lua
-localization.kr.lua
-localization.ru.lua
-localization.tw.lua
+localization.br.lua [AllowLoadTextLocale ptBR]
+localization.cn.lua [AllowLoadTextLocale zhCN]
+localization.de.lua [AllowLoadTextLocale deDE]
+localization.es.lua [AllowLoadTextLocale esES, esMX]
+localization.fr.lua [AllowLoadTextLocale frFR]
+localization.it.lua [AllowLoadTextLocale itIT]
+localization.kr.lua [AllowLoadTextLocale koKR]
+localization.ru.lua [AllowLoadTextLocale ruRU]
+localization.tw.lua [AllowLoadTextLocale zhTW]
 
 commonlocal.en.lua
-commonlocal.tw.lua
-commonlocal.br.lua
-commonlocal.cn.lua
-commonlocal.de.lua
-commonlocal.es.lua
-commonlocal.fr.lua
-commonlocal.it.lua
-commonlocal.kr.lua
-commonlocal.ru.lua
+commonlocal.tw.lua [AllowLoadTextLocale zhTW]
+commonlocal.br.lua [AllowLoadTextLocale ptBR]
+commonlocal.cn.lua [AllowLoadTextLocale zhCN]
+commonlocal.de.lua [AllowLoadTextLocale deDE]
+commonlocal.es.lua [AllowLoadTextLocale esES, esMX]
+commonlocal.fr.lua [AllowLoadTextLocale frFR]
+commonlocal.it.lua [AllowLoadTextLocale itIT]
+commonlocal.kr.lua [AllowLoadTextLocale koKR]
+commonlocal.ru.lua [AllowLoadTextLocale ruRU]
 
 # Pre-core modules
 modules\objects\PrototypeRegistry.lua

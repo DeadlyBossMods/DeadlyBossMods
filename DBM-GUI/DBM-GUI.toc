@@ -32,15 +32,15 @@
 ## X-Website: https://deadlybossmods.com
 
 localization.en.lua
-localization.de.lua
-localization.cn.lua
-localization.ru.lua
-localization.fr.lua
-localization.it.lua
-localization.tw.lua
-localization.kr.lua
-localization.es.lua
-localization.br.lua
+localization.de.lua [AllowLoadTextLocale deDE]
+localization.cn.lua [AllowLoadTextLocale zhCN]
+localization.ru.lua [AllowLoadTextLocale ruRU]
+localization.fr.lua [AllowLoadTextLocale frFR]
+localization.it.lua [AllowLoadTextLocale itIT]
+localization.tw.lua [AllowLoadTextLocale zhTW]
+localization.kr.lua [AllowLoadTextLocale koKR]
+localization.es.lua [AllowLoadTextLocale esES, esMX]
+localization.br.lua [AllowLoadTextLocale ptBR]
 
 DBM-GUI.lua
 DBM-GUI_DropDownNEW.lua

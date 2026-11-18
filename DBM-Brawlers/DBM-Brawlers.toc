@@ -33,15 +33,15 @@
 ## X-DBM-Mod-MapID: 369,1043
 ## X-DBM-Mod-MinCoreRevision: 20260522000000
 localization.en.lua
-localization.kr.lua
-localization.de.lua
-localization.cn.lua
-localization.tw.lua
-localization.es.lua
-localization.fr.lua
-localization.ru.lua
-localization.br.lua
-localization.it.lua
+localization.kr.lua [AllowLoadTextLocale koKR]
+localization.de.lua [AllowLoadTextLocale deDE]
+localization.cn.lua [AllowLoadTextLocale zhCN]
+localization.tw.lua [AllowLoadTextLocale zhTW]
+localization.es.lua [AllowLoadTextLocale esES, esMX]
+localization.fr.lua [AllowLoadTextLocale frFR]
+localization.ru.lua [AllowLoadTextLocale ruRU]
+localization.br.lua [AllowLoadTextLocale ptBR]
+localization.it.lua [AllowLoadTextLocale itIT]
 Brawlers.lua
 Rank1.lua
 Rank2.lua
