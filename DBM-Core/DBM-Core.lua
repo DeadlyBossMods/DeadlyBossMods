@@ -1774,10 +1774,10 @@ do
 				DBM.MidnightPopup:ShowMidnightPopup()
 			end
 		end
+		--GetSpecialization can be unavailable during the initial reload-time aura update, leaving a fallback spec cached.
+		--Refresh it here and rebuild anchors so Auto co-tank auras use the now-available tank role.
+		self:SetCurrentSpecInfo()
 		if private.isRetail or private.isForever then
-			--GetSpecialization can be unavailable during the initial reload-time aura update, leaving a fallback spec cached.
-			--Refresh it here and rebuild anchors so Auto co-tank auras use the now-available tank role.
-			self:SetCurrentSpecInfo()
 			self:UpdateZoneAuraAnchors(2)
 		end
 		difficulties:RefreshCache()
@@ -3481,7 +3481,9 @@ do
 		["WARLOCK"] = 11629,
 	}
 
+	---@return boolean specDetected Whether the current lookup identified a spec without using a fallback.
 	function DBM:SetCurrentSpecInfo()
+		local specDetected = false
 		if private.isRetail or private.isMop then
 			currentSpecGroup = GetSpecialization()
 			if currentSpecGroup then
@@ -3489,6 +3491,8 @@ do
 				currentSpecID = tonumber(currentSpecID)
 				if not currentSpecID or currentSpecID == 0 then
 					currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass
+				else
+					specDetected = true
 				end
 			else
 				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
@@ -3497,13 +3501,18 @@ do
 		elseif private.isForever then
 			--Each class has only one specialization; the library selects the talent group with the most points.
 			currentSpecGroup = GetSpecialization() or 1
-			currentSpecID = LibSpec and LibSpec.MySpecialization() or foreverFallbackClassToRole[playerClass]
+			currentSpecID = LibSpec and LibSpec.MySpecialization()
+			specDetected = type(currentSpecID) == "number" and currentSpecID > 0
+			if not specDetected then
+				currentSpecID = foreverFallbackClassToRole[playerClass]
+			end
 			currentSpecName = tostring(currentSpecID)
 		elseif private.isCata then
 			currentSpecGroup = GetPrimaryTalentTree()
 			if currentSpecGroup and GetTalentTabInfo(currentSpecGroup) then
 				currentSpecID, currentSpecName = GetTalentTabInfo(currentSpecGroup)
 				currentSpecID = tonumber(currentSpecID)
+				specDetected = currentSpecID ~= nil and currentSpecID > 0
 			else
 				currentSpecID, currentSpecName = catafallbackClassToRole[playerClass], playerClass--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 			end
@@ -3521,6 +3530,7 @@ do
 							currentSpecGroup = i
 							currentSpecID = playerClass .. tostring(i)--Associate specID with class name and tabnumber (class is used because spec name is shared in some spots like "holy")
 							currentSpecName = currentSpecID
+							specDetected = true
 						end
 					end
 				end
@@ -3533,6 +3543,7 @@ do
 			--Refresh entire spec table if not in combat and it's still missing for some reason
 			DBMExtraGlobal:rebuildSpecTable()
 		end
+		return specDetected
 	end
 
 	function DBM:GetCurrentSpecInfo()
@@ -4539,6 +4550,10 @@ local roleSetByDBM = false
 local lastRoleSetByDBM
 
 function DBM:RoleCheck(ignoreLoot)
+	if not self:SetCurrentSpecInfo() then
+		self:Debug("Skipping role check: specialization data unavailable", 2)
+		return
+	end
 	local role
 	if private.isRetail or private.isMop then
 		local spec = GetSpecialization()
@@ -4553,20 +4568,19 @@ function DBM:RoleCheck(ignoreLoot)
 		end
 	else--Cata and Forever
 		--Note: Forever will be iffy for hybrid specs since specIds are more or less guessed
-		if (not currentSpecID or currentSpecID == 0) then
-			DBM:SetCurrentSpecInfo()
-		end
 		if currentSpecID and private.specRoleTable[currentSpecID] then
 			if private.specRoleTable[currentSpecID]["Healer"] then
 				role = "HEALER"
 			elseif private.specRoleTable[currentSpecID]["Tank"] then
 				role = "TANK"
-			else
+			elseif private.specRoleTable[currentSpecID]["Dps"] then
 				role = "DAMAGER"
 			end
-		else--By some miracle, despite excessive redundancy, it still failed because classic spagetti code.
-			role = "DAMAGER"--Set default role (which is what cataclysm does btw, it sets everyone to damager on raid join unless changed by our mod)
 		end
+	end
+	if role ~= "TANK" and role ~= "HEALER" and role ~= "DAMAGER" then
+		self:Debug("Skipping role check: specialization role unavailable", 2)
+		return
 	end
 	if not InCombatLockdown() and not IsFalling() and ((IsPartyLFG() and (difficulties.difficultyIndex == 14 or difficulties.difficultyIndex == 15)) or not IsPartyLFG()) then
 		local currentRole = UnitGroupRolesAssigned("player")
