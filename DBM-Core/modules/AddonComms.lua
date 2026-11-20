@@ -15,7 +15,7 @@ local checkEntry, removeEntry = tableUtils.checkEntry, tableUtils.removeEntry
 local mrandom = math.random
 local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage -- Classic has C_ChatInfo but not C_ChatInfo.SendChatMessage, need to use global for classic
 local BNSendWhisper = C_BattleNet and C_BattleNet.SendWhisper or BNSendWhisper
-local playerName, playerRealm = private.playerName, GetRealmName()
+local playerName, playerRealm = private.playerName, private.isForever and "" or GetRealmName()
 private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 local normalizedPlayerRealm = playerRealm:gsub("[%s-]+", "")
 local cSyncSender, eeSyncSender = {}, {}
@@ -175,7 +175,9 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if IsInGuild() then
 		ChatThrottleLib:SendAddonMessage("ALERT", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 	end
-	if self.Options.EnableWBSharing and not noBNet then
+	if self.Options.EnableWBSharing and not noBNet and not private.isForever then
+		--Forever has too many layers, AND blizzard removed ability to detect game types to even prevent sending syncs to wrong game type
+		--So we skip bnet syncing entirely
 		local _, numBNetOnline = BNGetNumFriends()
 		local connectedServers = GetAutoCompleteRealms()
 		for i = 1, numBNetOnline do

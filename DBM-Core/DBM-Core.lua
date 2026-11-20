@@ -144,7 +144,7 @@ private:RegisterPlayerNameCallback(function(_, name) playerName = name end)
 local playerGUID = UnitGUID("player")
 private.playerLevel = UnitLevel("player")
 private.LastInstanceType = nil
-local playerRealm = GetRealmName()
+local playerRealm = private.isForever and "" or GetRealmName()
 local normalizedPlayerRealm = playerRealm:gsub("[%s-]+", "")
 private.chatPrefixShort = "<" .. L.DBM .. "> "
 local dbmIsEnabled = true
@@ -3001,6 +3001,7 @@ do
         if CustomNames then
             name = CustomNames.Get(name)
         end
+        if private.isForever then return name end
         local shortName, serverName = string.split("-", name)
         if serverName and serverName ~= playerRealm and serverName ~= normalizedPlayerRealm then
             return shortName .. "*"
