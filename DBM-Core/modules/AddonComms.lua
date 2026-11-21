@@ -63,13 +63,6 @@ function DBM:ResetVersionCheck(name)
 	end
 end
 
-local function getFullName()
-	if private.isForever then
-		return playerName--Realm names not used in forever
-	end
-	return playerName .. "-" .. normalizedPlayerRealm
-end
-
 local function getSendChannel()
 	if IsTrialAccount() then
 		return "SOLO"
@@ -109,15 +102,14 @@ local function sendSync(protocol, prefix, msg, priority, isLogged)
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	if DBM:IsEnabled() or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		local fullname = getFullName()
 		local sendChannel = getSendChannel()
 		if sendChannel == "SOLO" then
 			handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
 		else
 			if isLogged then
-				ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
+				ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, "" .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
 			else
-				ChatThrottleLib:SendAddonMessage(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
+				ChatThrottleLib:SendAddonMessage(priority, DBMPrefix, "" .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
 			end
 		end
 	end
@@ -133,11 +125,10 @@ private.sendSync = sendSync
 ---@param isLogged boolean?
 local function sendWhisperSync(protocol, prefix, msg, whisperTarget, priority, isLogged)
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
-	local fullname = getFullName()
 	if isLogged then
-		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
+		ChatThrottleLib:SendAddonMessageLogged(priority, DBMPrefix, "" .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
 	else
-		ChatThrottleLib:SendAddonMessage(priority, DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
+		ChatThrottleLib:SendAddonMessage(priority, DBMPrefix, "" .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "WHISPER", whisperTarget)
 	end
 end
 private.sendWhisperSync = sendWhisperSync
@@ -150,7 +141,7 @@ local function sendGuildSync(protocol, prefix, msg)
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	if IsInGuild() and (DBM:IsEnabled() or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		ChatThrottleLib:SendAddonMessage("NORMAL", DBMPrefix, getFullName() .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+		ChatThrottleLib:SendAddonMessage("NORMAL", DBMPrefix, "" .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 	end
 end
 private.sendGuildSync = sendGuildSync
@@ -165,15 +156,15 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not DBM:IsEnabled() then return end--Block all world syncs if force disabled
 	if DBM:MidRestrictionsActive(false, false, true) then return end--Block all in instance syncs in Midnight Alpha
 	DBM:Debug("SendWorldSync running for " .. prefix)
-	local fullname = getFullName()
+
 	local sendChannel = getSendChannel()
 	if sendChannel == "SOLO" then
 		handleSync("SOLO", playerName, nil, (protocol or DBMSyncProtocol), prefix, strsplit("\t", msg))
 	else
-		ChatThrottleLib:SendAddonMessage("ALERT", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
+		ChatThrottleLib:SendAddonMessage("ALERT", DBMPrefix, "" .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, sendChannel)
 	end
 	if IsInGuild() then
-		ChatThrottleLib:SendAddonMessage("ALERT", DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+		ChatThrottleLib:SendAddonMessage("ALERT", DBMPrefix, "" .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 	end
 	if self.Options.EnableWBSharing and not noBNet and not private.isForever then
 		--Forever has too many layers, AND blizzard removed ability to detect game types to even prevent sending syncs to wrong game type
