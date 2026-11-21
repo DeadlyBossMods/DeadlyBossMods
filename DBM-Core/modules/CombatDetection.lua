@@ -36,7 +36,7 @@ local questieWatchRestore, bossuIdFound = false, false
 local delayedFunction
 
 local playerName = private.playerName
-local normalizedPlayerRealm = GetRealmName():gsub("[%s-]+", "")
+local normalizedPlayerRealm = private.isForever and "" or GetRealmName():gsub("[%s-]+", "")
 local tinsert, twipe = table.insert, table.wipe
 local pairs, ipairs, type, select = pairs, ipairs, type, select
 local GetTime = GetTime
