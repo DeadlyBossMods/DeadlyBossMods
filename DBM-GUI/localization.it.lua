@@ -641,7 +641,6 @@ L.ReceivingFooter2					= "If you enable these options, it's between you and RL i
 L.ReceivingFooter3					= "If you enable the 'replace my mod configuration' your original settings will be lost on override"--NYI
 L.TabFooter							= "All options in this panel only work if you are group leader in a non dungeon/LFR group"
 L.Tab_Privacy 						= "Auto Reply & Privacy"
-L.Tab_PrivacyMidnight				= "Addon Comms Privacy"
 L.Area_WhisperMessages				= "Opzioni Sussurri"
 L.AutoRespond 						= "Rispondi automaticamente ai sussurri mentre stai combattendo"
 L.WhisperStats 						= "Nelle risposte ai sussurri, aggiungi le informazioni su uccisioni e sconfitte."

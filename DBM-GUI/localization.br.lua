@@ -645,7 +645,6 @@ L.ReceivingFooter2					= "Se você ativar essas opções, é entre você e o lí
 L.ReceivingFooter3					= "Se você ativar a opção 'substituir minhas configurações de mod', suas configurações originais serão perdidas ao aceitar a substituição" -- NYI
 L.TabFooter							= "Todas as opções neste painel só funcionam se você for o líder do grupo em um grupo que não seja de masmorra/LFR"
 L.Tab_Privacy 						= "Controles de privacidade"
-L.Tab_PrivacyMidnight				= "Privacidade das comunicações"
 L.Area_WhisperMessages				= "Opções de mensagens de sussurro"
 L.AutoRespond 						= "Responder automaticamente a sussurros durante o combate"
 L.WhisperStats 						= "Incluir estatísticas de vitórias/derrotas nas respostas de sussurro"
