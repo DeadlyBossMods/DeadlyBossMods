@@ -644,7 +644,6 @@ L.ReceivingFooter2					= "如果您啟用這些選項，則在您和領隊之間
 L.ReceivingFooter3					= "如果您啟用了 '替換我的配置' 您的原始設置將在覆蓋後丟失"--NYI
 L.TabFooter							= "本面板中的所有選項僅在您是非地下城/隨機隊伍中的隊伍領隊的情況下運作"
 L.Tab_Privacy 						= "自動回覆 & 隱私"
-L.Tab_PrivacyMidnight				= "插件通訊保密"
 L.Area_WhisperMessages				= "密語訊息選項"
 L.AutoRespond 						= "啟用戰鬥中自動密語回覆"
 L.WhisperStats 						= "在密語回應中加入戰勝/滅團狀態"

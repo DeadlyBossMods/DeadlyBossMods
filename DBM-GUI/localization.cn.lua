@@ -647,7 +647,6 @@ L.ReceivingFooter2					= "如果你启用了这些选项，你的配置可能会
 L.ReceivingFooter3					= "如果您启用了 '替换我的配置' ，你的原始设置将被队长的配置覆盖"--NYI
 L.TabFooter							= "本面板中的所有选项仅在你在非5人本/随机团的队长的情况下运作"
 L.Tab_Privacy 						= "自动回复与隐私"
-L.Tab_PrivacyMidnight				= "插件通信隐私设置"
 L.Area_WhisperMessages				= "密语信息设置"
 L.AutoRespond 						= "在战斗中自动回复私聊"
 L.WhisperStats 						= "在回复的私聊中包含击杀或灭团次数统计信息"

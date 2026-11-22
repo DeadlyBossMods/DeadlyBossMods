@@ -648,7 +648,6 @@ L.ReceivingFooter2					= "Si activas estas opciones, es entre tú y líder de ba
 L.ReceivingFooter3					= "Si activas 'reemplazar mi configuración de módulo', tu configuración original se perderá al anularla."--NYI
 L.TabFooter							= "Todas las opciones en este panel solo funcionan si eres líder de grupo en un grupo que no es de mazmorra/buscador de banda"
 L.Tab_Privacy 						= "Controles de privacidad"
-L.Tab_PrivacyMidnight				= "Privacidad de comunicaciones"
 L.Area_WhisperMessages				= "Opciones de susurros"
 L.AutoRespond 						= "Responder automáticamente a susurros durante encuentros de jefe"
 L.WhisperStats 						= "Incluir estadísticas de victoria y derrota en las respuestas automáticas"

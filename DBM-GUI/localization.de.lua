@@ -636,7 +636,6 @@ L.ReceivingFooter2					= "Wenn du diese Optionen aktivierst, liegt es zwischen d
 L.ReceivingFooter3					= "Wenn du 'Meine Mod-Konfiguration ersetzen' aktivierst, gehen deine ursprünglichen Einstellungen bei einer Überschreibung verloren"--NYI
 L.TabFooter							= "Alle Optionen in diesem Panel funktionieren nur, wenn du Gruppenleiter in einer Nicht-Dungeon-/LFR-Gruppe bist"
 L.Tab_Privacy 						= "Datenschutzeinstellungen"
-L.Tab_PrivacyMidnight				= "Addon-Kommunikationsschutz"
 L.Area_WhisperMessages				= "Flüsternachrichten"
 L.AutoRespond 						= "Automatische Antwort während eines Bosskampfes aktivieren"
 L.WhisperStats 						= "Sieg-/Niederlagenstatistik zu Flüsterantworten hinzufügen"

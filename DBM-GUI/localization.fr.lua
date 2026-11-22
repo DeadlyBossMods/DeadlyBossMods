@@ -643,7 +643,6 @@ L.ReceivingFooter2					= "Si vous activez ces options, c'est entre vous et le ch
 L.ReceivingFooter3					= "Si vous activez l'option 'remplacer ma configuration de mod', vos paramètres d'origine seront perdus lors de la dérogation"--NYI
 L.TabFooter							= "Toutes les options de ce panneau ne fonctionnent que si vous êtes chef de groupe dans un groupe hors donjon/LFR"
 L.Tab_Privacy 						= "Messages privés"
-L.Tab_PrivacyMidnight				= "Confidentialité des communications"
 L.Area_WhisperMessages				= "Options des chuchotements"
 L.AutoRespond 						= "Répondre automatiquement aux chuchotements pendant les combats"
 L.WhisperStats 						= "Inclure les victoires/défaites dans les réponses"
