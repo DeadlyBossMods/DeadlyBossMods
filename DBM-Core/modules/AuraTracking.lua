@@ -1090,7 +1090,8 @@ local function GetAutomaticCoTankSlot(slot, selectedUnits)
 end
 
 ---@return playerUUIDs?, playerUUIDs?
-local function ResolveCoTankUnits()
+function AuraTracking:ResolveCoTankUnits()
+	if not IsInGroup() then return end
 	local selectedUnits = {}
 	local slot1 = GetConfiguredCoTankUnit(DBM.Options.PrivateAurasCoTankSlot1Player, selectedUnits)
 		or GetAutomaticCoTankSlot(1, selectedUnits)
@@ -1119,7 +1120,7 @@ function AuraTracking:RegisterAllUnits()
 	HideContainerState(self, "cotank2")
 	if not IsInGroup() then return end
 
-	local slot1, slot2 = ResolveCoTankUnits()
+	local slot1, slot2 = self:ResolveCoTankUnits()
 	RegisterAuraContainer(self, "cotank1", slot1, GetCoTankSettings(1))
 	RegisterAuraContainer(self, "cotank2", slot2, GetCoTankSettings(2))
 end
@@ -1170,6 +1171,9 @@ end
 
 ---@param player boolean?
 function AuraTracking:OnSettingsChange(player)
+	if not player and private.refreshCoTankAuraSounds then
+		private.refreshCoTankAuraSounds()
+	end
 	if not self.IsInPreview then
 		if not self:UpdateAuraAnchors() then
 			DBM:QueueAuraAnchorUpdate()

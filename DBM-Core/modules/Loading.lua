@@ -45,6 +45,9 @@ function DBM:UpdateZoneAuraAnchors(priority)
 	if not private.isRetail and not private.isForever then
 		return
 	end
+	if private.refreshCoTankAuraSounds then
+		private.refreshCoTankAuraSounds()
+	end
 	local auraHandler = DBM.Auras
 	if auraHandler then
 		local updateMethod = auraHandler.UpdateAuraAnchors
@@ -468,8 +471,13 @@ do
 		if not private.isRetail and not private.isForever then
 			return
 		end
+		local zoneSoundsSynced = false
 		if pendingPASoundZoneSync then
 			syncZoneAuraSounds(self, pendingPASoundZoneSync)
+			zoneSoundsSynced = not pendingPASoundZoneSync
+		end
+		if not zoneSoundsSynced and private.refreshCoTankAuraSounds then
+			private.refreshCoTankAuraSounds()
 		end
 		if pendingPAAnchorCheck > 0 then
 			local auraHandler = DBM.Auras

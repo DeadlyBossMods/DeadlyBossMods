@@ -643,6 +643,10 @@ L.AUTO_INFO_FRAME_OPTION_TEXT3	= "Zeige Infofenster für $spell:%s (falls der Sc
 L.AUTO_READY_CHECK_OPTION_TEXT	= "Spiele \"Bereitschaftscheck\"-Sound, wenn der Boss angegriffen wird (auch wenn er nicht als Ziel gesetzt ist)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT	= "Zeige Timer für den schnellsten Clear dieser Zone"
 L.AUTO_PRIVATEAURA_OPTION_TEXT	= "Spiele DBM-Soundwarnungen für die Private Auren von $spell:%s in diesem Kampf ab."
+L.AUTO_AURASOUND_BOSS			= "Spiele Aura-Soundwarnungen für $spell:%s auf jeder Bosseinheit."
+L.AUTO_AURASOUND_COTANK			= "Spiele Aura-Soundwarnungen für $spell:%s auf konfigurierten Co-Tanks."
+L.AUTO_AURASOUND_NAMEPLATE		= "Spiele Aura-Soundwarnungen für $spell:%s auf Namensplaketten, einschließlich freundlicher."
+L.AUTO_AURASOUND_UNIT			= "Spiele Aura-Soundwarnungen für $spell:%s auf Einheit %s."
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "bewegbare Schlachtzugwarnung"
