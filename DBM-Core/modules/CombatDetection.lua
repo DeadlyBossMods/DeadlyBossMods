@@ -1524,11 +1524,7 @@ end
 function DBM:OnMobKill(cId, synced)
 	for i = #inCombat, 1, -1 do
 		local v = inCombat[i]
-		if not v.combatInfo then
-			return
-		end
-		if v.combatInfo.noBossDeathKill then return end
-		if v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
+		if v.combatInfo and not v.combatInfo.noBossDeathKill and v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
 			if not synced then
 				private.sendSync(private.DBMSyncProtocol, "K", cId .. "\t" .. difficulties.difficultyIndex, "ALERT")
 			end
@@ -1547,7 +1543,7 @@ function DBM:OnMobKill(cId, synced)
 			if allMobsDown and not v.multiIDSingleBoss then--More hacks. don't let combat end for mutli CID single bosses
 				self:EndCombat(v, nil, nil, "All Mobs Down")
 			end
-		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not v.combatInfo.multiMobPullDetection then
+		elseif v.combatInfo and not v.combatInfo.noBossDeathKill and cId == v.combatInfo.mob and not v.combatInfo.killMobs and not v.combatInfo.multiMobPullDetection then
 			if not synced then
 				private.sendSync(private.DBMSyncProtocol, "K", cId .. "\t" .. difficulties.difficultyIndex, "ALERT")
 			end

@@ -334,6 +334,18 @@ function DBM:LoadModByName(modName, force)
 	end
 end
 
+local worldBossDeathFrame
+
+local function onWorldBossDeath(_, _, guid)
+	if not DBM:IsEnabled() or #inCombat == 0 or IsInInstance() or DBM:issecretvalue(guid) then return end
+	if DBM:IsCreatureGUID(guid) then
+		local cId = DBM:GetCIDFromGUID(guid)
+		if cId and cId > 0 then
+			DBM:OnMobKill(cId)
+		end
+	end
+end
+
 do
 	local function loadModByUnit(uId)
 		if IsInInstance() or not UnitIsFriend("player", uId) and UnitIsDead("player") or UnitIsDead(uId) then return end--If you're in an instance no reason to waste cpu. If THE BOSS dead, no reason to load a mod for it. To prevent rare lua error, needed to filter on player dead.
@@ -493,12 +505,22 @@ do
 			private.LastInstanceType = "none"
 			if not targetEventsRegistered then
 				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "NAME_PLATE_UNIT_ADDED", "UNIT_TARGET player")
+				if private.isRetail or private.isForever then
+					if not worldBossDeathFrame then
+						worldBossDeathFrame = CreateFrame("Frame")
+						worldBossDeathFrame:SetScript("OnEvent", onWorldBossDeath)
+					end
+					worldBossDeathFrame:RegisterEvent("UNIT_DIED")
+				end
 				targetEventsRegistered = true
 			end
 		else
 			private.LastInstanceType = instanceType
 			if targetEventsRegistered then
 				self:UnregisterShortTermEvents()
+				if worldBossDeathFrame then
+					worldBossDeathFrame:UnregisterEvent("UNIT_DIED")
+				end
 				targetEventsRegistered = false
 			end
 			if difficulties.savedDifficulty == "worldboss" then
