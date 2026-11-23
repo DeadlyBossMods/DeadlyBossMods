@@ -1504,6 +1504,95 @@ end
 do
 	local AddAuraSound = C_UnitAuras.AddAuraSound
 	local RemoveAuraSound = C_UnitAuras.RemoveAuraSound or C_UnitAuras.RemovePrivateAuraAppliedSound
+	local coTankOptions, coTankFrame, coTankTimer
+	local coTankPending = false
+
+	local function coTankRestricted()
+		if C_ChatInfo.InChatMessagingLockdown() or C_Secrets.ShouldAurasBeSecret() then
+			return true
+		end
+		if C_RestrictedActions and C_RestrictedActions.IsAddOnRestrictionActive then
+			local isActive = C_RestrictedActions.IsAddOnRestrictionActive
+			return isActive(Enum.AddOnRestrictionType.Encounter) or isActive(Enum.AddOnRestrictionType.ChallengeMode)
+		end
+		return false
+	end
+
+	local function refreshCoTankAuraSounds()
+		if not coTankOptions then return end
+		if coTankRestricted() then
+			coTankPending = true
+			return
+		end
+		local auraHandler = DBM.Auras
+		if not auraHandler then
+			DBM:Debug("Cannot refresh co-tank aura sounds: aura tracking is unavailable.", 2)
+			return
+		end
+		coTankPending = false
+		local first, second = auraHandler:ResolveCoTankUnits()
+		local refresh = {}
+		for mod, options in pairs(coTankOptions) do
+			for optionId, units in pairs(options) do
+				if units[1] ~= first or units[2] ~= second then
+					refresh[#refresh + 1] = {mod, optionId}
+				end
+			end
+		end
+		for _, entry in ipairs(refresh) do
+			entry[1]:RefreshAuraSound(entry[2])
+		end
+	end
+
+	local function watchCoTankOption(mod, optionId, first, second)
+		if not coTankOptions then
+			coTankOptions = {}
+			if not coTankFrame then
+				coTankFrame = CreateFrame("Frame")
+				coTankFrame:SetScript("OnEvent", function(_, event, unitOrType, state)
+					if event == "ADDON_RESTRICTION_STATE_CHANGED" then
+						if state ~= Enum.AddOnRestrictionState.Inactive or not coTankPending or coTankTimer then return end
+						coTankTimer = C_Timer.NewTimer(0, function()
+							coTankTimer = nil
+							refreshCoTankAuraSounds()
+						end)
+					elseif event == "PLAYER_SPECIALIZATION_CHANGED" and private.isRetail and unitOrType == "player" then
+						return
+					else
+						refreshCoTankAuraSounds()
+					end
+				end)
+			end
+			coTankFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
+			coTankFrame:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+			coTankFrame:RegisterEvent("ADDON_RESTRICTION_STATE_CHANGED")
+			private.refreshCoTankAuraSounds = refreshCoTankAuraSounds
+		end
+		coTankOptions[mod] = coTankOptions[mod] or {}
+		coTankOptions[mod][optionId] = {first, second}
+	end
+
+	local function unwatchCoTankOption(mod, optionId)
+		if not coTankOptions or not coTankOptions[mod] then return end
+		if optionId then
+			coTankOptions[mod][optionId] = nil
+			if not next(coTankOptions[mod]) then
+				coTankOptions[mod] = nil
+			end
+		else
+			coTankOptions[mod] = nil
+		end
+		if not next(coTankOptions) then
+			coTankOptions = nil
+			coTankPending = false
+			private.refreshCoTankAuraSounds = nil
+			coTankFrame:UnregisterAllEvents()
+			if coTankTimer then
+				coTankTimer:Cancel()
+				coTankTimer = nil
+			end
+		end
+	end
 
 	-- Helper function to register an aura sound for a single spell ID
 	---@param self DBMMod
@@ -1512,7 +1601,8 @@ do
 	---@param media number|string
 	---@param soundType number? UnitAuraSoundTrigger: 0 = added, 1 = applications increased, 2 = removed
 	---@param throttleSeconds number? Optional throttle time in seconds to limit sound spam
-	local function registerAuraSound(self, optionId, spellId, media, soundType, throttleSeconds)
+	---@param unit string
+	local function registerAuraSound(self, optionId, spellId, media, soundType, throttleSeconds, unit)
 		if not AddAuraSound then
 			DBM:Debug("Attempting to register aura sound failed because no aura sound API is available for mod " .. self.id, 2)
 			return
@@ -1526,7 +1616,7 @@ do
 		end
 		local soundInfo = {
 			spellID = spellId,
-			unitToken = "player",
+			unitToken = unit,
 			outputChannel = soundSetting,
 		}
 		--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
@@ -1539,12 +1629,36 @@ do
 		--that allows you to limit how often the sound can be played. DBM defaults to 3 seconds.
 		soundInfo.throttleSeconds = throttleSeconds or 3
 		local auraSoundId = AddAuraSound(soundType or 0, soundInfo)
-		self.paSounds[optionId][#self.paSounds[optionId] + 1] = auraSoundId
+		if auraSoundId then
+			self.paSounds[optionId][#self.paSounds[optionId] + 1] = auraSoundId
+		else
+			DBM:Debug("Attempting to register aura sound for spell ID " .. spellId .. " on " .. unit .. " failed for mod " .. self.id, 2)
+		end
+	end
+
+	---@param mod DBMMod
+	---@param optionId number
+	---@param auraIds number|number[]
+	---@param media number|string
+	---@param soundType number?
+	---@param throttleSeconds number?
+	---@param unit string
+	local function registerAuraSoundForUnit(mod, optionId, auraIds, media, soundType, throttleSeconds, unit)
+		if type(auraIds) == "table" then
+			for _, spellId in ipairs(auraIds) do
+				registerAuraSound(mod, optionId, spellId, media, soundType, throttleSeconds, unit)
+			end
+		else
+			registerAuraSound(mod, optionId, auraIds, media, soundType, throttleSeconds, unit)
+		end
 	end
 
 	---@param self DBMMod
 	---@param optionId number
 	local function disableAuraSoundOption(self, optionId)
+		if coTankOptions then
+			unwatchCoTankOption(self, optionId)
+		end
 		if not self.paSounds or not self.paSounds[optionId] then return end
 		for _, id in ipairs(self.paSounds[optionId]) do
 			if RemoveAuraSound then
@@ -1598,7 +1712,8 @@ do
 	---@param difficultyVoices table<number, VPSound>? voice pack media path overrides keyed by Blizzard difficulty index
 	---@param throttleSeconds number? Optional throttle time in seconds to limit sound spam
 	---@param subType paSubTypes? Only subtype 2 permits the global GTFO override.
-	local function enableAuraSound(mod, auraspellId, voice, voiceVersion, soundType, difficultyVoices, throttleSeconds, subType)
+	---@param unit string?
+	local function enableAuraSound(mod, auraspellId, voice, voiceVersion, soundType, difficultyVoices, throttleSeconds, subType, unit)
 		local optionId
 		if type(auraspellId) == "table" then
 			optionId = auraspellId[1]
@@ -1632,12 +1747,29 @@ do
 			end
 			local mediaPath = overrideSound or checkValidVPSound(mod, "PrivateAuraSound", optionId, voice, voiceVersion)
 			if DBM:IsNoneValue(mediaPath) then return end--Don't register if media path is none, even if option is enabled
-			if type(auraspellId) == "table" then
-				for _, spellId in ipairs(auraspellId) do
-					registerAuraSound(mod, optionId, spellId, mediaPath, soundType, throttleSeconds)
+			if unit == "boss" or unit == "nameplate" then
+				for i = 1, unit == "boss" and 10 or 40 do
+					registerAuraSoundForUnit(mod, optionId, auraspellId, mediaPath, soundType, throttleSeconds, unit .. i)
+				end
+			elseif unit == "cotank" then
+				local first, second
+				if not DBM.Auras then
+					DBM:Debug("Cannot register co-tank aura sounds: aura tracking is unavailable.", 2)
+					coTankPending = true
+				elseif not coTankRestricted() then
+					first, second = DBM.Auras:ResolveCoTankUnits()
+				else
+					coTankPending = true
+				end
+				watchCoTankOption(mod, optionId, first, second)
+				if first then
+					registerAuraSoundForUnit(mod, optionId, auraspellId, mediaPath, soundType, throttleSeconds, first)
+				end
+				if second then
+					registerAuraSoundForUnit(mod, optionId, auraspellId, mediaPath, soundType, throttleSeconds, second)
 				end
 			else
-				registerAuraSound(mod, optionId, auraspellId, mediaPath, soundType, throttleSeconds)
+				registerAuraSoundForUnit(mod, optionId, auraspellId, mediaPath, soundType, throttleSeconds, unit or "player")
 			end
 		end
 	end
@@ -1650,7 +1782,7 @@ do
 		local zoneEntries = self.pendingPASoundsByZone[mapID]
 		if not zoneEntries then return end
 		for _, entry in ipairs(zoneEntries) do
-			enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7])
+			enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8])
 		end
 	end
 
@@ -1673,7 +1805,7 @@ do
 		for _, entry in ipairs(zoneEntries) do
 			local entryOptionId = type(entry[1]) == "table" and entry[1][1] or entry[1]
 			if entryOptionId == optionId then
-				enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7])
+				enableAuraSound(self, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8])
 			end
 		end
 		return true
@@ -1727,6 +1859,9 @@ do
 
 	function bossModPrototype:DisableAuraSounds()
 		--Removal doesn't have same restrictions as adding (allowed in combat)
+		if coTankOptions then
+			unwatchCoTankOption(self)
+		end
 		while self.paSounds do
 			local optionId = next(self.paSounds)
 			if not optionId then

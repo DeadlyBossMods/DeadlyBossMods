@@ -123,7 +123,8 @@ end
 ---@param soundType number|number[]? UnitAuraSoundTrigger(s): 0 = added, 1 = applications increased, 2 = removed; defaults to 0
 ---@param difficultyVoices table<number, VPSound>? voice pack media path overrides keyed by Blizzard difficulty index; voice remains the fallback
 ---@param throttleSeconds number? minimum seconds between sound plays for this aura; defaults to 3
-function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion, soundType, difficultyVoices, throttleSeconds)
+---@param unit string? Defaults to player. "boss" covers boss1-10, "cotank" uses configured co-tank slots, and "nameplate" covers visible nameplate1-40, including friendly nameplates. Nameplates must be enabled. Other values are individual unit tokens.
+function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId, defaultSound, subType, voice, voiceVersion, soundType, difficultyVoices, throttleSeconds, unit)
 	if type(subType) == "string" then
 		local shorthandVoiceVersion = type(voice) == "number" and voice or nil
 		voice = subType
@@ -153,7 +154,15 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 	end
 	self.Options["PrivateAuraSound" .. optionId .. "SWSound"] = defaultSound or 1
 	subType = subType or 0
-	if subType == 1 then
+	if unit == "boss" then
+		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_AURASOUND_BOSS:format(optionId)
+	elseif unit == "cotank" then
+		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_AURASOUND_COTANK:format(optionId)
+	elseif unit == "nameplate" then
+		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_AURASOUND_NAMEPLATE:format(optionId)
+	elseif unit and unit ~= "player" then
+		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_AURASOUND_UNIT:format(optionId, unit)
+	elseif subType == 1 then
 		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_PRIVATEAURA_OPTION_TARGET_TEXT:format(optionId)
 	elseif subType == 2 then
 		self.localization.options["PrivateAuraSound" .. optionId] = L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT:format(optionId)
@@ -195,7 +204,7 @@ function bossModPrototype:AddAuraSoundOption(auraspellId, default, groupSpellId,
 					if not self.pendingPASoundsByZone then self.pendingPASoundsByZone = {} end
 					for zoneID in pairs(self.zones) do
 						self.pendingPASoundsByZone[zoneID] = self.pendingPASoundsByZone[zoneID] or {}
-						self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, pairedVoice, pairedVoiceVersion, pairedSoundType, difficultyVoices, throttleSeconds, subType}
+						self.pendingPASoundsByZone[zoneID][#self.pendingPASoundsByZone[zoneID] + 1] = {auraspellId, pairedVoice, pairedVoiceVersion, pairedSoundType, difficultyVoices, throttleSeconds, subType, unit}
 					end
 				else
 					invalidRegistration = true
