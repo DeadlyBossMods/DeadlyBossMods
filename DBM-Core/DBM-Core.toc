@@ -36,7 +36,7 @@ Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\lib.xml
 Libs\LibSpecialization\LibSpecialization.lua
 Libs\LibDropDownMenu\LibDropDownMenu.xml [AllowLoadGameType tbc, wrath]
-Libs\LibCustomGlow-1.0\LibCustomGlow-1.0.xml
+Libs\LibCustomGlow-1.0\LibCustomGlow-1.0.xml [AllowLoadGameType classic]
 
 localization.en.lua
 localization.br.lua [AllowLoadTextLocale ptBR]
