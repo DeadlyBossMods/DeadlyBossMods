@@ -118,6 +118,7 @@ modules\objects\EnrageTimer.lua
 modules\objects\Announce.lua
 modules\objects\SpecialWarning.lua
 modules\objects\Yell.lua
+modules\objects\QuestTurnIn.lua
 modules\objects\Sorting.lua
 DBM-TextTimers.lua
 modules\AuraTracking.lua [AllowLoadGameType mainline]

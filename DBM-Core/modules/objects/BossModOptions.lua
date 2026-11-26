@@ -425,9 +425,12 @@ end
 ---|"Action": Auto select gossip choice(s) to perform actions (such as using transports)
 ---|"Encounter": Auto select gossip choice to start encounter
 ---|"Buff": Auto select gossip choice(s) for npc or profession buffs
+---|"Quest": Auto turn in quests for collected quest items (used by NewQuestTurnIn)
 ---@param default SpecFlags|boolean?
 ---@param gossipType gossipTypes|string
-function bossModPrototype:AddGossipOption(default, gossipType, optionVersion)
+---@param optionVersion number?
+---@param func function? Called when the option is changed in the GUI
+function bossModPrototype:AddGossipOption(default, gossipType, optionVersion, func)
 	local oVersion = ""
 	if optionVersion then
 		oVersion = tostring(optionVersion)
@@ -441,10 +444,16 @@ function bossModPrototype:AddGossipOption(default, gossipType, optionVersion)
 		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_PERFORM_ACTION
 	elseif gossipType == "Encounter" then
 		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_START_ENCOUNTER
+	elseif gossipType == "Quest" then
+		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_QUESTS
 	else--Buff
 		self.localization.options["AutoGossip" .. gossipType .. oVersion] = L.AUTO_GOSSIP_BUFFS
 	end
 	self:SetOptionCategory("AutoGossip" .. gossipType .. oVersion, "misc")
+	if func then
+		self.optionFuncs = self.optionFuncs or {}
+		self.optionFuncs["AutoGossip" .. gossipType .. oVersion] = func
+	end
 end
 
 ---@param default SpecFlags|boolean?

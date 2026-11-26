@@ -732,6 +732,7 @@ L.AUTO_CUSTOMALERT_OPTION_TEXT			= "Set alert sound for when $spell:%s is about 
 L.AUTO_GOSSIP_BUFFS						= "Auto select gossip choice(s) for npc or profession buffs"
 L.AUTO_GOSSIP_PERFORM_ACTION			= "Auto select gossip choice(s) to perform actions (such as using transports)"
 L.AUTO_GOSSIP_START_ENCOUNTER			= "Auto select gossip choice to start encounter"--This will never need to be plural, since it won't be in a trash mod like other two
+L.AUTO_GOSSIP_QUESTS					= "Auto turn in quests for collected quest items (hold Shift to skip)"
 
 -- New special warnings
 L.MOVE_WARNING_BAR						= "Announce movable"

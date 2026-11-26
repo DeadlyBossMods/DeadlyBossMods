@@ -681,6 +681,7 @@ L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Jouer les alertes sonores de DBM lorsque
 L.AUTO_PRIVATEAURA_OPTION_POST_TEXT   	= "Jouer les alertes sonores de DBM pour les effets persistants de $spell:%s."
 L.AUTO_CUSTOMTIMER_OPTION_TEXT        	= "Afficher un chronomètre pour $spell:%s"
 L.AUTO_CUSTOMALERT_OPTION_TEXT        	= "Définir une alerte sonore lorsque $spell:%s est sur le point d'être incanté"
+L.AUTO_GOSSIP_QUESTS				= "Rendre automatiquement les objets de quête collectés (maintenir Maj pour ignorer)"
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "Annonce mobile"

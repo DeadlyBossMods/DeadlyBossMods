@@ -647,6 +647,7 @@ L.AUTO_AURASOUND_BOSS			= "Spiele Aura-Soundwarnungen für $spell:%s auf jeder B
 L.AUTO_AURASOUND_COTANK			= "Spiele Aura-Soundwarnungen für $spell:%s auf konfigurierten Co-Tanks."
 L.AUTO_AURASOUND_NAMEPLATE		= "Spiele Aura-Soundwarnungen für $spell:%s auf Namensplaketten, einschließlich freundlicher."
 L.AUTO_AURASOUND_UNIT			= "Spiele Aura-Soundwarnungen für $spell:%s auf Einheit %s."
+L.AUTO_GOSSIP_QUESTS				= "Gesammelte Questgegenstände automatisch abgeben (Umschalt gedrückt halten zum Überspringen)"
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "bewegbare Schlachtzugwarnung"
