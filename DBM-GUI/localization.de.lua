@@ -188,6 +188,7 @@ L.AutoReplySound					= "Spiele Warnton und blinke Anwendungssymbol beim Erhalt v
 L.Area_CombatAlerts					= "Kampfwarnungen"
 L.Area_CombatAlertsRetail			= "Kampfwarnungen (nur Außenwelt)"
 L.AFKHealthWarning					= "Spiele Alarmsound und lasse Anwendungssymbol aufblinken, wenn du Gesundheit verlierst, während du als AFK markiert bist"
+L.AFKCombatWarning					= "Spiele einen Alarmsound und lasse das Anwendungssymbol aufblinken, wenn du als AFK markiert in den Kampf eintrittst (außerhalb eingeschränkter Inhalte)"
 L.HealthWarningLow					= "Spiele Alarmsound und lasse Anwendungssymbol aufblinken, wenn du Gesundheit verlierst (unter 35 Prozent)"
 L.EnteringCombatAlert				= "Spiele Alarmsound und lasse Anwendungssymbol aufblinken, wenn du in den Kampf eintrittst"
 L.LeavingCombatAlert				= "Spiele Alarmsound, wenn du den Kampf verlässt"

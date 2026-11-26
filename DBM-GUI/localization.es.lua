@@ -192,6 +192,7 @@ L.AutoReplySound					= "Reproducir sonido al recibir respuestas automáticas de 
 L.Area_CombatAlerts					= "Opciones de alerta de combate"
 L.Area_CombatAlertsRetail			= "Opciones de alertas de combate (solo en exteriores)"
 L.AFKHealthWarning					= "Reproducir sonido si tu salud se reduce mientras estás ausente"
+L.AFKCombatWarning					= "Reproducir un sonido de alerta y hacer parpadear el icono de la aplicación al entrar en combate mientras estás ausente (fuera de contenido restringido)"
 L.HealthWarningLow					= "Reproducir sonido si tu salud se reduce debajo de 35% mientras estás ausente"
 L.EnteringCombatAlert				= "Reproducir sonido al entrar en combate"
 L.LeavingCombatAlert				= "Reproducir sonido al salir de combate"

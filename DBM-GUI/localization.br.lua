@@ -192,6 +192,7 @@ L.AutoReplySound					= "Reproduzir som de alerta ao receber o sussurro de respos
 L.Area_CombatAlerts					= "Opções de alertas de combate"
 L.Area_CombatAlertsRetail			= "Opções de alertas de combate (somente em áreas externas)"
 L.AFKHealthWarning					= "Reproduzir som de alerta quando você estiver perdendo vida enquanto estiver LDT"
+L.AFKCombatWarning					= "Reproduzir um som de alerta e piscar o ícone do aplicativo ao entrar em combate enquanto estiver LDT (fora de conteúdo restrito)"
 L.HealthWarningLow					= "Reproduzir som de alerta quando você estiver perdendo vida (quando estiver abaixo de 35%) enquanto estiver LDT"
 L.EnteringCombatAlert				= "Reproduzir som de alerta ao entrar em combate"
 L.LeavingCombatAlert				= "Reproduzir som de alerta ao sair de combate"

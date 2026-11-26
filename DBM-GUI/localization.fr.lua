@@ -190,6 +190,7 @@ L.AutoReplySound					= "Jouer un son d'alerte quand vous recevez une réponse DB
 L.Area_CombatAlerts					= "Options des alertes de combat"
 L.Area_CombatAlertsRetail			= "Options des alertes de combat (extérieur uniquement)"
 L.AFKHealthWarning					= "Jouer un son d'alerte si vous perdez de la vie alors que vous êtes ABS"
+L.AFKCombatWarning					= "Jouer un son d'alerte et faire clignoter l'icône de l'application si vous entrez en combat en étant ABS (hors contenu restreint)"
 L.HealthWarningLow					= "Jouer un son d'alerte si vous perdez de la vie (quand vous êtes en dessous de 35%) alors que vous êtes ABS"
 L.EnteringCombatAlert				= "Jouer un son d'alerte lorsque vous entrez en combat"
 L.LeavingCombatAlert				= "Jouer un son d'alerte lorsque vous quittez le combat"

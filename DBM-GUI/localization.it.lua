@@ -191,6 +191,7 @@ L.AutoReplySound					= "Esegui suono controllo gruppo e intermittenza icona appl
 L.Area_CombatAlerts					= "Combat Alert Options"
 L.Area_CombatAlertsRetail			= "Combat Alert Options (outdoor only)"
 L.AFKHealthWarning					= "Esegui suono controllo gruppo e intermittenza icona applicazione se stai perdendo vita da AFK"
+L.AFKCombatWarning					= "Riproduci un suono di avviso e fai lampeggiare l'icona dell'applicazione quando entri in combattimento mentre sei AFK (fuori dai contenuti con restrizioni)"
 L.HealthWarningLow					= "Play alert sound and flash application icon if you are losing health (while below 35 percent)"
 L.EnteringCombatAlert				= "Play alert sound and flash application icon when you enter combat"
 L.LeavingCombatAlert				= "Play alert sound when you leave combat"

@@ -197,6 +197,7 @@ L.AutoReplySound					= "当你收到DBM自动回复密语时播放警告声和�
 L.Area_CombatAlerts					= "战斗警报选项"
 L.Area_CombatAlertsRetail			= "战斗警报选项 (仅副本外)"
 L.AFKHealthWarning					= "当你在挂机/暂离 状态下（任意生命值）受到伤害时播放音效并闪烁图标"
+L.AFKCombatWarning					= "当你在暂离状态下进入战斗时播放警告音并闪烁应用程序图标（限制内容之外）"
 L.HealthWarningLow					= "当你的生命值低于35%并受到伤害时播放音效并闪烁图标"
 L.EnteringCombatAlert				= "当你进入战斗模式后播放音效并闪烁图标"
 L.LeavingCombatAlert				= "当你离开战斗后播放音效"
