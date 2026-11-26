@@ -664,6 +664,7 @@ L.AUTO_READY_CHECK_OPTION_TEXT			= "Riproduti il suono controllo gruppo al pull 
 L.AUTO_GOSSIP_BUFFS						= "Seleziona automaticamente la/le scelta/e di dialogo per i buff da NPC o da professione"
 L.AUTO_GOSSIP_PERFORM_ACTION			= "Seleziona automaticamente la/le scelta/e di dialogo per eseguire azioni (come usare i trasporti)"
 L.AUTO_GOSSIP_START_ENCOUNTER			= "Seleziona automaticamente la scelta di dialogo per iniziare l'incontro"
+L.AUTO_GOSSIP_QUESTS				= "Consegna automaticamente gli oggetti delle missioni raccolti (tieni premuto Maiusc per saltare)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "Mostra temporizzatore per il completamento più veloce di questa zona"
 L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Esegui avvisi sonori di aura DBM per $spell:%s in questo scontro."
 L.AUTO_AURASOUND_BOSS					= "Riproduci avvisi sonori dell'aura $spell:%s su qualsiasi boss."

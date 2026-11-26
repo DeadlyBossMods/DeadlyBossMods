@@ -675,6 +675,7 @@ L.AUTO_AURASOUND_UNIT				= "为$spell:%s光环在单位%s上播放音效。"
 L.AUTO_GOSSIP_BUFFS					= "自动选择NPC对话来开启专业增益"
 L.AUTO_GOSSIP_PERFORM_ACTION		= "自动选择NPC对话来执行动作（例如传送）"
 L.AUTO_GOSSIP_START_ENCOUNTER		= "自动选择NPC对话来开始战斗"--This will never need to be plural, since it won't be in a trash mod like other two
+L.AUTO_GOSSIP_QUESTS				= "自动交付收集的任务物品（按住Shift跳过）"
 
 -- New special warnings
 L.MOVE_WARNING_BAR				= "可拖动的团队警告"

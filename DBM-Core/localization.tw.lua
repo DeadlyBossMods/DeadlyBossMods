@@ -686,6 +686,7 @@ L.AUTO_CUSTOMALERT_OPTION_TEXT			= "設定$spell:%s即將施放時的警報音�
 L.AUTO_GOSSIP_BUFFS						= "自動選擇npc的對話選項或專業增益"
 L.AUTO_GOSSIP_PERFORM_ACTION			= "自動選擇對話選項來執行動作 (例如使用傳送功能)"
 L.AUTO_GOSSIP_START_ENCOUNTER			= "自動選擇對話選項來開始遭遇戰"
+L.AUTO_GOSSIP_QUESTS				= "自動繳交收集的任務物品（按住Shift跳過）"
 
 -- New special warnings
 L.MOVE_WARNING_BAR			= "可移動提示"

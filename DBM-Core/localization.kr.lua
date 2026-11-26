@@ -662,6 +662,7 @@ L.AUTO_CUSTOMALERT_OPTION_TEXT			= "$spell:%s|1이;가; 시전되려 할 때 경
 L.AUTO_GOSSIP_BUFFS						= "NPC나 전문기술 버프 오브젝트 대화 자동 선택"
 L.AUTO_GOSSIP_PERFORM_ACTION			= "사물을 작동시키는 (순간이동 사용 같은) 선택지 자동 선택"
 L.AUTO_GOSSIP_START_ENCOUNTER			= "보스 전투 시작 대화 자동 선택"--This will never need to be plural, since it won't be in a trash mod like other two
+L.AUTO_GOSSIP_QUESTS				= "모은 퀘스트 아이템 자동 반납 (건너뛰려면 Shift 누르기)"
 
 -- New special warnings
 L.MOVE_WARNING_BAR				= "알림 이동"

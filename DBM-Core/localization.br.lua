@@ -683,6 +683,7 @@ L.AUTO_PRIVATEAURA_OPTION_GTFO_TEXT		= "Reproduzir alertas sonoros do DBM quando
 L.AUTO_PRIVATEAURA_OPTION_POST_TEXT   	= "Reproduzir alertas sonoros do DBM para efeitos persistentes de $spell:%s."
 L.AUTO_CUSTOMTIMER_OPTION_TEXT        	= "Exibir cronômetro para $spell:%s"
 L.AUTO_CUSTOMALERT_OPTION_TEXT        	= "Definir alerta sonoro quando $spell:%s estiver prestes a ser lançado"
+L.AUTO_GOSSIP_QUESTS				= "Entregar automaticamente itens de missão coletados (segure Shift para ignorar)"
 
 -- New special warnings
 L.MOVE_WARNING_BAR 						= "Anúncio móvel"
