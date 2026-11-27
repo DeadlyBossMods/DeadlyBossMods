@@ -1761,21 +1761,25 @@ end
 
 do
 	local tostring, mfloor = tostring, math.floor
+	local canaccesstable = _G.canaccesstable or function() return true end
 	local ChatEdit_GetActiveWindow, SendChatMessage, IsInGroup, IsInRaid = ChatEdit_GetActiveWindow, C_ChatInfo.SendChatMessage or SendChatMessage, IsInGroup, IsInRaid
 	function barPrototype:Announce()
-		if DBM:IsRestricted() then return end--Don't announce if it's past midnight, secrets can't be shared
+		if self.isSecret then return end
+		local text = _G[self.frame:GetName().."BarName"]:GetText()
+		local color = self.color
+		if DBM:hasanysecretvalues(text, self.timer, color) then return end
+		if color and (not canaccesstable(color) or DBM:hasanysecretvalues(color.r, color.g, color.b)) then return end
 		local msg
 		if DBT.announceHook then
 			msg = DBT.announceHook(self)
+			if DBM:issecretvalue(msg) then return end
 		end
-		msg = msg or ("%s %d:%02d"):format(tostring(_G[self.frame:GetName().."BarName"]:GetText()):gsub("|T.-|t", ""), mfloor(self.timer / 60), self.timer % 60)
+		msg = msg or ("%s %d:%02d"):format(tostring(text):gsub("|T.-|t", ""), mfloor(self.timer / 60), self.timer % 60)
 		local chatWindow = ChatEdit_GetActiveWindow()
 		if chatWindow then
 			chatWindow:Insert(msg)
 		else
-			if not DBM:IsRestricted() then
-				SendChatMessage(msg, (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY")
-			end
+			SendChatMessage(msg, (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY")
 		end
 	end
 end
