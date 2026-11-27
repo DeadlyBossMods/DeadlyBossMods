@@ -1959,6 +1959,7 @@ do
 								minExpansion	= tonumber(C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod-MinExpansion") or 0),
 								minToc			= minToc,
 								modId			= addonName,
+								announcePrefix	= C_AddOns.GetAddOnMetadata(i, "X-DBM-Mod-AnnouncePrefix"), -- shown when sharing its timers to chat
 							})
 							if self.AddOns[#self.AddOns].subTabs then
 								local subTabs = self.AddOns[#self.AddOns].subTabs
@@ -4541,8 +4542,21 @@ DBT:SetAnnounceHook(function(bar)
 	elseif bar.color and bar.color.r == 0 and bar.color.g == 0 and bar.color.b == 1 then
 		prefix = FACTION_ALLIANCE
 	end
-	if prefix then
-		return ("%s: %s  %d:%02d"):format(prefix, _G[bar.frame:GetName() .. "BarName"]:GetText(), floor(bar.timer / 60), bar.timer % 60)
+	-- Addons can name themselves in their shared timers with ## X-DBM-Mod-AnnouncePrefix, e.g. "[DBM-PvP] Alliance: Stables 1:15"
+	local addonPrefix
+	if bar.modId then
+		for _, addon in ipairs(DBM.AddOns) do
+			if addon.modId == bar.modId then
+				addonPrefix = addon.announcePrefix
+				break
+			end
+		end
+	end
+	local text = _G[bar.frame:GetName() .. "BarName"]:GetText()
+	if addonPrefix then
+		return ("[%s] %s%s %d:%02d"):format(addonPrefix, prefix and prefix .. ": " or "", (text:gsub("|T.-|t", "")), floor(bar.timer / 60), bar.timer % 60)
+	elseif prefix then
+		return ("%s: %s  %d:%02d"):format(prefix, text, floor(bar.timer / 60), bar.timer % 60)
 	end
 end)
 

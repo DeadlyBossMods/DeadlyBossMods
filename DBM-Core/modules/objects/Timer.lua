@@ -497,6 +497,7 @@ function timerPrototype:Start(timer, ...)
 		if not bar then
 			return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 		end
+		bar.modId = self.mod.modId -- for the addon's X-DBM-Mod-AnnouncePrefix when the bar is shared to chat
 	end
 	local msg
 	if self.type and not self.text then
