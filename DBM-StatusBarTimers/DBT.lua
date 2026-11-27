@@ -360,6 +360,9 @@ do
 	end
 
 	function updateProxy()
+		if hoveredFrame and not hoveredFrame:IsMouseEnabled() then
+			hoveredFrame = nil -- click-through was turned on while hovering
+		end
 		local frame = hoveredFrame
 		if frame and frame.obj and frame:IsVisible() and IsShiftKeyDown() and not DBT.movable then
 			if not proxy then
