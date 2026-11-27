@@ -376,6 +376,15 @@ do
 
 	local function hardcodeFailed(self)
 		badStateDetected = true
+		self:TLCountReset()
+		self:TLBatchReset()
+		self:TLActiveEventReset()
+		resetMephiticThrashScheduledEvents(self)
+		resetSpectralCoilsScheduledEvents(self)
+		resetStage3ScheduledEvents(self)
+		resetStoryStage3Batch(self)
+		resetLFRStage3Batch(self)
+		resetHeroicStage3Batch(self)
 		self:ResumeBlizzardAPI()
 		self:UnregisterShortTermEvents()
 		setFallback(self)
@@ -500,6 +509,9 @@ do
 
 	---@param self DBMMod
 	local function startLFRStage3Timer(self, timer, timerExact, eventID, isOpeningBatch)
+		if self:IsNormal() and not isOpeningBatch and timer ~= 65 and timer ~= 61 and timer ~= 60 then
+			return false
+		end
 		if not isOpeningBatch and (timer == 65 or timer == 56) then
 			self:TLBatchStart(timer, function()
 				local timerObj, eventType, countKey = resolveLFRStage3Collision(timer)
@@ -884,7 +896,7 @@ do
 	---@param timer number
 	---@param timerExact number
 	---@param eventID number
-	--TODO: Stage 2 routing is incomplete, and stage 3 is unimplemented; the available Normal kill ended early before any stage 3 abilities. More log evidence is needed.
+	--Normal stage 3 shares the observed LFR opening and early recurrences; later Normal routes remain unverified.
 	local function timersNormal(self, timer, timerExact, eventID)
 		local handled = false
 		local stage = self:GetStage()
@@ -917,6 +929,7 @@ do
 				stage1SixtyTwoCount = stage1SixtyTwoCount + 1
 				if stage1SixtyTwoCount == 1 then--Complete Normal corpus: opener Call, then Mother's Wrath
 					timerCalloftheSerpentCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "call", "callCount"))
+					self:Schedule(timerExact, finishTimelineEvent, self, eventID)--State 3 arrives six seconds late
 					handled = true
 				elseif stage1SixtyTwoCount == 2 then
 					timerMothersWrathCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "mothersWrath", "mothersWrathCount"))
@@ -924,12 +937,25 @@ do
 				end
 			end
 		elseif stage == 2 then
-			if timer == 118 then
+			if timer == 10 then
+				self:SetStage(2.5)
+				startSpectralCoilsTimer(self, timerExact, eventID)
+			elseif timer == 118 then
 				timerRageoftheShackledCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "rage", "rageCount"))
 			elseif timer == 30 or timer == 40 then
 				timerVirulentSpitCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "virulentSpit", "virulentSpitCount"))
+				self:Schedule(timerExact, finishTimelineEvent, self, eventID)--State 3 arrives six seconds late
 			end
-			handled = timer == 118 or timer == 30 or timer == 40
+			handled = timer == 10 or timer == 118 or timer == 30 or timer == 40
+		elseif stage == 2.5 then
+			table.insert(lfrStage3Batch, {timer = timer, timerExact = timerExact, eventID = eventID})
+			if not lfrStage3BatchScheduled then
+				lfrStage3BatchScheduled = true
+				self:Schedule(0, startLFRStage3Batch, self)
+			end
+			handled = true
+		elseif stage == 3 then
+			handled = startLFRStage3Timer(self, timer, timerExact, eventID, false)
 		end
 
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
