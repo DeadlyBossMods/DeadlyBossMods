@@ -346,6 +346,7 @@ L.DBT_DEBUG_HEADER		= "Diagnostica DBT (ripulita; nessun testo di incontro o seg
 L.DBT_DEBUG_EMPTY		= "Nessun aggiornamento di stile DBT è stato acquisito dal ricaricamento dell'interfaccia."
 L.DBT_DEBUG_DISABLED	= "L'acquisizione è disattivata. Abilita la modalità di debug di DBM prima di riprodurre il problema."
 L.DBT_DEBUG_NOTICE		= "Includi questo output della chat nella segnalazione di errore."
+L.DBT_ANNOUNCE_IN_COMBAT	= "I timer non possono essere condivisi in chat durante il combattimento."
 L.TIMER_USAGE			= {
 	"Comandi Temporizzatore "..L.DBM..":",
 	"-----------------",

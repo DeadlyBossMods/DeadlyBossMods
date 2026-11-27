@@ -321,6 +321,7 @@ L.DBT_DEBUG_HEADER			= "DBT-Diagnosen (bereinigt; keine Begegnungs- oder Geheimt
 L.DBT_DEBUG_EMPTY			= "Seit dem Neuladen des Interfaces wurden keine DBT-Stilaktualisierungen erfasst."
 L.DBT_DEBUG_DISABLED			= "Die Erfassung ist deaktiviert. Aktiviere den DBM-Debug-Modus, bevor du das Problem reproduzierst."
 L.DBT_DEBUG_NOTICE			= "Bitte füge diese Chat-Ausgabe deinem Fehlerbericht bei."
+L.DBT_ANNOUNCE_IN_COMBAT		= "Timer können im Kampf nicht in den Chat geteilt werden."
 L.TIMER_USAGE	= {
 	L.DBM .. "-Timer Kommandos:",
 	"-----------------",

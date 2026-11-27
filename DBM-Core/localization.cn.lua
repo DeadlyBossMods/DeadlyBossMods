@@ -336,6 +336,7 @@ L.DBT_DEBUG_HEADER			= "DBT 诊断信息（已净化；不含首领战或保密�
 L.DBT_DEBUG_EMPTY			= "自界面重载后，未捕获到 DBT 样式刷新。"
 L.DBT_DEBUG_DISABLED			= "捕获已禁用。请在重现问题前启用 DBM 调试模式。"
 L.DBT_DEBUG_NOTICE			= "请在错误报告中附上此聊天输出。"
+L.DBT_ANNOUNCE_IN_COMBAT		= "战斗中无法将计时条分享到聊天。"
 L.TIMER_USAGE	= {
 	L.DBM .. "计时器可用命令:",
 	"-----------------",

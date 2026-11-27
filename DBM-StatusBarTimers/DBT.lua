@@ -306,6 +306,100 @@ function DBT:AddDefaultOptions(t1, t2)
 	end
 end
 
+-- Shift-click sharing on retail and Forever. Chat sent by addon code is a blocked action there, and so is chat
+-- the player sends from a chat box an addon put text into (the text is tainted). A shift-click on a bar therefore
+-- hits a macro button laid over it, and the game sends the text as the player's own chat command.
+-- The button only exists after the first hover with Shift held, and the modifier event is only registered while
+-- the mouse is over a bar. Classic clients keep barPrototype:Announce. (DBT loads before DBM-Core, so the client
+-- check happens when bars are created.)
+local barOnEnter, barOnLeave
+do
+	local CreateFrame, IsShiftKeyDown, InCombatLockdown, IsInGroup, IsInRaid = CreateFrame, IsShiftKeyDown, InCombatLockdown, IsInGroup, IsInRaid
+	local proxy, modifierFrame, hoveredFrame
+	local updateProxy
+
+	---@param bar DBTBar?
+	local function macroText(bar)
+		local text = bar and bar:GetAnnounceText()
+		local slash = IsInGroup(2) and SLASH_INSTANCE_CHAT1 or IsInRaid() and SLASH_RAID1 or IsInGroup() and SLASH_PARTY1
+		return text and slash and slash .. " " .. text or nil
+	end
+
+	local function createProxy()
+		proxy = CreateFrame("Button", nil, UIParent, "InsecureActionButtonTemplate")
+		proxy:Hide()
+		proxy:RegisterForClicks("LeftButtonUp")
+		proxy:SetAttribute("useOnKeyDown", false)
+		proxy:SetAttribute("type", "macro")
+		proxy:SetScript("PreClick", function(self)
+			if InCombatLockdown() then
+				self:SetAttribute("macrotext", nil)
+				DBM:AddMsg(DBM_CORE_L.DBT_ANNOUNCE_IN_COMBAT)
+			else
+				self:SetAttribute("macrotext", macroText(self.bar))
+			end
+		end)
+		proxy:SetScript("PostClick", function(self)
+			self:SetAttribute("macrotext", nil)
+		end)
+		-- The button covers the bar, so it also takes the bar's right-click cancel
+		proxy:SetScript("OnMouseUp", function(self, btn)
+			if btn == "RightButton" and self.bar and not DBT.Options.DisableRightClick then
+				self.bar:Cancel()
+			end
+		end)
+		proxy:SetScript("OnLeave", function()
+			if hoveredFrame and not hoveredFrame:IsMouseOver() then
+				hoveredFrame = nil
+			end
+			updateProxy()
+		end)
+		proxy:SetScript("OnHide", function(self)
+			self.bar = nil
+		end)
+	end
+
+	function updateProxy()
+		local frame = hoveredFrame
+		if frame and frame.obj and frame:IsVisible() and IsShiftKeyDown() and not DBT.movable then
+			if not proxy then
+				createProxy()
+			end
+			proxy:SetParent(frame)
+			proxy:ClearAllPoints()
+			proxy:SetAllPoints(frame)
+			proxy:SetFrameLevel(frame:GetFrameLevel() + 10)
+			proxy.bar = frame.obj
+			proxy:Show()
+		elseif proxy then
+			proxy:Hide()
+		end
+		if hoveredFrame then
+			if not modifierFrame then
+				modifierFrame = CreateFrame("Frame")
+				modifierFrame:SetScript("OnEvent", function() updateProxy() end)
+			end
+			modifierFrame:RegisterEvent("MODIFIER_STATE_CHANGED")
+		elseif modifierFrame then
+			modifierFrame:UnregisterEvent("MODIFIER_STATE_CHANGED")
+		end
+	end
+
+	function barOnEnter(self)
+		hoveredFrame = self
+		updateProxy()
+	end
+
+	function barOnLeave(self)
+		-- Moving onto the proxy also leaves the bar
+		if proxy and proxy:IsShown() and proxy:IsMouseOver() then return end
+		if hoveredFrame == self then
+			hoveredFrame = nil
+		end
+		updateProxy()
+	end
+end
+
 do
 	local CreateFrame, IsShiftKeyDown = CreateFrame, IsShiftKeyDown
 
@@ -370,6 +464,10 @@ do
 		frame:SetScript("OnMouseDown", onMouseDown)
 		frame:SetScript("OnMouseUp", onMouseUp)
 		frame:SetScript("OnHide", onHide)
+		if DBM:IsRestricted() then
+			frame:SetScript("OnEnter", barOnEnter)
+			frame:SetScript("OnLeave", barOnLeave)
+		end
 		---@type DBTBar
 		frame.obj = nil
 		local bar = CreateFrame("StatusBar", "$parentBar", frame)
@@ -1763,8 +1861,10 @@ do
 	local tostring, mfloor = tostring, math.floor
 	local canaccesstable = _G.canaccesstable or function() return true end
 	local ChatEdit_GetActiveWindow, SendChatMessage, IsInGroup, IsInRaid = ChatEdit_GetActiveWindow, C_ChatInfo.SendChatMessage or SendChatMessage, IsInGroup, IsInRaid
-	function barPrototype:Announce()
-		if self.isSecret then return end
+	---The text for sharing the bar to chat, nil if it can't be shared (secret text, time or color)
+	---@return string?
+	function barPrototype:GetAnnounceText()
+		if self.isSecret or not self.frame then return end
 		local text = _G[self.frame:GetName().."BarName"]:GetText()
 		local color = self.color
 		if DBM:hasanysecretvalues(text, self.timer, color) then return end
@@ -1775,6 +1875,14 @@ do
 			if DBM:issecretvalue(msg) then return end
 		end
 		msg = msg or ("%s %d:%02d"):format(tostring(text):gsub("|T.-|t", ""), mfloor(self.timer / 60), self.timer % 60)
+		return msg
+	end
+
+	-- Classic clients; retail and Forever share through the macro button over the bar (see barOnEnter)
+	function barPrototype:Announce()
+		if DBM:IsRestricted() then return end
+		local msg = self:GetAnnounceText()
+		if not msg then return end
 		local chatWindow = ChatEdit_GetActiveWindow()
 		if chatWindow then
 			chatWindow:Insert(msg)
