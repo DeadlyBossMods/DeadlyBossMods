@@ -102,6 +102,8 @@ local lastYellTime = 0
 local lastTLEvent = 0
 local stage1CancelBurstCount = 0
 local stage1CancelBurstStart = 0
+local heroicToxicExpected
+local heroicDefilementExpected
 
 mod.vb.CrucibleCount = 0--Used for fangs AND defilement. Reset on stage 2 start
 mod.vb.GuilotineCount = 0--Used for guillotine AND grim guillotine. Reset on stage 2 start
@@ -172,6 +174,8 @@ function mod:OnLimitedCombatStart()
 	lastTLEvent = GetTime()
 	stage1CancelBurstCount = 0
 	stage1CancelBurstStart = 0
+	heroicToxicExpected = nil
+	heroicDefilementExpected = nil
 	badStateDetectedAt = nil
 	badStateDetectedDuringWipeResend = false
 	seenTimelineEventIDs = {}
@@ -223,6 +227,8 @@ function mod:OnCombatEnd()
 	lastTLEvent = 0
 	stage1CancelBurstCount = 0
 	stage1CancelBurstStart = 0
+	heroicToxicExpected = nil
+	heroicDefilementExpected = nil
 	self:UnregisterShortTermEvents()
 end
 
@@ -265,6 +271,8 @@ do
 		self.vb.ToxicDelugeCount = 1
 		stage3ThirtyFourCount = 0
 		stage3ThirtyThreeCount = 0
+		heroicToxicExpected = nil
+		heroicDefilementExpected = nil
 	end
 
 	---@param timer number
@@ -367,11 +375,12 @@ do
 			--Stage 3: CoiledAltar (Heroic/Week2)
 			if timer == 2 or timer == 43 or timer == 47 or timer == 57 or timer == 62 then--Toxic Deluge
 				handled = true
+				heroicToxicExpected = {eventID = eventID, expires = GetTime() + timerExact}
 				timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
 			elseif timer == 17 or timer == 170 then--Grim Guillotine
 				handled = true
 				timerGrimGuillotineCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "grimGuillotine", "GuilotineCount"))
-			elseif timer == 26 or timer == 51 or timer == 67 then--Gloombomb
+			elseif timer == 26 or timer == 51 or timer == 67 or timer == 86 then--Gloombomb
 				handled = true
 				timerGloombombCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "gloombomb", "GloombombCount"))
 			elseif timer == 32 or timer == 34 or timer == 38 then--Blighted Severing
@@ -380,12 +389,26 @@ do
 			elseif timer == 39 or timer == 100 then--Eternal Nightfall
 				handled = true
 				timerEternalNightfallCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "eternalNightfall", "EternalNightfallCount"))
-			elseif timer == 44 or timer == 61 or timer == 101 then--Dreadmarch
+			elseif timer == 44 or timer == 61 or timer == 101 or timer == 108 then--Dreadmarch
 				handled = true
 				timerDeathmarchCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "deathmarch", "DeathmarchCount"))
 			elseif timer == 105 or timer == 106 then--Defilement of the Crucible
 				handled = true
+				heroicDefilementExpected = {eventID = eventID, expires = GetTime() + timerExact}
 				timerDefilementoftheCrucibleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "defilement", "CrucibleCount"))
+			elseif self:IsRoundedTimer(timerExact, 59.77, 0.1) then--Both recurrences share the same duration.
+				local now = GetTime()
+				local toxicMatch = heroicToxicExpected and self:IsRoundedTimer(now, heroicToxicExpected.expires, 0.1)
+				local defilementMatch = heroicDefilementExpected and self:IsRoundedTimer(now, heroicDefilementExpected.expires, 0.1)
+				if toxicMatch and not defilementMatch then
+					handled = true
+					heroicToxicExpected = {eventID = eventID, expires = now + timerExact}
+					timerToxicDelugeCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "toxicDeluge", "ToxicDelugeCount"))
+				elseif defilementMatch and not toxicMatch then
+					handled = true
+					heroicDefilementExpected = {eventID = eventID, expires = now + timerExact}
+					timerDefilementoftheCrucibleCD:TLStart(timerExact, eventID, self:TLCountStart(eventID, "defilement", "CrucibleCount"))
+				end
 			elseif self:IsRoundedTimer(timerExact, 33.333, 0.1) then--Ambiguous: Blighted Severing OR Gloombomb
 				handled = true
 				stage3ThirtyThreeCount = stage3ThirtyThreeCount + 1
@@ -399,6 +422,8 @@ do
 
 		if not handled then--Reached end of chain without finding a valid timer, this means hardcode mod has failed, so we need to disable hardcoded features and fall back to blizz API
 			badStateDetected = true
+			heroicToxicExpected = nil
+			heroicDefilementExpected = nil
 			self:ResumeBlizzardAPI()
 			self:UnregisterShortTermEvents()
 			setFallback(self)
@@ -625,6 +650,14 @@ do
 		if not eventState then return end
 		if eventState >= 2 then
 			self:TLReleaseActiveEvent(eventID)
+		end
+		if eventState == 1 or eventState == 3 then
+			if heroicToxicExpected and heroicToxicExpected.eventID == eventID then
+				heroicToxicExpected = nil
+			end
+			if heroicDefilementExpected and heroicDefilementExpected.eventID == eventID then
+				heroicDefilementExpected = nil
+			end
 		end
 		if eventState == 2 then
 			local eventType, eventCount = self:TLCountFinish(eventID)
