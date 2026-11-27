@@ -263,3 +263,82 @@ do
 		hasCached = false
 	end
 end
+
+do
+	local rotationPending, rotationDungeon = false, nil
+	local advanceMusic
+
+	---@param dungeon boolean? Cancel only this music context when specified.
+	function DBM:CancelEventMusicRotation(dungeon)
+		if rotationPending and (dungeon == nil or dungeon == rotationDungeon) then
+			self:Unschedule(advanceMusic)
+			rotationPending = false
+			rotationDungeon = nil
+		end
+	end
+
+	---@param value string|number
+	---@param dungeon boolean
+	---@param previous string|number?
+	---@return string|number? path
+	function DBM:PlayEventMusic(value, dungeon, previous)
+		self:CancelEventMusicRotation()
+		local path, length
+		if value == "Random" then
+			local list = self.Options.EventSoundMusicCombined and self:GetMusic() or (dungeon and self:GetDungeonMusic() or self:GetBattleMusic())
+			if self.Options.EventMusicRandomNext then
+				local eligible, different = 0, 0
+				for i = 3, #list do
+					local track = list[i]
+					if type(track.length) == "number" and track.length > 0 and track.length < math.huge then
+						eligible = eligible + 1
+						if track.value ~= previous then different = different + 1 end
+					end
+				end
+				local count = different > 0 and different or eligible
+				if count > 0 then
+					local choice = fastrandom(1, count)
+					for i = 3, #list do
+						local track = list[i]
+						if type(track.length) == "number" and track.length > 0 and track.length < math.huge and (different == 0 or track.value ~= previous) then
+							choice = choice - 1
+							if choice == 0 then
+								path, length = track.value, track.length
+								break
+							end
+						end
+					end
+				else
+					self:Debug("No random music tracks with a valid length", 2)
+					if self.Options.musicPlaying then
+						StopMusic()
+						self.Options.musicPlaying = nil
+					end
+				end
+			elseif #list >= 3 then
+				path = list[fastrandom(3, #list)].value
+			end
+		else
+			path = value
+		end
+		if path and path ~= "MISSING" then
+			PlayMusic(path)
+			self.Options.musicPlaying = true
+			if length then
+				rotationPending = true
+				rotationDungeon = dungeon
+				self:Schedule(length, advanceMusic, dungeon, path)
+			end
+		end
+		if path ~= "MISSING" then return path end
+	end
+
+	advanceMusic = function(dungeon, previous)
+		rotationPending = false
+		rotationDungeon = nil
+		local option = dungeon and DBM.Options.EventSoundDungeonBGM or DBM.Options.EventSoundMusic
+		if DBM.Options.EventMusicRandomNext and DBM.Options.musicPlaying and option == "Random" then
+			DBM:PlayEventMusic(option, dungeon, previous)
+		end
+	end
+end

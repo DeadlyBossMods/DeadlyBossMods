@@ -129,6 +129,7 @@ DBM.DefaultOptions = {
 	EventSoundDungeonBGM = "None",
 	EventSoundMusicCombined = false,
 	EventMusicNoBuiltIn = false,
+	EventMusicRandomNext = false,
 	EventDungMusicMythicFilter = true,
 	EventMusicMythicFilter = true,
 	Enabled = true,
@@ -568,6 +569,7 @@ function DBM:CreateProfile(name)
 		self:AddMsg(L.PROFILE_CREATE_ERROR_D:format(self:GetLocalizedProfileName(name)))
 		return
 	end
+	self:CancelEventMusicRotation()
 	-- create profile
 	usedProfile = name
 	DBM_UsedProfile = usedProfile
@@ -589,6 +591,7 @@ function DBM:ApplyProfile(name)
 		self:AddMsg(L.PROFILE_APPLY_ERROR:format(self:GetLocalizedProfileName(name) or CL.UNKNOWN))
 		return
 	end
+	self:CancelEventMusicRotation()
 	usedProfile = name
 	DBM_UsedProfile = usedProfile
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
@@ -611,6 +614,7 @@ function DBM:CopyProfile(name)
 		self:AddMsg(L.PROFILE_COPY_ERROR_SELF)
 		return
 	end
+	self:CancelEventMusicRotation()
 	DBM_AllSavedOptions[usedProfile] = CopyTable(DBM_AllSavedOptions[name])
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
@@ -632,6 +636,7 @@ function DBM:DeleteProfile(name)
 		self:AddMsg(L.PROFILE_CANNOT_DELETE:format(DEFAULT))
 		return
 	end
+	self:CancelEventMusicRotation()
 	--Delete
 	DBM_AllSavedOptions[name] = nil
 	usedProfile = "Default"--Restore to default
