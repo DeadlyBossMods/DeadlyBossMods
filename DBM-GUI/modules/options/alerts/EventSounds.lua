@@ -18,11 +18,15 @@ function DBM_GUI:StopMusicPreview()
 	end
 end
 
-function DBM_GUI:PreviewMusic(value)
+function DBM_GUI:PreviewMusic(value, dungeon)
 	if value == "Random" or DBM:IsNoneValue(value) then
+		if value ~= "Random" then
+			DBM:CancelEventMusicRotation(dungeon)
+		end
 		self:StopMusicPreview()
 		return
 	end
+	DBM:CancelEventMusicRotation()
 	if not musicPreviewPlaying and tonumber(GetCVar("Sound_EnableMusic")) == 0 then
 		previousMusicSetting = 0
 		SetCVar("Sound_EnableMusic", 1)
@@ -69,13 +73,13 @@ VictorySoundDropdown2:SetPoint("LEFT", VictorySoundDropdown, "RIGHT", isNewDropd
 local useCombined = DBM.Options.EventSoundMusicCombined
 local DungeonMusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventDungeonMusic, useCombined and DBM:GetMusic() or DBM:GetDungeonMusic(), "DBM", "EventSoundDungeonBGM", function(value)
 	DBM.Options.EventSoundDungeonBGM = value
-	DBM_GUI:PreviewMusic(value)
+	DBM_GUI:PreviewMusic(value, true)
 end, 180)
 DungeonMusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown, "TOPLEFT", 0, -45)
 
 local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, useCombined and DBM:GetMusic() or DBM:GetBattleMusic(), "DBM", "EventSoundMusic", function(value)
 	DBM.Options.EventSoundMusic = value
-	DBM_GUI:PreviewMusic(value)
+	DBM_GUI:PreviewMusic(value, false)
 end, 180)
 MusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown2, "TOPLEFT", 0, -45)
 MusicDropDown.myheight = 0
@@ -95,6 +99,12 @@ EngageSoundDropdown:SetPoint("TOPLEFT", MusicDropDown, "TOPLEFT", 0, -45)
 local eventSoundsExtrasArea	= eventSoundsPanel:CreateArea(L.Area_EventSoundsExtras)
 eventSoundsExtrasArea:CreateCheckButton(L.EventMusicCombined, true, nil, "EventSoundMusicCombined")
 eventSoundsExtrasArea:CreateCheckButton(L.DisableBuiltInMusic, true, nil, "EventMusicNoBuiltIn")
+local randomNext = eventSoundsExtrasArea:CreateCheckButton(L.EventMusicRandomNext, true, nil, "EventMusicRandomNext")
+randomNext:HookScript("OnClick", function()
+	if not DBM.Options.EventMusicRandomNext then
+		DBM:CancelEventMusicRotation()
+	end
+end)
 
 if isRetail then
 	local eventSoundsFiltersArea= eventSoundsPanel:CreateArea(L.Area_EventSoundsFilters)

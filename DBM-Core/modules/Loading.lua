@@ -20,10 +20,9 @@ local UnitGUID, UnitIsDead, UnitIsFriend = UnitGUID, UnitIsDead, UnitIsFriend
 local InCombatLockdown = InCombatLockdown
 local C_TimerAfter = C_Timer.After
 local GetCVar, SetCVar = GetCVar, SetCVar
-local PlayMusic, StopMusic = PlayMusic, StopMusic
+local StopMusic = StopMusic
 local GetRealZoneText = GetRealZoneText
 local GetInstanceInfo = GetInstanceInfo
-local fastrandom = fastrandom
 local inCombat = private.combatDetectionState.inCombat ---@type DBMMod[]
 local DBMScheduler = private:GetModule("DBMScheduler")
 
@@ -396,6 +395,7 @@ do
 	function DBM:TransitionToDungeonBGM(force, cleanup)
 		if cleanup then
 			self:Unschedule(self.TransitionToDungeonBGM)
+			self:CancelEventMusicRotation()
 			if self.Options.RestoreSettingCustomMusic then
 				SetCVar("Sound_EnableMusic", self.Options.RestoreSettingCustomMusic)
 				self.Options.RestoreSettingCustomMusic = nil
@@ -422,20 +422,8 @@ do
 					self.Options.RestoreSettingCustomMusic = nil--Don't actually need it
 				end
 			end
-			local path = "MISSING"
-			if self.Options.EventSoundDungeonBGM == "Random" then
-				local usedTable = self.Options.EventSoundMusicCombined and self:GetMusic() or self:GetDungeonMusic()
-				if #usedTable >= 3 then
-					local random = fastrandom(3, #usedTable)
-					---@diagnostic disable-next-line: cast-local-type
-					path = usedTable[random].value
-				end
-			else
-				path = self.Options.EventSoundDungeonBGM
-			end
-			if path ~= "MISSING" then
-				PlayMusic(path)
-				self.Options.musicPlaying = true
+			local path = self:PlayEventMusic(self.Options.EventSoundDungeonBGM, true)
+			if path then
 				self:Debug("Starting Dungeon music with file: " .. path)
 			end
 		end

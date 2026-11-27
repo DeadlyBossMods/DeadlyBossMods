@@ -933,6 +933,7 @@ do
 					self.Options.RestoreSettingAmbiance = true
 				end
 				if self.Options.DisableMusic and GetCVar("Sound_EnableMusic") == "1" then
+					self:CancelEventMusicRotation()
 					SetCVar("Sound_EnableMusic", 0)
 					self.Options.RestoreSettingMusic = true
 				end
@@ -1094,22 +1095,7 @@ do
 							self.Options.RestoreSettingCustomMusic = nil--Don't actually need it
 						end
 					end
-					local path = "MISSING"
-					if self.Options.EventSoundMusic == "Random" then
-						local usedTable = self.Options.EventSoundMusicCombined and self:GetMusic() or self:GetBattleMusic()
-						if #usedTable >= 3 then
-							local random = fastrandom(3, #usedTable)
-							---@diagnostic disable-next-line: cast-local-type
-							path = usedTable[random].value
-						end
-					else
-						path = self.Options.EventSoundMusic
-					end
-					if path ~= "MISSING" then
-						PlayMusic(path)
-						self.Options.musicPlaying = true
-						--self:Debug("Starting combat music with file: " .. path)
-					end
+					self:PlayEventMusic(self.Options.EventSoundMusic, false)
 				end
 			else
 				self:AddMsg(L.COMBAT_STATE_RECOVERED:format(difficulties.difficultyText .. name, stringUtils.strFromTime(delay)))
