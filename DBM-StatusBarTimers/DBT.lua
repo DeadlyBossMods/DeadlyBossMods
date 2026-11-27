@@ -1778,7 +1778,7 @@ do
 		local chatWindow = ChatEdit_GetActiveWindow()
 		if chatWindow then
 			chatWindow:Insert(msg)
-		else
+		elseif not DBM:MidRestrictionsActive(false, false, true) then -- addon chat is blocked during chat lockdown (encounters, Mythic+, PvP matches)
 			SendChatMessage(msg, (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY")
 		end
 	end
