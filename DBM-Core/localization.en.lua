@@ -352,7 +352,7 @@ L.DBT_DEBUG_HEADER						= "DBT diagnostics (sanitized; no encounter or secret te
 L.DBT_DEBUG_EMPTY						= "No DBT style refreshes have been captured since this UI reload."
 L.DBT_DEBUG_DISABLED					= "Capture is disabled. Enable DBM Debug Mode before reproducing the problem."
 L.DBT_DEBUG_NOTICE						= "Please include this chat output with your bug report."
-L.DBT_ANNOUNCE_IN_COMBAT					= "Timers can't be shared to chat in combat."
+L.DBT_ANNOUNCE_IN_COMBAT					= "Timers cannot be shared to chat in combat."
 L.TIMER_USAGE							= {
 	L.DBM .. " timer commands:",
 	"-----------------",
