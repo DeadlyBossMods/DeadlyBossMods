@@ -266,14 +266,16 @@ end
 
 do
 	local rotationPending, rotationDungeon = false, nil
+	local playlist, playlistCombined
 	local advanceMusic
 
 	---@param dungeon boolean? Cancel only this music context when specified.
 	function DBM:CancelEventMusicRotation(dungeon)
-		if rotationPending and (dungeon == nil or dungeon == rotationDungeon) then
-			self:Unschedule(advanceMusic)
+		if dungeon == nil or dungeon == rotationDungeon then
+			if rotationPending then self:Unschedule(advanceMusic) end
 			rotationPending = false
 			rotationDungeon = nil
+			playlist, playlistCombined = nil, nil
 		end
 	end
 
@@ -282,41 +284,44 @@ do
 	---@param previous string|number?
 	---@return string|number? path
 	function DBM:PlayEventMusic(value, dungeon, previous)
-		self:CancelEventMusicRotation()
+		if not previous then self:CancelEventMusicRotation() end
 		local path, length
 		if value == "Random" then
-			local list = self.Options.EventSoundMusicCombined and self:GetMusic() or (dungeon and self:GetDungeonMusic() or self:GetBattleMusic())
 			if self.Options.EventMusicRandomNext then
-				local eligible, different = 0, 0
-				for i = 3, #list do
-					local track = list[i]
-					if type(track.length) == "number" and track.length > 0 and track.length < math.huge then
-						eligible = eligible + 1
-						if track.value ~= previous then different = different + 1 end
-					end
-				end
-				local count = different > 0 and different or eligible
-				if count > 0 then
-					local choice = fastrandom(1, count)
+				if not playlist or #playlist == 0 or playlistCombined ~= self.Options.EventSoundMusicCombined then
+					local list = self.Options.EventSoundMusicCombined and self:GetMusic() or (dungeon and self:GetDungeonMusic() or self:GetBattleMusic())
+					playlist = {}
+					playlistCombined = self.Options.EventSoundMusicCombined
 					for i = 3, #list do
 						local track = list[i]
-						if type(track.length) == "number" and track.length > 0 and track.length < math.huge and (different == 0 or track.value ~= previous) then
-							choice = choice - 1
-							if choice == 0 then
-								path, length = track.value, track.length
-								break
-							end
+						if type(track.length) == "number" and track.length > 0 and track.length < math.huge then
+							playlist[#playlist + 1] = track
 						end
 					end
+					for i = #playlist, 2, -1 do
+						local j = fastrandom(1, i)
+						playlist[i], playlist[j] = playlist[j], playlist[i]
+					end
+					-- Avoid repeating the last song at the boundary between shuffled cycles.
+					if #playlist > 1 and playlist[#playlist].value == previous then
+						local j = fastrandom(1, #playlist - 1)
+						playlist[#playlist], playlist[j] = playlist[j], playlist[#playlist]
+					end
+				end
+				local track = table.remove(playlist)
+				if track then
+					path, length = track.value, track.length
 				else
+					self:CancelEventMusicRotation()
 					self:Debug("No random music tracks with a valid length", 2)
 					if self.Options.musicPlaying then
 						StopMusic()
 						self.Options.musicPlaying = nil
 					end
 				end
-			elseif #list >= 3 then
-				path = list[fastrandom(3, #list)].value
+			else
+				local list = self.Options.EventSoundMusicCombined and self:GetMusic() or (dungeon and self:GetDungeonMusic() or self:GetBattleMusic())
+				if #list >= 3 then path = list[fastrandom(3, #list)].value end
 			end
 		else
 			path = value
@@ -324,6 +329,7 @@ do
 		if path and path ~= "MISSING" then
 			PlayMusic(path)
 			self.Options.musicPlaying = true
+			self:Debug((dungeon and "Starting Dungeon music with file: " or "Starting combat music with file: ") .. path)
 			if length then
 				rotationPending = true
 				rotationDungeon = dungeon
@@ -335,10 +341,11 @@ do
 
 	advanceMusic = function(dungeon, previous)
 		rotationPending = false
-		rotationDungeon = nil
 		local option = dungeon and DBM.Options.EventSoundDungeonBGM or DBM.Options.EventSoundMusic
 		if DBM.Options.EventMusicRandomNext and DBM.Options.musicPlaying and option == "Random" then
 			DBM:PlayEventMusic(option, dungeon, previous)
+		else
+			DBM:CancelEventMusicRotation()
 		end
 	end
 end

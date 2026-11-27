@@ -422,10 +422,7 @@ do
 					self.Options.RestoreSettingCustomMusic = nil--Don't actually need it
 				end
 			end
-			local path = self:PlayEventMusic(self.Options.EventSoundDungeonBGM, true)
-			if path then
-				self:Debug("Starting Dungeon music with file: " .. path)
-			end
+			self:PlayEventMusic(self.Options.EventSoundDungeonBGM, true)
 		end
 	end
 
