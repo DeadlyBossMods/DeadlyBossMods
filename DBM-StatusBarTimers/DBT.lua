@@ -1878,7 +1878,8 @@ do
 			if DBM:issecretvalue(msg) then return end
 		end
 		msg = msg or ("%s %d:%02d"):format(tostring(text):gsub("|T.-|t", ""), mfloor(self.timer / 60), self.timer % 60)
-		return msg
+		-- One line only: timer labels can come from other players, and the share button runs the text as a macro
+		return (msg:gsub("[\r\n]", " "))
 	end
 
 	-- Classic clients; retail and Forever share through the macro button over the bar (see barOnEnter)
