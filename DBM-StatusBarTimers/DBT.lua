@@ -312,11 +312,10 @@ end
 -- The button only exists after the first hover with Shift held, and the modifier event is only registered while
 -- the mouse is over a bar. Classic clients keep barPrototype:Announce. (DBT loads before DBM-Core, so the client
 -- check happens when bars are created.)
-local barOnEnter, barOnLeave
+local barOnEnter, barOnLeave, updateShareProxy
 do
 	local CreateFrame, IsShiftKeyDown, InCombatLockdown, IsInGroup, IsInRaid = CreateFrame, IsShiftKeyDown, InCombatLockdown, IsInGroup, IsInRaid
 	local proxy, modifierFrame, hoveredFrame
-	local updateProxy
 
 	---@param bar DBTBar?
 	local function macroText(bar)
@@ -352,14 +351,14 @@ do
 			if hoveredFrame and not hoveredFrame:IsMouseOver() then
 				hoveredFrame = nil
 			end
-			updateProxy()
+			updateShareProxy()
 		end)
 		proxy:SetScript("OnHide", function(self)
 			self.bar = nil
 		end)
 	end
 
-	function updateProxy()
+	function updateShareProxy()
 		if hoveredFrame and not hoveredFrame:IsMouseEnabled() then
 			hoveredFrame = nil -- click-through was turned on while hovering
 		end
@@ -380,7 +379,7 @@ do
 		if hoveredFrame then
 			if not modifierFrame then
 				modifierFrame = CreateFrame("Frame")
-				modifierFrame:SetScript("OnEvent", function() updateProxy() end)
+				modifierFrame:SetScript("OnEvent", function() updateShareProxy() end)
 			end
 			modifierFrame:RegisterEvent("MODIFIER_STATE_CHANGED")
 		elseif modifierFrame then
@@ -390,7 +389,7 @@ do
 
 	function barOnEnter(self)
 		hoveredFrame = self
-		updateProxy()
+		updateShareProxy()
 	end
 
 	function barOnLeave(self)
@@ -399,7 +398,7 @@ do
 		if hoveredFrame == self then
 			hoveredFrame = nil
 		end
-		updateProxy()
+		updateShareProxy()
 	end
 end
 
@@ -867,6 +866,7 @@ do
 				end
 			end
 		end
+		updateShareProxy() -- hide the share button if the bar under it just became click-through
 	end
 
 	---@param self DBT
