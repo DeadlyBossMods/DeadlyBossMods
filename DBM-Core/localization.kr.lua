@@ -338,6 +338,7 @@ L.DBT_DEBUG_HEADER			= "DBT 진단 내역 (정제 작업을 거쳐 보스전이�
 L.DBT_DEBUG_EMPTY			= "UI 재시작으로 인해 DBT 스타일 새로 고침이 캡처되지 않았습니다."
 L.DBT_DEBUG_DISABLED			= "캡처가 비활성화 상태입니다. 문제를 재현하기 전에 먼저 DBM 디버그 모드를 활성화하세요."
 L.DBT_DEBUG_NOTICE			= "버그 보고서에 이 대화창의 출력 내용을 포함해 주세요."
+L.DBT_ANNOUNCE_IN_COMBAT		= "전투 중에는 타이머를 대화창에 공유할 수 없습니다."
 L.TIMER_USAGE	= {
 	L.DBM .. " 타이머 명령어:",
 	"--------------",

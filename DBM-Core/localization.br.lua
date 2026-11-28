@@ -331,6 +331,7 @@ L.DBT_DEBUG_HEADER					= "Diagnósticos DBT (sanitizados; sem texto de encontro 
 L.DBT_DEBUG_EMPTY					= "Nenhuma atualização de estilo do DBT foi capturada desde que a interface foi recarregada."
 L.DBT_DEBUG_DISABLED					= "A captura está desativada. Ative o Modo de Depuração do DBM antes de reproduzir o problema."
 L.DBT_DEBUG_NOTICE					= "Inclua esta saída do chat no seu relatório de erro."
+L.DBT_ANNOUNCE_IN_COMBAT				= "Os cronômetros não podem ser compartilhados no bate-papo em combate."
 --Translate all of these
 L.TIMER_USAGE						= {
 	"Comandos de cronômetro do DBM:",

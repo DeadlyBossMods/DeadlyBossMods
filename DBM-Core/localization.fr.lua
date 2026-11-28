@@ -331,6 +331,7 @@ L.DBT_DEBUG_HEADER			= "Diagnostics DBT (nettoyés ; aucun texte de rencontre ou
 L.DBT_DEBUG_EMPTY			= "Aucune actualisation de style DBT n'a été capturée depuis le rechargement de l'interface."
 L.DBT_DEBUG_DISABLED			= "La capture est désactivée. Activez le mode débogage de DBM avant de reproduire le problème."
 L.DBT_DEBUG_NOTICE			= "Veuillez inclure cette sortie de discussion dans votre rapport d'erreur."
+L.DBT_ANNOUNCE_IN_COMBAT		= "Les décomptes ne peuvent pas être partagés dans la discussion en combat."
 L.TIMER_USAGE	= {
 	"Commandes " .. L.DBM .. " des chronomètres:",
 	"-----------------",

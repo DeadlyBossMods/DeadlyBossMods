@@ -22,6 +22,9 @@
 	],
 	"diagnostics.globals": [
 		"WOW_PROJECT_CAMELOT",
+		"SLASH_INSTANCE_CHAT1",
+		"SLASH_RAID1",
+		"SLASH_PARTY1",
 		"---MIDNIGHT SHIT---",
 		"C_InstanceEncounter",
 		"C_InstanceEncounter.IsEncounterInProgress",
